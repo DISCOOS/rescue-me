@@ -2,10 +2,10 @@
 -- version 3.2.4
 -- http://www.phpmyadmin.net
 --
--- Vert: localhost
--- Generert den: 30. Mai, 2013 22:05 PM
--- Tjenerversjon: 5.0.67
--- PHP-Versjon: 5.2.6
+-- Host: localhost
+-- Generated date: 30. May, 2013 22:05 PM
+-- Server-Version: 5.0.67
+-- PHP-Version: 5.2.6
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -16,13 +16,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `ntrkh_savnet`
+-- Database: `rescueme`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tabellstruktur for tabell `missing`
+-- Structure for table `missing`
 --
 
 CREATE TABLE IF NOT EXISTS `missing` (
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `missing` (
 -- --------------------------------------------------------
 
 --
--- Tabellstruktur for tabell `positions`
+-- Structure for table `positions`
 --
 
 CREATE TABLE IF NOT EXISTS `positions` (
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `positions` (
 -- --------------------------------------------------------
 
 --
--- Tabellstruktur for tabell `users`
+-- Structure for table `users`
 --
 
 CREATE TABLE IF NOT EXISTS `users` (

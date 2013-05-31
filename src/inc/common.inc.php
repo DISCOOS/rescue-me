@@ -2,7 +2,7 @@
 
 $user = '';
 $pass = '';
-$db = 'ntrkh_savnet';
+$db = 'rescueme';
 
 $mysqli = new mysqli("localhost", $user, $pass, $db);
 if ($mysqli->connect_errno) {
