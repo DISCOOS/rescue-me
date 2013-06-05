@@ -1,0 +1,8 @@
+#!/usr/bin/php
+
+<?
+    
+    require 'rescueme.php';
+    
+?>
+

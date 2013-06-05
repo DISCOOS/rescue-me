@@ -3,10 +3,8 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id']))
 	die('Ugyldig link!');
 
 require_once('common.inc.php');
-require_once('missing.class.php');
-require_once('position.class.php');
 
-$missing = new Missing();
+$missing = new \RescueMe\Missing();
 $missing->getMissing($_GET['id']);
 $positions = $missing->getPositions();
 

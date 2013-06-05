@@ -4,9 +4,8 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['num']) || s
 
 require_once('../config.php');
 require_once(APP_PATH_INC.'common.inc.php');
-require_once(APP_PATH_CLASS.'missing.class.php');
 
-$missing = new Missing();
+$missing = new \RescueMe\Missing();
 $missing->getMissing($_GET['id'], $_GET['num']);
 $missing->addPosition($_GET['lat'], $_GET['lon'], $_GET['acc'], $_GET['alt'], time(), $_SERVER['HTTP_USER_AGENT']);
 

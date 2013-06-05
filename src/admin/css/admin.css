@@ -90,6 +90,18 @@ margin-top: 28px;
 }
 
 /*==========================================
+/ [User List] page
+/=========================================*/
+.user {
+	.clickable;
+	background-color: #f1f1f1;
+}
+.user div.name {
+	font-weight: bold;
+	color: @colour-rodekors;
+}
+
+/*==========================================
 / 3. [Missing List] page
 /=========================================*/
 .missing {

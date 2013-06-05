@@ -1,22 +1,30 @@
 <?php
-require_once(APP_PATH_CLASS.'missing.class.php');
 
-$missing = new Missing();
-$missing->getMissing($_GET['missing_id']);
-$positions = $missing->getPositions();
+    use RescueMe\Missing;
+    $missing = Missing::getMissing($_GET['id']);
+    
+    if($missing == false)
+    {
+?>
+    <div class="alert alert-info">Ingen registrert</div>
+<?php
+    }
+    else
+    {
+        
+        $positions = $missing->getPositions();
 
-require_once(APP_PATH_CLASS.'gPoint.class.php');
-$gPoint = new gPoint();
 ?>
 <h3 class="pagetitle">Savnet: <?= $missing->m_name ?></h3>
 <?php
-if(isset($_ROUTER['message'])) { ?>
+        if(isset($_ROUTER['message'])) { ?>
 	<div class="alert alert-error">
 		<strong>En feil oppsto!</strong><br />
 		<?= $_ROUTER['message'] ?>
 	</div>
 <?
-} ?>
+        }        
+?>
 
 <div class="infos clear-fix">
 	<div class="info pull-left">
@@ -70,6 +78,9 @@ if(isset($_ROUTER['message'])) { ?>
 <div class="infos clear-fix">
 	<div class="info pull-left">
 		<label class="label label-important">Sporingslenke den savnede bruker</label> 
-		<?= APP_URI.$missing->missing_id.'-'.$missing->m_mobile; ?>
+		<?= APP_URI.$missing->id.'-'.$missing->m_mobile; ?>
 	</div>
 </div>
+<?php
+    }
+?>    

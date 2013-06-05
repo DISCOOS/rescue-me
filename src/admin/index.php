@@ -1,7 +1,7 @@
 <?php
     
-    require_once('../config.php');
-    require_once('router.php');
+    require('../config.php');
+    require('router.php');
     
 ?>
 <!DOCTYPE html>

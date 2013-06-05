@@ -1,7 +1,9 @@
     <?php
-    $missing = new all_missing();
-    $active = $missing->getAllMissing(); 
-    $closed = $missing->getAllMissing('closed');
+        
+    use \RescueMe\Missing;
+    
+    $active = Missing::getAllMissing('open'); 
+    $closed = Missing::getAllMissing('closed');
     ?>
 
     <h3>Registrerte savnede</h3>
@@ -45,7 +47,7 @@
     }
     else
     {
-        foreach($missing->getAllMissing('closed') as $id => $this_missing){
+        foreach(Missing::getAllMissing('closed') as $id => $this_missing){
             $this_missing->getPositions();
             ?>
             <li class="well well-small missing" id="<?= $id ?>">

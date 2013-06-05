@@ -1,7 +1,6 @@
 <?php
 
     require_once('common.inc.php');
-    require_once('missing.class.php');
 
     if (empty($_POST['mb_name'])) {
 
@@ -25,7 +24,7 @@
 
     <?php
 
-        $missing = new Missing();
+        $missing = new \RescueMe\Missing();
         $missings = $missing->getAllActiveMissings();
 
         echo '<h3>Aktive savnede:</h3>';
@@ -36,12 +35,12 @@
     }
 
     else {
-        $missing = new Missing();
+        $missing = new \RescueMe\Missing();
         $status = $missing->addMissing($_POST['mb_name'], $_POST['mb_mail'], $_POST['mb_mobile'], $_POST['m_name'], $_POST['m_mobile']);
         if ($status) {
             echo 'Savnet registrert!<br />
-                Send denne linken til savnede: '.APP_URI.'find.php?id='.$missing->missing_id.'&num='.$_POST['m_mobile'].'<br />
-                <a href="map.php?id='.$missing->missing_id.'">G&aring; til kart</a><br /><br /><a href="form.php">Tilbake</a>';
+                Send denne linken til savnede: '.APP_URI.'find.php?id='.$missing->id.'&num='.$_POST['m_mobile'].'<br />
+                <a href="map.php?id='.$missing->id.'">G&aring; til kart</a><br /><br /><a href="form.php">Tilbake</a>';
         }
         else
             echo 'En feil oppstod ved registrering.';

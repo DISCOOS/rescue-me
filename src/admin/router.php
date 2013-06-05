@@ -1,10 +1,9 @@
 <?php
-
-    require_once(APP_PATH_INC.'common.inc.php');
-    require_once(ADMIN_PATH_CLASS.'user.class.php');
+    
+    use RescueMe\User;
 
     // Verify logon information
-    $user = new user();
+    $user = new User();
     $_SESSION['logon'] = $user->verify();
     
     // Force logon?
@@ -18,13 +17,15 @@
         // Force logon (again)
         $_GET['view'] = 'logon';
         
-    }        
+    }
+    
     // Initialize view?
     else if(!isset($_GET['view']) || empty($_GET['view']) || $_GET['view'] == 'logon') {
         $_GET['view'] = 'start';
     }
     
 //    print_r($_GET);
+//    echo "<br />";
 //    print_r($_SESSION);
 //    
 //    exit;
@@ -86,17 +87,16 @@
         case 'list/missing':
             $_ROUTER['name'] = 'Alle savnede';
             $_ROUTER['file'] = $_GET['view'];
-            require_once(APP_PATH_CLASS.'all_missing.class.php');
             break;
         case 'new/missing':
+            
             if(isset($_POST['mb_name'])) {
                 require_once(APP_PATH_INC.'common.inc.php');
-                require_once(APP_PATH_CLASS.'missing.class.php');
-                $missing = new Missing();
+                $missing = new \RescueMe\Missing();
                 $status = $missing->addMissing($_POST['mb_name'], $_POST['mb_mail'], $_POST['mb_mobile'], 
                                                $_POST['m_name'], $_POST['m_mobile']);
                 if($status) {
-                    header("Location: ".ADMIN_URI.'details/missing/'.$missing->missing_id);
+                    header("Location: ".ADMIN_URI.'details/missing/'.$missing->id);
                     exit();
                 }
                 $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
@@ -104,10 +104,13 @@
             $_ROUTER['name'] = 'Start sporing av savnet';
             $_ROUTER['file'] = $_GET['view'];
             break;
+        case 'details/user':
+            $_ROUTER['name'] = 'Bruker';
+            $_ROUTER['file'] = $_GET['view'];
+            break;
         case 'details/missing':
             $_ROUTER['name'] = 'Savnet person';
             $_ROUTER['file'] = $_GET['view'];
-            require_once(APP_PATH_CLASS.'missing.class.php');
             break;
         default:
             echo "JaJa...";
