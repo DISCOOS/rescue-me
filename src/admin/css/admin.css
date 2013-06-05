@@ -3,17 +3,21 @@
 @colour-border: #cacaca;
 @colour-background: #e7e7e7;
 /*==========================================
-/ 0. DESIGN
+/ 0. Design
 /=========================================*/
 body {
-	padding-top: 20px;
-	padding-bottom: 40px;
+	padding-top: .1em;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-bottom: 4em;
 	background-color: #f5f5f5;
 }
 /* Custom container */
 .container-narrow {
-	margin: 0 auto;
-	max-width: 900px;
+    min-width: 10em;
+    max-width: 70em;
+    margin-left: auto;
+    margin-right: auto;
 }
 .container-narrow > hr {
 	margin: 30px 0;
@@ -32,7 +36,7 @@ h3.pagetitle {
 }
 
 /*==========================================
-/ 1. DASHBOARD
+/ 1. [Dashboard] page
 /=========================================*/
 /* Main marketing message and sign up button */
 .jumbotron {
@@ -57,7 +61,7 @@ margin-top: 28px;
 }
 
 /*==========================================
-/ 2. LOG ON-FORM
+/ 2. [Login] form
 /=========================================*/
 .form-signin {
 	max-width: 300px;
@@ -86,7 +90,7 @@ margin-top: 28px;
 }
 
 /*==========================================
-/ 3. SAVNEDE
+/ 3. [Missing List] page
 /=========================================*/
 .missing {
 	.clickable;
@@ -97,7 +101,7 @@ margin-top: 28px;
 	color: @colour-rodekors;
 }
 /*==========================================
-/ 4. SAVNET
+/ 4. [Missing Details] page
 /=========================================*/
 .infos .info {
 	margin-right: 10px;
@@ -149,10 +153,10 @@ li.position {
 
 }
 /*==========================================
-/ 5. NY SAVNET
+/ 5. [New Alert] form
 /=========================================*/
 
-.ny_savnet {
+.new-missing {
 	width: 45%;
 }
 
@@ -160,7 +164,7 @@ li.position {
 	margin: 10px 0px 5px 0px;
 }
 /*==========================================
-/ 6. OM SAVNET
+/ 6. [About] page
 /=========================================*/
 .contact {
 	float: left;
@@ -175,4 +179,13 @@ li.position {
 }
 .contact .name {
   font-weight: bold;
+}
+
+/*==========================================
+/ 7. [User] form
+/=========================================*/
+.form-user {
+	max-width: 400px;
+	padding: 19px 29px 29px;
+	margin: 0 auto 20px;
 }

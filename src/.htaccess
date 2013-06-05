@@ -1,0 +1,16 @@
+<IfModule mod_php5.c>
+    
+    php_value short_open_tag 1
+    
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    
+    RewriteEngine on
+
+    # Rewrite resource URIs to minify
+    RewriteRule ^js/(.*\.js) min/g=$1 [NE]
+    RewriteRule ^css/(.*\.css) min/g=$1 [NE]
+    RewriteRule ^css/(.*\.less) min/g=$1 [L,NE]
+    
+</IfModule>

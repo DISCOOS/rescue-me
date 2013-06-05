@@ -1,6 +1,6 @@
 <?php
 
-require_once(BASEPATH_INC.'common.inc.php');
+require_once(APP_PATH_INC.'common.inc.php');
 
 class Position {
 	public $pos_id = -1;

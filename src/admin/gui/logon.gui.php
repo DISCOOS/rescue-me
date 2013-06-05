@@ -1,9 +1,21 @@
-<form class="form-signin" method="post">
-<h2 class="form-signin-heading">Logg inn</h2>
-<input type="email" name="savnet_user" class="input-block-level" placeholder="E-postadresse">
-<input type="password" name="savnet_pass" class="input-block-level" placeholder="Passord">
-<label class="checkbox">
-<input type="checkbox" value="remember-me"> Husk meg på denne maskinen
-</label>
-<button class="btn btn-large btn-primary" type="submit">Logg inn</button>
+<form class="form-signin" method="post" action="<?= ADMIN_URI."logon" ?>">
+    <h2 class="form-signin-heading">Logg inn</h2>
+    <?php
+        if(isset($_ROUTER['message'])) { 
+    ?>
+        <div class="alert alert-error"><?= $_ROUTER['message'] ?></div>
+        <input type="email" name="username" class="input-block-level alert-error" placeholder="E-postadresse">
+        <input type="password" name="password" class="input-block-level alert-error" placeholder="Passord">
+    <?
+        } else {
+    ?>    
+        <input type="email" name="username" class="input-block-level" placeholder="E-postadresse">
+        <input type="password" name="password" class="input-block-level" placeholder="Passord">
+    <?
+        }
+    ?>    
+    <label class="checkbox">
+        <input type="checkbox" value="remember-me"> Husk meg på denne maskinen
+    </label>
+    <button class="btn btn-large btn-primary" type="submit">Logg inn</button>
 </form>

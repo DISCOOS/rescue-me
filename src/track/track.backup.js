@@ -1,9 +1,9 @@
-  	var base = 'http://savnet.ntrkh.no/';
+  	var base = R.admin.url;
   	var url = base + '#ID-#NUM/';
-	var forsok = parseInt(location.href.replace(url, ''));
-	if (isNaN(forsok))
-		forsok = 1;
-	url += (forsok+1);
+	var attempts = parseInt(location.href.replace(url, ''));
+	attempts = (isNaN(attempts))
+		attempts = 1;
+	url += (attempts+1);
   
     function getLocation() {
       var x=document.getElementById("feedback");
@@ -45,20 +45,20 @@
     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
 
-  if (y.accuracy > 500 && forsok < 10)
+  if (y.accuracy > 500 && attempts < 10)
     recalc = true;
   else
     recalc = false;
 
   if (!recalc) {
     xmlhttp.onreadystatechange=function() {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
           x.innerHTML=xmlhttp.responseText;
         }
 	  }
      }
 
-  var url = base+ "s/#ID-#NUM/"+y.latitude+"/"+y.longitude+"/"+y.accuracy+"/"+y.altitude;
+  var url = base + "s/#ID-#NUM/"+y.latitude+"/"+y.longitude+"/"+y.accuracy+"/"+y.altitude;
   xmlhttp.open("GET",url,true);
   xmlhttp.send();
 

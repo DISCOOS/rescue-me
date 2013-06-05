@@ -3,8 +3,8 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['num']) || s
     die('Ugyldig link!');
 
 require_once('../config.php');
-require_once(BASEPATH_INC.'common.inc.php');
-require_once(BASEPATH_CLASS.'missing.class.php');
+require_once(APP_PATH_INC.'common.inc.php');
+require_once(APP_PATH_CLASS.'missing.class.php');
 
 $missing = new Missing();
 $missing->getMissing($_GET['id'], $_GET['num']);

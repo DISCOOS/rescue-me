@@ -1,7 +1,7 @@
 <?php
 
-require_once(BASEPATH_INC.'common.inc.php');
-require_once(BASEPATH_CLASS.'position.class.php');
+require_once(APP_PATH_INC.'common.inc.php');
+require_once(APP_PATH_CLASS.'position.class.php');
 
 class Missing {
 
@@ -137,7 +137,7 @@ class Missing {
 							. '?user='.SMS_ACCOUNT
 							. '&to='.$to
 							. '&from='.SMS_FROM
-							. '&msg='.urlencode(str_replace(array('#unik_id', '#savnetnavn'),
+							. '&msg='.urlencode(str_replace(array('#missing_id', '#mb_name'),
 															array($this->missing_id.'-'.$to, $this->mb_name),
 															$message))
 							);
@@ -161,7 +161,7 @@ class Missing {
 	}
 	
 	############################################################
-	## TRANSFORM XML TO AN RRRAY
+	## TRANSFORM XML TO AN ARRAY
 	############################################################
 	private function _SVEVESMS_XML2Array($xml, $recursive=false){
 	    if (!$recursive)

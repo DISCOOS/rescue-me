@@ -4,9 +4,27 @@ class user {
 	
 	function __construct() {
 	}
+    
+    function create($name, $email, $password) {
+
+        $username = $this->safe(strtolower($email));
+
+        $password = $this->hash($password);
+
+        if(empty($username) || empty($password))
+            return false;
+
+        $query = "INSERT INTO `users` (`user_id`,`name`,`email`,`password`) VALUES(NULL, '$name', '$email', '$password');";
+        
+        if(SQLcon()->query($query)) {
+            return $this->logon($email, $password);
+        }
+        return false;
+    }    
 	
-	function logon($username, $password) {
-		$username = $this->safe(strtolower($username));
+	function logon($email, $password) {
+        
+		$username = $this->safe(strtolower($email));
 
 		$password = $this->hash($password);
 		if(empty($username) || empty($password))
@@ -35,21 +53,28 @@ class user {
 	
 	function _logon_ok($info) {
 		$this->info = $info;
-		$_SESSION['SAVNET_user_id'] = $this->info['user_id'];
-		$_SESSION['SAVNET_user_pass']=$this->info['password'];
+        $_SESSION['logon'] = true;
+		$_SESSION['user_id'] = $this->info['user_id'];
+		$_SESSION['password']=$this->info['password'];
 	}
 	
 	function verify() {
-		if(isset($_SESSION['SAVNET_user_id']) && isset($_SESSION['SAVNET_user_pass']))
-			return $this->_verify($_SESSION['SAVNET_user_id'], $_SESSION['SAVNET_user_pass']);
-		elseif(isset($_POST['savnet_user']) && isset($_POST['savnet_pass']))
-			return $this->logon($_POST['savnet_user'], $_POST['savnet_pass']);
+		if(isset($_SESSION['user_id']) && isset($_SESSION['password']))
+			return $this->_verify($_SESSION['user_id'], $_SESSION['password']);
+		elseif(isset($_POST['username']) && isset($_POST['password']))
+			return $this->logon($_POST['username'], $_POST['password']);
 		return false;
 	}
-	
+    
+    function logout() {
+		unset($this->info);
+		unset($_SESSION['logon']);
+		unset($_SESSION['user_id']);
+        unset($_SESSION['password']);
+    }	
 	
 	function hash($str) {
-		return sha1('SAVNETntrkH' . $str . '^[]|2"!#');
+		return sha1(SALT . $str . '^[]|2"!#');
 	}
 	
 	function safe($str) {

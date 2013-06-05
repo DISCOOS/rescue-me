@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+    
+    RewriteEngine on
+
+    # You may need RewriteBase on some servers
+    #RewriteBase /admin
+
+    # Rewrite URLs like "/..." to "index.php?view=..."
+    RewriteRule ^(.*)$ index.php?view=$1 [L,QSA]
+
+</IfModule>

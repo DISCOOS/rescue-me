@@ -1,7 +1,7 @@
 <?php
 
-$user = '';
-$pass = '';
+$user = 'root';
+$pass = 'onevoice';
 $db = 'rescueme';
 
 $mysqli = new mysqli("localhost", $user, $pass, $db);

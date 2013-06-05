@@ -1,5 +1,5 @@
 <?php
-require_once(BASEPATH_CLASS.'missing.class.php');
+require_once(APP_PATH_CLASS.'missing.class.php');
 class all_missing {
 	public function __construct(){}
 	

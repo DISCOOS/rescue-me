@@ -210,8 +210,8 @@ foreach ($positions as $key=>$value) {
 		echo '<a href="#" onClick="panMapTo('.$i.')">'.($i+1).'. N&oslash;yaktighet '.$value->acc.' meter (DTG: '.date('d-H:i:s', $value->timestamp).')</a><br />';
 	$i++;
 }
-echo '</i><br /><br /><u>Link som den savnede bruker:</u><br />
-	http://savnet.ntrkh.no/find.php?id='.$_GET['id'].'&num='.$missing->m_mobile;
+echo '</i><br /><br /><u>Link som den savnede bruker:</u><br />'.
+	APP_URI.'find.php?id='.$_GET['id'].'&num='.$missing->m_mobile;
 ?>
 
 </div>

@@ -1,19 +1,19 @@
 <?php
-require_once(BASEPATH_CLASS.'missing.class.php');
+require_once(APP_PATH_CLASS.'missing.class.php');
 
 $missing = new Missing();
-$missing->getMissing($_GET['SAVNET_id']);
-$positions = $missing->getPositions();    
+$missing->getMissing($_GET['missing_id']);
+$positions = $missing->getPositions();
 
-require_once(BASEPATH_CLASS.'gPoint.class.php');
+require_once(APP_PATH_CLASS.'gPoint.class.php');
 $gPoint = new gPoint();
 ?>
 <h3 class="pagetitle">Savnet: <?= $missing->m_name ?></h3>
 <?php
-if(isset($_SAVN['message'])) { ?>
+if(isset($_ROUTER['message'])) { ?>
 	<div class="alert alert-error">
 		<strong>En feil oppsto!</strong><br />
-		<?= $_SAVN['message'] ?>
+		<?= $_ROUTER['message'] ?>
 	</div>
 <?
 } ?>
@@ -30,7 +30,7 @@ if(isset($_SAVN['message'])) { ?>
 	</div>
 </div>
 
-<?php require_once(ADMINPATH_GUI.'savnet_script.gui.php'); ?>
+<?php require_once(ADMIN_PATH_GUI.'list/positions.gui.php'); ?>
 <div id="googleMap"></div>
 <div id="sidebar">
 	<h4>Posisjoner</h4>
@@ -70,6 +70,6 @@ if(isset($_SAVN['message'])) { ?>
 <div class="infos clear-fix">
 	<div class="info pull-left">
 		<label class="label label-important">Sporingslenke den savnede bruker</label> 
-		<?= PUBLIC_URL.$missing->missing_id.'-'.$missing->m_mobile; ?>
+		<?= APP_URI.$missing->missing_id.'-'.$missing->m_mobile; ?>
 	</div>
 </div>
