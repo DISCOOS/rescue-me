@@ -12,10 +12,10 @@
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <link href="<?=APP_URI?>/css/admin.less" rel="stylesheet/less">
+        <link href="<?=APP_URI?>css/admin.less" rel="stylesheet/less">
         
         <!--script src="//maps.googleapis.com/maps/api/js?key=AIzaSyANgZz6JPzBjSS5KoVyQ7I9a4RAwrS015Y&sensor=false"></script-->
-        <script src="<?=APP_URI?>/js/admin.js"></script>
+        <script src="<?=APP_URI?>js/admin.js"></script>
         
         <script>
             R.view = '<?= str_replace('/', '-', $_GET['view']); ?>';
