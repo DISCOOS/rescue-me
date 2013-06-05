@@ -27,7 +27,7 @@
                         
                  ?>
                     <li id="start"><a href="<?= ADMIN_URI ?>"><?= START ?></a></li>
-                    <li id="logout"><a href="<?= ADMIN_URI ?>logout"><?= LOGOUT ?></a></li>
+                    <li id="logout"><a href="<?= ADMIN_URI ?>"><?= LOGOUT ?></a></li>
                 <?php 
                     
                     } else {
