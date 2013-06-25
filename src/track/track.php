@@ -14,7 +14,7 @@ die();
 
 <!DOCTYPE html>
 <head><title>Savnet</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" /><script><?php
-	$js = file_get_contents('track.min.js');
+	$js = file_get_contents('js/track.min.js');
 	echo str_replace(array('#ID','#NUM'), array($_GET['id'], $_GET['num']), $js);
 ?></script></head><body onLoad="gL();">
 <div id="f">Beregner posisjon...</div>
