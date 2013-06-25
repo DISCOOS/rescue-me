@@ -71,23 +71,20 @@
                 // Ensure trailing slash
                 $root = rtrim($root,"/")."/";
                 
-//                // Uninstall current?
-//                if(file_exists(realpath($root))) {
-//                    $uninstall = new RescueMe\Uninstall($root);
-//                    // Unistall successfull?
-//                    if(!is_array($config = $uninstall->execute())) {
-//                        $status = error($config, ERROR, NONE); break;
-//                    }// if
-//                    
-//                    print_r($config).PHP_EOL;
-//                    
-//                    // Merge current config values with default ini values
-//                    $ini = array_merge($ini, $config);
-//                    
-//                    print_r($config).PHP_EOL;
-//                }// 
-
-                    print_r($ini).PHP_EOL;
+                // Uninstall current?
+                if(file_exists(realpath($root))) {
+                    
+                    $uninstall = new RescueMe\Uninstall($root);
+                    
+                    // Unistall successfull?
+                    if(!is_array($config = $uninstall->execute())) {
+                        $status = error($config, ERROR, NONE); break;
+                    }// if
+                    
+                    // Merge current config values with default ini values
+                    $ini = array_merge($ini, $config);
+                    
+                }// 
                     
                 // TODO: Get parameters from user (when !silent)
                 $ini['SALT']             = in("Salt", get($ini, "SALT", str_rnd(), true), PRE);
@@ -99,8 +96,6 @@
                 $ini['DB_PASSWORD']      = in("DB Password", get($ini, "DB_PASSWORD", "''", true));
                 $ini['GOOGLE_API_KEY']   = in("Google API key", get($ini, "GOOGLE_API_KEY", "''", true));
                 
-                    print_r($ini).PHP_EOL;
-                    
                 // Create install
                 $install = new RescueMe\Install("src.zip", $root, $ini);
 
