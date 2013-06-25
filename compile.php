@@ -79,7 +79,7 @@
                 $oPhar->startBuffering();
                 
                 // Pointing main file which bootstrap all resources
-                $oPhar->setDefaultStub('cli.php');
+                $oPhar->setDefaultStub('cli.php', 'cli.php');
                 
                 // Add build scripts source
                 $oPhar->buildFromDirectory('build');
