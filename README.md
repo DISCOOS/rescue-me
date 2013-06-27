@@ -6,7 +6,7 @@ Light-weight and minimalistic system for push-based location requests.
 Build from source
 =================
 
-1. <a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it, **or**
+1. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it, or**
 
     ```bash
     git clone https://github.com/DISCOOS/rescue-me.git
