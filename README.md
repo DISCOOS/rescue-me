@@ -6,13 +6,13 @@ Light-weight and minimalistic system for push-based location requests.
 Build from source
 =================
 
-1. <a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it, or
+1. <a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it, **or**
 
     ```bash
     git clone https://github.com/DISCOOS/rescue-me.git
     ```
 
-2. Goto RescueMe root folder and
+2. **Goto RescueMe root folder and**
 
     *Linux*
 
@@ -34,7 +34,7 @@ Build from source
     which outputs `dist/rescueme-<string>.phar` 
 
 
-3. Install RescueMe 
+3. **Install RescueMe**
 
    (assumes Apache is already installed and configured)
 
