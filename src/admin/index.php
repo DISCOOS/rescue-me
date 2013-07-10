@@ -13,34 +13,47 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <link href="<?=APP_URI?>css/admin.less" rel="stylesheet/less">
-        
-        <!--script src="//maps.googleapis.com/maps/api/js?key=AIzaSyANgZz6JPzBjSS5KoVyQ7I9a4RAwrS015Y&sensor=false"></script-->
+        <? if(GOOGLE_API_KEY !== '') { ?>
+        <script src="//maps.googleapis.com/maps/api/js?key=<?=GOOGLE_API_KEY?>&sensor=false"></script>
+        <? } ?>
         <script src="<?=APP_URI?>js/admin.js"></script>
-        
-        <script>
-            R.view = '<?= str_replace('/', '-', $_GET['view']); ?>';
-            if (R.view !== undefined && (R.view === 'details/missing' || R.view === 'new/missing'))
-                R.view = 'list/missing';
-        </script>
     </head>
 
     <body>
-        <div class="container-narrow">            
+        
+        <div class="container-narrow">
+            
             <div class="masthead">
+                
                 <ul class="nav nav-pills pull-right" style="display: <?= $_SESSION['logon'] ? 'block' : 'none' ?>;">
                 <?php 
                     
                     if($_SESSION['logon']) {
                         
                  ?>
-                    <li id="start"><a href="<?= ADMIN_URI ?>start"><?= START ?></a></li>
-                    <li id="missing"><a href="<?= ADMIN_URI ?>list/missing"><?= MISSING ?></a></li>
-                    <li id="new-missing"><a href="<?= ADMIN_URI ?>new/missing"><?= NEW_MISSING ?></a></li>
-                    <li id="users"><a href="<?= ADMIN_URI ?>list/users"><?= USERS ?></a></li>
-                    <li id="new-user"><a href="<?= ADMIN_URI ?>new/user"><?= NEW_USER ?></a></li>
-                    <li id="logout"><a href="<?= ADMIN_URI ?>logout"><?= LOGOUT ?></a></li>
+                    <li class="dropdown">
+                        <a id="drop1" class="dropdown-toggle" data-toggle="dropdown"><?= MISSING_PERSONS ?><b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                            <li id="missing"><a role="menuitem" href="<?= ADMIN_URI ?>list/missing"><b class="icon icon-th-list"></b><?= TRACES ?></a></li>
+                            <li class="divider"></li>
+                            <li id="new-missing"><a role="menuitem" href="<?= ADMIN_URI ?>new/missing"><b class="icon icon-plus-sign"></b><?= NEW_TRACE ?></a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="drop2" class="dropdown-toggle" data-toggle="dropdown"><?= SYSTEM ?><b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                            <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>list/users"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
+                            <li class="divider"></li>
+                            <li id="new-user"><a role="menuitem" href="<?= ADMIN_URI ?>new/user"><b class="icon icon-plus-sign"></b><?= NEW_USER ?></a></li>
+                            <li class="divider"></li>
+                            <li id="settings"><a href="<?= ADMIN_URI ?>list/setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
+                        </ul>
+                    </li>
+                    <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm"><?= LOGOUT ?></a></li>
                 <?php 
                     
+                        insert_dialog_confirm("confirm", "Bekreft", "Vil du logge ut?", ADMIN_URI."logout");
+                        
                     } else {
                         
                  ?>  
@@ -55,7 +68,12 @@
                 </ul>
                 <h3 class="muted"><a href="<?= APP_URI ?>"><?= TITLE ?></a></h3>
             </div>
-            <?php require_once('gui/' . $_ROUTER['file'] . '.gui.php'); ?>
+            
+            <?php 
+                
+                require_once('gui/' . $_ROUTER['file'] . '.gui.php'); 
+                
+            ?>
         </div>
     </body>
 </html>

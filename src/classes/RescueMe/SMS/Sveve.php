@@ -20,11 +20,11 @@
     class Sveve implements Provider 
     {
         /**
-         * Sveve user credentials
+         * Sveve account
          * 
          * @var string
          */
-        private $credentials;
+        private $account;
         
         /**
          * Constructor
@@ -34,11 +34,18 @@
          * @since 13. June 2013, v. 7.60
          * 
          */
-        public function __construct($credentials)
+        public function __construct($user='')
         {
-            $this->credentials = $credentials;
+            $this->account = $this->newConfig($user);
         }// __construct
 
+        public function newConfig($user='')
+        {
+            return array
+            (
+                "user" => $user
+            );
+        }// newConfig
         
         public function send($to, $from, $message)
         {
@@ -46,7 +53,7 @@
             $smsURL = utf8_decode
             (
                   'http://www.sveve.no/SMS/SendSMS'
-                . '?user='.$this->credentials
+                . '?user='.$this->account['user']
                 . '&to='.$to
                 . '&from='.$from
                 . '&msg='.$message

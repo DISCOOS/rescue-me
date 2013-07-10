@@ -57,8 +57,8 @@ function initialize() {
 <?php
 $i = 0;
 foreach ($positions as $key=>$value) {
-	$dms['lat'] = DECtoDMS($value->lat);
-	$dms['lon'] = DECtoDMS($value->lon);
+	$dms['lat'] = dec_to_dms($value->lat);
+	$dms['lon'] = dec_to_dms($value->lon);
 	$gPoint->setLongLat($value->lon, $value->lat);
 	$gPoint->convertLLtoTM();
 	echo "

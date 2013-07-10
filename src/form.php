@@ -9,7 +9,7 @@
     <html>
         <head>
             <meta charset="utf-8" />
-            <title>Savnet</title>
+            <title><?= MISSING_PERSON ?></title>
         <form method="POST" action="form.php">
             Ditt navn: <input type="text" name="mb_name" autofocus required> <br />
             Din epost: <input type="email" name="mb_mail" required> <br />

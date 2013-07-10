@@ -55,6 +55,10 @@
             $_ROUTER['name'] = ABOUT;
             $_ROUTER['file'] = $_GET['view'];
             break;
+        case 'list/setup':
+            $_ROUTER['name'] = SETUP;
+            $_ROUTER['file'] = $_GET['view'];
+            break;
         case 'list/users':
             $_ROUTER['name'] = USERS;
             $_ROUTER['file'] = $_GET['view'];
@@ -81,7 +85,7 @@
                     $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
                 }
             }            
-            $_ROUTER['name'] = 'Ny bruker';
+            $_ROUTER['name'] = NEW_USER;
             $_ROUTER['file'] = $_GET['view'];
             break;
         case 'list/missing':
@@ -105,11 +109,11 @@
             $_ROUTER['file'] = $_GET['view'];
             break;
         case 'details/user':
-            $_ROUTER['name'] = 'Bruker';
+            $_ROUTER['name'] = USER;
             $_ROUTER['file'] = $_GET['view'];
             break;
         case 'details/missing':
-            $_ROUTER['name'] = 'Savnet person';
+            $_ROUTER['name'] = MISSING_PERSON;
             $_ROUTER['file'] = $_GET['view'];
             break;
         default:

@@ -8,7 +8,7 @@ $missing = new \RescueMe\Missing();
 $missing->getMissing($_GET['id']);
 $positions = $missing->getPositions();
 
-function DECtoDMS($dec) {
+function dec_to_dms($dec) {
 	// Converts decimal longitude / latitude to DMS
 	// ( Degrees / minutes / seconds ) 
 	
@@ -36,8 +36,8 @@ $gPoint = new gPoint();
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Savnet - <?=$missing->m_name;?></title>
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyANgZz6JPzBjSS5KoVyQ7I9a4RAwrS015Y&sensor=false">
+<title><?= MISSING_PERSON ?> - <?=$missing->m_name;?></title>
+<script src="http://maps.googleapis.com/maps/api/js?key=<?= GOOGLE_API_KEY ?>&sensor=false">
 </script>
 
 <script>
@@ -94,8 +94,8 @@ function initialize() {
 <?php
 $i = 0;
 foreach ($positions as $key=>$value) {
-	$dms['lat'] = DECtoDMS($value->lat);
-	$dms['lon'] = DECtoDMS($value->lon);
+	$dms['lat'] = dec_to_dms($value->lat);
+	$dms['lon'] = dec_to_dms($value->lon);
 	$gPoint->setLongLat($value->lon, $value->lat);
 	$gPoint->convertLLtoTM();
 	echo "

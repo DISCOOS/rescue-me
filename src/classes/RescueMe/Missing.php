@@ -19,9 +19,18 @@
      */
     class Missing
     {
-        const SELECT_FIELDS = "`missed_by_name`, `missed_by_email`, `missed_by_mobile`, `missing_name`, `missing_mobile`, `missing_reported`";
-        const INSERT_FIELDS = "`missed_by_name`, `missed_by_email`, `missed_by_mobile`, `missing_name`, `missing_mobile`, `missing_reported`";
-        const INSERT_VALUES = "'%1\$s','%2\$s',%3\$d,'%4\$s',%5\$d,NOW()";
+        const TABLE = "missing";
+        
+        
+        private static $fields = array
+        (
+            "missed_by_name", 
+            "missed_by_email", 
+            "missed_by_mobile", 
+            "missing_name", 
+            "missing_mobile", 
+            "missing_reported"
+        );
             
         public $id = -1;
         public $positions = array();
@@ -65,14 +74,12 @@
             if(empty($mb_name) || empty($mb_email) || empty($mb_mobile) || empty($m_name) || empty($m_mobile))
                 return false;
             
-            $query = DB::prepareINSERT
-            (
-                "missing", self::INSERT_FIELDS, sprintf(self::INSERT_VALUES,
-                DB::escape($mb_name), DB::escape($mb_email), (int) $mb_mobile, DB::escape($m_name), (int) $m_mobile)
-            );
+            $values = array((string) $mb_name,  (string) $mb_email,  (int) $mb_mobile,  (string) $m_name,  (int) $m_mobile, "NOW()");
+            
+            $values = prepare_values(self::$fields, $values);
+            
+            $id = DB::insert(self::TABLE, $values);
                 
-            $id = DB::query($query);
-
             if(!$id) return false;
 
             $missing = self::getMissing($id);
@@ -204,8 +211,18 @@
                     array('#missing_id', '#mb_name'), array($this->id . '-' . $to, $this->mb_name), $message
                 )
             );
+            
+            $module = Module::get("SMS");
+            
+            $sms = $module->newInstance();
+            
+            if(!$sms)
+            {
+                echo "Failed!";
+                return false;
+            }
 
-            return get_rescueme_sms_provider()->send($to, SMS_FROM, $message);
+            return $sms->send($to, SMS_FROM, $message);
             
         }// _sendSMS
 

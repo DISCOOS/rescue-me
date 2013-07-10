@@ -131,10 +131,64 @@
         }// error
         
         
-        public static function prepareINSERT($table, $fields, $values) 
+        public static function prepare($format, $parameter, $_ = null)
         {
-            return "INSERT INTO `$table` ($fields) VALUES ($values)";
-        }// prepareINSERT
+            $args = array_slice(func_get_args(),1);
+            $params = array($format);
+            foreach($args as $arg) {
+                $params[] = is_string($arg) ? self::escape($arg) : $arg;
+            }
+            return call_user_func_array("sprintf",  $params);
+        }
+
+
+        public static function select($table, $fields="*", $filter="") 
+        {
+            if(is_string($fields) && $fields !== "*") {
+                $fields = "`" . ltrim(rtrim($fields,"`"),"`") . "`";
+            }
+            elseif (is_array($fields)) {
+                $fields = "`" . implode("`,`", $fields) . "`";
+            }
+            $query = "SELECT $fields FROM `$table`";
+            if($filter) $query .= "WHERE $filter";
+            
+            return self::query($query);
+            
+        }// select
         
+        
+        public static function insert($table, $values) 
+        {
+            $fields = "`" . implode("`,`", array_keys($values)) . "`";
+            $inserts = array();
+            foreach($values as $value) {
+                if(is_string($value)) 
+                    $value = "'" . self::escape($value) . "'";
+                $inserts[] = $value;
+            }
+            
+            $query = "INSERT INTO `$table` ($fields) VALUES (". implode(",", $values) . ")";
+            
+            return self::query($query);
+            
+        }// insert
+        
+        
+        public static function update($table, $values, $filter) 
+        {
+            $query = "UPDATE `$table` SET ";
+            $updates = array();
+            foreach($values as $field =>$value) {
+                if(is_string($value)) 
+                    $value = "'" . self::escape($value) . "'";
+                $updates[] = "$field=$value";
+            }
+            $query .= implode(",", $updates);
+            if($filter) $query .= "WHERE $filter";
+            
+            return self::query($query);
+            
+        }// update
         
     }// DB

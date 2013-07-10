@@ -19,12 +19,12 @@
     {
         foreach($users as $id => $user){
 ?>
-        <li class="well well-small user" id="<?= $id ?>">
+        <li class="user well well-small" id="<?= $id ?>">
+            <div class="name pull-left"><?= $user->name ?></div>
             <div class="status pull-right">
                 <label class="label label-inverse hidden-phone">E-post:</label>
-                <?= $user->email?></div>
-            <div class="name pull-left"><?= $user->name ?></div>
-            <div class="clearfix"></div>
+                <?= $user->email?>
+            </div>
         </li>
 <?php
         } 

@@ -1,27 +1,37 @@
-
-jQuery(document).ready(function(){
-	jQuery('.position').click(function(){
-		panMapTo(jQuery(this).attr('data-pan-to'));
+$(document).ready(function(){
+    
+	$('li.user').click(function(){
+		window.location.href = R.admin.url + 'details/user/' + $(this).attr('id');
 	});
 	
-	jQuery('li.user').click(function(){
-		window.location.href = R.admin.url + 'details/user/' + jQuery(this).attr('id');
+	$('li.missing').click(function(){
+		window.location.href = R.admin.url + 'details/missing/' + $(this).attr('id');
 	});
     
-	jQuery('li.missing').click(function(){
-		window.location.href = R.admin.url + 'details/missing/' + jQuery(this).attr('id');
+    $('ul.nav').find('li').each(function(){
+        var id = $(this).attr('id');
+		if(id !== undefined && id === R.view)
+			$(this).addClass('active');
 	});
 	
-	jQuery('ul.nav').find('li').each(function(){
-		if(jQuery(this).attr('id') === R.view)
-			jQuery(this).addClass('active');
+	$('.toggle').click(function(){
+		$('#'+$(this).attr('data-toggle')).slideToggle();
+	});
+    
+	$('select.swap').click(function(){
+        var show = $(this).attr('data-swap');
+        $('#'+show).hide();
+        var show = this.value;
+        $('#'+show).show();
+        $(this).prop('data-swap', show);
 	});
 	
-	jQuery('.toggle').click(function(){
-		jQuery('#'+jQuery(this).attr('data-toggle')).slideToggle();	
+	$('div.mail').each(function(){
+		$(this).html('<a href="mailto:'+$(this).html()+'">'+$(this).html()+'</a>');
 	});
-	
-	jQuery('div.mail').each(function(){
-		jQuery(this).html('<a href="mailto:'+jQuery(this).html()+'">'+jQuery(this).html()+'</a>');
-	});
+    
 });
+
+R.CapsLock.listen('[type="password"]');
+    
+    

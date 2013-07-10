@@ -3,7 +3,7 @@
 @colour-border: #cacaca;
 @colour-background: #e7e7e7;
 /*==========================================
-/ 0. Design
+/ Design
 /=========================================*/
 body {
 	padding-top: .1em;
@@ -16,6 +16,7 @@ body {
 .container-narrow {
     min-width: 10em;
     max-width: 70em;
+    /*margin-top: 1em;*/
     margin-left: auto;
     margin-right: auto;
 }
@@ -35,8 +36,13 @@ h3.pagetitle {
 	-webkit-border-radius:@radius
 }
 
+.icon {
+    margin-right: 0.5em;
+}
+
+
 /*==========================================
-/ 1. [Dashboard] page
+/ [Dashboard] page
 /=========================================*/
 /* Main marketing message and sign up button */
 .jumbotron {
@@ -61,7 +67,7 @@ margin-top: 28px;
 }
 
 /*==========================================
-/ 2. [Login] form
+/ [Login] form
 /=========================================*/
 .form-signin {
 	max-width: 300px;
@@ -102,7 +108,7 @@ margin-top: 28px;
 }
 
 /*==========================================
-/ 3. [Missing List] page
+/ [Missing List] page
 /=========================================*/
 .missing {
 	.clickable;
@@ -112,8 +118,9 @@ margin-top: 28px;
 	font-weight: bold;
 	color: @colour-rodekors;
 }
+
 /*==========================================
-/ 4. [Missing Details] page
+/ [Missing Details] page
 /=========================================*/
 .infos .info {
 	margin-right: 10px;
@@ -165,7 +172,7 @@ li.position {
 
 }
 /*==========================================
-/ 5. [New Alert] form
+/ [New Alert] form
 /=========================================*/
 
 .new-missing {
@@ -176,7 +183,7 @@ li.position {
 	margin: 10px 0px 5px 0px;
 }
 /*==========================================
-/ 6. [About] page
+/ [About] page
 /=========================================*/
 .contact {
 	float: left;
@@ -194,10 +201,23 @@ li.position {
 }
 
 /*==========================================
-/ 7. [User] form
+/ [User] view
 /=========================================*/
 .form-user {
 	max-width: 400px;
 	padding: 19px 29px 29px;
 	margin: 0 auto 20px;
+}
+
+/*==========================================
+/ [Module] view
+/=========================================*/
+.div-module div {
+	max-width: 400px;
+	padding: 19px 29px 29px;
+	margin: 0 auto 20px;
+}
+
+.form-module {
+    
 }

@@ -28,20 +28,20 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 CREATE TABLE IF NOT EXISTS `missing` (
   `missing_id` int(5) NOT NULL auto_increment,
   `user_id` int(3) NOT NULL,
-  `missed_by_name` char(255) NOT NULL,
-  `missed_by_email` char(255) NOT NULL,
-  `missed_by_mobile` int(8) NOT NULL,
-  `missing_name` char(255) NOT NULL,
+  `missed_by_name` varchar(255) NOT NULL,
+  `missed_by_email` varchar(255) NOT NULL,
+  `missed_by_mobile` varchar(8) NOT NULL,
+  `missing_name` varchar(255) NOT NULL,
   `missing_mobile` int(8) NOT NULL,
   `status` enum('Open','Sent','Recieved','Closed') NOT NULL,
   `sms_sent` datetime default NULL,
   `missing_reported` datetime NOT NULL,
   `timestamp_sms_sent` int(12) NOT NULL,
   `timestamp_pos_recieved` int(12) NOT NULL,
-  `sms2_sent` enum('false','true') NOT NULL default 'false',
+  `sms2_sent` enum('false','true') NOT NULL DEFAULT 'false',
   PRIMARY KEY  (`missing_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `positions` (
   `user_agent` varchar(255) NOT NULL,
   PRIMARY KEY  (`pos_id`),
   KEY `missing_id` (`missing_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=185 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -71,8 +71,38 @@ CREATE TABLE IF NOT EXISTS `positions` (
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(4) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
-  `password` char(128) NOT NULL default '',
+  `password` varchar(128) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL,
   `mobile` int(8) NOT NULL,
-  PRIMARY KEY  (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  PRIMARY KEY  (`user_id`)  
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for table `properties`
+--
+
+CREATE TABLE IF NOT EXISTS `properties` (
+  `property_id` int(4) NOT NULL auto_increment,
+  `type` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `value` text NOT NULL DEFAULT '',
+  PRIMARY KEY  (`property_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for table `modules`
+--
+
+CREATE TABLE IF NOT EXISTS `modules` (
+  `module_id` int(4) NOT NULL auto_increment,
+  `type` varchar(50) NOT NULL,
+  `impl` varchar(50) NOT NULL,
+  `config` text NOT NULL DEFAULT '',
+  PRIMARY KEY  (`module_id`),
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+

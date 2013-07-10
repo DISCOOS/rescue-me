@@ -15,7 +15,7 @@
         $positions = $missing->getPositions();
 
 ?>
-<h3 class="pagetitle">Savnet: <?= $missing->m_name ?></h3>
+<h3 class="pagetitle"><?= MISSING_PERSON ?>: <?= $missing->m_name ?></h3>
 <?php
         if(isset($_ROUTER['message'])) { ?>
 	<div class="alert alert-error">

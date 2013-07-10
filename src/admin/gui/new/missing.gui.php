@@ -1,12 +1,12 @@
 <h3>Start sporing av savnet</h3>
-<?php
-if(isset($_ROUTER['message'])) { ?>
+<?php if(isset($_ROUTER['message'])) { ?>
 	<div class="alert alert-error">
 		<strong>En feil oppsto!</strong><br />
 		<?= $_ROUTER['message'] ?>
 	</div>
-<?
-} ?>
+
+<? } elseif(modules_exists("\RescueMe\SMS\Provider")) { ?>
+
 <form method="post">
 	<fieldset class="span6 new-missing pull-left">
 		<legend>Den savnede</legend>
@@ -70,3 +70,5 @@ if(isset($_ROUTER['message'])) { ?>
     <button type="submit" class="btn btn-success">Opprett sporing</button>
 	
 </form>
+
+<? } ?>

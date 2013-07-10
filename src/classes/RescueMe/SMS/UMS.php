@@ -32,18 +32,22 @@
          * @since 13. June 2013, v. 7.60
          *
          */
-        public function __construct($company,$department,$password)
+        public function __construct($company='', $department='', $password='')
         {
-            $this->account = array
+            $this->account = $this->newConfig($company, $department, $password);
+            
+        }// __construct
+
+        public function newConfig($company='', $department='', $password='')
+        {
+            return array
             (
                 "company" => $company,
                 "department" => $department,
                 "password" => $password
             );
-            
-        }// __construct
-
-
+        }// newConfig
+        
         public function send($to, $from, $message)
         {
             try {

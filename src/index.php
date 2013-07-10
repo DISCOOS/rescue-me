@@ -13,7 +13,9 @@
         <script>
             var ADMIN_URI = '<?= ADMIN_URI ?>';
         </script>
-        <!--script src="//maps.googleapis.com/maps/api/js?key=<?= GOOGLE_API_KEY ?>&sensor=false"></script-->
+        <? if(GOOGLE_API_KEY !== '') { ?>
+        <script src="//maps.googleapis.com/maps/api/js?key=<?=GOOGLE_API_KEY?>&sensor=false"></script>
+        <? } ?>
         <script src="js/index.js"></script>
     </head>
 
@@ -27,8 +29,9 @@
                         
                  ?>
                     <li id="start"><a href="<?= ADMIN_URI ?>"><?= START ?></a></li>
-                    <li id="logout"><a href="<?= ADMIN_URI ?>logout"><?= LOGOUT ?></a></li>
+                    <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm"><?= LOGOUT ?></a></li>
                 <?php 
+                        insert_dialog_confirm("confirm", "Bekreft", "Vil du logge ut?", ADMIN_URI."logout");
                     
                     } else {
                         

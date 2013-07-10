@@ -9,8 +9,8 @@
     <?
         } else {
     ?>    
-        <input type="email" name="username" class="input-block-level" placeholder="E-postadresse">
-        <input type="password" name="password" class="input-block-level" placeholder="Passord">
+        <input type="email" name="username" class="input-block-level" placeholder="E-postadresse"></input>
+        <input type="password" name="password" id="password" class="input-block-level" placeholder="Passord" data-content="Cap-lock is on!"></input>
     <?
         }
     ?>    

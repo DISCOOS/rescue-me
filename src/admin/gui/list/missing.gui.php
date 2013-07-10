@@ -6,7 +6,7 @@
     $closed = Missing::getAllMissing('closed');
     ?>
 
-    <h3>Registrerte savnede</h3>
+    <h3>Savnede</h3>
     <ul class="unstyled">
     <?php
     
@@ -35,7 +35,7 @@
     </ul>
 
 
-    <h3>Tidligere savnede (lukkede saker)</h3>
+    <h3>Arkivert</h3>
     <ul class="unstyled">
     <?php
     

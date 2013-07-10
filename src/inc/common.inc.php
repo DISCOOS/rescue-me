@@ -1,7 +1,8 @@
 <?php
 
+    require('gui.inc.php');
 
-    function DECtoDMS($dec)
+    function dec_to_dms($dec)
     {
         // Converts decimal longitude / latitude to DMS
         // ( Degrees / minutes / seconds ) 
@@ -99,14 +100,64 @@
         
         return "(function(window,document,install,undefined){".$content."}(window,document,$install));";
     }// get_rescueme_js    
+    
 
-    /**
-     * Get SMS provider instance.
-     * 
-     * @return \RescueMe\SMS\Provider SMS provider instance if defined, false otherwise.
-     */
-    function get_rescueme_sms_provider()
+    function assert_types($values)
     {
-    //    return new \RescueMe\SMS\Sveve(SMS_ACCOUNT);
-        return new \RescueMe\SMS\UMS("COMPANY", "USERNAME", 'PASSWORD');
+        foreach($values as $type => $value)
+        {
+            assert_type($type, $value);
+        }
     }
+    
+    function assert_type($expected, $actual)
+    {
+        if(call_user_func("is_$expected", $actual))
+        {
+            throw new Exception("[$actual] is not of type '$actual'.");
+        }
+    }
+
+    function prepare_values($fields, $values) 
+    {
+        reset($values);
+        $prepared = array();
+        foreach($fields as $field) {
+            $value = next($values);
+            if($value === FALSE) break;
+            $prepared[$field] = $value;
+        }
+        return $prepared;
+    }    
+    
+    function isset_get($array, $key, $default=null) {
+        return isset($array[$key]) ? $array[$key] : $default;
+    }
+    
+    function array_pick($array, $key) {
+        $values = array();
+        foreach($array as $name => $value) {
+            if($key === $name || is_string($key) && strstr($name, $key) !== false) {
+                $values[] = $value;
+            }
+        }
+        return $values;
+    }
+    
+    function modules_exists($module, $_ = null) {
+        
+        $missing = array();
+        
+        foreach(func_get_args() as $module) {
+            if(!\RescueMe\Module::exists($module))
+            {
+                $missing[] = $module;
+            }
+        }    
+        
+        if(!empty($missing)) {
+            insert_errors("Missing module: ", $missing);
+        }
+        
+        return empty($missing);
+    }    

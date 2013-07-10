@@ -7,13 +7,13 @@
     // RescueMe application paths
     define('APP_PATH', dirname(__FILE__).'/');
     define('APP_PATH_INC', APP_PATH.'inc/');
-    define('APP_PATH_CLASS', APP_PATH.'class/');
+    define('APP_PATH_CLASS', APP_PATH.'classes/');
 
     // RescueMe administration paths
     define('ADMIN_PATH', APP_PATH.'admin/');
     define('ADMIN_PATH_INC', ADMIN_PATH.'inc/');
     define('ADMIN_PATH_GUI', ADMIN_PATH.'gui/');
-    define('ADMIN_PATH_CLASS', ADMIN_PATH.'class/');
+    define('ADMIN_PATH_CLASS', ADMIN_PATH.'classes/');
     
     // Load common resources
     require('inc/common.inc.php');
@@ -45,31 +45,37 @@
     // RescueMe custom constants
     define('TITLE', 'Rescue Me!');
 
-
     // RescueMe message constants
+    define('NO', 'Nei');
+    define('YES', 'Ja');
+    define('SAVE', 'Lagre');
+    define('CREATE', 'Opprett');    
+    define('NEW', 'Ny');
+    define('ADD', 'Legg til');
+    define('EDIT', 'Endre');
+    define('REMOVE', 'Fjern');
+    define('DELETE', 'Slett');
+    define('CANCEL', 'Avbryt');
     define('START', 'Start');
     define('LOGON', 'Logg inn');
     define('LOGOUT', 'Logg ut');
     define('ALERT', 'Varsle');
-    define('MISSING', 'Savnede');
-    define('NEW_MISSING', 'Finn savnet');    
+    define('TRACE', 'Sporing');
+    define('TRACES', 'Sporinger');
+    define('NEW_TRACE', 'Ny sporing');    
+    define('MISSING_PERSON', 'Savnet');
+    define('MISSING_PERSONS', 'Savnede');
+    define('USER', 'Bruker');
     define('USERS', 'Brukere');
     define('NEW_USER', 'Ny bruker');
+    define('OVERVIEW', 'Oversikt');
     define('DASHBOARD', 'Dashboard');
+    define('SYSTEM', 'System');
+    define('SETUP', 'Oppsett');
     define('ABOUT', 'Om '.TITLE);
     define('SMS_TEXT', 'TEST: Du er savnet! <br /> Trykk på lenken for at vi skal se hvor du er: <br /> '.APP_URL.'#missing_id');
     define('SMS_NOT_SENT', 'OBS: Varsel ble ikke sendt til "#mb_name"');
     define('SMS2_TEXT', 'Om du har GPS på telefonen, anbefaler vi at du aktiverer dette. Vanligvis finner du dette under Innstillinger -> Generelt, eller Innstillinger -> Plassering');
     
-    // Load automatic class loader class
-    require('class/SplClassLoader.php');
-    
-    // Define common class loader name
-    define('COMMON_CLASS_LOADER', 'COMMON_CLASS_LOADER');
-    
-    // Create CIM API class loader instance
-    $_SESSION[COMMON_CLASS_LOADER] = new SplClassLoader('RescueMe',__DIR__.DIRECTORY_SEPARATOR.'class');
-    
-    // Register class loader instance with SPL
-    $_SESSION[COMMON_CLASS_LOADER]->register();
-
+    // Import class loaders
+    require('vendor/autoload.php');

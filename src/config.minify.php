@@ -9,10 +9,32 @@
         // NOTE: add dependencies before dependents!
         return array
         (
-            'index.less'     => array('//css/bootstrap.min.css', '//admin/css/admin.css'),
-            'index.js'      => array('//js/rescueme.js', '//js/jquery-1.9.1.min.js', '//js/less.min.js'),
-            'admin.less'     => array('//css/bootstrap.min.css', '//admin/css/admin.css'),
-            'admin.js'      => array('//js/rescueme.js', '//js/jquery-1.9.1.min.js', '//js/less.min.js', '//admin/js/admin.js'),
+            'index.less' => array
+            (
+                '//css/bootstrap.min.css', 
+                '//admin/css/admin.css'
+            ),
+            'index.js' => array
+            (
+                '//js/rescueme.js', 
+                '//js/jquery-1.9.1.min.js', 
+                '//js/less.min.js',
+                '//js/bootstrap.min.js'
+            ),
+            'admin.less' => array
+            (
+                '//css/bootstrap.min.css', 
+                '//admin/css/admin.css'
+            ),
+            'admin.js' => array
+            (
+                '//js/rescueme.js', 
+                '//js/jquery-1.9.1.min.js', 
+                '//js/less.min.js', 
+                '//js/capslock.js',
+                '//js/bootstrap.min.js',
+                '//admin/js/admin.js'
+            ),
         );        
     }// get_rescueme_minify_config
 
@@ -47,5 +69,6 @@
         }
         return $content;
     }
+    
     $min_serveOptions['postprocessor'] = 'rescueme_js';    
     

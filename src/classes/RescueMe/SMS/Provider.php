@@ -20,6 +20,13 @@
     interface Provider
     {
         /**
+         * Create new configuration
+         * 
+         * @return array Associative array of parameters.
+         */
+        public function newConfig();
+        
+        /**
          * Send SMS message to given number.
          * 
          * @param string $to Recipient phone number
