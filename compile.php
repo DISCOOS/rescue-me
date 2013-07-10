@@ -27,7 +27,7 @@
         
         // Get options
         $opts = parse_opts($argv, array('h'));
-
+        
         // Get action
         $action = $opts[ACTION];
         
@@ -84,9 +84,6 @@
                 // Add build scripts source
                 $oPhar->buildFromDirectory('build');
                 
-                // Add autoloader class from src
-                $oPhar->addFile("src/classes/SplClassLoader.php", "classes/SplClassLoader.php");
-                
                 // Prepare ini values
                 $ini = "VERSION = " . $opts[VERSION];
                 
@@ -94,15 +91,13 @@
                 $oPhar->addFromString("rescueme.ini", $ini);
                     
                 // Prepare default config file
-                $config = file_get_contents("src/config.php");
+                $config = file_get_contents("src/config.tpl.php");
                 $config = ini_define($config, array
                 (
                     'SALT', 'GOOGLE_API_KEY', 
                     'VERSION', 'TITLE', 'SMS_FROM', 
                     'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD'
                 ));
-                
-                //echo "\nBEGIN===>:\n\n$config\n====>END\n\n";
                 
                 // Add configuration template
                 $oPhar->addFromString("config.php", $config);
@@ -178,6 +173,7 @@
                 echo "        -h,--help      Display this help" . PHP_EOL;
                 echo "SRC:" . PHP_EOL;
                 echo "        Path to source files";
+                break;
             case HELP:
             default:
                 echo "RescueMe Build Script" . (isset($msg) ? " - " . $msg : "") . PHP_EOL;
@@ -187,6 +183,7 @@
                 echo "ACTION:" . PHP_EOL;
                 echo "        package        Package RescueMe (PHAR)" . PHP_EOL;
                 echo "        help           Display help about an action" . PHP_EOL;
+                break;
         }// switch
         
         // Finished

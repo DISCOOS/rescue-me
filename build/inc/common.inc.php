@@ -253,8 +253,8 @@
      * @param string $string
      * @param string $delimiter"
      */
-    function str_escape($string) {
-        return "'".$string."'";
+    function str_escape($value) {
+        return isset($value) ? "'".rtrim(ltrim($value,"'"),"'")."'" : "''";
     }// str_escape
     
     
@@ -317,14 +317,12 @@
      * @param mixed $default Default value
      * @return mixed
      */
-    function get($opts, $arg, $default = NULL, $escape = false)
+    function get($opts, $arg, $default = NULL, $escape = true)
     {
         $value = isset($opts[$arg]) ? $opts[$arg] : $default;
-        out("$arg = $value");
         if($escape && $value !== "''") {
-            $value = isset($value) ? rtrim("'".ltrim($value,"'"),"'")."'" : "''";
+            $value = str_escape($value); 
         }
-        out("$arg = $value");
         return $value;
     }// get
 

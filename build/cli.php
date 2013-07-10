@@ -43,7 +43,7 @@
         $msg = (empty($action) ? "Show help: -h | help ACTION" : null);        
         
         // Print help now?
-        if(isset($opts['h']))  print_help();
+        if(isset($opts['h'])) print_help();
 
         // Print help with error message?
         if(isset($msg))  print_help(HELP, "Show help: -h");
@@ -60,10 +60,15 @@
                 begin("rescueme $action");
 
                 // Get default path install path
-                $root = get($opts, INSTALL_DIR, getcwd());
+                $root = get($opts, INSTALL_DIR, getcwd(), false);
                 
                 // Get default ini values
                 $ini = parse_ini_file("rescueme.ini");
+                
+                // Escape version
+                $ini['VERSION'] = str_escape($ini['VERSION']);
+                
+                print_r($ini);
                 
                 // Use current working directory?
                 if($root === ".") $root = getcwd();
@@ -87,14 +92,16 @@
                 }// 
                     
                 // TODO: Get parameters from user (when !silent)
-                $ini['SALT']             = in("Salt", get($ini, "SALT", str_rnd(), true), PRE);
-                $ini['TITLE']            = in("Title", get($ini, "TITLE", "RescueMe", true));
-                $ini['SMS_FROM']         = in("Sender", get($ini, "SMS_FROM", "RescueMe", true));
-                $ini['DB_HOST']          = in("DB Host", get($ini, "DB_HOST", "localhost", true));
-                $ini['DB_NAME']          = in("DB Name", get($ini, "DB_NAME", "rescueme", true));
-                $ini['DB_USERNAME']      = in("DB Username", get($ini, "DB_USERNAME", "root", true));
-                $ini['DB_PASSWORD']      = in("DB Password", get($ini, "DB_PASSWORD", "''", true));
-                $ini['GOOGLE_API_KEY']   = in("Google API key", get($ini, "GOOGLE_API_KEY", "''", true));
+                $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
+                $ini['TITLE']            = str_escape(in("Title", get($ini, "TITLE", "RescueMe")));
+                $ini['SMS_FROM']         = str_escape(in("Sender", get($ini, "SMS_FROM", "RescueMe")));
+                $ini['DB_HOST']          = str_escape(in("DB Host", get($ini, "DB_HOST", "localhost")));
+                $ini['DB_NAME']          = str_escape(in("DB Name", get($ini, "DB_NAME", "rescueme")));
+                $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
+                $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
+                $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''")));
+                
+                print_r($ini);                
                 
                 // Create install
                 $install = new RescueMe\Install("src.zip", $root, $ini);
@@ -156,6 +163,7 @@
                 echo "OPTIONS:" . PHP_EOL;
                 echo "        -o,--install-dir  Install directory [default: current]" . PHP_EOL;
                 echo "        -h,--help         Display this help" . PHP_EOL;
+                break;
             case HELP:
             default:
                 echo "RescueMe Package Script" . (isset($msg) ? " - " . $msg : "") . PHP_EOL;
@@ -165,6 +173,7 @@
                 echo "ACTION:" . PHP_EOL;
                 echo "        install        Install RescueMe" . PHP_EOL;
                 echo "        help           Display help about an action" . PHP_EOL;
+                break;
         }// switch
         
         // Finished
