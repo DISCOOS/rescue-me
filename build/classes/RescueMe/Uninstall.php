@@ -45,7 +45,7 @@
         /**
          * Execute uninstall script
          * 
-         * @return mixed Config values if success (array), error message otherwise.
+         * @return mixed TRUE if success, error message otherwise.
          * 
          */
         public function execute()
@@ -58,15 +58,6 @@
                 return FAILED."(".NOT_FOUND.")";
             }// if
             
-            // Get current configuration
-            $config = file_get_contents($this->root."config.php");
-            $ini = get_define_array($config, array
-            (
-                'SALT', 'VERSION', 'TITLE', 'SMS_FROM', 
-                'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD',
-                'GOOGLE_API_KEY'
-            ));
-            
             // Uninstall application
             out("Uninstalling [$this->root]....", PRE);
             if(!rrmdir(realpath($this->root))) {
@@ -74,7 +65,7 @@
             }// if
             
             // Finished
-            return $ini;
+            return true;
             
         }// execute
 
