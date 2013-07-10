@@ -17,10 +17,10 @@
     if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
         
         // Import class loader class
-        require('class/SplClassLoader.php');
+        require('classes/SplClassLoader.php');
 
         // Create class loader instance
-        $autoloader = new SplClassLoader('RescueMe','class');
+        $autoloader = new SplClassLoader('RescueMe','classes');
 
         // Register class loader instance with SPL
         $autoloader->register();

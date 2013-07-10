@@ -85,7 +85,7 @@
                 $oPhar->buildFromDirectory('build');
                 
                 // Add autoloader class from src
-                $oPhar->addFile("src/class/SplClassLoader.php", "class/SplClassLoader.php");
+                $oPhar->addFile("src/classes/SplClassLoader.php", "classes/SplClassLoader.php");
                 
                 // Prepare ini values
                 $ini = "VERSION = " . $opts[VERSION];

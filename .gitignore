@@ -2,3 +2,6 @@ nbproject
 dist
 test
 src/config.php
+src/vendor/*
+!src/vendor/composer
+!src/vendor/autoload.php
