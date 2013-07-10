@@ -68,8 +68,6 @@
                 // Escape version
                 $ini['VERSION'] = str_escape($ini['VERSION']);
                 
-                print_r($ini);
-                
                 // Use current working directory?
                 if($root === ".") $root = getcwd();
                 
@@ -100,8 +98,6 @@
                 $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
                 $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
                 $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''")));
-                
-                print_r($ini);                
                 
                 // Create install
                 $install = new RescueMe\Install("src.zip", $root, $ini);
