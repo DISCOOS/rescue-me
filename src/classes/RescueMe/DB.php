@@ -68,7 +68,7 @@
             {
                 $this->mysqli = mysqli_connect($host, $usr, $pwd);
             }
-            if($this->mysqli->connect_error)
+            else if($this->mysqli->connect_error)
             {
                 $this->mysqli->init()->real_connect($host, $usr, $pwd);
             }
@@ -330,7 +330,6 @@
                         }
                     }
                     ksort($queries);
-                    print_r($queries);
                     foreach($queries as $priority => $sqls)
                     {
                         foreach($sqls as $sql)

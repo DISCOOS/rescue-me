@@ -51,18 +51,20 @@
         public function execute()
         {
             // Notify
-            out("Inspecting installation in [$this->root]....", PRE, COLOR_INFO);
+            info("Inspecting installation in [$this->root]....", SUCCESS, NONE);
             
             // Not found?
             if(!file_exists(realpath($this->root))) {
                 return FAILED."(".NOT_FOUND.")";
             }// if
+            info("DONE", SUCCESS);
             
             // Uninstall application
-            out("Uninstalling [$this->root]....", PRE, COLOR_INFO);
+            info("Uninstalling [$this->root]....", SUCCESS, NONE);
             if(!rrmdir(realpath($this->root))) {
                 return FAILED."(".RM_DIR_FAILED.")";
             }// if 
+            info("DONE", SUCCESS);
            
             // Finished
             return true;

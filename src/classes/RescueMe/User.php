@@ -24,6 +24,19 @@
         public $email;
         public $mobile;
         
+        public static function isEmpty() {
+            
+            $result = DB::query("SELECT count(*) FROM `users`");
+            
+            if (DB::isEmpty($result)) return false;
+            
+            $row = $result->fetch_row();
+
+            return !$row[0];
+            
+        }// isEmpty
+        
+        
         public static function getAll() {
             
             $res = DB::query("SELECT * FROM `users`");
@@ -37,8 +50,7 @@
             }
             return $users;
             
-        }// getAll
-        
+        }// getAll        
         
         public static function get($id) {
             
@@ -57,11 +69,13 @@
         }// get
         
         
-        public function create($name, $email, $password) {
+        public static function create($name, $email, $password) {
+            
+            $user = new User();
 
-            $username = $this->safe(strtolower($email));
+            $username = $user->safe(strtolower($email));
 
-            $password = $this->hash($password);
+            $password = $user->hash($password);
 
             if(empty($username) || empty($password))
                 return false;
@@ -70,7 +84,7 @@
 
             if(($id = DB::query($query)) > 0) {
                 $info = array('user_id' => $id, "password" => $password);
-                $this->_logon_ok($info);
+                $user->_logon_ok($info);
                 return true;
             }
             return false;

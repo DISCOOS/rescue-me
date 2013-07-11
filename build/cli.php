@@ -99,7 +99,7 @@
                 $ini['DB_NAME']          = str_escape(in("DB Name", get($ini, "DB_NAME", "rescueme")));
                 $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
                 $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
-                $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''")));
+                $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
                 
                 // Uninstall current?
                 if(file_exists(realpath($root)))
@@ -108,7 +108,7 @@
                     
                     // Unistall successfull?
                     if($uninstall->execute() !== true) {
-                        $status = error($config, ERROR, PRE); 
+                        $status = error($config, ERROR, BOTH); 
                         break;
                     }// if
                     
@@ -119,7 +119,7 @@
 
                 // Execute installation
                 if(($message = $install->execute()) !== true) {
-                    $status = error($message, ERROR, PRE); break;
+                    $status = error($message, ERROR, BOTH); break;
                 }// if
                 
                 break;

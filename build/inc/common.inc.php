@@ -28,6 +28,7 @@
     define('ZIP_COPY_FAILED', "zip could not be copied");
     define('DB_NOT_CREATED', "%s could not be created");
     define('DB_NOT_IMPORTED', "%s could not be imported");
+    define('ADMIN_NOT_CREATED', "Admin user not created");    
     define('CONFIG_NOT_CREATED', "config.php could not be created");
     define('COLOR_NONE', 'none');
     define('COLOR_INFO', 'info');
@@ -309,10 +310,16 @@
      * 
      * @return string Answer 
      */
-    function in($message, $default=NULL, $newline=NONE) {
+    function in($message, $default=NULL, $newline=NONE, $required=true) {
         out(($default ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
         $answer = fgets(STDIN);
-        return ($answer !== PHP_EOL ? str_replace("\n", "", $answer) : $default);
+        $answer = ($answer !== PHP_EOL ? str_replace("\n", "", $answer) : $default);
+        if($required && !trim($answer,"'"))
+        {
+            return in($message, $default, $newline, $required);
+        }
+        out("$message: $answer", POST, COLOR_SUCCESS);
+        return $answer;
     }// in
     
     

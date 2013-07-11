@@ -71,7 +71,7 @@
         public function execute()
         {
             // Notify
-            info("Extracting [$this->src] to [$this->root]....", SUCCESS, PRE);
+            info("Extracting [$this->src] to [$this->root]....", SUCCESS, NONE);
             
             // Do not overwrite existing
             if(file_exists($this->root) === TRUE) {
@@ -91,6 +91,8 @@
             // Extract source to root directory
             $zip->extractTo($this->root);
             $zip->close();
+            
+            info("DONE", SUCCESS);
             
             // Get configuration template
             $config = file_get_contents("config.php");
@@ -126,15 +128,37 @@
                 define('DB_PASSWORD', get($this->ini, 'DB_PASSWORD', null, false));
             }
             
-            info("Creating database [$name]....", SUCCESS, PRE);
+            info("Creating database [$name]....", SUCCESS, NONE);
             if(DB::create($name) === FALSE) {
-                return sprintf(DB_NOT_CREATED,"$name")." (".DB::error().")";
+                return sprintf(DB_NOT_CREATED,"$name")." (check database credentials)";
             }// if
+            info("DONE", SUCCESS);
             
-            info("Importing [rescueme.sql]....", SUCCESS, PRE);
+            info("Importing [rescueme.sql]....", SUCCESS, NONE);
             if(DB::import($this->root."rescueme.sql") === FALSE) {
                 return sprintf(DB_NOT_IMPORTED,"rescueme.sql")." (".DB::error().")";
             }// if
+            info("DONE", SUCCESS);
+            
+            if(User::isEmpty())
+            {
+                info("Initializing database....", SUCCESS);
+                
+                $fullname = in("Admin Full Name");
+                $username = in("Admin Username (e-mail)");
+                $password = in("Admin Password");
+                
+                if(!defined('SALT'))
+                {
+                    define('SALT', get($this->ini, 'SALT', null, false));
+                }
+                if(User::create($fullname, $username, $password) === FALSE) {
+                    return ADMIN_NOT_CREATED." (".DB::error().")";
+                }// if                
+                
+                info("Initializing database....DONE", SUCCESS);
+                
+            }
             
             // Cleanup
             unlink($this->src);

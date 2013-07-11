@@ -77,7 +77,7 @@
                     $_ROUTER['message'] = 'Passord må oppgis';
                 }
                 else {
-                    $status = $user->create($_POST['name'], $_POST['username'], $_POST['password']);                                               
+                    $status = User::create($_POST['name'], $_POST['username'], $_POST['password']);
                     if($status) {
                         header("Location: ".ADMIN_URI.'list/users');
                         exit();
