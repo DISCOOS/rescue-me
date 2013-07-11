@@ -20,6 +20,8 @@
     class Position
     {
 
+        const TABLE = "positions";
+                
         public $pos_id = -1;
         public $lat = -1;
         public $lon = -1;
@@ -38,16 +40,14 @@
 
         function loadData()
         {
-            global $mysqli;
             if($this->pos_id === -1)
                 return false;
 
-            $query = "SELECT * FROM `positions` WHERE `pos_id` = " . (int) $this->pos_id;
-            $res = mysqli_query($mysqli, $query);
+            $query = "SELECT * FROM `".self::TABLE."` WHERE `pos_id` = " . (int) $this->pos_id;
+            $res = DB::query($query);
 
-            if(!$res)
-                return false;
-
+            if(DB::isEmpty($res)) return false;
+            
             $row = $res->fetch_assoc();
             $this->lat = $row['lat'];
             $this->lon = $row['lon'];

@@ -141,6 +141,18 @@ class gPoint
 	function N() { return $this->utmNorthing; }
 	function E() { return $this->utmEasting; }
 	function Z() { return $this->utmZone; }
+        function getNiceUTM() {
+            $nice = floor($this->utmEasting);
+            $niceE = substr($nice, 0, (strlen($nice)-5)).'<span class="papermappos">'.
+                     substr($nice, strlen($nice)-5, 3).'</span>'.
+                     substr($nice, strlen($nice)-2);
+            
+            $nice = floor($this->utmNorthing);
+            $niceN = substr($nice, 0, (strlen($nice)-5)).'<span class="papermappos">'.
+                     substr($nice, strlen($nice)-5, 3).'</span>'.
+                     substr($nice, strlen($nice)-2);
+            return $this->utmZone.' '.$niceE.' '.$niceN;
+        }
 	function printUTM() { print( "Northing: ".(int)$this->utmNorthing.", Easting: ".(int)$this->utmEasting.", Zone: ".$this->utmZone); }
 	//
 	// Set/Get/Output Lambert Conic Conformal Coordinates

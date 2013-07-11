@@ -139,6 +139,10 @@ li.position {
   float: left;
 }
 
+.papermappos {
+    text-decoration: underline;
+}
+
 #googleMap {
   clear: left;
   width: 650px;

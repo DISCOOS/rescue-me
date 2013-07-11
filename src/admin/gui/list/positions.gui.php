@@ -5,7 +5,7 @@ global $positions;
 var markers = {};
 var lastInfoWindow = {};
 function initialize() {
-	<?php
+    	<?php
 	foreach ($positions as $key=>$value) {
 		if ($value->acc < 1000) {
 			$centerMap = $value;
@@ -29,6 +29,12 @@ function initialize() {
 	};
 	map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 	map.mapTypes.set('topo2',new StatkartMapType("Kart", "topo2"));
+        
+        google.maps.event.addListener(map, 'click', function() {
+		if (lastInfoWindow[0] != null) {
+			lastInfoWindow[0].close();
+		}
+        });
 
 	var icons = new Array();
 	icons["red"] = new google.maps.MarkerImage("http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png",
@@ -59,6 +65,7 @@ $i = 0;
 foreach ($positions as $key=>$value) {
 	$dms['lat'] = dec_to_dms($value->lat);
 	$dms['lon'] = dec_to_dms($value->lon);
+        $gPoint = new gPoint;
 	$gPoint->setLongLat($value->lon, $value->lat);
 	$gPoint->convertLLtoTM();
 	echo "
@@ -88,11 +95,12 @@ foreach ($positions as $key=>$value) {
 	    content: '<u>Posisjon:</u><br /> '+
 				 '".$dms['lat']['deg']."&deg; ".$dms['lat']['min']."\' ".floor($dms['lat']['sec'])."\'\'<br />'+
 				 '".$dms['lon']['deg']."&deg; ".$dms['lon']['min']."\' ".floor($dms['lon']['sec'])."\'\'<br /><br />'+
-				 '<u>UTM (".$gPoint->Z()."):</u><br /> '+
-				 '".floor($gPoint->N())."<br />".floor($gPoint->E())."<br /><br />'+
+				 '<u>UTM:</u><br /> '+
+				 '".$gPoint->getNiceUTM()."<br /><br />'+
+                                 '<u>H&oslash;yde:</u> ".$value->alt." moh<br />'+
 				 '<u>N&oslash;yaktighet:</u> ".$value->acc." meter'
 	});
-	
+
 	google.maps.event.addListener(marker_".$i.", 'click', function() {
 		if (lastInfoWindow[0] != null) {
 			lastInfoWindow[0].close();
