@@ -58,10 +58,10 @@
                 if(!empty($msg)) print_help(PACKAGE, $msg);
                 
                 // Get absolute path to rescueme package
-                $package = "rescume-".$opts[VERSION].".phar";
+                $package = "rescueme-".$opts[VERSION].".phar";
                 
                 // Get package file
-                $package = "dist/rescume-".$opts[VERSION];
+                $package = "dist/rescueme-".$opts[VERSION];
                 
                 // Create folder if not exists
                 if(!file_exists("dist")) mkdir("dist");

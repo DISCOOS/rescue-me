@@ -108,7 +108,7 @@
                     
                     // Unistall successfull?
                     if($uninstall->execute() !== true) {
-                        $status = error($config, ERROR, NONE); 
+                        $status = error($config, ERROR, PRE); 
                         break;
                     }// if
                     
@@ -119,7 +119,7 @@
 
                 // Execute installation
                 if(($message = $install->execute()) !== true) {
-                    $status = error($message, ERROR, NONE); break;
+                    $status = error($message, ERROR, PRE); break;
                 }// if
                 
                 break;

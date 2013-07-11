@@ -34,18 +34,6 @@
         private $mysqli;
         
         /**
-         * Constructor
-         *
-         * @since 15. June 2013
-         *
-         */
-        public function __construct()
-        {
-            $this->mysqli = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
-        }// __construct
-        
-        
-        /**
          * Get default DB instance
          * 
          * @return DB 
@@ -56,6 +44,10 @@
             {
                 self::$instance = new DB();
             }
+            if(!isset(self::$instance->mysqli))
+            {
+                self::$instance->connect();
+            }
             return self::$instance;
         }// instance
         
@@ -64,20 +56,41 @@
          * Connect to database.
          * 
          * @param string $host DB host
-         * @param string $name DB name
          * @param string $usr DB username
          * @param string $pwd DB password
+         * @param string $name DB name
          * 
-         * @return mixed mysqli instance if success, FALSE otherwise.
+         * @return boolean TRUE if success, FALSE otherwise.
          */
-        public function connect($host=DB_HOST, $name=DB_NAME, $usr = DB_USERNAME, $pwd = DB_PASSWORD)
+        public function connect($host=DB_HOST, $usr = DB_USERNAME, $pwd = DB_PASSWORD, $name=DB_NAME)
         {
+            if(!isset($this->mysqli))
+            {
+                $this->mysqli = mysqli_connect($host, $usr, $pwd);
+            }
             if($this->mysqli->connect_error)
             {
-                return $this->mysqli->init()->real_connect($host, $usr, $pwd, $name);
+                $this->mysqli->init()->real_connect($host, $usr, $pwd);
             }
-            return $this->mysqli;
+            return $this->database($name);
         }// connect
+        
+        
+        /**
+         * Use database.
+         * 
+         * @param string $name DB name
+         * 
+         * @return TRUE if success, FALSE otherwise.
+         */
+        public function database($name=DB_NAME)
+        {
+            if(isset($this->mysqli) && !$this->mysqli->connect_error)
+            {
+                return $this->mysqli->select_db($name);
+            }
+            return false;
+        }// database
         
         
         /**
@@ -256,7 +269,7 @@
                 throw new Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
             $result = $mysqli->select_db($name);
-            if($result !== FALSE)
+            if($result === FALSE)
             {
                 $sql = "CREATE DATABASE IF NOT EXISTS $name";
                 $result = $mysqli->query($sql) && $mysqli->select_db($name);

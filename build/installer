@@ -98,7 +98,7 @@
         $retries = 3;
         while ($retries--) {
             if (!$quiet) {
-                out("Downloading...", PRE, COOLR_INFO);
+                out("Downloading...", PRE, COLOR_INFO);
             }
 
             $source = PHAR_URL;
