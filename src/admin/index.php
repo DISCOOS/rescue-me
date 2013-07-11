@@ -2,7 +2,33 @@
     
     require('../config.php');
     require('router.php');
-    
+   
+if(defined('USE_SILEX') && USE_SILEX) {
+	$app = new Silex\Application();
+	$app->register(new Silex\Provider\TwigServiceProvider(), array(
+	    'twig.path' =>ADMIN_PATH.'views',
+	));
+	
+	$app->get('/{module}', function ($module) use ($app) {
+		$TWIG = array();
+		$controller = ADMIN_PATH.'controllers/'.$module.'.controller.php';
+		if(file_exists($controller))
+			require_once($controller);
+	    return $app['twig']->render($module.'.twig', $TWIG);
+	});
+	$app->get('/{module}/{id}', function ($module, $id) use ($app) {
+		$TWIG = array();
+		$controller = ADMIN_PATH.'controllers/'.$module.'.controller.php';
+		if(file_exists($controller))
+			require_once($controller);
+
+	    return $app['twig']->render($module.'.twig', $TWIG);
+	});
+	
+	$app->run();
+	
+	die();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

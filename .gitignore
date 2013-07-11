@@ -5,3 +5,7 @@ src/config.php
 src/vendor/*
 !src/vendor/composer
 !src/vendor/autoload.php
+
+src/admin/.DS_Store
+
+src/composer.lock
