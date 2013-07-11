@@ -3,9 +3,9 @@
     /**
 	 * Common GUI functions
 	 * 
-	 * @copyright Copyright 2013 {@link http://www.onevoice.no One Voice AS} 
+	 * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation}  
 	 *
-     * @since 29. June 2013, v. 7.60
+     * @since 29. June 2013
 	 * 
 	 * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
 	 */
@@ -32,7 +32,7 @@
     {
         $html = '<div class="alert alert-error">'.$error.'</div> ';
         return insert_message($html,$echo);        
-    }        
+    }
 
     function insert_controls($controls)
     {

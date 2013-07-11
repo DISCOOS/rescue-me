@@ -3,9 +3,9 @@
     /**
      * File containing: User class
      * 
-     * @copyright Copyright 2013 {@link http://www.discoos.org DISCOOS Foundation} 
+     * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
      *
-     * @since 15. June 2013, v. 1.00
+     * @since 15. June 2013
      * 
      * @author Sven-Ove Bjerkan <post@sven-ove.no>
      */

@@ -3,9 +3,9 @@
     /**
      * File containing: Inspector class
      * 
-     * @copyright Copyright 2013 {@link http://www.discoos.org DISCOOS Foundation} 
+     * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
      *
-     * @since 03. July 2013, v. 8.00
+     * @since 03. July 2013
      * 
      * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
      */

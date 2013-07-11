@@ -3,9 +3,9 @@
     /**
      * File containing: Provider interface
      * 
-     * @copyright Copyright 2013 {@link http://www.discoos.org DISCOOS Foundation} 
+     * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
      *
-     * @since 13. June 2013, v. 1.00
+     * @since 13. June 2013
      * 
      * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
      */

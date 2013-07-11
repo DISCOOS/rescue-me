@@ -4,13 +4,14 @@
 
     use RescueMe\Module;
 
-    $modules = Module::getAll(); 
+    $modules = Module::getAll();
 
     if($modules == false)
     {
+        
+        insert_error('Kjør installasjonsskript!');
 
 ?>
-    <div class="alert alert-info">Kjør installasjonsskript!</div>
 <?php
 
     }

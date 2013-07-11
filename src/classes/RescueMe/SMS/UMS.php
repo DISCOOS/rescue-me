@@ -3,9 +3,9 @@
     /**
      * File containing: SMS class
      * 
-     * @copyright Copyright 2013 {@link http://www.onevoice.no One Voice AS} 
+     * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation}  
      *
-     * @since 13. June 2013, v. 7.60
+     * @since 13. June 2013
      * 
      * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
      */
@@ -29,7 +29,7 @@
         /**
          * constructor for SMS
          *
-         * @since 13. June 2013, v. 7.60
+         * @since 13. June 2013
          *
          */
         public function __construct($company='', $department='', $password='')
