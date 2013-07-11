@@ -3,9 +3,9 @@
     /**
      * File containing: Install class
      * 
-     * @copyright Copyright 2013 {@link http://www.discoos.org DISCOOS Foundation} 
+     * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
      *
-     * @since 19. June 2013, v. 7.60
+     * @since 19. June 2013
      * 
      * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
      */
@@ -32,7 +32,7 @@
          * @param string $root Installation root
          * 
          * 
-         * @since 19. June 2013, v. 7.60
+         * @since 19. June 2013
          *
          */
         public function __construct($root)
@@ -51,7 +51,7 @@
         public function execute()
         {
             // Notify
-            out("Inspecting installation in [$this->root]....", PRE);
+            out("Inspecting installation in [$this->root]....", PRE, COLOR_INFO);
             
             // Not found?
             if(!file_exists(realpath($this->root))) {
@@ -59,11 +59,11 @@
             }// if
             
             // Uninstall application
-            out("Uninstalling [$this->root]....", PRE);
+            out("Uninstalling [$this->root]....", PRE, COLOR_INFO);
             if(!rrmdir(realpath($this->root))) {
                 return FAILED."(".RM_DIR_FAILED.")";
-            }// if
-            
+            }// if 
+           
             // Finished
             return true;
             

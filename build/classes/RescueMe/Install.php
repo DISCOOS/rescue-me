@@ -3,14 +3,16 @@
     /**
      * File containing: Install class
      * 
-     * @copyright Copyright 2013 {@link http://www.discoos.org DISCOOS Foundation} 
+     * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
      *
-     * @since 19. June 2013, v. 7.60
+     * @since 19. June 2013
      * 
      * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
      */
     
     namespace RescueMe;
+    
+    use RescueMe\DB;
 
     /**
      * Install class
@@ -48,7 +50,7 @@
          * @param array $ini Installation ini parameters
          * 
          * 
-         * @since 19. June 2013, v. 7.60
+         * @since 19. June 2013
          *
          */
         public function __construct($src, $root, $ini)
@@ -69,7 +71,7 @@
         public function execute()
         {
             // Notify
-            info("Extracting [$this->src] to [$this->root]....", SUCCESS, NONE);
+            info("Extracting [$this->src] to [$this->root]....", SUCCESS, PRE);
             
             // Do not overwrite existing
             if(file_exists($this->root) === TRUE) {
@@ -90,9 +92,6 @@
             $zip->extractTo($this->root);
             $zip->close();
             
-            // Cleanup
-            unlink($this->src);
-            
             // Get configuration template
             $config = file_get_contents("config.php");
             $config = replace_define_array($config, array
@@ -105,13 +104,40 @@
                 'DB_NAME'           => $this->ini['DB_NAME'], 
                 'DB_USERNAME'       => $this->ini['DB_USERNAME'], 
                 'DB_PASSWORD'       => $this->ini['DB_PASSWORD'],
-                'GOOGLE_API_KEY'    => $this->ini['GOOGLE_API_KEY'],
+                'GOOGLE_API_KEY'    => $this->ini['GOOGLE_API_KEY']
             ));
             
             // Create file
             if(file_put_contents($this->root."config.php", $config) === FALSE) {
-                return FAILED."(".CONFIG_NOT_CREATED.")";;
+                return FAILED."(".CONFIG_NOT_CREATED.")";
             }// if
+            
+            // Bootstrap RescueMe classes
+            require $this->root."vendor/autoload.php";
+            
+            // Install database
+            $name = get($this->ini, 'DB_NAME', null, false);
+            if(!defined('DB_NAME'))
+            {
+                // RescueMe database constants
+                define('DB_NAME', $name);
+                define('DB_HOST', get($this->ini, 'DB_HOST', null, false));
+                define('DB_USERNAME', get($this->ini, 'DB_USERNAME', null, false));
+                define('DB_PASSWORD', get($this->ini, 'DB_PASSWORD', null, false));
+            }
+            
+            info("Creating database [$name]....", SUCCESS, PRE);
+            if(DB::create($name) === FALSE) {
+                return sprintf(DB_NOT_CREATED,"$name")." (".DB::error().")";
+            }// if
+            
+            info("Importing [rescueme.sql]....", SUCCESS, PRE);
+            if(DB::import($this->root."rescueme.sql") === FALSE) {
+                return sprintf(DB_NOT_IMPORTED,"rescueme.sql")." (".DB::error().")";
+            }// if
+            
+            // Cleanup
+            unlink($this->src);
             
             // Finished
             return true;

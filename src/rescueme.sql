@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `type` varchar(50) NOT NULL,
   `impl` varchar(50) NOT NULL,
   `config` text NOT NULL DEFAULT '',
-  PRIMARY KEY  (`module_id`),
+  PRIMARY KEY  (`module_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 

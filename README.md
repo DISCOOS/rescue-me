@@ -3,6 +3,33 @@ RescueMe
 
 Light-weight and minimalistic system for push-based location requests.
 
+Download RescueMe
+=================
+
+Run this in your terminal to get the latest RescueMe version:
+
+```bash
+curl -sS http://rescueme.discoos.org/installer | php
+```
+
+or if you don't have curl (windows):
+
+```bash
+php -r "eval('?>'.file_get_contents('http://rescueme.discoos.org/installer'));"
+```    
+This script will check some php.ini settings, warn you if they are set incorrectly, 
+and then download the latest rescueme.phar in the current directory. 
+
+Install RescueMe
+================
+
+Run this in your terminal to install RescueMe:
+```bash
+php rescueme.phar install --install-dir=/path/to/www/rescueme
+```
+
+Follow the instructions.
+
 Build from source
 =================
 
@@ -17,13 +44,13 @@ Build from source
     *Linux*
 
     ```php
-    ./build.sh package --version=<string>
+    ./compile.sh package --version=<string>
     ```
 
     *Any OS*
 
     ```php
-    php build.php package version=<string>
+    php compile.php package version=<string>
     ```
     which outputs `dist/rescueme-<string>.phar` 
 
@@ -33,7 +60,7 @@ Build from source
    (assumes Apache is already installed and configured)
 
     ```php
-    php dist/rescueme-<version>.phar install --install-dir=/path/web/document/root
+    php dist/rescueme-<version>.phar install --install-dir=/path/to/www/rescueme
     ```
     Follow the instructions.
 

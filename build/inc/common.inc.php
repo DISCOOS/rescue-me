@@ -3,9 +3,9 @@
     /**
 	 * RescueMe Build Script Common Functions
 	 * 
-     * @copyright Copyright 2013 {@link http://www.discoos.org DISCOOS Foundation} 
+     * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
      *
-     * @since 13. June 2013, v. 1.00
+     * @since 13. June 2013
      * 
      * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
 	 */
@@ -15,8 +15,9 @@
     define('NONE', 0);
     define('POST', 1);
     define('BOTH', 2);
-    define('ERROR', 1);
+    define('ERROR', -1);
     define('SUCCESS', 0);
+    define('INFO', 'INFO');
     define('DONE', "DONE");
     define('FAILED', "FAILED");
     define('NOT_FOUND', "not found");
@@ -25,7 +26,13 @@
     define('MAKE_DIR_FAILED', "make directory failed");
     define('ZIP_OPEN_FAILED', "zip could not be opened");
     define('ZIP_COPY_FAILED', "zip could not be copied");
+    define('DB_NOT_CREATED', "%s could not be created");
+    define('DB_NOT_IMPORTED', "%s could not be imported");
     define('CONFIG_NOT_CREATED', "config.php could not be created");
+    define('COLOR_NONE', 'none');
+    define('COLOR_INFO', 'info');
+    define('COLOR_ERROR', 'error');
+    define('COLOR_SUCCESS', 'success');
 
     /**
      * Parses parameters into an array.
@@ -303,7 +310,7 @@
      * @return string Answer 
      */
     function in($message, $default=NULL, $newline=NONE) {
-        out(($default ? "$message [$default]" : $message).": ", $newline);
+        out(($default ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
         $answer = fgets(STDIN);
         return ($answer !== PHP_EOL ? str_replace("\n", "", $answer) : $default);
     }// in
@@ -320,10 +327,7 @@
     function get($opts, $arg, $default = NULL, $escape = true)
     {
         $value = isset($opts[$arg]) ? $opts[$arg] : $default;
-        if($escape && $value !== "''") {
-            $value = str_escape($value); 
-        }
-        return $value;
+        return $escape ? str_escape($value) : trim($value,"'");
     }// get
 
 
@@ -384,7 +388,7 @@
      * @param integer $status Exit status [optional, default: 0]
      * @param integer $newline Message newline [optional, default: POST]
      * 
-     * @since 02. October 2012, v. 7.00 
+     * @since 02. October 2012 
      * 
      * @return void
      */
@@ -402,14 +406,14 @@
      * @param integer $status Status
      * @param integer $newline Message newline [optional, default: POST]
      * 
-     * @since 02. October 2012, v. 7.00 
+     * @since 02. October 2012 
      * 
      * @return integer
      * 
      */
     function info($message, $status = SUCCESS, $newline=POST)
     {
-        out($message,$newline); return $status;
+        out($message,$newline,COLOR_INFO); return $status;
     }// info
 
 
@@ -420,49 +424,70 @@
      * @param integer $status Status
      * @param integer $newline Message newline [optional, default: POST]
      * 
-     * @since 02. October 2012, v. 7.00 
+     * @since 02. October 2012 
      * 
      * @return integer
      * 
      */
     function error($message, $status = ERROR, $newline=POST)
     {
-        out($message,$newline); return $status;
+        out($message,$newline,COLOR_ERROR); return $status;
     }// error
 
 
     /**
-     * Log information
+     * Output message
+     * 
+     * Adapted from https://github.com/composer/getcomposer.org/blob/master/web/installer
      * 
      * @param string $message Message
      * @param integer $newline Message newline [optional, default: POST]
+     * @param string $color Output color
      * 
-     * @since 02. October 2012, v. 7.00 
+     * @since 07. June 2013
      * 
      * @return void
      * 
      */
-    function out($message, $newline=POST)
+    function out($message, $newline=POST, $color = COLOR_NONE)
     {
+        if (DIRECTORY_SEPARATOR == '\\') {
+            $hasColorSupport = false !== getenv('ANSICON');
+        } else {
+            $hasColorSupport = true;
+        }
+
+        $styles = array(
+            'success' => "\033[0;32m%s\033[0m",
+            'error' => "\033[31;31m%s\033[0m",
+            'info' => "\033[33;33m%s\033[0m"
+        );
+
+        $format = '%s';
+
+        if (isset($styles[$color]) && $hasColorSupport) {
+            $format = $styles[$color];
+        }
+
         switch($newline)
         {
             case PRE:
-                echo PHP_EOL.$message;
+                printf($format, PHP_EOL.$message);
                 break;
             case POST:
-                echo $message.PHP_EOL;
+                printf($format, $message.PHP_EOL);
                 break;
             case BOTH:
-                echo PHP_EOL.$message.PHP_EOL;
+                printf($format, PHP_EOL.$message.PHP_EOL);
                 break;
             case NONE:
             default:
-                echo $message;
+                printf($format, $message);
                 break;
         }
-    }// info
+    }// out
     
-
+    
     /**
      * Get debug information.
      * 

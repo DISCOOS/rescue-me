@@ -3,9 +3,9 @@
     /**
 	 * RescueMe Package command line interface
 	 * 
-	 * @copyright Copyright 2013 {@link http://www.onevoice.no One Voice AS} 
+	 * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation}  
 	 *
-     * @since 19. June 2013, v. 7.60
+     * @since 19. June 2013
 	 * 
 	 * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
 	 */
@@ -57,7 +57,7 @@
             case INSTALL:
                 
                 // Notify
-                begin("rescueme $action");
+                begin("RescueMe $action");
 
                 // Get default path install path
                 $root = get($opts, INSTALL_DIR, getcwd(), false);
@@ -75,7 +75,7 @@
                 $root = rtrim($root,"/")."/";
                 
                 // Get current?
-                if(file_exists(realpath($root))) {
+                if(file_exists(realpath($root."config.php"))) {
                     
                     // Get current configuration
                     $config = file_get_contents($root."config.php");
@@ -144,7 +144,7 @@
         }// switch
         
         // Finised
-        done("rescueme $action", $status);
+        done("RescueMe $action", $status);
         
     }// if	 
     

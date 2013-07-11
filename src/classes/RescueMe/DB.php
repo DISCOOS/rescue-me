@@ -3,9 +3,9 @@
     /**
      * File containing: Database class
      * 
-     * @copyright Copyright 2013 {@link http://www.discoos.org DISCOOS Foundation} 
+     * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
      *
-     * @since 13. June 2013, v. 1.00
+     * @since 13. June 2013
      * 
      * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
      */
@@ -36,16 +36,12 @@
         /**
          * Constructor
          *
-         * @since 15. June 2013, v. 7.60
+         * @since 15. June 2013
          *
          */
         public function __construct()
         {
             $this->mysqli = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
-            if(($code = mysqli_connect_errno($this->mysqli)) > 0)
-            {
-                throw new Exception("Failed to connect to MySQL: " . mysqli_connect_error($this->mysqli), $code);
-            }// if
         }// __construct
         
         
@@ -65,6 +61,26 @@
         
         
         /**
+         * Connect to database.
+         * 
+         * @param string $host DB host
+         * @param string $name DB name
+         * @param string $usr DB username
+         * @param string $pwd DB password
+         * 
+         * @return mixed mysqli instance if success, FALSE otherwise.
+         */
+        public function connect($host=DB_HOST, $name=DB_NAME, $usr = DB_USERNAME, $pwd = DB_PASSWORD)
+        {
+            if($this->mysqli->connect_error)
+            {
+                return $this->mysqli->init()->real_connect($host, $usr, $pwd, $name);
+            }
+            return $this->mysqli;
+        }// connect
+        
+        
+        /**
          * Performs a query on the RescueMe database.
          * 
          * @param string $sql SQL query.
@@ -73,9 +89,18 @@
          * mysqli_query will return a mysqli_result object. For successfull INSERT queries with 
          * AUTO_INCREMENT field, the auto generated id is returned. For other successful queries 
          * the method will return TRUE.
+         * 
+         * @throws \Exception If not connected.
          */
         public static function query($sql)
         {
+            if(self::instance()->mysqli->connect_error)
+            {
+                $code = mysqli_connect_errno(self::instance()->mysqli);
+                $error = mysqli_connect_error(self::instance()->mysqli);
+                throw new Exception("Failed to connect to MySQL: " . $error, $code);
+            }// if
+            
             $result = self::instance()->mysqli->query($sql);
             if($result == true && self::instance()->mysqli->insert_id > 0)
                 return self::instance()->mysqli->insert_id;
@@ -191,4 +216,123 @@
             
         }// update
         
+        
+        /**
+         * Check if database exists.
+         * 
+         * @param string $name Database name
+         * 
+         * @return boolean TRUE if success, FALSE otherwise.
+         */
+        public static function exists($name)
+        {
+            $mysqli = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD);
+            if($mysqli->connect_error)
+            {
+                $code = mysqli_connect_errno($this->mysqli);
+                $error = mysqli_connect_error($this->mysqli);
+                throw new Exception("Failed to connect to MySQL: " . $error, $code);
+            }// if
+            $result = $mysqli->select_db($name);
+            unset($mysqli);
+            return $result;
+        }// exists
+        
+        
+        /**
+         * Create database with given name.
+         * 
+         * @param string $name Database name
+         * 
+         * @return boolean TRUE if success, FALSE otherwise.
+         */
+        public static function create($name)
+        {
+            $mysqli = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD);
+            if($mysqli->connect_error)
+            {
+                $code = mysqli_connect_errno($this->mysqli);
+                $error = mysqli_connect_error($this->mysqli);
+                throw new Exception("Failed to connect to MySQL: " . $error, $code);
+            }// if
+            $result = $mysqli->select_db($name);
+            if($result !== FALSE)
+            {
+                $sql = "CREATE DATABASE IF NOT EXISTS $name";
+                $result = $mysqli->query($sql) && $mysqli->select_db($name);
+            }
+            unset($mysqli);
+            return $result;
+        }// create
+        
+        
+        /**
+         * Import SQL dump into database.
+         * 
+         * @param string $pathname Path to file
+         * 
+         * @return boolean TRUE if success, FALSE otherwise.
+         */
+        public static function import($pathname)
+        {
+            $result = false;
+            $clauses = array('INSERT', 'UPDATE', 'DELETE', 'DROP', 'GRANT', 'REVOKE', 'CREATE', 'ALTER');
+            $previous = array('INSERT');
+            if(file_exists($pathname))
+            {
+                $query = '';
+                $queries = array();
+                $lines = file($pathname);
+                if(is_array($lines))
+                {
+                    foreach($lines as $line)
+                    {
+                        $line = trim($line);
+                        if(!preg_match("#^--|^/\*#", $line))
+                        {
+                            if(!trim($line))
+                            {
+                                if($query != '')
+                                {
+                                    $clause = trim(strtoupper(substr($query, 0, strpos($query, ' '))));
+                                    if(in_array($clause, $clauses))
+                                    {
+                                        $pos = strpos($query, '`') + 1;
+                                        $query = substr($query, 0, $pos) . substr($query, $pos);
+                                    }
+
+                                    $priority = 1;
+                                    if(in_array($clause, $previous))
+                                    {
+                                        $priority = 10;
+                                    }
+                                    $queries[$priority][] = $query;
+                                    $query = '';
+                                }
+                            }
+                            else
+                            {
+                                $query .= $line;
+                            }
+                        }
+                    }
+                    ksort($queries);
+                    print_r($queries);
+                    foreach($queries as $priority => $sqls)
+                    {
+                        foreach($sqls as $sql)
+                        {
+                            $result = self::query($sql);
+                            if($result === false)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return $result;
+        }// import
+
+
     }// DB
