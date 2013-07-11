@@ -78,11 +78,11 @@
             
             $values = prepare_values(self::$fields, $values);
             
-            $id = DB::insert(self::TABLE, $values);
+            $this->id = DB::insert(self::TABLE, $values);
                 
-            if(!$id) return false;
+            if(!$this->id) return false;
 
-            $missing = self::getMissing($id);
+            $missing = self::getMissing($this->id);
             
             return ($missing->sendSMS() == true);
             
@@ -189,7 +189,7 @@
             
             $res = $this->_sendSMS($this->m_mobile, SMS_TEXT);
             if(!$res) {
-                $res = $this->_sendSMS($this->mb_mobile, SMS_NOT_SENT);
+               $res = $this->_sendSMS($this->mb_mobile, SMS_NOT_SENT);
             }
             
             return $res;
@@ -212,7 +212,7 @@
                 )
             );
             
-            $module = Module::get("SMS");
+            $module = Module::get("\RescueMe\SMS\Provider");
             
             $sms = $module->newInstance();
             

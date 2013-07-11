@@ -30,20 +30,22 @@
          * Constructor
          *
          * @param string $user Sveve user credentials
+         * @param string $passwd Sveve user credentials (optional)
          *
          * @since 13. June 2013, v. 7.60
          * 
          */
-        public function __construct($user='')
+        public function __construct($user='', $passwd='')
         {
-            $this->account = $this->newConfig($user);
+            $this->account = $this->newConfig($user, $passwd);
         }// __construct
 
-        public function newConfig($user='')
+        public function newConfig($user='', $passwd='')
         {
             return array
             (
-                "user" => $user
+                "user" => $user,
+                "passwd" => $passwd
             );
         }// newConfig
         
@@ -52,17 +54,19 @@
             // Create SMS provider url
             $smsURL = utf8_decode
             (
-                  'http://www.sveve.no/SMS/SendSMS'
+                  'https://www.sveve.no/SMS/SendSMS'
                 . '?user='.$this->account['user']
                 . '&to='.$to
                 . '&from='.$from
                 . '&msg='.$message
+                .(!empty($this->account['passwd']) ? '&passwd='.$this->account['passwd'] : '')
             );
-            
+                        
             // Start request
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $smsURL);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             $res = curl_exec($curl);
 
             ## INIT XML
@@ -70,10 +74,10 @@
             $response = $this->_SVEVESMS_XML2Array($res);
             $response = $response['response'];
             
-            if(isset($response['msg_ok_number']) && is_numeric($response['msg_ok_number']) && $response['msg_ok_number']>0)
+            if(isset($response['msg_ok_count']) && is_numeric($response['msg_ok_count']) && $response['msg_ok_count']>0)
             {
                 // Get first id (only one message is sent)
-                return \reset($response['ids']);
+                return true;
             }
             else
             {

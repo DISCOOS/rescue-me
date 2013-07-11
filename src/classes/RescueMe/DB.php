@@ -116,7 +116,7 @@
          */
         public static function errno()
         {
-            return $this->instance()->mysqli->errno;
+            return self::instance()->mysqli->errno;
         }// errno
         
         
@@ -127,7 +127,7 @@
          */
         public static function error()
         {
-            return $this->instance()->mysqli->error;
+            return self::instance()->mysqli->error;
         }// error
         
         
@@ -168,7 +168,7 @@
                 $inserts[] = $value;
             }
             
-            $query = "INSERT INTO `$table` ($fields) VALUES (". implode(",", $values) . ")";
+            $query = "INSERT INTO `$table` ($fields) VALUES (". implode(",", $inserts) . ")";
             
             return self::query($query);
             

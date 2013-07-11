@@ -121,11 +121,13 @@
     function prepare_values($fields, $values) 
     {
         reset($values);
+        reset($fields);
         $prepared = array();
         foreach($fields as $field) {
-            $value = next($values);
+            $value = current($values);
             if($value === FALSE) break;
             $prepared[$field] = $value;
+            next($values);
         }
         return $prepared;
     }    
