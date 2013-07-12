@@ -16,17 +16,9 @@
     // Only run this when executed on the CLI
     if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
         
-        // Import class loader class
-        require('classes/ClassLoader.php');
-
-        // Create class loader instance
-        $autoloader = new Composer\Autoload\ClassLoader();
-        
-        // Register build classes
-        $autoloader->add('RescueMe','classes');
-
-        // Register class loader instance with SPL
-        $autoloader->register();
+        // Import classes
+        require('classes/RescueMe/Install.php');
+        require('classes/RescueMe/Uninstall.php');
 
         // Define constants
         define('HELP',"help");
