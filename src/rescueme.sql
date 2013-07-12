@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `missing` (
   `sms2_sent` enum('false','true') NOT NULL DEFAULT 'false',
   PRIMARY KEY  (`missing_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `positions` (
   `user_agent` varchar(255) NOT NULL,
   PRIMARY KEY  (`pos_id`),
   KEY `missing_id` (`missing_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(255) NOT NULL,
   `mobile` int(8) NOT NULL,
   PRIMARY KEY  (`user_id`)  
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `properties` (
   `name` varchar(50) NOT NULL,
   `value` text NOT NULL DEFAULT '',
   PRIMARY KEY  (`property_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -103,6 +103,6 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `impl` varchar(50) NOT NULL,
   `config` text NOT NULL DEFAULT '',
   PRIMARY KEY  (`module_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
