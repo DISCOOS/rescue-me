@@ -63,7 +63,27 @@ Build from source
     php dist/rescueme-<version>.phar install --install-dir=/path/to/www/rescueme
     ```
     Follow the instructions.
-    
+
+Developers
+----------
+
+Remember to set correct newline behavior before commiting changes to this repo. The repos 
+is configured to store all files with LF line endings (see .gitattributes), and correct 
+behavior is best ensured by setting the correct `--global core.autocrlf` value for your OS. 
+
+**Windows**
+```bash
+git config --global core.autocrlf true
+```
+which tells Git to auto-convert CRLF line endings into LF when you commit, and vice 
+versa when it checks out code onto your filesystem.
+
+**Mac or Linux**
+```bash
+git config --global core.autocrlf input
+```
+which tells Git to convert CRLF to LF on commit but not the other way around.
+
 Troubleshooting
 ---------------
 
