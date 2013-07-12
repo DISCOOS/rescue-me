@@ -9,7 +9,7 @@
     if($modules == false)
     {
         
-        insert_error('Kjør installasjonsskript!');
+        insert_error('KjÃ¸r installasjonsskript!');
 
 ?>
 <?php

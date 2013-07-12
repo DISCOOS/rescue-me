@@ -7,7 +7,7 @@
      *
      * @since 13. June 2013
      * 
-     * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
+     * @author Kenneth GulbrandsÃ¸y <kenneth@discoos.org>
 	 */
     
     // Import common functions

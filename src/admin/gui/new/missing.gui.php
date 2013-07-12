@@ -38,29 +38,29 @@
 
 	<div class="clearfix"></div>
     <div class="alert alert-info">
-        <em>En SMS sendes automatisk til den savnede når sporing opprettes</em>
+        <em>En SMS sendes automatisk til den savnede nÃ¥r sporing opprettes</em>
         <button type="button" data-toggle="readmore" class="toggle btn btn-mini btn-info pull-right">Les mer</button>	
         <div id="readmore" style="display:none;">
             <h4>SMS-tekst</h4>
             <div class="alert"><?= SMS_TEXT ?></div>
             <h4>Sporingsside</h4>
-            <p>Når brukeren trykker på lenken åpnes en nettside som posisjonerer brukeren, 
-            og h*n må deretter godkjenne deling av posisjon i nettleseren.</p>
+            <p>NÃ¥r brukeren trykker pÃ¥ lenken Ã¥pnes en nettside som posisjonerer brukeren, 
+            og h*n mÃ¥ deretter godkjenne deling av posisjon i nettleseren.</p>
             <p>
                 <strong>Lastetid</strong>
                 <br />
-                Nettsiden er 1,9Kb, noe som burde ta litt mindre enn ett sekund på dårlig mobilnett. 
-                Det er likevel viktig at brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes.
+                Nettsiden er 1,9Kb, noe som burde ta litt mindre enn ett sekund pÃ¥ dÃ¥rlig mobilnett. 
+                Det er likevel viktig at brukeren er tÃ¥lmodig, og venter lengre enn dette hvis siden ikke Ã¥pnes.
             </p>
             <p>
                 <strong>Gjentatt posisjonering</strong>
                 <br />
-                Hvis posisjonen er unøyaktig, vil nettsiden lastes på nytt igjen etter 10 sekunder.
-                Brukeren vil da se nedtellingen, og siden åpnes på nytt. Dette vil gjentas inntil 10 ganger.
+                Hvis posisjonen er unÃ¸yaktig, vil nettsiden lastes pÃ¥ nytt igjen etter 10 sekunder.
+                Brukeren vil da se nedtellingen, og siden Ã¥pnes pÃ¥ nytt. Dette vil gjentas inntil 10 ganger.
                 <br />
-                Alle sporinger er tilgjengelig på admin-siden.
+                Alle sporinger er tilgjengelig pÃ¥ admin-siden.
                 <br />
-                <strong>OBS:</strong> Lastetiden vil mest sannsynlig være rimelig lik første åpning av sporingssiden.
+                <strong>OBS:</strong> Lastetiden vil mest sannsynlig vÃ¦re rimelig lik fÃ¸rste Ã¥pning av sporingssiden.
             </p>
 
         </div>

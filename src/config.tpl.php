@@ -73,10 +73,10 @@
     define('SYSTEM', 'System');
     define('SETUP', 'Oppsett');
     define('ABOUT', 'Om '.TITLE);
-    define('SMS_TEXT', 'TEST: Du er savnet! <br /> Trykk på lenken for at vi skal se hvor du er: <br /> '.APP_URL.'#missing_id-#to');
+    define('SMS_TEXT', 'TEST: Du er savnet! <br /> Trykk pÃ¥ lenken for at vi skal se hvor du er: <br /> '.APP_URL.'#missing_id-#to');
     define('SMS_NOT_SENT', 'OBS: Varsel ble ikke sendt til "#mb_name"');
-    define('SMS2_TEXT', 'Om du har GPS på telefonen, anbefaler vi at du aktiverer dette. Vanligvis finner du dette under Innstillinger -> Generelt, eller Innstillinger -> Plassering');
-    define('SMS_MB_TEXT', 'Mottatt posisjon på "#m_name" (+/- #acc meter)! '.APP_URL.'admin/missing/details/#missing_id');
+    define('SMS2_TEXT', 'Om du har GPS pÃ¥ telefonen, anbefaler vi at du aktiverer dette. Vanligvis finner du dette under Innstillinger -> Generelt, eller Innstillinger -> Plassering');
+    define('SMS_MB_TEXT', 'Mottatt posisjon pÃ¥ "#m_name" (+/- #acc meter)! '.APP_URL.'admin/missing/details/#missing_id');
     
     // Import class loaders
     require('vendor/autoload.php');

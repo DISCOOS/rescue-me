@@ -7,7 +7,7 @@
      *
      * @since 13. June 2013
      * 
-     * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
+     * @author Kenneth GulbrandsÃ¸y <kenneth@onevoice.no>
      */
     
     namespace RescueMe\SMS;

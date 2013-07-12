@@ -7,7 +7,7 @@
      *
      * @since 27. June 2013
      * 
-     * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
+     * @author Kenneth GulbrandsÃ¸y <kenneth@discoos.org>
      */
     
     namespace RescueMe;

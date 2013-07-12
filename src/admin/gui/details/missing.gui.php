@@ -42,7 +42,7 @@
 <div id="googleMap"></div>
 <div id="sidebar">
 	<h4>Posisjoner</h4>
-	<strong>Nøyaktighet &lt; 1km</strong>
+	<strong>NÃ¸yaktighet &lt; 1km</strong>
 	<ul class="unstyled">
 	<?php
 	$i = 0;
@@ -57,8 +57,8 @@
 		$i++;
 	} ?>
 	</ul>
-	<h4>Unøyaktige posisjoner</h4>
-	<strong>Nøyaktighet &gt;= 1km</strong>
+	<h4>UnÃ¸yaktige posisjoner</h4>
+	<strong>NÃ¸yaktighet &gt;= 1km</strong>
 	<ul class="unstyled">
 	<?php
 	$i = 0;
