@@ -70,7 +70,7 @@
         $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
         $sp = strtolower($_SERVER["SERVER_PROTOCOL"]);
         $protocol = substr($sp, 0, strpos($sp, "/")) . $s;
-        return $protocol . "://" . $_SERVER['SERVER_NAME'] . "/" . get_rescueme_uri();
+        return $protocol . "://" . $_SERVER['SERVER_NAME'] . get_rescueme_uri();
     }// get_rescueme_url
     
 

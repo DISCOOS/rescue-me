@@ -40,7 +40,10 @@
         public $m_name;
         public $m_mobile;
         public $timestamp_sms_sent;
-
+        private $last_acc;
+        private $sms2_sent;
+        private $sms_mb_sent;
+        
         /**
          * Get Missing instance
          * 
@@ -144,21 +147,33 @@
 
 
         public function addPosition($lat, $lon, $acc, $alt, $timestamp, $useragent = ''){
-            
             // Sanity check
             if($this->id === -1) return false;
-
+            
+            $this->last_acc = $acc;
+            
             // Send SMS 2?
             if((int) $acc > 500){
                 
                 // Update this object
                 $this->getMissing($this->id);
-                
-                // Is SMS2 alreadt sent?
-                if($this->sms2_sent == 'false'){
-                    
+                               
+                // Is SMS2 already sent and is this at least the second position?
+                if($this->sms2_sent == 'false' && sizeof($this->positions) > 1){
                     $this->_sendSMS($this->m_mobile, SMS2_TEXT);
                     $query = "UPDATE `missing` SET `sms2_sent` = 'true' WHERE `missing_id` = '" . $this->id . "';";
+                    $res = DB::query($query);
+                    if(!$res){
+                        trigger_error("Failed execute [$query]: " . DB::error(), E_USER_WARNING);
+                    }// if
+                }
+            }
+            
+            // Alert person of concern if an accurate position is logged
+            else {
+                if($this->sms_mb_sent == 'false') {
+                    $this->_sendSMS($this->mb_mobile, SMS_MB_TEXT);
+                    $query = "UPDATE `missing` SET `sms_mb_sent` = 'true' WHERE `missing_id` = '" . $this->id . "';";
                     $res = DB::query($query);
                     if(!$res){
                         trigger_error("Failed execute [$query]: " . DB::error(), E_USER_WARNING);
@@ -208,7 +223,9 @@
             (
                 str_replace
                 (
-                    array('#missing_id', '#mb_name'), array($this->id . '-' . $to, $this->mb_name), $message
+                    array('#missing_id', '#to', '#mb_name', '#m_name', '#acc'), 
+                    array($this->id, $to, $this->mb_name, $this->m_name, $this->last_acc),
+                    $message
                 )
             );
             
