@@ -67,7 +67,7 @@ Build from source
 Notes
 -----
 
-Windows user and command line is fighting you? [Read this)(http://php.net/manual/en/install.windows.commandline.php).
+Windows user and command line is fighting you? [Read this](http://php.net/manual/en/install.windows.commandline.php).
 
 Dependencies
 ------------
