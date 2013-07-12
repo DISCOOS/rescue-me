@@ -44,13 +44,13 @@ Build from source
     *Linux*
 
     ```php
-    ./compile.sh package --version=<string>
+    ./compile package -v <string>
     ```
 
     *Any OS*
 
     ```php
-    php compile.php package version=<string>
+    php compile.php package -v <string>
     ```
     which outputs `dist/rescueme-<string>.phar` 
 
