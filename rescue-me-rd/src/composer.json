@@ -1,0 +1,20 @@
+{
+    "type": "project",
+    "name": "discoos/rescueme",
+    "description": "Light-weight and minimalistic system for push-based location requests",
+    "homepage": "http://www.discoos.org/rescueme",
+    
+    "autoload": {
+        "psr-0": {"": "classes/"},
+        "classmap": [
+            "classes/Inspector.php", 
+            "classes/gPoint.class.php"
+        ]
+    },
+
+    "require": {
+        "silex/silex": "1.*",
+		"twig/twig": ">=1.8,<2.0-dev"
+    }
+
+}
