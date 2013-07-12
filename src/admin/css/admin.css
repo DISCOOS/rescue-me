@@ -149,6 +149,11 @@ li.position {
   height: 400px;
   float: left;
 }
+
+#googleMap img {
+    max-width: none;
+}
+
 #sidebar {
   margin: 0px 0px 0px 10px;
   padding: 0px;
