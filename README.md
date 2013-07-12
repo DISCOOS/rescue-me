@@ -67,7 +67,8 @@ Build from source
 Developers
 ----------
 
-Remember to set correct newline behavior before commiting changes to this repo. The repos 
+Remember to set correct newline behavior before commiting changes to this repo 
+(see [Git help](https://help.github.com/articles/dealing-with-line-endings)). The repos 
 is configured to store all files with LF line endings (see .gitattributes), and correct 
 behavior is best ensured by setting the correct `--global core.autocrlf` value for your OS. 
 
