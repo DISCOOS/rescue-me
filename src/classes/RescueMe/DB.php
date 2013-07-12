@@ -67,10 +67,12 @@
             if(!isset($this->mysqli))
             {
                 $this->mysqli = mysqli_connect($host, $usr, $pwd);
+                $this->mysqli->query("SET NAMES 'utf8'");
             }
             else if($this->mysqli->connect_error)
             {
                 $this->mysqli->init()->real_connect($host, $usr, $pwd);
+                $this->mysqli->query("SET NAMES 'utf8'");
             }
             return $this->database($name);
         }// connect
