@@ -178,7 +178,7 @@
      */
     function get_define($subject, $name, $default='') {
         $values = array();
-        return preg_match("#define\('$name',(.*)\)#", $subject, &$values) === 1 ? $values[1] : $default;
+        return preg_match("#define\('$name',(.*)\)#", $subject, $values) === 1 ? $values[1] : $default;
     }// replace_define
     
     
