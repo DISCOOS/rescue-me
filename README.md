@@ -44,13 +44,13 @@ Build from source
     *Linux*
 
     ```php
-    ./compile.sh package --version=<string>
+    ./compile package -v <string>
     ```
 
     *Any OS*
 
     ```php
-    php compile.php package version=<string>
+    php compile.php package -v <string>
     ```
     which outputs `dist/rescueme-<string>.phar` 
 
@@ -63,6 +63,11 @@ Build from source
     php dist/rescueme-<version>.phar install --install-dir=/path/to/www/rescueme
     ```
     Follow the instructions.
+    
+Troubleshooting
+---------------
+
+1. Windows user and command line is fighting you? [Read this](http://php.net/manual/en/install.windows.commandline.php).
 
 Dependencies
 ------------

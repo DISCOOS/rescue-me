@@ -70,7 +70,7 @@
                 if(file_exists($package)) unlink("$package.phar");
                     
                 // Could be done in php.ini
-                ini_set("phar.readonly", 0); 
+                ini_set("phar.readonly", "0"); 
 
                 // Creating new Phar
                 $oPhar = new Phar("$package.phar"); 
