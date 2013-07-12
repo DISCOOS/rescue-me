@@ -72,4 +72,5 @@ Troubleshooting
 Dependencies
 ------------
 
+* PHP >= 5.3
 * [Minify 2.1.5](https://minify.googlecode.com/files/minify-2.1.5.zip)
