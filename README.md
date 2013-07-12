@@ -64,10 +64,10 @@ Build from source
     ```
     Follow the instructions.
     
-Notes
------
+Troubleshooting
+---------------
 
-Windows user and command line is fighting you? [Read this](http://php.net/manual/en/install.windows.commandline.php).
+1. Windows user and command line is fighting you? [Read this](http://php.net/manual/en/install.windows.commandline.php).
 
 Dependencies
 ------------
