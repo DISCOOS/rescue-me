@@ -4,7 +4,7 @@ RescueMe
 Light-weight and minimalistic system for push-based location requests.
 
 Download RescueMe
-=================
+-----------------
 
 Run this in your terminal to get the latest RescueMe version:
 
@@ -21,7 +21,7 @@ This script will check some php.ini settings, warn you if they are set incorrect
 and then download the latest rescueme.phar in the current directory. 
 
 Install RescueMe
-================
+----------------
 
 Run this in your terminal to install RescueMe:
 ```bash
@@ -31,7 +31,7 @@ php rescueme.phar install --install-dir=/path/to/www/rescueme
 Follow the instructions.
 
 Build from source
-=================
+-----------------
 
 1. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it, or**
 
@@ -65,6 +65,6 @@ Build from source
     Follow the instructions.
 
 Dependencies
-============
+------------
 
 * [Minify 2.1.5](https://minify.googlecode.com/files/minify-2.1.5.zip)
