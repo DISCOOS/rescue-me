@@ -84,6 +84,9 @@
                 // Add build scripts source
                 $oPhar->buildFromDirectory('build');
                 
+                // Add 5.4+ compatible class loader
+                $oPhar->addFile("src/vendor/composer/ClassLoader.php", "classes/ClassLoader.php");
+                
                 // Prepare ini values
                 $ini = "VERSION = " . $opts[VERSION];
                 
