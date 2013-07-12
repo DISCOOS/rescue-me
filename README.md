@@ -63,6 +63,11 @@ Build from source
     php dist/rescueme-<version>.phar install --install-dir=/path/to/www/rescueme
     ```
     Follow the instructions.
+    
+Notes
+-----
+
+Windows user and command line is fighting you? [Read this)(http://php.net/manual/en/install.windows.commandline.php).
 
 Dependencies
 ------------
