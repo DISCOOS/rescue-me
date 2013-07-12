@@ -68,13 +68,13 @@
             if(isset($_POST['name']) || isset($_POST['username']) || isset($_POST['password'])) {
                 
                 if(!isset($_POST['name']) || empty($_POST['name'])) {
-                    $_ROUTER['message'] = 'Full navn mÃ¥ oppgis';
+                    $_ROUTER['message'] = 'Full navn må oppgis';
                 }
                 elseif(!isset($_POST['username']) || empty($_POST['username'])) {
-                    $_ROUTER['message'] = 'Brukernavn mÃ¥ oppgis';
+                    $_ROUTER['message'] = 'Brukernavn må oppgis';
                 }
                 elseif(!isset($_POST['password']) || empty($_POST['password'])) {
-                    $_ROUTER['message'] = 'Passord mÃ¥ oppgis';
+                    $_ROUTER['message'] = 'Passord må oppgis';
                 }
                 else {
                     $status = User::create($_POST['name'], $_POST['username'], $_POST['password']);
@@ -82,7 +82,7 @@
                         header("Location: ".ADMIN_URI.'list/users');
                         exit();
                     }
-                    $_ROUTER['message'] = 'En feil oppstod ved registrering, prÃ¸v igjen';
+                    $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
                 }
             }            
             $_ROUTER['name'] = NEW_USER;
@@ -103,7 +103,7 @@
                     header("Location: ".ADMIN_URI.'details/missing/'.$missing->id);
                     exit();
                 }
-                $_ROUTER['message'] = 'En feil oppstod ved registrering, prÃ¸v igjen';
+                $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
             }
             $_ROUTER['name'] = 'Start sporing av savnet';
             $_ROUTER['file'] = $_GET['view'];

@@ -7,7 +7,7 @@
 	 *
      * @since 29. June 2013
 	 * 
-	 * @author Kenneth GulbrandsÃ¸y <kenneth@onevoice.no>
+	 * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
 	 */
 
     function insert_message($message, $echo=true) 

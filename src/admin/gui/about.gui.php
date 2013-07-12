@@ -1,21 +1,21 @@
 <h3 class="muted"><?= TITLE ?></h3>
 <div class="lead">Lokaliserer personer via deres mobiltelefon</div>
 <p>
-    <?= TITLE ?> sender en lenke til den savnede via SMS. Med brukerens samtykke (klikk pÃ¥ lenken) blir brukeren lokalisert ved hjelp av 
+    <?= TITLE ?> sender en lenke til den savnede via SMS. Med brukerens samtykke (klikk på lenken) blir brukeren lokalisert ved hjelp av 
     <a href="http://www.w3schools.com/html/html5_geolocation.asp">HTML5 Geolocation</a>. Dette krever at telefonen har en nettleser, at telefonen
-    er pÃ¥ Internett (datakobling er pÃ¥) og at GPS-posisjonering er aktivert. 
+    er på Internett (datakobling er på) og at GPS-posisjonering er aktivert. 
 </p>    
 <p>
-    <strong>Alle posisjoner som mottas fra savnede logges i systemet, ogsÃ¥ de med stor unÃ¸yaktighet</strong>.
+    <strong>Alle posisjoner som mottas fra savnede logges i systemet, også de med stor unøyaktighet</strong>.
 </p>
 <p>
     Det sendes 2 SMS til brukeren; SMS 1 inneholder info om sporingslenke, SMS 2 inneholder info om GPS-innstillinger. Delingen sikrer at den savnede 
-    fÃ¥r den viktigste infoen fÃ¸rst, og kan starte sporing fortest mulig. SMS 2 sendes kun hvis fÃ¸rste posisjonering er unÃ¸yaktig, og kun Ã©n gang per 
+    får den viktigste infoen først, og kan starte sporing fortest mulig. SMS 2 sendes kun hvis første posisjonering er unøyaktig, og kun én gang per 
     savnet.
 </p>
 <p>
-    Posisjoneringssiden den savnede Ã¥pner er komprimert maksimalt for Ã¥ kunne gi en raskest mulig innlasting, uansett internetthastighet. Selv med 
-    veldig dÃ¥rlig internettilkobling skal siden lastes inn i lÃ¸pet av sekunder.
+    Posisjoneringssiden den savnede åpner er komprimert maksimalt for å kunne gi en raskest mulig innlasting, uansett internetthastighet. Selv med 
+    veldig dårlig internettilkobling skal siden lastes inn i løpet av sekunder.
 </p>
 
 <h3>Systemet er utviklet av</h3>
@@ -33,7 +33,7 @@
 </div>
 <div class="contact span3">
 	<img src="http://graph.facebook.com/kengulb/picture" />
-	<div class="name">Kenneth GulbrandsÃ¸y</div>
+	<div class="name">Kenneth Gulbrandsøy</div>
 	<div class="phone">932 58 930</div>
 	<div class="mail">kenneth@discoos.org</div>
 </div>

@@ -15,7 +15,7 @@
         }
     ?>    
     <label class="checkbox">
-        <input type="checkbox" value="remember-me"> Husk meg pÃ¥ denne maskinen
+        <input type="checkbox" value="remember-me"> Husk meg på denne maskinen
     </label>
     <button class="btn btn-large btn-primary" type="submit">Logg inn</button>
 </form>
