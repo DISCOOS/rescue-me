@@ -1,6 +1,6 @@
 <?php
 /**
-     * File containing: Delivery interface
+     * File containing: Callback-file for SMS-provider
      * 
      * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
      *
