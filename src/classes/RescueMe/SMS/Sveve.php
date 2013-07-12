@@ -17,7 +17,7 @@
      * 
      * @package 
      */
-    class Sveve implements Provider 
+    class Sveve implements Provider, Delivery
     {
         /**
          * Sveve account
@@ -77,7 +77,7 @@
             if(isset($response['msg_ok_count']) && is_numeric($response['msg_ok_count']) && $response['msg_ok_count']>0)
             {
                 // Get first id (only one message is sent)
-                return true;
+                return \reset($response['ids']);
             }
             else
             {
@@ -85,6 +85,19 @@
             }
             
         }// send
+        
+        public function delivered($provider_ref, $to, $status, $errorDesc='') {
+            $query = "UPDATE `missing` SET `sms_delivered` = '".(string)$status."', 
+                `sms_error` = '".(string)$errorDesc."'
+                WHERE `missing_mobile` = '" . $to . "' 
+                AND `sms_provider_ref` = '".$provider_ref."';";
+            
+            $db = new \RescueMe\DB();
+            $res = $db->query($query);
+            if(!$res){
+                trigger_error("Failed execute [$query]: " . $db->error(), E_USER_WARNING);
+            }// if
+        }// log
 	
         ############################################################
         ## TRANSFORM XML TO AN ARRAY

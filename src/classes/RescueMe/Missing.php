@@ -196,15 +196,19 @@
 
 
         public function sendSMS(){
-            
-            $query = "UPDATE `missing` SET `sms_sent` = NOW() WHERE `missing_id` = '" . $this->id . "';";
-            if(!DB::query($query)) {
-                trigger_error("Failed execute [$query]: ".DB::error(), E_USER_WARNING);
-            }
-            
+                        
             $res = $this->_sendSMS($this->m_mobile, SMS_TEXT);
             if(!$res) {
                $res = $this->_sendSMS($this->mb_mobile, SMS_NOT_SENT);
+            }
+            
+            else {
+                $query = "UPDATE `missing` SET `sms_sent` = '".date("Y-m-d H:i:s")."',
+                          `sms_provider_ref` = '".$res."'
+                          WHERE `missing_id` = '" . $this->id . "';";
+                if(!DB::query($query)) {
+                    trigger_error("Failed execute [$query]: ".DB::error(), E_USER_WARNING);
+                }
             }
             
             return $res;
