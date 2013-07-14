@@ -16,10 +16,6 @@
     // Only run this when executed on the CLI
     if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
         
-        // Import classes
-        require('classes/RescueMe/Install.php');
-        require('classes/RescueMe/Uninstall.php');
-
         // Define constants
         define('HELP',"help");
         define('NAME',"name");
@@ -52,7 +48,11 @@
             case INSTALL:
                 
                 // Notify
-                begin("RescueMe $action");
+                begin("rescueme [$action]");
+
+                // Import classes
+                require('classes/RescueMe/Install.php');
+                require('classes/RescueMe/Uninstall.php');
 
                 // Get default path install path
                 $root = get($opts, INSTALL_DIR, getcwd(), false);
@@ -119,6 +119,76 @@
                 
                 break;
 
+            case INSTALL:
+                
+                // Notify
+                begin("rescueme [$action]");
+
+                // Get default path install path
+                $root = get($opts, INSTALL_DIR, getcwd(), false);
+                
+                // Get default ini values
+                $ini = parse_ini_file("rescueme.ini");
+                
+                // Escape version
+                $ini['VERSION'] = str_escape($ini['VERSION']);
+                
+                // Use current working directory?
+                if($root === ".") $root = getcwd();
+                
+                // Ensure trailing slash
+                $root = rtrim($root,"/")."/";
+                
+                // Get current?
+                if(file_exists(realpath($root."config.php"))) {
+                    
+                    // Get current configuration
+                    $config = file_get_contents($root."config.php");
+                    $config = get_define_array($config, array
+                    (
+                        'SALT', 'VERSION', 'TITLE', 'SMS_FROM', 
+                        'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD',
+                        'GOOGLE_API_KEY'
+                    ));
+                    
+                    // Merge current config values with default ini values
+                    $ini = array_merge($ini, $config);
+                    
+                }// 
+                    
+                // TODO: Get parameters from user (when !silent)
+                $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
+                $ini['TITLE']            = str_escape(in("Title", get($ini, "TITLE", "RescueMe")));
+                $ini['SMS_FROM']         = str_escape(in("Sender", get($ini, "SMS_FROM", "RescueMe")));
+                $ini['DB_HOST']          = str_escape(in("DB Host", get($ini, "DB_HOST", "localhost")));
+                $ini['DB_NAME']          = str_escape(in("DB Name", get($ini, "DB_NAME", "rescueme")));
+                $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
+                $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
+                $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
+                
+                // Uninstall current?
+                if(file_exists(realpath($root)))
+                {
+                    $uninstall = new RescueMe\Uninstall($root);
+                    
+                    // Unistall successfull?
+                    if($uninstall->execute() !== true) {
+                        $status = error($config, ERROR, BOTH); 
+                        break;
+                    }// if
+                    
+                }
+                
+                // Create install
+                $install = new RescueMe\Install("src.zip", $root, $ini);
+
+                // Execute installation
+                if(($message = $install->execute()) !== true) {
+                    $status = error($message, ERROR, BOTH); break;
+                }// if
+                
+                break;
+                
             case HELP:
 
                 // Get action
@@ -139,7 +209,7 @@
         }// switch
         
         // Finised
-        done("RescueMe $action", $status);
+        done("rescueme [$action]", $status);
         
     }// if	 
     
