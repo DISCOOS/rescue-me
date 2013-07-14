@@ -1,5 +1,9 @@
 <?php
     session_start();
+
+    // Silex routing instead of router.php
+    // Still in early development!
+    define('USE_SILEX', false);
     
     // RescueMe constants
     define('VERSION', 'VERSION');
