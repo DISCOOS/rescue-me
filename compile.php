@@ -11,6 +11,7 @@
 	 */
     
     // Import common functions
+    require 'src/config.php';
     require 'build/inc/common.inc.php';
     
     // Only run this when executed on the CLI
@@ -21,9 +22,6 @@
         define('NAME',"name");
         define('ACTION',"action");
         define('PACKAGE',"package");
-        
-        // Define parameters
-        define('VERSION', 'v');
         
         // Get options
         $opts = parse_opts($argv, array('h'));
@@ -52,16 +50,16 @@
                 begin("rescueme $action");
 
                 // Verify options
-                $msg = (isset($opts[VERSION]) ? null : "VERSION is missing");
+                $msg = (isset($opts['v']) ? null : "VERSION is missing");
 
                 // Print help now?
                 if(!empty($msg)) print_help(PACKAGE, $msg);
                 
                 // Get absolute path to rescueme package
-                $package = "rescueme-".$opts[VERSION].".phar";
+                $package = "rescueme-".$opts['v'].".phar";
                 
                 // Get package file
-                $package = "dist/rescueme-".$opts[VERSION];
+                $package = "dist/rescueme-".$opts['v'];
                 
                 // Create folder if not exists
                 if(!file_exists("dist")) mkdir("dist");
@@ -88,7 +86,7 @@
                 $oPhar->addFile("src/vendor/composer/ClassLoader.php", "classes/ClassLoader.php");
                 
                 // Prepare ini values
-                $ini = "VERSION = " . $opts[VERSION];
+                $ini = "VERSION = " . $opts['v'];
                 
                 // Add ini file
                 $oPhar->addFromString("rescueme.ini", $ini);

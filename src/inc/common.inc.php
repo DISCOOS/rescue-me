@@ -67,10 +67,15 @@
      */
     function get_rescueme_url() 
     {
-        $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
-        $sp = strtolower($_SERVER["SERVER_PROTOCOL"]);
-        $protocol = substr($sp, 0, strpos($sp, "/")) . $s;
-        return $protocol . "://" . $_SERVER['SERVER_NAME'] . get_rescueme_uri();
+        $url = '';
+        if(isset($_SERVER["SERVER_PROTOCOL"]))
+        {
+            $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
+            $sp = strtolower($_SERVER["SERVER_PROTOCOL"]);
+            $protocol = substr($sp, 0, strpos($sp, "/")) . $s;
+            $url = $protocol . "://" . $_SERVER['SERVER_NAME'] . get_rescueme_uri();
+        }
+        return $url;
     }// get_rescueme_url
     
 

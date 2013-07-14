@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `missing` (
   `missing_id` int(5) NOT NULL auto_increment,
   `user_id` int(3) NOT NULL,
   `missed_by_name` varchar(255) NOT NULL,
+  `test_which_was_a_success` varchar(255) NOT NULL,
   `missed_by_email` varchar(255) NOT NULL,
   `missed_by_mobile` varchar(8) NOT NULL,
   `missing_name` varchar(255) NOT NULL,

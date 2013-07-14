@@ -40,15 +40,15 @@
          */
         private static function instance()
         {
-            if(!isset(self::$instance))
+            if(!isset(DB::$instance))
             {
-                self::$instance = new DB();
+                DB::$instance = new DB();
             }
-            if(!isset(self::$instance->mysqli))
+            if(!isset(DB::$instance->mysqli))
             {
-                self::$instance->connect();
+                DB::$instance->connect();
             }
-            return self::$instance;
+            return DB::$instance;
         }// instance
         
         
@@ -109,16 +109,16 @@
          */
         public static function query($sql)
         {
-            if(self::instance()->mysqli->connect_error)
+            if(DB::instance()->mysqli->connect_error)
             {
-                $code = mysqli_connect_errno(self::instance()->mysqli);
-                $error = mysqli_connect_error(self::instance()->mysqli);
+                $code = mysqli_connect_errno(DB::instance()->mysqli);
+                $error = mysqli_connect_error(DB::instance()->mysqli);
                 throw new Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
             
-            $result = self::instance()->mysqli->query($sql);
+            $result = DB::instance()->mysqli->query($sql);
             if($result == true && strpos($sql, "INSERT") !== false) {
-                return self::instance()->mysqli->insert_id;
+                return DB::instance()->mysqli->insert_id;
             }
             return $result;
         }// query
@@ -146,7 +146,7 @@
          */
         public static function escape($string)
         {
-           return self::instance()->mysqli->escape_string($string);
+           return DB::instance()->mysqli->escape_string($string);
         }// escape
         
         
@@ -157,7 +157,7 @@
          */
         public static function errno()
         {
-            return self::instance()->mysqli->errno;
+            return DB::instance()->mysqli->errno;
         }// errno
         
         
@@ -168,7 +168,7 @@
          */
         public static function error()
         {
-            return self::instance()->mysqli->error;
+            return DB::instance()->mysqli->error;
         }// error
         
         
@@ -177,7 +177,7 @@
             $args = array_slice(func_get_args(),1);
             $params = array($format);
             foreach($args as $arg) {
-                $params[] = is_string($arg) ? self::escape($arg) : $arg;
+                $params[] = is_string($arg) ? DB::escape($arg) : $arg;
             }
             return call_user_func_array("sprintf",  $params);
         }
@@ -194,7 +194,7 @@
             $query = "SELECT $fields FROM `$table`";
             if($filter) $query .= "WHERE $filter";
             
-            return self::query($query);
+            return DB::query($query);
             
         }// select
         
@@ -205,13 +205,13 @@
             $inserts = array();
             foreach($values as $value) {
                 if(is_string($value)) 
-                    $value = "'" . self::escape($value) . "'";
+                    $value = "'" . DB::escape($value) . "'";
                 $inserts[] = $value;
             }
             
             $query = "INSERT INTO `$table` ($fields) VALUES (". implode(",", $inserts) . ")";
             
-            return self::query($query);
+            return DB::query($query);
             
         }// insert
         
@@ -222,13 +222,13 @@
             $updates = array();
             foreach($values as $field =>$value) {
                 if(is_string($value)) 
-                    $value = "'" . self::escape($value) . "'";
+                    $value = "'" . DB::escape($value) . "'";
                 $updates[] = "$field=$value";
             }
             $query .= implode(",", $updates);
             if($filter) $query .= "WHERE $filter";
             
-            return self::query($query);
+            return DB::query($query);
             
         }// update
         
@@ -291,9 +291,10 @@
          */
         public static function import($pathname)
         {
-            $result = false;
-            $clauses = array('INSERT', 'UPDATE', 'DELETE', 'DROP', 'GRANT', 'REVOKE', 'CREATE', 'ALTER');
+            $skipped = array();
+            $executed = array();
             $previous = array('INSERT');
+            $clauses = array('INSERT', 'UPDATE', 'DELETE', 'DROP', 'GRANT', 'REVOKE', 'CREATE', 'ALTER');
             if(file_exists($pathname))
             {
                 $query = '';
@@ -333,21 +334,136 @@
                         }
                     }
                     ksort($queries);
-                    foreach($queries as $priority => $sqls)
+                    foreach($queries as $sqls)
                     {
                         foreach($sqls as $sql)
                         {
-                            $result = self::query($sql);
-                            if($result === false)
+                            // Check if table exists
+                            $skip = false;
+                            if(strpos($sql, "CREATE TABLE") === 0) 
                             {
-                                break;
+                                $table = DB::table($sql);
+                                if(($skip = DB::query("DESCRIBE `$table`")) !== false) 
+                                {
+                                    $skipped[] = $sql;
+                                }
+                            }
+                            if(DB::query($sql) === false)
+                            {
+                                return false;
+                            }
+                            if(!$skip) $executed[] = $sql;
+                        }
+                    }
+                    // Was tables skipped?
+                    if(!empty($skipped)) {
+                        // Add missing columns
+                        if(($altered = DB::alter($skipped)) === false) {
+                            return false;
+                        }
+                        $executed = array_merge($executed, $altered);
+                    }
+                }
+            }
+            
+            return $executed;
+        }// import
+        
+        
+        private static function alter($skipped)
+        {
+            $executed=array();
+            foreach($skipped as $create)
+            {
+                $exists = array();
+                $table = DB::table($create);
+                $result = DB::query("SHOW COLUMNS FROM `$table`;");
+                if($result !== false)
+                {
+                    while($row = $result->fetch_row())
+                    {
+                        $exists[] = $row[0];
+                    }
+                    $columns = DB::columns($create, $table);
+                    foreach(split(",", $columns) as $sql)
+                    {
+                        if(strpos($sql, "`") === 0)
+                        {
+                            $sql = rtrim($sql, ",");
+                            $column = DB::column($sql);
+                            if(!in_array($column, $exists))
+                            {
+                                $query = "ALTER TABLE `$table` ADD COLUMN $sql;";
+                                if(DB::query($query) === false)
+                                {
+                                    return false;
+                                }
+                                $executed[] = $query;
                             }
                         }
                     }
                 }
             }
-            return $result;
-        }// import
+            return $executed;
+        }
+
+        private static function table($query)
+        {
+            $table = array();
+            preg_match("#CREATE TABLE IF NOT EXISTS `([a-z_]*)`#i", $query, $table);
+            return $table[1];
+        }
+        
+        
+        private static function columns($query, $table)
+        {
+            $columns = array();
+            preg_match("#CREATE TABLE IF NOT EXISTS `$table` \((.*)\)#i", $query, $columns);
+            return $columns[1];
+        }
+        
+        
+        private static function column($query)
+        {
+            $column = array();
+            preg_match("#`.*`#", $query, $column);
+            return trim($column[0], "`");
+        }
+        
+        
+       /**
+         * Export SQL dump from database.
+         * 
+         * @param string $pathname Path to export file
+         * @param string $charset Default table charset 
+         * 
+         * @return boolean TRUE if success, FALSE otherwise.
+         */
+        public static function export($pathname, $charset="utf8")
+        {
+            if(file_exists($pathname)){
+                unlink($pathname);
+            }
+            $tables = DB::query("SHOW TABLES");
+            if(DB::isEmpty($tables)) return false;
+
+            $lines = '';
+            while ($row = $tables->fetch_row()) {
+                $result = DB::query("SHOW CREATE TABLE `$row[0]`");
+                if(DB::isEmpty($result)) return false;
+                $table = $result->fetch_assoc();
+                $lines .= "-- --------------------------------------------------------\n\n";
+                $lines .= "-- \n";    
+                $lines .= "-- Structure for table `$row[0]`\n";
+                $lines .= "-- \n\n";    
+                $create = preg_replace("#CREATE TABLE#i", "CREATE TABLE IF NOT EXISTS", $table['Create Table']);
+                $create = preg_replace("# AUTO_INCREMENT=[0-9]+#i", "", $create);
+                $create = preg_replace("#CHARSET=.+#i", "CHARSET=$charset", $create);
+                $lines .= "$create;\n\n";
+            }
+            file_put_contents($pathname, $lines);
+            return $lines;
+        }// export
 
 
     }// DB

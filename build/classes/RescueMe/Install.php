@@ -140,7 +140,7 @@
             info("DONE", SUCCESS);
             
             info("Importing [rescueme.sql]....", SUCCESS, NONE);
-            if(DB::import($this->root."rescueme.sql") === FALSE) {
+            if(($executed = DB::import($this->root."rescueme.sql")) === FALSE) {
                 return sprintf(DB_NOT_IMPORTED,"rescueme.sql")." (".DB::error().")";
             }// if
             info("DONE", SUCCESS);
