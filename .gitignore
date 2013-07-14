@@ -8,8 +8,6 @@ src/vendor/*
 
 src/admin/.DS_Store
 
-src/composer.lock
-
 src/tmp/twig.cache/.DS_Store
 
 src/tmp/twig.cache/6c/77/7d1a097e3127de632e7762dd059a.php
