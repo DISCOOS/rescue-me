@@ -14,19 +14,28 @@ function initialize() {
 	}
 	if(!isset($centerMap))
 		$centerMap = reset($positions);
-
+    
 	?>
-	var mapCenter = new google.maps.LatLng(<?php echo $centerMap->lat;?>, <?php echo $centerMap->lon;?>);
 	var zoom = getZoom(<?=$centerMap->acc;?>);
-
+    <? if(isset($centerMap)) {?>
 	var mapProp = {
-	  'center': mapCenter,
+      'center': new google.maps.LatLng(<?=$centerMap->lat;?>, <?=$centerMap->lon;?>),
 	  'zoom': zoom,
 	  'minZoom': 7,
 	  'mapTypeControl':false,
 	  'streetViewControl': false,
 	  'mapTypeId':'topo2'
 	};
+    <? } else { ?>
+    var mapProp = {
+	  'zoom': zoom,
+	  'minZoom': 7,
+	  'mapTypeControl':false,
+	  'streetViewControl': false,
+	  'mapTypeId':'topo2'
+	};
+    <? } ?>
+
 	map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 	map.mapTypes.set('topo2',new StatkartMapType("Kart", "topo2"));
         
@@ -143,13 +152,13 @@ function panMapTo(markerNo) {
 }
 
 function getZoom(acc) {
-	if (acc < 200)
+	if (acc> 0 && acc < 200)
 		return 16;
-	else if (acc < 750)
+	else if (acc> 0 && acc < 750)
 		return 15;
-	else if (acc < 1200)
+	else if (acc> 0 && acc < 1200)
 		return 14;
-	else if (acc < 1500)
+	else if (acc> 0 && acc < 1500)
 		return 13;
 	else
 		return 11;
