@@ -85,6 +85,19 @@ git config --global core.autocrlf input
 ```
 which tells Git to convert CRLF to LF on commit but not the other way around.
 
+**Database changes**
+
+If you change the database structure, remember to perform
+```bash
+php compile.php prepare
+```
+and commit + push changes made to `src/rescueme.sql`. Developers can update the local 
+database using
+```bash
+php compile.php update
+```
+which will import `src/rescueme.sql` analyzing it for changes, adding any new tables or columns. 
+
 Troubleshooting
 ---------------
 
