@@ -29,6 +29,8 @@
     define('DB_NOT_CREATED', "%s could not be created");
     define('DB_NOT_IMPORTED', "%s could not be imported");
     define('ADMIN_NOT_CREATED', "Admin user not created");    
+    define('SQL_NOT_IMPORTED', 'SQL not imported');
+    define('SQL_NOT_EXPORTED', 'SQL not exported');
     define('CONFIG_NOT_CREATED', "config.php could not be created");
     define('COLOR_NONE', 'none');
     define('COLOR_INFO', 'info');
@@ -361,7 +363,7 @@
      */
     function begin($action)
     {
-        info("$action...", SUCCESS, NONE);
+        info("$action...", SUCCESS);
     }// done
 
 
@@ -370,11 +372,11 @@
      * 
      * @param string $action Action name
      * @param integer $status Action status
-     * @param integer $newline Message newline [optional, default: BOTH]
+     * @param integer $newline Message newline [optional, default: POST]
      * 
      * @return void
      */
-    function done($action, $status = SUCCESS, $newline = BOTH)
+    function done($action, $status = SUCCESS, $newline = POST)
     {
         if($status === ERROR) {
             error("$action...".FAILED.PHP_EOL, $status, $newline);
