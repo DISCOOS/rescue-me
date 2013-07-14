@@ -52,6 +52,9 @@
         {
             try {
                 
+                echo $message;
+                exit;
+                
                 $sms = array
                 (
                     "from" => $from,

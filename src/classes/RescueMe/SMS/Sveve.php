@@ -58,7 +58,7 @@
                 . '?user='.$this->account['user']
                 . '&to='.$to
                 . '&from='.$from
-                . '&msg='.$message
+                . '&msg='.urlencode($message)
                 .(!empty($this->account['passwd']) ? '&passwd='.$this->account['passwd'] : '')
             );
                         
