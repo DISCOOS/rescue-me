@@ -149,7 +149,7 @@
         chmod($file, 0755);
 
         if (!$quiet) {
-            out(PHP_EOL."Composer successfully installed to: " . $file, NONE, COLOR_SUCCESS);
+            out(PHP_EOL."RescueMe successfully installed to: " . $file, NONE, COLOR_SUCCESS);
             out(PHP_EOL."Use it: php $path", POST, COLOR_INFO);
         }
         
