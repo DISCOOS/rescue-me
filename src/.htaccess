@@ -20,7 +20,7 @@ Options +FollowSymlinks
     # Location request - first try
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^p/([0-9]+)/([0-9]{8})$ track/request.php?id=$1&phone=$2 [L]
+    RewriteRule ^l/([0-9]+)/([0-9]{8})$ track/locate.php?id=$1&phone=$2 [L]
 
     # Location request - repeated tries
     RewriteCond %{SCRIPT_FILENAME} !-d  

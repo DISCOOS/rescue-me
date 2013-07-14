@@ -5,7 +5,7 @@ global $positions;
 var markers = {};
 var lastInfoWindow = {};
 function initialize() {
-    	<?php
+    <?php
 	foreach ($positions as $key=>$value) {
 		if ($value->acc < 1000) {
 			$centerMap = $value;
