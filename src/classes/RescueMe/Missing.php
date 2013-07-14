@@ -147,6 +147,7 @@
 
 
         public function addPosition($lat, $lon, $acc, $alt, $timestamp, $useragent = ''){
+            
             // Sanity check
             if($this->id === -1) return false;
             
@@ -239,7 +240,7 @@
             
             if(!$sms)
             {
-                echo "Failed!";
+                insert_error("Failed!");
                 return false;
             }
 

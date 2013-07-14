@@ -117,8 +117,9 @@
             }// if
             
             $result = self::instance()->mysqli->query($sql);
-            if($result == true && self::instance()->mysqli->insert_id > 0)
+            if($result == true && strpos($sql, "INSERT") !== false) {
                 return self::instance()->mysqli->insert_id;
+            }
             return $result;
         }// query
         

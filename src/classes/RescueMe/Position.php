@@ -44,6 +44,7 @@
                 return false;
 
             $query = "SELECT * FROM `".self::TABLE."` WHERE `pos_id` = " . (int) $this->pos_id;
+            
             $res = DB::query($query);
 
             if(DB::isEmpty($res)) return false;

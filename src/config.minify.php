@@ -35,6 +35,12 @@
                 '//js/bootstrap.min.js',
                 '//admin/js/admin.js'
             ),
+            'track.js' => array
+            (
+                '//js/rescueme.js', 
+                '//track/js/track.js'
+            ),
+            
         );        
     }// get_rescueme_minify_config
 
