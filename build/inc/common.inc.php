@@ -420,7 +420,7 @@
      */
     function info($message, $status = SUCCESS, $newline=POST)
     {
-        out($message,$newline,COLOR_INFO); return $status;
+        out($message,$newline,$status === SUCCESS ? COLOR_SUCCESS : COLOR_INFO); return $status;
     }// info
 
 
