@@ -8,7 +8,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
 	if (isset($_GET['lang'])) $lang = $_GET['lang'];
 	putenv("LC_ALL=$lang");
 	setlocale(LC_ALL, $lang);
-	bindtextdomain("messages", "/locale");
+	bindtextdomain("messages", APP_PATH."locale");
 	bind_textdomain_codeset('messages', 'UTF-8');
 	textdomain("messages");
 
@@ -24,7 +24,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
 	$app['debug'] = true;
 	$app->register(new Silex\Provider\TwigServiceProvider(),
 		array('twig.path' =>ADMIN_PATH.'views',
-			  'twig.options' => array('cache' => APP_PATH. 'tmp/twig.cache')
+			  #'twig.options' => array('cache' => APP_PATH. 'tmp/twig.cache')
 			  ));
     $app['twig']->addExtension(new Twig_Extensions_Extension_I18n());
     

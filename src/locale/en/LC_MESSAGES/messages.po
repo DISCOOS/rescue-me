@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe\n"
-"POT-Creation-Date: 2013-07-14 12:32+0100\n"
-"PO-Revision-Date: 2013-07-14 12:32+0100\n"
+"POT-Creation-Date: 2013-07-14 12:54+0100\n"
+"PO-Revision-Date: 2013-07-14 12:55+0100\n"
 "Last-Translator: Marius Mandal <mariusmandal>\n"
 "Language-Team: DISCOOS/RescueMe\n"
 "Language: en\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: /Users/mariusmandal/Sites/rescue-me/src/tmp/twig.cache/6c/77/7d1a097e3127de632e7762dd059a.php:34
 #: /Users/mariusmandal/Sites/rescue-me/src/tmp/twig.cache/6c/77/7d1a097e3127de632e7762dd059a.php:67
 msgid "Log in"
-msgstr ""
+msgstr "Sign in"
 
 #: /Users/mariusmandal/Sites/rescue-me/src/tmp/twig.cache/6c/77/7d1a097e3127de632e7762dd059a.php:51
 msgid "E-mail address"
