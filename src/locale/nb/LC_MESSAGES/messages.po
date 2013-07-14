@@ -1,0 +1,35 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: RescueMe\n"
+"POT-Creation-Date: 2013-07-14 12:32+0100\n"
+"PO-Revision-Date: 2013-07-14 12:33+0100\n"
+"Last-Translator: Marius Mandal <mariusmandal>\n"
+"Language-Team: DISCOOS/RescueMe\n"
+"Language: nb\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: /Users/mariusmandal/Sites/rescue-me/src\n"
+"X-Poedit-SearchPath-0: /Users/mariusmandal/Sites/rescue-me/src\n"
+
+#: /Users/mariusmandal/Sites/rescue-me/src/tmp/twig.cache/6c/77/7d1a097e3127de632e7762dd059a.php:34
+#: /Users/mariusmandal/Sites/rescue-me/src/tmp/twig.cache/6c/77/7d1a097e3127de632e7762dd059a.php:67
+msgid "Log in"
+msgstr "Logg inn"
+
+#: /Users/mariusmandal/Sites/rescue-me/src/tmp/twig.cache/6c/77/7d1a097e3127de632e7762dd059a.php:51
+msgid "E-mail address"
+msgstr "E-postadresse"
+
+#: /Users/mariusmandal/Sites/rescue-me/src/tmp/twig.cache/6c/77/7d1a097e3127de632e7762dd059a.php:57
+msgid "Password "
+msgstr "Passord"
+
+#: /Users/mariusmandal/Sites/rescue-me/src/tmp/twig.cache/6c/77/7d1a097e3127de632e7762dd059a.php:62
+msgid "Remember me on this computer"
+msgstr "Husk meg på denne maskinen"
+
+#~ msgid "GETTEXT test this is"
+#~ msgstr "Dette er GETTEXT på norsk"

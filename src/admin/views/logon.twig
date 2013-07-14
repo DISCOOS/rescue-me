@@ -1,0 +1,17 @@
+{% extends 'design_admin.twig' %}
+
+{% block content %}
+<form class="form-signin" method="post" action="logon">
+	<h2 class="form-signin-heading">{% trans "Log in" %}</h2>
+	{% if message is defined %}
+		<div class="alert alert-error">{{message}}</div>
+	{% endif %}
+	
+	<input type="email" name="username" class="input-block-level{{ message is defined ? ' alert-error' : '' }}" placeholder="{% trans "E-mail address" %}"></input>
+	<input type="password" name="password" id="password" class="input-block-level{{ message is defined ? ' alert-error' : '' }}" placeholder="{% trans "Password " %}" data-content="Cap-lock is on!"></input>
+	<label class="checkbox">
+		<input type="checkbox" value="remember-me"> {% trans "Remember me on this computer" %}
+	</label>
+	<button class="btn btn-large btn-primary" type="submit">{% trans "Log in" %}</button>
+</form>
+{% endblock %}

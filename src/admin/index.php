@@ -4,20 +4,52 @@
     require('router.php');
    
 if(defined('USE_SILEX') && USE_SILEX) {
+	$lang = "en";
+	if (isset($_GET['lang'])) $lang = $_GET['lang'];
+	putenv("LC_ALL=$lang");
+	setlocale(LC_ALL, $lang);
+	bindtextdomain("messages", "/locale");
+	bind_textdomain_codeset('messages', 'UTF-8');
+	textdomain("messages");
+
+	$TWIG = array('APP_TITLE' => TITLE,
+				  'APP_URI' => APP_URI,
+				  'GOOGLE_API_KEY' => GOOGLE_API_KEY,
+				  'ADMIN_URI' => ADMIN_URI,
+				  'APP_URI' => APP_URI,
+				  'LOGON' => $_SESSION['logon'],
+				  
+				  );
 	$app = new Silex\Application();
-	$app->register(new Silex\Provider\TwigServiceProvider(), array(
-	    'twig.path' =>ADMIN_PATH.'views',
-	));
+	$app['debug'] = true;
+	$app->register(new Silex\Provider\TwigServiceProvider(),
+		array('twig.path' =>ADMIN_PATH.'views',
+			  'twig.options' => array('cache' => APP_PATH. 'tmp/twig.cache')
+			  ));
+    $app['twig']->addExtension(new Twig_Extensions_Extension_I18n());
+    
+   	// Force logon?
+	if($_SESSION['logon'] == false) {
+		$app->get('/', function () use ($app) {
+			global $TWIG;
+			if(file_exists(ADMIN_PATH.'controllers/logon.controller.php'))
+				require_once(ADMIN_PATH.'controllers/logon.controller.php');
+			
+			return $app['twig']->render('logon.twig', $TWIG);
+		});
+
+	}
+
 	
 	$app->get('/{module}', function ($module) use ($app) {
-		$TWIG = array();
+		global $TWIG;
 		$controller = ADMIN_PATH.'controllers/'.$module.'.controller.php';
 		if(file_exists($controller))
 			require_once($controller);
 	    return $app['twig']->render($module.'.twig', $TWIG);
 	});
 	$app->get('/{module}/{id}', function ($module, $id) use ($app) {
-		$TWIG = array();
+		global $TWIG;
 		$controller = ADMIN_PATH.'controllers/'.$module.'.controller.php';
 		if(file_exists($controller))
 			require_once($controller);
