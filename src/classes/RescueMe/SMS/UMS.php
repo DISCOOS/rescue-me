@@ -68,7 +68,7 @@
                 );
 
                 $client = new \SoapClient("https://secure.ums.no/soap/sms/1.6/?wsdl");
-                $refno = 1; //$client->doSendSMS($this->account, $sms, $recipients, $settings);
+                $refno = $client->doSendSMS($this->account, $sms, $recipients, $settings);
                 return $refno;
                 
             }
