@@ -23,7 +23,7 @@
 		<?= $_ROUTER['message'] ?>
 	</div>
 <?
-        }        
+        }
 ?>
 
 <div class="infos clear-fix">
@@ -38,7 +38,7 @@
 	</div>
 </div>
 
-<?php require_once(ADMIN_PATH_GUI.'list/positions.gui.php'); ?>
+<?php require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
 <div id="googleMap"></div>
 <div id="sidebar">
 	<h4>Posisjoner</h4>

@@ -21,7 +21,7 @@ if(sizeof($missing) > 0) {
         $status = $missing->addMissing($_POST['mb_name'], $_POST['mb_mail'], $_POST['mb_mobile'], 
                                        $_POST['m_name'], $_POST['m_mobile']);
         if($status) {
-            header("Location: ".ADMIN_URI.'details/missing/'.$missing->id);
+            header("Location: ".ADMIN_URI.'missing/'.$missing->id);
             exit();
         }
         $TWIG['data']	= $_POST;

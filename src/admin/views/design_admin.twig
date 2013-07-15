@@ -22,21 +22,21 @@
                 <ul class="nav nav-pills pull-right">
                     <li class="dropdown">
                         {% if LOGON %}
-                        <a id="drop1" class="dropdown-toggle" data-toggle="dropdown">{% trans "Missing persons" %}<b class="caret"></b></a>
+                        <a id="drop1" class="dropdown-toggle" data-toggle="dropdown">{% trans "Missing" %}<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                            <li id="missing"><a role="menuitem" href="{{APP_ADMIN_URI}}list/missing"><b class="icon icon-th-list"></b>{% trans "Traces" %}</a></li>
+                            <li id="missing"><a role="menuitem" href="{{APP_ADMIN_URI}}missing/list"><b class="icon icon-th-list"></b>{% trans "Traces" %}</a></li>
                             <li class="divider"></li>
-                            <li id="new-missing"><a role="menuitem" href="{{APP_ADMIN_URI}}new/missing"><b class="icon icon-plus-sign"></b>{% trans "Start new trace" %}</a></li>
+                            <li id="new-missing"><a role="menuitem" href="{{APP_ADMIN_URI}}missing/new"><b class="icon icon-plus-sign"></b>{% trans "Start new trace" %}</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a id="drop2" class="dropdown-toggle" data-toggle="dropdown">{% trans "System" %}<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                            <li id="users"><a role="menuitem" href="{{APP_ADMIN_URI}}list/users"><b class="icon icon-th-list"></b>{% trans "Users" %}</a></li>
+                            <li id="users"><a role="menuitem" href="{{APP_ADMIN_URI}}user/list"><b class="icon icon-th-list"></b>{% trans "Users" %}</a></li>
                             <li class="divider"></li>
-                            <li id="new-user"><a role="menuitem" href="{{APP_ADMIN_URI}}new/user"><b class="icon icon-plus-sign"></b>{% trans "Create user" %}</a></li>
+                            <li id="new-user"><a role="menuitem" href="{{APP_ADMIN_URI}}user/new"><b class="icon icon-plus-sign"></b>{% trans "Create user" %}</a></li>
                             <li class="divider"></li>
-                            <li id="settings"><a href="{{APP_ADMIN_URI}}list/setup"><b class="icon icon-wrench"></b>{% trans "Settings" %}</a></li>
+                            <li id="settings"><a href="{{APP_ADMIN_URI}}setup/list"><b class="icon icon-wrench"></b>{% trans "Settings" %}</a></li>
                         </ul>
                         {% endif %}
                     </li>
@@ -47,7 +47,7 @@
                      {% endembed %}
                 </ul>
                 {% endif %}
-                <h3 class="muted"><a href="{{APP_URI}} ?>">{{APP_TITLE}}</a></h3>
+                <h3 class="muted"><a href="{{APP_URI}}">{{APP_TITLE}}</a></h3>
             </div>
            	{% if error is defined %}
            		{% embed 'inc.error_fatal.twig' %}{% endembed %}
