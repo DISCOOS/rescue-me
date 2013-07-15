@@ -1,5 +1,7 @@
 <?php
-    session_start();
+
+    // Allow usage on command line
+    if(php_sapi_name() !== 'cli') session_start();
 
     // Silex routing instead of router.php
     // Still in early development!
