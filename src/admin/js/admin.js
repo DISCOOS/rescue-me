@@ -22,8 +22,7 @@ $(document).ready(function(){
 		$(this).html('<a href="mailto:'+$(this).html()+'">'+$(this).html()+'</a>');
 	});
     
-});
-
-R.CapsLock.listen('[type="password"]');
+    R.CapsLock.listen('[type="password"]');
     
+});
     
