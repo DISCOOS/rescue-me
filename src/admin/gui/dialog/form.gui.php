@@ -23,9 +23,10 @@
      <?  insert_controls($fields); ?>
             
         </div>
+        <button type="submit" id="form-<?=$id?>-submit" class="hide"></button>
     </form>
     <div class="modal-footer">
-        <a class="btn btn-primary" onclick="$('#form-<?=$id?>').submit();" aria-hidden="true"><?= SAVE ?></a>
+        <button class="btn btn-primary" onclick="$('#form-<?=$id?>-submit').click();"><?= SAVE ?></button>
         <a class="btn" data-dismiss="modal" aria-hidden="true"><?= CANCEL ?></a>
     </div>
 </div>

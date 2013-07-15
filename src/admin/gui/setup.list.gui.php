@@ -35,12 +35,13 @@
                 $forms[$class]['id'] = "edit-$id-$type";
                 $forms[$class]['fields'] = array();
                 $config = $impl->newConfig();
-                foreach($config as $property => $default) {
+                foreach($config["fields"] as $property => $default) {
                     $forms[$class]['fields'][] = array(
                         'id' => "edit-$id-$type-$property",
                         'type' => 'text', 
                         'value' => $default, 
-                        'label' => $property
+                        'label' => (isset($config['labels'][$property]) ? $config['labels'][$property] : $property),
+                        'attributes' => (isset($config['required']) && in_array($property, $config['required']) ? "required" : "")
                     );
                 }
                 insert_item($class, "#".$forms[$class]['id']);

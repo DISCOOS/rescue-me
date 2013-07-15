@@ -44,8 +44,17 @@
         {
             return array
             (
-                "user" => $user,
-                "passwd" => $passwd
+                "fields" => array(
+                    "user" => $user,
+                    "passwd" => $passwd
+                ),
+                "required" => array(
+                    "user"
+                ),
+                "labels" => array(
+                    "user" => _("user"),
+                    "passwd" => _("password")
+                )
             );
         }// newConfig
         
@@ -55,11 +64,11 @@
             $smsURL = utf8_decode
             (
                   'https://www.sveve.no/SMS/SendSMS'
-                . '?user='.$this->account['user']
+                . '?user='.$this->account['fields']['user']
                 . '&to='.$to
                 . '&from='.$from
                 . '&msg='.urlencode($message)
-                .(!empty($this->account['passwd']) ? '&passwd='.$this->account['passwd'] : '')
+                .(!empty($this->account['fields']['passwd']) ? '&passwd='.$this->account['fields']['passwd'] : '')
             );
                         
             // Start request

@@ -42,9 +42,21 @@
         {
             return array
             (
-                "company" => $company,
-                "department" => $department,
-                "password" => $password
+                "fields" => array(
+                    "company" => $company,
+                    "department" => $department,
+                    "password" => $password
+                ),
+                "required" => array(
+                    "company", 
+                    "department", 
+                    "password"
+                ),
+                "labels" => array(
+                    "company" => _("company"),
+                    "department" => _("department"),
+                    "password" => _("password")
+                ),
             );
         }// newConfig
         
@@ -68,7 +80,7 @@
                 );
 
                 $client = new \SoapClient("https://secure.ums.no/soap/sms/1.6/?wsdl");
-                $refno = $client->doSendSMS($this->account, $sms, $recipients, $settings);
+                $refno = $client->doSendSMS($this->account["fields"], $sms, $recipients, $settings);
                 return $refno;
                 
             }
