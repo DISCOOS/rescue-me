@@ -1,0 +1,21 @@
+{% if message is not defined %}
+	{% set message = error %}
+{% endif %}
+<div class="alert alert-error">
+	<h3>
+		{% if message.header is defined %}
+			{{message.header}}
+		{% else %}
+			{% trans "An error occurred" %}
+		{% endif %}
+	</h3>
+	{% if message.body is defined %}
+		{{message.body}}
+	{% else %}
+		{{message}}
+	{% endif %}
+
+	{% if message.data is defined %}
+		<br />"<em>{{message.data}}</em>"
+	{% endif %}
+</div>

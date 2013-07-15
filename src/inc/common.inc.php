@@ -162,6 +162,9 @@
             }
         }    
         
+        if(defined('USE_SILEX') && USE_SILEX)
+        	return empty($missing);
+        
         if(!empty($missing)) {
             insert_errors("Missing module: ", $missing);
         }

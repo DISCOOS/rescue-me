@@ -1,27 +1,21 @@
 <?php
     
     require('../config.php');
-    require('router.php');
-   
+    require(APP_PATH_INC.'locale.php');
+    use RescueMe\User;
+       
 if(defined('USE_SILEX') && USE_SILEX) {
-	require_once(APP_PATH_INC.'php-gettext/gettext.inc');
-	
-	// SHOULD BE MOVED AND SET WITH COOKIES
-	$locale = isset($_GET['locale']) ? $_GET['locale'] : 'en';
-	
-	putenv("LC_ALL=$locale");
-	T_setlocale(LC_MESSAGES, $locale);
-	bindtextdomain("messages", APP_PATH."locale");
-	bind_textdomain_codeset('messages', 'UTF-8');
-	textdomain("messages");
-	
+    // Verify logon information
+    $user = new User();
+    $_SESSION['logon'] = $user->verify();
+    
 	$TWIG = array('APP_TITLE' => TITLE,
 				  'APP_URI' => APP_URI,
+				  'APP_ADMIN_URI' => ADMIN_URI,
 				  'GOOGLE_API_KEY' => GOOGLE_API_KEY,
-				  'ADMIN_URI' => ADMIN_URI,
-				  'APP_URI' => APP_URI,
 				  'LOGON' => $_SESSION['logon'],
-				  
+				  'SMS_TEXT_MISSING' => SMS_TEXT,
+				  'SMS_TEXT_GUIDE'  => SMS2_TEXT
 				  );
 	$app = new Silex\Application();
 	$app['debug'] = true;
@@ -35,35 +29,43 @@ if(defined('USE_SILEX') && USE_SILEX) {
 	if($_SESSION['logon'] == false) {
 		$app->get('/', function () use ($app) {
 			global $TWIG;
-			if(file_exists(ADMIN_PATH.'controllers/logon.controller.php'))
-				require_once(ADMIN_PATH.'controllers/logon.controller.php');
+			if(file_exists(ADMIN_PATH.'controllers/main_logon.controller.php'))
+				require_once(ADMIN_PATH.'controllers/main_logon.controller.php');
 			
-			return $app['twig']->render('logon.twig', $TWIG);
+			return $app['twig']->render('main/logon.main.twig', $TWIG);
 		});
-
 	}
 
-	
-	$app->get('/{module}', function ($module) use ($app) {
+	// Main actions
+	$app->match('/{action}', function ($action) use ($app) {
 		global $TWIG;
-		$controller = ADMIN_PATH.'controllers/'.$module.'.controller.php';
+		if($action == 'logon' && $_SESSION['logon']==true)
+			$action = 'start';
+		$TWIG['VIEW'] = $action;
+		$controller = ADMIN_PATH.'controllers/main_'.$action.'.controller.php';
 		if(file_exists($controller))
 			require_once($controller);
-	    return $app['twig']->render($module.'.twig', $TWIG);
-	});
-	$app->get('/{module}/{id}', function ($module, $id) use ($app) {
+	    return $app['twig']->render('main/'.$action.'.main.twig', $TWIG);
+	})->value('action', 'start');
+	
+	// Module actions
+	$app->match('/{action}/{module}/{id}', function ($action, $module, $id) use ($app) {
 		global $TWIG;
-		$controller = ADMIN_PATH.'controllers/'.$module.'.controller.php';
+		$TWIG['VIEW'] = $action .' '. $module;
+		$path = $action.'/'.$module.'.'.$action;
+		$controller = ADMIN_PATH.'controllers/'.$path.'.controller.php';
 		if(file_exists($controller))
 			require_once($controller);
 
-	    return $app['twig']->render($module.'.twig', $TWIG);
-	});
+	    return $app['twig']->render($path.'.twig', $TWIG);
+	})->value('id', false);
 	
 	$app->run();
 	
 	die();
-}
+} else 
+    require('router.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

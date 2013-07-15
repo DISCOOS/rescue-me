@@ -245,6 +245,9 @@
             
         }// _sendSMS
 
+        public function getError() {
+	        return DB::error();
+        }
 
     }// Missing
 

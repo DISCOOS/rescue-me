@@ -1,10 +1,10 @@
 {% extends 'design_admin.twig' %}
 
 {% block content %}
-<form class="form-signin" method="post" action="logon">
+<form class="form-signin" method="post" action="{{APP_ADMIN_URI}}logon">
 	<h2 class="form-signin-heading">{% trans "Log in" %}</h2>
 	{% if message is defined %}
-		<div class="alert alert-error">{{message}}</div>
+		<div class="alert alert-error"><strong>{{message.header}}</strong><br />{{message.body}}</div>
 	{% endif %}
 	
 	<input type="email" name="username" class="input-block-level{{ message is defined ? ' alert-error' : '' }}" placeholder="{% trans "E-mail address" %}"></input>
