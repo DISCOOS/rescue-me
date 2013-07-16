@@ -19,7 +19,7 @@
     <li class="well well-small" id="<?= $id ?>">
         <div class="large pull-left"><?= $module->impl ?></div>
         <div class="btn-group pull-right">
-            <a class="btn" data-toggle="modal" data-backdrop="false" data-modal="exclusive" href="#edit-<?=$id?>-<?=$current?>">
+            <a class="btn" data-toggle="modal" data-backdrop="false" href="#edit-<?=$id?>-<?=$current?>">
                 <b class="icon icon-edit"></b><?= EDIT ?>
             </a>
             <a class="btn dropdown-toggle" data-toggle="dropdown">

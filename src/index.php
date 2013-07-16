@@ -22,7 +22,7 @@
                         
                  ?>
                     <li id="start"><a href="<?= ADMIN_URI ?>/start"><?= START ?></a></li>
-                    <li id="logout"><a data-toggle="modal" data-backdrop="false" data-modal="exclusive" href="#confirm"><?= LOGOUT ?></a></li>
+                    <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm"><?= LOGOUT ?></a></li>
                 <?php 
                         insert_dialog_confirm("confirm", "Bekreft", "Vil du logge ut?", ADMIN_URI."logout");
                     
