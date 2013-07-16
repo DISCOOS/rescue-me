@@ -1,6 +1,6 @@
 <?php
 $missing = array();
-if(!\RescueMe\Module::exists("\RescueMe\SMS\Provider"))
+if(!RescueMe\Module::exists("RescueMe\SMS\Provider"))
 	$missing[] = 'RescueMe\SMS\Provider';
 
 #if(class_exists('\RescueMe\Missing'))

@@ -5,7 +5,7 @@
 		<?= $_ROUTER['message'] ?>
 	</div>
 
-<? } elseif(modules_exists("\RescueMe\SMS\Provider")) { ?>
+<? } elseif(modules_exists("RescueMe\SMS\Provider")) { ?>
 
 <form method="post">
 	<fieldset class="span6 new-missing pull-left">

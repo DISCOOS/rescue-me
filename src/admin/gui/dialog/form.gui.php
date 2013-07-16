@@ -17,7 +17,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="<?= $id ?>-label"><?= $title ?></h3>
     </div>
-    <form id="form-<?=$id?>" name="form-<?=$id?>" accept-charset="utf-8" class="form" action="<?=$action?>">
+    <form id="form-<?=$id?>" name="form-<?=$id?>" method="post" class="form" action="<?=$action?>">
         <div class="modal-body">
             
      <?  insert_controls($fields); ?>

@@ -13,7 +13,7 @@
     require_once(APP_PATH_INC.'common.inc.php');
 
     use RescueMe\Module;
-    $module = Module::get("\RescueMe\SMS\Provider");
+    $module = Module::get("RescueMe\SMS\Provider");
     $sms = $module->newInstance();
 
     if(!$sms)

@@ -1,12 +1,12 @@
 <?php
     
-    require('../config.php');
-    require(APP_PATH_INC.'locale.php'); // TODO: Move to ../config.php?
+require('../config.php');
+require(APP_PATH_INC.'locale.php'); // TODO: Move to ../config.php?
 
-    
-    use RescueMe\User;
-    use Symfony\Component\HttpFoundation\Request;
-    use Symfony\Component\HttpKernel\HttpKernelInterface;
+
+use RescueMe\User;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
        
 if(defined('USE_SILEX') && USE_SILEX) {
     
@@ -134,7 +134,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <li id="settings"><a href="<?= ADMIN_URI ?>setup/list"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
                         </ul>
                     </li>
-                    <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm"><?= LOGOUT ?></a></li>
+                    <li id="logout"><a data-toggle="modal" data-backdrop="false" data-modal="exclusive" href="#confirm"><?= LOGOUT ?></a></li>
                 <?php 
                     
                         insert_dialog_confirm("confirm", "Bekreft", "Vil du logge ut?", ADMIN_URI."logout");

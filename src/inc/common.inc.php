@@ -117,7 +117,7 @@
     
     function assert_type($expected, $actual)
     {
-        if(call_user_func("is_$expected", $actual))
+        if(!call_user_func("is_$expected", $actual))
         {
             throw new Exception("[$actual] is not of type '$actual'.");
         }
@@ -144,12 +144,27 @@
     function array_pick($array, $key) {
         $values = array();
         foreach($array as $name => $value) {
-            if($key === $name || is_string($key) && strstr($name, $key) !== false) {
-                $values[] = $value;
+            if($key === $name 
+                || is_string($key) && strstr($name, $key) !== false
+                || is_array($key) && in_array($name, $key)) {
+                $values[$name] = $value;
             }
         }
         return $values;
     }
+    
+    function array_exclude($array, $key) {
+        $values = array();
+        foreach($array as $name => $value) {
+            if(!($key === $name 
+                || is_string($key) && strstr($name, $key) !== false
+                || is_array($key) && in_array($name, $key))) {
+                $values[$name] = $value;
+            }
+        }
+        return $values;
+    }
+    
     
     function modules_exists($module, $_ = null) {
         

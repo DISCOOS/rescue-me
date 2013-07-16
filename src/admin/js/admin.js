@@ -22,6 +22,31 @@ $(document).ready(function(){
 		$(this).html('<a href="mailto:'+$(this).html()+'">'+$(this).html()+'</a>');
 	});
     
+    // Track menu item selections automatically
+    $('.checkable').click(function(e) {
+        var $this = $(this);
+        $('.checkable').removeClass('active');
+        if ($this.hasClass('active')) {
+            $this.removeClass('active');
+        }  else {
+            $this.addClass('active');            
+        }
+
+    });
+    
+    // Ensure only one modal dialog is shown
+    $('[data-toggle="modal"]').each(function() {
+        $(this).click(function() {
+            $('.modal').each(function() {
+                if(typeof $(this).modal === 'function') {
+                    if($(this).is(":visible") === true) {
+                        $(this).modal('hide', {backdrop: false});
+                    }
+                }
+            });
+        });
+    });
+    
     R.CapsLock.listen('[type="password"]');
     if(/new$|edit$|setup\/list$/.test(location.href)) {
         R.form.validate();

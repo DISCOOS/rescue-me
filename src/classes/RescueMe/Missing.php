@@ -231,7 +231,7 @@
                 $message
             );
             
-            $module = Module::get("\RescueMe\SMS\Provider");
+            $module = Module::get("RescueMe\SMS\Provider");
             
             $sms = $module->newInstance();
             

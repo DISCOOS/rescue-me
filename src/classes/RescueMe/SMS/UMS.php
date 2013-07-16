@@ -37,8 +37,14 @@
             $this->account = $this->newConfig($company, $department, $password);
             
         }// __construct
+        
+        
+        public function config()
+        {
+            return $this->account;
+        }
 
-        public function newConfig($company='', $department='', $password='')
+        private function newConfig($company='', $department='', $password='')
         {
             return array
             (

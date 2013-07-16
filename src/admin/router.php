@@ -52,9 +52,24 @@
             $_ROUTER['name'] = SETUP;
             $_ROUTER['view'] = $_GET['view'];
             break;
-        case 'module/edit':
+        case 'module':
+            
             $_ROUTER['name'] = SETUP;
-            $_ROUTER['view'] = $_GET['view'];
+            $_ROUTER['view'] = "setup/list";
+            
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                $config = array_exclude($_POST, array('type','class'));
+                $status = RescueMe\Module::set($_POST['type'], $_POST['class'], $config);
+                if($status) {
+                    header("Location: ".ADMIN_URI.'setup/list');
+                    exit();
+                }
+                $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
+
+            }
+            
             break;
         case 'user':
         case 'user/edit':

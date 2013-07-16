@@ -1,4 +1,4 @@
-<h3>Oppsett</h3>
+<h3>Systemoppsett</h3>
 <ul class="unstyled">
 <?
 
@@ -19,7 +19,7 @@
     <li class="well well-small" id="<?= $id ?>">
         <div class="large pull-left"><?= $module->impl ?></div>
         <div class="btn-group pull-right">
-            <a class="btn" data-toggle="modal" data-backdrop="false" href="#edit-<?=$id?>-<?=$current?>">
+            <a class="btn" data-toggle="modal" data-backdrop="false" data-modal="exclusive" href="#edit-<?=$id?>-<?=$current?>">
                 <b class="icon icon-edit"></b><?= EDIT ?>
             </a>
             <a class="btn dropdown-toggle" data-toggle="dropdown">
@@ -30,21 +30,32 @@
             $classes = \Inspector::subclassesOf($module->type);
             $forms = array();
             foreach(array_keys($classes) as $class) {
-                $impl = new $class;
+                $selected = ($module->impl === $class ? 'active' : '');
+                $impl = $selected ? Module::get($module->type)->newInstance() : new $class;
                 $type = ltrim(str_replace('\\','-',$class),"-");
                 $forms[$class]['id'] = "edit-$id-$type";
                 $forms[$class]['fields'] = array();
-                $config = $impl->newConfig();
+                $forms[$class]['fields'][] = array(
+                    'id' => "type",
+                    'type' => 'hidden', 
+                    'value' => $module->type
+                );
+                $forms[$class]['fields'][] = array(
+                    'id' => "class",
+                    'type' => 'hidden', 
+                    'value' => $class
+                );
+                $config = $impl->config();
                 foreach($config["fields"] as $property => $default) {
                     $forms[$class]['fields'][] = array(
-                        'id' => "edit-$id-$type-$property",
+                        'id' => "$property",
                         'type' => 'text', 
                         'value' => $default, 
                         'label' => (isset($config['labels'][$property]) ? $config['labels'][$property] : $property),
                         'attributes' => (isset($config['required']) && in_array($property, $config['required']) ? "required" : "")
                     );
                 }
-                insert_item($class, "#".$forms[$class]['id']);
+                insert_item($class, "#".$forms[$class]['id'], $selected);
             }
 ?>        
             </ul>
@@ -60,4 +71,11 @@
         }             
     }
 ?>
+</ul>
+<h3>Personlig oppsett</h3>
+<?
+    insert_alert("Kommer snart!");
+?>
+<ul class="unstyled">
+    
 </ul>

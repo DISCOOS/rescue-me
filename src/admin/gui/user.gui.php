@@ -6,18 +6,15 @@
     
     if($user == false)
     {
-?>
-        <div class="alert alert-info">Ingen registrert</div>
-<?php
+        insert_alert("Ingen registrert");
     }
     else
     {
 ?>
-    <h3><?=$user->name?></h3>
-    <ul class="unstyled">
-        <div class="alert alert-info">Kommer snart!</div>
-    </ul>        
+    <h3><?=$user->name?></h3>            
 <?php
+        insert_alert("Kommer snart!");
+
     }
 ?>
     

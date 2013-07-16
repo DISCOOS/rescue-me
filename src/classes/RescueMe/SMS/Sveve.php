@@ -40,7 +40,14 @@
             $this->account = $this->newConfig($user, $passwd);
         }// __construct
 
-        public function newConfig($user='', $passwd='')
+        
+        public function config()
+        {
+            return $this->account;
+        }
+
+        
+        private function newConfig($user='', $passwd='')
         {
             return array
             (

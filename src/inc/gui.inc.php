@@ -10,7 +10,7 @@
 	 * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
 	 */
     
-    function insert_item($label, $href, $class="", $attributes='data-toggle="modal" data-backdrop="false"', $echo=true) 
+    function insert_item($label, $href, $class="active", $attributes='data-toggle="modal" data-backdrop="false" data-modal="exclusive"', $echo=true) 
     {
         $html = '<li class="'.$class.'"><a href="'.$href. '" '.$attributes.'>'.$label.'</a></li>';
         if($echo) echo $html;
@@ -25,6 +25,21 @@
         return $html;
     }    
     
+    function insert_alerts($message, $alerts, $class="alert-info", $echo=true) 
+    {
+        $html = '';
+        foreach($alerts as $alert)
+        {
+            $html .= insert_alert($message . $alert, $class, false);
+        }
+        return insert_message($html,$echo);
+    }    
+    
+    function insert_alert($alert, $class="alert-info", $echo=true) 
+    {
+        $html = '<div class="alert '.$class.'">'.$alert.'</div>';
+        return insert_message($html,$echo);        
+    }
 
     function insert_errors($message, $errors, $echo=true) 
     {
@@ -38,7 +53,7 @@
     
     function insert_error($error, $echo=true) 
     {
-        $html = '<div class="alert alert-error">'.$error.'</div> ';
+        $html = '<div class="alert alert-error">'.$error.'</div>';
         return insert_message($html,$echo);        
     }
 
