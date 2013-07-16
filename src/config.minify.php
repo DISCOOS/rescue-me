@@ -17,7 +17,7 @@
             'index.js' => array
             (
                 '//js/rescueme.js', 
-                '//js/jquery-1.9.1.min.js', 
+                '//js/jquery.min.js', 
                 '//js/less.min.js',
                 '//js/bootstrap.min.js'
             ),
@@ -29,17 +29,19 @@
             'admin.js' => array
             (
                 '//js/rescueme.js', 
-                '//js/jquery-1.9.1.min.js', 
+                '//js/jquery.min.js', 
+                '//js/jquery.validate.min.js', 
                 '//js/less.min.js', 
                 '//js/capslock.js',
                 '//js/bootstrap.min.js',
+                '//js/validate.js',
                 '//admin/js/admin.js'
             ),
             'track.js' => array
             (
                 '//js/rescueme.js', 
-                '//track/js/track.js'
-            ),
+                '//track/js/track.js' 
+           ),
             
         );        
     }// get_rescueme_minify_config

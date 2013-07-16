@@ -16,7 +16,7 @@
 		<span class="help-block"></span>
 
 		<label>Savnedes mobilnummer</label>
-		<input class="input-block-level" type="tel" name="m_mobile" placeholder="Kun siffer, ingen mellomrom"required pattern="[4|9]{1}[0-9]{7}">
+		<input class="input-block-level" type="tel" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[4|9]{1}[0-9]{7}">
 		<span class="help-block"></span>
 	</fieldset>
 	
