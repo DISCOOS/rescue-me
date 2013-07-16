@@ -142,7 +142,7 @@
     function package($opts)
     {
         // Prepare sources before packaging
-        if(($status = prepare($opts)) === SUCCESS) {
+        if(($status = prepare($opts)) !== SUCCESS) {
             return $status;
         }
         
