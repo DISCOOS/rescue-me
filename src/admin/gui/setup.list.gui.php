@@ -48,17 +48,16 @@
             }
 ?>        
             </ul>
+        </div>
 <?
             foreach($forms as $class => $form) {
                 insert_dialog_form($form['id'], $class, $form['fields'], ADMIN_URI."module/$id");
             }
-        } 
-?>
-        </div>
+?>            
         <div class="clearfix"></div>
     </li>
-            
 <?
+        }             
     }
 ?>
 </ul>

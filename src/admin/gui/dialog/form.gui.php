@@ -12,7 +12,7 @@
 
 ?>
 
-<div id="<?= $id ?>" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="<?= $id ?>-label" aria-hidden="true">
+<div id="<?= $id ?>" class="modal fade hide" tabindex="-1" role="dialog" aria-labelledby="<?= $id ?>-label" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="<?= $id ?>-label"><?= $title ?></h3>
@@ -27,7 +27,7 @@
     </form>
     <div class="modal-footer">
         <button class="btn btn-primary" onclick="$('#form-<?=$id?>-submit').click();"><?= SAVE ?></button>
-        <a class="btn" data-dismiss="modal" aria-hidden="true"><?= CANCEL ?></a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true" onclick="R.form.reset();"><?= CANCEL ?></button>
     </div>
 </div>
 

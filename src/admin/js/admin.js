@@ -23,7 +23,7 @@ $(document).ready(function(){
 	});
     
     R.CapsLock.listen('[type="password"]');
-    if(/new$|edit$/.test(location.href)) {
+    if(/new$|edit$|setup\/list$/.test(location.href)) {
         R.form.validate();
     }
     

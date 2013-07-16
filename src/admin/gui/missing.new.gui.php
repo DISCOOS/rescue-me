@@ -49,7 +49,7 @@
             <p>
                 <strong>Lastetid</strong>
                 <br />
-                Nettsiden er 1,9Kb, noe som burde ta litt mindre enn ett sekund på dårlig mobilnett. 
+                Nettsiden er 1,4Kb, noe som burde ta litt mindre enn ett sekund på dårlig mobilnett. 
                 Det er likevel viktig at brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes.
             </p>
             <p>
@@ -57,9 +57,10 @@
                 <br />
                 Hvis posisjonen er unøyaktig, vil nettsiden lastes på nytt igjen etter 10 sekunder.
                 Brukeren vil da se nedtellingen, og siden åpnes på nytt. Dette vil gjentas inntil 10 ganger.
-                <br />
+            <p>
                 Alle sporinger er tilgjengelig på admin-siden.
-                <br />
+            <p/>
+            <p>
                 <strong>OBS:</strong> Lastetiden vil mest sannsynlig være rimelig lik første åpning av sporingssiden.
             </p>
 

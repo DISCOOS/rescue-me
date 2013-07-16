@@ -15,7 +15,7 @@
     <div class="controls">
         <? if(stristr($type,"select") !== false) { ?> 
         
-        <select id="<?= $id ?>" type="select" <?= $attributes ?>>
+        <select id="<?= $id ?>" name="<?= $id ?>" type="select" <?= $attributes ?>>
             <?= $value ?>
         </select>
         
@@ -31,7 +31,7 @@
         
         <? } else { ?>
         
-        <input id="<?= $id ?>" type="<?= $type ?>" placeholder="<?= $label ?>" <?= $attributes ?> value="<?= $value ?>">
+        <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>" placeholder="<?= $label ?>" <?= $attributes ?> value="<?= $value ?>">
         
         <? } if(isset($help)) { ?> 
         
