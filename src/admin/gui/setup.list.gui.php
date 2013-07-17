@@ -14,7 +14,8 @@
     else
     {
         foreach($modules as $id => $module) {
-            $current = ltrim(str_replace('\\','-',$module->impl),"-");  
+            $current = str_replace('\\','-',$module->impl);  
+            $classes = \Inspector::subclassesOf($module->type);
 ?>
     <li class="well well-small" id="<?= $id ?>">
         <div class="large pull-left"><?= $module->impl ?></div>
@@ -27,7 +28,6 @@
             </a>
             <ul class="dropdown-menu">
 <?
-            $classes = \Inspector::subclassesOf($module->type);
             $forms = array();
             foreach(array_keys($classes) as $class) {
                 $selected = ($module->impl === $class ? 'active' : '');
