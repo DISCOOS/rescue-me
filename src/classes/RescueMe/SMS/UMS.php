@@ -20,6 +20,8 @@
      */
     class UMS implements Provider
     {
+        const WDSL_URL = "https://secure.ums.no/soap/sms/1.6/?wsdl";
+        
         /**
          * UMS account
          * @var array
@@ -85,7 +87,7 @@
                     "splitFormat" => "(%d/%t)\\n",
                 );
 
-                $client = new \SoapClient("https://secure.ums.no/soap/sms/1.6/?wsdl");
+                $client = new \SoapClient(UMS::WDSL_URL);
                 $refno = $client->doSendSMS($this->account["fields"], $sms, $recipients, $settings);
                 return $refno;
                 

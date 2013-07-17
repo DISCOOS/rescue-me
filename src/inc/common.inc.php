@@ -186,3 +186,9 @@
         
         return empty($missing);
     }    
+    
+    
+    function is_function($value) {
+        return preg_match("#([A-Za-z0-9_]+)[\(\)]+#", $value) !== 0;
+    }
+    

@@ -120,7 +120,7 @@
                     header("Location: ".ADMIN_URI.'missing/'.$missing->id);
                     exit();
                 }
-                $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
+                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';
             }
             $_ROUTER['name'] = 'Start sporing av savnet';
             $_ROUTER['view'] = $_GET['view'];

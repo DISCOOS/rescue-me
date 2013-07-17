@@ -199,17 +199,19 @@
         }// select
         
         
-        public static function insert($table, $values) 
+        public static function insert($table, $values)
         {
             $fields = "`" . implode("`,`", array_keys($values)) . "`";
             $inserts = array();
             foreach($values as $value) {
-                if(is_string($value)) 
+                if(is_string($value) && !is_function($value)) 
                     $value = "'" . DB::escape($value) . "'";
                 $inserts[] = $value;
             }
             
             $query = "INSERT INTO `$table` ($fields) VALUES (". implode(",", $inserts) . ")";
+            
+            echo("$query\n");
             
             return DB::query($query);
             
