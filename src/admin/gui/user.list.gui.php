@@ -22,8 +22,9 @@
         <li class="user well well-small" id="<?= $id ?>">
             <div class="name pull-left"><?= $user->name ?></div>
             <div class="status pull-right">
-                <label class="label label-inverse hidden-phone">E-post:</label>
-                <?= $user->email?>
+                <label class="label label-inverse hidden-phone">Mobil:</label>
+                <div class="call"><?= $user->mobile?></div>
+                <div class="clear-fix"></div>
             </div>
         </li>
 <?php

@@ -41,8 +41,7 @@
 <?php require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
 <div id="googleMap"></div>
 <div id="sidebar">
-	<h4>Posisjoner</h4>
-	<strong>Nøyaktighet &lt; 1km</strong>
+	<h4>Posisjoner &lt; 1km</h4>
 	<ul class="unstyled">
 	<?php
 	$i = 0;
@@ -57,8 +56,7 @@
 		$i++;
 	} ?>
 	</ul>
-	<h4>Unøyaktige posisjoner</h4>
-	<strong>Nøyaktighet &gt;= 1km</strong>
+	<h4>Posisjoner &ge; 1km</h4>
 	<ul class="unstyled">
 	<?php
 	$i = 0;

@@ -21,7 +21,6 @@
     {
         const TABLE = "missing";
         
-        
         private static $fields = array
         (
             "missed_by_name", 

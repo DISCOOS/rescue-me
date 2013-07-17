@@ -82,28 +82,26 @@
             break;
         case 'user/new':
             
-            if(isset($_POST['name']) || isset($_POST['username']) || isset($_POST['password'])) {
-                
-                if(!isset($_POST['name']) || empty($_POST['name'])) {
-                    $_ROUTER['message'] = 'Full navn må oppgis';
-                }
-                elseif(!isset($_POST['username']) || empty($_POST['username'])) {
-                    $_ROUTER['message'] = 'Brukernavn må oppgis';
-                }
-                elseif(!isset($_POST['password']) || empty($_POST['password'])) {
-                    $_ROUTER['message'] = 'Passord må oppgis';
-                }
-                else {
-                    $status = User::create($_POST['name'], $_POST['username'], $_POST['password']);
-                    if($status) {
-                        header("Location: ".ADMIN_URI.'user/list');
-                        exit();
-                    }
-                    $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
-                }
-            }            
             $_ROUTER['name'] = NEW_USER;
             $_ROUTER['view'] = $_GET['view'];
+            
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                $username = User::safe($_POST['email']);
+                if(empty($username)) {
+                    $_ROUTER['message'] = 'Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn';
+                }
+                
+                $status = User::create($_POST['name'], $_POST['email'], $_POST['password'], $_POST['mobile']);
+                if($status) {
+                    header("Location: ".ADMIN_URI.'user/list');
+                    exit();
+                }
+                $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
+                
+            }
+            
             break;
         case 'missing/list':
             $_ROUTER['name'] = 'Alle savnede';

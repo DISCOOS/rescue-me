@@ -19,7 +19,11 @@ $(document).ready(function(){
 	});
     
 	$('div.mail').each(function(){
-		$(this).html('<a href="mailto:'+$(this).html()+'">'+$(this).html()+'</a>');
+		$(this).replaceWith('<a href="mailto:'+$(this).html()+'">'+$(this).html()+'</a>');
+	});
+    
+	$('div.call').each(function(){
+		$(this).replaceWith('<a href="tel:'+$(this).html()+'">'+$(this).html()+'</a>');
 	});
     
     // Track menu item selections automatically
@@ -31,7 +35,6 @@ $(document).ready(function(){
         }  else {
             $this.addClass('active');            
         }
-
     });
     
     // Ensure only one modal dialog is shown

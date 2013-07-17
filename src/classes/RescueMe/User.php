@@ -19,11 +19,46 @@
      */
     class User {
         
+        const TABLE = "users";
+        
+        private static $fields = array
+        (
+            "name", 
+            "password", 
+            "email", 
+            "mobile"
+        );
+        
+        /**
+         * User id
+         * @var integer
+         */
         public $id;
+        
+        /**
+         * Full name
+         * @var string
+         */
         public $name;
+        
+        /**
+         * User email (username)
+         * @var string
+         */
         public $email;
+        
+        /**
+         * User mobile number
+         * @var string
+         */
         public $mobile;
         
+        
+        /**
+         * Check if one or more users exist
+         * 
+         * @return boolean
+         */
         public static function isEmpty() {
             
             $result = DB::query("SELECT count(*) FROM `users`");
@@ -37,6 +72,11 @@
         }// isEmpty
         
         
+        /**
+         * Get all users in database
+         * 
+         * @return boolean|array
+         */
         public static function getAll() {
             
             $res = DB::query("SELECT * FROM `users`");
@@ -52,6 +92,14 @@
             
         }// getAll        
         
+        
+        /**
+         * Get user with given id
+         * 
+         * @param integer $id User id
+         * 
+         * @return boolean|\RescueMe\User
+         */
         public static function get($id) {
             
             $res = DB::query("SELECT * FROM `users` WHERE `user_id` = $id");
@@ -69,74 +117,119 @@
         }// get
         
         
-        public static function create($name, $email, $password) {
+        /**
+         * Create new user
+         * 
+         * @param string $name
+         * @param string $email
+         * @param string $password
+         * @param string $mobile
+         * @return boolean
+         */
+        public static function create($name, $email, $password, $mobile) {
             
             $user = new User();
 
-            $username = $user->safe(strtolower($email));
+            $username = User::safe(strtolower($email));
 
-            $password = $user->hash($password);
+            $password = User::hash($password);
 
             if(empty($username) || empty($password))
                 return false;
-
-            $query = "INSERT INTO `users` (`user_id`,`name`,`email`,`password`) VALUES(NULL, '$name', '$email', '$password');";
-
-            if(($id = DB::query($query)) > 0) {
-                $info = array('user_id' => $id, "password" => $password);
-                $user->_logon_ok($info);
-                return true;
+            
+            $values = array((string) $name, (string) $password, (string) $email,  (int) $mobile);
+            
+            $values = prepare_values(self::$fields, $values);
+            
+            if(($id = DB::insert(self::TABLE, $values)) !== false) {
+                return $user->_grant(array(
+                    'user_id' => $id, 
+                    "password" => $password
+                ));
             }
             return false;
+            
         }// create    
         
-
+        
+        /**
+         * Attempt to login in user
+         * 
+         * @param string $email
+         * @param string $password
+         * @return boolean
+         */
         public function logon($email, $password) {
 
-            $username = $this->safe(strtolower($email));
+            $username = User::safe(strtolower($email));
 
-            $password = $this->hash($password);
+            $password = User::hash($password);
+            
             if(empty($username) || empty($password))
                 return false;
+            
             $sql = "SELECT * FROM `users` WHERE `email` = '$username' AND `password` = '$password'";
-    #		var_dump($qry);
+            
             $res = DB::query($sql);
+            
             if(mysqli_num_rows($res) == 1) {
-                $this->_logon_ok(mysqli_fetch_assoc($res));
-                return true;
+                return $this->_grant(mysqli_fetch_assoc($res));
             }
             return false;
         }// logon
 
         
-        public function _verify($user_id, $password) {
+        /**
+         * Verify credentials
+         * 
+         * @param string $user_id
+         * @param string $password
+         * @return boolean
+         */
+        private function _verify($user_id, $password) {
             $username = (int) $user_id;
             $password = $password;
             $qry = "SELECT * FROM `users` WHERE `user_id` = '$username' AND `password` = '$password'";
             $sql = DB::query($qry);
             if(mysqli_num_rows($sql) == 1) {
-                $this->_logon_ok(mysqli_fetch_assoc($sql));
-                return true;
+                return $this->_grant(mysqli_fetch_assoc($sql));
             }
             return false;
         }// _verify
 
         
-        public function _logon_ok($info) {
+        private function _grant($info) {
             $_SESSION['logon'] = true;
             $_SESSION['user_id'] = $info['user_id'];
             $_SESSION['password']=$info['password'];
+            return true;
         }// _login_ok
 
-        function verify() {
+        
+        /**
+         * Verify current user credentials
+         * 
+         * @return boolean
+         */
+        public function verify() {
+
             if(isset($_SESSION['user_id']) && isset($_SESSION['password']))
-                return $this->_verify($_SESSION['user_id'], $_SESSION['password']);
-            elseif(isset($_POST['username']) && isset($_POST['password']))
-                return $this->logon($_POST['username'], $_POST['password']);
+            {
+                if($this->_verify($_SESSION['user_id'], $_SESSION['password'])) {
+                    return true;
+                }
+                $this->logout();
+            }
+            elseif(isset($_POST['username']) && isset($_POST['password'])) {
+                return $this->logon($_POST['username'], $_POST['password']);                
+            }
             return false;
         }// verify
 
         
+        /**
+         * Logout current user
+         */
         public function logout() {
             unset($_SESSION['logon']);
             unset($_SESSION['user_id']);
@@ -144,13 +237,25 @@
         }// logout
 
         
-        public function hash($str) {
-            return sha1(SALT . $str . '^[]|2"!#');
+        /**
+         * Make hash
+         * @param string $string
+         * @return string
+         */
+        public static function hash($string) {
+            return sha1(SALT . $string . '^[]|2"!#');
         }// hash
 
         
-        public function safe($str) {
-            return preg_replace('/[^a-z0-9.@_-]/', '', $str);
+        /**
+         * Make hashable string
+         * 
+         * @param string $string
+         * @return string
+         */
+        public static function safe($string) {
+            return preg_replace('/[^a-z0-9.@_-]/', '', $string);
         }// safe
+        
 
     }// user

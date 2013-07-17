@@ -199,6 +199,13 @@
         }// select
         
         
+        /**
+         * Insert values into given table.
+         * 
+         * @param string $table
+         * @param array $values
+         * @return integer|boolean FALSE on failure, integer if table has AUTO_INCREMENT primary id, TRUE otherswise.
+         */
         public static function insert($table, $values)
         {
             $fields = "`" . implode("`,`", array_keys($values)) . "`";
@@ -210,8 +217,6 @@
             }
             
             $query = "INSERT INTO `$table` ($fields) VALUES (". implode(",", $inserts) . ")";
-            
-            echo("$query\n");
             
             return DB::query($query);
             
