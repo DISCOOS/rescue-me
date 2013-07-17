@@ -119,17 +119,17 @@ if(defined('USE_SILEX') && USE_SILEX) {
                     <li class="dropdown">
                         <a id="drop1" class="dropdown-toggle" data-toggle="dropdown"><?= MISSING_PERSONS ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                            <li id="missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/list"><b class="icon icon-th-list"></b><?= TRACES ?></a></li>
-                            <li class="divider"></li>
                             <li id="new-missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/new"><b class="icon icon-plus-sign"></b><?= NEW_TRACE ?></a></li>
+                            <li class="divider"></li>
+                            <li id="missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/list"><b class="icon icon-th-list"></b><?= TRACES ?></a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a id="drop2" class="dropdown-toggle" data-toggle="dropdown"><?= SYSTEM ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                            <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
-                            <li class="divider"></li>
                             <li id="new-user"><a role="menuitem" href="<?= ADMIN_URI ?>user/new"><b class="icon icon-plus-sign"></b><?= NEW_USER ?></a></li>
+                            <li class="divider"></li>
+                            <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
                             <li class="divider"></li>
                             <li id="settings"><a href="<?= ADMIN_URI ?>setup/list"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
                         </ul>
