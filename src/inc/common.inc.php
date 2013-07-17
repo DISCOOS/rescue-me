@@ -192,3 +192,8 @@
         return preg_match("#([A-Za-z0-9_]+)[\(\)]+#", $value) !== 0;
     }
     
+    
+    function is_ajax_request() {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }
+    

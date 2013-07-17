@@ -61,8 +61,8 @@
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $config = array_exclude($_POST, array('type','class'));
-                $status = RescueMe\Module::set($_POST['type'], $_POST['class'], $config);
-                if($status) {
+                
+                if(RescueMe\Module::set($_POST['type'], $_POST['class'], $config)) {
                     header("Location: ".ADMIN_URI.'setup/list');
                     exit();
                 }
@@ -72,13 +72,33 @@
             
             break;
         case 'user':
-        case 'user/edit':
             $_ROUTER['name'] = USER;
-            $_ROUTER['view'] = 'user';
-            break;
-        case 'user/list':
-            $_ROUTER['name'] = USERS;
             $_ROUTER['view'] = $_GET['view'];
+            break;
+        case 'user/edit':
+            
+            $_ROUTER['name'] = USER;
+            $_ROUTER['view'] = $_GET['view'];
+            
+            // Get requested user
+            $user = User::get($_GET['id']);
+            
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                $username = User::safe($_POST['email']);
+                if(empty($username)) {
+                    $_ROUTER['message'] = 'Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn';
+                }
+                
+                if($user->update($_POST['name'], $_POST['email'], $_POST['mobile'])) {
+                    header("Location: ".ADMIN_URI.'user/list');
+                    exit();
+                }
+                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';
+                
+            }   
+            
             break;
         case 'user/new':
             
@@ -103,8 +123,8 @@
             }
             
             break;
-        case 'missing/list':
-            $_ROUTER['name'] = 'Alle savnede';
+        case 'user/list':
+            $_ROUTER['name'] = USERS;
             $_ROUTER['view'] = $_GET['view'];
             break;
         case 'missing/new':
@@ -121,6 +141,10 @@
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';
             }
             $_ROUTER['name'] = 'Start sporing av savnet';
+            $_ROUTER['view'] = $_GET['view'];
+            break;
+        case 'missing/list':
+            $_ROUTER['name'] = 'Alle savnede';
             $_ROUTER['view'] = $_GET['view'];
             break;
         case 'missing':

@@ -192,7 +192,7 @@
                 $fields = "`" . implode("`,`", $fields) . "`";
             }
             $query = "SELECT $fields FROM `$table`";
-            if($filter) $query .= "WHERE $filter";
+            if($filter) $query .= " WHERE $filter";
             
             return DB::query($query);
             
@@ -223,6 +223,14 @@
         }// insert
         
         
+        /**
+         * Update table with given values.
+         * 
+         * @param string $table
+         * @param array $values
+         * @param string $filter
+         * @return boolean
+         */
         public static function update($table, $values, $filter) 
         {
             $query = "UPDATE `$table` SET ";
@@ -233,7 +241,7 @@
                 $updates[] = "$field=$value";
             }
             $query .= implode(",", $updates);
-            if($filter) $query .= "WHERE $filter";
+            if($filter) $query .= " WHERE $filter";
             
             return DB::query($query);
             

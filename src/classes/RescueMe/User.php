@@ -21,13 +21,21 @@
         
         const TABLE = "users";
         
-        private static $fields = array
+        private static $insert = array
         (
             "name", 
             "password", 
             "email", 
             "mobile"
         );
+        
+        private static $update = array
+        (
+            "name", 
+            "email", 
+            "mobile"
+        );
+        
         
         /**
          * User id
@@ -105,12 +113,19 @@
             $res = DB::query("SELECT * FROM `users` WHERE `user_id` = $id");
 
             if (DB::isEmpty($res)) return false;
+            
+            $exclude = array("user_id", 'password');
 
             $user = new User();
             $row = $res->fetch_assoc();
             foreach($row as $property => $value){
-                if($property != 'password') $user->$property = $value;
+                
+                if(!in_array($property, $exclude)) { 
+                    $user->$property = $value;
+                }
             }
+            
+            $user->id = $id;
             
             return $user;
             
@@ -139,7 +154,7 @@
             
             $values = array((string) $name, (string) $password, (string) $email,  (int) $mobile);
             
-            $values = prepare_values(self::$fields, $values);
+            $values = prepare_values(User::$insert, $values);
             
             if(($id = DB::insert(self::TABLE, $values)) !== false) {
                 return $user->_grant(array(
@@ -150,6 +165,52 @@
             return false;
             
         }// create    
+        
+
+        /**
+         * Update user
+         * 
+         * @param string $name
+         * @param string $email
+         * @param string $mobile
+         * @return boolean
+         */
+        public function update($name, $email, $mobile) {
+            
+            $username = User::safe(strtolower($email));
+
+            if(empty($username))
+                return false;
+            
+            $values = array((string) $name, (string) $email,  (int) $mobile);
+            
+            $values = prepare_values(User::$update, $values);
+            
+            return DB::update(self::TABLE, $values, "user_id=$this->id");
+            
+        }// update       
+        
+
+        /**
+         * Reset user password.
+         * 
+         * Returns random password
+         * 
+         * @param integer $length Length of random password
+         * 
+         * @return string|boolean
+         */
+        public function reset($length = 15) {
+            
+            $password = str_rnd($length);
+
+            $values = prepare_values(array("password"), array(User::hash($password)));
+            
+            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
+            
+            return ($result === false ? false : $password);
+            
+        }// reset
         
         
         /**
@@ -173,9 +234,10 @@
             $res = DB::query($sql);
             
             if(mysqli_num_rows($res) == 1) {
-                return $this->_grant(mysqli_fetch_assoc($res));
-            }
+                return $this->_grant($res->fetch_assoc());
+            }            
             return false;
+            
         }// logon
 
         
@@ -202,6 +264,7 @@
             $_SESSION['logon'] = true;
             $_SESSION['user_id'] = $info['user_id'];
             $_SESSION['password']=$info['password'];
+            $this->id = $info['user_id'];
             return true;
         }// _login_ok
 

@@ -19,13 +19,24 @@
     {
         foreach($users as $id => $user){
 ?>
-        <li class="user well well-small" id="<?= $id ?>">
-            <div class="name pull-left"><?= $user->name ?></div>
-            <div class="status pull-right">
-                <label class="label label-inverse hidden-phone">Mobil:</label>
-                <div class="call"><?= $user->mobile?></div>
-                <div class="clear-fix"></div>
+        <li class="well well-small" id="<?= $id ?>">
+            <div class="user control-group pull-left">
+                <div class="user name"><span><?= $user->name ?></span>
+                        <label class="label label-inverse hidden-phone">Mobil:</label>
+                        <div class="call"><?= $user->mobile?></div>
+                </div>
             </div>
+            <div class="btn-group pull-right">
+                <a class="btn" href="<?=ADMIN_URI."user/edit/$id"?>">
+                    <b class="icon icon-edit"></b><?= EDIT ?>
+                </a>
+                <a class="btn dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                </ul>
+            </div>
+            <div class="clearfix"></div>
         </li>
 <?php
         } 
