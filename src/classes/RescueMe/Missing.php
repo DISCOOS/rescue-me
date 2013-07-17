@@ -11,6 +11,7 @@
      */
 
     namespace RescueMe;
+    use \gPoint;
     
     /**
      * Missing class
@@ -20,7 +21,6 @@
     class Missing
     {
         const TABLE = "missing";
-        
         
         private static $fields = array
         (
@@ -41,6 +41,7 @@
         public $m_mobile;
         public $timestamp_sms_sent;
         private $last_acc;
+        private $last_UTM;
         private $sms2_sent;
         private $sms_mb_sent;
         
@@ -150,6 +151,11 @@
             // Sanity check
             if($this->id === -1) return false;
             
+            $gPoint = new gPoint;
+            $gPoint->setLongLat($lon, $lat);
+            $gPoint->convertLLtoTM();
+            $this->last_UTM = strip_tags($gPoint->getNiceUTM());
+            
             $this->last_acc = $acc;
             
             // Send SMS 2?
@@ -227,8 +233,9 @@
             (
                 str_replace
                 (
-                    array('#missing_id', '#to', '#mb_name', '#m_name', '#acc'), 
-                    array($this->id, $to, $this->mb_name, $this->m_name, $this->last_acc),
+                    array('#missing_id', '#to', '#mb_name', '#m_name', '#acc', '#UTM'), 
+                    array($this->id, $to, $this->mb_name, $this->m_name, 
+                        $this->last_acc, $this->last_UTM),
                     $message
                 )
             );
@@ -242,7 +249,7 @@
                 echo "Failed!";
                 return false;
             }
-
+            
             return $sms->send($to, SMS_FROM, $message);
             
         }// _sendSMS
