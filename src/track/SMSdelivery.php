@@ -18,7 +18,7 @@
 
     if(!$sms)
     {
-        echo "Failed!";
+        trigger_error("Failed loading SMS-module!", E_USER_WARNING);
     }
 
     // Is Sveve
@@ -28,11 +28,11 @@
                     (isset($_GET['errorDesc']) ? $_GET['errorDesc'] : ''));
         }
         else {
-            echo 'Missing parameters...';
+            trigger_error('Missing parameters...', E_USER_WARNING);
         }
     }
     // Not Sveve
     else {
-        echo 'Not supported...';
+        trigger_error('Not supported...', E_USER_WARNING);
     }
 ?>
