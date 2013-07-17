@@ -22,8 +22,10 @@
         <li class="well well-small" id="<?= $id ?>">
             <div class="user control-group pull-left">
                 <div class="user name"><span><?= $user->name ?></span>
-                        <label class="label label-inverse hidden-phone">Mobil:</label>
-                        <div class="call"><?= $user->mobile?></div>
+                    <label class="label label-inverse hidden-phone">Mobil:</label>
+                <? if(isset($user->mobile)) { ?>
+                    <div class="call"><?= $user->mobile?></div><? 
+                } ?>
                 </div>
             </div>
             <div class="btn-group pull-right">
