@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{{APP_TITLE}} - {{VIEW|capitalize}}</title>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="{{APP_URI}}css/admin.less" rel="stylesheet/less">
+        {% if GOOGLE_API_KEY %}
+	        <script src="//maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&sensor=false"></script>
+		{% endif %}
+        <script src="{{APP_URI}}js/admin.js"></script>
+    </head>
+
+    <body>
+        
+        <div class="container-narrow">
+            
+            <div class="masthead">
+                {% if LOGON %}
+                <ul class="nav nav-pills pull-right">
+                    <li class="dropdown">
+                        {% if LOGON %}
+                        <a id="drop1" class="dropdown-toggle" data-toggle="dropdown">{% trans "Missing" %}<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                            <li id="missing"><a role="menuitem" href="{{APP_ADMIN_URI}}missing/list"><b class="icon icon-th-list"></b>{% trans "Traces" %}</a></li>
+                            <li class="divider"></li>
+                            <li id="new-missing"><a role="menuitem" href="{{APP_ADMIN_URI}}missing/new"><b class="icon icon-plus-sign"></b>{% trans "Start new trace" %}</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a id="drop2" class="dropdown-toggle" data-toggle="dropdown">{% trans "System" %}<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                            <li id="users"><a role="menuitem" href="{{APP_ADMIN_URI}}user/list"><b class="icon icon-th-list"></b>{% trans "Users" %}</a></li>
+                            <li class="divider"></li>
+                            <li id="new-user"><a role="menuitem" href="{{APP_ADMIN_URI}}user/new"><b class="icon icon-plus-sign"></b>{% trans "Create user" %}</a></li>
+                            <li class="divider"></li>
+                            <li id="settings"><a href="{{APP_ADMIN_URI}}setup/list"><b class="icon icon-wrench"></b>{% trans "Settings" %}</a></li>
+                        </ul>
+                        {% endif %}
+                    </li>
+                    <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm">{% trans "Log out" %}</a></li>
+                     {% embed "inc.dialog.twig" %}
+                     	{% block message %}{% trans "Are you sure you want to log out?" %}{% endblock %}
+                     	{% block target %}{{APP_ADMIN_URI}}logout{% endblock %}
+                     {% endembed %}
+                </ul>
+                {% endif %}
+                <h3 class="muted"><a href="{{APP_URI}}">{{APP_TITLE}}</a></h3>
+            </div>
+           	{% if error is defined %}
+           		{% embed 'inc.error_fatal.twig' %}{% endembed %}
+           	{% else %}
+           		{% if message is defined %}
+           			{% embed 'inc.error.twig' %}{% endembed %}
+           		{% endif %}
+           		{% block content %} 
+           		{% endblock %}
+           	{% endif %}
+        </div>
+    </body>
+</html>

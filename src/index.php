@@ -8,14 +8,7 @@
         <meta charset="utf-8">
         <title><?= TITLE ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
         <link href="css/index.less" rel="stylesheet/less">
-        <script>
-            var ADMIN_URI = '<?= ADMIN_URI ?>';
-        </script>
-        <? if(GOOGLE_API_KEY !== '') { ?>
-        <script src="//maps.googleapis.com/maps/api/js?key=<?=GOOGLE_API_KEY?>&sensor=false"></script>
-        <? } ?>
         <script src="js/index.js"></script>
     </head>
 
@@ -28,7 +21,7 @@
                     if($_SESSION['logon']) {
                         
                  ?>
-                    <li id="start"><a href="<?= ADMIN_URI ?>"><?= START ?></a></li>
+                    <li id="start"><a href="<?= ADMIN_URI ?>/start"><?= START ?></a></li>
                     <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm"><?= LOGOUT ?></a></li>
                 <?php 
                         insert_dialog_confirm("confirm", "Bekreft", "Vil du logge ut?", ADMIN_URI."logout");

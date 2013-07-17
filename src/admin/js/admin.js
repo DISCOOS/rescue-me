@@ -1,11 +1,11 @@
 $(document).ready(function(){
     
 	$('li.user').click(function(){
-		window.location.href = R.admin.url + 'details/user/' + $(this).attr('id');
+		window.location.href = R.admin.url + 'user/' + $(this).attr('id');
 	});
 	
 	$('li.missing').click(function(){
-		window.location.href = R.admin.url + 'details/missing/' + $(this).attr('id');
+		window.location.href = R.admin.url + 'missing/' + $(this).attr('id');
 	});
     
     $('ul.nav').find('li').each(function(){
@@ -18,20 +18,42 @@ $(document).ready(function(){
 		$('#'+$(this).attr('data-toggle')).slideToggle();
 	});
     
-	$('select.swap').click(function(){
-        var show = $(this).attr('data-swap');
-        $('#'+show).hide();
-        var show = this.value;
-        $('#'+show).show();
-        $(this).prop('data-swap', show);
-	});
-	
 	$('div.mail').each(function(){
-		$(this).html('<a href="mailto:'+$(this).html()+'">'+$(this).html()+'</a>');
+		$(this).replaceWith('<a href="mailto:'+$(this).html()+'">'+$(this).html()+'</a>');
 	});
+    
+	$('div.call').each(function(){
+		$(this).replaceWith('<a href="tel:'+$(this).html()+'">'+$(this).html()+'</a>');
+	});
+    
+    // Track menu item selections automatically
+    $('.checkable').click(function(e) {
+        var $this = $(this);
+        $('.checkable').removeClass('active');
+        if ($this.hasClass('active')) {
+            $this.removeClass('active');
+        }  else {
+            $this.addClass('active');            
+        }
+    });
+    
+    // Ensure only one modal dialog is shown
+    $('[data-toggle="modal"]').each(function() {
+        $(this).click(function() {
+            $('.modal').each(function() {
+                if(typeof $(this).modal === 'function') {
+                    if($(this).is(":visible") === true) {
+                        $(this).modal('hide', {backdrop: false});
+                    }
+                }
+            });
+        });
+    });
+    
+    R.CapsLock.listen('[type="password"]');
+    if(/new$|edit$|setup\/list$/.test(location.href)) {
+        R.form.validate();
+    }
     
 });
-
-R.CapsLock.listen('[type="password"]');
-    
     

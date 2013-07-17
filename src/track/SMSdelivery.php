@@ -13,7 +13,7 @@
     require_once(APP_PATH_INC.'common.inc.php');
 
     use RescueMe\Module;
-    $module = Module::get("\RescueMe\SMS\Provider");
+    $module = Module::get("RescueMe\SMS\Provider");
     $sms = $module->newInstance();
 
     if(!$sms)
@@ -28,11 +28,13 @@
                     (isset($_GET['errorDesc']) ? $_GET['errorDesc'] : ''));
         }
         else {
+     
             trigger_error('Missing parameters...', E_USER_WARNING);
         }
     }
     // Not Sveve
     else {
+     
         trigger_error('Not supported...', E_USER_WARNING);
     }
 ?>

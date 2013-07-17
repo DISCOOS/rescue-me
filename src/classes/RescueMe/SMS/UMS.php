@@ -20,6 +20,8 @@
      */
     class UMS implements Provider
     {
+        const WDSL_URL = "https://secure.ums.no/soap/sms/1.6/?wsdl";
+        
         /**
          * UMS account
          * @var array
@@ -37,14 +39,32 @@
             $this->account = $this->newConfig($company, $department, $password);
             
         }// __construct
+        
+        
+        public function config()
+        {
+            return $this->account;
+        }
 
-        public function newConfig($company='', $department='', $password='')
+        private function newConfig($company='', $department='', $password='')
         {
             return array
             (
-                "company" => $company,
-                "department" => $department,
-                "password" => $password
+                "fields" => array(
+                    "company" => $company,
+                    "department" => $department,
+                    "password" => $password
+                ),
+                "required" => array(
+                    "company", 
+                    "department", 
+                    "password"
+                ),
+                "labels" => array(
+                    "company" => _("company"),
+                    "department" => _("department"),
+                    "password" => _("password")
+                ),
             );
         }// newConfig
         
@@ -67,8 +87,8 @@
                     "splitFormat" => "(%d/%t)\\n",
                 );
 
-                $client = new \SoapClient("https://secure.ums.no/soap/sms/1.6/?wsdl");
-                $refno = $client->doSendSMS($this->account, $sms, $recipients, $settings);
+                $client = new \SoapClient(UMS::WDSL_URL);
+                $refno = $client->doSendSMS($this->account["fields"], $sms, $recipients, $settings);
                 return $refno;
                 
             }

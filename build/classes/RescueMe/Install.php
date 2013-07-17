@@ -75,7 +75,7 @@
             
             // Do not overwrite existing
             if(file_exists($this->root) === TRUE) {
-                return FAILED."(".DIR_EXISTS.")";
+                return DIR_EXISTS;
             }// if
             
             // Escape Phar context (HACK...)
@@ -85,7 +85,7 @@
             // Unpack source filoes to root
             $zip = new \ZipArchive();
             if (($error = $zip->open($this->src)) !== TRUE) {
-                return FAILED."(".ZIP_OPEN_FAILED.":$error)";;
+                return ZIP_OPEN_FAILED.":$error";
             }// if 
             
             // Extract source to root directory
@@ -111,8 +111,13 @@
             
             // Create file
             if(file_put_contents($this->root."config.php", $config) === FALSE) {
-                return FAILED."(".CONFIG_NOT_CREATED.")";
+                return CONFIG_NOT_CREATED;
             }// if
+            
+            // Create apache logs folder
+            if(!is_dir($this->root."logs")) {
+                mkdir($this->root."logs");
+            }
             
             // Bootstrap RescueMe classes
             require $this->root."vendor/autoload.php";
@@ -135,7 +140,7 @@
             info("DONE", SUCCESS);
             
             info("Importing [rescueme.sql]....", SUCCESS, NONE);
-            if(DB::import($this->root."rescueme.sql") === FALSE) {
+            if(($executed = DB::import($this->root."rescueme.sql")) === FALSE) {
                 return sprintf(DB_NOT_IMPORTED,"rescueme.sql")." (".DB::error().")";
             }// if
             info("DONE", SUCCESS);

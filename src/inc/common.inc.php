@@ -67,10 +67,15 @@
      */
     function get_rescueme_url() 
     {
-        $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
-        $sp = strtolower($_SERVER["SERVER_PROTOCOL"]);
-        $protocol = substr($sp, 0, strpos($sp, "/")) . $s;
-        return $protocol . "://" . $_SERVER['SERVER_NAME'] . get_rescueme_uri();
+        $url = '';
+        if(isset($_SERVER["SERVER_PROTOCOL"]))
+        {
+            $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
+            $sp = strtolower($_SERVER["SERVER_PROTOCOL"]);
+            $protocol = substr($sp, 0, strpos($sp, "/")) . $s;
+            $url = $protocol . "://" . $_SERVER['SERVER_NAME'] . get_rescueme_uri();
+        }
+        return $url;
     }// get_rescueme_url
     
 
@@ -112,7 +117,7 @@
     
     function assert_type($expected, $actual)
     {
-        if(call_user_func("is_$expected", $actual))
+        if(!call_user_func("is_$expected", $actual))
         {
             throw new Exception("[$actual] is not of type '$actual'.");
         }
@@ -139,12 +144,27 @@
     function array_pick($array, $key) {
         $values = array();
         foreach($array as $name => $value) {
-            if($key === $name || is_string($key) && strstr($name, $key) !== false) {
-                $values[] = $value;
+            if($key === $name 
+                || is_string($key) && strstr($name, $key) !== false
+                || is_array($key) && in_array($name, $key)) {
+                $values[$name] = $value;
             }
         }
         return $values;
     }
+    
+    function array_exclude($array, $key) {
+        $values = array();
+        foreach($array as $name => $value) {
+            if(!($key === $name 
+                || is_string($key) && strstr($name, $key) !== false
+                || is_array($key) && in_array($name, $key))) {
+                $values[$name] = $value;
+            }
+        }
+        return $values;
+    }
+    
     
     function modules_exists($module, $_ = null) {
         
@@ -157,9 +177,23 @@
             }
         }    
         
+        if(defined('USE_SILEX') && USE_SILEX)
+        	return empty($missing);
+        
         if(!empty($missing)) {
-            insert_errors("Missing module: ", $missing);
+            insert_errors(_("Missing modules").' ( <a href="'.ADMIN_URI.'setup/list">'. _("Configure"). "</a>): ", $missing);
         }
         
         return empty($missing);
     }    
+    
+    
+    function is_function($value) {
+        return preg_match("#([A-Za-z0-9_]+)[\(\)]+#", $value) !== 0;
+    }
+    
+    
+    function is_ajax_request() {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }
+    

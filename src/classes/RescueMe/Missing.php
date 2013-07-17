@@ -148,6 +148,7 @@
 
 
         public function addPosition($lat, $lon, $acc, $alt, $timestamp, $useragent = ''){
+            
             // Sanity check
             if($this->id === -1) return false;
             
@@ -229,24 +230,18 @@
                 $to = substr($to, 3);
 
             // Create message
-            $message = urlencode
+            $message = str_replace
             (
-                str_replace
-                (
-                    array('#missing_id', '#to', '#mb_name', '#m_name', '#acc', '#UTM'), 
-                    array($this->id, $to, $this->mb_name, $this->m_name, 
-                        $this->last_acc, $this->last_UTM),
-                    $message
-                )
+
             );
             
-            $module = Module::get("\RescueMe\SMS\Provider");
+            $module = Module::get("RescueMe\SMS\Provider");
             
             $sms = $module->newInstance();
             
             if(!$sms)
             {
-                echo "Failed!";
+                insert_error("Failed!");
                 return false;
             }
             
@@ -254,6 +249,9 @@
             
         }// _sendSMS
 
+        public function getError() {
+	        return DB::error();
+        }
 
     }// Missing
 

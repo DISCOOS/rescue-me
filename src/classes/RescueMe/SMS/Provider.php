@@ -20,11 +20,11 @@
     interface Provider
     {
         /**
-         * Create new configuration
+         * Get configuration
          * 
          * @return array Associative array of parameters.
          */
-        public function newConfig();
+        public function config();
         
         /**
          * Send SMS message to given number.

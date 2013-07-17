@@ -29,8 +29,8 @@
         
         private function __construct($module)
         {
-            $this->type = $module['type'];
-            $this->impl = $module['impl'];
+            $this->type = ltrim($module['type'],"\\");
+            $this->impl = ltrim($module['impl'],"\\");
             $this->config = json_decode($module['config'], true);
         }
         
@@ -54,15 +54,22 @@
         
         public static function exists($type) 
         {
-            $res = DB::select(self::TABLE, "*", DB::prepare(self::FILTER,$type));
+            $res = DB::select(self::TABLE, "*", DB::prepare(self::FILTER,ltrim($type,"\\")));
             
             return !DB::isEmpty($res);
         }
         
         
+        /**
+         * Get module definition
+         * 
+         * @param string $type Module type
+         * 
+         * @return boolean|\RescueMe\Module
+         */
         public static function get($type)
         {
-            $res = DB::select(self::TABLE, "*", DB::prepare(self::FILTER,$type));
+            $res = DB::select(self::TABLE, "*", DB::prepare(self::FILTER,ltrim($type,"\\")));
             
             if(DB::isEmpty($res)) return false;
 
@@ -73,7 +80,7 @@
         
         
         /**
-         * Module definition name
+         * Set module configuration
          * 
          * @param string $type Module type name
          * @param string $impl Module implementation name
@@ -84,6 +91,10 @@
          */
         public static function set($type, $impl, $config, $construct=false)
         {
+            // Enfore namespace convension
+            $type = ltrim($type,"\\");
+            $impl = ltrim($impl,"\\");
+            
             // Sanity checks
             assert_types(array('string'=>$type,'string'=>$impl,'array'=>$config));
             
@@ -97,6 +108,39 @@
                 
                 $res = DB::insert(self::TABLE, $values);
             }
+            
+            if($res === TRUE || is_numeric($res) && $res > 0){
+                
+                return $construct ? new Module(array("type" => $type, "impl"  => $impl, "config"  => $config)) : true;
+            }
+            
+            return false;
+            
+        }// set
+        
+        
+        /**
+         * Add module configuration
+         * 
+         * @param string $type Module type name
+         * @param string $impl Module implementation name
+         * @param array $config Module construction arguments as (name=>value) pairs
+         * @param boolean $construct Create module instance on success (optional, default: false).
+         * 
+         * @return mixed TRUE (or module instance) if success, FALSE otherwise. 
+         */
+        public static function add($type, $impl, $config, $construct=false)
+        {
+            // Enfore namespace convension
+            $type = ltrim($type,"\\");
+            $impl = ltrim($impl,"\\");
+            
+            // Sanity checks
+            assert_types(array('string'=>$type,'string'=>$impl,'array'=>$config));
+            
+            $values = prepare_values(self::$fields, array($type, $impl, json_encode($config)));
+                
+            $res = DB::insert(self::TABLE, $values);
             
             if($res === TRUE || is_numeric($res) && $res > 0){
                 
