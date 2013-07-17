@@ -33,10 +33,10 @@ R.CapsLock.toggle = function(e) {
 
 R.CapsLock.listen = function(selector) {
     $(selector).each(function() {
-        $(this).keypress(function(e) {
+        $(this).off('keypress').keypress(function(e) {
             handle($(this), R.CapsLock.test(e));
         });
-        $(this).keydown(function(e) {
+        $(this).off('keydown').keydown(function(e) {
             if(R.CapsLock.toggle(e)) {
                 handle($(this), R.CapsLock.isOn());
             }
@@ -44,6 +44,7 @@ R.CapsLock.listen = function(selector) {
         function handle(input, on) {
             $this = input;
             if ( on ) {
+                $this.data('popover').options.content = "Cap-lock is on!";
                 $this.popover('show').click(function (e) {
                     $this.popover('hide');
                     e.preventDefault();

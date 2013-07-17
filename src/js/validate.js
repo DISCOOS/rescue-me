@@ -4,6 +4,7 @@ R.form.validate = function(selector) {
     selector = typeof selector !== 'undefined' ? selector : "form";
     
     $(selector).each(function(i,form) {
+        var message;
         var form = $(form);
         var invalid = undefined;
         if(typeof form.data('reset') !== 'function') {
@@ -15,7 +16,8 @@ R.form.validate = function(selector) {
                 validClass:'success',
                 errorElement:'span',
                 highlight: function (element, errorClass) {
-                    if(invalid === undefined){
+                    if(invalid === undefined || invalid === element){
+                        $(element).data('popover').options.content = message;
                         $(element).popover('show');
                         invalid = element;
                     }
@@ -30,7 +32,7 @@ R.form.validate = function(selector) {
                 },
                 showErrors: function(errorMap, errorList) {
                     if(errorList.length > 0) { 
-                        $(errorList[0].element).attr('data-content',errorList[0].message);
+                        message = errorList[0].message;
                     }
                     this.defaultShowErrors();
                 }            
