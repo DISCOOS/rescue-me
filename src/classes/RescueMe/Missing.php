@@ -40,8 +40,8 @@
         public $m_name;
         public $m_mobile;
         public $timestamp_sms_sent;
-        private $last_acc;
         private $last_UTM;
+        private $last_acc;
         private $sms2_sent;
         private $sms_mb_sent;
         
