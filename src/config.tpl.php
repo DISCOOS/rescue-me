@@ -85,4 +85,5 @@
     define('SMS2_TEXT', 'Om du har GPS på telefonen, anbefaler vi at du aktiverer dette. Vanligvis finner du dette under Innstillinger -> Generelt, eller Innstillinger -> Plassering');
     define('SMS_MB_TEXT', 'Mottatt posisjon på "#m_name": #UTM (+/- #acc meter)! '.APP_URL.'admin/missing/details/#missing_id');
     
-    // Import class loaders    require('vendor/autoload.php');
+    // Import class loaders
+    require('vendor/autoload.php');

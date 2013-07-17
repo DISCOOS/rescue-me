@@ -232,7 +232,9 @@
             // Create message
             $message = str_replace
             (
-
+                array('#missing_id', '#to', '#mb_name', '#m_name', '#acc'), 
+                array($this->id, $to, $this->mb_name, $this->m_name, $this->last_acc),
+                $message
             );
             
             $module = Module::get("RescueMe\SMS\Provider");
@@ -241,6 +243,7 @@
             
             if(!$sms)
             {
+            
                 insert_error("Failed!");
                 return false;
             }

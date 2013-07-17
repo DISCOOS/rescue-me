@@ -28,13 +28,13 @@
                     (isset($_GET['errorDesc']) ? $_GET['errorDesc'] : ''));
         }
         else {
-     
+          
             trigger_error('Missing parameters...', E_USER_WARNING);
         }
     }
     // Not Sveve
     else {
-     
+         
         trigger_error('Not supported...', E_USER_WARNING);
     }
 ?>
