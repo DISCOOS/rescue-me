@@ -181,7 +181,7 @@
         	return empty($missing);
         
         if(!empty($missing)) {
-            insert_errors("Missing module: ", $missing);
+            insert_errors(_("Missing modules").' ( <a href="'.ADMIN_URI.'setup/list">'. _("Configure"). "</a>): ", $missing);
         }
         
         return empty($missing);
