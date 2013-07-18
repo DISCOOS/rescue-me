@@ -43,27 +43,30 @@ $(document).ready(function(){
                 }
             });
         });
+    });
+    $('.modal').each(function() {
         
-        // Add shrink-to-width behavior, see https://github.com/twitter/bootstrap/issues/675#issuecomment-3664958
-        $(this).css({
-            width: 'auto',
-            'margin-left': function () {
-                return -($(this).width() / 2);
-            }
-        });
+//        // Add shrink-to-width behavior, see https://github.com/twitter/bootstrap/issues/675#issuecomment-3664958
+//        $(this).css({
+//            'width': 'auto',
+//            'margin-left': function () {
+//                return -($(this).width() / 2);
+//            }
+//        });
         
         // Add capslock listener and validation to forms in modals
         $(this).on('shown', function () {
             $(this).find("form").each(function(i,e) {
                 R.form.validate($(e));
-
             });
             $(this).find('input[type="password"]').each(function(i,e) {
                 R.CapsLock.listen($(e));
             });
         });
         
-    });
+    });    
+    
+    
     
     // Add form validation
     R.form.validate();

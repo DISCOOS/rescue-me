@@ -1,4 +1,5 @@
-<h3 class="muted"><?= TITLE ?></h3>
+<p class="lead muted"><b><?= TITLE ?></b></p>
+
 <div class="lead">Lokaliserer personer via deres mobiltelefon</div>
 <p>
     <?= TITLE ?> sender en lenke til den savnede via SMS. Med brukerens samtykke (klikk på lenken) blir brukeren lokalisert ved hjelp av 

@@ -111,11 +111,11 @@ if(defined('USE_SILEX') && USE_SILEX) {
             <div class="masthead">
 
                 <ul class="nav nav-pills pull-right" style="display: <?= $_SESSION['logon'] ? 'block' : 'none' ?>;">
-                <?php 
-                    
-                    if($_SESSION['logon']) {
-                        
-                 ?>
+            <?php 
+                
+                if(($logon = isset($_SESSION['logon']) && $_SESSION['logon']) === true) {
+
+             ?>
                     <li class="dropdown">
                         <a id="drop1" class="dropdown-toggle" data-toggle="dropdown"><?= MISSING_PERSONS ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
@@ -127,7 +127,10 @@ if(defined('USE_SILEX') && USE_SILEX) {
                     <li class="dropdown">
                         <a id="drop2" class="dropdown-toggle" data-toggle="dropdown"><?= SYSTEM ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                            <li id="new-user"><a role="menuitem" href="<?= ADMIN_URI ?>user/new"><b class="icon icon-plus-sign"></b><?= NEW_USER ?></a></li>
+                            <li id="new-user">
+                                <a role="menuitem" data-toggle="modal" data-backdrop="false" href="#user-new">
+                                <b class="icon icon-plus-sign"></b><?= NEW_USER ?></a>
+                            </li>
                             <li class="divider"></li>
                             <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
                             <li class="divider"></li>
@@ -135,29 +138,31 @@ if(defined('USE_SILEX') && USE_SILEX) {
                         </ul>
                     </li>
                     <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm"><?= LOGOUT ?></a></li>
-                <?php 
                     
-                        insert_dialog_confirm("confirm", "Bekreft", "Vil du logge ut?", ADMIN_URI."logout");
-                        
-                    } else {
-                        
-                 ?>  
-                    
+            <?php  } else { ?>  
                     
                     <li id="logout"><a href="<?=ADMIN_URI?>logon"><?= LOGIN ?></a></li>
                     
-                <?php 
+            <?php } ?>         
                     
-                    }
-                        
-                 ?>         
                 </ul>
-                <h3 class="muted"><a href="<?=APP_URI?>"><?= TITLE ?></a></h3>
+                <a class="lead no-wrap" href="<?=APP_URI?>"><b><?= TITLE ?></b></a>
             </div>
             
-            <?php 
+            <?php
                 
-                require_once('gui/' . str_replace("/",".",$_ROUTER['view']) . '.gui.php'); 
+                if($logon) {
+                    
+                    // Insert modal forms
+                    insert_dialog_form("user-new", NEW_USER, 'gui/user.new.gui.php',  ADMIN_URI."user/new");
+
+                    // Insert modal confirmations
+                    insert_dialog_confirm("confirm", "Bekreft", "Vil du logge ut?", ADMIN_URI."logout");
+                    
+                }
+                
+                
+                require('gui/' . str_replace("/",".",$_ROUTER['view']) . '.gui.php'); 
                 
             ?>
         </div>

@@ -17,10 +17,20 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="<?= $id ?>-label"><?= $title ?></h3>
     </div>
-    <form id="form-<?=$id?>" name="form-<?=$id?>" method="post" class="form" action="<?=$action?>">
+    <form id="form-<?=$id?>" name="form-<?=$id?>" method="post" class="form" <?if(isset($action)){?>action="<?=$action?>"<?}?>>
         <div class="modal-body">
             
-     <?  insert_controls($fields); ?>
+     <?  
+         if(is_array($fields)) {
+             insert_controls($fields);
+         }
+         else if(is_file($fields)) {
+             require $fields;
+         } 
+         else {
+             echo $fields;
+         }
+     ?>
             
         </div>
         <button type="submit" id="form-<?=$id?>-submit" class="hide"></button>

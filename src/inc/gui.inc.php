@@ -94,7 +94,7 @@
     }
     
     
-    function insert_dialog_form($id, $title, $fields, $action)
+    function insert_dialog_form($id, $title, $fields, $action=null)
     {
         require ADMIN_PATH . "gui/dialog/form.gui.php";
     }

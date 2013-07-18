@@ -40,6 +40,10 @@ h3.pagetitle {
     margin-right: 0.5em;
 }
 
+.no-wrap {
+    white-space: nowrap;
+}
+
 
 /*==========================================
 / [Dashboard] page
