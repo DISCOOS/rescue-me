@@ -60,7 +60,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
 		$TWIG['VIEW'] = $action;
 	    return $app['twig']->render("$action.twig", $TWIG);
         
-	})->value('action', 'start')->assert('action', "logon|start");
+	})->value('action', 'start')->assert('action', "logon|start|logout");
 	
 	// Module actions
 	$app->match('/{module}/{action}/{id}', function ($module, $action, $id) use ($app) {
