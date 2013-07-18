@@ -30,6 +30,7 @@
             (
                 '//js/rescueme.js', 
                 '//js/jquery.min.js', 
+                '//js/jquery.ui-custom.min.js', 
                 '//js/jquery.validate.min.js', 
                 '//js/less.min.js', 
                 '//js/capslock.js',

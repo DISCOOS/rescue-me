@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+	$('.jQshake').effect('shake');
     
 	$('li.user').click(function(){
 		window.location.href = R.admin.url + 'user/' + $(this).attr('id');
