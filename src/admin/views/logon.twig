@@ -3,9 +3,6 @@
 {% block content %}
 <form class="form-signin" method="post" action="{{APP_ADMIN_URI}}logon">
 	<h2 class="form-signin-heading">{% trans "Log in" %}</h2>
-	{% if message is defined %}
-		<div class="alert alert-error"><strong>{{message.header}}</strong><br />{{message.body}}</div>
-	{% endif %}
 	
 	<input type="email" name="username" class="input-block-level{{ message is defined ? ' alert-error' : '' }}" placeholder="{% trans "E-mail address" %}"></input>
 	<input type="password" name="password" id="password" class="input-block-level{{ message is defined ? ' alert-error' : '' }}" placeholder="{% trans "Password " %}" data-content="Cap-lock is on!"></input>

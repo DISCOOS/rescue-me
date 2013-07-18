@@ -34,12 +34,9 @@ if(defined('USE_SILEX') && USE_SILEX) {
     
    	// Force logon?
 	if($_SESSION['logon'] == false) {
-		$app->get('/', function () use ($app) {
+		$app->match('/', function () use ($app) {
 			global $TWIG;
-            $controller = ADMIN_PATH.'controllers/logon.controller.php';
-			if(file_exists($controller))
-				require_once($controller);
-			
+			require_once(ADMIN_PATH.'controllers/logon.controller.php');
 			return $app['twig']->render('logon.twig', $TWIG);
 		});
 	}
@@ -47,15 +44,12 @@ if(defined('USE_SILEX') && USE_SILEX) {
 	// Main actions
 	$app->match('/{action}', function ($action) use ($app, $user) {
 		global $TWIG;
-        
 		if($_SESSION['logon']==true) {
             if($action == 'logon') {
                 $action = 'start';
             } elseif($action == 'logout') {
-                
                 $user->logout();
-                
-                return $app->redirect(APP_URI);                
+                return $app->redirect(APP_URI);
             }
         }
         
@@ -66,12 +60,11 @@ if(defined('USE_SILEX') && USE_SILEX) {
 		$TWIG['VIEW'] = $action;
 	    return $app['twig']->render("$action.twig", $TWIG);
         
-	})->value('module', 'start')->assert('module', "login|start");
+	})->value('action', 'start')->assert('action', "logon|start");
 	
 	// Module actions
-	$app->match('/{module}/{action}/{id}', function ($action, $module, $id) use ($app) {
+	$app->match('/{module}/{action}/{id}', function ($module, $action, $id) use ($app) {
 		global $TWIG; 
-        
 		$view = rtrim("$module.$action",".");
 		$controller = ADMIN_PATH."controllers/$view.controller.php";
 		if(file_exists($controller))
@@ -80,7 +73,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
         $TWIG['VIEW'] = trim("$action $module");
 	    return $app['twig']->render("$view.twig", $TWIG);
         
-	})->value('action', '')->value('id', false);
+	})->value('id', false);
 	
 	$app->run();
 	
