@@ -10,7 +10,7 @@
 	 * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
 	 */
     
-    function insert_item($label, $href, $class="active", $attributes='data-toggle="modal" data-backdrop="false"', $echo=true) 
+    function insert_item($label, $href, $class="", $attributes='data-toggle="modal" data-backdrop="false"', $echo=true) 
     {
         $html = '<li class="'.$class.'"><a href="'.$href. '" '.$attributes.'>'.$label.'</a></li>';
         if($echo) echo $html;
