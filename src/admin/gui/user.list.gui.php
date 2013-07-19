@@ -29,10 +29,10 @@
                 </div>
             </div>
             <div class="btn-group pull-right">
-                <a class="btn" href="<?=ADMIN_URI."user/edit/$id"?>">
+                <a class="btn btn-small" href="<?=ADMIN_URI."user/edit/$id"?>">
                     <b class="icon icon-edit"></b><?= EDIT ?>
                 </a>
-                <a class="btn dropdown-toggle" data-toggle="dropdown">
+                <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">

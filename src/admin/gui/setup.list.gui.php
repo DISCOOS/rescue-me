@@ -20,10 +20,10 @@
     <li class="well well-small" id="<?= $id ?>">
         <div class="large pull-left"><?= $module->impl ?></div>
         <div class="btn-group pull-right">
-            <a class="btn" data-toggle="modal" data-backdrop="false" href="#edit-<?=$id?>-<?=$current?>">
+            <a class="btn btn-small" data-toggle="modal" data-backdrop="false" href="#edit-<?=$id?>-<?=$current?>">
                 <b class="icon icon-edit"></b><?= EDIT ?>
             </a>
-            <a class="btn dropdown-toggle" data-toggle="dropdown">
+            <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
