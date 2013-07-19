@@ -19,7 +19,7 @@
     veldig dårlig internettilkobling skal siden lastes inn i løpet av sekunder.
 </p>
 
-<h3>Systemet er utviklet av</h3>
+<h3>Systemet utvikles av</h3>
 <div class="contact span3">
 	<img src="http://graph.facebook.com/svenove/picture" />
 	<div class="name">Sven-Ove Bjerkan</div>
