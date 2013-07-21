@@ -9,6 +9,10 @@ $(document).ready(function(){
 	$('li.missing').click(function(){
 		window.location.href = R.admin.url + 'missing/' + $(this).attr('id');
 	});
+        
+        $('li.position').click(function(){
+		panMapTo($(this).attr('data-pan-to'));
+	});
     
     
     $('ul.nav').find('li').each(function(){
