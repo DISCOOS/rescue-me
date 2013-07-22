@@ -103,7 +103,10 @@
         }// send
         
         public function delivered($provider_ref, $to, $status, $errorDesc='') {
-            $query = "UPDATE `missing` SET `sms_delivered` = '".(string)$status."', 
+            if (empty($provider_ref) || empty($to) || empty($status))
+                return false;
+                        
+            $query = "UPDATE `missing` SET `sms_delivery` = NOW(), 
                 `sms_error` = '".(string)$errorDesc."'
                 WHERE `missing_mobile` = '" . $to . "' 
                 AND `sms_provider_ref` = '".$provider_ref."';";
@@ -112,7 +115,9 @@
             $res = $db->query($query);
             if(!$res){
                 trigger_error("Failed execute [$query]: " . $db->error(), E_USER_WARNING);
+                return false;
             }// if
+            return true;
         }// log
 	
         ############################################################

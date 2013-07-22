@@ -23,18 +23,11 @@
 
     // Is Sveve
     if ($sms instanceof RescueMe\SMS\Sveve) {
-        if (isset($_GET['id']) && isset($_GET['number']) && isset($_GET['status'])) {
-            $sms->delivered($_GET['id'], $_GET['number'], $_GET['status'], 
-                    (isset($_GET['errorDesc']) ? $_GET['errorDesc'] : ''));
-        }
-        else {
-          
-            trigger_error('Missing parameters...', E_USER_WARNING);
-        }
+        $sms->delivered($_GET['id'], $_GET['number'], $_GET['status'], 
+                (isset($_GET['errorDesc']) ? $_GET['errorDesc'] : ''));
     }
     // Not Sveve
     else {
-         
         trigger_error('Not supported...', E_USER_WARNING);
     }
 ?>
