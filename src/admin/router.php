@@ -131,11 +131,13 @@
             
             if(isset($_POST['mb_name'])) {
                 require_once(APP_PATH_INC.'common.inc.php');
-                $missing = new \RescueMe\Missing();
-                $status = $missing->addMissing($_POST['mb_name'], $_POST['mb_mail'], $_POST['mb_mobile'], 
-                                               $_POST['m_name'], $_POST['m_mobile']);
+                $operation = new RescueMe\Operation;
+                $operation = $operation->addOperation($_POST['m_name'], 
+                                                $user->id, 47, $_POST['mb_mobile']);
+                $missing = new RescueMe\Missing;
+                $status = $missing->addMissing($_POST['m_name'], $_POST['m_mobile'], $operation->id);
                 if($status) {
-                    header("Location: ".ADMIN_URI.'missing/'.$missing->id);
+                    header("Location: ".ADMIN_URI.'missing/'.$operation->id);
                     exit();
                 }
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';

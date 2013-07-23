@@ -65,14 +65,14 @@
             );
         }// newConfig
         
-        public function send($to, $from, $message)
+        public function send($country, $to, $from, $message)
         {
             // Create SMS provider url
             $smsURL = utf8_decode
             (
                   'https://www.sveve.no/SMS/SendSMS'
                 . '?user='.$this->account['fields']['user']
-                . '&to='.$to
+                . '&to='.$this->getInternationalPrefix().$country.$to
                 . '&from='.$from
                 . '&msg='.urlencode($message)
                 .(!empty($this->account['fields']['passwd']) ? '&passwd='.$this->account['fields']['passwd'] : '')
@@ -101,6 +101,10 @@
             }
             
         }// send
+        
+        public function getInternationalPrefix() {
+            return '00';
+        }
         
         public function delivered($provider_ref, $to, $status, $errorDesc='') {
             if (empty($provider_ref) || empty($to) || empty($status))

@@ -68,7 +68,7 @@
             );
         }// newConfig
         
-        public function send($to, $from, $message)
+        public function send($country, $to, $from, $message)
         {
             try {
                 
@@ -79,7 +79,7 @@
                     "schedule" => time()  // send immediately, to send in one hour use: time()+3600
                 );
 
-                $recipients = array($to);
+                $recipients = array($this->getInternationalPrefix().$country.$to);
 
                 $settings = array
                 (
@@ -98,6 +98,10 @@
             }
             
         }// send
+        
+        public function getInternationalPrefix() {
+            return '00';
+        }
 
 
     }// UMS

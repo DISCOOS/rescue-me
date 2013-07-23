@@ -1,9 +1,9 @@
     <?php
-        
-    use \RescueMe\Missing;
     
-    $active = Missing::getAllMissing('open'); 
-    $closed = Missing::getAllMissing('closed');
+    use RescueMe\Operation;
+    
+    $active = Operation::getAllOperations('open'); 
+    $closed = Operation::getAllOperations('closed');
     ?>
 
     <h3>Savnede</h3>
@@ -18,7 +18,9 @@
     }
     else
     {
-        foreach($active as $id => $this_missing){
+        foreach($active as $id => $this_operation){
+            $missings = $this_operation->getAllMissing();
+            $this_missing = current($missings);
             $this_missing->getPositions();
     ?>
         <li class="well well-small missing" id="<?= $id ?>">
@@ -47,7 +49,7 @@
     }
     else
     {
-        foreach(Missing::getAllMissing('closed') as $id => $this_missing){
+        foreach($closed as $id => $this_missing){
             $this_missing->getPositions();
             ?>
             <li class="well well-small missing" id="<?= $id ?>">

@@ -1,7 +1,8 @@
 <?php
-
-    use RescueMe\Missing;
-    $missing = Missing::getMissing($_GET['id']);
+    use RescueMe\Operation;
+    $operation = Operation::getOperation($_GET['id']);
+    $missings = $operation->getAllMissing();
+    $missing = current($missings);
     
     if($missing == false)
     {
@@ -29,9 +30,6 @@
 <div class="infos clear-fix">
 	<div class="info pull-left">
 		<label class="label label-important">Sist posisjonert</label> <?= $missing->last_pos->human?>
-	</div>
-	<div class="info pull-left">
-		<label class="label label-important">Meldt av</label> <?= $missing->mb_name ?> (<?= $missing->mb_mobile?>)
 	</div>
 	<div class="info pull-left">
 		<label class="label label-important">Meldt savnet</label> <?= $missing->m_reported ?>
@@ -76,7 +74,7 @@
 <div class="infos clear-fix">
 	<div class="info pull-left">
 		<label class="label label-important">Sporingslenke den savnede bruker</label> 
-		<?= APP_URI.$missing->id.'-'.$missing->m_mobile; ?>
+		<?= APP_URL.'l/'.$missing->id.'/'.$missing->m_mobile; ?>
 	</div>
 </div>
 <?php
