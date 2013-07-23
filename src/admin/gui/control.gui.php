@@ -11,32 +11,51 @@
 	 */
 ?>
 
-<div class="control-group">
-    <div class="controls">
-        <? if(stristr($type,"select") !== false) { ?> 
-        
-        <select id="<?= $id ?>" name="<?= $id ?>" type="select" <?= $attributes ?>>
+<? if(stristr($type,"select") !== false) { $class = (empty($class) ? 'input-block-level' : $class) ?> 
+
+<div class="controls">
+    <label><?= $label ?>
+        <select class="<?= $class ?>" id="<?= $id ?>" name="<?= $id ?>" type="select" <?= $attributes ?>>
             <?= $value ?>
         </select>
-        
-        <? } elseif(stristr($type,"group") !== false) { ?> 
-        
-        <div id="<?= $id ?>" class="control-group">
-            <div class="controls">
-                
-                <? insert_controls($value); ?>
-                
-            </div>
-        </div>
-        
-        <? } else { ?>
-        
-        <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>" placeholder="<?= $label ?>" <?= $attributes ?> value="<?= $value ?>">
-        
-        <? } if(isset($help)) { ?> 
-        
-        <span class="help-block"><?= $help ?></span>
-        
-        <? } ?>
+    </label>
+</div>
+<? } elseif(stristr($type,"group") !== false) { $class = (empty($class) ? 'row-fluid' : $class) ?> 
+
+<div class="<?= $class ?>">
+
+    <? insert_controls($value); ?>
+
+</div>
+
+<? } elseif(stristr($type,"fieldset") !== false) { $class = (empty($class) ? 'controls-group' : $class) ?> 
+
+<fieldset class="<?= $class ?>">
+    <legend><?= $class ?></legend>
+<? 
+    foreach($value as $control) {
+        insert_control
+        (
+            isset_get($control,"id"),
+            isset_get($control,"type","text"),
+            isset_get($control,"value"),
+            isset_get($control,"label"),
+            isset_get($control,"attributes"),
+            isset_get($control,"class", '')
+        );
+    } 
+?> 
+    
+</fieldset>        
+
+<? } elseif(stristr($type,"hidden") !== false) { ?> 
+
+<input class="<?= $class ?>" id="<?= $id ?>" name="<?= $id ?>" type="hidden" value="<?= $value ?>">
+
+<? } else { $class = (empty($class) ? 'input-block-level' : $class) ?>
+
+    <div class="<?= $class ?>">
+        <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
+        <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>" placeholder="<?= $label ?>" class="input-block-level" <?= $attributes ?> value="<?= $value ?>">        
     </div>
-</div>    
+<? } ?>

@@ -1,17 +1,41 @@
-<form class="form-user" method="post">
-    <h3 ><?=EDIT_USER?></h3>
-    <?php
-        if(isset($_ROUTER['message'])) { 
-    ?>
-        <div class="alert alert-error"><?= $_ROUTER['message'] ?></div>
-    <?
-        } 
-    ?>    
-    <input type="text" name="name" class="input-block-level" placeholder="Fullt navn" value="<?= $user->name ?>" autofocus required >
-    <input type="email" name="email" class="input-block-level" placeholder="E-postadresse" value="<?= $user->email ?>" required>
-    <input type="tel" name="mobile" class="input-block-level" placeholder="Mobiltelefon" value="<?= $user->mobile ?>" required pattern="[4|9]{1}[0-9]{7}">
-    <div class="form-actions">
-        <button class="btn btn-primary" type="submit"><?= CREATE ?></button>
-        <a type="button" class="btn" href="javascript: history.go(-1)"><?= CANCEL ?></a>
-    </div>    
-</form>
+<?    
+    if(isset($_ROUTER['message'])) { 
+        insert_error($_ROUTER['message']);
+    } 
+
+    $fields = array();
+    
+    $fields[] = array(
+        'id' => 'name',
+        'type' => 'text', 
+        'value' => $user->name, 
+        'label' => _('Full name'),
+        'attributes' => 'required'
+    );
+    
+    $group = array(
+        'type' => 'group',
+        'class' => 'row-fluid'
+    );
+    $group['value'][] = array(
+        'id' => 'mobile',
+        'type' => 'tel', 
+        'value' => $user->mobile, 
+        'label' => _('Mobile'),
+        'class' => 'span2',
+        'attributes' => 'required pattern="[4|9]{1}[0-9]{7}"'
+    );
+    $group['value'][] = array(
+        'id' => 'email',
+        'type' => 'email', 
+        'value' => $user->email, 
+        'label' => _('E-mail'),
+        'class' => 'span3',
+        'attributes' => 'required'
+    );    
+    $fields[] = $group;
+    
+    
+    insert_form("user", _(EDIT_USER), $fields, ADMIN_URI."user/edit/$id");
+    
+?>

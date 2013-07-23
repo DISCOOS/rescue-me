@@ -44,6 +44,16 @@ h3.pagetitle {
     white-space: nowrap;
 }
 
+.search-close {
+    float: none;
+    position: relative;
+    left: -5px;
+    top: 10px;
+}
+
+.editor a.dropdown-toggle {
+    
+}
 
 /*==========================================
 / [Dashboard] page
@@ -106,8 +116,10 @@ margin-top: 28px;
 	.clickable;
 	background-color: #f1f1f1;
 }
-.user div.name {
+
+.user div.name, td.name {
 	font-weight: bold;
+    white-space: nowrap;
 	color: @colour-rodekors;
 }
 
@@ -166,24 +178,7 @@ li.position {
   height: 400px;
   overflow-y: scroll;
 }
-@media (max-width: 767px) {
-	#googleMap {
-	  clear: left;
-	  width: 100%;
-	  height: auto;
-	  min-height: 300px;
-	  float: left;
-	}
-	#sidebar {
-	  margin: 0px 0px 0px 10px;
-	  padding: 0px;
-	  float: left;
-	  width: 200px;
-	  height: 400px;
-	  overflow-y: scroll;
-	}
 
-}
 /*==========================================
 / [New Alert] form
 /=========================================*/
@@ -210,27 +205,62 @@ li.position {
 	.border-radius(3px);
 }
 .contact .name {
-  font-weight: bold;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
 /*==========================================
-/ [User] view
+/ Forms
 /=========================================*/
-.form-user {
-	max-width: 400px;
-	padding: 19px 29px 29px;
-	margin: 0 auto 20px;
+.form {
+    padding: 0em;
+    margin: 2em auto 2em;
+    background-color: white;
 }
-
-/*==========================================
-/ [Module] view
-/=========================================*/
-.div-module div {
-	max-width: 400px;
-	padding: 19px 29px 29px;
-	margin: 0 auto 20px;
+.form-header {
+    margin: 2em 2em 2em;
+    border-bottom: 1px solid #eee;
 }
-
-.form-module {
-    
+.form-header h3 {
+    line-height: 30px;
+}
+.form-body {
+    margin: 2em 2em 2em;
+}
+.form-body label {
+    color: graytext;
+    font-weight: bold;
+}
+.form-footer {
+    padding: 1em 2em 2em;
+    margin-bottom: 0;
+    text-align: left;
+    background-color: #F1F1F1;
+    border-top: 1px solid #ddd;
+    -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
+    -webkit-box-shadow: inset 0 1px 0 #ffffff;
+    -moz-box-shadow: inset 0 1px 0 #ffffff;
+    box-shadow: inset 0 1px 0 #ffffff;
+    *zoom: 1;
+}
+.form-footer:before,
+.form-footer:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.form-footer:after {
+    clear: both;
+}
+.form-footer .btn + .btn {
+    margin-left: 5px;
+    margin-bottom: 0;
+}
+.form-footer .btn-group .btn + .btn {
+    margin-left: -1px;
+}
+.form-footer .btn-block + .btn-block {
+    margin-left: 0;
 }

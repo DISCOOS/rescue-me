@@ -6,13 +6,10 @@
     
     if($missing == false)
     {
-?>
-    <div class="alert alert-info">Ingen registrert</div>
-<?php
+        insert_alert('Ingen registrert');
     }
     else
-    {
-        
+    {        
         $positions = $missing->getPositions();
 
 ?>

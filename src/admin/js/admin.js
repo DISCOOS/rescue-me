@@ -1,9 +1,16 @@
 $(document).ready(function(){
 
+    // Fix unclickable dropdowns on mobiles and tablets
+    $('body').on('touchstart.dropdown', '.dropdown-menu', function (e) { e.stopPropagation(); });
+
 	$('.jQshake').effect('shake');
     
-	$('li.user').click(function(){
+	$('li.user:not(.editor)').click(function(){
 		window.location.href = R.admin.url + 'user/' + $(this).attr('id');
+	});
+    
+	$('td.user:not(.editor)').click(function(){
+		window.location.href = R.admin.url + 'user/' + $(this).closest('tr').attr('id');
 	});
 	
 	$('li.missing').click(function(){
@@ -14,6 +21,9 @@ $(document).ready(function(){
 		panMapTo($(this).attr('data-pan-to'));
 	});
     
+	$('td.missing').click(function(){
+		window.location.href = R.admin.url + 'missing/' + $(this).closest('tr').attr('id');
+	});
     
     $('ul.nav').find('li').each(function(){
         var id = $(this).attr('id');
@@ -27,40 +37,35 @@ $(document).ready(function(){
 	});
     
     // Add mailto:scheme urls
-	$('div.mail').each(function(){
-		$(this).replaceWith('<a href="mailto:'+$(this).html()+'">'+$(this).html()+'</a>');
+	$('li.mailto, td.mailto').each(function(){
+		$(this).html('<a href="mailto:'+$(this).html()+'">'+$(this).html()+'</a>');
 	});
     
     // Add tel:scheme urls
-	$('div.call').each(function(){
-		$(this).replaceWith('<a href="tel:'+$(this).html()+'">'+$(this).html()+'</a>');
+	$('li.tel, td.tel').each(function(){
+		$(this).html('<a href="tel:'+$(this).html()+'">'+$(this).html()+'</a>');
 	});
     
-    // Add RescueMe behaviors to modals 
-    $('[data-toggle="modal"]').each(function() {
+    // Add common RescueMe behaviors to modals 
+    $('[data-toggle="modal"]').click(function() {
         
-        // Ensure only one modal dialog is shown
-        $(this).click(function() {
-            $('.modal').each(function() {
-                if(typeof $(this).modal === 'function') {
-                    if($(this).is(":visible") === true) {
-                        $(this).modal('hide', {backdrop: false});
-                    }
+        // Class all visible modals
+        $('.modal').each(function() {
+            if(typeof $(this).modal === 'function') {
+                // Hide this modal?
+                if($(this).is(":visible") === true) {
+                    $(this).modal('hide', {backdrop: false});
                 }
-            });
+            }
         });
+        
+        // Update modal header
+        $('#dialog-label').html( $(this).attr("data-title") );
+        
     });
+    
+    // Add capslock detection to modal forms
     $('.modal').each(function() {
-        
-//        // Add shrink-to-width behavior, see https://github.com/twitter/bootstrap/issues/675#issuecomment-3664958
-//        $(this).css({
-//            'width': 'auto',
-//            'margin-left': function () {
-//                return -($(this).width() / 2);
-//            }
-//        });
-        
-        // Add capslock listener and validation to forms in modals
         $(this).on('shown', function () {
             $(this).find("form").each(function(i,e) {
                 R.form.validate($(e));
@@ -68,11 +73,23 @@ $(document).ready(function(){
             $(this).find('input[type="password"]').each(function(i,e) {
                 R.CapsLock.listen($(e));
             });
-        });
-        
-    });    
-    
-    
+        });  
+//        $(this).on('hidden', function() {
+//            R.form.reset();
+//            $(this).removeData('modal');
+//        });
+        // Prevent backdrop
+        $(this).attr("data-backdrop", false);
+    });
+
+    // Add table filtering capability. Add class "searchable" to tbody element.
+    $('input.search-query').on('keyup', function() {
+        var pattern = new RegExp($(this).val(), 'i');
+        $('.searchable tr').hide();
+        $('.searchable tr').filter(function() {
+            return pattern.test($(this).text());
+        }).show();
+    });
     
     // Add form validation
     R.form.validate();

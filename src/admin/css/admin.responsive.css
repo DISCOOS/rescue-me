@@ -1,0 +1,81 @@
+/* 
+    Document   : admin.responsive.css
+    Created on : Jul 19, 2013, 3:50:46 PM
+    Author     : Kenneth Gulbrandsøy <kenneth@discoos.org>
+    Description:
+        Contains RescueMe Responsive CSS
+*/
+
+/* ==========================================
+/  Large desktop
+/  ==========================================*/
+
+@media (min-width: 1200px) { 
+
+    /* Use defaults */
+    
+}
+ 
+/* ==========================================
+/  Portrait tablet to landscape and desktop
+/  ==========================================*/
+
+@media (min-width: 768px) and (max-width: 979px) {  
+
+    /* Use defaults */
+    
+}
+
+/* ==========================================
+/  Landscape phone to portrait tablet
+/  ==========================================*/
+
+@media (max-width: 767px) {
+    
+	#googleMap {
+	  clear: left;
+	  width: 100%;
+	  height: auto;
+	  min-height: 300px;
+	  float: left;
+	}
+    
+	#sidebar {
+	  margin: 0px 0px 0px 10px;
+	  padding: 0px;
+	  float: left;
+	  width: 200px;
+	  height: 400px;
+	  overflow-y: scroll;
+	}
+    
+    /* Make dropdown toggles easier to hit */
+    .editor .dropdown-toggle {
+        width: 1.25em;
+    }
+    
+}
+
+/* ==========================================
+/  Landscape phones and down
+/  ==========================================*/
+
+@media (max-width: 480px) { 
+    
+    /* Make search field smaller */
+    input.search-query {
+        width: 5.25em;
+    }
+    
+    /* Make dropdown toggles easier to hit */
+    .editor .dropdown-toggle {
+        width: 1.25em;
+    }
+    
+    /* Allow names to wrap*/
+    .name {
+        white-space: normal;
+    }
+    
+}
+

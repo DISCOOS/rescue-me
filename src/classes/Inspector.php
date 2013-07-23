@@ -41,8 +41,8 @@
             foreach ($dir as $file) {
                 if($file->isFile()) {
                     $basename = $file->getBasename($extension);
-                    $subclassName = $namespace.$separator.$basename;
-                    if(class_exists($subclassName)) {
+                    $subclassName = ltrim($namespace.$separator.$basename,$separator);
+                    if($subclassName !== 'Inspector' && class_exists($subclassName)) {
                         $class = new ReflectionClass($namespace.$separator.$basename);
                         if($class->isSubclassOf($className)) {
                             $classes[$subclassName] = $basename;

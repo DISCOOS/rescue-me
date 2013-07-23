@@ -24,7 +24,9 @@
             'admin.less' => array
             (
                 '//css/bootstrap.min.css', 
-                '//admin/css/admin.css'
+                '//admin/css/admin.css',
+                '//admin/css/admin.responsive.css'
+
             ),
             'admin.js' => array
             (

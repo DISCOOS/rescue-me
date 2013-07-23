@@ -18,23 +18,36 @@
     class Module
     {
         const TABLE = "modules";
-        const FILTER = "`type`='%1\$s'";
         
         private static $fields = array('type', 'impl', 'config');
         
+        public $id;
+        
         public $type;
+        
         public $impl;
+        
         public $config;
         
         
+        /**
+         * Constructor
+         * @param type $module Module definition
+         */
         private function __construct($module)
         {
+            $this->id = $module['module_id'];
             $this->type = ltrim($module['type'],"\\");
             $this->impl = ltrim($module['impl'],"\\");
             $this->config = json_decode($module['config'], true);
         }
         
         
+        /**
+         * Get all modules
+         * 
+         * @return boolean|\RescueMe\Module
+         */
         public static function getAll()
         {
             $res = DB::select(self::TABLE);
@@ -52,9 +65,28 @@
         }// getAll
         
         
+        /**
+         * Get module filter
+         * 
+         * @param mixed $type Module id or type
+         * 
+         * @return string
+         */
+        public static function filter($type) {
+            return is_numeric($type) ? "`module_id`=$type" : "`type`='".DB::escape(ltrim($type,"\\"))."'";
+        }
+        
+        
+        /**
+         * Check if module exists
+         * 
+         * @param mixed $type Module id or type
+         * 
+         * @return boolean
+         */
         public static function exists($type) 
         {
-            $res = DB::select(self::TABLE, "*", DB::prepare(self::FILTER,ltrim($type,"\\")));
+            $res = DB::select(self::TABLE, "*", Module::filter($type));
             
             return !DB::isEmpty($res);
         }
@@ -63,13 +95,13 @@
         /**
          * Get module definition
          * 
-         * @param string $type Module type
+         * @param mixed $type Module id or type
          * 
          * @return boolean|\RescueMe\Module
          */
         public static function get($type)
         {
-            $res = DB::select(self::TABLE, "*", DB::prepare(self::FILTER,ltrim($type,"\\")));
+            $res = DB::select(self::TABLE, "*", Module::filter(ltrim($type,"\\")));
             
             if(DB::isEmpty($res)) return false;
 
@@ -101,8 +133,8 @@
             $values = prepare_values(self::$fields, array($type, $impl, json_encode($config)));
                 
             if(self::exists($type)) {
-                
-                $res = DB::update(self::TABLE, $values, DB::prepare(self::FILTER,$type));
+                                
+                $res = DB::update(self::TABLE, $values, Module::filter($type));
             } 
             else {
                 

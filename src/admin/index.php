@@ -79,7 +79,13 @@ if(defined('USE_SILEX') && USE_SILEX) {
 	
 	die();
 } else 
+    
     require('router.php');
+
+    // Was ajax request?
+    if(is_ajax_request()) {
+        die();
+    }
 
 ?>
 <!DOCTYPE html>
@@ -102,7 +108,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
         <div class="container-narrow">
             
             <div class="masthead">
-
+                <a class="lead no-wrap" href="<?=APP_URI?>"><b><?= TITLE ?></b></a>                    
                 <ul class="nav nav-pills pull-right" style="display: <?= $_SESSION['logon'] ? 'block' : 'none' ?>;">
             <?php 
                 
@@ -120,17 +126,14 @@ if(defined('USE_SILEX') && USE_SILEX) {
                     <li class="dropdown">
                         <a id="drop2" class="dropdown-toggle" data-toggle="dropdown"><?= SYSTEM ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                            <li id="new-user">
-                                <a role="menuitem" data-toggle="modal" data-backdrop="false" href="#user-new">
-                                <b class="icon icon-plus-sign"></b><?= NEW_USER ?></a>
-                            </li>
+                            <?  insert_item(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign"); ?>
                             <li class="divider"></li>
                             <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
                             <li class="divider"></li>
-                            <li id="settings"><a href="<?= ADMIN_URI ?>setup/list"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
+                            <li id="settings"><a href="<?= ADMIN_URI ?>setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
                         </ul>
                     </li>
-                    <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm"><?= LOGOUT ?></a></li>
+                    <li id="logout"><a data-toggle="modal" href="#confirm"><?= LOGOUT ?></a></li>
                     
             <?php  } else { ?>  
                     
@@ -139,25 +142,32 @@ if(defined('USE_SILEX') && USE_SILEX) {
             <?php } ?>         
                     
                 </ul>
-                <a class="lead no-wrap" href="<?=APP_URI?>"><b><?= TITLE ?></b></a>
             </div>
+            
+            <div>
             
             <?php
                 
                 if($logon) {
                     
-                    // Insert modal forms
-                    insert_dialog_form("user-new", NEW_USER, 'gui/user.new.gui.php',  ADMIN_URI."user/new");
-
                     // Insert modal confirmations
                     insert_dialog_confirm("confirm", "Bekreft", "Vil du logge ut?", ADMIN_URI."logout");
                     
-                }
-                
+                }                
                 
                 require('gui/' . str_replace("/",".",$_ROUTER['view']) . '.gui.php'); 
                 
             ?>
+                
+            </div>                
         </div>
+        
+        <!-- Modal container filled by bootstrap.js -->
+        <? 
+            
+//            insert_form_dialog("dialog", isset($dialog) ? $dialog : "", insert_progress(100, false));
+            
+        ?>
+
     </body>
 </html>

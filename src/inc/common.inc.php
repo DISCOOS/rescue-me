@@ -171,7 +171,7 @@
         $missing = array();
         
         foreach(func_get_args() as $module) {
-            if(!\RescueMe\Module::exists($module))
+            if(!RescueMe\Module::exists($module))
             {
                 $missing[] = $module;
             }
@@ -181,7 +181,7 @@
         	return empty($missing);
         
         if(!empty($missing)) {
-            insert_errors(_("Missing modules").' ( <a href="'.ADMIN_URI.'setup/list">'. _("Configure"). "</a>): ", $missing);
+            insert_errors(_("Missing modules").' ( <a href="'.ADMIN_URI.'setup">'. _("Configure"). "</a>): ", $missing);
         }
         
         return empty($missing);

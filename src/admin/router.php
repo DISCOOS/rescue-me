@@ -48,14 +48,14 @@
             $_ROUTER['name'] = ABOUT;
             $_ROUTER['view'] = $_GET['view'];
             break;
-        case 'setup/list':
+        case 'setup':
             $_ROUTER['name'] = SETUP;
             $_ROUTER['view'] = $_GET['view'];
             break;
-        case 'module':
+        case 'setup/module':
             
             $_ROUTER['name'] = SETUP;
-            $_ROUTER['view'] = "setup/list";
+            $_ROUTER['view'] = $_GET['view'];
             
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -63,43 +63,25 @@
                 $config = array_exclude($_POST, array('type','class'));
                 
                 if(RescueMe\Module::set($_POST['type'], $_POST['class'], $config)) {
-                    header("Location: ".ADMIN_URI.'setup/list');
+                    header("Location: ".ADMIN_URI.'setup');
                     exit();
                 }
                 $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
-
             }
             
             break;
         case 'user':
-            $_ROUTER['name'] = USER;
-            $_ROUTER['view'] = $_GET['view'];
-            break;
-        case 'user/edit':
             
             $_ROUTER['name'] = USER;
             $_ROUTER['view'] = $_GET['view'];
             
-            // Get requested user
-            $user = User::get($_GET['id']);
-            
-            // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                
-                $username = User::safe($_POST['email']);
-                if(empty($username)) {
-                    $_ROUTER['message'] = 'Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn';
-                }
-                
-                if($user->update($_POST['name'], $_POST['email'], $_POST['mobile'])) {
-                    header("Location: ".ADMIN_URI.'user/list');
-                    exit();
-                }
-                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';
-                
-            }   
-            
             break;
+        
+        case 'user/list':
+            $_ROUTER['name'] = USERS;
+            $_ROUTER['view'] = $_GET['view'];
+            break;
+        
         case 'user/new':
             
             $_ROUTER['name'] = NEW_USER;
@@ -119,14 +101,40 @@
                     exit();
                 }
                 $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
-                
             }
             
+            $dialog = insert_form("dialog", NEW_USER, 'gui/user.new.gui.php',  ADMIN_URI."user/new", is_ajax_request());
+            
             break;
-        case 'user/list':
-            $_ROUTER['name'] = USERS;
+            
+        case 'user/edit':
+            
+            $id = $_GET['id'];
+            $_ROUTER['name'] = USER;
             $_ROUTER['view'] = $_GET['view'];
+            
+            // Get requested user
+            $user = User::get($id);
+            
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                $username = User::safe($_POST['email']);
+                if(empty($username)) {
+                    $_ROUTER['message'] = 'Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn';
+                }
+                
+                if($user->update($_POST['name'], $_POST['email'], $_POST['mobile'])) {
+                    header("Location: ".ADMIN_URI.'user/list');
+                    exit();
+                }
+                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';                
+            }   
+            
+            $dialog = insert_form("user-edit-$id", NEW_USER, 'gui/user.edii.gui.php',  ADMIN_URI."user/edit/$id", is_ajax_request());
+            
             break;
+        
         case 'missing/new':
             
             if(isset($_POST['mb_name'])) {
@@ -154,6 +162,6 @@
             $_ROUTER['view'] = $_GET['view'];
             break;
         default:
-            echo "JaJa...";
+            print_r($_REQUEST);
             break;
     }       

@@ -16,6 +16,11 @@
      * User class
      * 
      * @package RescueMe
+     * 
+     * @property integer $id User id
+     * @property string $name Full name
+     * @property string $email Email address
+     * @property string $mobile Mobile number
      */
     class User {
         

@@ -40,7 +40,7 @@
                         </ul>
                         {% endif %}
                     </li>
-                    <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm">{% trans "Log out" %}</a></li>
+                    <li id="logout"><a data-toggle="modal" href="#confirm">{% trans "Log out" %}</a></li>
                      {% embed "inc.dialog.twig" %}
                      	{% block message %}{% trans "Are you sure you want to log out?" %}{% endblock %}
                      	{% block target %}{{APP_ADMIN_URI}}logout{% endblock %}
