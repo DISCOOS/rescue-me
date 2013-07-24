@@ -508,3 +508,21 @@
         return "'" . $name . "' [" . dechex(\cim\common\crc32($name)) . "]";
     }// toDebug
     
+    
+    function is_osx() {
+        $uname = strtolower(php_uname());
+        return (strpos($uname, "darwin") !== false);
+    }
+
+    
+    function is_linux() {
+        $uname = strtolower(php_uname());
+        return (strpos($uname, "linux") !== false);
+    }
+
+    
+    function is_win() {
+        $uname = strtolower(php_uname());
+        return (strpos($uname, "win") !== false);
+    }
+    
