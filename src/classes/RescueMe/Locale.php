@@ -47,6 +47,28 @@
                 $codes[$code] = $country['dial_code'];
             }
             return $codes;
+        }        
+        
+        
+        /**
+         * Get ISO Country Code from current locale.
+         * 
+         * See <a href="http://www.icu-project.org/apiref/icu4c/uloc_8h.html#details">ICU's function uloc_getDefault</a>.
+         * 
+         * @return boolean|string ISO Country code, FALSE otherwise.
+         */
+        public static function getCurrentCountryCode() {
+            
+            // TODO: impl RescueMe\Properties::get('locale'), defaulting to host OS locale if not found when available
+            
+            if(extension_loaded("intl")) {
+                $locale = \locale_get_default(); //\Locale::getDefault();
+                $code = split("[_-]", $locale);
+                if(isset($code[1])) {
+                    return $code[1];
+                }
+            }
+            return false;
         }
         
         
@@ -62,7 +84,8 @@
             {
                 $codes[$code] = ucwords(strtolower($country['country_name']));
             }
-            asort(\reset($codes));
+            \reset($codes);
+            \asort($codes);
             return $codes;
         }
         
@@ -70,8 +93,8 @@
         /**
          * Get country information from ISO country code.
          * <p>
-         * Adapted from {@link http://ninetwozero.com/2011/12/04/php-country-array-with-dial-codes/ PHP Country-array with dial codes}
-         * by {@link http://www.ninetwozero.com/ Karl Lindmark}.
+         * Adapted from <a href="http://ninetwozero.com/2011/12/04/php-country-array-with-dial-codes/">PHP Country-array with dial codes</a>
+         * by <a href="http://www.ninetwozero.com/">Karl Lindmark</a>.
          * </p>
          * @param string $country ISO country code
          * @return array Country Information

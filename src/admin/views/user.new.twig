@@ -18,8 +18,15 @@
 			    <input class="span4" type="email" value="{{user.email}}" name="email" placeholder="{% trans "For logon and system alerts" %}" required />
 			</div>
 			<div class="controls">
+				<label>{% trans "Mobile country" %}</label>
+                <select name="country" placeholder="{% trans "For dial code" %}" required>
+                    {{countries}}
+                </select>
+			    <input type="tel" name="mobile" value="{{user.country}}" placeholder="{% trans "For dial code" %}" required />
+			</div>
+			<div class="controls">
 				<label>{% trans "Mobile phone" %}</label>
-			    <input type="tel" name="mobile" value="{{user.mobile}}" placeholder="{% trans "For tracing status" %}" required pattern="[4|9]{1}[0-9]{7}" />
+			    <input type="tel" name="mobile" value="{{user.mobile}}" placeholder="{% trans "For tracing status" %}" required pattern="[0-9]*" />
 			</div>
 		</fieldset>
 		
@@ -44,7 +51,7 @@
 		    </div>
    			<div class="controls">
 				<label>{% trans "Repeat password" %}</label>
-			    <input type="password" name="confirm-pwd" class="span3" placeholder="{% trans "Repeat password" %}" {% if editmode is not defined %}required{% endif %} equalto="#pwd" />
+			    <input type="password" name="confirm-pwd" class="span3" placeholder="{% trans "Repeat password" %}" {% if editmode is not defined %}required{% endif %} equalTo="#pwd" />
 			</div>
 		</fieldset>
 		

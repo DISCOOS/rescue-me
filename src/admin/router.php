@@ -95,7 +95,7 @@
                     $_ROUTER['message'] = 'Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn';
                 }
                 
-                $status = User::create($_POST['name'], $_POST['email'], $_POST['password'], $_POST['mobile']);
+                $status = User::create($_POST['name'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['mobile']);
                 if($status) {
                     header("Location: ".ADMIN_URI.'user/list');
                     exit();
@@ -122,7 +122,7 @@
                     $_ROUTER['message'] = 'Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn';
                 }
                 
-                if($user->update($_POST['name'], $_POST['email'], $_POST['mobile'])) {
+                if($user->update($_POST['name'], $_POST['email'], $_POST['country'], $_POST['mobile'])) {
                     header("Location: ".ADMIN_URI.'user/list');
                     exit();
                 }

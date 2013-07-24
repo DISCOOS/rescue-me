@@ -152,12 +152,14 @@
                 $fullname = in("Admin Full Name");
                 $username = in("Admin Username (e-mail)");
                 $password = in("Admin Password");
+                $country = in("Admin Country (ISO2)", Locale::getCurrentCountryCode());
+                $mobile = in("Admin Phone Number Without Int'l Dial Code");
                 
                 if(!defined('SALT'))
                 {
                     define('SALT', get($this->ini, 'SALT', null, false));
                 }
-                if(User::create($fullname, $username, $password) === FALSE) {
+                if(User::create($fullname, $username, $password, $country, $mobile) === FALSE) {
                     return ADMIN_NOT_CREATED." (".DB::error().")";
                 }// if                
                 

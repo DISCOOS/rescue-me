@@ -18,12 +18,20 @@
         'class' => 'row-fluid'
     );
     $group['value'][] = array(
+        'id' => 'country',
+        'type' => 'select', 
+        'value' => insert_options(\RescueMe\Locale::getCountryNames(), RescueMe\User::getCurrent()->mobile_country, false), 
+        'label' => _('Mobile country'),
+        'class' => 'span2',
+        'attributes' => 'required'
+    );    
+    $group['value'][] = array(
         'id' => 'mobile',
         'type' => 'tel', 
         'value' => $user->mobile, 
         'label' => _('Mobile'),
         'class' => 'span2',
-        'attributes' => 'required pattern="[4|9]{1}[0-9]{7}"'
+        'attributes' => 'required pattern="[0-9]*"'
     );
     $group['value'][] = array(
         'id' => 'email',
@@ -34,6 +42,8 @@
         'attributes' => 'required'
     );    
     $fields[] = $group;
+    
+    
     
     
     insert_form("user", _(EDIT_USER), $fields, ADMIN_URI."user/edit/$id");

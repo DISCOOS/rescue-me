@@ -18,12 +18,20 @@
         'class' => 'row-fluid'
     );
     $group['value'][] = array(
+        'id' => 'country',
+        'type' => 'select', 
+        'value' => insert_options(\RescueMe\Locale::getCountryNames(), null, false), 
+        'label' => _('Mobile country'),
+        'class' => 'span2',
+        'attributes' => 'required'
+    );    
+    $group['value'][] = array(
         'id' => 'mobile',
         'type' => 'tel', 
         'value' => $user->mobile, 
         'label' => _('Mobile'),
-        'class' => 'span3',
-        'attributes' => 'required pattern="[4|9]{1}[0-9]{7}"'
+        'class' => 'span2',
+        'attributes' => 'required pattern="[0-9]*"'
     );
     $group['value'][] = array(
         'id' => 'email',
@@ -34,6 +42,7 @@
         'attributes' => 'required'
     );    
     $fields[] = $group;
+    
     
     $group['value'] = array();
     $group['value'][] = array(
@@ -47,7 +56,7 @@
         'id' => 'repeat-pwd',
         'type' => 'password', 
         'label' => _('Repeat Password'),
-        'class' => 'span3',
+        'class' => 'span3 offset1',
         'attributes' => 'required equalTo="#password"'
     );    
     $fields[] = $group;

@@ -31,14 +31,16 @@
             "name", 
             "password", 
             "email", 
-            "mobile"
+            "mobile",
+            "mobile_country"
         );
         
         private static $update = array
         (
             "name", 
             "email", 
-            "mobile"
+            "mobile",
+            "mobile_country"
         );
         
         
@@ -48,11 +50,13 @@
          */
         public $id;
         
+        
         /**
          * Full name
          * @var string
          */
         public $name;
+        
         
         /**
          * User email (username)
@@ -60,11 +64,19 @@
          */
         public $email;
         
+        
         /**
          * User mobile number
          * @var string
          */
         public $mobile;
+        
+        
+        /**
+         * User mobile number country 
+         * @var string
+         */
+        public $mobile_country;
         
         
         /**
@@ -103,7 +115,17 @@
             }
             return $users;
             
-        }// getAll        
+        }// getAll     
+        
+        
+        /**
+         * Get current user.
+         * 
+         * @return boolean|User User instance if found, FALSE otherwise.
+         */
+        public static function getCurrent() {
+            return isset($_SESSION['user_id']) ? User::get($_SESSION['user_id']) : false;
+        }
         
         
         /**
@@ -143,10 +165,11 @@
          * @param string $name
          * @param string $email
          * @param string $password
+         * @param string $country
          * @param string $mobile
          * @return boolean
          */
-        public static function create($name, $email, $password, $mobile) {
+        public static function create($name, $email, $password, $country, $mobile) {
             
             $user = new User();
 
@@ -157,7 +180,7 @@
             if(empty($username) || empty($password))
                 return false;
             
-            $values = array((string) $name, (string) $password, (string) $email,  (int) $mobile);
+            $values = array((string) $name, (string) $password, (string) $email, (int) $mobile, (string) $country);
             
             $values = prepare_values(User::$insert, $values);
             
@@ -177,17 +200,18 @@
          * 
          * @param string $name
          * @param string $email
+         * @param string $country
          * @param string $mobile
          * @return boolean
          */
-        public function update($name, $email, $mobile) {
+        public function update($name, $email, $country, $mobile) {
             
             $username = User::safe(strtolower($email));
 
             if(empty($username))
                 return false;
             
-            $values = array((string) $name, (string) $email,  (int) $mobile);
+            $values = array((string) $name, (string) $email,  (int) $mobile, (string) $country);
             
             $values = prepare_values(User::$update, $values);
             

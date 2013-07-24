@@ -99,7 +99,7 @@
         $html = '';
         foreach($values as $key => $value)
         {
-            if($value === $selected) {
+            if($key === $selected) {
                 $html .= '<option selected value="'.$key.'">'.$value.'</option>';
             } 
             else {

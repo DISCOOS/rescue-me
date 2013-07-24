@@ -1,3 +1,6 @@
+<?
+    use RescueMe\Locale;    
+?>
 <h3>Start sporing av savnet</h3>
 <?php if(isset($_ROUTER['message'])) { ?>
 	<div class="alert alert-error">
@@ -16,10 +19,10 @@
 
 		<label for="m_mobile">Savnedes land (prefix)</label>
         <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="Velg land" required>
-            <?= insert_options(\RescueMe\Locale::getCountryNames()); ?>
+            <?= insert_options(Locale::getCountryNames(), Locale::getCurrentCountryCode()); ?>
         </select>
 		<label for="m_mobile">Savnedes mobilnummer</label>
-        <input class="input-block-level" type="tel" id="m_mobile" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[4|9]{1}[0-9]{7}">
+        <input class="input-block-level" type="tel" id="m_mobile" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
         
 	</fieldset>
 	
@@ -33,7 +36,7 @@
 		<input class="span3" type="email" id="mb_mail" name="mb_mail" placeholder="E-postadresse" required>
 
 		<label for="mb_name">Ditt mobilnummer</label>
-        <input class="span3" type="tel" id="mb_mobile" name="mb_mobile" placeholder="Kun siffer, ingen mellomrom"required pattern="[4|9]{1}[0-9]{7}">
+        <input class="span3" type="tel" id="mb_mobile" name="mb_mobile" placeholder="Kun siffer, ingen mellomrom"required pattern="[0-9]*">
 	</fieldset>
 
 	<div class="clearfix"></div>

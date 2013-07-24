@@ -13,13 +13,13 @@
 
 <? if(stristr($type,"select") !== false) { $class = (empty($class) ? 'input-block-level' : $class) ?> 
 
-<div class="controls">
-    <label><?= $label ?>
-        <select class="<?= $class ?>" id="<?= $id ?>" name="<?= $id ?>" type="select" <?= $attributes ?>>
-            <?= $value ?>
-        </select>
-    </label>
+<div class="<?= $class ?>">
+    <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
+    <select id="<?= $id ?>" name="<?= $id ?>" type="select" class="input-block-level" <?= $attributes ?>>
+        <?= $value ?>
+    </select>
 </div>
+
 <? } elseif(stristr($type,"group") !== false) { $class = (empty($class) ? 'row-fluid' : $class) ?> 
 
 <div class="<?= $class ?>">
@@ -54,8 +54,9 @@
 
 <? } else { $class = (empty($class) ? 'input-block-level' : $class) ?>
 
-    <div class="<?= $class ?>">
-        <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
-        <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>" placeholder="<?= $label ?>" class="input-block-level" <?= $attributes ?> value="<?= $value ?>">        
-    </div>
+<div class="<?= $class ?>">
+    <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
+    <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>" placeholder="<?= $label ?>" class="input-block-level" <?= $attributes ?> value="<?= $value ?>">        
+</div>
+
 <? } ?>

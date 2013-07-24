@@ -60,9 +60,9 @@
             }
         }        
         if(!extension_loaded("intl")) {
-            out("RescueMe requires 'intl' extension to be enabled.\n", POST, COLOR_ERROR);
+            out("Extension 'intl' should be enabled for better locale handling.\n", POST, COLOR_INFO);
             out('On linux: "sudo apt-get install php5-intl"', POST, COLOR_ERROR);
-            out('On windows: Uncomment "extension = php_intl.dll" in php.ini', POST, COLOR_ERROR);
+            out('On windows: Uncomment "extension = php_intl.dll" in php.ini', POST, COLOR_INFO);
         }        
         
         // Get options
