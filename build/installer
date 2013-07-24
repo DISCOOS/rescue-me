@@ -47,7 +47,6 @@
     if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
 
         if (extension_loaded('suhosin')) {
-            echo "suhosin";
             if (stristr(ini_get('suhosin.executor.include.whitelist'), 'phar') === false) {
                 out("RescueMe Download Script requires 'phar://' includes to be enabled.", POST, COLOR_ERROR);
                 out("Add 'phar' to 'suhosin.executor.include.whitelist' in 'php.ini'.", POST, COLOR_ERROR);
@@ -55,10 +54,15 @@
             }
             if (stristr(ini_get('suhosin.executor.include.blacklist'), 'phar') !== false
             ) {
-                echo "RescueMe Download Script requires 'phar://' includes to be enabled.\n\n";
-                echo "Remove 'phar' from 'suhosin.executor.include.blacklist' in 'php.ini'.\n";
+                out("RescueMe Download Script requires 'phar://' includes to be enabled.\n", POST, COLOR_ERROR);
+                out("Remove 'phar' from 'suhosin.executor.include.blacklist' in 'php.ini'.", POST, COLOR_ERROR);
                 exit(ERROR);
             }
+        }        
+        if(!extension_loaded("intl")) {
+            out("RescueMe requires 'intl' extension to be enabled.\n", POST, COLOR_ERROR);
+            out('On linux: "sudo apt-get install php5-intl"', POST, COLOR_ERROR);
+            out('On windows: Uncomment "extension = php_intl.dll" in php.ini', POST, COLOR_ERROR);
         }        
         
         // Get options
