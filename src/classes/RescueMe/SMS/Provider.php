@@ -20,6 +20,11 @@
     interface Provider
     {
         /**
+         * Fatal error constant
+         */
+        const FATAL = -1;
+        
+        /**
          * Get configuration
          * 
          * @return array Associative array of parameters.
@@ -29,20 +34,50 @@
         /**
          * Send SMS message to given number.
          * 
-         * @param string $country Recipient countryprefix (no leading 00 or +)
-         * @param string $to Recipient phone number
-         * @param string $from Sender phone number
+         * @param string $from Sender
+         * @param string $code International dial code
+         * @param string $to Recipient phone number without dial code
          * @param string $message Message text
          * 
-         * @return mixed Message id (mixed) if success, errors otherwise (array).
+         * @return mixed|array Message id if success, FALSE otherwise.
          */
-        public function send($country,$to,$from,$message);
+        public function send($from, $code, $to, $message);
         
         /**
-         * Get the providers prefix for international numbers (usually 00 or +)
+         * Get supported country dial code pattern.
          * 
-         * @return string Prefix for international numbers
+         * See {@link http://countrycode.org/ Country Codes} for more information.
+         * 
+         * @return string Country code as 
+         * {@link http://www.php.net/manual/en/pcre.pattern.php PCRE pattern}
          */
-        public function getInternationalPrefix();
+        public function getDialCodePattern();
+        
+        
+        /**
+         * Check if provider accepts given telephone number.
+         * 
+         * @param mixed $number
+         * 
+         * @return boolean|string. Accepted code, FALSE otherwise
+         */
+        public function accept($number);
+        
+        
+        /**
+         * Returns the error code for the most recent function call.
+         * 
+         * @return integer An error code value for the last call, if it failed. zero means no error occurred.
+         */
+        public function errno();
+        
+        
+        /**
+         * Returns a string description of the last error.
+         * 
+         * @return string A string that describes the error. An empty string if no error occurred.
+         */
+        public function error();
+        
         
     }// Provider

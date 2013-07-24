@@ -153,6 +153,13 @@
         return $values;
     }
     
+    /**
+     * Exclude given key(s) from array
+     * 
+     * @param array $array
+     * @param mixed $key
+     * @return array
+     */
     function array_exclude($array, $key) {
         $values = array();
         foreach($array as $name => $value) {

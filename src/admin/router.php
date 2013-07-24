@@ -103,8 +103,6 @@
                 $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
             }
             
-            $dialog = insert_form("dialog", NEW_USER, 'gui/user.new.gui.php',  ADMIN_URI."user/new", is_ajax_request());
-            
             break;
             
         case 'user/edit':
@@ -131,27 +129,37 @@
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';                
             }   
             
-            $dialog = insert_form("user-edit-$id", NEW_USER, 'gui/user.edii.gui.php',  ADMIN_URI."user/edit/$id", is_ajax_request());
-            
             break;
         
         case 'missing/new':
             
-            if(isset($_POST['mb_name'])) {
-                require_once(APP_PATH_INC.'common.inc.php');
+            $_ROUTER['name'] = 'Start sporing av savnet';
+            $_ROUTER['view'] = $_GET['view'];
+            
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
                 $operation = new RescueMe\Operation;
-                $operation = $operation->addOperation($_POST['m_name'], 
-                                                $user->id, 47, $_POST['mb_mobile']);
+                
+                $operation = $operation->addOperation(
+                    $_POST['m_name'], 
+                    $user->id, 
+                    "NO", 
+                    $_POST['mb_mobile']);
+                
                 $missing = new RescueMe\Missing;
-                $status = $missing->addMissing($_POST['m_name'], $_POST['m_mobile'], $operation->id);
+                $status = $missing->addMissing(
+                    $_POST['m_name'], 
+                    $_POST['m_mobile_country'], 
+                    $_POST['m_mobile'], $operation->id);
+                
                 if($status) {
                     header("Location: ".ADMIN_URI.'missing/'.$operation->id);
                     exit();
                 }
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';
             }
-            $_ROUTER['name'] = 'Start sporing av savnet';
-            $_ROUTER['view'] = $_GET['view'];
+            
             break;
         case 'missing/list':
             $_ROUTER['name'] = 'Alle savnede';
@@ -162,6 +170,6 @@
             $_ROUTER['view'] = $_GET['view'];
             break;
         default:
-            print_r($_REQUEST);
+            insert_error(str_replace("\n", "<br />", print_r($_REQUEST,true)));
             break;
     }       

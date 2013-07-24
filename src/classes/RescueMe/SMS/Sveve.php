@@ -27,6 +27,12 @@
         private $account;
         
         /**
+         * Description of last error
+         * @var array
+         */
+        private $errors;
+        
+        /**
          * Constructor
          *
          * @param string $user Sveve user credentials
@@ -65,15 +71,29 @@
             );
         }// newConfig
         
-        public function send($country, $to, $from, $message)
+        public function send($from, $country, $to, $message)
         {
+            // Prepare
+            unset($this->errors);
+            
+            if(!($code = $code = \RescueMe\Locale::getDialCode($country)))
+            {
+                return $this->fatal("Failed to get country dial code [$country]");
+            }               
+                
+            if(!$this->accept($code)) {
+                return $this->fatal("SMS provider does not accept recipient [$to]");
+            }
+
+            $number = $code.$to; 
+            
             // Create SMS provider url
             $smsURL = utf8_decode
             (
                   'https://www.sveve.no/SMS/SendSMS'
                 . '?user='.$this->account['fields']['user']
-                . '&to='.$this->getInternationalPrefix().$country.$to
                 . '&from='.$from
+                . '&to='.$number
                 . '&msg='.urlencode($message)
                 .(!empty($this->account['fields']['passwd']) ? '&passwd='.$this->account['fields']['passwd'] : '')
             );
@@ -97,14 +117,60 @@
             }
             else
             {
-                return $response['errors'];
+                return $this->errors($response['errors']);
             }
             
         }// send
         
-        public function getInternationalPrefix() {
-            return '00';
+        
+        public function getDialCodePattern() {
+            return '\d{1,4}';
         }
+        
+        
+        public function accept($code) {
+            $pattern = $this->getDialCodePattern();
+            if(preg_match("#$pattern#", $code) === 1) {
+                return sprintf("%04d",$code);
+            }
+            return false;
+        }        
+                
+        
+        public function errno()
+        {
+            return isset($this->errors) ? \count($this->errors) : 0;
+        }
+
+
+        public function error()
+        {
+            $errors = array();
+            if(isset($this->errors)) {
+                foreach($this->errors as $error) {
+                    if(isset($error['fatal'])) {
+                        return $error['fatal'];
+                    } else {
+                        $errors[] = $error['number'].":".$error['message'];
+                    }
+                }
+            }
+            return implode("\n", $errors);
+        }        
+
+        
+        private function fatal($message) {
+            $this->errors['fatal'] = $message;
+            return false;
+        }
+
+        
+        private function errors($errors)
+        {
+            $this->errors = $errors;
+            return false;
+        }
+        
         
         public function delivered($provider_ref, $to, $status, $errorDesc='') {
             if (empty($provider_ref) || empty($to) || empty($status))

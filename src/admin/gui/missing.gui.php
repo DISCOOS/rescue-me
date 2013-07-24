@@ -71,7 +71,7 @@
 <div class="infos clear-fix">
 	<div class="info pull-left">
 		<label class="label label-important">Sporingslenke den savnede bruker</label> 
-		<?= APP_URL.'l/'.$missing->id.'/'.$missing->m_mobile; ?>
+		<?= APP_URL."l/$missing->id/$missing->m_mobile_country/$missing->m_mobile"; ?>
 	</div>
 </div>
 <?php

@@ -28,6 +28,14 @@
          */
         private $account;
         
+        
+        /**
+         * Last error
+         * @var \Exception
+         */
+        private $error;
+        
+        
         /**
          * constructor for SMS
          *
@@ -68,40 +76,85 @@
             );
         }// newConfig
         
-        public function send($country, $to, $from, $message)
+        public function send($from, $country, $to, $message)
         {
             try {
                 
+                // Prepare
+                unset($this->error);
+                
+                if(!($code = $code = \RescueMe\Locale::getDialCode($country)))
+                {
+                    return $this->fatal("Failed to get country dial code [$country]");
+                }               
+                
+                if(!($code = $this->accept($code))) {
+                    return $this->fatal("SMS provider does not accept recipient [$to]");
+                }
+                
+                $number = $code.$to; 
+            
                 $sms = array
                 (
                     "from" => $from,
                     "text" => $message,
                     "schedule" => time()  // send immediately, to send in one hour use: time()+3600
                 );
-
-                $recipients = array($this->getInternationalPrefix().$country.$to);
-
-                $settings = array
-                (
-                    "splitMessages" => true,
-                    "splitFormat" => "(%d/%t)\\n",
-                );
+                
+                $recipients = array($number);
 
                 $client = new \SoapClient(UMS::WDSL_URL);
-                $refno = $client->doSendSMS($this->account["fields"], $sms, $recipients, $settings);
+                
+                $refno = $client->doSendSMS($this->account["fields"], $sms, $recipients);
+                
                 return $refno;
                 
             }
             catch(\Exception $e) 
             {
-                return array(array('number' => $e->getCode() ,'message' => "$e"));
+                return $this->exception($$e);
             }
             
         }// send
         
-        public function getInternationalPrefix() {
-            return '00';
+        public function getDialCodePattern() {
+            return '\d{1,4}';
         }
+        
+        
+        public function accept($code) {
+            $pattern = $this->getDialCodePattern();
+            if(preg_match("#$pattern#", $code) === 1) {
+                return sprintf("%04d",$code);
+            }
+            return false;
+        }        
+        
+        
+        public function errno()
+        {
+            return isset($this->error) ? $this->error['code'] : 0;
+        }
+
+
+        public function error()
+        {
+            return isset($this->error) ? $this->error['message'] : '';
+        }        
+        
+        private function exception(\Exception $e) {
+            $this->error['code'] = $e->getCode();
+            $this->error['message'] = $e->getMessage();
+            return false;
+        }
+        
+        
+        private function fatal($message) {
+            $this->error['code'] = Provider::FATAL;
+            $this->error['message'] = $message;
+            return false;
+        }
+        
 
 
     }// UMS

@@ -11,29 +11,29 @@
 	<fieldset class="span6 new-missing pull-left">
 		<legend>Den savnede</legend>
 
-		<label>Savnedes navn</label>
-		<input class="input-block-level" type="text" name="m_name" placeholder="Fullt navn" autofocus required>
-		<span class="help-block"></span>
+		<label for="m_name">Savnedes navn</label>
+		<input class="input-block-level" type="text" id="m_name" name="m_name" placeholder="Fullt navn" autofocus required>
 
-		<label>Savnedes mobilnummer</label>
-		<input class="input-block-level" type="tel" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[4|9]{1}[0-9]{7}">
-		<span class="help-block"></span>
+		<label for="m_mobile">Savnedes land (prefix)</label>
+        <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="Velg land" required>
+            <?= insert_options(\RescueMe\Locale::getCountryNames()); ?>
+        </select>
+		<label for="m_mobile">Savnedes mobilnummer</label>
+        <input class="input-block-level" type="tel" id="m_mobile" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[4|9]{1}[0-9]{7}">
+        
 	</fieldset>
 	
 	<fieldset class="span6 new-missing pull-left">
 		<legend>Om deg</legend>
 
-		<label>Ditt navn</label>
-		<input class="input-block-level"  type="text" name="mb_name" placeholder="Fullt navn" required>
-		<span class="help-block"></span>
+		<label for="mb_name">Ditt navn</label>
+		<input class="input-block-level"  type="text" id="mb_name" name="mb_name" placeholder="Fullt navn" required>
 
-		<label>Din e-postadresse</label>
-		<input class="input-block-level" type="email" name="mb_mail" placeholder="E-postadresse" required>
-		<span class="help-block"></span>
+		<label for="mb_name">Din e-postadresse</label>
+		<input class="span3" type="email" id="mb_mail" name="mb_mail" placeholder="E-postadresse" required>
 
-		<label>Ditt mobilnummer</label>
-		<input class="input-block-level" type="tel" name="mb_mobile" placeholder="Kun siffer, ingen mellomrom"required pattern="[4|9]{1}[0-9]{7}">
-		<span class="help-block"></span>
+		<label for="mb_name">Ditt mobilnummer</label>
+        <input class="span3" type="tel" id="mb_mobile" name="mb_mobile" placeholder="Kun siffer, ingen mellomrom"required pattern="[4|9]{1}[0-9]{7}">
 	</fieldset>
 
 	<div class="clearfix"></div>

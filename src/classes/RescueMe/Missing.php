@@ -24,6 +24,7 @@ class Missing
     private static $fields = array
     (
         "missing_name", 
+        "missing_mobile_country", 
         "missing_mobile", 
         "missing_reported",
         "op_id"
@@ -34,6 +35,7 @@ class Missing
     public $m_name;
     public $m_mobile;
     public $alert_mobile;
+    
     private $last_UTM;
     private $last_acc;
     private $sms2_sent;
@@ -47,11 +49,12 @@ class Missing
      * @param integer $phone Missing phone number (if more than one)
      * @return mixed. Instance of \RescueMe\Missing is success, FALSE otherwise.
      */
-    public static function getMissing($id, $phone = -1){
+    public static function getMissing($id, $code = -1, $phone = -1){
         $missing = new Missing();
         $missing->id = $id;
 
         $query = "SELECT * FROM `missing` WHERE `missing_id`=" . (int) $missing->id;
+        if($code !== -1) $query .= " AND `missing_mobile_country`='" . (string) $code . "'";
         if($phone !== -1) $query .= " AND `missing_mobile`=" . (int) $phone;
         $res = DB::query($query);
 
@@ -73,22 +76,22 @@ class Missing
     }// getMissing
 
 
-    public function addMissing($m_name, $m_mobile, $op_id){
+    public function addMissing($m_name, $m_mobile_country, $m_mobile, $op_id){
 
-        if(empty($m_name) || empty($m_mobile) || empty($op_id))
+        if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($op_id))
             return false;
 
-        $values = array((string) $m_name,  (int) $m_mobile, "NOW()", (int) $op_id);            
+        $values = array((string) $m_name,  (string) $m_mobile_country, (int) $m_mobile, "NOW()", (int) $op_id);            
         $values = prepare_values(self::$fields, $values);
 
         $this->id = DB::insert(self::TABLE, $values);
 
-        if(!$this->id) 
+        if(!$this->id) {
             return false;
+        }
 
-        $missing = self::getMissing($this->id);            
-        return $missing->sendSMS();
-
+        return self::getMissing($this->id)->sendSMS();            
+        
     }// addMissing
 
 
@@ -166,7 +169,9 @@ class Missing
 
             // Is SMS2 already sent
             if($this->sms2_sent == 'false'){
-                $this->_sendSMS($this->m_mobile, SMS2_TEXT);
+                
+                $this->_sendSMS($this->m_mobile_country, $this->m_mobile, SMS2_TEXT);
+                
                 $query = "UPDATE `missing` SET `sms2_sent` = 'true' WHERE `missing_id` = '" . $this->id . "';";
                 $res = DB::query($query);
                 if(!$res){
@@ -176,16 +181,21 @@ class Missing
         }
 
         // Alert person of concern if an accurate position is logged
-        else {
-            if($this->sms_mb_sent == 'false') {
-                $this->_sendSMS($this->alert_mobile['country'], 
-                                $this->alert_mobile['mobile'], SMS_MB_TEXT);
-                $query = "UPDATE `missing` SET `sms_mb_sent` = 'true' WHERE `missing_id` = '" . $this->id . "';";
-                $res = DB::query($query);
-                if(!$res){
-                    trigger_error("Failed execute [$query]: " . DB::error(), E_USER_WARNING);
-                }// if
+        else if($this->sms_mb_sent == 'false') {
+                
+            if(!$this->_sendSMS(
+                $this->alert_mobile['country'], 
+                $this->alert_mobile['mobile'], 
+                SMS_MB_TEXT)) {
+                return false;
             }
+
+            $query = "UPDATE `missing` SET `sms_mb_sent` = 'true' WHERE `missing_id` = '" . $this->id . "';";
+            $res = DB::query($query);
+            if(!$res) {
+                trigger_error("Failed execute [$query]: " . DB::error(), E_USER_WARNING);
+            }// if
+            
         }
 
         // Insert new position
@@ -203,16 +213,23 @@ class Missing
 
 
     public function sendSMS(){
+        
         $res = $this->_sendSMS($this->m_mobile_country, $this->m_mobile, SMS_TEXT);
+        
         if(!$res) {
-           $res = $this->_sendSMS($this->alert_mobile['country'], 
-                        $this->alert_mobile['mobile'], SMS_NOT_SENT);
+            
+           $res = $this->_sendSMS(
+               $this->alert_mobile['country'], 
+               $this->alert_mobile['mobile'], 
+               SMS_NOT_SENT);
         }
 
         else {
+            
             $query = "UPDATE `missing` SET `sms_sent` = '".date("Y-m-d H:i:s")."',
                       `sms_provider_ref` = '".$res."'
                       WHERE `missing_id` = '" . $this->id . "';";
+            
             if(!DB::query($query)) {
                 trigger_error("Failed execute [$query]: ".DB::error(), E_USER_WARNING);
             }
@@ -221,36 +238,61 @@ class Missing
         return $res;
 
     }// sendSMS
-
-
-    private function _sendSMS($country, $to, $message) {
-       ## Facebook-copy fix (includes 3 invisible chars..)
-        if(strlen($to) == 11 && (int) $to == 0)
-            $to = substr($to, 3);
-
-        // Create message
-        $message = str_replace
-        (
-            array('#missing_id', '#to', '#m_name', '#acc', '#UTM'), 
-            array($this->id, $to, $this->m_name, $this->last_acc, $this->last_UTM),
-            $message
-        );
-
-        $module = Module::get("RescueMe\SMS\Provider");
-        $sms = $module->newInstance();
-
-        if(!$sms)
+    
+    
+    private function getDialCode($country) {
+        
+        $code = Locale::getDialCode($country);
+        
+        if(!$code)
         {
-            insert_error("Failed!");
+            insert_error("Failed to get country dial code [$country]");
             return false;
         }
+        return $code;
+    }
 
-        return $sms->send($country, $to, SMS_FROM, $message);
+
+    /**
+     * Send SMS
+     * 
+     * @param string $country International phone number to sender
+     * @param string $to Local phone number to recipient (without country dial code)
+     * @param string $message Message string
+     * 
+     * @return mixed|array Message id if success, errors otherwise (array).
+     */
+    private function _sendSMS($country, $to, $message) {
+
+        $sms = Module::get("RescueMe\SMS\Provider")->newInstance();
+        if(!$sms)
+        {
+            insert_error("Failed to get SMS provider");
+            return false;
+        }
+        
+        // facebook-copy fix (includes 3 invisible chars..)
+        if(strlen($to) == 11 && (int) $to == 0) {
+            $to = substr($to, 3);
+        }
+        
+        $message = str_replace
+        (
+            array('#missing_id', '#country', '#to', '#m_name', '#acc', '#UTM'), 
+            array($this->id, $country, $to, $this->m_name, $this->last_acc, $this->last_UTM),
+            $message
+        );
+        
+        $res = $sms->send(SMS_FROM, $country, $to, $message);
+        if(!$res) {
+            insert_error($sms->error());
+        }
+        return $res;
 
     }// _sendSMS
 
     public function getError() {
-            return DB::error();
+        return DB::error();
     }
 
 }// Missing

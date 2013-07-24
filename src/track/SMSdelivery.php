@@ -9,8 +9,7 @@
      * @author Sven-Ove Bjerkan <post@sven-ove.no>
      */
 
-    require_once('../config.php');
-    require_once(APP_PATH_INC.'common.inc.php');
+    require('../config.php');
 
     use RescueMe\Module;
     $module = Module::get("RescueMe\SMS\Provider");

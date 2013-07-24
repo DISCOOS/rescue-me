@@ -57,7 +57,7 @@ R.track.locate = function() {
             }
         }
 
-        var url = R.app.url + "r/" + query.id + "/" + query.phone + "/" + (5) + "/" + y.latitude + "/" + y.longitude + "/" + y.accuracy + "/" + y.altitude;
+        var url = R.app.url + "r/" + query.id + "/" + query.country + "/" + query.phone + "/" + (5) + "/" + y.latitude + "/" + y.longitude + "/" + y.accuracy + "/" + y.altitude;
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
     }

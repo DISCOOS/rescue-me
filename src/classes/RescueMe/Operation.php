@@ -61,17 +61,20 @@ class Operation {
      * 
      * @param string $op_name Operation name
      * @param int $user_id User ID of the "owner" (Tip: often $_SESSION['user_id'])
-     * @param string $alert_mobile_country Country phoneprefix
+     * @param string $alert_mobile_country Country code (ISO)
      * * @param string $alert_mobile Mobilephone to alert of recieced positions, etc
      * @param string $op_ref Reference of the operation, like SAR-number or something
      * @param string $op_comments Any comments to the operation
      * @return boolean
      */
-    public function addOperation($op_name, $user_id, $alert_mobile_country, 
-                                    $alert_mobile, $op_ref = '', $op_comments = ''){
+    public function addOperation(
+        $op_name, $user_id, $alert_mobile_country, 
+        $alert_mobile, $op_ref = '', $op_comments = ''){
+        
         if(empty($op_name) || empty($user_id) || 
-                empty($alert_mobile_country) || empty($alert_mobile))
-            return false;
+                empty($alert_mobile_country) || empty($alert_mobile)) {
+            return false;            
+        }
 
         $values = array((int) $user_id, (string) $op_name, (string) $alert_mobile_country, 
                 (string) $alert_mobile, (string) $op_ref, "NOW()", (string) $op_comments);
@@ -79,8 +82,9 @@ class Operation {
         $values = prepare_values(self::$fields, $values);
         $this->id = DB::insert(self::TABLE, $values);
 
-        if(!$this->id) 
+        if(!$this->id) {
             return false;
+        }
 
         $operation = self::getOperation($this->id);
 

@@ -3,7 +3,7 @@
 
 <html><head><title><?=TITLE?></title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
         
-<? if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['phone']) || strlen($_GET['phone']) != 8) { ?>
+<? if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['country']) || !isset($_GET['phone'])) { ?>
         
 </head><body><?=insert_error('Ugyldig link!');?></body>
 
@@ -13,7 +13,7 @@
 
 <? } else { ?>
 
-<script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&phone=<?=$_GET['phone']?>"></script></head>
+<script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&country=<?=$_GET['country']?>&phone=<?=$_GET['phone']?>"></script></head>
 <body onLoad="R.track.locate();"><div id="feedback">Beregner posisjon...</div></body>
 
 <? } ?>

@@ -9,7 +9,6 @@ Options +FollowSymlinks
 <IfModule mod_rewrite.c>
     
     RewriteEngine on    
-    # RewriteBase /
 
     # Rewrite resource URIs to minify
     RewriteRule ^js/(.*\.js) min/g=$1 [NE]
@@ -20,17 +19,17 @@ Options +FollowSymlinks
     # Location request - first try
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^l/([0-9]+)/([0-9]{8})$ track/locate.php?id=$1&phone=$2 [L]
+    RewriteRule ^l/([0-9]+)/([a-zA-Z]*)/([0-9]{8})$ track/locate.php?id=$1&country=$2&phone=$3 [L]
 
     # Location request - repeated tries
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^l/([0-9]+)/([0-9]{8})/([0-9]+)?$ track/locate.php?id=$1&phone=$2&attempt=$3 [L]
+    RewriteRule ^l/([0-9]+)/([a-zA-Z]*)/([0-9]*)/([0-9]+)?$ track/locate.php?id=$1&country=$2&phone=$3&attempt=$4 [L]
 
     # Location response
-    RewriteCond %{SCRIPT_FILENAME} !-d  
+    RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^r/([0-9]+)/([0-9]{8})/([0-9]+)/(.*)/(.*)/(.*)/(.+)$ track/report.php?id=$1&phone=$2&attempt=$3&lat=$4&lon=$5&acc=$6&alt=$7 [L]
+    RewriteRule ^r/([0-9]+)/([a-zA-Z]*)/([0-9]*)/([0-9]+)/(.*)/(.*)/(.*)/(.+)$ track/report.php?id=$1&country=$2&phone=$3&attempt=$4&lat=$5&lon=$6&acc=$7&alt=$8 [L]
     
     
 </IfModule>
