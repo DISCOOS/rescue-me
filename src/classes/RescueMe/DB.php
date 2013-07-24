@@ -400,7 +400,7 @@
                         $exists[] = $row[0];
                     }
                     $columns = DB::columns($create, $table);
-                    foreach(split(",", $columns) as $sql)
+                    foreach(explode(",", $columns) as $sql)
                     {
                         if(strpos($sql, "`") === 0)
                         {
