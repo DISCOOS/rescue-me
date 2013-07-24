@@ -59,15 +59,19 @@
          */
         public static function getCurrentCountryCode() {
             
-            // TODO: impl RescueMe\Properties::get('locale'), defaulting to host OS locale if not found when available
+            $locale = Properties::get(Properties::SYSTEM_LOCALE);
             
-            if(extension_loaded("intl")) {
-                $locale = \locale_get_default(); //\Locale::getDefault();
+            if(!isset($locale) && extension_loaded("intl")) {
+                $locale = \locale_get_default();
+            }
+            
+            if(isset($locale)) {
                 $code = split("[_-]", $locale);
                 if(isset($code[1])) {
                     return $code[1];
                 }
             }
+            
             return false;
         }
         
