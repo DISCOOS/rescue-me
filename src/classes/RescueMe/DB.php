@@ -224,6 +224,32 @@
         
         
         /**
+         * Delete rows from given table.
+         * 
+         * @param string $table
+         * @param string $filter
+         * 
+         * @return boolean TRUE on success, FALSE otherswise.
+         */
+        public static function delete($table, $filter='')
+        {
+            $fields = "`" . implode("`,`", array_keys($values)) . "`";
+            $inserts = array();
+            foreach($values as $value) {
+                if(is_string($value) && !is_function($value)) 
+                    $value = "'" . DB::escape($value) . "'";
+                $inserts[] = $value;
+            }
+            
+            $query = "DELETE FROM `$table`";
+            if($filter) $query .= " WHERE $filter";            
+            
+            return DB::query($query);
+            
+        }// delete        
+        
+        
+        /**
          * Update table with given values.
          * 
          * @param string $table
