@@ -98,14 +98,8 @@
     {
         $html = '';
         foreach($values as $key => $value)
-        {
-            if($key === $selected) {
-                $html .= '<option selected value="'.$key.'">'.$value.'</option>';
-            } 
-            else {
-                $html .= '<option value="'.$key.'">'.$value.'</option>';
-            }
-        }
+            $html .= '<option value="'.$key.'"'.(($key === $selected) ? ' selected' : '').'>'.$value.'</option>';
+
         if($output) echo $html;
         return $html;
     }

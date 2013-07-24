@@ -82,7 +82,7 @@
             $codes = array();
             foreach(self::$countries as $code => $country)
             {
-                $codes[$code] = ucwords(strtolower($country['country_name']));
+                $codes[$code] = ucwords(strtolower($country['country_name'])).' (+'.$country['dial_code'].')';
             }
             \reset($codes);
             \asort($codes);
