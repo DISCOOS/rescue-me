@@ -14,15 +14,15 @@
 	<fieldset class="span6 new-missing pull-left">
 		<legend>Den savnede</legend>
 
-		<label for="m_name">Savnedes navn</label>
-		<input class="input-block-level" type="text" id="m_name" name="m_name" placeholder="Fullt navn" autofocus required>
+		<label for="m_name">Savnedes fornavn</label>
+		<input class="input-block-level" type="text" id="m_name" name="m_name" placeholder="Fornavn" autofocus required>
 
 		<label for="m_mobile">Savnedes land (prefix)</label>
-        <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="Velg land" required>
+        <select class="input-block-level country" id="m_mobile_country" name="m_mobile_country" placeholder="Velg land" required>
             <?= insert_options(Locale::getCountryNames(), Locale::getCurrentCountryCode()); ?>
         </select>
 		<label for="m_mobile">Savnedes mobilnummer</label>
-        <input class="input-block-level" type="tel" id="m_mobile" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
+                <span id="flag" class="pull-left"></span> <input class="input-append" type="tel" id="m_mobile" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
         
 	</fieldset>
 	
