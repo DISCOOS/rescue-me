@@ -49,7 +49,7 @@ R.track.locate = function() {
                 xmlhttp = false;
             }
         }
-xmlhttp = false;
+
         var query = R.toQuery(document.scripts.namedItem("track").src);
 
         console.log(query);
