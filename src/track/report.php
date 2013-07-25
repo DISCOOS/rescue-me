@@ -13,11 +13,11 @@ else {
     {
         $acc = (int)$_GET['acc'];
         $m->addPosition($_GET['lat'], $_GET['lon'], $acc, $_GET['alt'], time(), $_SERVER['HTTP_USER_AGENT']);
-        $response  = "Vi har funnet din posisjon med $acc m nøyaktighet.<br/>";
+        $response  = "Vi har funnet din posisjon med $acc m n&oslash;yaktighet.<br/>";
         if ($_GET['acc'] > 500) {
-            $response .= 'Vi er på vei, men prøv å gjøre deg mest mulig synlig fra lufta og bakken!';
+            $response .= 'Vi er på vei, men pr&oslash;v å gj&oslash;re deg mest mulig synlig fra lufta og bakken!';
         } else {
-            $response .= 'Hold deg i ro, vi er på vei!<br />Prøv å gjøre deg mest mulig synlig fra lufta og bakken!';
+            $response .= 'Hold deg i ro, vi er p&aring; vei!<br />Pr&oslash;v &aring; gj&oslash;re deg mest mulig synlig fra lufta og bakken!';
         }
     }
     else {
