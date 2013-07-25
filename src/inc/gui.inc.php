@@ -10,25 +10,31 @@
 	 * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
 	 */
     
-    function insert_action($label, $href, $icon="", $class="btn btn-small", $attributes='data-toggle="modal" data-target="#dialog"', $output=true)
+    function insert_action($label, $href, $icon="", $class="btn btn-small", $attributes='', $output=true)
     {
         $html = $icon? '<b class="icon '.$icon.'"></b>' : "";
         $html = '<a class="'.$class.'" href="'.$href. '" '.$attributes.' data-title="'.$label.'">'."$html$label</a>";
-        if($output) echo $html;
+        if($output) {
+            echo $html;
+        }
         return $html;
     }    
     
-    function insert_item($label, $href, $icon="", $class="", $attributes='role="menuitem" data-toggle="modal"', $output=true) 
+    function insert_item($label, $href, $icon="", $class="", $attributes='role="menuitem"', $output=true) 
     {
         $html = '<li class="'.$class.'">'.insert_action($label, $href, $icon, "", $attributes, false).'</li>';
-        if($output) echo $html;
+        if($output) {
+            echo $html;
+        }
         return $html;
     }    
 
     function insert_message($message, $output=true) 
     {
         $html = '<ul class="unstyled">'.$message. '</ul>';
-        if($output) echo $html;
+        if($output) {
+            echo $html;
+        }
         return $html;
     }    
     
@@ -69,7 +75,9 @@
         ob_start();
         require(ADMIN_PATH . "gui/control.gui.php");
         $html = ob_get_clean();
-        if($output) echo $html;
+        if($output) {
+            echo $html;
+        }
         return $html;
     }
     
@@ -98,9 +106,17 @@
     {
         $html = '';
         foreach($values as $key => $value)
-            $html .= '<option value="'.$key.'"'.(($key === $selected) ? ' selected' : '').'>'.$value.'</option>';
-
-        if($output) echo $html;
+        {
+            if($key === $selected) {
+                $html .= '<option selected value="'.$key.'">'.$value.'</option>';
+            } 
+            else {
+                $html .= '<option value="'.$key.'">'.$value.'</option>';
+            }
+        }
+        if($output) {
+            echo $html;
+        }
         return $html;
     }
     
@@ -119,7 +135,9 @@
         ob_start();
         require(ADMIN_PATH . "gui/form.gui.php");
         $html = ob_get_clean();
-        if($output) echo $html;
+        if($output) {
+            echo $html;
+        }
         return $html;
     }
     
@@ -138,6 +156,49 @@
         ob_start();
         require(ADMIN_PATH . "gui/confirm.dialog.gui.php");
         $html = ob_get_clean();
-        if($output) echo $html;
+        if($output) {
+            echo $html;
+        }
         return $html;
     }        
+    
+    
+    function insert_table($id, $rows, $searchable=true, $output=true) {
+        ob_start();
+        require(ADMIN_PATH . "gui/table.gui.php");
+        $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+    
+    function insert_rows($rows, $output=true) {
+        $html = '';
+        foreach($rows as $row) {
+            $html .= insert_row
+            (
+                isset_get($row,"id"),
+                isset_get($row,"cells",""),
+                isset_get($row,"attributes"),
+                isset_get($row,"class", ''), 
+                false
+            );
+        } 
+        if($output) {
+            echo $html;
+        }
+        return $html;        
+    }
+    
+    function insert_row($id, $cells, $attributes='', $class='', $output=true)
+    {
+        ob_start();
+        require(ADMIN_PATH . "gui/row.gui.php");
+        $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+    

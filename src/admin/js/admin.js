@@ -107,11 +107,23 @@ $(document).ready(function(){
         }).show();
     });
     
+    
+    
     // Add form validation
     R.form.validate();
     
     // Add capslock listeners to password
-    R.CapsLock.listen('[type="password"]');    
+    R.CapsLock.listen('[type="password"]');
+    
+    // Make x-editable inline
+    $.fn.editable.defaults.mode = 'inline';
+    
+    // Register editables
+    $('.editable').editable({savenochange: true});
+    
+    
+    
+    
     
 });
     

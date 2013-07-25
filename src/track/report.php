@@ -3,12 +3,12 @@ require_once('../config.php');
 
 use RescueMe\Missing;
 
-if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['country']) || !isset($_GET['phone'])) { 
+if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['phone'])) { 
      $response = 'Ugyldig link!';
 } 
 else {
     
-    $m = Missing::getMissing($_GET['id'], $_GET['country'], $_GET['phone']);
+    $m = Missing::getMissing($_GET['id'], $_GET['phone']);
     if($m !== false)
     {
         $acc = (int)$_GET['acc'];

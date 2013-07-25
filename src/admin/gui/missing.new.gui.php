@@ -1,5 +1,6 @@
 <?
     use RescueMe\Locale;    
+    
 ?>
 <h3>Start sporing av savnet</h3>
 <?php if(isset($_ROUTER['message'])) { ?>
@@ -11,32 +12,50 @@
 <? } elseif(modules_exists("RescueMe\SMS\Provider")) { ?>
 
 <form method="post">
-	<fieldset class="span6 new-missing pull-left">
+	<fieldset class="new-missing pull-left" style="margin-right: 2em;">
 		<legend>Den savnede</legend>
 
 		<label for="m_name">Savnedes fornavn</label>
 		<input class="input-block-level" type="text" id="m_name" name="m_name" placeholder="Fornavn" autofocus required>
 
-		<label for="m_mobile">Savnedes land (prefix)</label>
-        <select class="input-block-level country" id="m_mobile_country" name="m_mobile_country" placeholder="Velg land" required>
-            <?= insert_options(Locale::getCountryNames(), Locale::getCurrentCountryCode()); ?>
-        </select>
-		<label for="m_mobile">Savnedes mobilnummer</label>
-                <span id="flag" class="pull-left"></span> <input class="input-append" type="tel" id="m_mobile" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
+        <div class="row-fluid">
+            <div class="span4">
+                <label for="m_mobile">Land-kode</label>
+                <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="Velg land" required>
+                    <?= insert_options(Locale::getCountryNames(), Locale::getCurrentCountryCode()); ?>
+                </select>
+            </div>
+            <div class="span8">
+                <label for="m_mobile">Savnedes mobilnummer</label>
+                <input class="input-block-level" type="tel" id="m_mobile" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
+            </div>
+        </div>
+        
         
 	</fieldset>
-	
-	<fieldset class="span6 new-missing pull-left">
+    
+	<fieldset class="new-missing pull-left">
 		<legend>Om deg</legend>
 
 		<label for="mb_name">Ditt navn</label>
-		<input class="input-block-level"  type="text" id="mb_name" name="mb_name" placeholder="Fullt navn" required>
+		<input class="input-block-level"  type="text" id="mb_name" name="mb_name" value="<?=$user->name?>" placeholder="Fullt navn" required>
 
+        <div class="row-fluid">
+            <div class="span4">
+                <label for="mb_mobile">Land-kode</label>
+                <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="Velg land" required>
+                    <?= insert_options(Locale::getCountryNames(), $user->mobile_country); ?>
+                </select>
+            </div>
+            <div class="span8">
+                <label for="m_mobile">Ditt mobilnummer</label>
+                <input class="input-block-level" type="tel" id="m_mobile" name="mb_mobile" value="<?=$user->mobile?>" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
+            </div>
+        </div>
+        
 		<label for="mb_name">Din e-postadresse</label>
-		<input class="span3" type="email" id="mb_mail" name="mb_mail" placeholder="E-postadresse" required>
+		<input class="span5" type="email" id="mb_mail" name="mb_mail" placeholder="E-postadresse" value="<?=$user->email?>" required>
 
-		<label for="mb_name">Ditt mobilnummer</label>
-        <input class="span3" type="tel" id="mb_mobile" name="mb_mobile" placeholder="Kun siffer, ingen mellomrom"required pattern="[0-9]*">
 	</fieldset>
 
 	<div class="clearfix"></div>

@@ -1,18 +1,22 @@
 R.track = {};
+
 var lastAcc = 1000000;
+
+var query = R.toQuery(document.scripts.namedItem("track").src);
+
 R.track.locate = function() {
     var x = document.getElementById("feedback");
     if (navigator.geolocation) {
         navigator.geolocation.getAccurateCurrentPosition(showPosition, showError, showProgress, {
-            maxWait:180000,            // 3 min
-            desiredAccuracy:100});    // 100 m
+            maxWait:query.wait,       // Properties::LOCATION_MAX_WAIT
+            desiredAccuracy:100});    // 100 meter
     }
     else {
         x.innerHTML = "Lokalisering st&oslash;ttes ikke av din telefon.";
     }
 
     function showProgress(position) {
-        x.innerHTML = 'Har funnet deg med '+Math.floor(position.coords.accuracy)+ ' m n&oslash;yaktighet... <br />'
+        x.innerHTML = 'Har funnet deg med '+Math.ceil(position.coords.accuracy)+ ' m n&oslash;yaktighet... <br />'
                            + 'Søker etter mer nøyaktig posisjon, vent litt...';
         if (position.coords.accuracy + 50 < lastAcc) {
             lastAcc = position.coords.accuracy;
@@ -43,20 +47,17 @@ R.track.locate = function() {
             xmlhttp = new XMLHttpRequest();
         }
         else {// code for IE6, IE5
-            try {
+             try {
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             } catch (e) {
                 xmlhttp = false;
             }
         }
 
-        var query = R.toQuery(document.scripts.namedItem("track").src);
-
-        console.log(query);
-
-        var url = R.app.url + "r/" + query.id + "/" + query.country + "/" + query.phone + "/" + (5) + "/" + y.latitude + "/" + y.longitude + "/" + y.accuracy + "/" + y.altitude;
-
-        if (xmlhttp != false) {
+        var url = R.app.url + "r/" + query.id + "/" + query.phone + "/" + (5) + "/" + y.latitude + "/" + y.longitude + "/" + y.accuracy + "/" + y.altitude;
+        
+        if (xmlhttp !== false) {
+            
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                     if (updateHTML)
@@ -67,6 +68,7 @@ R.track.locate = function() {
             xmlhttp.open("GET", url, true);
             xmlhttp.send();
         }
+        
         // Fallback for those not supporting XMLhttprequest
         // Known: WP 7.8
         else if (y.accuracy < 300) {
@@ -110,11 +112,11 @@ navigator.geolocation.getAccurateCurrentPosition = function (geolocationSuccess,
         geolocationSuccess(position, true);
     }
 
-    if (!options.maxWait)            options.maxWait = 10000; // Default 10 seconds
+    if (!options.maxWait)            options.maxWait = query.wait; // Default 3 min
     if (!options.desiredAccuracy)    options.desiredAccuracy = 20; // Default 20 meters
     if (!options.timeout)            options.timeout = options.maxWait; // Default to maxWait
 
-    options.maximumAge = 900000; // 15 min
+    options.maximumAge = query.age; // Accept that old positions
     options.enableHighAccuracy = true; // Force high accuracy (otherwise, why are you using this function?)
 
     var watchID = navigator.geolocation.watchPosition(checkLocation, onError, options);

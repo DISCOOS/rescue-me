@@ -152,7 +152,7 @@
                 }
             }
             
-            $user->id = $id;
+            $user->id = (int)$id;
             
             return $user;
             
@@ -185,10 +185,7 @@
             $values = prepare_values(User::$insert, $values);
             
             if(($id = DB::insert(self::TABLE, $values)) !== false) {
-                return $user->_grant(array(
-                    'user_id' => $id, 
-                    "password" => $password
-                ));
+                return self::get($id);
             }
             return false;
             
@@ -293,7 +290,18 @@
             $_SESSION['logon'] = true;
             $_SESSION['user_id'] = $info['user_id'];
             $_SESSION['password']=$info['password'];
-            $this->id = $info['user_id'];
+            
+            $this->id = (int)$info['user_id'];
+            
+            $exclude = array("user_id", 'password');
+
+            foreach($info as $property => $value){
+                
+                if(!in_array($property, $exclude)) { 
+                    $this->$property = $value;
+                }
+            }
+            
             return true;
         }// _login_ok
 

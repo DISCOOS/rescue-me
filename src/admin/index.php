@@ -96,7 +96,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <link href="<?=APP_URI?>css/admin.less" rel="stylesheet/less">
+        <link href="<?=APP_URI?>css/admin.css" rel="stylesheet">
         <? if(GOOGLE_API_KEY !== '') { ?>
         <script src="//maps.googleapis.com/maps/api/js?key=<?=GOOGLE_API_KEY?>&sensor=false"></script>
         <? } ?>

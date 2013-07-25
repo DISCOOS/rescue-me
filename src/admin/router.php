@@ -1,6 +1,8 @@
 <?php
     
     use RescueMe\User;
+    use RescueMe\Locale;
+    use RescueMe\Properties;
 
     // Verify logon information
     $user = new User();
@@ -52,6 +54,81 @@
             $_ROUTER['name'] = SETUP;
             $_ROUTER['view'] = $_GET['view'];
             break;
+
+        case Properties::source(Properties::SYSTEM_COUNTRY):
+        
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                
+                $options = array();
+                foreach(Locale::getCountryNames(true) as $code => $country) {
+                    $options[] = array('value' =>  $code, 'text' => $country);
+                }
+                
+                echo json_encode($options);
+                
+            } 
+            else {
+                header('HTTP 400 Bad Request', true, 400);
+                echo "Illegal operation";
+            }
+
+            exit;            
+            
+        case 'setup/put':
+            
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                // Get data
+                $name = $_POST['pk'];
+                $value = $_POST['value'];
+                
+                // Verify setting
+                switch($name) {
+                    case Properties::SYSTEM_COUNTRY:
+                        
+                        if(!Locale::accept($value)) {
+                            header('HTTP 400 Bad Request', true, 400);
+                            echo 'Locale "'.$value.'" not accepted';
+                            exit;
+                        }                        
+                        
+                        break;
+                    case Properties::LOCATION_MAX_AGE:
+                    case Properties::LOCATION_MAX_WAIT:
+                        
+                        if(!is_numeric($value)) {
+                            header('HTTP 400 Bad Request', true, 400);
+                            echo '"'.$value.'" is not a number';
+                            exit;
+                        }                        
+                        
+                        break;
+                    default:
+                        
+                        header('HTTP 400 Bad Request', true, 400);
+                        echo 'Setting "'."$name=$value".'" is invalid';
+                        exit;
+                        
+                        break;
+                }
+                
+                if(!Properties::set($name, $value)) {
+                    header('HTTP 400 Bad Request', true, 400);
+                    echo 'Setting "'."$name=$value".' not saved';
+                    exit;
+                }
+                
+            } 
+            else {
+                header('HTTP 400 Bad Request', true, 400);
+                echo "Illegal operation";
+            }
+            
+            exit;
+            
+            break;
         case 'setup/module':
             
             $_ROUTER['name'] = SETUP;
@@ -61,8 +138,9 @@
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $config = array_exclude($_POST, array('type','class'));
+                $user_id = isset($_POST['user']) ? $_POST['class'] : 0;
                 
-                if(RescueMe\Module::set($_POST['type'], $_POST['class'], $config)) {
+                if(RescueMe\Module::set($_GET['id'], $_POST['type'], $_POST['class'], $config, $user_id)) {
                     header("Location: ".ADMIN_URI.'setup');
                     exit();
                 }

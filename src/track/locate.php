@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<? require_once('../config.php'); ?>
+<? 
+    
+    require_once('../config.php'); 
+    
+    use RescueMe\Properties;
+
+?>
 
 <html><head><title><?=TITLE?></title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
         
-<? if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['country']) || !isset($_GET['phone'])) { ?>
+<? if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['phone'])) { ?>
         
 </head><body><?=insert_error('Ugyldig link!');?></body>
 
@@ -11,9 +17,16 @@
 
 </head><body><h4>Klarte ikke å posisjonere akkurat nå</h4>På denne siden vil det komme noen gode råd</body>
 
-<? } else { ?>
+<? 
+    
+} else { 
+    
+    $age = Properties::get(Properties::LOCATION_MAX_AGE);
+    $wait = Properties::get(Properties::LOCATION_MAX_WAIT);
+    
+?>
 
-<script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&country=<?=$_GET['country']?>&phone=<?=$_GET['phone']?>"></script></head>
+<script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&phone=<?=$_GET['phone']?>&wait=<?=$wait?>&age=<?=$age?>"></script></head>
 <body onLoad="R.track.locate();"><div id="feedback">Beregner posisjon...</div></body>
 
 <? } ?>

@@ -7,8 +7,8 @@ $module = Module::get($id);
 
 if($module === false)
 {
-?><h3>Modul</h3><?
-    insert_alert('Ingen registrert');
+?><h3><?=_("Module")?></h3><?
+    insert_alert(_('No module found. Run install script.'));
 }
 else
 {        
@@ -25,7 +25,7 @@ else
     $fields[] = array(
         'id' => "class",
         'type' => 'hidden', 
-        'value' => $module->impl
+        'value' => isset($_GET['type']) ? $_GET['type'] : $module->impl
     );
     
     $config = $impl->config();

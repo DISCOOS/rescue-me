@@ -49,12 +49,11 @@ class Missing
      * @param integer $phone Missing phone number (if more than one)
      * @return mixed. Instance of \RescueMe\Missing is success, FALSE otherwise.
      */
-    public static function getMissing($id, $code = -1, $phone = -1){
+    public static function getMissing($id, $phone = -1){
         $missing = new Missing();
         $missing->id = $id;
 
         $query = "SELECT * FROM `missing` WHERE `missing_id`=" . (int) $missing->id;
-        if($code !== -1) $query .= " AND `missing_mobile_country`='" . (string) $code . "'";
         if($phone !== -1) $query .= " AND `missing_mobile`=" . (int) $phone;
         $res = DB::query($query);
 
@@ -278,8 +277,8 @@ class Missing
         
         $message = str_replace
         (
-            array('#missing_id', '#country', '#to', '#m_name', '#acc', '#UTM'), 
-            array($this->id, $country, $to, $this->m_name, $this->last_acc, $this->last_UTM),
+            array('#missing_id', '#to', '#m_name', '#acc', '#UTM'), 
+            array($this->id, $to, $this->m_name, $this->last_acc, $this->last_UTM),
             $message
         );
         

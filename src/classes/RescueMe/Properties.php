@@ -22,18 +22,108 @@
     {
         const TABLE = "properties";
         
-        const SYSTEM_LOCALE = "system.locale";
+        const SYSTEM_COUNTRY = "system.country";
+        
+        const LOCATION_MAX_WAIT = "location.max.wait";
+        
+        const LOCATION_MAX_AGE = "location.max.age";
+        
+        private static $defaults = array(
+            
+            Properties::SYSTEM_COUNTRY => "",
+            Properties::LOCATION_MAX_AGE => "900000",
+            Properties::LOCATION_MAX_WAIT => "180000"
+        );
+        
+        public static function getDefaults() {
+            self::$defaults[Properties::SYSTEM_COUNTRY] = Locale::getDefaultCountryCode();
+            return self::$defaults;
+        }
+        
+        
+        /**
+         * Get all properties
+         * 
+         * @param integer $user_id
+         * 
+         * @return boolean|\RescueMe\Module
+         */
+        public static function getAll($user_id=null)
+        {
+            $res = DB::select(self::TABLE, "*", "`user_id`=$user_id");
+            
+            $properties = self::getDefaults();
+            
+            if(!DB::isEmpty($res)) {
+                while ($row = $res->fetch_assoc()) {
+                    $properties[$row['name']] = $row['value']; 
+                }
+            }
+            
+            return $properties;
+            
+        }// getAll       
+        
+        
+        /**
+         * Get value editor type
+         * @param string $name property name
+         * @return string|boolean
+         */
+        public static final function type($name) {
+            switch($name) {
+                case self::SYSTEM_COUNTRY:
+                    return "select";
+                case self::LOCATION_MAX_AGE:
+                case self::LOCATION_MAX_WAIT:
+                    return "text";
+            }
+            return false;
+        }
+        
+        
+        /**
+         * Get value options source
+         * 
+         * @param string $name property name
+         * @return string|boolean
+         */
+        public static final function source($name) {
+            switch($name) {
+                case self::SYSTEM_COUNTRY:
+                    return "countries/get";
+            }
+            return false;
+        }
+        
+        
+        /**
+         * Get value text
+         * 
+         * @param string $name property name
+         * @return string|boolean
+         */
+        public static final function text($name) {
+            $value = self::get($name);
+            switch($name) {
+                case self::SYSTEM_COUNTRY:
+                    return Locale::getCountryName($value);
+            }
+            return $value;
+        }
+        
         
         /**
          * Check if property exists
          * 
          * @param string $name Property name
+         * @param integer $user_id
          * 
          * @return boolean
          */
-        public static function exists($name) 
+        public static function exists($name, $user_id=0) 
         {
-            $res = DB::select(self::TABLE, "COUNT(*)", "name='$name'");
+            $res = DB::select(self::TABLE, "*", self::filter($name, $user_id));
             
             return !DB::isEmpty($res);
         }        
@@ -43,14 +133,23 @@
          * 
          * @param string $name Property name
          * @param mixed $default Default property value
+         * @param integer $user_id
          * 
-         * @return mixed
+         * @return boolean|mixed
          */
-        public static function get($name, $default=null) {
+        public static function get($name, $default=null, $user_id=0) {
             
-            $res = DB::select(self::TABLE, "`value`", "name='$name'");
+            $defaults = self::getDefaults();
+            
+            if(!isset($defaults[$name])) {
+                return false;
+            }
+            
+            $res = DB::select(self::TABLE, "`value`", self::filter($name, $user_id));
 
-            if (DB::isEmpty($res)) return $default;
+            if (DB::isEmpty($res)) {
+                return isset($default) ? $default : $defaults[$name];
+            }
             
             $row = $res->fetch_row();
             
@@ -63,20 +162,26 @@
          * Set value of property with given name
          * 
          * @param string $name
-         * @param string $value
+         * @param mixed $value
+         * @param integer $user_id
          * 
          * @return boolean TRUE if success, FALSE otherwise
          */
-        public function set($name, $value) {
+        public static function set($name, $value, $user_id=0) {
             
-            $values = array("name" => $value);                        
+            $values = array("name" => $name, "value" => $value);
             
             if(self::exists($name)) {
             
-                return DB::update(self::TABLE, $values, "name='$name'") !== false;
+                $res = DB::update(self::TABLE, $values, self::filter($name, $user_id)) !== false;
+            } 
+            else {
+            
+                $res = DB::insert(self::TABLE, $values) !== false;
             }
             
-            return DB::insert(self::TABLE, $values) !== false;
+            return ($res === TRUE || is_numeric($res) && $res > 0);
+            
             
         }// set
 
@@ -85,15 +190,27 @@
          * Set value of property with given name
          * 
          * @param string $name
-         * @param string $value
+         * @param int $user_id
          * 
          * @return boolean TRUE if success, FALSE otherwise
          */
-        public function delete($name, $value) {
+        public function delete($name, $user_id=0) {
             
-            return DB::delete(self::TABLE, "name='$name'");
+            return DB::delete(self::TABLE, self::filter($name, $user_id));
             
         }// delete
         
+        
+        /**
+         * Get property filter
+         * 
+         * @param string $name Property name
+         * @param integer $user_id User id
+         * 
+         * @return string
+         */
+        private static function filter($name, $user_id) {
+            return "`name`='$name' AND `user_id`=$user_id";
+        }        
 
     }// Properties

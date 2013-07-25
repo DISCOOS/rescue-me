@@ -106,6 +106,7 @@
                 'DB_NAME'           => $this->ini['DB_NAME'], 
                 'DB_USERNAME'       => $this->ini['DB_USERNAME'], 
                 'DB_PASSWORD'       => $this->ini['DB_PASSWORD'],
+                'DEFAULT_COUNTRY'    => $this->ini['DEFAULT_COUNTRY'],
                 'GOOGLE_API_KEY'    => $this->ini['GOOGLE_API_KEY']
             ));
             
@@ -152,7 +153,7 @@
                 $fullname = in("Admin Full Name");
                 $username = in("Admin Username (e-mail)");
                 $password = in("Admin Password");
-                $country = in("Admin Country (ISO2)", Locale::getCurrentCountryCode());
+                $country = in("Admin Phone Country Code (ISO2)", Locale::getCurrentCountryCode());
                 $mobile = in("Admin Phone Number Without Int'l Dial Code");
                 
                 if(!defined('SALT'))

@@ -9,7 +9,7 @@
         // NOTE: add dependencies before dependents!
         return array
         (
-            'index.less' => array
+            'index.css' => array
             (
                 '//css/bootstrap.min.css', 
                 '//css/bootstrap.fix.css', 
@@ -19,13 +19,13 @@
             (
                 '//js/rescueme.js', 
                 '//js/jquery.min.js', 
-                '//js/less.min.js',
                 '//js/bootstrap.min.js'
             ),
-            'admin.less' => array
+            'admin.css' => array
             (
                 '//css/bootstrap.min.css', 
                 '//css/bootstrap.fix.css', 
+                '//css/bootstrap-editable.css', 
                 '//admin/css/admin.css',
                 '//admin/css/admin.responsive.css'
 
@@ -36,9 +36,9 @@
                 '//js/jquery.min.js', 
                 '//js/jquery.ui-custom.min.js', 
                 '//js/jquery.validate.min.js', 
-                '//js/less.min.js', 
                 '//js/capslock.js',
                 '//js/bootstrap.min.js',
+                '//js/bootstrap-editable.min.js', 
                 '//js/validate.js',
                 '//admin/js/admin.js'
             ),
