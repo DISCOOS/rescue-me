@@ -12,6 +12,7 @@
             'index.less' => array
             (
                 '//css/bootstrap.min.css', 
+                '//css/bootstrap.fix.css', 
                 '//admin/css/admin.css'
             ),
             'index.js' => array
@@ -24,6 +25,7 @@
             'admin.less' => array
             (
                 '//css/bootstrap.min.css', 
+                '//css/bootstrap.fix.css', 
                 '//admin/css/admin.css',
                 '//admin/css/admin.responsive.css'
 

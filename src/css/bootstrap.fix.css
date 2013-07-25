@@ -1,0 +1,12 @@
+/* 
+    Document   : bootstrap.fixes
+    Created on : Jul 25, 2013, 9:37:42 AM
+    Author     : Kenneth Gulbrandsøy <kenneth@onevoice.no>
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.dropdown-backdrop {
+    position: static;
+}
+

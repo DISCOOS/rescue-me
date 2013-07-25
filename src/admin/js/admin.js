@@ -1,9 +1,13 @@
 $(document).ready(function(){
 
-    // Fix unclickable dropdowns on mobiles and tablets
-    $('body').on('touchstart.dropdown', '.dropdown-menu', function (e) { e.stopPropagation(); });
+    // Workaround for missing iphone click event delegation (needed to show dropdowns from nav-buttons),
+    // see http://www.quirksmode.org/blog/archives/2010/09/click_event_del.html#c14807
+    $('[data-toggle=dropdown]').each(function() {
+        this.addEventListener('click', function() {
+        }, false);
+    });
 
-	$('.jQshake').effect('shake');
+    $('.jQshake').effect('shake');
     
 	$('li.user:not(.editor)').click(function(){
 		window.location.href = R.admin.url + 'user/' + $(this).attr('id');
