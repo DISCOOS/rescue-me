@@ -131,7 +131,7 @@
         public function accept($code) {
             $pattern = $this->getDialCodePattern();
             if(preg_match("#$pattern#", $code) === 1) {
-                return sprintf("%04d",$code);
+                return $code;
             }
             return false;
         }        

@@ -98,7 +98,7 @@ class Operation {
      * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
      */
     public static function getAllOperations($status='open') {
-
+        $user = User::getCurrent();
         // Get WHERE clause
         switch( $status ) {
             case 'open': 		
@@ -113,6 +113,7 @@ class Operation {
 
         $query = "SELECT `op_id`, `op_name` FROM `".self::TABLE."`
                   WHERE `op_closed` {$where}
+                  AND `".self::TABLE."`.`user_id` = ".(int)$user->id."
                   ORDER BY `op_opened` DESC";
                     
         $res = DB::query($query);
