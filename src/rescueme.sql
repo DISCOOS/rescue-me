@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `missing` (
 
 CREATE TABLE IF NOT EXISTS `modules` (
   `module_id` int(4) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0',
   `type` varchar(50) NOT NULL,
   `impl` varchar(50) NOT NULL,
   `config` text NOT NULL,
@@ -92,6 +93,20 @@ CREATE TABLE IF NOT EXISTS `positions` (
   `user_agent` varchar(255) NOT NULL,
   PRIMARY KEY (`pos_id`),
   KEY `missing_id` (`missing_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure for table `properties`
+-- 
+
+CREATE TABLE IF NOT EXISTS `properties` (
+  `property_id` int(4) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(50) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

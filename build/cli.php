@@ -94,7 +94,7 @@
                 $ini['DB_NAME']          = str_escape(in("DB Name", get($ini, "DB_NAME", "rescueme")));
                 $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
                 $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
-                $ini['DEFAULT_COUNTRY']   = str_escape(in("Default Country (ISO2)", get($ini, "DEFAULT_COUNTRY", RescueMe\Locale::getCurrentCountry())));
+                $ini['DEFAULT_COUNTRY']   = str_escape(in("Default Country (ISO2)", get($ini, "DEFAULT_COUNTRY")));
                 $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
                 
                 // Uninstall current?

@@ -60,7 +60,7 @@
                 }
             }
             
-            return $properties;
+            return empty($properties) ? false : $properties;
             
         }// getAll       
         

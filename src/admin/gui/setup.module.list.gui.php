@@ -9,7 +9,8 @@
         
 ?><tr><td colspan="3"><p><?
     
-    insert_error(_('No modules found. Run install script.'));
+        // Initialize modules
+        $modules = Module::prepare();
         
 ?></p></td></tr><?
     

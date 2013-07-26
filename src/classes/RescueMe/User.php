@@ -182,7 +182,7 @@
             
             $values = array((string) $name, (string) $password, (string) $email, (int) $mobile, (string) $country);
             
-            $values = prepare_values(User::$insert, $values);
+            $values = \prepare_values(User::$insert, $values);
             
             if(($id = DB::insert(self::TABLE, $values)) !== false) {
                 return self::get($id);
@@ -210,7 +210,7 @@
             
             $values = array((string) $name, (string) $email,  (int) $mobile, (string) $country);
             
-            $values = prepare_values(User::$update, $values);
+            $values = \prepare_values(User::$update, $values);
             
             return DB::update(self::TABLE, $values, "user_id=$this->id");
             
@@ -230,7 +230,7 @@
             
             $password = str_rnd($length);
 
-            $values = prepare_values(array("password"), array(User::hash($password)));
+            $values = \prepare_values(array("password"), array(User::hash($password)));
             
             $result = DB::update(self::TABLE, $values, "user_id=$this->id");
             

@@ -31,6 +31,8 @@
         
         public $user_id;
         
+        private static $required = array("RescueMe\SMS\Provider" => "RescueMe\SMS\UMS"); 
+        
         /**
          * Constructor
          * @param type $module Module definition
@@ -40,8 +42,26 @@
             $this->id = $module['module_id'];
             $this->type = ltrim($module['type'],"\\");
             $this->impl = ltrim($module['impl'],"\\");
-            $this->config = json_decode($module['config'], true);
-            $this->user_id = $module['user_id'];
+            $this->config = json_decode(isset_get($module, 'config', array()), true);
+            $this->user_id = isset_get($module,'user_id', 0);
+        }
+        
+        
+        /**
+         *  Prepare required modules if not already exist
+         * 
+         * @return boolean|array Array of new Module instances, FALSE if no change.
+         */
+        public static function prepare() {
+            $modules = array();
+            foreach(self::$required as $type => $impl) {
+                if(!self::exists($type)) {
+                    $module = new $impl;
+                    $id = self::add($type, $impl, $module->config());
+                    $modules[$id] = self::get($id);
+                }                
+            }
+            return empty($modules) ? false : $modules;
         }
         
         
@@ -64,7 +84,7 @@
                 $modules[$row['module_id']] = $module;
             }
             
-            return $modules;
+            return empty($modules) ? false : $modules;
             
         }// getAll
         
@@ -162,7 +182,7 @@
          * @param array $config Module construction arguments as (name=>value) pairs
          * @param integer $user_id
          * 
-         * @return boolean TRUE if success, FALSE otherwise. 
+         * @return Module id if success, FALSE otherwise. 
          */
         public static function add($type, $impl, $config, $user_id=0)
         {
@@ -175,9 +195,7 @@
             
             $values = prepare_values(self::$fields, array($type, $impl, json_encode($config), $user_id));
                 
-            $res = DB::insert(self::TABLE, $values);
-            
-            return ($res === TRUE || is_numeric($res) && $res > 0);
+            return DB::insert(self::TABLE, $values);
             
         }// set
         
@@ -186,11 +204,8 @@
          * Get new configuration
          */
         public function newConfig() {
-            $config = $this->config;
-            foreach(array_keys($this->config) as $key) {
-                $config[$key] = '';
-            }
-            return $config;
+            $module = new $this->impl;
+            return $module->config();
         }        
         
         

@@ -1,9 +1,3 @@
-<?
-    
-        $properties = RescueMe\Properties::getAll(1);    
-    
-    ?>
-
 <h3>Systemoppsett</h3>
 <table class="table table-striped">
     <thead>

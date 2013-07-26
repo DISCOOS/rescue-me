@@ -8,7 +8,9 @@ $module = Module::get($id);
 if($module === false)
 {
 ?><h3><?=_("Module")?></h3><?
+    
     insert_alert(_('No module found. Run install script.'));
+    
 }
 else
 {        

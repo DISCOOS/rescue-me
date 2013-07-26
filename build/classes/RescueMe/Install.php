@@ -13,6 +13,7 @@
     namespace RescueMe;
     
     use RescueMe\DB;
+    use RescueMe\User;
 
     /**
      * Install class
@@ -122,6 +123,10 @@
             
             // Bootstrap RescueMe classes
             require $this->root."vendor/autoload.php";
+            
+            // Get common functions
+            require $this->root."inc/common.inc.php";
+            
             
             // Install database
             $name = get($this->ini, 'DB_NAME', null, false);
