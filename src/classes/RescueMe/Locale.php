@@ -139,28 +139,6 @@
         }        
         
         /**
-         * Get all country dial codes with country names
-         *  
-         * @return array Country names
-         */
-        public static function getCountryNamesWithDialCode() {
-            
-            $codes = array();
-            foreach(self::getCountryInfo() as $code => $country)
-            {
-                $name = ucwords(strtolower($country['country']));
-                $dail_code = $country['dial_code'];
-                $name .=  " (" . (strlen($dail_code)<4 ? "+$dail_code" : $dail_code). ")";
-                $codes[$code] = $name;
-            }
-            \reset($codes);
-            \asort($codes);
-            return $codes;
-        }
-        
-        
-        
-        /**
          * Get country name
          * 
          * @param string $code ISO2 Country code
