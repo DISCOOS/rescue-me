@@ -1,6 +1,8 @@
 <?php
 
-    if(!file_exists("VERSION")) {
+    $verfile = dirname(__FILE__).DIRECTORY_SEPARATOR."VERSION";
+    
+    if(!file_exists($verfile)) {
         
         require "setup.php";
         
@@ -16,7 +18,7 @@
     define('USE_SILEX', false);
     
     // RescueMe constants
-    define('VERSION', 'VERSION');
+    define('VERSION', get_file_contents($verfile));
     
     // RescueMe application paths
     define('APP_PATH', dirname(__FILE__).'/');
