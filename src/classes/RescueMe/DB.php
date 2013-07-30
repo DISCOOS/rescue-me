@@ -177,7 +177,7 @@
             $args = array_slice(func_get_args(),1);
             $params = array($format);
             foreach($args as $arg) {
-                $params[] = is_string($arg) ? DB::escape($arg) : $arg;
+                $params[] = is_string($arg) && !is_function($value) ? DB::escape($arg) : $arg;
             }
             return call_user_func_array("sprintf",  $params);
         }
@@ -262,7 +262,7 @@
             $query = "UPDATE `$table` SET ";
             $updates = array();
             foreach($values as $field =>$value) {
-                if(is_string($value)) 
+                if(is_string($value)  && !is_function($value)) 
                     $value = "'" . DB::escape($value) . "'";
                 $updates[] = "$field=$value";
             }

@@ -9,8 +9,8 @@
         
 ?><tr><td colspan="3"><p><?
     
-        // Initialize modules
-        $modules = Module::prepare();
+            // Initialize modules
+            $modules = Module::prepare();
         
 ?></p></td></tr><?
     

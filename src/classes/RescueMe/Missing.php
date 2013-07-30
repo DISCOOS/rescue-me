@@ -36,7 +36,9 @@ class Missing
     public $m_mobile;
     public $alert_mobile;
     
-    private $last_UTM;
+    public $last_UTM;
+    public $last_pos;
+    
     private $last_acc;
     private $sms2_sent;
     private $sms_mb_sent;
@@ -69,7 +71,7 @@ class Missing
         $operation = new Operation();
         $operation = $operation->getOperation($missing->op_id);
         $missing->alert_mobile = $operation->getAlertMobile();
-
+        
         return $missing;
 
     }// getMissing
@@ -94,36 +96,6 @@ class Missing
     }// addMissing
 
 
-    public static function getAllMissing($status='open') {
-
-        // Get WHERE clause
-        switch( $status ) {
-            case 'open': 		
-                $where = "!= 'Closed'";		
-                break;
-            case 'closed':		
-                $where = "= 'Closed'";		
-                break;
-            default:
-                $where = ' NOT NULL';
-        }
-
-        $query = "SELECT `missing_id`, `missing_name` FROM `missing` WHERE `status`
-                       {$where} ORDER BY `missing_reported` DESC";
-        $res = DB::query($query);
-
-        if (DB::isEmpty($res)) 
-            return false;
-
-        $missing_ids = array();
-        while ($row = $res->fetch_assoc()) {
-            $missing = self::getMissing($row['missing_id']);
-            $missing_ids[$row['missing_id']] = $missing;
-        }
-        return $missing_ids;
-    }
-
-
     public function getPositions(){
         if($this->id === -1)
             return false;
@@ -141,11 +113,17 @@ class Missing
 
         if(!is_array($this->positions) || count($this->positions) == 0) {
             $this->last_pos = new Position();
+            $this->last_acc = -1;
+            $this->last_UTM = _('Aldri posisjoner');
         }
         else {
             $this->last_pos = $this->positions[key($this->positions)];
+            $gPoint = new gPoint();
+            $gPoint->setLongLat($this->last_pos->lon, $this->last_pos->lat);
+            $gPoint->convertLLtoTM();
+            $this->last_UTM = strip_tags($gPoint->getNiceUTM());
         }
-
+        
         return $this->positions;
     }// getPositions
 

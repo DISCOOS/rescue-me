@@ -20,25 +20,25 @@ $(document).ready(function(){
 	$('li.missing').click(function(){
 		window.location.href = R.admin.url + 'missing/' + $(this).attr('id');
 	});
-        
-        $('li.position').click(function(){
+    
+    $('li.position').click(function(){
 		panMapTo($(this).attr('data-pan-to'));
 	});
     
-	$('td.missing').click(function(){
+	$('td.missing:not(.editor)').click(function(){
 		window.location.href = R.admin.url + 'missing/' + $(this).closest('tr').attr('id');
 	});
         
-        var flagImg = null;
-        $('.country').change(function(){
-                if (flagImg != null) {
-                    document.getElementById("flag").removeChild(flagImg);
-                }
-                else {
-                    flagImg=document.createElement("img");
-                }
-                flagImg.src="../img/flags/"+this.value+".png"; //src of img attribute
-                document.getElementById("flag").appendChild(flagImg); //append to body
+    var flagImg = null;
+    $('.country').change(function(){
+            if (flagImg != null) {
+                document.getElementById("flag").removeChild(flagImg);
+            }
+            else {
+                flagImg=document.createElement("img");
+            }
+            flagImg.src="../img/flags/"+this.value+".png"; //src of img attribute
+            document.getElementById("flag").appendChild(flagImg); //append to body
 	});
     
     $('ul.nav').find('li').each(function(){

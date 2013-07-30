@@ -55,7 +55,34 @@ class Operation {
 
         return $operation;
     }// getOperation
+    
+    
+    /**
+     * Close given operation
+     * 
+     * @param integer $id Operation id
+     * @return boolean
+     */
+    public static function closeOperation($id) {
+        
+        return DB::update(self::TABLE,array('op_closed' => 'NOW()'), "`op_id`=" . (int) $id);
+        
+    }
+    
 
+    /**
+     * Reopen given operation
+     * 
+     * @param integer $id Operation id
+     * @return boolean
+     */
+    public static function reopenOperation($id) {
+        
+        return DB::update(self::TABLE,array('op_closed' => '0000-00-00 00:00:00'), "`op_id`=" . (int) $id);
+        
+    }
+    
+    
     /**
      * Add a new operation
      * 
@@ -121,7 +148,7 @@ class Operation {
         if (DB::isEmpty($res)) 
             return false;
 
-        $missing_ids = array();
+        $operation_ids = array();
         while ($row = $res->fetch_assoc()) {
             $operation = new Operation();
             $operation = $operation->getOperation($row['op_id']);
@@ -158,6 +185,7 @@ class Operation {
     }
 
     public function getError() {
-            return DB::error();
+        return DB::error();
     }
+    
 }// Operation

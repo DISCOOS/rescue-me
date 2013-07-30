@@ -208,7 +208,51 @@
             }   
             
             break;
-        
+
+        case 'operation/close':
+            
+            $_ROUTER['name'] = _('Avslutt operasjon');
+            $_ROUTER['view'] = 'missing/list';
+            
+            if(!isset($_GET['id'])) {
+                
+                $_ROUTER['message'] = "Operasjon [{$_GET['id']}] finnes ikke.";
+                
+            } else {
+
+                if(RescueMe\Operation::closeOperation($_GET['id'])) {
+                    header("Location: ".ADMIN_URI.'missing/list');
+                    exit();
+                }
+                
+                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "operation/close/$id ikke gjennomført, prøv igjen.";
+                
+            }
+            
+            break;
+            
+        case 'operation/reopen':
+            
+            $_ROUTER['name'] = _('Gjenåpne operasjon');
+            $_ROUTER['view'] = 'missing/list';
+            
+            if(!isset($_GET['id'])) {
+                
+                $_ROUTER['message'] = "Operasjon [{$_GET['id']}] finnes ikke.";
+                
+            } else {
+
+                if(RescueMe\Operation::reopenOperation($_GET['id'])) {
+                    header("Location: ".ADMIN_URI.'missing/list');
+                    exit();
+                }
+                
+                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "operation/reopen/$id ikke gjennomført, prøv igjen.";
+                
+            }
+            
+            break;
+            
         case 'missing/new':
             
             $_ROUTER['name'] = 'Start sporing av savnet';
@@ -244,6 +288,7 @@
             $_ROUTER['view'] = $_GET['view'];
             break;
         case 'missing':
+        case 'missing/edit':
             $_ROUTER['name'] = MISSING_PERSON;
             $_ROUTER['view'] = $_GET['view'];
             break;

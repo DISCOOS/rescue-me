@@ -27,10 +27,9 @@
             </tr>
         </thead>        
         <tbody class="searchable">
-<?php
-
-    foreach($users as $id => $user) {
-?>
+            
+<? foreach($users as $id => $user) { ?>
+            
             <tr id="<?= $id ?>">
                 <td class="user name"> <?= $user->name ?> </td>
                 <td class="user tel"><?= isset($user->mobile)?$user->mobile : ''?></td>
@@ -48,10 +47,8 @@
                     </div>
                 </td>
             </tr>
-<?php
-        } 
-    }
-?>
+            
+<? }} ?>
         </tbody>
     </table>    
     
