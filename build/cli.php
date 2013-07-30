@@ -76,7 +76,7 @@
                     $config = file_get_contents($root."config.php");
                     $config = get_define_array($config, array
                     (
-                        'SALT', 'VERSION', 'TITLE', 'SMS_FROM', 'DEFAULT_COUNTRY', 
+                        'SALT', 'TITLE', 'SMS_FROM', 'DEFAULT_COUNTRY', 
                         'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD',
                         'GOOGLE_API_KEY'
                     ));

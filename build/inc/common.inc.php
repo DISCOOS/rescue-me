@@ -28,6 +28,7 @@
     define('ZIP_COPY_FAILED', "zip could not be copied");
     define('DB_NOT_CREATED', "%s could not be created");
     define('DB_NOT_IMPORTED', "%s could not be imported");
+    define('VERSION_NOT_SET', "Version %s could not be set");    
     define('ADMIN_NOT_CREATED', "Admin user not created");    
     define('SQL_NOT_IMPORTED', 'SQL not imported');
     define('SQL_NOT_EXPORTED', 'SQL not exported');

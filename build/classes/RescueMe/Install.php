@@ -100,7 +100,6 @@
             $config = replace_define_array($config, array
             (
                 'SALT'              => $this->ini['SALT'], 
-                'VERSION'           => $this->ini['VERSION'], 
                 'TITLE'             => $this->ini['TITLE'], 
                 'SMS_FROM'          => $this->ini['SMS_FROM'], 
                 'DB_HOST'           => $this->ini['DB_HOST'], 
@@ -111,7 +110,7 @@
                 'GOOGLE_API_KEY'    => $this->ini['GOOGLE_API_KEY']
             ));
             
-            // Create file
+            // Create config.php
             if(file_put_contents($this->root."config.php", $config) === FALSE) {
                 return CONFIG_NOT_CREATED;
             }// if
@@ -121,12 +120,11 @@
                 mkdir($this->root."logs");
             }
             
-            // Bootstrap RescueMe classes
-            require $this->root."vendor/autoload.php";
-            
             // Get common functions
             require $this->root."inc/common.inc.php";
             
+            // Bootstrap RescueMe classes
+            require $this->root."vendor/autoload.php";
             
             // Install database
             $name = get($this->ini, 'DB_NAME', null, false);
@@ -172,6 +170,11 @@
                 info("Initializing database....DONE", SUCCESS);
                 
             }
+            
+            // Create VERSION file
+            if(file_put_contents($this->root."VERSION", $this->ini['VERSION']) === FALSE) {
+                return sprintf(VERSION_NOT_SET,$this->ini['VERSION']);
+            }// if            
             
             // Cleanup
             unlink($this->src);

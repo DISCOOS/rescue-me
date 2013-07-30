@@ -189,7 +189,7 @@
         $config = ini_define($config, array
             (
             'SALT', 'GOOGLE_API_KEY',
-            'VERSION', 'DEFAULT_COUNTRY', 'TITLE', 'SMS_FROM',
+            'DEFAULT_COUNTRY', 'TITLE', 'SMS_FROM',
             'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD'
         ));
 
