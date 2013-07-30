@@ -21,6 +21,7 @@
         <div class="masthead">
             <span class="lead muted"><b>RescueMe</b></span>
             <h3>Configuration Wizard</h3>
+            <?insert_alert("Kommer snart");?>
         </div>
     </body>
 </html>
