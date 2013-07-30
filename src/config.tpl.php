@@ -18,7 +18,7 @@
     define('USE_SILEX', false);
     
     // RescueMe constants
-    define('VERSION', get_file_contents($verfile));
+    define('VERSION', file_get_contents($verfile));
     
     // RescueMe application paths
     define('APP_PATH', dirname(__FILE__).'/');
