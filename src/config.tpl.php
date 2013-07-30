@@ -1,5 +1,13 @@
 <?php
 
+    if(!file_exists("VERSION")) {
+        
+        require "setup.php";
+        
+        die();
+        
+    }
+    
     // Allow usage on command line
     if(php_sapi_name() !== 'cli') session_start();
 

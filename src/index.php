@@ -1,7 +1,8 @@
 <?php
-    require_once('config.php');
-    require_once('admin/router.php');    
+    require('config.php');
+    require('admin/router.php');    
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
