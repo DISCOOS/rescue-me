@@ -293,6 +293,8 @@
             $_ROUTER['view'] = $_GET['view'];
             break;
         default:
-            insert_error(str_replace("\n", "<br />", print_r($_REQUEST,true)));
+            $_ROUTER['name'] = _("Illegal Operation");
+            $_ROUTER['view'] = "404";
+            $_ROUTER['message'] = print_r($_REQUEST,true);
             break;
     }       
