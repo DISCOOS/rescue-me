@@ -122,6 +122,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(255) NOT NULL,
   `mobile_country` char(4) NOT NULL,
   `mobile` varchar(25) NOT NULL,
+  `state` enum('pending','disabled','deleted') DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
