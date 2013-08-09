@@ -250,13 +250,25 @@
     
     /** 
      * Get random string of given length
+     * 
      * @param integer $length String lengt
      * @return string
      */
-    function str_rnd($length = 15)
+    function str_rnd($length = 8)
     {
-        return substr(sha1(rand()), 0, $length);
+        $str = '';
+        
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-=~!@#$%^&*()_+,./<>?;:[]{}\|';
+        
+        $max = (strlen($chars) - 1);
+
+        for($i = 0; $i < $length; $i++) {
+            $str .= $chars[rand(0, $max)];
+        }
+
+        return $str;
     }// str_rnd
+    
     
     /**
      * Escape string with "'"

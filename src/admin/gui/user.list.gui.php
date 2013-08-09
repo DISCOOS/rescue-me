@@ -51,7 +51,9 @@
                                     insert_item(_("Deaktiver"), ADMIN_URI."user/disable/$id");                                    
                                 }
                             ?>
+                            <li class="divider"></li>
                             <?insert_item(_("Endre passord"), ADMIN_URI."password/change/$id")?>
+                            <?insert_item(_("Nullstill passord"), ADMIN_URI."password/recover/$id")?>
                             <li class="divider"></li>
                             <?insert_item(_("Slett"), "#confirm-delete-$id", "", "", 'data-toggle="modal"')?>
                         </ul>

@@ -131,7 +131,7 @@
 //    }
     
     
-    function insert_form($id, $title, $fields, $action=null, $output=true)
+    function insert_form($id, $title, $fields, $action=null, $actions=null, $output=true)
     {
         ob_start();
         require(ADMIN_PATH . "gui/form.gui.php");

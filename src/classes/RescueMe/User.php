@@ -168,6 +168,34 @@
         
         
         /**
+         * Recover user
+         * 
+         * @param string $email
+         * @param string $country
+         * @param string $mobile
+         * 
+         * @return boolean
+         */
+        public static function recover($email, $country, $mobile) {
+            
+            $res = DB::query("SELECT user_id FROM `users` WHERE `email` = '$email' AND `mobile_country` = '$country' AND `mobile` = '$mobile'");
+
+            if (DB::isEmpty($res)) return false;
+            
+            $row = $res->fetch_row();
+            
+            $user = self::get($row[0]);
+            
+            $password = $user->reset();
+            
+            $message = "$password\nYour " . APP_URL . " password.";
+            
+            return $user->send($message);
+            
+        }// recover
+        
+        
+        /**
          * Create new user
          * 
          * @param string $name
@@ -232,11 +260,11 @@
          * 
          * @return string|boolean
          */
-        public function reset($length = 15) {
+        public function reset($length = 8) {
             
             $password = str_rnd($length);
 
-            return $this->password($password);
+            return $this->password($password) ? $password : false;
             
         }// reset
         
@@ -310,7 +338,33 @@
             
             return $result !== false;
             
-        }// disable        
+        }// disable     
+        
+        
+        /**
+         * Send message to user
+         * 
+         * @param string $message
+         * 
+         * @return boolean
+         */
+        public function send($message) {
+            
+            $sms = Module::get("RescueMe\SMS\Provider")->newInstance();
+            if(!$sms)
+            {
+                insert_error("Failed to get SMS provider");
+                return false;
+            }
+
+            $res = $sms->send(SMS_FROM, $this->mobile_country, $this->mobile, $message);
+            if(!$res) {
+                insert_error($sms->error());
+            }
+            return $res;
+            
+        }// send
+        
 
         
         /**

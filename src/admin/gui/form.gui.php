@@ -32,7 +32,15 @@
     ?>
     </div>
     <div class="form-footer">
+        <? if(isset($actions['submit'])) { ?>
+        <button type="submit" class="btn btn-primary"><?= _($actions['submit']) ?></button>
+        <? } else { ?>
         <button type="submit" class="btn btn-primary"><?= _(SAVE) ?></button>
+        <? } ?>
+        <? if(isset($actions['cancel'])) { ?>
+        <button type="reset" class="btn" onclick="history.go(-1);"><?= _($actions['cancel']) ?></button>
+        <? } else { ?>
         <button type="reset" class="btn" onclick="history.go(-1);"><?= _(CANCEL) ?></button>
+        <? } ?>
     </div>
 </form>

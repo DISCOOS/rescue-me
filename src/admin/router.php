@@ -16,8 +16,10 @@
             $_ROUTER['message'] = "Du har oppgitt feil brukernavn eller passord";
         }            
         
-        // Force logon (again)
-        $_GET['view'] = 'logon';
+        // Force logon?
+        if(!isset($_GET['view']) || $_GET['view'] !== "password/recover") { 
+            $_GET['view'] = 'logon';
+        }
         
     }
     
@@ -301,6 +303,26 @@
                 }
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Endring ikke gjennomført, prøv igjen.';
             }   
+            
+            break;
+            
+        case "password/recover":
+            
+            $_ROUTER['name'] = _("Recover Password");
+            $_ROUTER['view'] = $_GET['view'];
+            
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                if(User::recover($_POST['email'], $_POST['country'], $_POST['mobile'])) {
+                    header("Location: ".ADMIN_URI.($_SESSION['logon'] ? 'user/list' : 'logon'));
+                    exit();
+                }
+                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Bruker eksisterer ikke.';
+            }   
+            
+            // Get requested user (only when logged in)
+            $user = $_SESSION['logon'] && isset($_GET['id']) ? User::get($_GET['id']) : null;            
             
             break;
             
