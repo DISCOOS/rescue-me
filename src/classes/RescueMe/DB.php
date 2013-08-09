@@ -177,13 +177,22 @@
             $args = array_slice(func_get_args(),1);
             $params = array($format);
             foreach($args as $arg) {
-                $params[] = is_string($arg) && !is_function($value) ? DB::escape($arg) : $arg;
+                $params[] = is_string($arg) && !($arg === "NULL" || is_function($arg)) ? DB::escape($arg) : $arg;
             }
             return call_user_func_array("sprintf",  $params);
         }
 
 
-        public static function select($table, $fields="*", $filter="") 
+        /**
+         * Get selection from given table
+         * 
+         * @param string $table
+         * @param mixed $fields
+         * @param string $filter
+         * @param string $order
+         * @return boolean|\mysqli_result
+         */
+        public static function select($table, $fields="*", $filter="", $order="") 
         {
             if(is_string($fields) && $fields !== "*") {
                 $fields = "`" . ltrim(rtrim($fields,"`"),"`") . "`";
@@ -191,8 +200,12 @@
             elseif (is_array($fields)) {
                 $fields = "`" . implode("`,`", $fields) . "`";
             }
+            
             $query = "SELECT $fields FROM `$table`";
+            
             if($filter) $query .= " WHERE $filter";
+            
+            if($order) $query .= " ORDER BY $order";
             
             return DB::query($query);
             
@@ -211,7 +224,7 @@
             $fields = "`" . implode("`,`", array_keys($values)) . "`";
             $inserts = array();
             foreach($values as $value) {
-                if(is_string($value) && !is_function($value)) 
+                if(is_string($value) && !($value === "NULL" || is_function($value)))
                     $value = "'" . DB::escape($value) . "'";
                 $inserts[] = $value;
             }
@@ -233,15 +246,8 @@
          */
         public static function delete($table, $filter='')
         {
-            $fields = "`" . implode("`,`", array_keys($values)) . "`";
-            $inserts = array();
-            foreach($values as $value) {
-                if(is_string($value) && !is_function($value)) 
-                    $value = "'" . DB::escape($value) . "'";
-                $inserts[] = $value;
-            }
-            
             $query = "DELETE FROM `$table`";
+            
             if($filter) $query .= " WHERE $filter";            
             
             return DB::query($query);
@@ -262,7 +268,7 @@
             $query = "UPDATE `$table` SET ";
             $updates = array();
             foreach($values as $field =>$value) {
-                if(is_string($value)  && !is_function($value)) 
+                if(is_string($value)  && !($value === "NULL" || is_function($value))) 
                     $value = "'" . DB::escape($value) . "'";
                 $updates[] = "$field=$value";
             }

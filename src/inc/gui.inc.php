@@ -20,8 +20,9 @@
         return $html;
     }    
     
-    function insert_item($label, $href, $icon="", $class="", $attributes='role="menuitem"', $output=true) 
+    function insert_item($label, $href, $icon="", $class="", $attributes='', $output=true) 
     {
+        $attributes .= 'role="menuitem"';
         $html = '<li class="'.$class.'">'.insert_action($label, $href, $icon, "", $attributes, false).'</li>';
         if($output) {
             echo $html;

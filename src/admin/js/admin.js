@@ -62,7 +62,7 @@ $(document).ready(function(){
 		$(this).html('<a href="tel:'+$(this).html()+'">'+$(this).html()+'</a>');
 	});
     
-    // Add common RescueMe behaviors to modals 
+    // Add common RescueMe behaviors to modals
     $('[data-toggle="modal"]').click(function() {
         
         // Class all visible modals

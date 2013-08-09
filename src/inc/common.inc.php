@@ -125,8 +125,8 @@
 
     function prepare_values($fields, $values) 
     {
-        reset($values);
         reset($fields);
+        reset($values);
         $prepared = array();
         foreach($fields as $field) {
             $value = current($values);

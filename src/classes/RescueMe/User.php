@@ -100,11 +100,19 @@
         /**
          * Get all users in database
          * 
+         * @param array $states User state (optional, default: null, values: {'pending', 'disabled', 'deleted'})
+         * 
          * @return boolean|array
          */
-        public static function getAll() {
+        public static function getAll($states=null) {
             
-            $res = DB::query("SELECT * FROM `users`");
+            $states = isset($states) ? $states : array("", "NULL","pending","disabled");
+            foreach(isset($states) ? $states : array() as $state) {
+                $filter[] = $state === "NULL" ? "`state` IS NULL" : "`state`='$state'";
+            } 
+            $filter = implode($filter," OR ");
+            
+            $res = DB::select(self::TABLE, "*", $filter, "`state`, `name`");
             
             if (DB::isEmpty($res)) return false;
 
@@ -171,8 +179,6 @@
          */
         public static function create($name, $email, $password, $country, $mobile) {
             
-            $user = new User();
-
             $username = User::safe(strtolower($email));
 
             $password = User::hash($password);
@@ -230,14 +236,82 @@
             
             $password = str_rnd($length);
 
-            $values = \prepare_values(array("password"), array(User::hash($password)));
-            
-            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
-            
-            return ($result === false ? false : $password);
+            return $this->password($password);
             
         }// reset
         
+        
+        /**
+         * Set user password.
+         * 
+         * @param string $tokens Password
+         * 
+         * @return boolean
+         */
+        public function password($tokens) {
+            
+            $password = User::hash($tokens);
+            
+            $values = \prepare_values(array("password"), array($password));
+            
+            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
+            
+            if($result !== false && isset_get($_SESSION,'user_id') == $this->id) {
+                $_SESSION['password'] = $password;
+            }
+            
+            return $result !== false;
+            
+        }// password
+        
+        
+        /**
+         * Delete user.
+         * 
+         * @return boolean
+         */
+        public function delete() {
+            
+            $values = \prepare_values(array("state"), array("deleted"));
+            
+            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
+            
+            return $result !== false;
+            
+        }// delete        
+
+        
+        /**
+         * Disable user.
+         * 
+         * @return boolean
+         */
+        public function disable() {
+            
+            $values = \prepare_values(array("state"), array("disabled"));
+            
+            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
+            
+            return $result !== false;
+            
+        }// disable        
+
+        
+        /**
+         * Enable user.
+         * 
+         * @return boolean
+         */
+        public function enable() {
+            
+            $values = \prepare_values(array("state"), array("NULL"));
+            
+            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
+            
+            return $result !== false;
+            
+        }// disable        
+
         
         /**
          * Attempt to login in user
@@ -289,7 +363,7 @@
         private function _grant($info) {
             $_SESSION['logon'] = true;
             $_SESSION['user_id'] = $info['user_id'];
-            $_SESSION['password']=$info['password'];
+            $_SESSION['password'] = $info['password'];
             
             $this->id = (int)$info['user_id'];
             

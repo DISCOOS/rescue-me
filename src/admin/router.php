@@ -209,6 +209,101 @@
             
             break;
 
+        case 'user/delete':
+            
+            $_ROUTER['name'] = USERS;
+            $_ROUTER['view'] = 'user/list';
+            
+            if(isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $user = User::get($id);
+                if(!$user) {
+                    $_ROUTER['message'] = "User '$id' " . _(" not found");
+                }
+                else if(!$user->delete()) {
+                    $_ROUTER['message'] = "'$user->name'" . _(" not deleted") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+                }
+                else {
+                    header("Location: ".ADMIN_URI.'user/list');
+                    exit();
+                }            
+            } else {
+                $_ROUTER['message'] = "User id is missing";
+            }
+            
+            break;
+            
+        case 'user/disable':
+            
+            $_ROUTER['name'] = USERS;
+            $_ROUTER['view'] = 'user/list';
+            
+            if(isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $user = User::get($id);
+                if(!$user) {
+                    $_ROUTER['message'] = "User '$id' " . _(" not found");
+                }
+                else if(!$user->disable()) {
+                    $_ROUTER['message'] = "'$user->name'" . _(" not disabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+                }
+                else {
+                    header("Location: ".ADMIN_URI.'user/list');
+                    exit();
+                }            
+            
+            } else {
+                $_ROUTER['message'] = "User id is missing";
+            }
+            
+            break;
+            
+        case 'user/enable':
+            
+            $_ROUTER['name'] = USERS;
+            $_ROUTER['view'] = 'user/list';
+            
+            if(isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $user = User::get($id);
+                if(!$user) {
+                    $_ROUTER['message'] = "User '$id' " . _(" not found");
+                }
+                else if(!$user->enable()) {
+                    $_ROUTER['message'] = "'$user->name'" . _(" not enabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+                }
+                else {
+                    header("Location: ".ADMIN_URI.'user/list');
+                    exit();
+                }            
+            
+            } else {
+                $_ROUTER['message'] = "User id is missing";
+            }
+            
+            break;
+            
+        case 'password/change':
+            
+            $id = isset($_GET['id']) ? $_GET['id'] : $user->id;
+            $_ROUTER['name'] = _("Change Password");
+            $_ROUTER['view'] = $_GET['view'];
+            
+            // Get requested user
+            $user = User::get($id);
+            
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                if($user->password($_POST['password'])) {
+                    header("Location: ".ADMIN_URI.'user/list');
+                    exit();
+                }
+                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Endring ikke gjennomført, prøv igjen.';
+            }   
+            
+            break;
+            
         case 'operation/close':
             
             $_ROUTER['name'] = _('Avslutt operasjon');
