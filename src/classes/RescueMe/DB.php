@@ -404,6 +404,7 @@
                     }
                     // Was tables skipped?
                     if(!empty($skipped)) {
+                        
                         // Add missing columns
                         if(($altered = DB::alter($skipped)) === false) {
                             return false;
@@ -432,7 +433,8 @@
                         $exists[] = $row[0];
                     }
                     $columns = DB::columns($create, $table);
-                    foreach(explode(",", $columns) as $sql)
+                    
+                    foreach($columns as $sql)
                     {
                         if(strpos($sql, "`") === 0)
                         {
@@ -464,9 +466,32 @@
         
         private static function columns($query, $table)
         {
+            $body = array();
+            preg_match("#CREATE TABLE IF NOT EXISTS `$table` \((.*)\)#i", $query, $body);
+            $column = "";
             $columns = array();
-            preg_match("#CREATE TABLE IF NOT EXISTS `$table` \((.*)\)#i", $query, $columns);
-            return $columns[1];
+            foreach(explode(",", $body[1]) as $item) {
+                // Next column found?
+                if(strpos($item, "`") === 0 && $column) {
+                    $columns[] = $column;
+                    $column = $item;
+                } 
+                // Key found?
+                else if(stripos($item, "primary") === 0 || stripos($item, "key") === 0) {
+                    $columns[] = $column;
+                    $column = "";
+                }
+                else {
+                    // Implode enum values
+                    $column = "$column, $item";
+                }
+            }
+            
+            // Add trailing column? (no keys found)
+            if($column) $columns[] = $column;
+            
+            // Finished
+            return $columns;
         }
         
         

@@ -120,7 +120,7 @@
         
         if(RescueMe\DB::export("src/rescueme.sql") === false)
         {
-            return error(SQL_NOT_EXPORTED." (".DB::error().")");
+            return error(SQL_NOT_EXPORTED." (".RescueMe\DB::error().")");
         }
         return info("DONE", SUCCESS);
     }
@@ -133,7 +133,7 @@
         
         if(RescueMe\DB::import("src/rescueme.sql") === false)
         {
-            return error(SQL_NOT_IMPORTED." (".DB::error().")");
+            return error(SQL_NOT_IMPORTED." (".RescueMe\DB::error().")");
         }
         return info("DONE", SUCCESS);
     }
