@@ -262,7 +262,7 @@
          */
         public function reset($length = 8) {
             
-            $password = str_rnd($length);
+            $password = self::generate($length);
 
             return $this->password($password) ? $password : false;
             
@@ -484,6 +484,30 @@
         public static function safe($string) {
             return preg_replace('/[^a-z0-9.@_-]/', '', $string);
         }// safe
+        
+
+        /** 
+         * Get random string of given length
+         * 
+         * @param integer $length String lengt
+         * @return string
+         */
+        public static function generate($length = 8)
+        {
+            $str = '';
+
+            $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-=!@#$%&*()_+,./<>?;:[]{}';
+
+            $max = (strlen($chars) - 1);
+
+            for($i = 0; $i < $length; $i++) {
+                $str .= $chars[rand(0, $max)];
+            }
+
+            return $str;
+            
+        }// generate
+    
         
 
     }// user
