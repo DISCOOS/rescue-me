@@ -9,6 +9,7 @@
         <meta charset="utf-8">
         <title><?= TITLE ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="img/favicon.ico" >
         <link href="css/index.css" rel="stylesheet">
         <script src="js/index.js"></script>
     </head>
