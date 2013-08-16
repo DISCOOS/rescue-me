@@ -38,11 +38,11 @@ class Missing
     
     public $last_UTM;
     public $last_pos;
+    public $last_acc;
     
-    private $last_acc;
-    private $sms2_sent;
-    private $sms_mb_sent;
-    private $op_id;
+    public $sms2_sent;
+    public $sms_mb_sent;
+    public $op_id;
 
     /**
      * Get Missing instance
@@ -241,7 +241,7 @@ class Missing
      */
     private function _sendSMS($country, $to, $message) {
 
-        $sms = Module::get("RescueMe\SMS\Provider")->newInstance();
+        $sms = Module::get("RescueMe\SMS\Provider", User::currentId())->newInstance();
         if(!$sms)
         {
             insert_error("Failed to get SMS provider");

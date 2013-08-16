@@ -31,13 +31,13 @@ else
     );
     
     $config = $impl->config();
-    foreach($config["fields"] as $property => $default) {
+    foreach($config->params() as $property => $default) {
         $fields[] = array(
             'id' => "$property",
             'type' => 'text', 
             'value' => $default, 
-            'label' => _(isset($config['labels'][$property]) ? $config['labels'][$property] : $property),
-            'attributes' => (isset($config['required']) && in_array($property, $config['required']) ? "required" : "")
+            'label' => _($config->label($property)),
+            'attributes' => $config->required($property)
         );
     }
     

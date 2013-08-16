@@ -3,6 +3,8 @@
     
     require_once('../config.php'); 
     
+    use RescueMe\Missing;
+    use RescueMe\Operation;
     use RescueMe\Properties;
 
 ?>
@@ -21,13 +23,23 @@
     
 } else { 
     
-    $age = Properties::get(Properties::LOCATION_MAX_AGE);
-    $wait = Properties::get(Properties::LOCATION_MAX_WAIT);
+    $missing = Missing::getMissing($_GET['id'], $_GET['phone']);
+    
+    if($missing !== false) {
+    
+        $id = Operation::getOperation($missing->op_id)->user_id;
+        $age = Properties::get(Properties::LOCATION_MAX_AGE, $id);
+        $wait = Properties::get(Properties::LOCATION_MAX_WAIT, $id);
+    
     
 ?>
 
 <script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&phone=<?=$_GET['phone']?>&wait=<?=$wait?>&age=<?=$age?>"></script></head>
 <body onLoad="R.track.locate();"><div id="feedback">Beregner posisjon...</div></body>
 
-<? } ?>
+<? } else { ?>
+
+<? insert_alert(_("Missing not found")) ?>
+
+<? }} ?>
 </html>

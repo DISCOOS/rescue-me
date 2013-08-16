@@ -27,9 +27,10 @@
         /**
          * Get configuration
          * 
-         * @return array Associative array of parameters.
+         * @return \RescueMe\Configuration Configuration object.
          */
         public function config();
+        
         
         /**
          * Send SMS message to given number.
@@ -42,6 +43,7 @@
          * @return mixed|array Message id if success, FALSE otherwise.
          */
         public function send($from, $code, $to, $message);
+
         
         /**
          * Get supported country dial code pattern.

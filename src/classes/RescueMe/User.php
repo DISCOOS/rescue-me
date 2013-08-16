@@ -127,11 +127,21 @@
         
         
         /**
+         * Get current user id.
+         * 
+         * @return integer|null.
+         */
+        public static function currentId() {
+            return isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+        }
+
+        
+        /**
          * Get current user.
          * 
          * @return boolean|User User instance if found, FALSE otherwise.
          */
-        public static function getCurrent() {
+        public static function current() {
             return isset($_SESSION['user_id']) ? User::get($_SESSION['user_id']) : false;
         }
         
@@ -219,11 +229,14 @@
             $values = \prepare_values(User::$insert, $values);
             
             if(($id = DB::insert(self::TABLE, $values)) !== false) {
-                return self::get($id);
+                $user = self::get($id);
+                $user->prepare();
+                return $user;
             }
+            
             return false;
             
-        }// create    
+        }// create
         
 
         /**
@@ -248,7 +261,25 @@
             
             return DB::update(self::TABLE, $values, "user_id=$this->id");
             
-        }// update       
+        }// update
+        
+
+        /**
+         * Prepare user modules if not already exist
+         * 
+         * @return boolean TRUE if changes was made, FALSE otherwise.
+         */
+        public function prepare() {
+            $changed = false;
+            $modules = Module::getAll();
+            foreach($modules as $module) {
+                if(!Module::exists($module->type, $this->id)) {
+                    Module::add($module->type, $module->impl, $module->newConfig()->params(), $this->id);
+                    $changed = true;
+                }
+            }                        
+            return $changed;
+        }
         
 
         /**
@@ -350,7 +381,7 @@
          */
         public function send($message) {
             
-            $sms = Module::get("RescueMe\SMS\Provider")->newInstance();
+            $sms = Module::get("RescueMe\SMS\Provider", User::currentId())->newInstance();
             if(!$sms)
             {
                 insert_error("Failed to get SMS provider");

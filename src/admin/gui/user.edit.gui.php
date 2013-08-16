@@ -1,4 +1,7 @@
-<?    
+<?  
+    use RescueMe\User;
+    use \RescueMe\Locale;
+    
     if(isset($_ROUTER['message'])) { 
         insert_error($_ROUTER['message']);
     } 
@@ -20,7 +23,7 @@
     $group['value'][] = array(
         'id' => 'country',
         'type' => 'select', 
-        'value' => insert_options(\RescueMe\Locale::getCountryNames(), RescueMe\User::getCurrent()->mobile_country, false), 
+        'value' => insert_options(Locale::getCountryNames(), User::current()->mobile_country, false), 
         'label' => _('Mobile country'),
         'class' => 'span2',
         'attributes' => 'required'

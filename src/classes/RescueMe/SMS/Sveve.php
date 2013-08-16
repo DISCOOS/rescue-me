@@ -20,11 +20,11 @@
     class Sveve implements Provider, Delivery
     {
         /**
-         * Sveve account
+         * Sveve configuration
          * 
-         * @var string
+         * @var \RescueMe\Configuration
          */
-        private $account;
+        private $config;
         
         /**
          * Description of last error
@@ -43,30 +43,29 @@
          */
         public function __construct($user='', $passwd='')
         {
-            $this->account = $this->newConfig($user, $passwd);
+            $this->config = $this->newConfig($user, $passwd);
         }// __construct
 
         
         public function config()
         {
-            return $this->account;
+            return clone($this->config);
         }
 
         
         private function newConfig($user='', $passwd='')
         {
-            return array
-            (
-                "fields" => array(
+            return new \RescueMe\Configuration(
+                array(
                     "user" => $user,
                     "passwd" => $passwd
                 ),
-                "required" => array(
-                    "user"
-                ),
-                "labels" => array(
+                array(
                     "user" => _("user"),
                     "passwd" => _("password")
+                ),
+                array(
+                    "user"
                 )
             );
         }// newConfig
@@ -87,15 +86,17 @@
 
             $number = $code.$to; 
             
+            $account = $this->config()->params();
+            
             // Create SMS provider url
             $smsURL = utf8_decode
             (
                   'https://www.sveve.no/SMS/SendSMS'
-                . '?user='.$this->account['fields']['user']
+                . '?user='.$account['fields']['user']
                 . '&from='.$from
                 . '&to='.$number
                 . '&msg='.urlencode($message)
-                .(!empty($this->account['fields']['passwd']) ? '&passwd='.$this->account['fields']['passwd'] : '')
+                .(!empty($account['fields']['passwd']) ? '&passwd='.$account['fields']['passwd'] : '')
             );
                         
             // Start request

@@ -23,10 +23,10 @@
         const WDSL_URL = "https://secure.ums.no/soap/sms/1.6/?wsdl";
         
         /**
-         * UMS account
-         * @var array
+         * UMS configuration
+         * @var \RescueMe\Configuration
          */
-        private $account;
+        private $config;
         
         
         /**
@@ -44,37 +44,38 @@
          */
         public function __construct($company='', $department='', $password='')
         {
-            $this->account = $this->newConfig($company, $department, $password);
+            $this->config = $this->newConfig($company, $department, $password);
             
         }// __construct
         
         
         public function config()
         {
-            return $this->account;
+            return clone($this->config);
         }
 
         private function newConfig($company='', $department='', $password='')
         {
-            return array
+            return new \RescueMe\Configuration
             (
-                "fields" => array(
+                array(
                     "company" => $company,
                     "department" => $department,
                     "password" => $password
                 ),
-                "required" => array(
-                    "company", 
-                    "department", 
-                    "password"
-                ),
-                "labels" => array(
+                array(
                     "company" => _("company"),
                     "department" => _("department"),
                     "password" => _("password")
                 ),
+                array(
+                    "company", 
+                    "department", 
+                    "password"
+                )
             );
         }// newConfig
+        
         
         public function send($from, $country, $to, $message)
         {
@@ -105,7 +106,7 @@
 
                 $client = new \SoapClient(UMS::WDSL_URL);
                 
-                $refno = $client->doSendSMS($this->account["fields"], $sms, $recipients);
+                $refno = $client->doSendSMS($this->config->params(), $sms, $recipients);
                 
                 return $refno;
                 

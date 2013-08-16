@@ -14,6 +14,7 @@
     
     use RescueMe\DB;
     use RescueMe\User;
+    use RescueMe\Module;
 
     /**
      * Install class
@@ -170,6 +171,17 @@
                 info("Initializing database....DONE", SUCCESS);
                 
             }
+            
+            info("Initializing modules....", SUCCESS);
+            if(Module::install() !== false) {
+                info("  System modules installed", SUCCESS);
+            }
+            foreach(User::getAll() as $user) {
+                if($user->prepare()) {
+                    info("  Modules for [$user->name] installed", SUCCESS);
+                }
+            }
+            info("Initializing modules....DONE", SUCCESS);
             
             // Create VERSION file
             if(file_put_contents($this->root."VERSION", $this->ini['VERSION']) === FALSE) {

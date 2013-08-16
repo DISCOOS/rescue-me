@@ -12,7 +12,7 @@
     require('../config.php');
 
     use RescueMe\Module;
-    $module = Module::get("RescueMe\SMS\Provider");
+    $module = Module::get("RescueMe\SMS\Provider", User::current()->id);
     $sms = $module->newInstance();
 
     if(!$sms)
@@ -27,6 +27,6 @@
     }
     // Not Sveve
     else {
-        trigger_error('Not supported...', E_USER_WARNING);
+        trigger_error('Delivery notification not supported...', E_USER_WARNING);
     }
 ?>

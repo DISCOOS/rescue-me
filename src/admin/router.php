@@ -82,6 +82,9 @@
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
+                // Get user id
+                $id = isset($_GET['id']) ? $_GET['id'] : 0;
+                
                 // Get data
                 $name = $_POST['pk'];
                 $value = $_POST['value'];
@@ -116,7 +119,7 @@
                         break;
                 }
                 
-                if(!Properties::set($name, $value)) {
+                if(!Properties::set($name, $value, $id)) {
                     header('HTTP 400 Bad Request', true, 400);
                     echo 'Setting "'."$name=$value".' not saved';
                     exit;

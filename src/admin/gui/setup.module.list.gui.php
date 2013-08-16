@@ -1,31 +1,9 @@
 <?
+    use RescueMe\User;
     use RescueMe\Module;
     
-    $modules = Module::getAll(isset($user_id) ? $user_id : 0);
+    $modules = Module::getAll(User::currentId());
 
-    if($modules == false)
-    {
-        if(!isset($user_id)) {
-        
-?><tr><td colspan="3"><p><?
-    
-            // Initialize modules
-            $modules = Module::prepare();
-        
-?></p></td></tr><?
-    
-        } else {
-            
-            $modules = Module::getAll();
-            
-            foreach($modules as $module) {
-                $id = Module::add($module->type, $module->impl, $module->newConfig(), $user_id);
-                $modules[$id] = Module::get($id);
-            }                        
-        }
-
-    } 
-    
     if($modules !== false) {
         
         foreach($modules as $id => $module) {

@@ -31,6 +31,7 @@ class Operation {
     );
 
     public $id = -1;
+    public $user_id = -1;
 
     /**
      * Get Operation instance
@@ -125,7 +126,7 @@ class Operation {
      * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
      */
     public static function getAllOperations($status='open') {
-        $user = User::getCurrent();
+        $user = User::current();
         // Get WHERE clause
         switch( $status ) {
             case 'open': 		

@@ -48,16 +48,16 @@
         
         
         /**
-         *  Prepare required modules if not already exist
+         *  Install required modules if not already exist
          * 
          * @return boolean|array Array of new Module instances, FALSE if no change.
          */
-        public static function prepare() {
+        public static function install() {
             $modules = array();
-            foreach(self::$required as $type => $impl) {
+            foreach(Module::$required as $type => $impl) {
                 if(!self::exists($type)) {
                     $module = new $impl;
-                    $id = self::add($type, $impl, $module->config());
+                    $id = self::add($type, $impl, $module->config()->params());
                     $modules[$id] = self::get($id);
                 }                
             }
@@ -158,7 +158,7 @@
             // Sanity checks
             assert_types(array('string'=>$type,'string'=>$impl,'array'=>$config));
             
-            $values = prepare_values(self::$fields, array($type, $impl, json_encode($config)));
+            $values = prepare_values(Module::$fields, array($type, $impl, json_encode($config)));
                 
             if(self::exists($type)) {
                 
@@ -193,7 +193,7 @@
             // Sanity checks
             assert_types(array('string'=>$type,'string'=>$impl,'array'=>$config, 'integer'=>$user_id));
             
-            $values = prepare_values(self::$fields, array($type, $impl, json_encode($config), $user_id));
+            $values = prepare_values(Module::$fields, array($type, $impl, json_encode($config), $user_id));
                 
             return DB::insert(self::TABLE, $values);
             
@@ -202,6 +202,9 @@
         
         /**
          * Get new configuration
+         * 
+         * @return Configuration
+         * 
          */
         public function newConfig() {
             $module = new $this->impl;
@@ -222,7 +225,7 @@
             
             $invoke = array($reflect,'newInstance');
             
-            $config = $empty ? $this->newConfig() : $this->config;
+            $config = $empty ? $this->newConfig()->params() : $this->config;
             
             return call_user_func_array($invoke, $config);
         }

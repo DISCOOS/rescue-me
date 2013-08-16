@@ -48,7 +48,7 @@
          * 
          * @return boolean|\RescueMe\Module
          */
-        public static function getAll($user_id=null)
+        public static function getAll($user_id=0)
         {
             $res = DB::select(self::TABLE, "*", "`user_id`=$user_id");
             
@@ -101,10 +101,12 @@
          * Get value text
          * 
          * @param string $name property name
+         * @param integer $user_id
+         * 
          * @return string|boolean
          */
-        public static final function text($name) {
-            $value = self::get($name);
+        public static final function text($name, $user_id=0) {
+            $value = self::get($name, $user_id);
             switch($name) {
                 case self::SYSTEM_COUNTRY:
                     return Locale::getCountryName($value);
@@ -132,12 +134,11 @@
          * Get value of property with given name
          * 
          * @param string $name Property name
-         * @param mixed $default Default property value
          * @param integer $user_id
          * 
          * @return boolean|mixed
          */
-        public static function get($name, $default=null, $user_id=0) {
+        public static function get($name, $user_id=0) {
             
             $defaults = self::getDefaults();
             
@@ -148,7 +149,7 @@
             $res = DB::select(self::TABLE, "`value`", self::filter($name, $user_id));
 
             if (DB::isEmpty($res)) {
-                return isset($default) ? $default : $defaults[$name];
+                return $defaults[$name];
             }
             
             $row = $res->fetch_row();
@@ -169,14 +170,16 @@
          */
         public static function set($name, $value, $user_id=0) {
             
-            $values = array("name" => $name, "value" => $value);
+            if(self::exists($name, $user_id)) {
             
-            if(self::exists($name)) {
+                $values = array("name" => $name, "value" => $value);
             
                 $res = DB::update(self::TABLE, $values, self::filter($name, $user_id)) !== false;
             } 
             else {
             
+                $values = array("name" => $name, "value" => $value, "user_id" => $user_id);
+                
                 $res = DB::insert(self::TABLE, $values) !== false;
             }
             
