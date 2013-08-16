@@ -92,11 +92,11 @@
             $smsURL = utf8_decode
             (
                   'https://www.sveve.no/SMS/SendSMS'
-                . '?user='.$account['fields']['user']
+                . '?user='.$account['user']
                 . '&from='.$from
                 . '&to='.$number
                 . '&msg='.urlencode($message)
-                .(!empty($account['fields']['passwd']) ? '&passwd='.$account['fields']['passwd'] : '')
+                .(!empty($account['passwd']) ? '&passwd='.$account['passwd'] : '')
             );
                         
             // Start request
