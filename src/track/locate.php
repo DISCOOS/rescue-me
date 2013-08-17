@@ -34,7 +34,7 @@
 ?>
 
 <script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&phone=<?=$_GET['phone']?>&wait=<?=$wait?>&age=<?=$age?>&desiredAcc=<?=$desiredAcc?>"></script></head>
-<body onLoad="R.track.locate();"><div id="feedback">Beregner posisjon...</div></body>
+<body onLoad="R.track.locate();"><div id="feedback">Beregner posisjon...</div><span id="img"></span><br /><span id="sec"></span></body>
 
 <? } else { ?>
 

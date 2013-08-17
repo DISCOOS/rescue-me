@@ -6,6 +6,10 @@ var query = R.toQuery(document.scripts.namedItem("track").src);
 
 R.track.locate = function() {
     var x = document.getElementById("feedback");
+    var sec = document.getElementById("sec");
+    var loadImg = null;
+    var countID = 0;
+    var count = (query.wait/1000);
     if (navigator.geolocation) {
         navigator.geolocation.getAccurateCurrentPosition(showPosition, showError, showProgress, {
             maxWait:query.wait,       // Properties::LOCATION_MAX_WAIT
@@ -14,14 +18,35 @@ R.track.locate = function() {
     else {
         x.innerHTML = "Lokalisering st&oslash;ttes ikke av din telefon.";
     }
-
+    
     function showProgress(position) {
         x.innerHTML = 'Har funnet deg med '+Math.ceil(position.coords.accuracy)+ ' m n&oslash;yaktighet... <br />'
-                           + 'Søker etter mer nøyaktig posisjon, vent litt...';
+                           + 'Søker etter mer nøyaktig posisjon, vent litt...';        
+        if (countID === 0) {
+            loadImg=document.createElement("img");
+            loadImg.src="../../img/loading.gif"; //src of img attribute
+            document.getElementById("img").appendChild(loadImg); //append to body
+            sec.innerHTML = Math.floor(count / 60) +" m " + (count - Math.floor(count / 60) * 60) + " s";
+            countID = setTimeout(countdown, 1000);
+        }
+        
         // If the new position has improved by 10%, report it
         if (position.coords.accuracy + (lastAcc*0.1) < lastAcc) {
             lastAcc = position.coords.accuracy;
             showPosition(position, false);
+        }
+    }
+    
+    function countdown() {
+        if (count > 0) {
+            count -= 1;
+            sec.innerHTML = sec.innerHTML = Math.floor(count / 60) +" m " + (count - Math.floor(count / 60) * 60) + " s";
+            countID = setTimeout(countdown, 1000);
+        }
+        else {
+            sec.innerHTML = '';
+            if (loadImg !== null)
+                document.getElementById("img").removeChild(loadImg);
         }
     }
 
@@ -41,7 +66,7 @@ R.track.locate = function() {
                 break;
         }
     }
-
+    
     function showPosition(position, updateHTML) {
         var y = position.coords;
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -61,8 +86,13 @@ R.track.locate = function() {
             
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                    if (updateHTML)
+                    if (updateHTML) {
                         x.innerHTML = xmlhttp.responseText;
+                        clearTimeout(countID);
+                        sec.innerHTML = '';
+                        if (loadImg !== null)
+                            document.getElementById("img").removeChild(loadImg);            
+                    }
                 }
             }
 
