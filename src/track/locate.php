@@ -30,11 +30,10 @@
         $id = Operation::getOperation($missing->op_id)->user_id;
         $age = Properties::get(Properties::LOCATION_MAX_AGE, $id);
         $wait = Properties::get(Properties::LOCATION_MAX_WAIT, $id);
-    
-    
+        $desiredAcc = Properties::get(Properties::LOCATION_DESIRED_ACC, $id);    
 ?>
 
-<script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&phone=<?=$_GET['phone']?>&wait=<?=$wait?>&age=<?=$age?>"></script></head>
+<script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&phone=<?=$_GET['phone']?>&wait=<?=$wait?>&age=<?=$age?>&desiredAcc=<?=$desiredAcc?>"></script></head>
 <body onLoad="R.track.locate();"><div id="feedback">Beregner posisjon...</div></body>
 
 <? } else { ?>

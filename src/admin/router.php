@@ -102,6 +102,7 @@
                         break;
                     case Properties::LOCATION_MAX_AGE:
                     case Properties::LOCATION_MAX_WAIT:
+                    case Properties::LOCATION_DESIRED_ACC:
                         
                         if(!is_numeric($value)) {
                             header('HTTP 400 Bad Request', true, 400);

@@ -28,11 +28,14 @@
         
         const LOCATION_MAX_AGE = "location.max.age";
         
+        const LOCATION_DESIRED_ACC = "location.desired.accuracy";
+        
         private static $defaults = array(
             
             Properties::SYSTEM_COUNTRY => "",
             Properties::LOCATION_MAX_AGE => "900000",
-            Properties::LOCATION_MAX_WAIT => "180000"
+            Properties::LOCATION_MAX_WAIT => "180000",
+            Properties::LOCATION_DESIRED_ACC => "100"
         );
         
         public static function getDefaults() {
@@ -75,6 +78,7 @@
                 case self::SYSTEM_COUNTRY:
                     return "select";
                 case self::LOCATION_MAX_AGE:
+                case self::LOCATION_DESIRED_ACC:
                 case self::LOCATION_MAX_WAIT:
                     return "text";
             }

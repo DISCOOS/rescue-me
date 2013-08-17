@@ -9,7 +9,7 @@ R.track.locate = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getAccurateCurrentPosition(showPosition, showError, showProgress, {
             maxWait:query.wait,       // Properties::LOCATION_MAX_WAIT
-            desiredAccuracy:100});    // 100 meter
+            desiredAccuracy:query.desiredAcc});    // Properties::LOCATION_DESIRED_ACC
     }
     else {
         x.innerHTML = "Lokalisering st&oslash;ttes ikke av din telefon.";
@@ -18,7 +18,8 @@ R.track.locate = function() {
     function showProgress(position) {
         x.innerHTML = 'Har funnet deg med '+Math.ceil(position.coords.accuracy)+ ' m n&oslash;yaktighet... <br />'
                            + 'Søker etter mer nøyaktig posisjon, vent litt...';
-        if (position.coords.accuracy + 50 < lastAcc) {
+        // If the new position has improved by 10%, report it
+        if (position.coords.accuracy + (lastAcc*0.1) < lastAcc) {
             lastAcc = position.coords.accuracy;
             showPosition(position, false);
         }
@@ -113,7 +114,7 @@ navigator.geolocation.getAccurateCurrentPosition = function (geolocationSuccess,
     }
 
     if (!options.maxWait)            options.maxWait = query.wait; // Default 3 min
-    if (!options.desiredAccuracy)    options.desiredAccuracy = 20; // Default 20 meters
+    if (!options.desiredAccuracy)    options.desiredAccuracy = query.desiredAcc; // Default 20 meters
     if (!options.timeout)            options.timeout = options.maxWait; // Default to maxWait
 
     options.maximumAge = query.age; // Accept that old positions
