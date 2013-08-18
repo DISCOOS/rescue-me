@@ -1,30 +1,30 @@
 <?php
 /**
- * Class Minify_Cache_APC
+ * Class Minify_Cache_XCache
+ *
+ * @link http://xcache.lighttpd.net/
  * @package Minify
  */
 
 /**
- * APC-based cache class for Minify
- * 
+ * XCache-based cache class for Minify
+ * {@see http://xcache.lighttpd.net/wiki/XcacheApi XCache API}
+ *
  * <code>
- * Minify::setCache(new Minify_Cache_APC());
+ * Minify::setCache(new Minify_Cache_XCache());
  * </code>
- * 
+ *
  * @package Minify
- * @author Chris Edwards
+ * @author Elan Ruusamäe <glen@delfi.ee>
  **/
-class Minify_Cache_APC {
+class Minify_Cache_XCache {
 
     /**
-     * Create a Minify_Cache_APC object, to be passed to
+     * Create a Minify_Cache_XCache object, to be passed to
      * Minify::setCache().
-     *
      *
      * @param int $expire seconds until expiration (default = 0
      * meaning the item will not get an expiration date)
-     *
-     * @return null
      */
     public function __construct($expire = 0)
     {
@@ -35,21 +35,18 @@ class Minify_Cache_APC {
      * Write data to cache.
      *
      * @param string $id cache id
-     *
      * @param string $data
-     *
      * @return bool success
      */
     public function store($id, $data)
     {
-        return apc_store($id, "{$_SERVER['REQUEST_TIME']}|{$data}", $this->_exp);
+        return xcache_set($id, "{$_SERVER['REQUEST_TIME']}|{$data}", $this->_exp);
     }
 
     /**
      * Get the size of a cache entry
      *
      * @param string $id cache id
-     *
      * @return int size in bytes
      */
     public function getSize($id)
@@ -66,9 +63,7 @@ class Minify_Cache_APC {
      * Does a valid cache entry exist?
      *
      * @param string $id cache id
-     *
      * @param int $srcMtime mtime of the original source file(s)
-     *
      * @return bool exists
      */
     public function isValid($id, $srcMtime)
@@ -92,7 +87,6 @@ class Minify_Cache_APC {
      * Fetch the cached content
      *
      * @param string $id cache id
-     *
      * @return string
      */
     public function fetch($id)
@@ -110,10 +104,9 @@ class Minify_Cache_APC {
     private $_id = null;
 
     /**
-     * Fetch data and timestamp from apc, store in instance
+     * Fetch data and timestamp from xcache, store in instance
      *
      * @param string $id
-     *
      * @return bool success
      */
     private function _fetch($id)
@@ -121,7 +114,7 @@ class Minify_Cache_APC {
         if ($this->_id === $id) {
             return true;
         }
-        $ret = apc_fetch($id);
+        $ret = xcache_get($id);
         if (false === $ret) {
             $this->_id = null;
             return false;

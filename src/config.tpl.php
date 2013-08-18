@@ -65,6 +65,9 @@
     define('TITLE', 'Rescue Me!');
     define('DEFAULT_COUNTRY', 'US');
 
+    // Minify constants
+    define('MINIFY_MAXAGE', 1800);
+
     // RescueMe message constants
     define('NO', 'Nei');
     define('YES', 'Ja');
