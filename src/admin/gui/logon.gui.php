@@ -1,4 +1,4 @@
-<form id="logon" name="logon" class="form-signin" method="post" action="<?= ADMIN_URI."logon" ?>">
+<form id="logon" name="logon" class="form-signin" method="post" action="<?= ADMIN_URI."logon".(isset($_GET['uri'])? "?uri={$_GET['uri']}" : "")?>">
     <h2 class="form-signin-heading">Logg inn</h2>
 <?php 
     if(isset($_ROUTER['message'])) { 

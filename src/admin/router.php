@@ -12,19 +12,36 @@
     if($_SESSION['logon'] == false) {
         
         // Set message?
-        if(isset($_GET['view']) && $_GET['view'] == 'logon') {
+        if(isset($_GET['view']) && !isset($_GET['uri']) && $_GET['view'] === 'logon') {
             $_ROUTER['message'] = "Du har oppgitt feil brukernavn eller passord";
         }            
         
         // Force logon?
-        if(!isset($_GET['view']) || $_GET['view'] !== "password/recover") { 
+        if(!isset($_GET['view']) || $_GET['view'] !== "password/recover") {
+            
+            // Redirect?
+            if(isset($_GET['view']) && $_GET['view'] !== "logon") {
+                $params = array();
+                $url = $_GET['view'];
+                foreach(array_exclude($_GET, array('view','uri')) as $key => $value) {
+                    $params[] = "$key=$value";
+                }
+                header("Location: ".ADMIN_URI."logon?uri=". urlencode("$url?".implode("&",$params)));
+            }
+            
             $_GET['view'] = 'logon';
+            
         }
-        
     }
     
     // Initialize view?
-    else if(!isset($_GET['view']) || empty($_GET['view']) || $_GET['view'] == 'logon') {
+    else if(!isset($_GET['view']) || empty($_GET['view']) || $_GET['view'] === 'logon') {
+        
+        // Redirect to uri?
+        if(isset($_GET['uri'])) {
+            header("Location: ".ADMIN_URI.urldecode($_GET['uri']));
+        }
+        
         $_GET['view'] = 'start';
     }
     
