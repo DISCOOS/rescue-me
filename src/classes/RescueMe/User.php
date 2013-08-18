@@ -525,18 +525,7 @@
          */
         public static function generate($length = 8)
         {
-            $str = '';
-
-            $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-=!@#$%&*()_+,./<>?;:[]{}';
-
-            $max = (strlen($chars) - 1);
-
-            for($i = 0; $i < $length; $i++) {
-                $str .= $chars[rand(0, $max)];
-            }
-
-            return $str;
-            
+            return str_rnd($length);
         }// generate
     
         

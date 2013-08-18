@@ -39,6 +39,18 @@
     define('COLOR_INFO', 'info');
     define('COLOR_ERROR', 'error');
     define('COLOR_SUCCESS', 'success');
+    
+    /**
+     * Perform system sanity checks
+     */
+    function system_checks() {
+        
+        if(ini_get("short_open_tag") !== "1") {
+            fatal("php ini value 'short_open_tag' must be '1'");
+        }
+        
+    }
+    
 
     /**
      * Parses parameters into an array.
@@ -251,39 +263,6 @@
     
     
     /** 
-     * Get random string of given length
-     * 
-     * @param integer $length String lengt
-     * @return string
-     */
-    function str_rnd($length = 8)
-    {
-        $str = '';
-        
-        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-=!@#$%&*()_+,./<>?;:[]{}';
-        
-        $max = (strlen($chars) - 1);
-
-        for($i = 0; $i < $length; $i++) {
-            $str .= $chars[rand(0, $max)];
-        }
-
-        return $str;
-    }// str_rnd
-    
-    
-    /**
-     * Escape string with "'"
-     * 
-     * @param string $string
-     * @param string $delimiter"
-     */
-    function str_escape($value) {
-        return isset($value) ? ("'".trim($value,"'")."'") : "''";
-    }// str_escape
-    
-    
-    /** 
      * Recursively delete directory.
      * 
      * @param string $dir
@@ -356,10 +335,6 @@
     }// get
 
 
-    function isset_get($array, $key, $default=null) {
-        return isset($array[$key]) ? $array[$key] : $default;
-    }
-    
     /**
      * Get tail argument value
      * 
@@ -456,7 +431,6 @@
     function in_phar() {
         return Phar::running();
     }
-    
     
     
     /**

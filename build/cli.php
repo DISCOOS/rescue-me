@@ -39,8 +39,12 @@
         define('USERNAME',"username");
         define('PASSWORD',"password");
         
-        // Import common functions
-        require 'inc/common.inc.php';
+        // Include resources
+        require 'inc/build.inc.php';
+        require dirname(__FILE__).'/../src/inc/common.inc.php';
+        
+        // Perform sanity checks on system
+        system_checks();        
         
         // Get options
         $opts = parse_opts($argv, array('h'));

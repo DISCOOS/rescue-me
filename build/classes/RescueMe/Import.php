@@ -87,7 +87,7 @@
             begin(IMPORT);
             
             // Notify
-            info(" Importing [$this->root/rescueme.sql] into [".$this->db."]....", INFO, NONE);
+            info("  Importing [$this->root/rescueme.sql] into [".$this->db."]....", INFO, NONE);
             
             // Connect to database
             DB::instance()->connect($this->host, $this->username, $this->password, $this->db);

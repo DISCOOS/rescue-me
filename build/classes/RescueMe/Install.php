@@ -65,8 +65,19 @@
         {
             begin(in_phar() ? INSTALL : CONFIGURE);
             
+            // Get archived configuration
+            if(in_phar()) {
+                $config = file_get_contents("config.php");
+            } 
+            // Initialize developement environment?
+            else if(!file_exists($this->root."config.php")) {
+                $config = file_get_contents($this->root."config.tpl.php");
+            } 
+            else {
+                $config = file_get_contents($this->root."config.php");                
+            }            
+            
             // Get configuration template
-            $config = file_get_contents("config.php");
             $config = replace_define_array($config, array
             (
                 'SALT'              => $this->ini['SALT'], 
@@ -150,7 +161,7 @@
                     $inline = false;
                 }
             }
-            info("DONE");
+            info($inline ? "DONE" : "  Initializing modules....DONE", INFO);
             
             // Create VERSION file
             if(file_put_contents($this->root."VERSION", $this->ini['VERSION']) === FALSE) {

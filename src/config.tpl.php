@@ -34,8 +34,10 @@
     // Import class loaders
     require('vendor/autoload.php');
     
-    // Load common resources
+    // Include resources
     require('inc/common.inc.php');
+    require('inc/rescueme.inc.php');
+    require('inc/gui.inc.php');
     
     // RescueMe application URI
     define('APP_URI', get_rescueme_uri());
