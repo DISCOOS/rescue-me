@@ -2,7 +2,7 @@
 
 <?
     
-    require 'compile.php';
+    require 'rescueme.php';
     
 ?>
 

@@ -50,22 +50,26 @@
          */
         public function execute()
         {
+            begin(UNINSTALL);
+            
             // Notify
-            info("Inspecting installation in [$this->root]....", SUCCESS, NONE);
+            info("  Inspecting [$this->root]....", INFO, NONE);
             
             // Not found?
             if(!file_exists(realpath($this->root))) {
-                return FAILED."(".NOT_FOUND.")";
+                return error(sprintf("%s ".NOT_FOUND,$this->root));
             }// if
-            info("DONE", SUCCESS);
+            info("DONE");
             
             // Uninstall application
-            info("Uninstalling [$this->root]....", SUCCESS, NONE);
+            info("  Uninstalling [$this->root]....", INFO, NONE);
             if(!rrmdir(realpath($this->root))) {
-                return FAILED."(".RM_DIR_FAILED.")";
-            }// if 
-            info("DONE", SUCCESS);
+                return error(FAILED."(".RM_DIR_FAILED.")");
+            }// if             
+            info("DONE");
            
+            done(UNINSTALL);
+            
             // Finished
             return true;
             

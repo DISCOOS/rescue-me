@@ -17,9 +17,11 @@
     define('BOTH', 2);
     define('ERROR', -1);
     define('SUCCESS', 0);
+    define('CANCEL', 1);
     define('INFO', 'INFO');
     define('DONE', "DONE");
     define('FAILED', "FAILED");
+    define('CANCELLED', "CANCELLED");
     define('NOT_FOUND', "not found");
     define('RM_DIR_FAILED', "remove directory failed");
     define('DIR_EXISTS', "directory exists");
@@ -181,7 +183,7 @@
      */
     function get_define($subject, $name, $default='') {
         $values = array();
-        return preg_match("#define\('$name',(.*)\)#", $subject, $values) === 1 ? $values[1] : $default;
+        return trim(preg_match("#define\('$name',(.*)\)#", $subject, $values) === 1 ? $values[1] : $default);
     }// replace_define
     
     
@@ -322,6 +324,7 @@
      * @param string $message Message
      * @param string $default Default value
      * @param integer $newline Message newline [optional, default: NONE]
+     * @param boolean $required Required value.
      * 
      * @return string Answer 
      */
@@ -353,6 +356,10 @@
     }// get
 
 
+    function isset_get($array, $key, $default=null) {
+        return isset($array[$key]) ? $array[$key] : $default;
+    }
+    
     /**
      * Get tail argument value
      * 
@@ -368,6 +375,91 @@
     
     
     /**
+     * Get configuration parameters
+     * 
+     * @param string $root
+     * @return array
+     */
+    function get_config_params($root) {
+        // Get current configuration
+        $config = file_get_contents(realpath($root)."/config.php");
+        $config = get_define_array($config, array
+        (
+            'SALT', 'TITLE', 'SMS_FROM', 'DEFAULT_COUNTRY', 
+            'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD',
+            'GOOGLE_API_KEY'
+        ));        
+        return $config;
+    }
+    
+    
+    /**
+     * Get database parameters
+     * 
+     * @param array $opts
+     * @param array $config
+     */
+    function get_db_params($opts, $config, $ensure=false) {
+
+        // Get database parameters
+        $db = get($opts, DB, isset_get($config, "DB_NAME", ""), false);
+        $host = get( $opts, HOST, isset_get($config, "DB_HOST", ""), false);
+        $username = get($opts, USERNAME, isset_get($config, "DB_USERNAME", ""), false);
+        $password = get($opts, PASSWORD, isset_get($config, "DB_PASSWORD", ""), false);
+
+        // Ensure missing parameters?
+        if($ensure) {
+            $db = $db ? $db : in("Database Name", "rescueme");
+            $host = $host ? $host : in("Database Host", "localhost");
+            $username = $username ? $username : in("Database Username");
+            $password = $password ? $password : in("Database Password");
+        } 
+        
+        // Trim values
+        $opts[DB] = trim($db, "'");
+        $opts[HOST] = trim($host, "'");
+        $opts[USERNAME] = trim($username, "'");
+        $opts[PASSWORD] = trim($password, "'");            
+               
+        // Finished
+        return $opts;        
+    }
+    
+    
+    /**
+     * Get safe directory path (trailing slash)
+     * 
+     * @param array $opts
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+    function get_safe_dir($opts, $key, $default) {
+        
+        // Get path 
+        $dir = get($opts, $key, $default, false);
+
+        // Use current working directory?
+        if($dir === ".") $dir = getcwd();
+
+        // Ensure trailing slash
+        return rtrim($dir,"/")."/";
+        
+    }
+    
+    
+    /**
+     * Check if script is running in a phar-archive.
+     * 
+     * @return boolean
+     */
+    function in_phar() {
+        return Phar::running();
+    }
+    
+    
+    
+    /**
      * Log action begun
      * 
      * @param string $action Action name
@@ -376,12 +468,12 @@
      */
     function begin($action)
     {
-        info("$action...", SUCCESS);
+        info("rescueme [$action]...", SUCCESS);
     }// done
 
-
+    
     /**
-     * Log action done and exit script with given status
+     * Log action done. 
      * 
      * @param string $action Action name
      * @param integer $status Action status
@@ -389,15 +481,17 @@
      * 
      * @return void
      */
-    function done($action, $status = SUCCESS, $newline = POST)
+    function done($action, $status = SUCCESS, $newline=POST)
     {
-        if($status === ERROR) {
-            error("$action...".FAILED.PHP_EOL, $status, $newline);
-        } 
-        else {
-            info("$action...".DONE.PHP_EOL, $status, $newline);
+        switch($status) { 
+            case ERROR: 
+                fatal("rescueme [$action]...".FAILED.PHP_EOL, ERROR, $newline);
+            case CANCEL: 
+                fatal("rescueme [$action]...".CANCELLED.PHP_EOL, CANCEL, $newline);
+            default:
+                info("rescueme [$action]...".DONE.PHP_EOL, $status, $newline);
+                break;
         }
-        exit($status);
     }// done
 
 
@@ -417,7 +511,8 @@
     function fatal($message, $status = ERROR, $newline=POST)
     {
         // Log event, cleanup and terminate
-        exit (error($message, $status, $newline));
+        exit(error($message, $status, $newline));
+        
     }// fatal
 
 
@@ -433,7 +528,7 @@
      * @return integer
      * 
      */
-    function info($message, $status = SUCCESS, $newline=POST)
+    function info($message, $status = INFO, $newline=POST)
     {
         out($message,$newline,$status === SUCCESS ? COLOR_SUCCESS : COLOR_INFO); return $status;
     }// info
@@ -453,7 +548,7 @@
      */
     function error($message, $status = ERROR, $newline=POST)
     {
-        out($message,$newline,COLOR_ERROR); return $status;
+        out($message, $newline, COLOR_ERROR); return $status;
     }// error
 
 

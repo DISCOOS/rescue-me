@@ -26,6 +26,7 @@
          */
         private static $instance;
         
+        
         /**
          * Connection instance
          * 
@@ -33,12 +34,13 @@
          */
         private $mysqli;
         
+        
         /**
          * Get default DB instance
          * 
          * @return DB 
          */
-        private static function instance()
+        public static function instance()
         {
             if(!isset(DB::$instance))
             {
@@ -62,8 +64,19 @@
          * 
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public function connect($host=DB_HOST, $usr = DB_USERNAME, $pwd = DB_PASSWORD, $name=DB_NAME)
-        {
+        public function connect($host = null, $usr = null, $pwd = null, $name = null)
+        {        
+            // Use defaults?
+            $host = $host ? $host : (defined('DB_HOST') ? DB_HOST : "");
+            $usr = $usr ? $usr : (defined('DB_USERNAME') ? DB_USERNAME : "");
+            $pwd = $pwd ? $pwd : (defined('DB_PASSWORD') ? DB_PASSWORD : "");
+            $name = $name ? $name : (defined('DB_NAME') ? DB_NAME : "");
+            
+            // Sanity check
+            if(!($host && $name)) {
+                return false;
+            }
+            
             if(!isset($this->mysqli))
             {
                 $this->mysqli = mysqli_connect($host, $usr, $pwd);

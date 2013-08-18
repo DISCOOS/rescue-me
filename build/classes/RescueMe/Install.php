@@ -24,13 +24,6 @@
     class Install
     {
         /**
-         * RescueMe source archive (zip, filename)
-         * @var string
-         */
-        private $src;
-        
-        
-        /**
          * Installation root
          * @var string
          */
@@ -47,7 +40,6 @@
         /**
          * Constructor
          *
-         * @param string $src RescueMe source archive (zip, filename)
          * @param string $root Installation root
          * @param array $ini Installation ini parameters
          * 
@@ -55,9 +47,8 @@
          * @since 19. June 2013
          *
          */
-        public function __construct($src, $root, $ini)
+        public function __construct($root, $ini)
         {
-            $this->src = $src;
             $this->root = $root;
             $this->ini = $ini;
             
@@ -72,29 +63,7 @@
          */
         public function execute()
         {
-            // Notify
-            info("Extracting [$this->src] to [$this->root]....", SUCCESS, NONE);
-            
-            // Do not overwrite existing
-            if(file_exists($this->root) === TRUE) {
-                return DIR_EXISTS;
-            }// if
-            
-            // Escape Phar context (HACK...)
-            $content = file_get_contents($this->src);
-            file_put_contents($this->src, $content);
-            
-            // Unpack source filoes to root
-            $zip = new \ZipArchive();
-            if (($error = $zip->open($this->src)) !== TRUE) {
-                return ZIP_OPEN_FAILED.":$error";
-            }// if 
-            
-            // Extract source to root directory
-            $zip->extractTo($this->root);
-            $zip->close();
-            
-            info("DONE", SUCCESS);
+            begin(in_phar() ? INSTALL : CONFIGURE);
             
             // Get configuration template
             $config = file_get_contents("config.php");
@@ -113,16 +82,13 @@
             
             // Create config.php
             if(file_put_contents($this->root."config.php", $config) === FALSE) {
-                return CONFIG_NOT_CREATED;
+                return error(CONFIG_NOT_CREATED);
             }// if
             
             // Create apache logs folder
-            if(!is_dir($this->root."logs")) {
+            if(!file_exists(realpath($this->root."logs"))) {
                 mkdir($this->root."logs");
             }
-            
-            // Get common functions
-            require $this->root."inc/common.inc.php";
             
             // Bootstrap RescueMe classes
             require $this->root."vendor/autoload.php";
@@ -138,58 +104,60 @@
                 define('DB_PASSWORD', get($this->ini, 'DB_PASSWORD', null, false));
             }
             
-            info("Creating database [$name]....", SUCCESS, NONE);
+            info("  Creating database [$name]....", INFO, NONE);
             if(DB::create($name) === FALSE) {
-                return sprintf(DB_NOT_CREATED,"$name")." (check database credentials)";
+                return error(sprintf(DB_NOT_CREATED,"$name")." (check database credentials)");
             }// if
-            info("DONE", SUCCESS);
+            info("DONE");
             
-            info("Importing [rescueme.sql]....", SUCCESS, NONE);
+            info("  Importing [rescueme.sql]....", INFO, NONE);
             if(($executed = DB::import($this->root."rescueme.sql")) === FALSE) {
-                return sprintf(DB_NOT_IMPORTED,"rescueme.sql")." (".DB::error().")";
+                return error(sprintf(DB_NOT_IMPORTED,"rescueme.sql")." (".DB::error().")");
             }// if
-            info("DONE", SUCCESS);
+            info("DONE");
             
             if(User::isEmpty())
             {
-                info("Initializing database....", SUCCESS);
+                info("  Initializing database....", INFO);
                 
-                $fullname = in("Admin Full Name");
-                $username = in("Admin Username (e-mail)");
-                $password = in("Admin Password");
-                $country = in("Admin Phone Country Code (ISO2)", Locale::getCurrentCountryCode());
-                $mobile = in("Admin Phone Number Without Int'l Dial Code");
+                $fullname = in("  Admin Full Name");
+                $username = in("  Admin Username (e-mail)");
+                $password = in("  Admin Password");
+                $country = in("  Admin Phone Country Code (ISO2)", Locale::getCurrentCountryCode());
+                $mobile = in("  Admin Phone Number Without Int'l Dial Code");
                 
                 if(!defined('SALT'))
                 {
                     define('SALT', get($this->ini, 'SALT', null, false));
                 }
                 if(User::create($fullname, $username, $password, $country, $mobile) === FALSE) {
-                    return ADMIN_NOT_CREATED." (".DB::error().")";
+                    return error(ADMIN_NOT_CREATED." (".DB::error().")");
                 }// if                
                 
-                info("Initializing database....DONE", SUCCESS);
+                info("  Initializing database....DONE", INFO);
                 
             }
             
-            info("Initializing modules....", SUCCESS);
+            $inline = true;
+            info("  Initializing modules....", INFO, NONE);
             if(Module::install() !== false) {
-                info("  System modules installed", SUCCESS);
+                info("    System modules installed", BOTH);
+                $inline = false;
             }
             foreach(User::getAll() as $user) {
                 if($user->prepare()) {
-                    info("  Modules for [$user->name] installed", SUCCESS);
+                    info("    Modules for [$user->name] installed", INFO, $inline ? BOTH : POST);
+                    $inline = false;
                 }
             }
-            info("Initializing modules....DONE", SUCCESS);
+            info("DONE");
             
             // Create VERSION file
             if(file_put_contents($this->root."VERSION", $this->ini['VERSION']) === FALSE) {
-                return sprintf(VERSION_NOT_SET,$this->ini['VERSION']);
-            }// if            
+                return error(sprintf(VERSION_NOT_SET,$this->ini['VERSION']));
+            }// if
             
-            // Cleanup
-            unlink($this->src);
+            done(in_phar() ? INSTALL : CONFIGURE);
             
             // Finished
             return true;
