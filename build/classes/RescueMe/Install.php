@@ -65,16 +65,13 @@
         {
             begin(in_phar() ? INSTALL : CONFIGURE);
             
-            // Get archived configuration
+            // Initialize packaged configuration?
             if(in_phar()) {
                 $config = file_get_contents("config.php");
             } 
             // Initialize developement environment?
-            else if(!file_exists($this->root."config.php")) {
-                $config = file_get_contents($this->root."config.tpl.php");
-            } 
             else {
-                $config = file_get_contents($this->root."config.php");                
+                $config = file_get_contents($this->root."config.tpl.php");
             }            
             
             // Get configuration template

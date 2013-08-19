@@ -19,7 +19,6 @@
 
         return array("deg" => $deg, "min" => $min, "sec" => $sec);
     }
-
     
     /**
      * Get application path relative to $_SERVER['SERVER_NAME'];

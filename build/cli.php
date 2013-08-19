@@ -78,7 +78,7 @@
      * 
      * @param array $actions
      */
-    function execute($actions) 
+    function execute($actions)
     {
         foreach($actions as $action => $opts) 
         {            
@@ -224,7 +224,7 @@
                     
                     // Get paths
                     $root = get_safe_dir($opts, INSTALL_DIR, in_phar() ? getcwd() : "src");
-
+                    
                     // Get default ini values
                     $ini = is_file("rescueme.ini") ? parse_ini_file("rescueme.ini") : array();
 
@@ -414,6 +414,7 @@
                 info("RescueMe Configure Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme configure [OPTIONS]... ' . PHP_EOL;
                 echo "OPTIONS:" . PHP_EOL;
+                echo "        --install-dir Install directory [default: src]" . PHP_EOL;
                 echo "        -h            Display this help" . PHP_EOL;                
                 break;
             case UNINSTALL:

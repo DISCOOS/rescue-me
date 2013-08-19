@@ -17,6 +17,12 @@
 		"twig/twig": ">=1.8,<2.0-dev",
 		"twig/extensions": "*",
 		"umpirsky/twig-gettext-extractor": "1.1.*"
+    },
+            
+    "scripts": {
+      "post-update-cmd": "RescueMe\\Build::configure",
+      "post-install-cmd": "RescueMe\\Build::configure"
     }
+            
 
 }
