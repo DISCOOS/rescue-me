@@ -149,7 +149,7 @@
             $inline = true;
             info("  Initializing modules....", INFO, NONE);
             if(Module::install() !== false) {
-                info("    System modules installed", BOTH);
+                info("    System modules installed", INFO, BOTH);
                 $inline = false;
             }
             $users = User::getAll();
