@@ -36,13 +36,13 @@ Follow the instructions.
 Build from source
 -----------------
 
-2. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it, or**
+2. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it to /path/to/rescume/src, or**
 
     ```bash
     git clone https://github.com/DISCOOS/rescue-me.git /path/to/rescume/src
     ```
 
-3. **Download latest Composer version into `/path/to/rescume/src`**
+3. **Download latest Composer version into /path/to/rescume/src**
 
     ```bash
     curl -sS https://getcomposer.org/installer | php
