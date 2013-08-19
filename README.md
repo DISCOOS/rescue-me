@@ -24,6 +24,9 @@ Install RescueMe
 ----------------
 
 Run this in your terminal to install RescueMe:
+
+(assumes Apache is already installed and configured)
+
 ```bash
 php rescueme.phar install --install-dir=/path/to/www/rescueme
 ```
@@ -44,24 +47,15 @@ Build from source
     *Linux*
 
     ```php
-    ./compile package -v <string>
+    ./rescueme configure
     ```
 
     *Any OS*
 
     ```php
-    php compile.php package -v <string>
+    php rescueme.php configure
     ```
-    which outputs `dist/rescueme-<string>.phar` 
-
-
-3. **Install RescueMe**
-
-   (assumes Apache is already installed and configured)
-
-    ```php
-    php dist/rescueme-<version>.phar install --install-dir=/path/to/www/rescueme
-    ```
+    
     Follow the instructions.
 
 Developers
