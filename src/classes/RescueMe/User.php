@@ -114,9 +114,10 @@
             
             $res = DB::select(self::TABLE, "*", $filter, "`state`, `name`");
             
-            if (DB::isEmpty($res)) return false;
-
             $users = array();
+            
+            if (DB::isEmpty($res)) return $users;
+
             while ($row = $res->fetch_assoc()) {
                 $user = self::get($row['user_id']);
                 $users[$row['user_id']] = $user;
