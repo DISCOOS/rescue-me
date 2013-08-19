@@ -28,7 +28,7 @@ Run this in your terminal to install RescueMe:
 (assumes Apache is already installed and configured)
 
 ```bash
-php rescueme.phar install --install-dir=/path/to/www/rescueme
+php rescueme.phar install --install-dir=/path/to/rescueme
 ```
 
 Follow the instructions.
@@ -36,24 +36,28 @@ Follow the instructions.
 Build from source
 -----------------
 
-1. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it, or**
+2. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it, or**
 
     ```bash
-    git clone https://github.com/DISCOOS/rescue-me.git
+    git clone https://github.com/DISCOOS/rescue-me.git /path/to/rescume/src
     ```
 
-2. **Goto RescueMe root folder and**
+3. **Download latest Composer version into `/path/to/rescume/src`**
 
-    *Linux*
-
-    ```php
-    ./rescueme configure
+    ```bash
+    curl -sS https://getcomposer.org/installer | php
     ```
+    
+    or if you don't have curl (windows):
+    
+    ```bash
+    php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
+    ```    
 
-    *Any OS*
+3. **Install dependencies and configure RescueMe**
 
     ```php
-    php rescueme.php configure
+    php composer.phar install
     ```
     
     Follow the instructions.
