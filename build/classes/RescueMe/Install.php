@@ -84,7 +84,7 @@
                 'DB_NAME'           => $this->ini['DB_NAME'], 
                 'DB_USERNAME'       => $this->ini['DB_USERNAME'], 
                 'DB_PASSWORD'       => $this->ini['DB_PASSWORD'],
-                'DEFAULT_COUNTRY'    => $this->ini['DEFAULT_COUNTRY'],
+                'DEFAULT_COUNTRY'   => $this->ini['DEFAULT_COUNTRY'],
                 'GOOGLE_API_KEY'    => $this->ini['GOOGLE_API_KEY']
             ));
             

@@ -109,6 +109,9 @@
             // Add build scripts source
             $oPhar->buildFromDirectory("$this->build");
 
+            // Add common resources
+            $oPhar->addFile("$this->src/inc/common.inc.php", "inc/common.inc.php");
+            
             // Add 5.4+ compatible class loader
             $oPhar->addFile("$this->src/vendor/composer/ClassLoader.php", "classes/ClassLoader.php");
 

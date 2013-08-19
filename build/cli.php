@@ -41,7 +41,7 @@
         
         // Include resources
         require 'inc/build.inc.php';
-        require dirname(__FILE__).'/../src/inc/common.inc.php';
+        require (in_phar() ? '' : dirname(__FILE__).'/../src/').'inc/common.inc.php';
         
         // Perform sanity checks on system
         system_checks();        
@@ -258,7 +258,7 @@
                     if($action !== CONFIGURE) {
 
                         // Uninstall?
-                        if(isset_get($opts, 'clean', false) && file_exists(realpath($root)))
+                        if(file_exists(realpath($root)))
                         {
                             execute(array(UNINSTALL => array(INSTALL_DIR => $root)));
                         }
@@ -267,7 +267,7 @@
                         $src = get($opts, ARCHIVE, "src.zip", false);                    
 
                         // Extract?
-                        if(file_exists(realpath($src)))
+                        if(file_exists($src))
                         {
                             execute(array('extract' => array(ARCHIVE => $src, EXTRACT_DIR => $root)));
                         }
@@ -403,7 +403,6 @@
                 echo "OPTIONS:" . PHP_EOL;
                 echo "        --archive     RescueMe archive file [default: src.zip]" . PHP_EOL;
                 echo "        --install-dir Install directory [default: ".getcwd()."]" . PHP_EOL;
-                echo "        --clean       Remove current installation [default: false]" . PHP_EOL;
                 echo "        -h            Display this help" . PHP_EOL;                
                 break;
             case CONFIGURE:
