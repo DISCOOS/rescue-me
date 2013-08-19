@@ -114,10 +114,9 @@
             
             $res = DB::select(self::TABLE, "*", $filter, "`state`, `name`");
             
-            $users = array();
-            
-            if (DB::isEmpty($res)) return $users;
+            if (DB::isEmpty($res)) return false;
 
+            $users = array();
             while ($row = $res->fetch_assoc()) {
                 $user = self::get($row['user_id']);
                 $users[$row['user_id']] = $user;
@@ -273,12 +272,14 @@
         public function prepare() {
             $changed = false;
             $modules = Module::getAll();
-            foreach($modules as $module) {
-                if(!Module::exists($module->type, $this->id)) {
-                    Module::add($module->type, $module->impl, $module->newConfig()->params(), $this->id);
-                    $changed = true;
-                }
-            }                        
+            if($modules != false) {
+                foreach($modules as $module) {
+                    if(!Module::exists($module->type, $this->id)) {
+                        Module::add($module->type, $module->impl, $module->newConfig()->params(), $this->id);
+                        $changed = true;
+                    }
+                }           
+            }
             return $changed;
         }
         

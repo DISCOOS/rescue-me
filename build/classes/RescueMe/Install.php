@@ -152,10 +152,13 @@
                 info("    System modules installed", BOTH);
                 $inline = false;
             }
-            foreach(User::getAll() as $user) {
-                if($user->prepare()) {
-                    info("    Modules for [$user->name] installed", INFO, $inline ? BOTH : POST);
-                    $inline = false;
+            $users = User::getAll();
+            if($users != false) {
+                foreach(User::getAll() as $user) {
+                    if($user->prepare()) {
+                        info("    Modules for [$user->name] installed", INFO, $inline ? BOTH : POST);
+                        $inline = false;
+                    }
                 }
             }
             info($inline ? "DONE" : "  Initializing modules....DONE", INFO);
