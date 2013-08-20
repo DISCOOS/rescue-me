@@ -79,7 +79,7 @@ class Operation {
      */
     public static function reopenOperation($id) {
         
-        return DB::update(self::TABLE,array('op_closed' => '0000-00-00 00:00:00'), "`op_id`=" . (int) $id);
+        return DB::update(self::TABLE,array('op_closed' => '0'), "`op_id`=" . (int) $id);
         
     }
     
@@ -148,7 +148,7 @@ class Operation {
                 
         if (DB::isEmpty($res)) 
             return false;
-
+        
         $operation_ids = array();
         while ($row = $res->fetch_assoc()) {
             $operation = new Operation();

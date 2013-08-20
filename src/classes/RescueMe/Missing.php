@@ -128,7 +128,7 @@ class Missing
     }// getPositions
 
 
-    public function addPosition($lat, $lon, $acc, $alt, $timestamp, $useragent = ''){
+    public function addPosition($lat, $lon, $acc, $alt, $useragent = ''){
 
         // Sanity check
         if($this->id === -1) return false;
@@ -176,15 +176,15 @@ class Missing
         }
 
         // Insert new position
-        $query = "INSERT INTO `positions` (`missing_id`, `lat`, `lon`, `acc`, `alt`, `timestamp`, `user_agent`) VALUES (" . 
+        $query = "INSERT INTO `positions` (`missing_id`, `lat`, `lon`, `acc`, `alt`, `user_agent`) VALUES (" . 
             (int) $this->id . ", " . DB::escape($lat) . ", " . DB::escape($lon) . ", " .
-            (int) $acc . ", " . (int) $alt . ", " . (int) $timestamp . ", '" . DB::escape($useragent) . "')";
+            (int) $acc . ", " . (int) $alt . ", '" . DB::escape($useragent) . "')";
 
         $posID = DB::query($query);
 
         if(!$posID) return false;
 
-        $this->positions[(int) $timestamp] = new Position($posID);
+        $this->positions[(int) time()] = new Position($posID);
 
     }// addPosition
 
@@ -203,7 +203,7 @@ class Missing
 
         else {
             
-            $query = "UPDATE `missing` SET `sms_sent` = '".date("Y-m-d H:i:s")."',
+            $query = "UPDATE `missing` SET `sms_sent` = 'NOW()',
                       `sms_provider_ref` = '".$res."'
                       WHERE `missing_id` = '" . $this->id . "';";
             

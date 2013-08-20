@@ -55,7 +55,7 @@
             $this->acc = $row['acc'];
             $this->alt = $row['alt'];
             $this->timestamp = $row['timestamp'];
-            $this->human = date('Y-m-d H:i:s', $row['timestamp']);
+            $this->human = $this->timestamp;
         }
 
 

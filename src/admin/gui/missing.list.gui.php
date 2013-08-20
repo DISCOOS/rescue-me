@@ -77,15 +77,16 @@
         </tbody>
     </table>
         
-    <?                 
-        foreach($active as $id => $this_operation) {
-            // Insert close confirmation
-            insert_dialog_confirm(
-                "confirm-close-$id", 
-                "Bekreft", 
-                _("Vil du avslutte <u>$this_operation->op_name</u>?"), 
-                ADMIN_URI."operation/close/{$id}"
-            );
+    <?  if (is_array($active)) {
+            foreach($active as $id => $this_operation) {
+                // Insert close confirmation
+                insert_dialog_confirm(
+                    "confirm-close-$id", 
+                    "Bekreft", 
+                    _("Vil du avslutte <u>$this_operation->op_name</u>?"), 
+                    ADMIN_URI."operation/close/{$id}"
+                );
+            }
         }
     ?>
 

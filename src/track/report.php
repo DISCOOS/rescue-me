@@ -12,7 +12,7 @@ else {
     if($m !== false)
     {
         $acc = (int)$_GET['acc'];
-        $m->addPosition($_GET['lat'], $_GET['lon'], $acc, $_GET['alt'], time(), $_SERVER['HTTP_USER_AGENT']);
+        $m->addPosition($_GET['lat'], $_GET['lon'], $acc, $_GET['alt'], $_SERVER['HTTP_USER_AGENT']);
         $response  = "Vi har funnet din posisjon med $acc m n&oslash;yaktighet.<br/>";
         if ($_GET['acc'] > 500) {
             $response .= 'Vi er på vei, men pr&oslash;v å gj&oslash;re deg mest mulig synlig fra lufta og bakken!';
