@@ -1,26 +1,6 @@
 -- --------------------------------------------------------
 
 -- 
--- Structure for table `countries`
--- 
-
-CREATE TABLE IF NOT EXISTS `countries` (
-  `country_id` int(5) NOT NULL AUTO_INCREMENT,
-  `iso2` char(2) DEFAULT NULL,
-  `short_name` varchar(80) NOT NULL DEFAULT '',
-  `long_name` varchar(80) NOT NULL DEFAULT '',
-  `iso3` char(3) DEFAULT NULL,
-  `numcode` varchar(6) DEFAULT NULL,
-  `un_member` varchar(12) DEFAULT NULL,
-  `calling_code` varchar(8) DEFAULT NULL,
-  `cctld` varchar(5) DEFAULT NULL,
-  PRIMARY KEY (`country_id`),
-  KEY `calling_code` (`calling_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
--- 
 -- Structure for table `missing`
 -- 
 
@@ -30,11 +10,11 @@ CREATE TABLE IF NOT EXISTS `missing` (
   `missing_name` char(255) NOT NULL,
   `missing_mobile_country` char(4) NOT NULL,
   `missing_mobile` varchar(25) NOT NULL,
-  `sms_sent` datetime DEFAULT NULL,
-  `sms_delivery` datetime NOT NULL,
+  `sms_sent` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `sms_delivery` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `sms_provider_ref` varchar(255) NOT NULL,
   `sms_error` varchar(255) NOT NULL,
-  `missing_reported` datetime NOT NULL,
+  `missing_reported` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sms2_sent` enum('false','true') NOT NULL DEFAULT 'false',
   `sms_mb_sent` enum('false','true') NOT NULL,
   PRIMARY KEY (`missing_id`),
@@ -69,8 +49,8 @@ CREATE TABLE IF NOT EXISTS `operations` (
   `alert_mobile_country` char(4) NOT NULL,
   `alert_mobile` varchar(25) NOT NULL,
   `op_ref` varchar(255) NOT NULL,
-  `op_opened` datetime NOT NULL,
-  `op_closed` datetime NOT NULL,
+  `op_opened` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `op_closed` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `op_comments` text NOT NULL,
   PRIMARY KEY (`op_id`),
   KEY `user_id` (`user_id`)
@@ -89,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `positions` (
   `lon` double NOT NULL,
   `acc` int(5) NOT NULL,
   `alt` int(4) NOT NULL,
-  `timestamp` int(12) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_agent` varchar(255) NOT NULL,
   PRIMARY KEY (`pos_id`),
   KEY `missing_id` (`missing_id`)
