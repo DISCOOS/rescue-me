@@ -33,19 +33,7 @@
             $this_missing->getPositions();
             if($this_missing->last_pos->timestamp>0) {
                 $position = $this_missing->last_UTM;
-                $ts = (int)(time() - $this_missing->last_pos->timestamp);
-                $since = "~"._("sec");
-                if($ts > 0) {
-                    if($ts < 60) {
-                        $since = "$ts "._("sec");
-                    }
-                    else if($ts < 2*60*60) {
-                        $since = (int)($ts/60)." "._("min");                        
-                    }
-                    else {
-                        $since = $this_missing->last_pos->human;
-                    }
-                }
+                $since = $this_missing->last_pos->timestamp > -1 ? format_since($this_missing->last_pos->timestamp) : $this_missing->last_pos->human;
                 $position = "$position ($since)";
             } else {
                 $position = $this_missing->last_pos->human;
@@ -109,7 +97,7 @@
     ?>
             <tr id="<?= $id ?>">
                 <td class="missing name"> <?= $this_operation->op_name ?> </td>
-                <td class="missing date"><?= $this_operation->op_closed ?></td>
+                <td class="missing date"><?= format_since($this_operation->op_closed) ?></td>
                 <td class="missing editor">
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/$id"?>">

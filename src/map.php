@@ -110,7 +110,7 @@ foreach ($positions as $key=>$value) {
           position: new google.maps.LatLng(".$value->lat.", ".$value->lon."),
           draggable: false,
           icon: getMarkerImage(color),
-          title: '+/- ".$value->acc." meter (DTG ". date('d-Hi', $value->timestamp) .")'
+          title: '+/- ".$value->acc." meter (DTG ". format_dtg($value->timestamp) .")'
     });
 	var circle_".$i." = new google.maps.Circle({
 		  strokeColor: color,
@@ -198,14 +198,14 @@ google.maps.event.addDomListener(window, 'load', initialize);
 $i = 0;
 foreach ($positions as $key=>$value) {
 	if ($value->acc < 1000)
-		echo '<a href="#" onClick="panMapTo('.$i.')">'.($i+1).'. N&oslash;yaktighet '.$value->acc.' meter (DTG: '.date('d-H:i:s', $value->timestamp).')</a><br />';
+		echo '<a href="#" onClick="panMapTo('.$i.')">'.($i+1).'. N&oslash;yaktighet '.$value->acc.' meter (DTG: '.format_dtg($value->timestamp,true).')</a><br />';
 	$i++;
 }
 echo '<br /><i>';
 $i = 0;
 foreach ($positions as $key=>$value) {
 	if ($value->acc >= 1000)
-		echo '<a href="#" onClick="panMapTo('.$i.')">'.($i+1).'. N&oslash;yaktighet '.$value->acc.' meter (DTG: '.date('d-H:i:s', $value->timestamp).')</a><br />';
+		echo '<a href="#" onClick="panMapTo('.$i.')">'.($i+1).'. N&oslash;yaktighet '.$value->acc.' meter (DTG: '.format_dtg($value->timestamp,true).')</a><br />';
 	$i++;
 }
 echo '</i><br /><br /><u>Link som den savnede bruker:</u><br />'.

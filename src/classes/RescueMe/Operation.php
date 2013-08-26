@@ -130,13 +130,12 @@ class Operation {
         // Get WHERE clause
         switch( $status ) {
             case 'open': 		
-                $where = "= '0000-00-00 00:00:00'";		
+                $where = " IS NULL";		
                 break;
             case 'closed':		
-                $where = "!= '0000-00-00 00:00:00'";
-                break;
             default:
-                $where = ' NOT NULL';
+                $where = "IS NOT NULL";
+                break;
         }
 
         $query = "SELECT `op_id`, `op_name` FROM `".self::TABLE."`

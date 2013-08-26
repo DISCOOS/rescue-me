@@ -26,10 +26,11 @@
 
 <div class="infos clear-fix">
 	<div class="info pull-left">
-		<label class="label label-important">Sist posisjonert</label> <?= $missing->last_pos->human?>
+		<label class="label label-important">Sist posisjonert</label> 
+        <?= $missing->last_pos->timestamp > -1 ? format_since($missing->last_pos->timestamp) : $missing->last_pos->human ?>
 	</div>
 	<div class="info pull-left">
-		<label class="label label-important">Meldt savnet</label> <?= $missing->m_reported ?>
+		<label class="label label-important">Meldt savnet</label> <?= format_since($missing->m_reported) ?>
 	</div>
 </div>
 
@@ -41,9 +42,9 @@
 	<?php
 	$i = 0;
 	foreach ($positions as $key=>$value) {
-		if ($value->acc < 1000) {?>
+		if ($value->acc < 1000) { $timestamp = date('Y-m-d H:i:s', strtotime($value->timestamp));?>
 			<li class="position clearfix well well-small" data-pan-to="<?= $i ?>">
-				<time class="timeago" datetime="<?= date('Y-m-d H:i:s', $value->timestamp)?>"><?= $value->human ?></time>
+                <time class="timeago" datetime="<?= $timestamp ?>"><?= format_since($value->timestamp) ?></time>
 				<div class="noyaktighet"><?= $value->acc ?> m</div>
 			</li>
 		<?php
@@ -56,9 +57,9 @@
 	<?php
 	$i = 0;
 	foreach ($positions as $key=>$value) {
-		if ($value->acc >= 1000) {?>
+		if ($value->acc >= 1000) { $timestamp = date('Y-m-d H:i:s', strtotime($value->timestamp)); ?>
 			<li class="position clearfix well well-small" data-pan-to="<?= $i ?>">
-				<time class="timeago" datetime="<?= date('Y-m-d H:i:s', $value->timestamp)?>"><?= date('d.M H:i:s', $value->timestamp) ?></time>
+				<time class="timeago" datetime="<?= $timestamp ?>"><?= format_since($value->timestamp) ?></time>
 				<div class="noyaktighet"><?= $value->acc ?> m</div>
 			</li>
 		<?php

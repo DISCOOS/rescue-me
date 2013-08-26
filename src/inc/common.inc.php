@@ -125,5 +125,48 @@
     }// str_escape
     
     
+    /**
+     * Get formatted timestamp
+     * 
+     * @param string $timestamp mysql timestamp
+     */
+    function format_dt($timestamp) {        
+        $time = strtotime($timestamp);
+        return date(date('Y', $time) === date('Y') ? 'd.M H:i:s' : $timestamp, strtotime($timestamp));
+    }
+    
+    /**
+     * Get formatted timestamp
+     * 
+     * @param string $timestamp mysql timestamp
+     * @param boolean $seconds Show seconds
+     */
+    function format_dtg($timestamp, $seconds=false) {
+        return date(($seconds ? 'd-H:i:s' : 'd-Hi'), strtotime($timestamp));
+    }
+    
+    /**
+     * Get formatted elapsed time
+     * 
+     * @param string $timestamp mysql timestamp
+     */
+    function format_since($timestamp) {
+        $ts = (int)(time() - strtotime($timestamp));
+        $since = "~"._("sec");
+        if($ts > 0) {
+            if($ts < 60) {
+                $since = "$ts "._("sec");
+            }
+            else if($ts < 2*60*60) {
+                $since = (int)($ts/60)." "._("min");                        
+            }
+            else {
+                $since = format_dt($timestamp);
+            }
+        }        
+        return $since;
+    }
+    
+    
     
 ?>

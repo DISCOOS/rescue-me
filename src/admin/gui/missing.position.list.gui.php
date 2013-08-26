@@ -89,7 +89,7 @@ foreach ($positions as $key=>$value) {
           position: new google.maps.LatLng(".$value->lat.", ".$value->lon."),
           draggable: false,
           icon: getMarkerImage(color),
-          title: '+/- ".$value->acc." meter (DTG ". date('d-Hi', strtotime($value->timestamp)) .")'
+          title: '+/- ".$value->acc." meter (DTG ". format_dtg($value->timestamp) .")'
     });
 	var circle_".$i." = new google.maps.Circle({
 		  strokeColor: color,
