@@ -68,13 +68,15 @@
             // Initialize packaged configuration?
             if(in_phar()) {
                 $config = file_get_contents("config.php");
+                $config_minify = file_get_contents("config.minify.php");
             } 
             // Initialize developement environment?
             else {
                 $config = file_get_contents($this->root."config.tpl.php");
+                $config_minify = file_get_contents($this->root."config.minify.tpl.php");
             }            
             
-            // Get configuration template
+            // Get config template
             $config = replace_define_array($config, array
             (
                 'SALT'              => $this->ini['SALT'], 
@@ -90,6 +92,17 @@
             
             // Create config.php
             if(file_put_contents($this->root."config.php", $config) === FALSE) {
+                return error(CONFIG_NOT_CREATED);
+            }// if
+            
+            // Get config minify template
+            $config_minify = replace_define_array($config_minify, array
+            (
+                'MINIFY_MAXAGE'      => $this->ini['MINIFY_MAXAGE']
+            ));
+            
+            // Create config.php
+            if(file_put_contents($this->root."config.minify.php", $config_minify) === FALSE) {
                 return error(CONFIG_NOT_CREATED);
             }// if
             

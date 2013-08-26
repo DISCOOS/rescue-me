@@ -35,6 +35,7 @@
     define('SQL_NOT_IMPORTED', 'SQL not imported');
     define('SQL_NOT_EXPORTED', 'SQL not exported');
     define('CONFIG_NOT_CREATED', "config.php could not be created");
+    define('CONFIG_MINIFY_NOT_CREATED', "config.minify.php could not be created");
     define('COLOR_NONE', 'none');
     define('COLOR_INFO', 'info');
     define('COLOR_ERROR', 'error');
@@ -218,20 +219,6 @@
     
     
     /**
-     * Initialize constant value in subject.
-     * 
-     * @param string $subject Replace substring in subject
-     * @param array $name Constant name array
-     * 
-     * @return string
-     */
-    function ini_define($subject, $names) {
-        foreach($names as $name) $subject = replace_define($subject, $name, "'$name'");
-        return $subject;
-    }// ini_define
-    
-
-    /**
      * Replace constant value in subject.
      * 
      * @param string $subject Replace substring in subject
@@ -308,10 +295,10 @@
      * @return string Answer 
      */
     function in($message, $default=NULL, $newline=NONE, $required=true) {
-        out(($default ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
+        out((($default ||  $default == 0) ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
         $answer = fgets(STDIN);
-        $answer = ($answer !== PHP_EOL ? str_replace("\n", "", $answer) : $default);
-        if($required && !trim($answer,"'"))
+        $answer = ($answer !== PHP_EOL ? str_replace("\n", "", $answer) : "$default");
+        if($required && !trim($answer,"'") && trim($answer,"'") !== '0')
         {
             return in($message, $default, $newline, $required);
         }
@@ -330,7 +317,7 @@
      */
     function get($opts, $arg, $default = NULL, $escape = true)
     {
-        $value = isset($opts[$arg]) ? $opts[$arg] : $default;
+        $value = isset($opts[$arg]) && ($opts[$arg] || $opts[$arg] == 0) ? $opts[$arg] : $default;
         return $escape ? str_escape($value) : trim($value,"'");
     }// get
 
@@ -367,6 +354,22 @@
         return $config;
     }
     
+    
+    /**
+     * Get minify configuration parameters
+     * 
+     * @param string $root
+     * @return array
+     */
+    function get_config_minify_params($root) {
+        // Get current configuration
+        $config = file_get_contents(realpath($root)."/config.minify.php");
+        $config = get_define_array($config, array
+        (
+            'MINIFY_MAXAGE'
+        ));        
+        return $config;
+    }
     
     /**
      * Get database parameters

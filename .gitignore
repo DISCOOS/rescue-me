@@ -2,6 +2,7 @@ nbproject
 dist
 test
 src/config.php
+src/config.minify.php
 src/vendor/*
 !src/vendor/composer
 !src/vendor/autoload.php

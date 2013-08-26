@@ -122,17 +122,18 @@
             $oPhar->addFromString("rescueme.ini", $ini);
 
             // Prepare default config file
-            $config = file_get_contents("$this->src/config.tpl.php");
-            $config = ini_define($config, array
-                (
-                'SALT', 'GOOGLE_API_KEY',
-                'DEFAULT_COUNTRY', 'TITLE', 'SMS_FROM',
-                'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD'
-            ));
+            $config = file_get_contents(realpath("$this->src/config.php"));
 
             // Add configuration template
             $oPhar->addFromString("config.php", $config);
 
+            // Prepare default minify config file
+            $config_minify = file_get_contents(realpath("$this->src/config.minify.php"));
+
+            // Add minify configuration template
+            $oPhar->addFromString("config.minify.php", $config_minify);
+            
+            
             // Package source files as zip file
             $zip = new \ZipArchive();
             $zip->open("src.zip", \ZipArchive::CREATE);

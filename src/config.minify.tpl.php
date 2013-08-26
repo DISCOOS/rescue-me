@@ -1,5 +1,8 @@
 <?php
 
+    // Minify constants
+    define('MINIFY_MAXAGE', 1800);
+    
     /**
      * Get Minify groups configuration array
      * 

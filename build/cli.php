@@ -178,8 +178,8 @@
                     $src = get($opts, SRC_DIR, "src", false);
                     $dist = get($opts, DIST_DIR, "dist", false);
                     
-                    // Uninstall?
-                    if(isset_get($opts, EXPORT, false))
+                    // Export database?
+                    if(stristr(isset_get($opts, EXPORT, 'true'), 'true') !== false)
                     {
                         execute(array(EXPORT => array(SRC_DIR => $src, EXPORT_DIR => $src)));
                     }
@@ -231,7 +231,7 @@
                     // Escape version
                     $ini['VERSION'] = str_escape(isset_get($ini,'VERSION',"source"));
 
-                    // Get current?
+                    // Get current configuration params?
                     if(file_exists(realpath($root)."/config.php")) {
 
                         // Get current configuration
@@ -240,8 +240,19 @@
                         // Merge current config values with default ini values
                         $ini = array_merge($ini, $config);
 
-                    }// 
+                    }
+                    if(file_exists(realpath($root)."/config.minify.php")) {
 
+                        // Get current configuration
+                        $config = get_config_minify_params($root);
+
+                        // Merge current config values with default ini values
+                        $ini = array_merge($ini, $config);
+                        
+
+                    }//                     
+                    
+                    // Prompt params from user
                     $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
                     $ini['TITLE']            = str_escape(in("Title", get($ini, "TITLE", "RescueMe")));
                     $ini['SMS_FROM']         = str_escape(in("Sender", get($ini, "SMS_FROM", "RescueMe")));
@@ -249,8 +260,10 @@
                     $ini['DB_NAME']          = str_escape(in("DB Name", get($ini, "DB_NAME", "rescueme")));
                     $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
                     $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
-                    $ini['DEFAULT_COUNTRY']   = str_escape(in("Default Country (ISO2)", get($ini, "DEFAULT_COUNTRY")));
+                    $ini['DEFAULT_COUNTRY']  = str_escape(in("Default Country (ISO2)", get($ini, "DEFAULT_COUNTRY")));
                     $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
+                    
+                    $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
                     
                     echo PHP_EOL;
                     
@@ -273,7 +286,7 @@
                         }
                         
                     }
-
+                    
                     require('classes/RescueMe/Install.php');
                     
                     // Create install
