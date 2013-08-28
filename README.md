@@ -83,18 +83,27 @@ git config --global core.autocrlf input
 ```
 which tells Git to convert CRLF to LF on commit but not the other way around.
 
+**Configuration changes**
+
+If `config.tpl.php` or `config.minify.tpl.php` was changed by a commit, remember to perform
+```bash
+php rescueme.php configure
+```
+locally after commit is pulled. This will update ignored local configuration files.
+
 **Database changes**
 
 If you change the database structure, remember to perform
 ```bash
-php compile.php prepare
+php rescueme.php export
 ```
 and commit + push changes made to `src/rescueme.sql`. Developers can update the local 
 database using
 ```bash
-php compile.php update
+php rescueme.php import
 ```
 which will import `src/rescueme.sql` analyzing it for changes, adding any new tables or columns. 
+
 
 Troubleshooting
 ---------------
