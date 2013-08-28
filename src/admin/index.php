@@ -92,7 +92,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title><?= TITLE ?> - <?= $_ROUTER['name'] ?></title>
+        <title><?= $_ROUTER['name']." (".TITLE.")" ?></title>
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
