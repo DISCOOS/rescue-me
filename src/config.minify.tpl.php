@@ -76,11 +76,20 @@
         // Is content type JS?
         if ($type === Minify::TYPE_JS) {
 
-                // Load RescueMe configuration
-                require '../config.php';
+            // Load RescueMe configuration
+            require '../config.php';
 
-                // Get concatenated js
-                $content = get_rescueme_js($content);
+            // Get concatenated js
+            $content = get_rescueme_js($content);
+
+        }
+        else if ($type === Minify::TYPE_CSS) {
+
+            // Load RescueMe configuration
+            require '../config.php';
+            
+            // Replace all data urls
+            $content = preg_replace('#url\("/#', 'url("'.APP_URI, $content);
 
         }
         return $content;
