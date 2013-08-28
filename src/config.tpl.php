@@ -20,6 +20,9 @@
     // RescueMe constants
     define('VERSION', file_get_contents($verfile));
     
+    // RescueMe timesone
+    define('TIMEZONE', 'UTC');
+    
     // RescueMe application paths
     define('APP_PATH', dirname(__FILE__).'/');
     define('APP_PATH_INC', APP_PATH.'inc/');
@@ -67,9 +70,6 @@
     define('TITLE', 'Rescue Me!');
     define('DEFAULT_COUNTRY', 'US');
 
-    // Minify constants
-    define('MINIFY_MAXAGE', 1800);
-
     // RescueMe message constants
     define('NO', 'Nei');
     define('YES', 'Ja');
@@ -103,4 +103,11 @@
     define('SMS_NOT_SENT', 'OBS: Varsel ble ikke sendt til "#m_name"');
     define('SMS2_TEXT', 'Om du har GPS på telefonen, anbefaler vi at du aktiverer dette. Vanligvis finner du dette under Innstillinger -> Generelt, eller Innstillinger -> Plassering');
     define('SMS_MB_TEXT', 'Mottatt posisjon på "#m_name": #UTM (+/- #acc meter)! '.APP_URL.'admin/missing/#missing_id');
+    
+    // Set current timezone
+    if(date_default_timezone_set(TIMEZONE) === FALSE) {
+        trigger_error("Failed to set timesone to [" . TIMEZONE . "]");
+    }
+    
+    
 ?>

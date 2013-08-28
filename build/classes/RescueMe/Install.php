@@ -87,6 +87,7 @@
                 'DB_USERNAME'       => $this->ini['DB_USERNAME'], 
                 'DB_PASSWORD'       => $this->ini['DB_PASSWORD'],
                 'DEFAULT_COUNTRY'   => $this->ini['DEFAULT_COUNTRY'],
+                'TIMEZONE'          => $this->ini['TIMEZONE'],
                 'GOOGLE_API_KEY'    => $this->ini['GOOGLE_API_KEY']
             ));
             
@@ -103,7 +104,7 @@
             
             // Create config.php
             if(file_put_contents($this->root."config.minify.php", $config_minify) === FALSE) {
-                return error(CONFIG_NOT_CREATED);
+                return error(CONFIG_MINIFY_NOT_CREATED);
             }// if
             
             // Create apache logs folder

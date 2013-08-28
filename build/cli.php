@@ -261,6 +261,9 @@
                     $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
                     $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
                     $ini['DEFAULT_COUNTRY']  = str_escape(in("Default Country (ISO2)", get($ini, "DEFAULT_COUNTRY")));
+                    
+                    $ini['TIMEZONE']         = str_escape(in_timezone($ini));
+                    
                     $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
                     
                     $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));

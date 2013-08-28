@@ -77,17 +77,21 @@
                 return false;
             }
             
+            // Connect to database
             if(!isset($this->mysqli))
             {
                 $this->mysqli = mysqli_connect($host, $usr, $pwd);
-                $this->mysqli->query("SET NAMES 'utf8'");
+                DB::configure($this->mysqli);
             }
             else if($this->mysqli->connect_error)
             {
                 $this->mysqli->init()->real_connect($host, $usr, $pwd);
-                $this->mysqli->query("SET NAMES 'utf8'");
+                DB::configure($this->mysqli);
             }
+
+            
             return $this->database($name);
+            
         }// connect
         
         
@@ -513,6 +517,43 @@
             $column = array();
             preg_match("#`.*`#", $query, $column);
             return trim($column[0], "`");
+        }
+        
+        /**
+         * Configure database connection.
+         * <ol>
+         * <li>Connection encoding to 'utf8'</li>
+         * <li>Connection timesone offset from php timesone</li>
+         * </ol>
+         * @param \mysqli $mysqli
+         * @return boolean TRUE if success, FALSE otherwise
+         */
+        private static function configure($mysqli) {
+            
+            // Enforce 'utf8' encoding
+            if($mysqli->query("SET NAMES 'utf8'") === FALSE) {
+                return false;
+            }
+            
+            //
+            // Enforce current timesone 
+            // 
+            // (see http://www.sitepoint.com/synchronize-php-mysql-timezone-configuration)
+            //            
+            $now = new \DateTime();
+            $mins = $now->getOffset() / 60;
+            $sgn = ($mins < 0 ? -1 : 1);
+            $mins = abs($mins);
+            $hrs = floor($mins / 60);
+            $mins -= $hrs * 60;            
+            $offset = sprintf('%+d:%02d', $hrs*$sgn, $mins);
+            
+            if($mysqli->query("SET time_zone='$offset';") === FALSE) {
+                return false;
+            }
+            
+            return true;
+            
         }
         
         

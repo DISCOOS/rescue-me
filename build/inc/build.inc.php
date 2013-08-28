@@ -291,18 +291,21 @@
      * @param string $default Default value
      * @param integer $newline Message newline [optional, default: NONE]
      * @param boolean $required Required value.
+     * @param boolean $echo Echo entered value.
      * 
      * @return string Answer 
      */
-    function in($message, $default=NULL, $newline=NONE, $required=true) {
+    function in($message, $default=NULL, $newline=NONE, $required=true, $echo=true) {
         out((($default ||  $default == 0) ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
         $answer = fgets(STDIN);
         $answer = ($answer !== PHP_EOL ? str_replace("\n", "", $answer) : "$default");
         if($required && !trim($answer,"'") && trim($answer,"'") !== '0')
         {
-            return in($message, $default, $newline, $required);
+            return in($message, $default, $newline, $required, $echo);
         }
-        out("$message: $answer", POST, COLOR_SUCCESS);
+        if($echo) {
+            out("$message: $answer", POST, COLOR_SUCCESS);
+        }
         return $answer;
     }// in
     
@@ -317,9 +320,36 @@
      */
     function get($opts, $arg, $default = NULL, $escape = true)
     {
-        $value = isset($opts[$arg]) && ($opts[$arg] || $opts[$arg] == 0) ? $opts[$arg] : $default;
+        $value = (isset($opts[$arg]) && (!empty($opts[$arg]) || $opts[$arg] == 0) ?  $opts[$arg] : $default);
+        
         return $escape ? str_escape($value) : trim($value,"'");
+        
+        return $value;
+        
     }// get
+    
+    
+    /**
+     * Prompt user for timezone.
+     * 
+     * @param array $opts Option array
+     * @param string $arg Argument name
+     * @param mixed $default Default timezone value
+     * @return mixed
+     */
+    function in_timezone($opts, $default='UTC') {
+        $timezone = in("Timesone", get($opts, "TIMEZONE", $default), NONE, true, false);
+        $old = error_reporting(E_ALL ^ E_NOTICE);
+        $current = date_default_timezone_get();
+        if(@date_default_timezone_set(trim($timezone,"'")) === FALSE) {
+            out("Invalid timezone: $timezone", POST, COLOR_SUCCESS);
+            return in_timezone($opts, $default);
+        }
+        error_reporting($old);
+        date_default_timezone_set($current);
+        out("Timesone: $timezone", POST, COLOR_SUCCESS);
+        return $timezone;
+    }
 
 
     /**
@@ -349,7 +379,7 @@
         (
             'SALT', 'TITLE', 'SMS_FROM', 'DEFAULT_COUNTRY', 
             'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD',
-            'GOOGLE_API_KEY'
+            'GOOGLE_API_KEY', 'TIMEZONE'
         ));        
         return $config;
     }

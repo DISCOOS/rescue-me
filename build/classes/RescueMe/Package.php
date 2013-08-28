@@ -122,13 +122,13 @@
             $oPhar->addFromString("rescueme.ini", $ini);
 
             // Prepare default config file
-            $config = file_get_contents(realpath("$this->src/config.php"));
+            $config = file_get_contents(realpath("$this->src/config.tpl.php"));
 
             // Add configuration template
             $oPhar->addFromString("config.php", $config);
 
             // Prepare default minify config file
-            $config_minify = file_get_contents(realpath("$this->src/config.minify.php"));
+            $config_minify = file_get_contents(realpath("$this->src/config.minify.tpl.php"));
 
             // Add minify configuration template
             $oPhar->addFromString("config.minify.php", $config_minify);
