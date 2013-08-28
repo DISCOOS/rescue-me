@@ -337,8 +337,18 @@
      * @param mixed $default Default timezone value
      * @return mixed
      */
-    function in_timezone($opts, $default='UTC') {
-        $timezone = in("Timesone", get($opts, "TIMEZONE", $default), NONE, true, false);
+    function in_timezone($opts, $default=null) {
+        $current = date_default_timezone_get();
+        // Replace default with current?
+        if(!isset($default) || empty($default) || trim($default,"'") == ''){
+            $default = $current;
+        }
+        $timezone = get($opts, "TIMEZONE", $default);
+        // Replace given timezone with default?
+        if(!isset($timezone) || empty($timezone) || trim($timezone,"'") == '') {            
+            $timezone = $default;
+        }
+        $timezone = in("Timesone",$timezone, NONE, true, false);
         $old = error_reporting(E_ALL ^ E_NOTICE);
         $current = date_default_timezone_get();
         if(@date_default_timezone_set(trim($timezone,"'")) === FALSE) {
