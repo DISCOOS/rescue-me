@@ -94,6 +94,7 @@
     define('USERS', 'Brukere');
     define('NEW_USER', 'Ny bruker');
     define('EDIT_USER', 'Endre bruker');
+    define('EDIT_MISSING', 'Endre savnet');
     define('OVERVIEW', 'Oversikt');
     define('DASHBOARD', 'Dashboard');
     define('SYSTEM', 'System');
