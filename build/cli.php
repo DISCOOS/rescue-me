@@ -250,25 +250,27 @@
                         $ini = array_merge($ini, $config);
                         
 
-                    }//                     
+                    }
                     
-                    // Prompt params from user
-                    $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
-                    $ini['TITLE']            = str_escape(in("Title", get($ini, "TITLE", "RescueMe")));
-                    $ini['SMS_FROM']         = str_escape(in("Sender", get($ini, "SMS_FROM", "RescueMe")));
-                    $ini['DB_HOST']          = str_escape(in("DB Host", get($ini, "DB_HOST", "localhost")));
-                    $ini['DB_NAME']          = str_escape(in("DB Name", get($ini, "DB_NAME", "rescueme")));
-                    $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
-                    $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
-                    $ini['DEFAULT_COUNTRY']  = str_escape(in("Default Country (ISO2)", get($ini, "DEFAULT_COUNTRY")));
-                    
-                    $ini['TIMEZONE']         = str_escape(in_timezone($ini));
-                    
-                    $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
-                    
-                    $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
-                    
-                    echo PHP_EOL;
+                    // Prompt params from user?
+                    if(!isset($opts['silent'])) {
+                        $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
+                        $ini['TITLE']            = str_escape(in("Title", get($ini, "TITLE", "RescueMe")));
+                        $ini['SMS_FROM']         = str_escape(in("Sender", get($ini, "SMS_FROM", "RescueMe")));
+                        $ini['DB_HOST']          = str_escape(in("DB Host", get($ini, "DB_HOST", "localhost")));
+                        $ini['DB_NAME']          = str_escape(in("DB Name", get($ini, "DB_NAME", "rescueme")));
+                        $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
+                        $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
+                        $ini['DEFAULT_COUNTRY']  = str_escape(in("Default Country (ISO2)", get($ini, "DEFAULT_COUNTRY")));
+
+                        $ini['TIMEZONE']         = str_escape(in_timezone($ini));
+
+                        $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
+
+                        $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
+
+                        echo PHP_EOL;
+                    }
                     
                     // Configure only?
                     if($action !== CONFIGURE) {
@@ -417,6 +419,7 @@
                 info("RescueMe Install Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme install [OPTIONS]... ' . PHP_EOL;
                 echo "OPTIONS:" . PHP_EOL;
+                echo "        --silent      No user interaction [use defaults]" . PHP_EOL;
                 echo "        --archive     RescueMe archive file [default: src.zip]" . PHP_EOL;
                 echo "        --install-dir Install directory [default: ".getcwd()."]" . PHP_EOL;
                 echo "        -h            Display this help" . PHP_EOL;                
@@ -429,6 +432,7 @@
                 info("RescueMe Configure Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme configure [OPTIONS]... ' . PHP_EOL;
                 echo "OPTIONS:" . PHP_EOL;
+                echo "        --silent      No user interaction [use defaults]" . PHP_EOL;
                 echo "        --install-dir Install directory [default: src]" . PHP_EOL;
                 echo "        -h            Display this help" . PHP_EOL;                
                 break;
