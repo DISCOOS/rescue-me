@@ -16,8 +16,8 @@ function initialize() {
 		$centerMap = reset($positions);
     
 	?>
-	var zoom = getZoom(<?=$centerMap->acc;?>);
     <? if(isset($centerMap)) {?>
+	var zoom = getZoom(<?=$centerMap->acc;?>);
 	var mapProp = {
       'center': new google.maps.LatLng(<?=$centerMap->lat;?>, <?=$centerMap->lon;?>),
 	  'zoom': zoom,
@@ -28,7 +28,7 @@ function initialize() {
 	};
     <? } else { ?>
     var mapProp = {
-	  'zoom': zoom,
+	  'zoom': 7,
 	  'minZoom': 7,
 	  'mapTypeControl':false,
 	  'streetViewControl': false,

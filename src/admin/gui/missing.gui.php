@@ -13,7 +13,7 @@
         $positions = $missing->getPositions();
 
 ?>
-<h3 class="pagetitle"><?= MISSING_PERSON ?>: <?= $missing->m_name ?></h3>
+<h3 class="pagetitle"><?= $missing->m_name ?></h3>
 <?php
         if(isset($_ROUTER['message'])) { ?>
 	<div class="alert alert-error">
@@ -22,12 +22,23 @@
 	</div>
 <?
         }
+        
+        if($missing->last_pos->timestamp>-1) {
+            $position = $missing->last_UTM;
+            $received = format_since($missing->last_pos->timestamp);
+        } else {
+            $received = "";
+            $position = $missing->last_pos->human;
+        }
+        
 ?>
 
 <div class="infos clear-fix">
 	<div class="info pull-left">
-		<label class="label label-important">Sist posisjonert</label> 
-        <?= $missing->last_pos->timestamp > -1 ? format_since($missing->last_pos->timestamp) : $missing->last_pos->human ?>
+		<label class="label label-important">Siste posisjon</label> <?= $position ?>
+	</div>
+	<div class="info pull-left">
+		<label class="label label-important">Posisjon mottatt</label> <?= $received ?>
 	</div>
 	<div class="info pull-left">
 		<label class="label label-important">Meldt savnet</label> <?= format_since($missing->m_reported) ?>
@@ -69,9 +80,12 @@
 	?>
 	</ul>
 </div>
-<div class="infos clear-fix">
+<div class="infos clear-fix pull-left">
 	<div class="info pull-left">
-		<label class="label label-important">Sporingslenke den savnede bruker</label> 
+		<label class="label label-important">SMS sendt</label> <?= format_since($missing->sms_sent) ?>
+	</div>
+	<div class="info pull-left">
+		<label class="label label-important">Sporingslenke</label> 
 		<?= APP_URL."l/$missing->id/$missing->m_mobile"; ?>
 	</div>
 </div>

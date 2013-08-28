@@ -6,11 +6,11 @@
 / Design
 /=========================================*/
 body {
-	padding-top: .1em;
-	padding-left: 1em;
-	padding-right: 1em;
-	padding-bottom: 4em;
-	background-color: #f5f5f5;
+    padding-top: .1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 4em;
+    background-color: #f5f5f5;
 }
 /* Custom container */
 .container-narrow {
@@ -21,19 +21,19 @@ body {
     margin-right: auto;
 }
 .container-narrow > hr {
-	margin: 30px 0;
+    margin: 30px 0;
 }
 
 h3.pagetitle {
-	margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 .clickable {
-	cursor: pointer;
+    cursor: pointer;
 }
 .border-radius ( @radius ) {
-	border-radius:@radius;
-	-moz-border-radius:@radius;
-	-webkit-border-radius:@radius
+    border-radius:@radius;
+    -moz-border-radius:@radius;
+    -webkit-border-radius:@radius
 }
 
 .icon {
@@ -52,7 +52,7 @@ h3.pagetitle {
 }
 
 .editor a.dropdown-toggle {
-    
+
 }
 
 .disabled {
@@ -64,99 +64,99 @@ h3.pagetitle {
 /=========================================*/
 /* Main marketing message and sign up button */
 .jumbotron {
-margin: 60px 0;
-text-align: center;
+    margin: 60px 0;
+    text-align: center;
 }
 .jumbotron h1 {
-font-size: 72px;
-line-height: 1;
+    font-size: 72px;
+    line-height: 1;
 }
 .jumbotron .btn {
-font-size: 21px;
-padding: 14px 24px;
+    font-size: 21px;
+    padding: 14px 24px;
 }
 
 /* Supporting marketing content */
 .marketing {
-margin: 60px 0;
+    margin: 60px 0;
 }
 .marketing p + h4 {
-margin-top: 28px;
+    margin-top: 28px;
 }
 
 /*==========================================
 / [Login] form
 /=========================================*/
 .form-signin {
-	max-width: 300px;
-	padding: 19px 29px 29px;
-	margin: 0 auto 20px;
-	background-color: #fff;
-	border: 1px solid #e5e5e5;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-	box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    max-width: 300px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 .form-signin input[type="text"],
 .form-signin input[type="email"],
 .form-signin input[type="password"] {
-	font-size: 16px;
-	height: auto;
-	margin-bottom: 15px;
-	padding: 7px 9px;
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
 }
 
 /*==========================================
 / [User List] page
 /=========================================*/
 .user {
-	.clickable;
-	background-color: #f1f1f1;
+    .clickable;
+    background-color: #f1f1f1;
 }
 
 .user div.name, td.name {
-	font-weight: bold;
+    font-weight: bold;
     white-space: nowrap;
-	color: @colour-rodekors;
+    color: @colour-rodekors;
 }
 
 /*==========================================
 / [Missing List] page
 /=========================================*/
 .missing {
-	.clickable;
-	background-color: #f1f1f1;
+    .clickable;
+    background-color: #f1f1f1;
 }
 .missing div.name {
-	font-weight: bold;
-	color: @colour-rodekors;
+    font-weight: bold;
+    color: @colour-rodekors;
 }
 
 /*==========================================
 / [Missing Details] page
 /=========================================*/
 .infos .info {
-	margin-right: 10px;
+    margin-right: 10px;
 }
 li.position {
-	.clickable;
-	margin: 4px 0px 4px 0px;
-	padding: 2px 4px 2px 4px;
-	background-color: #fff;
+    .clickable;
+    margin: 4px 0px 4px 0px;
+    padding: 2px 4px 2px 4px;
+    background-color: #fff;
 }
 .position time {
-  float: right;
-  font-size: 12px;
+    float: right;
+    font-size: 12px;
 }
 .position div {
-  float: left;
+    float: left;
 }
 
 .papermappos {
@@ -164,10 +164,14 @@ li.position {
 }
 
 #googleMap {
-  clear: left;
-  width: 650px;
-  height: 400px;
-  float: left;
+    margin: 0px 0px 0px 0px;
+    clear: left;
+    float: left;
+    width: 500px;
+    height: 500px;
+    max-width: 500px;
+    max-height: 500px;
+    border: 1px solid lightgray;
 }
 
 #googleMap img {
@@ -175,12 +179,13 @@ li.position {
 }
 
 #sidebar {
-  margin: 0px 0px 0px 10px;
-  padding: 0px;
-  float: left;
-  width: 200px;
-  height: 400px;
-  overflow-y: scroll;
+    margin: 0px 0px 0px 0px;
+    padding-left: 5px;
+    float: left;
+    width: 200px;
+    height: 500px;
+    border: 1px solid lightgray;
+    border-left: 0px;
 }
 
 /*==========================================
@@ -188,25 +193,25 @@ li.position {
 /=========================================*/
 
 .new-missing {
-	width: 45%;
+    width: 45%;
 }
 
 #readmore h4 {
-	margin: 10px 0px 5px 0px;
+    margin: 10px 0px 5px 0px;
 }
 /*==========================================
 / [About] page
 /=========================================*/
 .contact {
-	float: left;
+    float: left;
 }
 .contact img {
-	float: left;
-	background: @colour-background;
-	padding: 5px;
-	margin: 0px 5px 0px 0px;
-	border: 1px solid @colour-border;
-	.border-radius(3px);
+    float: left;
+    background: @colour-background;
+    padding: 5px;
+    margin: 0px 5px 0px 0px;
+    border: 1px solid @colour-border;
+    .border-radius(3px);
 }
 .contact .name {
     font-weight: bold;

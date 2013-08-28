@@ -13,9 +13,9 @@
 @media (min-width: 1200px) { 
 
     /* Use defaults */
-    
+
 }
- 
+
 /* ==========================================
 /  Portrait tablet to landscape and desktop
 /  ==========================================*/
@@ -23,7 +23,7 @@
 @media (min-width: 768px) and (max-width: 979px) {  
 
     /* Use defaults */
-    
+
 }
 
 /* ==========================================
@@ -31,51 +31,70 @@
 /  ==========================================*/
 
 @media (max-width: 767px) {
-    
-	#googleMap {
-	  clear: left;
-	  width: 100%;
-	  height: auto;
-	  min-height: 300px;
-	  float: left;
-	}
-    
-	#sidebar {
-	  margin: 0px 0px 0px 10px;
-	  padding: 0px;
-	  float: left;
-	  width: 200px;
-	  height: 400px;
-	  overflow-y: scroll;
-	}
-    
+
+    #googleMap {
+        clear: left;
+        float: left;
+        width: 255px;
+        height: auto;
+        min-width: 255px;
+        min-height: 255px;
+    }
+
+    #sidebar {
+        width: 160px;
+        height: auto;
+        min-width: 160px;
+        min-height: 255px;
+    }
+
     /* Make dropdown toggles easier to hit */
     .editor .dropdown-toggle {
         width: 1.25em;
     }
-    
+
 }
 
 /* ==========================================
-/  Landscape phones and down
+/  Portrait phones and down
 /  ==========================================*/
 
 @media (max-width: 480px) { 
-    
+
+    #googleMap {
+        clear: left;
+        float: left;
+        height: auto;
+        width: 305px;
+        min-width: 305px;
+        min-height: 300px;
+    }
+
+    #sidebar {
+        clear: left;
+        float: left;
+        width: 300px;
+        height: auto;
+        min-width: 300px;
+        min-height: 300px;
+        border: 1px solid lightgray;
+        border-top: 0px;
+    }
+
     /* Make search field smaller */
     input.search-query {
         width: 5.25em;
     }
-    
+
     /* Make dropdown toggles easier to hit */
     .editor .dropdown-toggle {
         width: 1.25em;
     }
-    
+
     /* Allow names to wrap*/
     .name {
         white-space: normal;
     }
-    
+
 }
 
