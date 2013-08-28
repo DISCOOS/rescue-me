@@ -3,11 +3,11 @@
     /**
 	 * locales
 	 * 
-	 * @copyright Copyright 2013 {@link http://www.onevoice.no One Voice AS} 
+	 * @copyright Copyright 2013 {@link http://www.discoos.org DISCO Open Source Foundation} 
 	 *
-     * @since 25. July 2013, v. 8.00
+     * @since 25. July 2013
 	 * 
-	 * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
+	 * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
 	 */
 
 $locales = array ( 
