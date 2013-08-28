@@ -16,34 +16,24 @@ function initialize() {
 		$centerMap = reset($positions);
     
 	?>
-    <? if(isset($centerMap)) {?>
-	var zoom = getZoom(<?=$centerMap->acc;?>);
-	var mapProp = {
-      'center': new google.maps.LatLng(<?=$centerMap->lat;?>, <?=$centerMap->lon;?>),
-	  'zoom': zoom,
-	  'minZoom': 7,
-	  'mapTypeControl':false,
-	  'streetViewControl': false,
-	  'mapTypeId':'topo2'
-	};
-    <? } else { ?>
-    var mapProp = {
-	  'zoom': 7,
-	  'minZoom': 7,
-	  'mapTypeControl':false,
-	  'streetViewControl': false,
-	  'mapTypeId':'topo2'
-	};
-    <? } ?>
-
-	map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-	map.mapTypes.set('topo2',new StatkartMapType("Kart", "topo2"));
+    <? if($centerMap !== false) {?>
         
-        google.maps.event.addListener(map, 'click', function() {
-		if (lastInfoWindow[0] != null) {
-			lastInfoWindow[0].close();
-		}
+	load_google_map(<?=$centerMap->lat;?>, <?=$centerMap->lon;?>,<?=$centerMap->acc;?>);
+    
+    <? } else { ?>
+    
+    if (navigator.geolocation)
+    {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            load_google_map(position.coords.latitude, position.coords.longitude, position.coords.accuracy);
         });
+    }
+    else{
+        // TODO: Add default location to properties/configuration, use Oslo for now.
+        load_google_map(10.75225, 59.91387,30000);
+    }
+    
+    <? } ?>
 
 	var icons = new Array();
 	icons["red"] = new google.maps.MarkerImage("http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png",
@@ -53,6 +43,28 @@ function initialize() {
 	      new google.maps.Point(0,0),
 	      // The anchor for this image is at 16,32.
 	      new google.maps.Point(16, 32));
+          
+          
+    function load_google_map(lat,lon,acc) {
+        var mapProp = {
+          'center': new google.maps.LatLng(lat,lon),
+          'zoom': getZoom(acc),	  
+          'minZoom': 7,
+          'mapTypeControl':false,
+          'streetViewControl': false,
+          'mapTypeId':'topo2'
+        };
+        map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        map.mapTypes.set('topo2',new StatkartMapType("Kart", "topo2"));
+
+            google.maps.event.addListener(map, 'click', function() {
+            if (lastInfoWindow[0] != null) {
+                lastInfoWindow[0].close();
+            }
+            });
+        
+    }
+    
 	function getMarkerImage(iconColor) {
 	   if ((typeof(iconColor)=="undefined") || (iconColor==null)) {
 	      iconColor = "red";
