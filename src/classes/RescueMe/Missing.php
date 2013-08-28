@@ -30,6 +30,13 @@ class Missing
         "op_id"
     );
 
+    private static $update = array
+    (
+        "missing_name", 
+        "missing_mobile_country", 
+        "missing_mobile"
+    );
+    
     public $id = -1;
     public $positions = array();
     public $m_name;
@@ -49,7 +56,7 @@ class Missing
      * 
      * @param integer $id Missing id
      * @param integer $phone Missing phone number (if more than one)
-     * @return mixed. Instance of \RescueMe\Missing is success, FALSE otherwise.
+     * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
      */
     public static function getMissing($id, $phone = -1){
         $missing = new Missing();
@@ -75,7 +82,7 @@ class Missing
         return $missing;
 
     }// getMissing
-
+    
 
     public function addMissing($m_name, $m_mobile_country, $m_mobile, $op_id){
 
@@ -96,6 +103,23 @@ class Missing
     }// addMissing
 
 
+    public function updateMissing($m_name, $m_mobile_country, $m_mobile){
+
+        if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile))
+            return false;
+
+        $values = prepare_values(Missing::$update, array($m_name, $m_mobile_country, $m_mobile));
+                
+        $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
+        if(!$res) {
+            trigger_error("Failed execute [updateMissing]: " . DB::error(), E_USER_WARNING);
+        }// if
+        
+        return true;
+        
+    }// updateMissing
+    
+    
     public function getPositions(){
         if($this->id === -1)
             return false;
@@ -203,7 +227,7 @@ class Missing
 
         else {
             
-            $query = "UPDATE `missing` SET `sms_sent` = 'NOW()',
+            $query = "UPDATE `missing` SET `sms_sent` = NOW(),
                       `sms_provider_ref` = '".$res."'
                       WHERE `missing_id` = '" . $this->id . "';";
             
@@ -215,6 +239,24 @@ class Missing
         return $res;
 
     }// sendSMS
+    
+    
+    /**
+     * Anonymize missing data
+     * 
+     * @return boolean
+     */
+    public function anonymize() {        
+        
+        $values = prepare_values(Missing::$update, array('', '', ''));
+                
+        $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
+        if(!$res) {
+            trigger_error("Failed execute [anonymize]: " . DB::error(), E_USER_WARNING);
+        }// if
+
+        return true;
+    }
     
     
     private function getDialCode($country) {

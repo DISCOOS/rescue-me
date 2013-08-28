@@ -381,7 +381,7 @@
             } else {
 
                 if(RescueMe\Operation::reopenOperation($_GET['id'])) {
-                    header("Location: ".ADMIN_URI.'missing/list');
+                    header("Location: ".ADMIN_URI."missing/edit/{$_GET['id']}");
                     exit();
                 }
                 
@@ -427,9 +427,76 @@
             break;
         case 'missing':
         case 'missing/edit':
-            $_ROUTER['name'] = MISSING_PERSON;
+            
+            $_ROUTER['name'] = EDIT_MISSING;
             $_ROUTER['view'] = $_GET['view'];
+            
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                if(!isset($_GET['id'])) {
+
+                    $_ROUTER['message'] = "Missing [{$_GET['id']}] does not exist.";
+
+                } else {
+
+                    $id = $_GET['id'];
+                    $missing = RescueMe\Missing::getMissing($id);
+                    if($missing !== FALSE)
+                    {
+                        if($missing->updateMissing( $_POST['m_name'], $_POST['m_mobile_country'], $_POST['m_mobile'])) {
+                            
+                            if(isset($_POST['resend'])) {
+                                
+                                if($missing->sendSMS() === FALSE) {
+                                    $_ROUTER['message'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
+                                }
+                            } 
+                            
+                            if(!isset($_ROUTER['message'])){
+                                header("Location: ".ADMIN_URI."missing/list");
+                                exit();
+                            }
+                            
+                        } 
+                    }
+                    $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "missing/edit/$id ikke gjennomført, prøv igjen.";
+
+                }
+            }
+            
             break;
+            
+        case 'missing/resend':
+            
+            $_ROUTER['name'] = "Alle savnede";
+            $_ROUTER['view'] = "missing/list";
+            
+            if(!isset($_GET['id'])) {
+
+                $_ROUTER['message'] = "Missing [{$_GET['id']}] does not exist.";
+
+            } else {
+
+                $id = $_GET['id'];
+                $missing = RescueMe\Missing::getMissing($id);
+                if($missing !== FALSE) {
+                    if($missing->sendSMS() === FALSE) {
+                        $_ROUTER['message'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
+                    }
+                    if(!isset($_ROUTER['message'])){
+                        header("Location: ".ADMIN_URI."missing/list");
+                        exit();
+                    }
+                }
+                else {
+                    $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "missing/resend/$id ikke gjennomført, prøv igjen.";
+                }
+
+            }
+            
+            break;            
+            
         default:
             $_ROUTER['name'] = _("Illegal Operation");
             $_ROUTER['view'] = "404";

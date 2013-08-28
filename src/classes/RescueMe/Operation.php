@@ -17,6 +17,7 @@ namespace RescueMe;
  * @package RescueMe
  */
 class Operation {
+    
     const TABLE = "operations";
 
     private static $fields = array
@@ -66,7 +67,21 @@ class Operation {
      */
     public static function closeOperation($id) {
         
-        return DB::update(self::TABLE,array('op_closed' => 'NOW()'), "`op_id`=" . (int) $id);
+        // Close operation
+        if(DB::update(self::TABLE,array('op_closed' => 'NOW()'), "`op_id`=" . (int) $id) === FALSE) {
+            return false;
+        }
+            
+        // Anonymize all missing
+        $operation = Operation::getOperation($id);
+        $missings = $operation->getAllMissing();
+        if($missings !== FALSE) {
+            foreach($missings as $id => $missing) {
+                $missing->anonymize();
+            }
+        }
+        
+        return true;
         
     }
     
@@ -79,7 +94,7 @@ class Operation {
      */
     public static function reopenOperation($id) {
         
-        return DB::update(self::TABLE,array('op_closed' => '0'), "`op_id`=" . (int) $id);
+        return DB::update(self::TABLE,array('op_closed' => 'NULL'), "`op_id`=" . (int) $id);
         
     }
     

@@ -4,6 +4,7 @@
     
     $active = Operation::getAllOperations('open'); 
     $closed = Operation::getAllOperations('closed');
+    $resend = array();
     
     if(isset($_ROUTER['message'])) {
         insert_error($_ROUTER['message']);
@@ -19,8 +20,10 @@
         <thead>
             <tr>
                 <th width="25%"><?=_("Name")?></th>
-                <th width="55%"><?=_("Position")?></th>
-                <th width="10%">
+                <th width="17%"><?=_("Position")?></th>
+                <th width="13%"><?=_("Received")?></th>
+                <th width="13%"><?=_("Sent")?></th>
+                <th>
                     <input type="search" class="input-medium search-query pull-right" placeholder="Search">
                 </th>            
             </tr>
@@ -30,18 +33,22 @@
         foreach($active as $id => $this_operation) {
             $missings = $this_operation->getAllMissing();
             $this_missing = current($missings);
+            $resend[$this_missing->id] = $this_missing;
             $this_missing->getPositions();
-            if($this_missing->last_pos->timestamp>0) {
+            $sent = format_since($this_missing->sms_sent);
+            if($this_missing->last_pos->timestamp>-1) {
                 $position = $this_missing->last_UTM;
-                $since = $this_missing->last_pos->timestamp > -1 ? format_since($this_missing->last_pos->timestamp) : $this_missing->last_pos->human;
-                $position = "$position ($since)";
+                $received = format_since($this_missing->last_pos->timestamp);
             } else {
+                $received = "";
                 $position = $this_missing->last_pos->human;
             }
     ?>
             <tr id="<?= $this_missing->id ?>">
                 <td class="missing name"> <?= $this_missing->m_name ?> </td>
                 <td class="missing position"><?= $position ?></td>
+                <td class="missing received"><?= $received ?></td>
+                <td class="missing sent"><?= $sent ?></td>
                 <td class="missing editor">
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."missing/edit/$this_missing->id"?>">
@@ -53,7 +60,10 @@
                         <ul class="dropdown-menu">
                             <li id="users">
                                 <a role="menuitem" href="#confirm-close-<?=$id?>" data-toggle="modal">
-                                    <b class="icon icon-ok"></b><?= _('Avslutt operasjon') ?>
+                                    <b class="icon icon-off"></b><?= _('Avslutt operasjon') ?>
+                                </a>
+                                <a role="menuitem" href="#confirm-resend-<?=$id?>" data-toggle="modal">
+                                    <b class="icon icon-envelope"></b><?= _('Send SMS på nyt') ?>
                                 </a>
                             </li>   
                         </ul>
@@ -65,7 +75,8 @@
         </tbody>
     </table>
         
-    <?  if (is_array($active)) {
+    <?  
+        if (is_array($active)) {
             foreach($active as $id => $this_operation) {
                 // Insert close confirmation
                 insert_dialog_confirm(
@@ -73,6 +84,17 @@
                     "Bekreft", 
                     _("Vil du avslutte <u>$this_operation->op_name</u>?"), 
                     ADMIN_URI."operation/close/{$id}"
+                );
+            }
+        }
+        if (!empty($resend)) {
+            foreach($resend as $id => $this_missing) {
+                // Insert resend confirmation
+                insert_dialog_confirm(
+                    "confirm-resend-$id", 
+                    "Bekreft", 
+                    _("Vil du sende SMS til <u>$this_missing->m_name</u> på nytt?"), 
+                    ADMIN_URI."missing/resend/{$id}"
                 );
             }
         }
