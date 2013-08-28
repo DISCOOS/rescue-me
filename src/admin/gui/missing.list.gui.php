@@ -97,7 +97,7 @@
     ?>
             <tr id="<?= $id ?>">
                 <td class="missing name"> <?= $this_operation->op_name ?> </td>
-                <td class="missing date"><?= format_since($this_operation->op_closed) ?></td>
+                <td class="missing date"><?= format_dt($this_operation->op_closed) ?></td>
                 <td class="missing editor">
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/$id"?>">
