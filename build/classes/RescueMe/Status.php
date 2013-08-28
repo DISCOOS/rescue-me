@@ -59,9 +59,16 @@
             
             info("DONE");
             
-
             // Get current configuration
             $config = get_config_params($this->root);            
+            
+            // Print all parameters
+            foreach($config as $key => $value) {
+                info("  $key = $value");
+            }            
+            
+            // Get current minify configuration
+            $config = get_config_minify_params($this->root);            
             
             // Print all parameters
             foreach($config as $key => $value) {
