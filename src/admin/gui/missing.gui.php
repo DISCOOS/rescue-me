@@ -85,6 +85,9 @@
 		<label class="label label-important">SMS sendt</label> <?= format_since($missing->sms_sent) ?>
 	</div>
 	<div class="info pull-left">
+		<label class="label label-important">SMS levert</label> <?= format_since($missing->sms_delivery) ?>
+	</div>
+	<div class="info pull-left">
 		<label class="label label-important">Sporingslenke</label> 
 		<?= APP_URL."l/$missing->id/$missing->m_mobile"; ?>
 	</div>

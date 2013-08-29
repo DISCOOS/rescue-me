@@ -2,6 +2,8 @@
     
     use RescueMe\User;
     use RescueMe\Locale;
+    use RescueMe\Module;
+    use RescueMe\Missing;
     use RescueMe\Properties;
 
     // Verify logon information
@@ -407,7 +409,7 @@
                     "NO", 
                     $_POST['mb_mobile']);
                 
-                $missing = new RescueMe\Missing;
+                $missing = new Missing;
                 $status = $missing->addMissing(
                     $_POST['m_name'], 
                     $_POST['m_mobile_country'], 
@@ -441,7 +443,7 @@
                 } else {
 
                     $id = $_GET['id'];
-                    $missing = RescueMe\Missing::getMissing($id);
+                    $missing = Missing::getMissing($id);
                     if($missing !== FALSE)
                     {
                         if($missing->updateMissing( $_POST['m_name'], $_POST['m_mobile_country'], $_POST['m_mobile'])) {
@@ -479,7 +481,7 @@
             } else {
 
                 $id = $_GET['id'];
-                $missing = RescueMe\Missing::getMissing($id);
+                $missing = Missing::getMissing($id);
                 if($missing !== FALSE) {
                     if($missing->sendSMS() === FALSE) {
                         $_ROUTER['message'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
@@ -496,6 +498,41 @@
             }
             
             break;            
+
+        case 'missing/check':
+            
+            if(is_ajax_request()) {
+                
+                if(!isset($_GET['id'])) {
+
+                    echo '<span class="badge badge-important">Not found</span>';
+
+                } else {
+
+                    $id = $_GET['id'];
+                    $missing = Missing::getMissing($id);
+                    $module = Module::get("RescueMe\SMS\Provider", User::current()->id);    
+                    $sms = $module->newInstance();
+                    
+                    if($sms instanceof RescueMe\SMS\Check) {
+                        if($missing !== FALSE) {
+                            $code = Locale::getDialCode($missing->m_mobile_country);
+                            $code = $sms->accept($code);
+                            $ref = $missing->sms_provider_ref;
+                            if(!empty($ref) && $sms->request($ref,$code.$missing->m_mobile)) {
+                                
+                                $missing = Missing::getMissing($id);
+                                
+                            }
+                        }
+
+                    } 
+                    echo format_since($missing->sms_delivery);
+                    exit;
+                }
+
+                break;
+            }
             
         default:
             $_ROUTER['name'] = _("Illegal Operation");

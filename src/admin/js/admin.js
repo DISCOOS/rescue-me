@@ -107,8 +107,6 @@ $(document).ready(function(){
         }).show();
     });
     
-    
-    
     // Add form validation
     R.form.validate();
     
@@ -121,9 +119,22 @@ $(document).ready(function(){
     // Register editables
     $('.editable').editable({savenochange: true});
     
-    
-    
-    
-    
 });
+
+R.ajax = function(url,element) {
+    
+    var restore = $(element).html();
+    
+    var timeout = setTimeout(function() {
+        $(element).html(restore);
+    }, 30000);
+    
+    $(element).append(' <img src="'+R.app.url+'img/loading.gif" alt="Wait...">');
+    
+    $.ajax(url).done(function(data) {
+        clearTimeout(timeout);
+        $(element).html(data);
+    });
+};
+
     

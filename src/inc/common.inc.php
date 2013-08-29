@@ -15,6 +15,19 @@
             throw new Exception("[$actual] is not of type '$actual'.");
         }
     }
+    
+    function assert_isset_all($values, $keys) {
+        $keys = is_array($keys) ? $keys : array($keys);
+        $missing = array();
+        foreach($keys as $key) {
+            if(!isset($values[$key])) {
+                $missing[] = $key;
+            }
+        }
+        if(!empty($missing)) {
+            trigger_error("Keys are missing", E_USER_ERROR);
+        }
+    }
 
     function prepare_values($fields, $values) 
     {
@@ -165,6 +178,11 @@
             }
         }        
         return $since;
+    }
+    
+    
+    function mysql_dt($time) {
+        return date( 'Y-m-d H:i:s', $time );
     }
     
     

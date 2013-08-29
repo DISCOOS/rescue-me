@@ -11,27 +11,14 @@
      */
     
     namespace RescueMe\SMS;
-
+    
     /**
      * Sveve class
      * 
      * @package 
      */
-    class Sveve implements Provider, Delivery
+    class Sveve extends AbstractProvider implements Callback
     {
-        /**
-         * Sveve configuration
-         * 
-         * @var \RescueMe\Configuration
-         */
-        private $config;
-        
-        /**
-         * Description of last error
-         * @var array
-         */
-        private $errors;
-        
         /**
          * Constructor
          *
@@ -45,12 +32,6 @@
         {
             $this->config = $this->newConfig($user, $passwd);
         }// __construct
-
-        
-        public function config()
-        {
-            return clone($this->config);
-        }
 
         
         private function newConfig($user='', $passwd='')
@@ -70,31 +51,16 @@
             );
         }// newConfig
         
-        public function send($from, $country, $to, $message)
+        
+        protected function _send($from, $to, $message, $account)
         {
-            // Prepare
-            unset($this->errors);
-            
-            if(!($code = $code = \RescueMe\Locale::getDialCode($country)))
-            {
-                return $this->fatal("Failed to get country dial code [$country]");
-            }               
-                
-            if(!$this->accept($code)) {
-                return $this->fatal("SMS provider does not accept recipient [$to]");
-            }
-
-            $number = $code.$to; 
-            
-            $account = $this->config()->params();
-            
             // Create SMS provider url
             $smsURL = utf8_decode
             (
                   'https://www.sveve.no/SMS/SendSMS'
                 . '?user='.$account['user']
                 . '&from='.$from
-                . '&to='.$number
+                . '&to='.$to
                 . '&msg='.urlencode($message)
                 .(!empty($account['passwd']) ? '&passwd='.$account['passwd'] : '')
             );
@@ -121,8 +87,7 @@
                 return $this->errors($response['errors']);
             }
             
-        }// send
-        
+        }
         
         public function getDialCodePattern() {
             return '\d{1,4}';
@@ -138,58 +103,28 @@
         }        
                 
         
-        public function errno()
-        {
-            return isset($this->errors) ? \count($this->errors) : 0;
-        }
-
-
-        public function error()
-        {
-            $errors = array();
-            if(isset($this->errors)) {
-                foreach($this->errors as $error) {
-                    if(isset($error['fatal'])) {
-                        return $error['fatal'];
-                    } else {
-                        $errors[] = $error['number'].":".$error['message'];
-                    }
+        private function errors($errors) {
+            $messages = array();
+            foreach($errors as $error) {
+                if(isset($error['fatal'])) {
+                    $error['number'] = Provider::FATAL;
+                    $error['message'] = $error['fatal'];
                 }
+                $messages[] = $error['number'].":".$error['message'];
             }
-            return implode("\n", $errors);
-        }        
-
-        
-        private function fatal($message) {
-            $this->errors['fatal'] = $message;
-            return false;
-        }
-
-        
-        private function errors($errors)
-        {
-            $this->errors = $errors;
+            $this->error['code'] = Provider::FATAL;
+            $this->error['message'] = implode("\n", $messages);
             return false;
         }
         
-        
-        public function delivered($provider_ref, $to, $status, $errorDesc='') {
-            if (empty($provider_ref) || empty($to) || empty($status))
-                return false;
-                        
-            $query = "UPDATE `missing` SET `sms_delivery` = NOW(), 
-                `sms_error` = '".(string)$errorDesc."'
-                WHERE `missing_mobile` = '" . $to . "' 
-                AND `sms_provider_ref` = '".$provider_ref."';";
+        public function handle($params) {
             
-            $db = new \RescueMe\DB();
-            $res = $db->query($query);
-            if(!$res){
-                trigger_error("Failed execute [$query]: " . $db->error(), E_USER_WARNING);
-                return false;
-            }// if
-            return true;
-        }// log
+            assert_isset_all($params,array('id','number','status'));
+            
+            $this->delivered($params['id'], $params['number'], $params['status'], new \DateTime(),
+                    (isset($params['errorDesc']) ? $params['errorDesc'] : ''));
+        }
+        
 	
         ############################################################
         ## TRANSFORM XML TO AN ARRAY
@@ -212,7 +147,6 @@
             
             return $newArray ;
             
-        }// _SVEVESMS_XML2Array
-
-
+        }
+        
     }// Sveve

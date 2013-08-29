@@ -38,9 +38,13 @@ class Missing
     );
     
     public $id = -1;
+    public $op_id;
+    
     public $positions = array();
+    
     public $m_name;
     public $m_mobile;
+    public $m_mobile_country;
     public $alert_mobile;
     
     public $last_UTM;
@@ -49,7 +53,7 @@ class Missing
     
     public $sms2_sent;
     public $sms_mb_sent;
-    public $op_id;
+    public $sms_provider_ref;
 
     /**
      * Get Missing instance
@@ -227,9 +231,9 @@ class Missing
 
         else {
             
-            $query = "UPDATE `missing` SET `sms_sent` = NOW(),
-                      `sms_provider_ref` = '".$res."'
-                      WHERE `missing_id` = '" . $this->id . "';";
+            $query = "UPDATE `missing` 
+                        SET `sms_sent` = NOW(), `sms_delivery` = NULL, `sms_provider_ref` = '".$res."'
+                        WHERE `missing_id` = '" . $this->id . "';";
             
             if(!DB::query($query)) {
                 trigger_error("Failed execute [$query]: ".DB::error(), E_USER_WARNING);

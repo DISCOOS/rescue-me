@@ -15,6 +15,8 @@ Options +FollowSymlinks
     RewriteRule ^css/(.*\.css) min/g=$1 [NE]
     RewriteRule ^css/(.*\.less) min/g=$1 [L,NE]
     
+    # Rewrite sms callbacks
+    RewriteRule ^sms/delivered(.*)$ sms.php?request=delivered&$1 [QSA,L]
 
     # Location request - first try
     RewriteCond %{SCRIPT_FILENAME} !-d  

@@ -18,23 +18,9 @@
      * 
      * @package 
      */
-    class UMS implements Provider
+    class UMS extends AbstractProvider implements Check
     {
         const WDSL_URL = "https://secure.ums.no/soap/sms/1.6/?wsdl";
-        
-        /**
-         * UMS configuration
-         * @var \RescueMe\Configuration
-         */
-        private $config;
-        
-        
-        /**
-         * Last error
-         * @var \Exception
-         */
-        private $error;
-        
         
         /**
          * constructor for SMS
@@ -49,11 +35,6 @@
         }// __construct
         
         
-        public function config()
-        {
-            return clone($this->config);
-        }
-
         private function newConfig($company='', $department='', $password='')
         {
             return new \RescueMe\Configuration
@@ -77,43 +58,29 @@
         }// newConfig
         
         
-        public function send($from, $country, $to, $message)
+        protected function _send($from, $to, $message, $account)
         {
             try {
                 
-                // Prepare
-                unset($this->error);
-                
-                if(!($code = $code = \RescueMe\Locale::getDialCode($country)))
-                {
-                    return $this->fatal("Failed to get country dial code [$country]");
-                }               
-                
-                if(!($code = $this->accept($code))) {
-                    return $this->fatal("SMS provider does not accept recipient [$to]");
-                }
-                
-                $number = $code.$to; 
-            
                 $sms = array
                 (
                     "from" => $from,
                     "text" => $message,
-                    "schedule" => time()  // send immediately, to send in one hour use: time()+3600
+                    "schedule" => time()
                 );
                 
-                $recipients = array($number);
+                $recipients = array($to);
 
                 $client = new \SoapClient(UMS::WDSL_URL);
                 
-                $refno = $client->doSendSMS($this->config->params(), $sms, $recipients);
+                $refno = $client->doSendSMS($account, $sms, $recipients);
                 
                 return $refno;
                 
             }
             catch(\Exception $e) 
             {
-                return $this->exception($$e);
+                return $this->exception($e);
             }
             
         }// send
@@ -131,31 +98,42 @@
             return false;
         }        
         
-        
-        public function errno()
+                
+        public function request($provider_ref, $number)
         {
-            return isset($this->error) ? $this->error['code'] : 0;
-        }
+            $client = new \SoapClient(UMS::WDSL_URL);
 
+            $result = $client->doGetStatus($this->config->params(), $provider_ref);
 
-        public function error()
-        {
-            return isset($this->error) ? $this->error['message'] : '';
-        }        
-        
-        private function exception(\Exception $e) {
-            $this->error['code'] = $e->getCode();
-            $this->error['message'] = $e->getMessage();
-            return false;
+            $checked = false;
+
+            foreach($result as $status) {
+                
+                switch($status->queueStatus) {
+                    case 'delivered':
+                        
+                        // This is a workaround for strange UTC timezone behavior
+                        $timezone = new \DateTimeZone("UTC");
+                        $datetime = \DateTime::createFromFormat(\DateTime::W3C, $status->deliveredToRecipient, $timezone);
+                        $datetime->setTimestamp($datetime->getTimestamp()-$datetime->getOffset());
+                        
+                        $this->delivered($provider_ref, $status->sentTo, 'true', $datetime);
+                        
+                        break;
+                    
+                    default:
+                        
+                        $this->delivered($provider_ref, $status->sentTo, 'false', null, $status->errorMessage);
+                        
+                        break;
+                }
+                
+                $checked = (ltrim($number,'0') === ltrim($status->sentTo,'0'));
+                
+            }
+
+            return $checked;
         }
         
-        
-        private function fatal($message) {
-            $this->error['code'] = Provider::FATAL;
-            $this->error['message'] = $message;
-            return false;
-        }
-        
-
 
     }// UMS

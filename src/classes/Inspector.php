@@ -26,7 +26,7 @@
             return $separator;
         }
         
-        public static function subclassesOf($className, $includePath=null, $separator='\\', $extension='.php') {
+        public static function subclassesOf($className, $abstract=false, $includePath=null, $separator='\\', $extension='.php') {
 
             $classes = array();
             
@@ -44,12 +44,12 @@
                     $subclassName = ltrim($namespace.$separator.$basename,$separator);
                     if($subclassName !== 'Inspector' && class_exists($subclassName)) {
                         $class = new ReflectionClass($namespace.$separator.$basename);
-                        if($class->isSubclassOf($className)) {
+                        if($class->isSubclassOf($className) && $class->isAbstract() === $abstract) {
                             $classes[$subclassName] = $basename;
                         }
                     }
                 } elseif($file->isDir() && !$file->isDot()) {
-                    $classes += self::subclassesOf($className, $file->getPathname(), $separator, $extension);
+                    $classes += self::subclassesOf($className, $abstract, $file->getPathname(), $separator, $extension);
                 }
             }
             return $classes;
