@@ -10,6 +10,9 @@
         
     }
     
+    // TODO: Add to install/configure
+    define('DEBUG', false); 
+    
     // Allow usage on command line
     if(php_sapi_name() !== 'cli') session_start();
 
@@ -110,5 +113,9 @@
         trigger_error("Failed to set timesone to [" . TIMEZONE . "]");
     }
     
+    // Control mebugging
+    use_soap_error_handler(DEBUG);
+    error_reporting(DEBUG ? ~0 : 0);
+    ini_set('display_errors', DEBUG ? 1 : 0);
     
 ?>
