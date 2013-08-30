@@ -41,14 +41,14 @@ class Operation {
      * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
      */
     public static function getOperation($id){
-        $operation = new Operation();
-        $operation->id = $id;
-
-        $query = "SELECT * FROM `".self::TABLE."` WHERE `op_id`=" . (int) $operation->id;
+        $query = "SELECT * FROM `".self::TABLE."` WHERE `op_id`=" . (int) $id;
         $res = DB::query($query);
 
         if(DB::isEmpty($res)) 
             return false;
+
+        $operation = new Operation();
+        $operation->id = $id;
 
         $row = $res->fetch_assoc();
         foreach($row as $key => $val){
@@ -57,6 +57,27 @@ class Operation {
 
         return $operation;
     }// getOperation
+    
+
+    /**
+     * Check i given operation is closed
+     * 
+     * @param integer $id Operation id
+     * @return boolean TRUE if closed (or not found), FALSE otherwise.
+     */
+    public static function isOperationClosed($id) {
+        
+        $query = "SELECT op_closed FROM `".self::TABLE."` WHERE `op_id`=" . (int) $id;
+        $res = DB::query($query);
+
+        if(DB::isEmpty($res)) 
+            return false;
+
+        $row = $res->fetch_row();
+        
+        return isset($row[0]) && !empty($row[0]);        
+    }
+    
     
     
     /**

@@ -4,6 +4,7 @@
     use RescueMe\Locale;
     use RescueMe\Module;
     use RescueMe\Missing;
+    use RescueMe\Operation;
     use RescueMe\Properties;
 
     // Verify logon information
@@ -382,12 +383,8 @@
                 
             } else {
 
-                if(RescueMe\Operation::reopenOperation($_GET['id'])) {
-                    header("Location: ".ADMIN_URI."missing/edit/{$_GET['id']}");
-                    exit();
-                }
-                
-                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "operation/reopen/$id ikke gjennomført, prøv igjen.";
+                header("Location: ".ADMIN_URI."missing/edit/{$_GET['id']}?reopen");
+                exit();
                 
             }
             
@@ -422,47 +419,78 @@
             }
             
             break;
+            
+        case 'missing':
+            
+            $_ROUTER['name'] = MISSING_PERSON;
+            $_ROUTER['view'] = $_GET['view'];
+            
+            break;
+            
         case 'missing/list':
+            
             $_ROUTER['name'] = 'Alle savnede';
             $_ROUTER['view'] = $_GET['view'];
             break;
-        case 'missing':
+        
         case 'missing/edit':
             
             $_ROUTER['name'] = EDIT_MISSING;
             $_ROUTER['view'] = $_GET['view'];
-            
-            // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                
-                if(!isset($_GET['id'])) {
 
-                    $_ROUTER['message'] = "Missing [{$_GET['id']}] does not exist.";
+            if(!isset($_GET['id'])) {
 
-                } else {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = "Id not found.";
 
-                    $id = $_GET['id'];
-                    $missing = Missing::getMissing($id);
-                    if($missing !== FALSE)
-                    {
-                        if($missing->updateMissing( $_POST['m_name'], $_POST['m_mobile_country'], $_POST['m_mobile'])) {
-                            
-                            if(isset($_POST['resend'])) {
-                                
-                                if($missing->sendSMS() === FALSE) {
-                                    $_ROUTER['message'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
+            } else {
+
+                $id = $_GET['id'];
+
+                $missing = Missing::getMissing($id);
+
+                if($missing !== FALSE){
+                    
+                    $closed = Operation::isOperationClosed($missing->op_id);
+
+                    // Process form?
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                        if($closed) {
+                            if(!Operation::reopenOperation($_GET['id'])) {
+                                $_ROUTER['message'] = "Failed to reopen operation [{$missing->op_id}].";
+                            }                        
+                        }
+                        if(!isset($_ROUTER['message'])) {
+                            if($missing->updateMissing( $_POST['m_name'], $_POST['m_mobile_country'], $_POST['m_mobile'])) {
+
+                                if(isset($_POST['resend'])) {
+
+                                    if($missing->sendSMS() === FALSE) {
+                                        $_ROUTER['message'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
+                                    }
+                                } 
+
+                                if(!isset($_ROUTER['message'])){
+                                    header("Location: ".ADMIN_URI."missing/list");
+                                    exit();
                                 }
-                            } 
-                            
-                            if(!isset($_ROUTER['message'])){
-                                header("Location: ".ADMIN_URI."missing/list");
-                                exit();
-                            }
-                            
-                        } 
-                    }
-                    $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "missing/edit/$id ikke gjennomført, prøv igjen.";
 
+                            } 
+                        }
+                    }
+                    
+                    // Reopen operation
+                    if($closed && !isset($_GET['reopen'])) {
+                        $_ROUTER['name'] = _("Illegal Operation");
+                        $_ROUTER['view'] = "404";
+                        $_ROUTER['message'] = "Operation [$missing->op_id] is closed.";
+                    }
+                    
+                }
+                else {
+                    $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "missing/edit/$id ikke gjennomført, prøv igjen.";
                 }
             }
             
@@ -473,16 +501,22 @@
             $_ROUTER['name'] = "Alle savnede";
             $_ROUTER['view'] = "missing/list";
             
-            if(!isset($_GET['id'])) {
+             if(!isset($_GET['id'])) {
 
-                $_ROUTER['message'] = "Missing [{$_GET['id']}] does not exist.";
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = "Id not found.";
 
             } else {
 
                 $id = $_GET['id'];
                 $missing = Missing::getMissing($id);
                 if($missing !== FALSE) {
-                    if($missing->sendSMS() === FALSE) {
+                    
+                    if(Operation::isOperationClosed($missing->op_id)) {
+                        $_ROUTER['message'] = _("Missing [$missing->id] is closed");
+                    }
+                    elseif($missing->sendSMS() === FALSE) {
                         $_ROUTER['message'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
                     }
                     if(!isset($_ROUTER['message'])){

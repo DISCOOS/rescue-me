@@ -55,8 +55,13 @@
                 'class' => 'span3'
             );
             $fields[] = $group;
-
-            insert_form("user", _(EDIT_MISSING), $fields, ADMIN_URI."missing/edit/$missing->id");
+            
+            if(!empty($operation->op_closed)) {
+                $actions['message'] = _("Merk: Dette vil gjenåpne operasjonen");
+            }
+            else $actions = array();
+            
+            insert_form("user", _(EDIT_MISSING), $fields, ADMIN_URI."missing/edit/$missing->id", $actions);
         }
     } else { ?> 
 <h3 class="pagetitle"><?= _(EDIT_MISSING) ?></h3>

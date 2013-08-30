@@ -20,6 +20,10 @@
 <? } ?>    
     <div id="<?= $id ?>-body" class="form-body">
     <?  
+        if(isset($actions['message'])) {     
+            insert_alert($actions['message']);  
+        }
+        
         if(is_array($fields)) {
             insert_controls($fields);
         }

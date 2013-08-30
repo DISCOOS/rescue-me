@@ -11,9 +11,13 @@
     else
     {        
         $positions = $missing->getPositions();
+        $name = $missing->name;
+        if(Operation::isOperationClosed($missing->id)) {
+            $name .= " ("._("Closed").")";
+        }
 
 ?>
-<h3 class="pagetitle"><?= $missing->name ?></h3>
+<h3 class="pagetitle"><?= $name ?></h3>
 <?php
         if(isset($_ROUTER['message'])) { ?>
 	<div class="alert alert-error">
