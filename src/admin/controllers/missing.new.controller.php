@@ -17,10 +17,10 @@ if(sizeof($missing) > 0) {
 } else {
 	if(isset($_POST['mb_name'])) {
         require_once(APP_PATH_INC.'common.inc.php');
-        $missing = new \RescueMe\Missing();
-        $status = $missing->addMissing($_POST['mb_name'], $_POST['mb_mail'], $_POST['mb_mobile'], 
+        
+        $missing = RescueMe\Missing::addMissing($_POST['mb_name'], $_POST['mb_mail'], $_POST['mb_mobile'], 
                                        $_POST['m_name'], $_POST['m_mobile']);
-        if($status) {
+        if($missing) {
             header("Location: ".ADMIN_URI.'missing/'.$missing->id);
             exit();
         }

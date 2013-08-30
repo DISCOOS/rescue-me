@@ -19,6 +19,9 @@
      */
     interface Callback extends Status
     {
+        const URL = "sms/callback/";
+        const PROPERTY = "callback";
+
         /**
          * Handle given status
          * 

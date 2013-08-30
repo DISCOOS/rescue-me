@@ -39,11 +39,13 @@
             return new \RescueMe\Configuration(
                 array(
                     "user" => $user,
-                    "passwd" => $passwd
+                    "passwd" => $passwd,
+                    Callback::PROPERTY => Callback::URL.\RescueMe\User::currentId(),
                 ),
                 array(
-                    "user" => _("user"),
-                    "passwd" => _("password")
+                    "user" => _("User"),
+                    "passwd" => _("Password"),
+                    "callback" => _("Callback"),
                 ),
                 array(
                     "user"
@@ -54,6 +56,7 @@
         
         protected function _send($from, $to, $message, $account)
         {
+            
             // Create SMS provider url
             $smsURL = utf8_decode
             (
@@ -64,7 +67,8 @@
                 . '&msg='.urlencode($message)
                 .(!empty($account['passwd']) ? '&passwd='.$account['passwd'] : '')
             );
-                        
+            
+            
             // Start request
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $smsURL);
@@ -148,5 +152,6 @@
             return $newArray ;
             
         }
-        
+
+
     }// Sveve

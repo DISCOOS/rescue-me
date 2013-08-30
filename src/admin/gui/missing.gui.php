@@ -13,7 +13,7 @@
         $positions = $missing->getPositions();
 
 ?>
-<h3 class="pagetitle"><?= $missing->m_name ?></h3>
+<h3 class="pagetitle"><?= $missing->name ?></h3>
 <?php
         if(isset($_ROUTER['message'])) { ?>
 	<div class="alert alert-error">
@@ -41,7 +41,7 @@
 		<label class="label label-important">Posisjon mottatt</label> <?= $received ?>
 	</div>
 	<div class="info pull-left">
-		<label class="label label-important">Meldt savnet</label> <?= format_since($missing->m_reported) ?>
+		<label class="label label-important">Meldt savnet</label> <?= format_since($missing->reported) ?>
 	</div>
 </div>
 
@@ -89,7 +89,7 @@
 	</div>
 	<div class="info pull-left">
 		<label class="label label-important">Sporingslenke</label> 
-		<?= APP_URL."l/$missing->id/$missing->m_mobile"; ?>
+		<?= APP_URL."l/$missing->id/$missing->mobile"; ?>
 	</div>
 </div>
 <?php

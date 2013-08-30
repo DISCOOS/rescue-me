@@ -10,6 +10,7 @@
  */
 
 namespace RescueMe;
+
 use \gPoint;
 
 /**
@@ -39,12 +40,13 @@ class Missing
     
     public $id = -1;
     public $op_id;
+    public $user_id;
     
-    public $positions = array();
+    public $reported;
     
-    public $m_name;
-    public $m_mobile;
-    public $m_mobile_country;
+    public $name;
+    public $mobile;
+    public $mobile_country;
     public $alert_mobile;
     
     public $last_UTM;
@@ -53,8 +55,12 @@ class Missing
     
     public $sms2_sent;
     public $sms_mb_sent;
+    public $sms_delivery;
+    public $sms_provider;
     public $sms_provider_ref;
 
+    public $positions = array();
+    
     /**
      * Get Missing instance
      * 
@@ -63,32 +69,50 @@ class Missing
      * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
      */
     public static function getMissing($id, $phone = -1){
-        $missing = new Missing();
-        $missing->id = $id;
-
-        $query = "SELECT * FROM `missing` WHERE `missing_id`=" . (int) $missing->id;
+        
+        $query = "SELECT * FROM `missing` WHERE `missing_id`=" . (int) $id;
         if($phone !== -1) $query .= " AND `missing_mobile`=" . (int) $phone;
-        $res = DB::query($query);
-
-        if(DB::isEmpty($res)) 
+        
+        $result = DB::query($query);
+        
+        if(DB::isEmpty($result)) {
             return false;
-
-        $row = $res->fetch_assoc();
-        foreach($row as $key => $val){
-            $property = str_replace('missing_', 'm_', $key);
-            $missing->$property = $val;
         }
-        
-        $operation = new Operation();
-        $operation = $operation->getOperation($missing->op_id);
-        $missing->alert_mobile = $operation->getAlertMobile();
-        
-        return $missing;
+
+        $row = $result->fetch_assoc();
+                
+        $missing = new Missing();
+        return $missing->setMissing($id, $row);
 
     }// getMissing
     
+    
+    /**
+     * Set missing data from mysqli_result.
+     * 
+     * @param integer $id Missing id.
+     * @param \mysqli_result $result Recordset.
+     * 
+     * @return \RescueMe\Missing
+     */
+    private function setMissing($id, $values) {
+        
+        $this->id = $id;
+        
+        foreach($values as $key => $val){
+            $property = str_replace('missing_', '', $key);
+            $this->$property = $val;
+        }
+        
+        $operation = Operation::getOperation($this->op_id);
+        $this->user_id = $operation->user_id;
+        $this->alert_mobile = $operation->getAlertMobile();
+        
+        return $this;
+    }
+    
 
-    public function addMissing($m_name, $m_mobile_country, $m_mobile, $op_id){
+    public static function addMissing($m_name, $m_mobile_country, $m_mobile, $op_id){
 
         if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($op_id))
             return false;
@@ -96,13 +120,17 @@ class Missing
         $values = array((string) $m_name,  (string) $m_mobile_country, (int) $m_mobile, "NOW()", (int) $op_id);            
         $values = prepare_values(self::$fields, $values);
 
-        $this->id = DB::insert(self::TABLE, $values);
+        $id = DB::insert(self::TABLE, $values);
 
-        if(!$this->id) {
+        if(!$id) {
             return false;
         }
 
-        return self::getMissing($this->id)->sendSMS();            
+        // Reuse values (optimization)
+        $missing = new Missing();
+        $missing->setMissing($id, array_exclude($values,'missing_reported'));
+        
+        return $missing->sendSMS() ? $missing : false;
         
     }// addMissing
 
@@ -175,7 +203,7 @@ class Missing
             // Is SMS2 already sent
             if($this->sms2_sent == 'false'){
                 
-                $this->_sendSMS($this->m_mobile_country, $this->m_mobile, SMS2_TEXT);
+                $this->_sendSMS($this->mobile_country, $this->mobile, SMS2_TEXT);
                 
                 $query = "UPDATE `missing` SET `sms2_sent` = 'true' WHERE `missing_id` = '" . $this->id . "';";
                 $res = DB::query($query);
@@ -219,7 +247,7 @@ class Missing
 
     public function sendSMS(){
         
-        $res = $this->_sendSMS($this->m_mobile_country, $this->m_mobile, SMS_TEXT);
+        $res = $this->_sendSMS($this->mobile_country, $this->mobile, SMS_TEXT);
         
         if(!$res) {
             
@@ -231,8 +259,12 @@ class Missing
 
         else {
             
+            $module = Module::get("RescueMe\SMS\Provider", $this->user_id);
+            
             $query = "UPDATE `missing` 
-                        SET `sms_sent` = NOW(), `sms_delivery` = NULL, `sms_provider_ref` = '".$res."'
+                        SET `sms_sent` = NOW(), `sms_delivery` = NULL, 
+                            `sms_provider` = '".DB::escape($module->impl)."',
+                            `sms_provider_ref` = '".$res."'
                         WHERE `missing_id` = '" . $this->id . "';";
             
             if(!DB::query($query)) {
@@ -269,7 +301,7 @@ class Missing
         
         if(!$code)
         {
-            insert_error("Failed to get country dial code [$country]");
+            trigger_error("Failed to get country dial code [$country]", E_USER_WARNING);
             return false;
         }
         return $code;
@@ -286,11 +318,11 @@ class Missing
      * @return mixed|array Message id if success, errors otherwise (array).
      */
     private function _sendSMS($country, $to, $message) {
-
-        $sms = Module::get("RescueMe\SMS\Provider", User::currentId())->newInstance();
+        
+        $sms = Module::get("RescueMe\SMS\Provider", $this->user_id)->newInstance();
         if(!$sms)
         {
-            insert_error("Failed to get SMS provider");
+            trigger_error("Failed to get SMS provider", E_USER_WARNING);
             return false;
         }
         
@@ -302,13 +334,13 @@ class Missing
         $message = str_replace
         (
             array('#missing_id', '#to', '#m_name', '#acc', '#UTM'), 
-            array($this->id, $to, $this->m_name, $this->last_acc, $this->last_UTM),
+            array($this->id, $to, $this->name, $this->last_acc, $this->last_UTM),
             $message
         );
         
         $res = $sms->send(SMS_FROM, $country, $to, $message);
         if(!$res) {
-            insert_error($sms->error());
+            trigger_error($sms->error(), E_USER_WARNING);
         }
         return $res;
 

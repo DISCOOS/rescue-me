@@ -31,13 +31,18 @@ else
     );
     
     $config = $impl->config();
+    
     foreach($config->params() as $property => $default) {
+        
+        $readonly = ($property === \RescueMe\SMS\Callback::PROPERTY) && ($impl instanceof \RescueMe\SMS\Callback);
+        $attributes = array($config->required($property) ? "required" : '', ($readonly ? "readonly" : ''));
+        
         $fields[] = array(
             'id' => "$property",
             'type' => 'text', 
             'value' => $default, 
             'label' => _($config->label($property)),
-            'attributes' => $config->required($property)
+            'attributes' => trim(implode(" ", $attributes))
         );
     }
     

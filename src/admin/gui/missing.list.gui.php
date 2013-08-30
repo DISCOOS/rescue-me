@@ -36,7 +36,7 @@
         <tbody class="searchable">
     <?
         // Enable manual SMS delivery status check?
-        $module = Module::get("RescueMe\SMS\Provider", User::current()->id);    
+        $module = Module::get("RescueMe\SMS\Provider", User::currentId());
         $sms = $module->newInstance();
         $check = ($sms instanceof RescueMe\SMS\Check);
         
@@ -53,11 +53,11 @@
                 $position = $this_missing->last_pos->human;
             }
             $sent = format_since($this_missing->sms_sent);
-            if($check && !isset($this_missing->sms_delivery)) {
-                $code = Locale::getDialCode($this_missing->m_mobile_country);
+            if($check && !isset($this_missing->sms_delivery) && $this_missing->sms_provider === $module->impl) {
+                $code = Locale::getDialCode($this_missing->mobile_country);
                 $code = $sms->accept($code);
                 $ref = $this_missing->sms_provider_ref;
-                if(!empty($ref) && $sms->request($ref,$code.$this_missing->m_mobile)) {
+                if(!empty($ref) && $sms->request($ref,$code.$this_missing->mobile)) {
                     $this_missing = Missing::getMissing($id);
                 }
             }
@@ -65,7 +65,7 @@
             
     ?>
             <tr id="<?= $this_missing->id ?>">
-                <td class="missing name"> <?= $this_missing->m_name ?> </td>
+                <td class="missing name"> <?= $this_missing->name ?> </td>
                 <td class="missing sent hidden-phone"><?= $sent ?></td>
                 <td id="delivered-<?=$id?>" class="missing delivered hidden-phone"><?= $delivered ?></td>
                 <td class="missing received hidden-phone"><?= $received ?></td>
@@ -122,7 +122,7 @@
                 insert_dialog_confirm(
                     "confirm-resend-$id", 
                     "Bekreft", 
-                    _("Vil du sende SMS til <u>$this_missing->m_name</u> på nytt?"), 
+                    _("Vil du sende SMS til <u>$this_missing->name</u> på nytt?"), 
                     ADMIN_URI."missing/resend/{$id}"
                 );
             }

@@ -36,7 +36,7 @@ $gPoint = new gPoint();
 <html>
 <head>
 <meta charset="utf-8" />
-<title><?= MISSING_PERSON ?> - <?=$missing->m_name;?></title>
+<title><?= MISSING_PERSON ?> - <?=$missing->name;?></title>
 <script src="http://maps.googleapis.com/maps/api/js?key=<?= GOOGLE_API_KEY ?>&sensor=false">
 </script>
 
@@ -189,7 +189,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 </head>
 
 <body>
-<h1><?=$missing->m_name;?> (Mob: <?=$missing->m_mobile;?>)</h1>
+<h1><?=$missing->name;?> (Mob: <?=$missing->mobile;?>)</h1>
 
 <div id="googleMap" style="float: left; width:800px;height:500px;"></div>
 <div id="sidebar" style="float:left; margin-left: 10px">
@@ -209,7 +209,7 @@ foreach ($positions as $key=>$value) {
 	$i++;
 }
 echo '</i><br /><br /><u>Link som den savnede bruker:</u><br />'.
-	APP_URI.'find.php?id='.$_GET['id'].'&num='.$missing->m_mobile;
+	APP_URI.'find.php?id='.$_GET['id'].'&num='.$missing->mobile;
 ?>
 
 </div>

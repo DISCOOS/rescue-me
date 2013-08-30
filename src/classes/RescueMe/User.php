@@ -147,6 +147,30 @@
         
         
         /**
+         * Get user id from SMS provider reference id
+         * 
+         * @param integer $reference
+         * 
+         * @return integer|boolean Operation id if success, FALSE otherwise.
+         */
+        public static function getProviderUserId($provider, $reference) {
+            
+            
+            // Get all missing with given reference
+            $select = "SELECT `op_id` FROM `missing` WHERE `sms_provider` = '".$provider."' AND `sms_provider_ref` = '".$reference."';";
+
+            $result = DB::query($select);
+            if(DB::isEmpty($result)) { 
+                trigger_error("Missing not found", E_USER_WARNING);
+                return false;
+            }
+            $row = $result->fetch_row();
+            $operation = Operation::getOperation($row[0]);
+            return $operation ? $operation->user_id : false;
+        }
+
+        
+        /**
          * Get user with given id
          * 
          * @param integer $id User id

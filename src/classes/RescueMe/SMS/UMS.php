@@ -103,34 +103,42 @@
         {
             $client = new \SoapClient(UMS::WDSL_URL);
 
-            $result = $client->doGetStatus($this->config->params(), $provider_ref);
-
-            $checked = false;
-
-            foreach($result as $status) {
+            try {
                 
-                switch($status->queueStatus) {
-                    case 'delivered':
-                        
-                        // This is a workaround for strange UTC timezone behavior
-                        $timezone = new \DateTimeZone("UTC");
-                        $datetime = \DateTime::createFromFormat(\DateTime::W3C, $status->deliveredToRecipient, $timezone);
-                        $datetime->setTimestamp($datetime->getTimestamp()-$datetime->getOffset());
-                        
-                        $this->delivered($provider_ref, $status->sentTo, 'true', $datetime);
-                        
-                        break;
-                    
-                    default:
-                        
-                        $this->delivered($provider_ref, $status->sentTo, 'false', null, $status->errorMessage);
-                        
-                        break;
+                $result = $client->doGetStatus($this->config->params(), $provider_ref);
+                
+                $checked = false;
+
+                foreach($result as $status) {
+
+                    switch($status->queueStatus) {
+                        case 'delivered':
+
+                            // This is a workaround for strange UTC timezone behavior
+                            $timezone = new \DateTimeZone("UTC");
+                            $datetime = \DateTime::createFromFormat(\DateTime::W3C, $status->deliveredToRecipient, $timezone);
+                            $datetime->setTimestamp($datetime->getTimestamp()-$datetime->getOffset());
+
+                            $this->delivered($provider_ref, $status->sentTo, 'true', $datetime);
+
+                            break;
+
+                        default:
+
+                            $this->delivered($provider_ref, $status->sentTo, 'false', null, $status->errorMessage);
+
+                            break;
+                    }
+
+                    $checked = (ltrim($number,'0') === ltrim($status->sentTo,'0'));
+
                 }
-                
-                $checked = (ltrim($number,'0') === ltrim($status->sentTo,'0'));
-                
             }
+            catch(\Exception $e) 
+            {
+                return $this->exception($e);
+            }
+                
 
             return $checked;
         }

@@ -96,7 +96,7 @@
          * @param string $property
          */
         public function required($property) {
-            return isset($this->required[$property]) ? $this->required[$property] : false;
+            return in_array($property, $this->required);
         }
         
         

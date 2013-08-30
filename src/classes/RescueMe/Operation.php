@@ -182,13 +182,12 @@ class Operation {
         if (DB::isEmpty($res)) 
             return false;
 
-        $missing_ids = array();
+        $missings = array();
         while ($row = $res->fetch_assoc()) {
-            $missing = new Missing();
-            $missing = $missing->getMissing($row['missing_id']);
-            $missing_ids[$row['missing_id']] = $missing;
+            $missing = Missing::getMissing($row['missing_id']);
+            $missings[$row['missing_id']] = $missing;
         }
-        return $missing_ids;
+        return $missings;
     }
     
     public function getAlertMobile() {

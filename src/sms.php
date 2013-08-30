@@ -11,10 +11,9 @@
 
     require('config.php');
 
-    use RescueMe\User;
     use RescueMe\Module;
     
-    $module = Module::get("RescueMe\SMS\Provider", User::current()->id);
+    $module = Module::get("RescueMe\SMS\Provider", $_GET['user']);
     
     $sms = $module->newInstance();
 
@@ -24,13 +23,13 @@
     
     // Dispatch push request
     switch(isset($_GET['request']) ? $_GET['request'] : '') {
-        case 'delivered':
+        case 'callback':
             
             // Is status callback supported?
             if ($sms instanceof RescueMe\SMS\Callback) {
                 $sms->handle(strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' ? $_POST : $_GET);
             } else {
-                trigger_error("[RescueMe/SMS/Provider] does not support [RescueMe/SMS/Callback]", E_USER_ERROR);
+                trigger_error("[{$module->impl}] does not support [RescueMe/SMS/Callback]", E_USER_ERROR);
             }
             
             break;

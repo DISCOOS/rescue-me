@@ -53,6 +53,7 @@
         protected function exception(\Exception $e) {
             $this->error['code'] = $e->getCode();
             $this->error['message'] = $e->getMessage();
+            trigger_error($this->error(), E_USER_WARNING);
         }
         
         
@@ -63,6 +64,7 @@
         protected function fatal($message) {
             $this->error['code'] = Provider::FATAL;
             $this->error['message'] = $message;
+            trigger_error($this->error(), E_USER_WARNING);
         }
         
         /**
@@ -110,10 +112,29 @@
             if(!($code = $this->accept($code))) {
                 return $this->fatal("SMS provider does not accept country dial code [$code]");
             }
-
-            return $this->_send($from, $code.$to, $message, $this->config()->params());
+            
+            if(!($account = $this->validate($this->config()))) {
+                return $this->fatal("SMS provider configuration is invalid");
+            }
+            
+            return $this->_send($from, $code.$to, $message, $account);
             
         }// send
+        
+        
+        /**
+         * Validate account
+         * @param \RescueMe\Configuration $config Account
+         * @return boolean TRUE if success, FALSE otherwise.
+         */
+        protected function validate($config) {
+            foreach($config->params() as $property => $default) {
+                if($config->required($property) && empty($default)) {
+                    return false;
+                }
+            }
+            return $config->params();
+        }
 
         
         /**
@@ -147,11 +168,11 @@
             // Get all missing with given reference
             $select = "SELECT `missing_id`, `missing_mobile_country`, `missing_mobile`  
                        FROM `missing` 
-                       WHERE `sms_provider_ref` = '".$provider_ref."';";
-
+                       WHERE `sms_provider` = '".DB::escape(get_class($this))."' AND `sms_provider_ref` = '".$provider_ref."';";
+            
             $result = DB::query($select);
             if(DB::isEmpty($result)) { 
-                trigger_error("Missing not found", E_USER_WARNING);
+                trigger_error("Missing not found [$select]", E_USER_WARNING);
                 return false;
             }
 

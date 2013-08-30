@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `missing` (
   `missing_mobile` varchar(25) NOT NULL,
   `sms_sent` timestamp NULL DEFAULT NULL,
   `sms_delivery` timestamp NULL DEFAULT NULL,
+  `sms_provider` varchar(255) NOT NULL,
   `sms_provider_ref` varchar(255) NOT NULL,
   `sms_error` varchar(255) NOT NULL,
   `missing_reported` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

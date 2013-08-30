@@ -22,7 +22,7 @@
         /**
          * Register that a message has been delivered.
          * 
-         * @param string $provider_ref Message id
+         * @param string $provider_ref SMS Provider id
          * @param string $to Recipient phone number
          * @param bool $status Deliverystatus
          * @param \DateTime $datetime Time of delivery

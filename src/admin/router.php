@@ -409,13 +409,12 @@
                     "NO", 
                     $_POST['mb_mobile']);
                 
-                $missing = new Missing;
-                $status = $missing->addMissing(
+                $missing = Missing::addMissing(
                     $_POST['m_name'], 
                     $_POST['m_mobile_country'], 
                     $_POST['m_mobile'], $operation->id);
                 
-                if($status) {
+                if($missing) {
                     header("Location: ".ADMIN_URI.'missing/'.$operation->id);
                     exit();
                 }
@@ -511,15 +510,15 @@
 
                     $id = $_GET['id'];
                     $missing = Missing::getMissing($id);
-                    $module = Module::get("RescueMe\SMS\Provider", User::current()->id);    
+                    $module = Module::get("RescueMe\SMS\Provider", User::currentId());    
                     $sms = $module->newInstance();
                     
                     if($sms instanceof RescueMe\SMS\Check) {
-                        if($missing !== FALSE) {
-                            $code = Locale::getDialCode($missing->m_mobile_country);
+                        if($missing !== FALSE && $missing->sms_provider === $module->impl) {
+                            $code = Locale::getDialCode($missing->mobile_country);
                             $code = $sms->accept($code);
                             $ref = $missing->sms_provider_ref;
-                            if(!empty($ref) && $sms->request($ref,$code.$missing->m_mobile)) {
+                            if(!empty($ref) && $sms->request($ref,$code.$missing->mobile)) {
                                 
                                 $missing = Missing::getMissing($id);
                                 

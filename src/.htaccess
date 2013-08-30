@@ -8,7 +8,7 @@ Options +FollowSymlinks
 
 <IfModule mod_rewrite.c>
     
-    RewriteEngine on    
+    RewriteEngine on
 
     # Rewrite resource URIs to minify
     RewriteRule ^js/(.*\.js) min/g=$1 [NE]
@@ -16,7 +16,7 @@ Options +FollowSymlinks
     RewriteRule ^css/(.*\.less) min/g=$1 [L,NE]
     
     # Rewrite sms callbacks
-    RewriteRule ^sms/delivered(.*)$ sms.php?request=delivered&$1 [QSA,L]
+    RewriteRule ^sms/callback/([0-9]+)(.*)$ sms.php?request=callback&user=$1&$2 [QSA,L]
 
     # Location request - first try
     RewriteCond %{SCRIPT_FILENAME} !-d  

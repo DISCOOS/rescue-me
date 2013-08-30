@@ -19,7 +19,7 @@
             $fields[] = array(
                 'id' => 'm_name',
                 'type' => 'text', 
-                'value' => $missing->m_name,
+                'value' => $missing->name,
                 'label' => _('Savnedes navn'),
                 'attributes' => 'required'
             );
@@ -29,7 +29,7 @@
                 'class' => 'row-fluid'
             );
             
-            $code = empty($missing->m_mobile_country) ? Locale::getCurrentCountryCode() : $missing->m_mobile_country;
+            $code = empty($missing->mobile_country) ? Locale::getCurrentCountryCode() : $missing->mobile_country;
             
             $group['value'][] = array(
                 'id' => 'm_mobile_country',
@@ -42,7 +42,7 @@
             $group['value'][] = array(
                 'id' => 'm_mobile',
                 'type' => 'tel', 
-                'value' => $missing->m_mobile, 
+                'value' => $missing->mobile, 
                 'label' => _('Savnedes mobiltelefon'),
                 'class' => 'span3',
                 'attributes' => 'required pattern="[0-9]*"'
