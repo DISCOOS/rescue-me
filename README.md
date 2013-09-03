@@ -18,7 +18,7 @@ or if you don't have curl (windows):
 php -r "eval('?>'.file_get_contents('http://rescueme.discoos.org/installer'));"
 ```    
 This script will check some php.ini settings, warn you if they are set incorrectly, 
-and then download the latest rescueme.phar in the current directory. 
+and then download the latest `rescueme.phar` in current directory. 
 
 Install RescueMe
 ----------------
@@ -36,8 +36,7 @@ Follow the instructions.
 Build from source
 -----------------
 
-2. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a> and extract it to /path/to/rescume/src, or**
-
+2. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a>** and extract it to `/path/to/rescume/src`, **or**
     ```bash
     git clone https://github.com/DISCOOS/rescue-me.git /path/to/rescume/src
     ```
@@ -66,7 +65,7 @@ Developers
 ----------
 
 Remember to set correct newline behavior before commiting changes to this repo 
-(see [Git help](https://help.github.com/articles/dealing-with-line-endings)). The repos 
+(see [Git help](https://help.github.com/articles/dealing-with-line-endings)). The repo 
 is configured to store all files with LF line endings (see .gitattributes), and correct 
 behavior is best ensured by setting the correct `--global core.autocrlf` value for your OS. 
 
@@ -89,7 +88,7 @@ If `config.tpl.php` or `config.minify.tpl.php` was changed by a commit, remember
 ```bash
 php rescueme.php configure
 ```
-locally after commit is pulled. This will update ignored local configuration files.
+locally after commit is pulled. This will update local configuration files (ignored by git).
 
 **Database changes**
 
