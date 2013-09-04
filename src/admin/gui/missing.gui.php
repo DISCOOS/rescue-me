@@ -115,6 +115,9 @@
             ?>
 	</div>
 	<div class="info pull-left">
+		<label class="label label-important">Respons</label> <?= format_since($missing->answered) ?>
+	</div>
+	<div class="info pull-left">
 		<label class="label label-important">Sporingslenke</label> 
 		<?= APP_URL."l/$missing->id/$missing->mobile"; ?>
 	</div>

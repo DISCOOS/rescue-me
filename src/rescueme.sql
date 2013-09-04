@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `missing` (
   `sms_provider` varchar(255) NOT NULL,
   `sms_provider_ref` varchar(255) NOT NULL,
   `sms_error` varchar(255) NOT NULL,
+  `missing_answered` timestamp NULL DEFAULT NULL,
   `missing_reported` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sms2_sent` enum('false','true') NOT NULL DEFAULT 'false',
   `sms_mb_sent` enum('false','true') NOT NULL,

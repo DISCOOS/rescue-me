@@ -30,7 +30,10 @@
         $id = Operation::getOperation($missing->op_id)->user_id;
         $age = Properties::get(Properties::LOCATION_MAX_AGE, $id);
         $wait = Properties::get(Properties::LOCATION_MAX_WAIT, $id);
-        $desiredAcc = Properties::get(Properties::LOCATION_DESIRED_ACC, $id);    
+        $desiredAcc = Properties::get(Properties::LOCATION_DESIRED_ACC, $id);
+        
+        $missing->responded();
+        
 ?>
 
 <script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&phone=<?=$_GET['phone']?>&wait=<?=$wait?>&age=<?=$age?>&desiredAcc=<?=$desiredAcc?>"></script></head>

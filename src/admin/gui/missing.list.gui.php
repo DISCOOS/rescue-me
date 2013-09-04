@@ -26,7 +26,8 @@
                 <th width="25%"><?=_("Name")?></th>
                 <th class="hidden-phone" width="13%"><?=_("Sent")?></th>
                 <th class="hidden-phone" width="13%"><?=_("Delivered")?></th>
-                <th class="hidden-phone" width="13%"><?=_("Received")?></th>
+                <th class="hidden-phone" width="13%"><?=_("Answered")?></th>
+                <th class="hidden-phone" width="13%"><?=_("Reported")?></th>
                 <th width="17%"><?=_("Position")?></th>
                 <th>
                     <input type="search" class="input-medium search-query pull-right" placeholder="Search">
@@ -39,7 +40,6 @@
         $module = Module::get("RescueMe\SMS\Provider", User::currentId());
         $sms = $module->newInstance();
         $check = ($sms instanceof RescueMe\SMS\Check);
-        
         foreach($active as $id => $this_operation) {
             $missings = $this_operation->getAllMissing();
             $this_missing = current($missings);
@@ -61,6 +61,7 @@
                     $this_missing = Missing::getMissing($id);
                 }
             }
+            $answered = format_since($this_missing->answered);
             $delivered = format_since($this_missing->sms_delivery);
             if (empty($delivered))
                 $delivered = _('Ukjent');
@@ -70,6 +71,7 @@
                 <td class="missing name"> <?= $this_missing->name ?> </td>
                 <td class="missing sent hidden-phone"><?= $sent ?></td>
                 <td id="delivered-<?=$id?>" class="missing delivered hidden-phone"><?= $delivered ?></td>
+                <td id="responded-<?=$id?>" class="missing answered hidden-phone"><?= $answered ?></td>
                 <td class="missing received hidden-phone"><?= $received ?></td>
                 <td class="missing position"><?= $position ?></td>
                 <td class="missing editor">

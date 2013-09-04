@@ -278,6 +278,25 @@ class Missing
     
     
     /**
+     * Log missing location request response
+     * 
+     * @return boolean
+     */
+    public function responded() {
+        
+        $query = "UPDATE `missing` 
+                    SET `missing_responded` = NOW() 
+                  WHERE `missing_id` = '" . $this->id . "';";
+        
+        $response = DB::query($query);
+
+        if(!$response) {
+            trigger_error("Failed execute [$query]: ".DB::error(), E_USER_WARNING);
+        }
+        return $response;
+    }
+    
+    /**
      * Anonymize missing data
      * 
      * @return boolean
