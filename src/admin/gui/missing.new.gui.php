@@ -35,10 +35,7 @@
 	</fieldset>
     
 	<fieldset class="new-missing pull-left">
-		<legend>Om deg</legend>
-
-		<label for="mb_name">Ditt navn</label>
-		<input class="input-block-level"  type="text" id="mb_name" name="mb_name" value="<?=$user->name?>" placeholder="Fullt navn" required>
+		<legend>Nummer for varsling av mottatt posisjon</legend>
 
         <div class="row-fluid">
             <div class="span4">
@@ -48,14 +45,11 @@
                 </select>
             </div>
             <div class="span8">
-                <label for="m_mobile">Ditt mobilnummer</label>
+                <label for="m_mobile">Mobilnummer</label>
                 <input class="input-block-level" type="tel" id="m_mobile" name="mb_mobile" value="<?=$user->mobile?>" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
             </div>
         </div>
         
-		<label for="mb_name">Din e-postadresse</label>
-		<input class="span5" type="email" id="mb_mail" name="mb_mail" placeholder="E-postadresse" value="<?=$user->email?>" required>
-
 	</fieldset>
 
 	<div class="clearfix"></div>

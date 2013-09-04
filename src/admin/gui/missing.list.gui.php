@@ -62,6 +62,8 @@
                 }
             }
             $delivered = format_since($this_missing->sms_delivery);
+            if (empty($delivered))
+                $delivered = _('Ukjent');
             
     ?>
             <tr id="<?= $this_missing->id ?>">
@@ -111,7 +113,8 @@
                 insert_dialog_confirm(
                     "confirm-close-$id", 
                     "Bekreft", 
-                    _("Vil du avslutte <u>$this_operation->op_name</u>?"), 
+                    _("Vil du avslutte <u>$this_operation->op_name</u>?").'<br />'.
+                    _("Dette vil slette navn og mobilnummer (av personvernhensyn) permanent."), 
                     ADMIN_URI."operation/close/{$id}"
                 );
             }
