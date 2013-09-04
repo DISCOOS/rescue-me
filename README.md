@@ -38,7 +38,7 @@ Build from source
 
 1. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a>** and extract it to `/path/to/rescume/`, **or**
     ```bash
-    git clone https://github.com/DISCOOS/rescue-me.git /path/to/rescume7
+    git clone https://github.com/DISCOOS/rescue-me.git /path/to/rescume/
     ```
 
 2. **Goto /path/to/rescume/src/**
