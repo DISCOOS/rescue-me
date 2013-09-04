@@ -55,7 +55,7 @@
     define('ADMIN_URI', APP_URI.'admin/');
     
     // RescueMe salt value
-    define('SALT', 'SALT');
+    define('SALT', '');
 
     // SMS integration constants
     define('SMS_FROM', 'RescueMe');
@@ -70,7 +70,7 @@
     define('DB_PASSWORD', 'DB_PASSWORD');
     
     // RescueMe custom constants
-    define('TITLE', 'Rescue Me!');
+    define('TITLE', 'RescueMe');
     define('DEFAULT_COUNTRY', 'US');
 
     // RescueMe message constants
