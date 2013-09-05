@@ -136,7 +136,7 @@
             // Package source files as zip file, exclude dev-local (ignored) files
             $zip = new \ZipArchive();
             $zip->open("src.zip", \ZipArchive::CREATE);
-            add_folder_to_zip("$this->src/", $zip, "src/", "config.php|config.minify.php|.*min/cache");            
+            add_folder_to_zip("$this->src/", $zip, "src/", "$this->src/config.php|$this->src/config.minify.php|.*min/cache");            
             $zip->close();
 
             // Add source to package

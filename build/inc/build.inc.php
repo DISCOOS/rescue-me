@@ -382,7 +382,8 @@
      * @return string Answer 
      */
     function in($message, $default=NULL, $newline=NONE, $required=true, $echo=true) {
-        out(((!empty($default) || $default === 0) ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
+        $isset = isset($default) && (!empty($default) || $default == 0 && $default !== '');
+        out(($isset ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
         $answer = fgets(STDIN);
         $answer = ($answer !== PHP_EOL ? str_replace("\n", "", $answer) : "$default");
         if($required && !trim($answer,"'") && trim($answer,"'") !== '0')
@@ -407,7 +408,8 @@
     function get($opts, $arg, $default = NULL, $escape = true)
     {
         // Allow 0 as value, but not empty string
-        $value = (isset($opts[$arg]) && (!empty($opts[$arg]) || $opts[$arg] == 0 && $opts[$arg] !== '') ?  $opts[$arg] : $default);
+        $isset = isset($opts[$arg]) && (!empty($opts[$arg]) || $opts[$arg] == 0 && $opts[$arg] !== '');
+        $value = $isset ?  $opts[$arg] : $default;
         
         return $escape ? str_escape($value) : trim($value,"'\"");
         
