@@ -50,11 +50,11 @@
         {
             begin(STATUS);
             
-            info("  Analysing [$this->root/config.php]...", INFO, NONE);
+            info("  Analysing [$this->root".DIRECTORY_SEPARATOR."config.php]...", INFO, NONE);
             
             // Get current database parameters?
-            if(!file_exists(realpath($this->root)."/config.php")) {
-                return error(sprintf("%s ".NOT_FOUND,"$this->root/config.php"), false);
+            if(!file_exists(realpath($this->root).DIRECTORY_SEPARATOR."config.php")) {
+                return error(sprintf("%s ".NOT_FOUND,"$this->root".DIRECTORY_SEPARATOR."config.php"), false);
             }
             
             info("DONE");

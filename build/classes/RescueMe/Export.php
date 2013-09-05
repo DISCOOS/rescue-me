@@ -87,13 +87,13 @@
             begin(EXPORT);
             
             // Notify
-            info("  Exporting [".$this->db."] into [$this->root/rescueme.sql]....", INFO, NONE);
+            info("  Exporting [".$this->db."] into [$this->root".DIRECTORY_SEPARATOR."rescueme.sql]....", INFO, NONE);
 
             // Connect to database
             DB::instance()->connect($this->host, $this->username, $this->password, $this->db);
             
             // Attempt to export
-            if(DB::export("$this->root/rescueme.sql") === false)
+            if(DB::export("$this->root".DIRECTORY_SEPARATOR."rescueme.sql") === false)
             {
                 return error(SQL_NOT_EXPORTED." (".DB::error().")");
             }

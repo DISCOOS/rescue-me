@@ -87,13 +87,13 @@
             begin(IMPORT);
             
             // Notify
-            info("  Importing [$this->root/rescueme.sql] into [".$this->db."]....", INFO, NONE);
+            info("  Importing [$this->root".DIRECTORY_SEPARATOR."rescueme.sql] into [".$this->db."]....", INFO, NONE);
             
             // Connect to database
             DB::instance()->connect($this->host, $this->username, $this->password, $this->db);
             
             // Attempt to import
-            if(DB::import("$this->root/rescueme.sql") === false)
+            if(DB::import("$this->root".DIRECTORY_SEPARATOR."rescueme.sql") === false)
             {
                 return error(SQL_NOT_IMPORTED." (".DB::error().")");
             }

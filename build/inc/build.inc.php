@@ -36,6 +36,10 @@
     define('SQL_NOT_EXPORTED', 'SQL not exported');
     define('CONFIG_NOT_CREATED', "config.php could not be created");
     define('CONFIG_MINIFY_NOT_CREATED', "config.minify.php could not be created");
+    define('DIR_NOT_CREATED', "Failed to create directory %s");
+    define('CHOWN_NOT_SET', "Failed to set %s as owner of %s");
+    define('CHGRP_NOT_SET', "Failed to set %s as group of %s");
+    define('NOT_SUDO', "Please execute with sudo");
     define('COLOR_NONE', 'none');
     define('COLOR_INFO', 'info');
     define('COLOR_ERROR', 'error');
@@ -43,14 +47,80 @@
     
     /**
      * Perform system sanity checks
+     * 
+     * @param string $action Action-senitive check
      */
-    function system_checks() {
+    function system_checks($action='') {
+        
+        $status = SUCCESS;
+        
+        $action = strtolower($action);
         
         if(ini_get("short_open_tag") !== "1") {
-            fatal("php ini value 'short_open_tag' must be '1'");
+            $status = error("php.ini value 'short_open_tag' must be '1'");
+        }
+        if(ini_get("date.timezone") === FALSE) {
+            $status = error("php.ini value 'date.timezone' is not set");
+        }
+        if(os_command_exists("php") === FALSE) {
+            $status = error("php-cli is not configured correctly");
+            if(is_win()) {
+                info('   Run php installer again and select "Script Executable"', ERROR);
+            } else {
+                info('   Run "sudo apt-get install php5-cli"', ERROR);
+            }
+            
         }
         
+        if($action === "install" || $action == "configure") {
+            if(!extension_loaded("intl")) {
+                info("Extension 'intl' should be enabled for better locale handling.\n", ERROR);
+                if(is_win()) {
+                    info('   Uncomment "extension = php_intl.dll" in php.ini', ERROR);
+                } else {
+                    info('   Run "sudo apt-get install php5-intl"', ERROR);
+                }
+            }        
+        }
+        
+        // Failure?
+        if($status !== SUCCESS) {
+            echo PHP_EOL;
+            exit($status);
+        }
     }
+    
+
+    /**
+     * Check if command exists on host OS.
+     * @param string $command
+     * @return boolean
+     */
+    function os_command_exists($command)
+    {
+        $whereIsCommand = is_win() ? 'where' : 'which';
+
+        $pipes = array();
+        $process = proc_open(
+            "$whereIsCommand $command", array(
+            0 => array("pipe", "r"), //STDIN
+            1 => array("pipe", "w"), //STDOUT
+            2 => array("pipe", "w"), //STDERR
+            ), $pipes
+        );
+        if($process !== false)
+        {
+            $stdout = stream_get_contents($pipes[1]);
+            $stderr = stream_get_contents($pipes[2]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            proc_close($process);
+
+            return $stdout != '';
+        }
+
+        return false;
+    }    
     
 
     /**
@@ -116,9 +186,10 @@
      * 
      * @param string $dir
      * @param ZipArchive $zipArchive
-     * @param mixed $remove Remove parent subpath if found.
+     * @param string $remove Remove parent subpath if found.
+     * @param string $exclude Exclude paths matching this pattern
      */
-    function add_folder_to_zip($dir, $zipArchive, $remove=NULL)
+    function add_folder_to_zip($dir, $zipArchive, $remove=NULL, $exclude=NULL)
     {
         if(is_dir($dir))
         {
@@ -129,32 +200,47 @@
                 {
                     // Get filename
                     $filename = $dir . $file;
+                    
+                    // Include?
+                    if($exclude === null || preg_match("#$exclude#", $filename) !== 1) {
                         
-                    // If it's a folder, run the function again!
-                    if(!is_file($filename))
-                    {
-                        // Skip parent and root directories
-                        if(($file !== ".") && ($file !== ".."))
+                        $match = preg_match("#$exclude#", $filename);
+                        
+                        // If it's a folder, run the function again!
+                        if(!is_file($filename))
                         {
-                            add_folder_to_zip($filename . "/", $zipArchive, $remove);
+                            // Skip parent and root directories
+                            if(($file !== ".") && ($file !== ".."))
+                            {
+                                add_folder_to_zip($filename . DIRECTORY_SEPARATOR, $zipArchive, $remove, $exclude);
+                            }
                         }
-                    }
-                    else
-                    {
-                        // Get local name
-                        $local = ($remove ? str_freplace($remove, '', $filename) : $filename);
-                        
-                        // Add file    
-                        $zipArchive->addFile($dir . $file, $local);
-                        
-                        // TODO: Add info($local) on verbose output;
-                        
-                        
-                    }// else
+                        else
+                        {
+                            // Get local name
+                            $local = ($remove ? str_freplace($remove, '', $filename) : $filename);
+
+                            // Add file    
+                            $zipArchive->addFile($dir . $file, $local);
+
+                            // TODO: Add info($local) on verbose output;
+                        }// else
+                    }// if
                 }// while
             }// if
         }// if
     }// add_folder_to_zip
+    
+    
+    /**
+     * Check if string ends with given substring.
+     * @param string $search
+     * @param string $subject
+     * @return boolean
+     */
+    function str_ends($search, $subject) {
+        return substr_compare($subject, $search, -strlen($search), strlen($search)) === 0;
+    }
     
     
     /**
@@ -196,7 +282,7 @@
      */
     function get_define($subject, $name, $default='') {
         $values = array();
-        return trim(preg_match("#define\('$name',(.*)\)#", $subject, $values) === 1 ? $values[1] : $default);
+        return trim(trim(preg_match("#define\('$name',(.*)\)#", $subject, $values) === 1 ? $values[1] : $default),"'\"");
     }// replace_define
     
     
@@ -228,7 +314,7 @@
      * @return string
      */
     function replace_define($subject, $name, $value) {
-        return preg_replace("#define\('$name',.*\)#", "define('$name',$value)", $subject);
+        return trim(trim(preg_replace("#define\('$name',.*\)#", "define('$name',$value)", $subject)),"'\"");
     }// replace_define
     
     
@@ -271,8 +357,8 @@
             {
                 if($object != "." && $object != "..")
                 {
-                    if(filetype($dir . "/" . $object) == "dir")
-                        rrmdir($dir . "/" . $object);
+                    if(filetype($dir . DIRECTORY_SEPARATOR . $object) == "dir")
+                        rrmdir($dir . DIRECTORY_SEPARATOR . $object);
                     else
                         unlink($dir . '/' . $object);
                 }
@@ -296,7 +382,7 @@
      * @return string Answer 
      */
     function in($message, $default=NULL, $newline=NONE, $required=true, $echo=true) {
-        out((($default ||  $default == 0) ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
+        out(((!empty($default) || $default === 0) ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
         $answer = fgets(STDIN);
         $answer = ($answer !== PHP_EOL ? str_replace("\n", "", $answer) : "$default");
         if($required && !trim($answer,"'") && trim($answer,"'") !== '0')
@@ -320,12 +406,10 @@
      */
     function get($opts, $arg, $default = NULL, $escape = true)
     {
-        // Allow 0 as isset values
-        $value = (isset($opts[$arg]) && (!empty($opts[$arg]) || $opts[$arg] === 0) ?  $opts[$arg] : $default);
+        // Allow 0 as value, but not empty string
+        $value = (isset($opts[$arg]) && (!empty($opts[$arg]) || $opts[$arg] == 0 && $opts[$arg] !== '') ?  $opts[$arg] : $default);
         
-        return $escape ? str_escape($value) : trim($value,"'");
-        
-        return $value;
+        return $escape ? str_escape($value) : trim($value,"'\"");
         
     }// get
     
@@ -383,11 +467,19 @@
      * Get configuration parameters
      * 
      * @param string $root
+     * 
      * @return array
      */
     function get_config_params($root) {
+        if(file_exists(realpath($root).DIRECTORY_SEPARATOR.'config.php')) {
+            // Get from current
+            $file = $root.DIRECTORY_SEPARATOR.'config.php';
+        } else {
+            // Get from template
+            $file = (in_phar() ? "" : $root.DIRECTORY_SEPARATOR).'config.tpl.php';
+        }        
         // Get current configuration
-        $config = file_get_contents(realpath($root)."/config.php");
+        $config = file_get_contents($file);
         $config = get_define_array($config, array
         (
             'SALT', 'TITLE', 'SMS_FROM', 'DEFAULT_COUNTRY', 
@@ -405,8 +497,15 @@
      * @return array
      */
     function get_config_minify_params($root) {
+        if(file_exists(realpath($root).DIRECTORY_SEPARATOR.'config.minify.php')) {
+            // Get from current
+            $file = $root.DIRECTORY_SEPARATOR.'config.minify.php';
+        } else {
+            // Get from template
+            $file = (in_phar() ? "" : $root.DIRECTORY_SEPARATOR).'config.minify.tpl.php';
+        }        
         // Get current configuration
-        $config = file_get_contents(realpath($root)."/config.minify.php");
+        $config = file_get_contents($file);
         $config = get_define_array($config, array
         (
             'MINIFY_MAXAGE'
@@ -448,7 +547,7 @@
     
     
     /**
-     * Get safe directory path (trailing slash)
+     * Get safe directory path (remove trailing slashes)
      * 
      * @param array $opts
      * @param string $key
@@ -463,8 +562,8 @@
         // Use current working directory?
         if($dir === ".") $dir = getcwd();
 
-        // Ensure trailing slash
-        return rtrim($dir,"/")."/";
+        // Remove trailing slashes
+        return rtrim($dir,DIRECTORY_SEPARATOR);
         
     }
     
@@ -652,5 +751,9 @@
     function is_win() {
         $uname = strtolower(php_uname());
         return (strpos($uname, "win") !== false);
+    }
+    
+    function is_sudo() { 
+        return !is_win() && posix_getuid() === 0;         
     }
     

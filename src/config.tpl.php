@@ -61,13 +61,13 @@
     define('SMS_FROM', 'RescueMe');
 
     // Google API key
-    define('GOOGLE_API_KEY', 'GOOGLE_API_KEY');
+    define('GOOGLE_API_KEY', '');
     
     // RescueMe database constants
     define('DB_HOST', 'localhost');
     define('DB_NAME', 'rescueme');
-    define('DB_USERNAME', 'DB_USERNAME');
-    define('DB_PASSWORD', 'DB_PASSWORD');
+    define('DB_USERNAME', 'root');
+    define('DB_PASSWORD', '');
     
     // RescueMe custom constants
     define('TITLE', 'RescueMe');

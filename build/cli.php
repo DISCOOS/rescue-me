@@ -43,14 +43,14 @@
         require 'inc/build.inc.php';
         require (in_phar() ? '' : dirname(__FILE__).'/../src/').'inc/common.inc.php';
         
-        // Perform sanity checks on system
-        system_checks();        
-        
         // Get options
         $opts = parse_opts($argv, array('h'));
 
         // Get action
         $action = $opts[ACTION];
+        
+        // Perform sanity checks on php host system
+        system_checks($action);        
         
         // Get error message?
         $msg = (empty($action) ? "Show help: -h | help ACTION" : null);        
@@ -61,7 +61,8 @@
         // Print help with error message?
         if(isset($msg))  print_help(HELP, "Show help: -h");
         
-        // Forward
+        info("rescueme build script", SUCCESS); echo PHP_EOL;
+        
         execute(array($action => $opts));
         
     }
@@ -93,7 +94,7 @@
                 case STATUS:
                     
                     // Get default paths
-                    $root = get($opts, INSTALL_DIR, "src", false);
+                    $root = get_safe_dir($opts, INSTALL_DIR, "src");
                     
                     // Create Status
                     require('classes/RescueMe/Status.php');
@@ -113,7 +114,7 @@
                     if(in_phar()) print_help();
                     
                     // Get default path install path
-                    $root = get($opts, IMPORT_DIR, "src", false);
+                    $root = get_safe_dir($opts, IMPORT_DIR, "src");
                     
                     // Get configuration parameters
                     $config = file_exists(realpath($root)."/config.php") ? get_config_params($root) : array();
@@ -140,8 +141,8 @@
                     if(in_phar()) print_help();
                     
                     // Get default path paths
-                    $src = get($opts, SRC_DIR, "src", false);
-                    $root = get($opts, EXPORT_DIR, "src", false);
+                    $src = get_safe_dir($opts, SRC_DIR, "src");
+                    $root = get_safe_dir($opts, EXPORT_DIR, "src");
                     
                     // Get configuration parameters
                     $config = file_exists(realpath($root)."/config.php") ? get_config_params($root) : array();
@@ -174,9 +175,9 @@
                     if(!empty($msg)) print_help(PACKAGE, $msg);
                     
                     // Get default paths
-                    $build = get($opts, BUILD_DIR, "build", false);
-                    $src = get($opts, SRC_DIR, "src", false);
-                    $dist = get($opts, DIST_DIR, "dist", false);
+                    $src = get_safe_dir($opts, SRC_DIR, "src");
+                    $dist = get_safe_dir($opts, DIST_DIR, "dist");
+                    $build = get_safe_dir($opts, BUILD_DIR, "build");
                     
                     // Export database?
                     if(stristr(isset_get($opts, EXPORT, 'true'), 'true') !== false)
@@ -230,43 +231,19 @@
 
                     // Escape version
                     $ini['VERSION'] = str_escape(isset_get($ini,'VERSION',"source"));
-
-                    // Get current configuration params?
-                    if(file_exists(realpath($root)."/config.php")) {
-
-                        // Get current configuration
-                        $config = get_config_params($root);
-
-                        // Merge current config values with default ini values
-                        $ini = array_merge($ini, $config);
-
-                    }
-                    if(file_exists(realpath($root)."/config.minify.php")) {
-
-                        // Get current configuration
-                        $config = get_config_minify_params($root);
-
-                        // Merge current config values with default ini values
-                        $ini = array_merge($ini, $config);
-                        
-
-                    }
+                    
+                    // Get default configuration parameters
+                    $config = get_config_params($root);
+                    $ini = array_merge($ini, $config);
+                    
+                    // Get default minify configuration parameters
+                    $config = get_config_minify_params($root);
+                    $ini = array_merge($ini, $config);
                     
                     // Prompt params from user?
-                    if(!isset($opts['silent'])) {
+                    if(!($silent = isset($opts['silent']))) {
                         
-                        unset($ini['SALT']);
-                        
-                        $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
-                        
-                        $ini['SALT'] = '';
-                        
-                        $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
-                        
-                        $ini['SALT'] = 'SALT';
-                        
-                        $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
-                        
+                        $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd())));
                         $ini['TITLE']            = str_escape(in("Title", get($ini, "TITLE", "RescueMe")));
                         $ini['SMS_FROM']         = str_escape(in("Sender", get($ini, "SMS_FROM", "RescueMe")));
                         $ini['DB_HOST']          = str_escape(in("DB Host", get($ini, "DB_HOST", "localhost")));
@@ -278,9 +255,9 @@
                         $ini['TIMEZONE']         = str_escape(in_timezone($ini));
 
                         $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
-
+                        
                         $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
-
+                        
                         echo PHP_EOL;
                     }
                     
@@ -307,7 +284,7 @@
                     require('classes/RescueMe/Install.php');
                     
                     // Create install
-                    $install = new RescueMe\Install($root, $ini);
+                    $install = new RescueMe\Install($root, $ini, $silent);
 
                     // Execute installation
                     if($install->execute() !== true) {

@@ -53,6 +53,10 @@ $min_allowDebugFlag = false;
  */
 //$min_cachePath = 'c:\\WINDOWS\\Temp';
 //$min_cachePath = '/tmp';
+
+// Set cache relative to RescueMe root
+$min_cachePath = dirname(__FILE__).DIRECTORY_SEPARATOR.'cache';
+
 //$min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
 /**
  * To use APC/Memcache/ZendPlatform for cache storage, require the class and
@@ -186,3 +190,15 @@ $min_libPath = dirname(__FILE__) . '/lib';
 
 // try to disable output_compression (may not have an effect)
 ini_set('zlib.output_compression', '0');
+
+// Disable caching?
+if(MINIFY_MAXAGE === 0) {
+    
+    // Disable server caching
+    $min_cachePath = null;
+    
+    // Prevent client caching
+    $min_serveOptions['maxAge'] = 0;
+    $min_serveOptions['lastModifiedTime'] = $_SERVER['REQUEST_TIME'];
+}
+

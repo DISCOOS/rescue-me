@@ -61,9 +61,9 @@
         public function __construct($version, $build, $src, $dist)
         {
             $this->version = $version;
-            $this->$build = $build;
             $this->src = $src;
             $this->dist = $dist;
+            $this->build = $build;
             
         }// __construct
         
@@ -79,7 +79,7 @@
             begin(PACKAGE);
             
             // Get package file without extension
-            $package = "$this->dist/rescueme-" . $this->version;
+            $package = "$this->dist".DIRECTORY_SEPARATOR."rescueme-" . $this->version;
 
             // Notify
             info("  Packaging [$this->src] into [$package]....", INFO, NONE);
@@ -125,20 +125,18 @@
             $config = file_get_contents(realpath("$this->src/config.tpl.php"));
 
             // Add configuration template
-            $oPhar->addFromString("config.php", $config);
+            $oPhar->addFromString("config.tpl.php", $config);
 
             // Prepare default minify config file
             $config_minify = file_get_contents(realpath("$this->src/config.minify.tpl.php"));
 
             // Add minify configuration template
-            $oPhar->addFromString("config.minify.php", $config_minify);
+            $oPhar->addFromString("config.minify.tpl.php", $config_minify);            
             
-            
-            // Package source files as zip file
+            // Package source files as zip file, exclude dev-local (ignored) files
             $zip = new \ZipArchive();
             $zip->open("src.zip", \ZipArchive::CREATE);
-            add_folder_to_zip("$this->src/", $zip, "src/");
-            $zip->deleteName("config.php");
+            add_folder_to_zip("$this->src/", $zip, "src/", "config.php|config.minify.php|.*min/cache");            
             $zip->close();
 
             // Add source to package

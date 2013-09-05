@@ -69,7 +69,7 @@
             $locale = self::getDefaultLocale();
             
             if($locale) {
-                self::getCountryCode($locale);
+                return self::getCountryCode($locale);
             }
             
             return false;

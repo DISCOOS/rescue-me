@@ -38,19 +38,28 @@
         
         
         /**
+         * Use defaults if TRUE, prompt otherwise.
+         * @var boolean
+         */
+        private $silent;
+        
+        
+        /**
          * Constructor
          *
          * @param string $root Installation root
          * @param array $ini Installation ini parameters
+         * @param boolean $silent Use defaults if TRUE, prompt otherwise.
          * 
          * 
          * @since 19. June 2013
          *
          */
-        public function __construct($root, $ini)
+        public function __construct($root, $ini, $silent)
         {
             $this->root = $root;
             $this->ini = $ini;
+            $this->silent = $silent;
             
         }// __construct
         
@@ -65,15 +74,44 @@
         {
             begin(in_phar() ? INSTALL : CONFIGURE);
             
-            // Initialize packaged configuration?
+            $this->initLibs();
+            
+            $this->initConfig();
+            
+            // Bootstrap RescueMe classes
+            require $this->root.DIRECTORY_SEPARATOR."vendor/autoload.php";
+            
+            $this->initDB();
+            
+            $this->initModules();
+            
+            $this->initMinify();
+            
+            // Create VERSION file
+            if(file_put_contents($this->root.DIRECTORY_SEPARATOR."VERSION", $this->ini['VERSION']) === FALSE) {
+                return error(sprintf(VERSION_NOT_SET,$this->ini['VERSION']));
+            }// if
+            
+            done(in_phar() ? INSTALL : CONFIGURE);
+            
+            // Finished
+            return true;
+            
+            
+        }// execute
+        
+        
+        private function initConfig() {
+            
+            // Get template from phar?
             if(in_phar()) {
-                $config = file_get_contents("config.php");
-                $config_minify = file_get_contents("config.minify.php");
+                $config = file_get_contents("config.tpl.php");
+                $config_minify = file_get_contents("config.minify.tpl.php");
             } 
-            // Initialize developement environment?
+            // Get template from source?
             else {
-                $config = file_get_contents($this->root."config.tpl.php");
-                $config_minify = file_get_contents($this->root."config.minify.tpl.php");
+                $config = file_get_contents($this->root.DIRECTORY_SEPARATOR."config.tpl.php");
+                $config_minify = file_get_contents($this->root.DIRECTORY_SEPARATOR."config.minify.tpl.php");
             }            
             
             // Get config template
@@ -92,7 +130,7 @@
             ));
             
             // Create config.php
-            if(file_put_contents($this->root."config.php", $config) === FALSE) {
+            if(file_put_contents($this->root.DIRECTORY_SEPARATOR."config.php", $config) === FALSE) {
                 return error(CONFIG_NOT_CREATED);
             }// if
             
@@ -103,18 +141,31 @@
             ));
             
             // Create config.php
-            if(file_put_contents($this->root."config.minify.php", $config_minify) === FALSE) {
+            if(file_put_contents($this->root.DIRECTORY_SEPARATOR."config.minify.php", $config_minify) === FALSE) {
                 return error(CONFIG_MINIFY_NOT_CREATED);
             }// if
             
             // Create apache logs folder
-            if(!file_exists(realpath($this->root."logs"))) {
-                mkdir($this->root."logs");
+            if(!file_exists(realpath($this->root.DIRECTORY_SEPARATOR."logs"))) {
+                mkdir($this->root.DIRECTORY_SEPARATOR."logs");
+            }            
+        }
+        
+        private function initLibs() {
+            
+            info("  Initializing libraries...", INFO, NONE);
+            
+            $cache = $this->root.DIRECTORY_SEPARATOR."min".DIRECTORY_SEPARATOR."cache";           
+            if(!file_exists($cache)) {
+                
             }
             
-            // Bootstrap RescueMe classes
-            require $this->root."vendor/autoload.php";
-            
+            info("  Initializing libraries....DONE", INFO);            
+        }
+        
+        
+        private function initDB() {
+
             // Install database
             $name = get($this->ini, 'DB_NAME', null, false);
             if(!defined('DB_NAME'))
@@ -133,21 +184,21 @@
             info("DONE");
             
             info("  Importing [rescueme.sql]....", INFO, NONE);
-            if(($executed = DB::import($this->root."rescueme.sql")) === FALSE) {
+            if(($executed = DB::import($this->root.DIRECTORY_SEPARATOR."rescueme.sql")) === FALSE) {
                 return error(sprintf(DB_NOT_IMPORTED,"rescueme.sql")." (".DB::error().")");
             }// if
-            info("DONE");
-            
+            info("DONE");            
+           
             if(User::isEmpty())
             {
                 info("  Initializing database....", INFO);
-                
+
                 $fullname = in("  Admin Full Name");
                 $username = in("  Admin Username (e-mail)");
                 $password = in("  Admin Password");
                 $country = in("  Admin Phone Country Code (ISO2)", Locale::getCurrentCountryCode());
                 $mobile = in("  Admin Phone Number Without Int'l Dial Code");
-                
+
                 if(!defined('SALT'))
                 {
                     define('SALT', get($this->ini, 'SALT', null, false));
@@ -155,17 +206,21 @@
                 if(User::create($fullname, $username, $password, $country, $mobile) === FALSE) {
                     return error(ADMIN_NOT_CREATED." (".DB::error().")");
                 }// if                
-                
-                info("  Initializing database....DONE", INFO);
-                
+
+                info("  Initializing database....DONE", INFO);            
             }
+        }
+        
+        private function initModules() {
             
             $inline = true;
             info("  Initializing modules....", INFO, NONE);
+            
             if(Module::install() !== false) {
                 info("    System modules installed", INFO, BOTH);
                 $inline = false;
             }
+            
             $users = User::getAll();
             if($users != false) {
                 foreach(User::getAll() as $user) {
@@ -177,18 +232,43 @@
             }
             info($inline ? "DONE" : "  Initializing modules....DONE", INFO);
             
-            // Create VERSION file
-            if(file_put_contents($this->root."VERSION", $this->ini['VERSION']) === FALSE) {
-                return error(sprintf(VERSION_NOT_SET,$this->ini['VERSION']));
-            }// if
-            
-            done(in_phar() ? INSTALL : CONFIGURE);
-            
-            // Finished
-            return true;
-            
-            
-        }// execute
+        }
         
+        private function initMinify() {
+            
+            info("  Initializing minify...", INFO, NONE);
+            
+            $cache = $this->root.DIRECTORY_SEPARATOR."min".DIRECTORY_SEPARATOR."cache";           
+            if(!file_exists($cache)) {
+                if(!mkdir($cache)) {
+                    return error(sprintf(DIR_NOT_CREATED,$cache));
+                }
+                $cache = realpath($this->root.DIRECTORY_SEPARATOR."min".DIRECTORY_SEPARATOR."cache");                
+                if(is_linux()) {
+                    if(!is_sudo()) {
+                        rmdir($cache);
+                        return error(NOT_SUDO);
+                    }
+                    $user = "www-data:www-data";
+                    if(!$this->silent) {
+                        $user = in("    Webservice username", $user, PRE);
+                        $inline = false;
+                    }
+                    $user = explode(":", $user);
+                    if(!chown($cache, $user[0])) {
+                        rmdir($cache);
+                        return error(sprintf(CHOWN_NOT_SET,$user[0],$cache));
+                    }                    
+                    if(isset($user[1]) && !chgrp($cache, $user[1])) {
+                        rmdir($cache);
+                        return error(sprintf(CHGRP_NOT_SET,$user[1],$cache));
+                    }                    
+                }
+            }
+            info($inline ? "DONE" : "  Initializing minify....DONE", INFO);            
+            
+        }
+
+
 
     }// Install
