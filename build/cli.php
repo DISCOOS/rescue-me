@@ -254,7 +254,19 @@
                     
                     // Prompt params from user?
                     if(!isset($opts['silent'])) {
+                        
+                        unset($ini['SALT']);
+                        
                         $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
+                        
+                        $ini['SALT'] = '';
+                        
+                        $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
+                        
+                        $ini['SALT'] = 'SALT';
+                        
+                        $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd()), PRE));
+                        
                         $ini['TITLE']            = str_escape(in("Title", get($ini, "TITLE", "RescueMe")));
                         $ini['SMS_FROM']         = str_escape(in("Sender", get($ini, "SMS_FROM", "RescueMe")));
                         $ini['DB_HOST']          = str_escape(in("DB Host", get($ini, "DB_HOST", "localhost")));

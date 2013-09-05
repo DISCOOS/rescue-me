@@ -320,7 +320,8 @@
      */
     function get($opts, $arg, $default = NULL, $escape = true)
     {
-        $value = (isset($opts[$arg]) && (!empty($opts[$arg]) || $opts[$arg] == 0) ?  $opts[$arg] : $default);
+        // Allow 0 as isset values
+        $value = (isset($opts[$arg]) && (!empty($opts[$arg]) || $opts[$arg] === 0) ?  $opts[$arg] : $default);
         
         return $escape ? str_escape($value) : trim($value,"'");
         
