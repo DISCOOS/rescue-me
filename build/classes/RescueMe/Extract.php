@@ -60,7 +60,7 @@
             begin(EXTRACT);
             
             // Notify
-            info("  Extracting [$this->src] to [$this->root]....", INFO, NONE);
+            info("  Extracting [$this->src] to [$this->root]...", INFO, NONE);
             
             // Do not overwrite existing
             if(file_exists($this->root) === TRUE) {

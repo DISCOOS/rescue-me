@@ -240,8 +240,12 @@
                     $config = get_config_minify_params($root);
                     $ini = array_merge($ini, $config);
                     
+                    // Get flags
+                    $silent = isset_get($opts,'silent',false);
+                    $update = isset_get($opts,'update',false);
+                    
                     // Prompt params from user?
-                    if(!($silent = isset($opts['silent']))) {
+                    if($silent === FALSE) {
                         
                         $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd())));
                         $ini['TITLE']            = str_escape(in("Title", get($ini, "TITLE", "RescueMe")));
@@ -284,7 +288,7 @@
                     require('classes/RescueMe/Install.php');
                     
                     // Create install
-                    $install = new RescueMe\Install($root, $ini, $silent);
+                    $install = new RescueMe\Install($root, $ini, $silent, $update);
 
                     // Execute installation
                     if($install->execute() !== true) {
@@ -422,6 +426,7 @@
                 echo 'Usage: rescueme configure [OPTIONS]... ' . PHP_EOL;
                 echo "OPTIONS:" . PHP_EOL;
                 echo "        --silent      No user interaction [use defaults]" . PHP_EOL;
+                echo "        --update      Update libraries if already installed [default: false]" . PHP_EOL;
                 echo "        --install-dir Install directory [default: src]" . PHP_EOL;
                 echo "        -h            Display this help" . PHP_EOL;                
                 break;

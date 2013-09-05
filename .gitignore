@@ -3,10 +3,8 @@ dist
 test
 src/config.php
 src/config.minify.php
-src/vendor/*
+src/vendor
 src/min/cache/
-!src/vendor/composer
-!src/vendor/autoload.php
 
 src/admin/.DS_Store
 

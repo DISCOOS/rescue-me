@@ -43,6 +43,12 @@
          */
         private $silent;
         
+        /**
+         * Update libraries
+         * @var boolean
+         */
+        private $update;
+        
         
         /**
          * Constructor
@@ -50,16 +56,18 @@
          * @param string $root Installation root
          * @param array $ini Installation ini parameters
          * @param boolean $silent Use defaults if TRUE, prompt otherwise.
+         * @param boolean $update Update libraries if installed.
          * 
          * 
          * @since 19. June 2013
          *
          */
-        public function __construct($root, $ini, $silent)
+        public function __construct($root, $ini, $silent, $update)
         {
             $this->root = $root;
             $this->ini = $ini;
             $this->silent = $silent;
+            $this->update = $update;
             
         }// __construct
         
@@ -74,12 +82,19 @@
         {
             begin(in_phar() ? INSTALL : CONFIGURE);
             
-            $this->initLibs();
+            // In dev-mode?
+            if(!in_phar()) {
+                
+                $this->initComposer();
+                
+                $this->initLibs();
+                
+            }
+            
+            // Bootstrap libraries
+            require $this->root.DIRECTORY_SEPARATOR."vendor/autoload.php";            
             
             $this->initConfig();
-            
-            // Bootstrap RescueMe classes
-            require $this->root.DIRECTORY_SEPARATOR."vendor/autoload.php";
             
             $this->initDB();
             
@@ -151,16 +166,73 @@
             }            
         }
         
+        private function initComposer() {
+            
+            $inline = true;
+            info("  Installing composer....", INFO, NONE);
+            
+            $composer = $this->root.DIRECTORY_SEPARATOR."composer.phar";
+            if(!file_exists($composer)) {
+                
+                // TODO: Move installer to github
+                $installer = 'http://rescueme.discoos.org/installer';
+                
+                $cmd = 'php -r "eval(\'?>\'.file_get_contents(\''.$installer.'\'));"';
+                exec($cmd, $output, $retval);
+                if($retval !== 0) {
+                    $output = implode("\n", $output);
+                    return error("Failed to download composer: \n$output\n");
+                }                                       
+            }
+            info($inline ? "SKIPPED" : "  Installing composer...DONE");
+        }
+        
+        
         private function initLibs() {
             
-            info("  Initializing libraries...", INFO, NONE);
+            info("  Initializing libraries...");
             
-            $cache = $this->root.DIRECTORY_SEPARATOR."min".DIRECTORY_SEPARATOR."cache";           
-            if(!file_exists($cache)) {
+            $vendor = $this->root.DIRECTORY_SEPARATOR."vendor";
+            $exists = file_exists($vendor);
+            if($exists) {
                 
+                info("     Updating libraries...", INFO, NONE);
+
+                if($this->update) {
+                
+                    $composer = $this->root.DIRECTORY_SEPARATOR."composer.phar";
+
+                    $cmd = "php $composer update --no-scripts --working-dir='$this->root'";
+                    exec($cmd, $output, $retval);
+                    if($retval !== 0) {
+                        $output = implode("\n", $output);
+                        return error("Failed to update libraries: \n$output\n");
+                    }                                       
+
+                    info("DONE");                
+                    
+                } else {
+                    
+                    info("SKIPPED");                
+                }
+                
+            } elseif(!$exists) {
+                
+                info("     Installing libraries...", INFO, NONE);
+                
+                $composer = $this->root.DIRECTORY_SEPARATOR."composer.phar";
+                
+                $cmd = "php $composer install --no-scripts --working-dir='$this->root'";
+                exec($cmd, $output, $retval);
+                if($retval !== 0) {
+                    $output = implode("\n", $output);
+                    return error("Failed to install libraries: \n$output\n");
+                }                                       
+
+                info("DONE");
             }
             
-            info("  Initializing libraries....DONE", INFO);            
+            info("  Initializing libraries....DONE");
         }
         
         
@@ -230,12 +302,13 @@
                     }
                 }
             }
-            info($inline ? "DONE" : "  Initializing modules....DONE", INFO);
+            info($inline ? "SKIPPED" : "  Initializing modules....DONE", INFO);
             
         }
         
         private function initMinify() {
             
+            $inline = true;
             info("  Initializing minify...", INFO, NONE);
             
             $cache = $this->root.DIRECTORY_SEPARATOR."min".DIRECTORY_SEPARATOR."cache";           
@@ -265,7 +338,7 @@
                     }                    
                 }
             }
-            info($inline ? "DONE" : "  Initializing minify....DONE", INFO);            
+            info($inline ? "SKIPPED" : "  Initializing minify....DONE", INFO);            
             
         }
 
