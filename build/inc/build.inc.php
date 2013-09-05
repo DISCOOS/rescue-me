@@ -306,7 +306,7 @@
         if($echo) {
             out("$message: $answer", POST, COLOR_SUCCESS);
         }
-        return $answer;
+        return trim($answer);
     }// in
     
     
@@ -338,7 +338,9 @@
      * @return mixed
      */
     function in_timezone($opts, $default=null) {
+        
         $current = date_default_timezone_get();
+        
         // Replace default with current?
         if(!isset($default) || empty($default) || trim($default,"'") == ''){
             $default = $current;

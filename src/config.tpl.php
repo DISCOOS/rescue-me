@@ -113,7 +113,7 @@
         trigger_error("Failed to set timesone to [" . TIMEZONE . "]");
     }
     
-    // Control mebugging
+    // Control debugging
     use_soap_error_handler(DEBUG);
     error_reporting(DEBUG ? ~0 : 0);
     ini_set('display_errors', DEBUG ? 1 : 0);
