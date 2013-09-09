@@ -3,6 +3,14 @@ RescueMe
 
 Light-weight and minimalistic system for push-based location requests.
 
+Dependencies
+------------
+
+* PHP >= 5.3.3
+* MySQL >= 5.5.0
+* Apache >= 2.2.0
+* [Minify >= 2.1.7](https://minify.googlecode.com/files/minify-2.1.7.zip)
+
 Download RescueMe
 -----------------
 
@@ -115,8 +123,4 @@ Troubleshooting
 
 1. Windows user and command line is fighting you? [Read this](http://php.net/manual/en/install.windows.commandline.php).
 
-Dependencies
-------------
 
-* PHP >= 5.3.3
-* [Minify 2.1.7](https://minify.googlecode.com/files/minify-2.1.7.zip)
