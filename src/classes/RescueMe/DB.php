@@ -291,7 +291,7 @@
             }
             $query .= implode(",", $updates);
             if($filter) $query .= " WHERE $filter";
-            var_dump($query);
+            
             return DB::query($query);
             
         }// update
