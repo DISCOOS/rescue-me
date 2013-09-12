@@ -16,7 +16,7 @@
     
 ?>
 
-    <h3>Savnede</h3>
+    <h3>Aktive operasjoner</h3>
     
     <? if($active == false) { insert_alert(_("Ingen registrert"));  } else { ?>
     
@@ -68,7 +68,7 @@
             
     ?>
             <tr id="<?= $this_missing->id ?>">
-                <td class="missing name"> <?= $this_missing->name ?> </td>
+                <td class="missing name"> <?= $this_operation->op_name ?> </td>
                 <td class="missing sent hidden-phone"><?= $sent ?></td>
                 <td id="delivered-<?=$id?>" class="missing delivered hidden-phone"><?= $delivered ?></td>
                 <td id="responded-<?=$id?>" class="missing answered hidden-phone"><?= $answered ?></td>
@@ -84,7 +84,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a role="menuitem" href="#confirm-close-<?=$id?>" data-toggle="modal">
+                                <a role="menuitem" href="<?=ADMIN_URI."operation/close/$this_missing->id"?>">
                                     <b class="icon icon-off"></b><?= _('Avslutt operasjon') ?>
                                 </a>
                             </li>
@@ -109,18 +109,6 @@
     </table>
         
     <?  
-        if (is_array($active)) {
-            foreach($active as $id => $this_operation) {
-                // Insert close confirmation
-                insert_dialog_confirm(
-                    "confirm-close-$id", 
-                    "Bekreft", 
-                    _("Vil du avslutte <u>$this_operation->op_name</u>?").'<br />'.
-                    _("Dette vil slette navn og mobilnummer (av personvernhensyn) permanent."), 
-                    ADMIN_URI."operation/close/{$id}"
-                );
-            }
-        }
         if (!empty($resend)) {
             foreach($resend as $id => $this_missing) {
                 // Insert resend confirmation
@@ -134,7 +122,7 @@
         }
     ?>
 
-    <h3>Avsluttet</h3>
+    <h3>Avsluttede operasjoner</h3>
     
     <? if($closed == false) { insert_alert(_("Ingen registrert"));  } else { ?>
     

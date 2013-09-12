@@ -86,24 +86,31 @@ class Operation {
      * @param integer $id Operation id
      * @return boolean
      */
-    public static function closeOperation($id) {
+    public static function closeOperation($id, $op_name = false) {
         
         // Close operation
         if(DB::update(self::TABLE,array('op_closed' => 'NOW()'), "`op_id`=" . (int) $id) === FALSE) {
             return false;
         }
-            
-        // Anonymize all missing
-        $operation = Operation::getOperation($id);
-        $missings = $operation->getAllMissing();
-        if($missings !== FALSE) {
-            foreach($missings as $id => $missing) {
-                $missing->anonymize();
-            }
-        }
+        
+        // Anonymize operation
+        if (!$op_name)
+            $op_name = date('Y-m-d');
+        Operation::set($id, 'op_name', $op_name);
         
         return true;
         
+    }
+    
+    /**
+     * Update a field in the DB
+     * @param int $id Operation ID
+     * @param string $field DB-field to update
+     * @param string $value New valye
+     * @return boolean
+     */
+    public static function set($id, $field, $value) {
+        return DB::update(self::TABLE,array($field => $value), "`op_id`=" . (int) $id);
     }
     
 
@@ -126,7 +133,7 @@ class Operation {
      * @param string $op_name Operation name
      * @param int $user_id User ID of the "owner" (Tip: often $_SESSION['user_id'])
      * @param string $alert_mobile_country Country code (ISO)
-     * * @param string $alert_mobile Mobilephone to alert of recieced positions, etc
+     * @param string $alert_mobile Mobilephone to alert of recieced positions, etc
      * @param string $op_ref Reference of the operation, like SAR-number or something
      * @param string $op_comments Any comments to the operation
      * @return boolean

@@ -353,13 +353,32 @@
         case 'operation/close':
             
             $_ROUTER['name'] = _('Avslutt operasjon');
-            $_ROUTER['view'] = 'missing/list';
+            $_ROUTER['view'] = 'operation/close';
             
             if(!isset($_GET['id'])) {
-                
                 $_ROUTER['message'] = "Operasjon [{$_GET['id']}] finnes ikke.";
                 
-            } else {
+            } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $operation = new RescueMe\Operation;
+                RescueMe\Operation::set($_GET['id'], 'op_ref', $_POST['op_ref']);
+                RescueMe\Operation::set($_GET['id'], 'op_comments', $_POST['op_comments']);
+                $status = RescueMe\Operation::closeOperation($_GET['id'], $_POST['op_name']);
+                
+                $missings = Operation::getOperation($_GET['id'])->getAllMissing();
+                if($missings !== FALSE) {
+                    foreach($missings as $id => $missing) {
+                        $missing->anonymize($_POST['m_sex']. ' ('.$_POST['m_age'].')');
+                    }
+                }
+                
+                if ($status) {
+                    header("Location: ".ADMIN_URI.'missing/list');
+                    exit();
+                }
+                
+                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "operation/close/{$_GET['id']} ikke gjennomført, prøv igjen.";
+            }
+            /*else {
 
                 if(RescueMe\Operation::closeOperation($_GET['id'])) {
                     header("Location: ".ADMIN_URI.'missing/list');
@@ -368,7 +387,7 @@
                 
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "operation/close/$id ikke gjennomført, prøv igjen.";
                 
-            }
+            }*/
             
             break;
             

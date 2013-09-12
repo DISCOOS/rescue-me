@@ -303,7 +303,7 @@ class Missing
      */
     public function anonymize($name=MISSING_PERSON) {        
         
-        $values = prepare_values(Missing::$update, array($name, '', ''));
+        $values = prepare_values(Missing::$update, array("'$name'", '', ''));
                 
         $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
         if(!$res) {
