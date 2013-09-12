@@ -287,11 +287,11 @@
             foreach($values as $field =>$value) {
                 if(is_string($value)  && !($value === "NULL" || is_function($value))) 
                     $value = "'" . DB::escape($value) . "'";
-                $updates[] = "$field=$value";
+                $updates[] = "`$field`=$value";
             }
             $query .= implode(",", $updates);
             if($filter) $query .= " WHERE $filter";
-            
+            var_dump($query);
             return DB::query($query);
             
         }// update
