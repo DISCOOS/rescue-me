@@ -35,7 +35,7 @@
 	</fieldset>
     
 	<fieldset class="new-missing pull-left">
-		<legend>Nummer for varsling av mottatt posisjon</legend>
+		<legend>Rapporter til</legend>
 
         <div class="row-fluid">
             <div class="span4">
