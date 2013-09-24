@@ -2,8 +2,8 @@
     
     RewriteEngine on
 
-    # You may need RewriteBase on some servers
-    #RewriteBase /admin
+    # You may need RewriteBase on some servers. NOTE: / is document root.
+    #RewriteBase /admin/
 
     # Rewrite URLs like "/..." to "index.php?view=..."
     #RewriteRule ^(.*)$ index.php?view=$1 [L,QSA]

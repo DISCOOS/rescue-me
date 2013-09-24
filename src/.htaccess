@@ -10,6 +10,9 @@ Options +FollowSymlinks
     
     RewriteEngine on
 
+    # You may need RewriteBase on some servers. NOTE: / is document root.
+    #RewriteBase /
+
     # Rewrite resource URIs to minify
     RewriteRule ^js/(.*\.js) min/?g=$1 [NE]
     RewriteRule ^css/(.*\.css) min/?g=$1 [NE]
