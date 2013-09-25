@@ -32,7 +32,7 @@
         $wait = Properties::get(Properties::LOCATION_MAX_WAIT, $id);
         $desiredAcc = Properties::get(Properties::LOCATION_DESIRED_ACC, $id);
         
-        $missing->responded();
+        $missing->answered();
         
 ?>
 

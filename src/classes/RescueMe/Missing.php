@@ -42,6 +42,7 @@ class Missing
     public $op_id;
     public $user_id;
     
+    public $answered;
     public $reported;
     
     public $name;
@@ -278,14 +279,14 @@ class Missing
     
     
     /**
-     * Log missing location request response
+     * Log missing location request response answered
      * 
      * @return boolean
      */
-    public function responded() {
+    public function answered() {
         
         $query = "UPDATE `missing` 
-                    SET `missing_responded` = NOW() 
+                    SET `missing_answered` = NOW() 
                   WHERE `missing_id` = '" . $this->id . "';";
         
         $response = DB::query($query);
