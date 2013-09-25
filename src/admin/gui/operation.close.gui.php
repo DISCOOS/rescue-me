@@ -26,37 +26,48 @@
                 'id' => 'op_ref',
                 'type' => 'text', 
                 'value' => $operation->op_ref, 
-                'label' => _('Aksjonsreferanse (f.eks SAR-nr/AMIS-nr)'),
+                'label' => _('Aksjonsreferanse'),
+                'placeholder' => _('SAR- eller AMIS-nr'),
                 'attributes' => ''
             );
                         
             $fields[] = array(
                 'id' => 'op_comments',
-                'type' => 'textarea', 
+                'type' => 'text', 
                 'value' => $operation->op_comments, 
                 'label' => _('Kommentarer'),
+                'placeholder' => _('Kort beskrivelse'),
                 'attributes' => ''
-            );
+            );            
             
-            $fields[] = array(
+            $group = array(
+                'type' => 'group',
+                'class' => 'row-fluid',
+                'value' => array()
+            );
+            $group['value'][] = array(
                 'id' => 'm_sex',
                 'type' => 'select', 
-                'value' => insert_options(array(_('Mann') => _('Mann'), 
-                                                _('Dame') => _('Dame')), null, false), 
+                'value' => insert_options(
+                    array(
+                        _('Mann') => _('Mann'), 
+                        _('Dame') => _('Dame')
+                    ), 
+                    null, 
+                    false), 
                 'label' => _('Kjønn'),
-                'class' => 'span1',
+                'class' => 'span3',
                 'attributes' => 'required'
-            );    
-            
-            $fields[] = array(
+            );
+            $group['value'][] = array(
                 'id' => 'm_age',
                 'type' => 'num', 
                 'value' => '', 
                 'label' => _('Alder'),
-                'class' => 'span2',
+                'class' => 'span3',
                 'attributes' => 'required pattern="[0-9]*"'
-            );
-            
+            );    
+            $fields[] = $group;                                    
             
             if(!empty($operation->op_closed)) {
                 $actions['message'] = _("Merk: Dette vil gjenåpne operasjonen");

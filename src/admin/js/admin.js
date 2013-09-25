@@ -89,11 +89,8 @@ $(document).ready(function() {
             $(this).find('input[type="password"]').each(function(i, e) {
                 R.CapsLock.listen($(e));
             });
-        });
-//        $(this).on('hidden', function() {
-//            R.form.reset();
-//            $(this).removeData('modal');
-//        });
+        });  
+        
         // Prevent backdrop
         $(this).attr("data-backdrop", false);
     });

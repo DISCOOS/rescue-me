@@ -71,7 +71,7 @@
         return insert_message($html,$output);        
     }
 
-    function insert_control($id, $type, $value, $label, $attributes='', $class='', $output)
+    function insert_control($id, $type, $value, $label, $attributes='', $class='', $placeholder=null, $output=true)
     {
         ob_start();
         require(ADMIN_PATH . "gui/control.gui.php");
@@ -93,7 +93,8 @@
                 isset_get($control,"value"),
                 isset_get($control,"label"),
                 isset_get($control,"attributes"),
-                isset_get($control,"class", ''), 
+                isset_get($control,"class", ''),
+                isset_get($control,"placeholder", null),
                 false
             );
         } 

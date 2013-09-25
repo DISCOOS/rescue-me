@@ -41,7 +41,8 @@
             isset_get($control,"value"),
             isset_get($control,"label"),
             isset_get($control,"attributes"),
-            isset_get($control,"class", '')
+            isset_get($control,"class", ''),
+            isset_get($control,"placeholder", null)
         );
     } 
 ?> 
@@ -56,7 +57,9 @@
 
 <div class="<?= $class ?>">
     <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
-    <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>" placeholder="<?= $label ?>" class="input-block-level" <?= $attributes ?> value="<?= $value ?>">        
+    <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>" 
+           placeholder="<?= isset($placeholder) ? $placeholder : $label ?>" 
+           class="input-block-level" <?= $attributes ?> value="<?= $value ?>">
 </div>
 
 <? } ?>
