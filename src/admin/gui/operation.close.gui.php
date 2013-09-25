@@ -70,25 +70,14 @@
             ?>
             <script>
             $(document).ready(function(){
-                dateStr = "<?php echo date('Y-m-d', strtotime($missing->last_pos->timestamp));?>";
-                var geocoder = new google.maps.Geocoder();
-                var latlng = new google.maps.LatLng(<?=$missing->last_pos->lat; ?>, 
-                                                    <?=$missing->last_pos->lon; ?>);
-                geocoder.geocode({'latLng': latlng}, function(results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        //console.log(JSON.stringify(results));
-                      if (results[1]) {
-                          document.getElementsByName("op_name")[0].value = 
-                                  results[1].address_components[0].long_name;
-                      }
-                      else {
-                        document.getElementsByName("op_name")[0].value = dateStr;
-                      }
-                    }
-                    else {
-                        document.getElementsByName("op_name")[0].value = dateStr;
-                    }
-                });            
+                function updateLocation(loc) {
+                    if (loc !== false)
+                        document.getElementsByName("op_name")[0].value = loc;
+                }
+           
+                R.geoname(<?=$missing->last_pos->lat; ?>, 
+                          <?=$missing->last_pos->lon; ?>, updateLocation);
+            
             });
             </script>
             <?php
