@@ -117,7 +117,7 @@
                 return $this->fatal("SMS provider configuration is invalid");
             }
             
-            return $this->_send($from, $code.$to, $message, $account);
+            return trim($this->_send($from, $code.$to, $message, $account));
             
         }// send
         

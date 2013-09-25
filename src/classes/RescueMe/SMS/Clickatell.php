@@ -1,0 +1,162 @@
+<?php
+
+    /**
+     * File containing: Clickatell class
+     * 
+     * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
+     *
+     * @since 25. September 2013
+     * 
+     * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
+     */
+    
+    namespace RescueMe\SMS;
+    
+    /**
+     * Clickatell class
+     * 
+     * @package 
+     */
+    class Clickatell extends AbstractProvider implements Callback
+    {
+        private $status = array(
+            
+            "001" => "Message unknown", 
+            "002" => "Message queued",
+            "003" => "Delivered to gateway",
+            "004" => "Received by recipient",
+            "005" => "Error with message",
+            "006" => "User cancelled message delivery",
+            "007" => "Error delivering message",
+            "008" => "Message received by gateway",
+            "009" => "Routing error",
+            "010" => "Message expired", 
+            "011" => "Message queued for later delivery"
+        );
+        
+        
+        /**
+         * Constructor
+         *
+         * @param string $user Clickatell user credentials
+         * @param string $user Clickatell user credentials
+         * @param string $passwd Clickatell user credentials (optional)
+         *
+         * @since 13. June 2013
+         * 
+         */
+        public function __construct($api_id='', $user='', $passwd='')
+        {
+            $this->config = $this->newConfig($api_id, $user, $passwd);
+        }// __construct
+
+        
+        private function newConfig($api_id='', $user='', $password='')
+        {
+            return new \RescueMe\Configuration(
+                array(
+                    "api_id" => $api_id,
+                    "user" => $user,
+                    "password" => $password,
+                    Callback::PROPERTY => Callback::URL.\RescueMe\User::currentId(),
+                ),
+                array(
+                    "api_id" => _("API ID"),
+                    "user" => _("User"),
+                    "password" => _("Password"),
+                    "callback" => _("Callback"),
+                ),
+                array(
+                    "user",
+                    "api_id",
+                    "password",                    
+                )
+            );
+        }// newConfig
+        
+        
+        protected function _send($from, $to, $message, $account)
+        {
+            $user = $account['user'];
+            $api_id = $account['api_id'];
+            $password = $account['password'];
+            $baseurl = "http://api.clickatell.com";
+
+            // Auth call
+            $url = "$baseurl/http/auth?user=$user&password=$password&api_id=$api_id";
+
+            // Do auth call
+            $result = file($url);
+
+            // Explode response (first line of the data returned)
+            $response = explode(":", $result[0]);
+            if($response[0] === "OK")
+            {
+                $text = utf8_decode(urlencode($message));
+
+                // Send message call. Enable callback (6: final and error statuses) and delivery acknowledgment (if supported). 
+                $sess_id = trim($response[1]); 
+                $url = "$baseurl/http/sendmsg?session_id=$sess_id&from=$from&to=$to&text=$text&callback=6&deliv_ack=1";
+
+                // Do sendmsg call
+                $result = file($url);
+                $response = explode(":", $result[0]);
+
+                if($response[0] === "ID")
+                {
+                    return $response[1];
+                }
+                else
+                {
+                    return $this->errors
+                    (
+                        $response[1]
+                    );
+                }
+            }
+            else
+            {
+                return $this->errors(
+                    "Authentication failure: {$response[0]}"
+                );
+            }
+            
+        }
+        
+        public function getDialCodePattern() {
+            return '\d{1,4}';
+        }
+        
+        
+        public function accept($code) {
+            $pattern = $this->getDialCodePattern();
+            if(preg_match("#$pattern#", $code) === 1) {
+                return $code;
+            }
+            return false;
+        }        
+                
+        
+        private function errors($message, $code = Provider::FATAL) {
+            $this->error['code'] = $code;
+            $this->error['message'] = $message;
+            return false;
+        }
+        
+        public function handle($params) {
+            
+            // Required callback params: apiMsgId, to and status (optional: cliMsgId, timestamp, from and charge)
+            assert_isset_all($params,array('apiMsgId','to','status'));
+            
+            // Get timestamp
+            $when = isset($params['timestamp']) ? \DateTime::createFromFormat('U', $params['timestamp']) : new \DateTime();
+            
+            // Status description
+            $description = $this->status[$params['status']];
+            
+            // Update status
+            $this->delivered($params['apiMsgId'], $params['to'], $params['status'], $when, $description);
+        }
+        
+	
+    }// Clickatell
