@@ -354,10 +354,15 @@
             
             $_ROUTER['name'] = _('Avslutt operasjon');
             $_ROUTER['view'] = 'operation/close';
-            
+                        
             if(!isset($_GET['id'])) {
                 $_ROUTER['message'] = "Operasjon [{$_GET['id']}] finnes ikke.";
-                
+            }
+            
+            if (!$user->allow('write', 'operation', $_GET['id'])) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = _("Du mangler tilgang!");
             } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $operation = new RescueMe\Operation;
                 RescueMe\Operation::set($_GET['id'], 'op_ref', $_POST['op_ref']);
@@ -397,9 +402,13 @@
             $_ROUTER['view'] = 'missing/list';
             
             if(!isset($_GET['id'])) {
-                
                 $_ROUTER['message'] = "Operasjon [{$_GET['id']}] finnes ikke.";
-                
+            }
+            
+            if (!$user->allow('write', 'operation', $_GET['id'])) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = _("Du mangler tilgang!");                
             } else {
 
                 header("Location: ".ADMIN_URI."missing/edit/{$_GET['id']}?reopen");
@@ -444,6 +453,12 @@
             $_ROUTER['name'] = MISSING_PERSON;
             $_ROUTER['view'] = $_GET['view'];
             
+            if (!$user->allow('read', 'missing', $_GET['id'])) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = _("Du mangler tilgang!");
+            }
+            
             break;
             
         case 'missing/list':
@@ -463,6 +478,11 @@
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = "Id not found.";
 
+            } 
+            if (!$user->allow('write', 'missing', $_GET['id'])) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = _("Du mangler tilgang!");
             } else {
 
                 $id = $_GET['id'];
@@ -526,7 +546,12 @@
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = "Id not found.";
 
-            } else {
+            }
+            if (!$user->allow('write', 'missing', $_GET['id'])) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = _("Du mangler tilgang!");
+            }else {
 
                 $id = $_GET['id'];
                 $missing = Missing::getMissing($id);

@@ -510,7 +510,38 @@
             }
             return false;
         }// verify
-
+        
+        /**
+         * Check if a user is allowed to perform something
+         * @param string $access read/write
+         * @param string $object 
+         * @param int $obj_id
+         * @return boolean
+         */
+        public function allow($access, $object, $obj_id) {
+            switch($object) {
+                case 'operation':
+                    $sql = "SELECT `op_id` FROM `operations` 
+                        WHERE `op_id`=".(int)$obj_id." AND `user_id`=".(int)$this->id;
+                    break;
+                case 'missing':
+                    $sql = "SELECT `operations`.`op_id` FROM `operations`
+                        JOIN `missing` ON `missing`.`op_id` = `operations`.`op_id`
+                        WHERE `operations`.`op_id`=".(int)$obj_id." AND `user_id`=".(int)$this->id;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+            
+            $res = DB::query($sql);
+            
+            if(mysqli_num_rows($res) === 1) {
+                return true;
+            }            
+            
+            return false;
+        }
         
         /**
          * Logout current user
