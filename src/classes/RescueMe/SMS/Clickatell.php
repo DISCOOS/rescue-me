@@ -92,7 +92,7 @@
             $response = explode(":", $result[0]);
             if($response[0] === "OK")
             {
-                $text = utf8_decode(urlencode($message));
+                $text = urlencode($message);
 
                 // Send message call. Enable callback (6: final and error statuses) and delivery acknowledgment (if supported). 
                 $sess_id = trim($response[1]); 
