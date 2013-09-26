@@ -32,21 +32,25 @@
         
         const MAP_DEFAULT_BASE = 'map.default.base';
         
+        public static $basemaps = array(
+            'statkart.topo2' => 'Norway Topo2', 
+            'terrain' => 'Terrain', 
+            'satellite' => 'Satellite'
+        );
+        
+        const SMS_SENDER_ID = 'sms.sender.id';
+        
         private static $defaults = array(
             
             Properties::SYSTEM_COUNTRY => "",
             Properties::LOCATION_MAX_AGE => "900000",
             Properties::LOCATION_MAX_WAIT => "180000",
             Properties::LOCATION_DESIRED_ACC => "100",
-            Properties::MAP_DEFAULT_BASE => 'terrain'
+            Properties::MAP_DEFAULT_BASE => 'terrain',
+            Properties::SMS_SENDER_ID => SMS_FROM
         );
         
         
-        public static $basemaps = array(
-            'statkart.topo2' => 'Norway Topo2', 
-            'terrain' => 'Terrain', 
-            'satellite' => 'Satellite'
-        );
 
         
         public static function getDefaults() {
@@ -87,13 +91,13 @@
         public static final function type($name) {
             switch($name) {
                 case self::SYSTEM_COUNTRY:
-                    return "select";
-                case self::LOCATION_MAX_AGE:
-                case self::LOCATION_DESIRED_ACC:
-                case self::LOCATION_MAX_WAIT:
-                    return "text";
                 case self::MAP_DEFAULT_BASE:
                     return "select";
+                case self::SMS_SENDER_ID:
+                case self::LOCATION_MAX_AGE:
+                case self::LOCATION_MAX_WAIT:
+                case self::LOCATION_DESIRED_ACC:
+                    return "text";
             }
             return false;
         }

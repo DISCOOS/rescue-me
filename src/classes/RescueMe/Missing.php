@@ -358,7 +358,13 @@ class Missing
             $message
         );
         
-        $res = $sms->send(SMS_FROM, $country, $to, $message);
+        $from = Properties::get(Properties::SMS_SENDER_ID, User::currentId());
+        
+        echo $from;
+        
+        exit;
+        
+        $res = $sms->send($from, $country, $to, $message);
         if(!$res) {
             trigger_error($sms->error(), E_USER_WARNING);
         }

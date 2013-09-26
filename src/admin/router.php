@@ -152,8 +152,25 @@
                         
                         break;
                         
+                    case Properties::SMS_SENDER_ID:
+                        
+                         // Initialize?
+                        if(empty($value)) {
+                            $value = SMS_FROM;
+                        }                        
+                       
+                        // TODO: Validate values
+                        break;
+                        
+                        
                     case Properties::MAP_DEFAULT_BASE:
                         
+                        // Initialize?
+                        if(empty($value)) {
+                            $value = "terrain";
+                        }
+                        
+                        // TODO: Validate values
                         break;
                         
                     default:
