@@ -89,21 +89,6 @@
     }// get_rescueme_install
     
     
-    /**
-     * Get js wrapped inside self-invoking function.
-     * 
-     * @param string $content Script content
-     * 
-     * @return string
-     */
-    function get_rescueme_js($content)
-    {
-        $install = get_rescueme_install();
-        
-        return "(function(window,document,install,undefined){".$content."}(window,document,$install));";
-    }// get_rescueme_js
-
-    
     function is_ajax_request() {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
     }        

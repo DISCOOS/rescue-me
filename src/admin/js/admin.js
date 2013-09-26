@@ -22,7 +22,7 @@ $(document).ready(function() {
     });
 
     $('li.position').click(function() {
-        panMapTo($(this).attr('data-pan-to'));
+        R.map.panTo($(this).attr('data-pan-to'));
     });
 
     $('td.missing:not(.editor)').click(function() {

@@ -1,0 +1,12 @@
+/* 
+    Document   : map.css
+    Created on : Sep 26, 2013, 10:26:31 PM
+    Author     : Kenneth Gulbrandsøy <kenneth@onevoice.no>
+    Description:
+        Override default Google Maps styling
+*/
+
+.gm-style-mtc {
+    width: 100px !important;
+}
+

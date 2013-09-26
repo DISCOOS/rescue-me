@@ -30,13 +30,24 @@
         
         const LOCATION_DESIRED_ACC = "location.desired.accuracy";
         
+        const MAP_DEFAULT_BASE = 'map.default.base';
+        
         private static $defaults = array(
             
             Properties::SYSTEM_COUNTRY => "",
             Properties::LOCATION_MAX_AGE => "900000",
             Properties::LOCATION_MAX_WAIT => "180000",
-            Properties::LOCATION_DESIRED_ACC => "100"
+            Properties::LOCATION_DESIRED_ACC => "100",
+            Properties::MAP_DEFAULT_BASE => 'terrain'
         );
+        
+        
+        public static $basemaps = array(
+            'statkart.topo2' => 'Norway Topo2', 
+            'terrain' => 'Terrain', 
+            'satellite' => 'Satellite'
+        );
+
         
         public static function getDefaults() {
             self::$defaults[Properties::SYSTEM_COUNTRY] = Locale::getDefaultCountryCode();
@@ -81,6 +92,8 @@
                 case self::LOCATION_DESIRED_ACC:
                 case self::LOCATION_MAX_WAIT:
                     return "text";
+                case self::MAP_DEFAULT_BASE:
+                    return "select";
             }
             return false;
         }
@@ -96,6 +109,8 @@
             switch($name) {
                 case self::SYSTEM_COUNTRY:
                     return "countries/get";
+                case self::MAP_DEFAULT_BASE:
+                    return "maps/get";
             }
             return false;
         }
@@ -114,6 +129,8 @@
             switch($name) {
                 case self::SYSTEM_COUNTRY:
                     return Locale::getCountryName($value);
+                case self::MAP_DEFAULT_BASE:
+                    return isset(self::$basemaps[$value]) ? self::$basemaps[$value] : $value;
             }
             return $value;
         }

@@ -32,7 +32,7 @@
 
 @media (max-width: 767px) {
 
-    #googleMap {
+    #map {
         clear: left;
         float: left;
         width: 255px;
@@ -61,7 +61,7 @@
 
 @media (max-width: 480px) { 
 
-    #googleMap {
+    #map {
         clear: left;
         float: left;
         height: auto;

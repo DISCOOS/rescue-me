@@ -97,6 +97,26 @@
 
             exit;            
             
+        case Properties::source(Properties::MAP_DEFAULT_BASE):
+        
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                
+                $options = array();
+                foreach(Properties::$basemaps as $code => $text) {
+                    $options[] = array('value' => $code, 'text' => $text);
+                }
+                
+                echo json_encode($options);
+                
+            } 
+            else {
+                header('HTTP 400 Bad Request', true, 400);
+                echo "Illegal operation";
+            }
+
+            exit;     
+            
         case 'setup/put':
             
             // Process form?
@@ -131,6 +151,11 @@
                         }                        
                         
                         break;
+                        
+                    case Properties::MAP_DEFAULT_BASE:
+                        
+                        break;
+                        
                     default:
                         
                         header('HTTP 400 Bad Request', true, 400);

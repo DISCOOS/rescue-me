@@ -164,7 +164,7 @@ class Missing
 
         $this->positions = array();
         while($row = $res->fetch_assoc()){
-            $this->positions[(int) $row['timestamp']] = new Position($row['pos_id']);
+            $this->positions[$row['timestamp']] = new Position($row['pos_id']);
         }
         krsort($this->positions);
 

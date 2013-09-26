@@ -53,13 +53,14 @@
 </div>
 
 <?php require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
-<div id="googleMap"></div>
+<div id="map"></div>
 <div id="sidebar">
             <h4>Posisjoner &lt; 1km</h4>
             <ul class="unstyled">
             <?php
 	$i = 0;
-        $displayed = false;
+    $displayed = false;
+    
 	foreach ($positions as $key=>$value) {
 		if ($value->acc < 1000) { 
                     $displayed = true;

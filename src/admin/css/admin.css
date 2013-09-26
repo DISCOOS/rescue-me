@@ -163,7 +163,7 @@ li.position {
     text-decoration: underline;
 }
 
-#googleMap {
+#map {
     margin: 0px 0px 0px 0px;
     clear: left;
     float: left;
@@ -174,7 +174,7 @@ li.position {
     border: 1px solid lightgray;
 }
 
-#googleMap img {
+#map img {
     max-width: none;
 }
 

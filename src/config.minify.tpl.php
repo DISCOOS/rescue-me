@@ -30,7 +30,8 @@
                 '//css/bootstrap.fix.css', 
                 '//css/bootstrap-editable.css', 
                 '//admin/css/admin.css',
-                '//admin/css/admin.responsive.css'
+                '//admin/css/admin.responsive.css',
+                '//admin/css/map.css',
 
             ),
             'admin.js' => array
@@ -45,11 +46,15 @@
                 '//js/validate.js',
                 '//admin/js/admin.js'
             ),
+            'map.js' => array
+            (
+                '//admin/js/map.js'
+            ),
             'track.js' => array
             (
                 '//js/rescueme.js', 
                 '//track/js/track.js' 
-           ),
+            ),            
             
         );        
     }// get_rescueme_minify_config
@@ -76,11 +81,12 @@
         // Is content type JS?
         if ($type === Minify::TYPE_JS) {
 
-            // Load RescueMe configuration
             require '../config.php';
 
-            // Get concatenated js
-            $content = get_rescueme_js($content);
+            $install = get_rescueme_install();
+            
+            // Get js wrapped inside self-invoking function.
+            $content = "(function(window,document,install,undefined){".$content."}(window,document,$install));";
 
         }
         else if ($type === Minify::TYPE_CSS) {
