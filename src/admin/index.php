@@ -42,25 +42,25 @@ if(defined('USE_SILEX') && USE_SILEX) {
 	}
 
 	// Main actions
-	$app->match('/{action}', function ($action) use ($app, $user) {
+	$app->match('/{module}', function ($module) use ($app, $user) {
 		global $TWIG;
 		if($_SESSION['logon']==true) {
-            if($action == 'logon') {
-                $action = 'start';
-            } elseif($action == 'logout') {
+            if($module == 'logon') {
+                $module = 'start';
+            } elseif($module == 'logout') {
                 $user->logout();
                 return $app->redirect(APP_URI);
             }
         }
         
-		$controller = ADMIN_PATH."controllers/$action.controller.php";
+		$controller = ADMIN_PATH."controllers/$module.controller.php";
 		if(file_exists($controller))
 			require_once($controller);
         
-		$TWIG['VIEW'] = $action;
-	    return $app['twig']->render("$action.twig", $TWIG);
+		$TWIG['VIEW'] = _('Dashboard');
+	    return $app['twig']->render("$module.twig", $TWIG);
         
-	})->value('action', 'start')->assert('action', "logon|start|logout");
+	})->value('module', 'start')->assert('module', "logon|start|logout");
 	
 	// Module actions
 	$app->match('/{module}/{action}/{id}', function ($module, $action, $id) use ($app) {

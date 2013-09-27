@@ -2,11 +2,12 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>{{APP_TITLE}} - {{VIEW|capitalize}}</title>
+        <title>{{VIEW|capitalize}} ({{APP_TITLE}})</title>
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <link href="{{APP_URI}}css/admin.less" rel="stylesheet/less">
+          <link rel="shortcut icon" href="<?=APP_URI?>img/favicon.ico" >
+     <link href="{{APP_URI}}css/admin.css" rel="stylesheet">
         {% if GOOGLE_API_KEY %}
 	        <script src="//maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&sensor=false"></script>
 		{% endif %}
@@ -14,7 +15,6 @@
     </head>
 
     <body>
-        
         <div class="container-narrow">
             
             <div class="masthead">
@@ -24,19 +24,39 @@
                         {% if LOGON %}
                         <a id="drop1" class="dropdown-toggle" data-toggle="dropdown">{% trans "Missing" %}<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                            <li id="missing"><a role="menuitem" href="{{APP_ADMIN_URI}}missing/list"><b class="icon icon-th-list"></b>{% trans "Traces" %}</a></li>
+                            <li id="new-missing">
+                            	<a role="menuitem" href="{{APP_ADMIN_URI}}missing/new">
+                            		<b class="icon icon-plus-sign"></b>{% trans "New trace" %}
+                            	</a>
+                            </li>
                             <li class="divider"></li>
-                            <li id="new-missing"><a role="menuitem" href="{{APP_ADMIN_URI}}missing/new"><b class="icon icon-plus-sign"></b>{% trans "Start new trace" %}</a></li>
+                            <li id="missing">
+                            	<a role="menuitem" href="{{APP_ADMIN_URI}}missing/list">
+                            		<b class="icon icon-th-list"></b>{% trans "Traces" %}
+                            	</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a id="drop2" class="dropdown-toggle" data-toggle="dropdown">{% trans "System" %}<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                            <li id="users"><a role="menuitem" href="{{APP_ADMIN_URI}}user/list"><b class="icon icon-th-list"></b>{% trans "Users" %}</a></li>
+                            <li id="new-user">
+                            	<a role="menuitem" href="{{APP_ADMIN_URI}}user/new">
+                            		<b class="icon icon-plus-sign"></b>{% trans "New user" %}
+                            	</a>
+                            </li>
                             <li class="divider"></li>
-                            <li id="new-user"><a role="menuitem" href="{{APP_ADMIN_URI}}user/new"><b class="icon icon-plus-sign"></b>{% trans "Create user" %}</a></li>
+                            <li id="users">
+                            	<a role="menuitem" href="{{APP_ADMIN_URI}}user/list">
+                            		<b class="icon icon-th-list"></b>{% trans "Users" %}
+                            	</a>
+                            </li>
                             <li class="divider"></li>
-                            <li id="settings"><a href="{{APP_ADMIN_URI}}setup/list"><b class="icon icon-wrench"></b>{% trans "Settings" %}</a></li>
+                            <li id="settings">
+                            	<a href="{{APP_ADMIN_URI}}setup/list">
+                            		<b class="icon icon-wrench"></b>{% trans "Settings" %}
+                            	</a>
+                            </li>
                         </ul>
                         {% endif %}
                     </li>

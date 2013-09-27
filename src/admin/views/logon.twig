@@ -4,11 +4,10 @@
 <form class="form-signin" method="post" action="{{APP_ADMIN_URI}}logon">
 	<h2 class="form-signin-heading">{% trans "Log in" %}</h2>
 	
-	<input type="email" name="username" class="input-block-level{{ message is defined ? ' alert-error' : '' }}" placeholder="{% trans "E-mail address" %}"></input>
-	<input type="password" name="password" id="password" class="input-block-level{{ message is defined ? ' alert-error' : '' }}" placeholder="{% trans "Password " %}" data-content="Cap-lock is on!"></input>
-	<label class="checkbox">
-		<input type="checkbox" value="remember-me"> {% trans "Remember me on this computer" %}
-	</label>
+	<input type="email" name="username" class="input-block-level{{ message is defined ? ' alert-error' : '' }}" placeholder="{% trans "E-mail address" %}" required autofocus></input>
+	<input type="password" name="password" id="password" class="input-block-level{{ message is defined ? ' alert-error' : '' }}" placeholder="{% trans "Password " %}" data-content="Caps-lock is on!" required></input>
 	<button class="btn btn-large btn-primary" type="submit">{% trans "Log in" %}</button>
+	<a class="pull-right" href="{{APP_ADMIN_URI}}password/recover">{% trans "Forgot password?" %}</a>
+
 </form>
 {% endblock %}
