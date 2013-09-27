@@ -751,7 +751,7 @@
 
     
     function is_win() {
-        $uname = strtolower(php_uname());
+        $uname = strtolower(php_uname()) && !is_osx();
         return (strpos($uname, "win") !== false);
     }
     
