@@ -47,7 +47,7 @@
         
         $_GET['view'] = 'start';
     }
-    
+
     // Dispatch view
     switch($_GET['view']) {
         case 'logon':
@@ -77,17 +77,12 @@
             $_ROUTER['view'] = $_GET['view'];
             break;
 
-        case Properties::source(Properties::SYSTEM_COUNTRY):
+        case Properties::OPTIONS_URI:
         
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 
-                $options = array();
-                foreach(Locale::getCountryNames(true) as $code => $country) {
-                    $options[] = array('value' =>  $code, 'text' => $country);
-                }
-                
-                echo json_encode($options);
+                echo json_encode(Properties::options($_GET['name']));
                 
             } 
             else {
@@ -97,27 +92,7 @@
 
             exit;            
             
-        case Properties::source(Properties::MAP_DEFAULT_BASE):
-        
-            // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                
-                $options = array();
-                foreach(Properties::$basemaps as $code => $text) {
-                    $options[] = array('value' => $code, 'text' => $text);
-                }
-                
-                echo json_encode($options);
-                
-            } 
-            else {
-                header('HTTP 400 Bad Request', true, 400);
-                echo "Illegal operation";
-            }
-
-            exit;     
-            
-        case 'setup/put':
+        case Properties::PUT_URI:
             
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -129,58 +104,16 @@
                 $name = $_POST['pk'];
                 $value = $_POST['value'];
                 
-                // Verify setting
-                switch($name) {
-                    case Properties::SYSTEM_COUNTRY:
-                        
-                        if(!Locale::accept($value)) {
-                            header('HTTP 400 Bad Request', true, 400);
-                            echo 'Locale "'.$value.'" not accepted';
-                            exit;
-                        }                        
-                        
-                        break;
-                    case Properties::LOCATION_MAX_AGE:
-                    case Properties::LOCATION_MAX_WAIT:
-                    case Properties::LOCATION_DESIRED_ACC:
-                        
-                        if(!is_numeric($value)) {
-                            header('HTTP 400 Bad Request', true, 400);
-                            echo '"'.$value.'" is not a number';
-                            exit;
-                        }                        
-                        
-                        break;
-                        
-                    case Properties::SMS_SENDER_ID:
-                        
-                         // Initialize?
-                        if(empty($value)) {
-                            $value = SMS_FROM;
-                        }                        
-                       
-                        // TODO: Validate values
-                        break;
-                        
-                        
-                    case Properties::MAP_DEFAULT_BASE:
-                        
-                        // Initialize?
-                        if(empty($value)) {
-                            $value = "terrain";
-                        }
-                        
-                        // TODO: Validate values
-                        break;
-                        
-                    default:
-                        
-                        header('HTTP 400 Bad Request', true, 400);
-                        echo 'Setting "'."$name=$value".'" is invalid';
-                        exit;
-                        
-                        break;
-                }
+                // Ensure property not empty
+                $value = Properties::ensure($name, $value);
+                
+                // Assert property value
+                $allowed = Properties::accept($name, $value);
+                if($allowed !== TRUE ) {
+                    header('HTTP 400 Bad Request', true, 400);
+                    echo $allowed;
+                    exit;
+                }                        
                 
                 if(!Properties::set($name, $value, $id)) {
                     header('HTTP 400 Bad Request', true, 400);

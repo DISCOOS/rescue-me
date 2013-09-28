@@ -11,6 +11,9 @@
      */
     
     namespace RescueMe\SMS;
+
+    use RescueMe\User;
+    use RescueMe\Properties;
     
     /**
      * Clickatell class
@@ -92,16 +95,27 @@
             $response = explode(":", $result[0]);
             if($response[0] === "OK")
             {
-                $text = urlencode($message);
-
-                // Send message call. Enable callback (6: final and error statuses) and delivery acknowledgment (if supported). 
-                $sess_id = trim($response[1]); 
-                $url = "$baseurl/http/sendmsg?session_id=$sess_id&from=$from&to=$to&text=$text&callback=6&deliv_ack=1";
-
+                $sess_id = trim($response[1]);
+                
+                // Analyse message and determine if concatenation and unicode encoding is requried
+                list($text, $concat, $unicode) = $this->prepare($message);
+                
+                // Enable callback for final and error statuses and delivery acknowledgment (if supported)
+                $url = sprintf(
+                    "%s/http/sendmsg?session_id=%s&from=%s&to=%s&concat=%s&text=%s&unicode=%s&callback=6&deliv_ack=1",
+                    $baseurl, 
+                    $sess_id,
+                    $from, 
+                    $to,
+                    $concat,
+                    $text,
+                    $unicode
+                );
+                
                 // Do sendmsg call
                 $result = file($url);
                 $response = explode(":", $result[0]);
-
+                
                 if($response[0] === "ID")
                 {
                     return $response[1];
@@ -117,7 +131,7 @@
             else
             {
                 return $this->errors(
-                    "Authentication failure: {$response[0]}"
+                    "Authentication failure: {$response[1]}"
                 );
             }
             
@@ -137,12 +151,6 @@
         }        
                 
         
-        private function errors($message, $code = Provider::FATAL) {
-            $this->error['code'] = $code;
-            $this->error['message'] = $message;
-            return false;
-        }
-        
         public function handle($params) {
             
             // Required callback params: apiMsgId, to and status (optional: cliMsgId, timestamp, from and charge)
@@ -158,5 +166,46 @@
             $this->delivered($params['apiMsgId'], $params['to'], $params['status'], $when, $description);
         }
         
-	
+        private function errors($message, $code = Provider::FATAL) {
+            $this->error['code'] = $code;
+            $this->error['message'] = $message;
+            return false;
+        }
+        
+        private function prepare($data) {
+            $n = 0;
+            $text = '';
+            $concat = 1;
+            $optimize = Properties::get(Properties::SMS_OPTIMIZE, User::currentId());
+            $unicode = $optimize === Properties::SMS_OPTIMIZE_ENCODING && !$this->isASCII($data);
+            $max = ($unicode ? 70 : 160);
+            for($i = 0; $i < mb_strlen($data, 'UTF-8'); $i++) {
+                $c = mb_substr($data, $i, 1, 'UTF-8');
+                if($unicode){
+                    $o = unpack('N', mb_convert_encoding($c, 'UCS-4BE', 'UTF-8'));
+                    $c = sprintf('%04X', $o[1]);
+                }
+                $text .= $c;
+                $n++;
+                if($n === $max){
+                    $n = 0;
+                    $concat++;
+                }
+            }
+            $text = ($unicode? $text : urlencode($text));
+            return array($text, $concat, $unicode ? "1" : "0");
+        }
+
+        private function isASCII($string = '') {
+            $num = 0;
+            while(isset($string[$num])){
+                if(ord($string[$num]) & 0x80){
+                    return false;
+                }
+                $num++;
+            }
+            return true;
+        }
+
+
     }// Clickatell

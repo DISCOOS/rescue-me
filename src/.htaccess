@@ -10,7 +10,7 @@ Options +FollowSymlinks
     
     RewriteEngine on
 
-    # You may need RewriteBase on some servers. NOTE: / is document root.
+    # You may need RewriteBase on some servers (debian). NOTE: / is document root.
     #RewriteBase /
 
     # Rewrite resource URIs to minify

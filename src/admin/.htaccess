@@ -2,7 +2,7 @@
     
     RewriteEngine on
 
-    # You may need RewriteBase on some servers. NOTE: / is document root.
+    # You may need RewriteBase on some servers (debian). NOTE: / is document root.
     #RewriteBase /admin/
 
     # Rewrite URLs like "/..." to "index.php?view=..."
@@ -14,9 +14,8 @@
     RewriteRule ^(.*)/([0-9]+)/?(.*) index.php?view=$1&id=$2&q=$3 [L,QSA]
 
     # Admin-page (new, lists: no id)
-    RewriteCond %{SCRIPT_FILENAME} !-d  
-    RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^(.*[^/])/?$ index.php?view=$1 [L,QSA]
-    
+    RewriteCond %{SCRIPT_FILENAME} !-d
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteRule ^(.*[^/])/?(.*)$ index.php?view=$1&q=$2 [L,QSA]
 
 </IfModule>

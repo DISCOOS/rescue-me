@@ -3,8 +3,8 @@
     <thead>
         <tr>
             <th width="25%"><?=_("Settings")?></th>
-            <th width="55%"></th>
-            <th width="10%">
+            <th width="25%"></th>
+            <th width="50%">
                 <input type="search" class="input-medium search-query pull-right" placeholder="Search">
             </th>            
         </tr>
