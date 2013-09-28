@@ -31,7 +31,7 @@
                 '//css/bootstrap-editable.css', 
                 '//admin/css/admin.css',
                 '//admin/css/admin.responsive.css',
-                '//admin/css/map.css',
+                '//admin/css/map.css'
 
             ),
             'admin.js' => array

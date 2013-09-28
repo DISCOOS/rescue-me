@@ -38,6 +38,12 @@
         
         const LOCATION_DESIRED_ACC = "location.desired.accuracy";
         
+        const SMS_REQUIRE = 'sms.require';
+        const SMS_REQUIRE_MULTIPLE = 'multiple';
+        const SMS_REQUIRE_UNICODE = 'unicode';
+        const SMS_REQUIRE_SENDER_ID_ALPHA = 'alpha';
+        const SMS_REQUIRE_SENDER_ID_NUMERIC = 'numeric';        
+        
         const SMS_SENDER_ID = 'sms.sender.id';
         
         const SMS_OPTIMIZE = 'sms.optimize';
@@ -82,7 +88,7 @@
                 'type' => 'text',
                 'default' => SMS_FROM,
                 'options' => false,
-                'description' => "Use custom alphanumeric sms sender id (if supported by SMS provider)."
+                'description' => "Use custom alphanumeric sms sender id (if supported)."
             ),
             
             self::SMS_OPTIMIZE => array(
@@ -93,6 +99,18 @@
                     self::SMS_OPTIMIZE_ENCODING => 'Encoding'
                  ),
                 'description' => "Use 'Delivery' to minimize delivery delay, use 'Encoding' otherwise."
+            ),
+            
+            self::SMS_REQUIRE => array(
+                'type' => 'checklist',
+                'default' => self::SMS_REQUIRE_MULTIPLE,
+                'options' => array(
+                    self::SMS_REQUIRE_MULTIPLE => 'Multiple SMS',
+                    self::SMS_REQUIRE_UNICODE => 'Unicode Support',
+                    self::SMS_REQUIRE_SENDER_ID_ALPHA => 'Alpha Sender ID',
+                    self::SMS_REQUIRE_SENDER_ID_NUMERIC => 'Numeric Sender ID'
+                 ),
+                'description' => "Features must be present for delivery to occur (if supported)."
             ),
             
             self::MAP_DEFAULT_BASE => array(
@@ -174,8 +192,15 @@
             }
             
             $res = DB::select(self::TABLE, "`value`", self::filter($name, $user_id));
-
+            
             if (DB::isEmpty($res)) {
+                
+                // Allow empty?
+                switch($name) {
+                    case self::SMS_REQUIRE:
+                        return "";
+                }
+                
                 return $defaults[$name];
             }
             
@@ -237,18 +262,7 @@
          * @return string|boolean
          */
         public static final function type($name) {
-            switch($name) {
-                case self::SMS_OPTIMIZE:
-                case self::SYSTEM_COUNTRY:
-                case self::MAP_DEFAULT_BASE:
-                    return "select";
-                case self::SMS_SENDER_ID:
-                case self::LOCATION_MAX_AGE:
-                case self::LOCATION_MAX_WAIT:
-                case self::LOCATION_DESIRED_ACC:
-                    return "text";
-            }
-            return false;
+            return isset(self::$meta[$name]['type']) ? self::$meta[$name]['type'] : false;
         }
         
         
@@ -265,12 +279,22 @@
             switch($name) {
                 case self::SYSTEM_COUNTRY:
                     return Locale::getCountryName($value);
-                case self::SMS_OPTIMIZE:
-                case self::MAP_DEFAULT_BASE:
+                case self::SMS_REQUIRE:
+                    $selected = array();
+                    if(empty($value)) {
+                        return _("None");
+                    }
+                    foreach(explode(',', $value) as $option) {
+                        $selected[] = self::$meta[$name]['options'][$option];
+                    }
+                    return implode("<br>", $selected);
+                default:
                     return isset(self::$meta[$name]['options'][$value]) ? self::$meta[$name]['options'][$value] : $value;
             }
             return $value;
         }
+        
+        
         
         
         /**
@@ -280,10 +304,10 @@
          * @return string|boolean
          */
         public static final function source($name) {
-            switch($name) {
-                case self::SMS_OPTIMIZE:
-                case self::SYSTEM_COUNTRY:
-                case self::MAP_DEFAULT_BASE:
+            
+            switch(self::$meta[$name]['type']) {
+                case 'select':
+                case 'checklist':
                     return "property/options?name=$name";
             }
             return false;
@@ -304,16 +328,16 @@
                         $options[] = array('value' =>  $code, 'text' => $country);
                     }
                     break;
-                case self::SMS_OPTIMIZE:
-                case self::MAP_DEFAULT_BASE:
-                    foreach(self::$meta[$name]['options'] as $code => $text) {
-                        $options[] = array('value' => $code, 'text' => $text);
-                    }
-                    break;
                 default:
+                    if(isset(self::$meta[$name]['options'])) {
+                        foreach(self::$meta[$name]['options'] as $code => $text) {
+                            $options[] = array('value' => $code, 'text' => $text);
+                        }
+                    }        
+                    
                     break;
             }
-            return $options;
+            return empty($options) ? false : $options;
         }
         
         
@@ -384,9 +408,22 @@
          * @return mixed
          */
         public static final function ensure($name, $value) {
-           if(empty($value)) {
-               $defaults = self::getDefaults();
-               $value = $defaults[$name];
+            switch($name) {
+                case self::SMS_REQUIRE:
+                    
+                    if(is_array($value)) {
+                        $value = implode(",", $value);
+                    }
+
+                    break;
+                    
+                default:
+                    
+                    if(empty($value)) {
+                        $defaults = self::getDefaults();
+                        $value = $defaults[$name];
+                     }
+                    
             }
             return $value;
         }        
@@ -421,12 +458,27 @@
 
                     break;
                     
+                case self::SMS_REQUIRE:
+                    
+                    if(empty($value)) {
+                        return true;
+                    }
+                    
                 case self::SMS_OPTIMIZE:
                 case self::MAP_DEFAULT_BASE:
                     
+                    $array = is_array($value) ? $value : explode(",", $value);
+                    
+                    foreach($array as $value)
+                    {
+                        if(!in_array($value, array_keys(self::$meta[$name]['options']))) {
+                            return '"'.$value.'" is not allowed';
+                        }                        
+                    }                    
+                    
                     if(!in_array($value, array_keys(self::$meta[$name]['options']))) {
                         return '"'.$value.'" is not allowed';
-                    }                        
+                    }
                     
                     break;
                 

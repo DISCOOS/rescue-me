@@ -100,16 +100,27 @@
                 // Analyse message and determine if concatenation and unicode encoding is requried
                 list($text, $concat, $unicode) = $this->prepare($message);
                 
+                echo "unicode: $unicode <br>";
+                
+                // Require alpha and numeric sender id support
+                $require = 1;
+                $values = explode(',', Properties::get(Properties::SMS_REQUIRE, User::currentId()));
+                if(in_array(Properties::SMS_REQUIRE_UNICODE, $values)) $require += ($unicode ? 8 : 0);
+                if(in_array(Properties::SMS_REQUIRE_SENDER_ID_ALPHA, $values)) $require += 16;
+                if(in_array(Properties::SMS_REQUIRE_SENDER_ID_NUMERIC, $values)) $require += 32;
+                if($concat > 1 && in_array(Properties::SMS_REQUIRE_MULTIPLE, $values)) $require += 16384;
+                
                 // Enable callback for final and error statuses and delivery acknowledgment (if supported)
                 $url = sprintf(
-                    "%s/http/sendmsg?session_id=%s&from=%s&to=%s&concat=%s&text=%s&unicode=%s&callback=6&deliv_ack=1",
+                    "%s/http/sendmsg?session_id=%s&from=%s&to=%s&concat=%s&text=%s&unicode=%s&req_feat=%s&callback=6&deliv_ack=1",
                     $baseurl, 
                     $sess_id,
                     $from, 
                     $to,
                     $concat,
                     $text,
-                    $unicode
+                    ($unicode ? "1" : "0"),
+                    $require
                 );
                 
                 // Do sendmsg call
@@ -193,7 +204,7 @@
                 }
             }
             $text = ($unicode? $text : urlencode($text));
-            return array($text, $concat, $unicode ? "1" : "0");
+            return array($text, $concat, $unicode);
         }
 
         private function isASCII($string = '') {

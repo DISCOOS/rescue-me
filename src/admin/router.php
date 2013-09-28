@@ -47,6 +47,7 @@
         
         $_GET['view'] = 'start';
     }
+    
 
     // Dispatch view
     switch($_GET['view']) {
@@ -102,7 +103,7 @@
                 
                 // Get data
                 $name = $_POST['pk'];
-                $value = $_POST['value'];
+                $value = isset($_POST['value']) ? $_POST['value'] : "";
                 
                 // Ensure property not empty
                 $value = Properties::ensure($name, $value);
