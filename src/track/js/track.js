@@ -12,8 +12,8 @@ R.track.locate = function() {
     var count = (query.wait/1000);
     if (navigator.geolocation) {
         navigator.geolocation.getAccurateCurrentPosition(showPosition, showError, showProgress, {
-            maxWait:query.wait,       // Properties::LOCATION_MAX_WAIT
-            desiredAccuracy:query.desiredAcc});    // Properties::LOCATION_DESIRED_ACC
+            maxWait:query.wait,       
+            desiredAccuracy:query.desiredAcc});
     }
     else {
         x.innerHTML = "Lokalisering st&oslash;ttes ikke av din telefon.";
