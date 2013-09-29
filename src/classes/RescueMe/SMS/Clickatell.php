@@ -37,7 +37,7 @@
             "011" => "Message queued for later delivery"
         );
         
-        
+
         /**
          * Constructor
          *
@@ -50,6 +50,13 @@
          */
         public function __construct($api_id='', $user='', $passwd='')
         {
+            parent::__construct(
+                array(
+                    Properties::SMS_SENDER_ID,
+                    Properties::SMS_OPTIMIZE, 
+                    Properties::SMS_REQUIRE
+                )
+            );
             $this->config = $this->newConfig($api_id, $user, $passwd);
         }// __construct
 

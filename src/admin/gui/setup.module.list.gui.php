@@ -5,9 +5,15 @@
     $modules = Module::getAll(User::currentId());
 
     if($modules !== false) {
+
+        if(!isset($include)) $include = ".*";
+
+        $pattern = '#'.$include.'#';
         
         foreach($modules as $id => $module) {
-            $classes = \Inspector::subclassesOf($module->type);
+            
+            if(preg_match($pattern, $module->type)) {
+                $classes = \Inspector::subclassesOf($module->type);
 ?>
         <tr id="<?= $id ?>">
             <td class="module type"> <?=_($module->type)?> </td>
@@ -32,4 +38,15 @@
                 </div>
             </td>
         </tr>
-<? }} ?>     
+<?              
+                $instance = $module->newInstance();
+                if(($instance instanceof RescueMe\Uses)) {
+                    
+                    $include = implode("|", $instance->uses());
+                    require 'setup.property.list.gui.php';
+                    
+                }
+            }
+        }    
+    } 
+?>     

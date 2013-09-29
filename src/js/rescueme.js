@@ -13,6 +13,17 @@ R.toQuery = function(url) {
     return query;
 };
 
+R.toTab = function(tabs, url) {
+    url = url || window.location.href;
+    index = url.indexOf("#");
+    if(index === -1) {
+        tab = ':first';
+    } else {
+        tab = '[href="#'+url.substr(index + 1)+'"]';
+    }
+    $('#'+tabs+' a'+tab).tab('show');
+};
+
 // Allow one "version" per window
 window.R = R;
 

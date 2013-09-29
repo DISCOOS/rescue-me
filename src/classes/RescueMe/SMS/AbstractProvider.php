@@ -14,13 +14,16 @@
     
     use \RescueMe\DB;
     use \RescueMe\Locale;
+    use \RescueMe\Properties;
+    use \RescueMe\AbstractUses;
+    
 
     /**
      * AbstractProvider class
      * 
      * @package 
      */
-    abstract class AbstractProvider implements Provider, Status
+    abstract class AbstractProvider extends AbstractUses implements Provider, Status
     {
         /**
          * Provider configuration
@@ -29,11 +32,26 @@
          */
         protected $config;
         
+        
         /**
          * Description of last error
          * @var array
          */
         protected $error;
+        
+        
+        /**
+         * Constructor
+         *
+         * @param string $uses 
+         *
+         * @since 29. September 2013
+         * 
+         */
+        public function __construct($uses=Properties::SMS_SENDER_ID)
+        {
+            parent::__construct($uses);
+        }        
         
         
         /**
@@ -201,5 +219,5 @@
 
         }// delivered
         
-	
+        
     }// AbstractProvider

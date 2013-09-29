@@ -30,6 +30,7 @@
          */
         public function __construct($company='', $department='', $password='')
         {
+            parent::__construct();
             $this->config = $this->newConfig($company, $department, $password);
             
         }// __construct
