@@ -1,4 +1,4 @@
-Options +FollowSymlinks
+Options +FollowSymlinks -Indexes
 
 <IfModule mod_php5.c>
     
