@@ -16,10 +16,10 @@
     
 ?>
 
-<h3>Operasjoner</h3>
+<h3><?=_("Operasjoner")?></h3>
 
 <ul id="tabs" class="nav nav-tabs">
-  <li><a href="#active" data-toggle="tab"><?=_("Aktive")?></a></li>
+  <li><a href="#active" data-toggle="tab"><?=_("Åpne")?></a></li>
   <li><a href="#closed" data-toggle="tab"><?=_("Lukkede")?></a></li>
 </ul>
 
