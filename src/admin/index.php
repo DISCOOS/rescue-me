@@ -132,9 +132,10 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
                             <li class="divider"></li>
                             <li id="settings"><a href="<?= ADMIN_URI ?>setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
+                            <li class="divider"></li>                            
+                            <li id="logout"><a data-toggle="modal" href="#confirm"><b class="icon icon-eject"></b><?= LOGOUT ?></a></li>
                         </ul>
                     </li>
-                    <li id="logout"><a data-toggle="modal" href="#confirm"><?= LOGOUT ?></a></li>
                     
             <?php  } else { ?>  
                     
