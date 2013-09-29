@@ -407,7 +407,7 @@
                 $operation = $operation->addOperation(
                     $_POST['m_name'], 
                     $user->id, 
-                    "NO", 
+                    $_POST['mb_mobile_country'], 
                     $_POST['mb_mobile']);
                 
                 $missing = Missing::addMissing(

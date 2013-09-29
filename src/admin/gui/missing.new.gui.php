@@ -39,8 +39,8 @@
 
         <div class="row-fluid">
             <div class="span4">
-                <label for="mb_mobile">Land-kode</label>
-                <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="Velg land" required>
+                <label for="mb_mobile_country">Land-kode</label>
+                <select class="input-block-level" id="mb_mobile_country" name="mb_mobile_country" placeholder="Velg land" required>
                     <?= insert_options(Locale::getCountryNames(), $user->mobile_country); ?>
                 </select>
             </div>
