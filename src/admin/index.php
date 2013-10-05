@@ -63,7 +63,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
 	})->value('module', 'start')->assert('module', "logon|start|logout");
 	
 	// Module actions
-	$app->match('/{module}/{action}/{id}', function ($module, $action, $id) use ($app) {
+	$app->match('/{module}/{action}/{id}', function ($module, $action, $id) use ($app, $user) {
 		global $TWIG; 
 		$view = rtrim("$module.$action",".");
 		$controller = ADMIN_PATH."controllers/$view.controller.php";

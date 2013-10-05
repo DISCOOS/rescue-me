@@ -1,32 +1,53 @@
 <?php
-$missing = array();
+use RescueMe\User;
+use RescueMe\Locale; 
+use RescueMe\Missing; 
+
+$missing_modules = array();
 if(!RescueMe\Module::exists("RescueMe\SMS\Provider"))
-	$missing[] = 'RescueMe\SMS\Provider';
+	$missing_modules[] = 'RescueMe\SMS\Provider';
 
 #if(class_exists('\RescueMe\Missing'))
 #	$missing[] = '\RescueMe\Missing';
 
-if(sizeof($missing) > 0) {
-	$TWIG['error'] = array('header' => sizeof($missing) > 1 
+if(sizeof($missing_modules) > 0) {
+	$TWIG['error'] = array('header' => sizeof($missing_modules) > 1 
 										? _('Missing modules!') 
 										: _('Missing module!'),
-						   'body' => sizeof($missing) > 1 
+						   'body' => sizeof($missing_modules) > 1 
 						   				? _('The system is missing following modules!') 
 						   				: _('The system is missing following module!'),
-						   'data' => implode(', ', $missing));
+						   'data' => implode(', ', $missing_modules));
 } else {
-	if(isset($_POST['mb_name'])) {
+	if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $TWIG['data']	= $_POST;
         require_once(APP_PATH_INC.'common.inc.php');
         
-        $missing = RescueMe\Missing::addMissing($_POST['mb_name'], $_POST['mb_mail'], $_POST['mb_mobile'], 
-                                       $_POST['m_name'], $_POST['m_mobile']);
-        if($missing) {
-            header("Location: ".ADMIN_URI.'missing/'.$missing->id);
-            exit();
-        }
-        $TWIG['data']	= $_POST;
-        $TWIG['message']['header'] = _('Oops! Could not initiate trace');
-        $TWIG['message']['body']   = _('When initiating trace, an error ocurred. The system reported: ');
-        $TWIG['message']['data']   = $missing->getError();
+		$operation = new RescueMe\Operation;
+		$operation = $operation->addOperation(
+			$_POST['m_name'], 
+			$user->id, 
+			$_POST['mb_mobile_country'], //"NO", 
+			$_POST['mb_mobile']);
+
+		if(!$operation) {
+	        $TWIG['message']['header'] = _('Could not initiate trace');
+	        $TWIG['message']['body']   = _('System error: could not initiate operation');
+		} else {
+			$missing = Missing::addMissing(
+				$_POST['m_name'], 
+				$_POST['m_mobile_country'], 
+				$_POST['m_mobile'], $operation->id);
+			
+			if($missing) {
+				header("Location: ".ADMIN_URI.'missing/'.$operation->id);
+				exit();
+			}
+	        $TWIG['message']['header'] = _('Could not initiate trace');
+	        $TWIG['message']['body']   =  RescueMe\DB::errno() ? 'DB Error: '. RescueMe\DB::error() : _('Please try again');
+	    }
     }
+	$TWIG['countries'] = Locale::getCountryNames();
+	$TWIG['selected_country'] = isset($user) ? Locale::getCountryCode($user->mobile_country) : Locale::getCurrentCountryCode();
 }
+
