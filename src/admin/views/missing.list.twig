@@ -1,5 +1,35 @@
 {% extends 'design_admin.twig' %}
 
 {% block content %}
-	List missing
+<h3>{% trans "Operations" %}</h3>
+
+<ul id="tabs" class="nav nav-tabs">
+  <li><a href="#active" data-toggle="tab">{% trans "Open" %}</a></li>
+  <li><a href="#closed" data-toggle="tab">{% trans "Closed" %}</a></li>
+</ul>
+
+<div class="tab-content" style="width: auto; overflow: visible">
+    <div id="active" class="tab-pane active">
+	<ul class="unstyled">
+		{% for operation in operations_open %}
+		{% else %}
+			<div class="alert alert-info">{% trans "No open operations at the moment" %}</div>
+		{% endfor %}
+	</ul>
+</div>
+
+<div id="closed" class="tab-pane">
+	<ul class="unstyled">
+		{% for operation in operations_closed %}
+		{% else %}
+			<div class="alert alert-info">{% trans "No closed operations at the moment" %}</div>
+		{% endfor %}
+	</ul>
+</div>
+{% endblock %}
+
+{% block footer_script %}
+<script>
+    R.toTab('tabs');
+</script>
 {% endblock %}

@@ -12,6 +12,7 @@
 	        <script src="//maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&sensor=false"></script>
 		{% endif %}
         <script src="{{APP_URI}}js/admin.js"></script>
+		{% block header_script %}{% endblock %}
     </head>
 
     <body>
@@ -80,4 +81,5 @@
            	{% endif %}
         </div>
     </body>
+	{% block footer_script %}{% endblock %}
 </html>
