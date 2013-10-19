@@ -48,6 +48,9 @@ if(sizeof($missing_modules) > 0) {
 	    }
     }
 	$TWIG['countries'] = Locale::getCountryNames();
+	
+	// POSSIBLE BUG IF USER IS SET
+	
 	$TWIG['selected_country'] = isset($user) ? Locale::getCountryCode($user->mobile_country) : Locale::getCurrentCountryCode();
 }
 
