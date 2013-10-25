@@ -50,7 +50,7 @@
         $action = $opts[ACTION];
         
         // Perform sanity checks on php host system
-        system_checks($action);        
+        system_checks($action);
         
         // Get error message?
         $msg = (empty($action) ? "Show help: -h | help ACTION" : null);        

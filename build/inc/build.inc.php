@@ -81,6 +81,14 @@
                     info('   Run "sudo apt-get install php5-intl"', ERROR);
                 }
             }        
+            if(!extension_loaded("gettext")) {
+                info("Extension 'gettext' should be enabled for better locale support.\n", ERROR);
+                if(is_win()) {
+                    info('   Uncomment "extension = php_gettext.dll" in php.ini', ERROR);
+                } else {
+                    info('   Run "sudo apt-get install php5-gettext"', ERROR);
+                }
+            }        
         }
         
         // Failure?
