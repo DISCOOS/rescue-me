@@ -410,10 +410,15 @@
                     $_POST['mb_mobile_country'], 
                     $_POST['mb_mobile']);
                 
+                if (strpos($_POST['sms_text'], '%LINK%')===false)
+                        $_POST['sms_text'] .= ' %LINK%';
+                
                 $missing = Missing::addMissing(
                     $_POST['m_name'], 
                     $_POST['m_mobile_country'], 
-                    $_POST['m_mobile'], $operation->id);
+                    $_POST['m_mobile'], 
+                    $_POST['sms_text'],
+                    $operation->id);
                 
                 if($missing) {
                     header("Location: ".ADMIN_URI.'missing/'.$operation->id);

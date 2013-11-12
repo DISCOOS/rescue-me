@@ -29,6 +29,11 @@
                 <label for="m_mobile">Savnedes mobilnummer</label>
                 <input class="input-block-level" type="tel" id="m_mobile" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
             </div>
+            <div class="span8">
+                <label for="sms_text">SMS-tekst</label>
+                <textarea id="sms_text" name="sms_text" required><?=SMS_TEXT;?></textarea>
+                <div>(<i>%LINK%</i> blir automatisk erstattet med riktig lenke)</div>
+            </div>
         </div>
         
         

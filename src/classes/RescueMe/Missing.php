@@ -28,7 +28,8 @@ class Missing
         "missing_mobile_country", 
         "missing_mobile", 
         "missing_reported",
-        "op_id"
+        "op_id",
+        "sms_text"
     );
 
     private static $update = array
@@ -113,12 +114,16 @@ class Missing
     }
     
 
-    public static function addMissing($m_name, $m_mobile_country, $m_mobile, $op_id){
+    public static function addMissing($m_name, $m_mobile_country, $m_mobile, $sms_text, $op_id){
 
-        if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($op_id))
+        if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || 
+                empty($op_id) || empty($sms_text))
             return false;
 
-        $values = array((string) $m_name,  (string) $m_mobile_country, (int) $m_mobile, "NOW()", (int) $op_id);            
+        $sms_text = str_replace('%LINK%', SMS_LINK, $sms_text);
+        
+        $values = array((string) $m_name,  (string) $m_mobile_country, (int) 
+            $m_mobile, "NOW()", (int) $op_id, $sms_text);
         $values = prepare_values(self::$fields, $values);
 
         $id = DB::insert(self::TABLE, $values);
@@ -248,7 +253,7 @@ class Missing
 
     public function sendSMS(){
         
-        $res = $this->_sendSMS($this->mobile_country, $this->mobile, SMS_TEXT);
+        $res = $this->_sendSMS($this->mobile_country, $this->mobile, $this->sms_text);
         
         if(!$res) {
             

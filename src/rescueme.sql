@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `missing` (
   `missing_reported` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sms2_sent` enum('false','true') NOT NULL DEFAULT 'false',
   `sms_mb_sent` enum('false','true') NOT NULL DEFAULT 'false',
+  `sms_text` text NOT NULL,
   PRIMARY KEY (`missing_id`),
   KEY `oper_id` (`op_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
