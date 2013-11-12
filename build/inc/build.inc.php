@@ -759,8 +759,8 @@
 
     
     function is_win() {
-        $uname = strtolower(php_uname()) && !is_osx();
-        return (strpos($uname, "win") !== false);
+        $uname = strtolower(php_uname());
+        return (strpos($uname, "win") !== false) && !is_osx();
     }
     
     function is_sudo() { 
