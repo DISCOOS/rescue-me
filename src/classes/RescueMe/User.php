@@ -525,9 +525,9 @@
                         WHERE `op_id`=".(int)$obj_id." AND `user_id`=".(int)$this->id;
                     break;
                 case 'missing':
-                    $sql = "SELECT `operations`.`op_id` FROM `operations`
-                        JOIN `missing` ON `missing`.`op_id` = `operations`.`op_id`
-                        WHERE `operations`.`op_id`=".(int)$obj_id." AND `user_id`=".(int)$this->id;
+                    $sql = "SELECT `operations`.`op_id` FROM `operations` 
+                        JOIN `missing` ON `missing`.`op_id` = `operations`.`op_id` 
+                        AND `missing`.`missing_id`=".(int)$obj_id." AND `user_id`=".(int)$this->id;
                     break;
                 default:
                     return false;

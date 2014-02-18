@@ -1,13 +1,15 @@
 <?
     use RescueMe\User;
     use RescueMe\Locale;
+    use RescueMe\Missing;
     use RescueMe\Operation;
-    $operation = Operation::getOperation($_GET['id']);
-    $missings = $operation === FALSE ? FALSE : $operation->getAllMissing();
-    if($missings !== false)
+
+    $missing = Missing::getMissing($_GET['id']);
+
+    if($missing !== false)
     {
+        Operation::getOperation($missing->op_id);
         $user = User::get($operation->user_id);
-        $missing = current($missings);    
         
         if(isset($_ROUTER['message'])) { 
             insert_error($_ROUTER['message']);

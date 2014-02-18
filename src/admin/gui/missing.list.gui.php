@@ -92,7 +92,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a role="menuitem" href="<?=ADMIN_URI."operation/close/$this_missing->id"?>">
+                                    <a role="menuitem" href="<?=ADMIN_URI."operation/close/$id"?>">
                                         <b class="icon icon-off"></b><?= _('Avslutt operasjon') ?>
                                     </a>
                                 </li>

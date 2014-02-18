@@ -1,18 +1,19 @@
 <?php
+    use RescueMe\Missing;
     use RescueMe\Operation;
-    $operation = Operation::getOperation($_GET['id']);
-    $missings = $operation->getAllMissing();
-    $missing = current($missings);
-    
-    if($missing == false)
+
+    $missing = Missing::getMissing($_GET['id']);
+
+    if($missing === false)
     {
         insert_alert('Ingen registrert');
     }
     else
     {        
+    
         $positions = $missing->getPositions();
         $name = $missing->name;
-        if(Operation::isOperationClosed($missing->id)) {
+        if(Operation::isOperationClosed($missing->op_id)) {
             $name .= " ("._("Closed").")";
         }
 
