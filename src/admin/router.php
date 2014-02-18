@@ -421,7 +421,7 @@
                     $operation->id);
                 
                 if($missing) {
-                    header("Location: ".ADMIN_URI.'missing/'.$operation->id);
+                    header("Location: ".ADMIN_URI.'missing/'.$missing->id);
                     exit();
                 }
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';
