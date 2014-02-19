@@ -16,7 +16,7 @@
     
 ?>
 
-<h3><?=_("Operasjoner")?></h3>
+<h3><?=_("Sporinger")?></h3>
 
 <ul id="tabs" class="nav nav-tabs">
   <li><a href="#active" data-toggle="tab"><?=_("Åpne")?></a></li>
@@ -66,7 +66,7 @@
             $code = $sms->accept($code);
             $ref = $this_missing->sms_provider_ref;
             if(!empty($ref) && $sms->request($ref,$code.$this_missing->mobile)) {
-                $this_missing = Missing::getMissing($id);
+                $this_missing = Missing::getMissing($this_missing->id);
             }
         }
         $answered = format_since($this_missing->answered);
@@ -76,7 +76,7 @@
 
 ?>
                 <tr id="<?= $this_missing->id ?>">
-                    <td class="missing name"> <?= $this_operation->op_name ?> </td>
+                    <td class="missing name"> <?= $this_operation->name ?> </td>
                     <td class="missing sent hidden-phone"><?= $sent ?></td>
                     <td id="delivered-<?=$id?>" class="missing delivered hidden-phone"><?= $delivered ?></td>
                     <td id="responded-<?=$id?>" class="missing answered hidden-phone"><?= $answered ?></td>
@@ -144,10 +144,11 @@
         <tbody class="searchable">
 <?
     foreach($closed as $id => $this_operation) {
-
+        $missings = $this_operation->getAllMissing();
+        $this_missing = current($missings);
 ?>
-            <tr id="<?= $id ?>">
-                <td class="missing name"> <?= $this_operation->op_name ?> </td>
+            <tr id="<?= $this_missing->id ?>">
+                <td class="missing name"> <?= $this_missing->name ?> </td>
                 <td class="missing date"><?= format_dt($this_operation->op_closed) ?></td>
                 <td class="missing editor">
                     <div class="btn-group pull-right">

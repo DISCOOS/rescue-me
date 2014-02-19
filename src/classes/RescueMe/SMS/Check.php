@@ -22,7 +22,7 @@
         /**
          * Request SMS status from provider
          * 
-         * @param string $provider_ref Message id
+         * @param string $provider_ref Provider message reference id
          * @param string $to Recipient phone number
          * 
          * @return boolean TRUE if success, FALSE otherwise.
