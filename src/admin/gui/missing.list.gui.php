@@ -97,13 +97,13 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a role="menuitem" href="#confirm-resend-<?=$id?>" data-toggle="modal">
+                                    <a role="menuitem" href="#confirm-resend-<?=$this_missing->id?>" data-toggle="modal">
                                         <b class="icon icon-envelope"></b><?= _('Send SMS på nytt') ?>
                                     </a>
                                 </li>                                
                                 <li class="divider"></li>
                                 <li>
-                                    <a role="menuitem" onclick="R.ajax('<?=ADMIN_URI."missing/check/$id"?>','#delivered-<?=$id?>');">
+                                    <a role="menuitem" onclick="R.ajax('<?=ADMIN_URI."missing/check/$this_missing->id"?>','#delivered-<?=$this_missing->id?>');">
                                         <b class="icon icon-refresh"></b><?= _('Sjekk leveringsstatus') ?>
                                     </a>
                                </li>   
@@ -115,7 +115,7 @@
             </tbody>
         </table>
 <?  
-    if (!empty($resend)) {
+    if (empty($resend) === false) {
         foreach($resend as $id => $this_missing) {
             // Insert resend confirmation
             insert_dialog_confirm(
