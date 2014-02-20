@@ -76,7 +76,7 @@
 
 ?>
                 <tr id="<?= $this_missing->id ?>">
-                    <td class="missing name"> <?= $this_operation->name ?> </td>
+                    <td class="missing name"> <?= $this_missing->name ?> </td>
                     <td class="missing sent hidden-phone"><?= $sent ?></td>
                     <td id="delivered-<?=$id?>" class="missing delivered hidden-phone"><?= $delivered ?></td>
                     <td id="responded-<?=$id?>" class="missing answered hidden-phone"><?= $answered ?></td>
