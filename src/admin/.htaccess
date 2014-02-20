@@ -1,5 +1,7 @@
 <IfModule mod_rewrite.c>
     
+    #AddDefaultCharset off
+    
     RewriteEngine on
 
     # You may need RewriteBase on some servers (debian). NOTE: / is document root.
