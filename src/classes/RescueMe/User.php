@@ -512,34 +512,42 @@
         }// verify
         
         /**
-         * Check if a user is allowed to perform something
+         * Check if a user is authorized to access given object
+         * 
          * @param string $access read/write
-         * @param string $object 
-         * @param int $obj_id
+         * @param string $object Check permission to given object
+         * @param mixed $condition Conditional access value
          * @return boolean
          */
-        public function allow($access, $object, $obj_id) {
+        public function allow($access, $object, $condition = null) {
+            // Is administrator?
+            
+            
+            
+            // Check conditions
             switch($object) {
                 case 'operation':
-                    $sql = "SELECT `op_id` FROM `operations` 
-                        WHERE `op_id`=".(int)$obj_id." AND `user_id`=".(int)$this->id;
+                    $sql = "SELECT COUNT(*) FROM `operations` 
+                        WHERE `op_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
                     break;
                 case 'missing':
-                    $sql = "SELECT `operations`.`op_id` FROM `operations` 
+                    $sql = "SELECT COUNT(*) FROM `operations` 
                         JOIN `missing` ON `missing`.`op_id` = `operations`.`op_id` 
-                        AND `missing`.`missing_id`=".(int)$obj_id." AND `user_id`=".(int)$this->id;
+                        AND `missing`.`missing_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
                     break;
                 default:
-                    return false;
                     break;
             }
             
-            $res = DB::query($sql);
+            // Is permission possible?
+            if(isset($sql))
+            {
+                $res = DB::query($sql);
+                
+                return DB::isEmpty($res) === false;
+            }
             
-            if(mysqli_num_rows($res) === 1) {
-                return true;
-            }            
-            
+            // Unknown permission
             return false;
         }
         

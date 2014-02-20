@@ -150,7 +150,7 @@
          */
         public static function isEmpty($res) 
         {
-            return !($res && mysqli_num_rows($res));
+            return ($res && mysqli_num_rows($res)) === false;
         }// isEmpty
         
         
@@ -211,7 +211,7 @@
          */
         public static function select($table, $fields="*", $filter="", $order="") 
         {
-            if(is_string($fields) && $fields !== "*") {
+            if(is_string($fields) && in_array(strtoupper($fields), array("*","COUNT(*)")) === FALSE) {
                 $fields = "`" . ltrim(rtrim($fields,"`"),"`") . "`";
             }
             elseif (is_array($fields)) {
@@ -291,6 +291,8 @@
             }
             $query .= implode(",", $updates);
             if($filter) $query .= " WHERE $filter";
+            
+            var_dump($query);
             
             return DB::query($query);
             

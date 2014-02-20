@@ -48,5 +48,5 @@ else
     
     $label = _($module->type).": "._(isset($_GET['type']) ? $_GET['type'] : $module->impl);
     
-    insert_form("module", $label, $fields, ADMIN_URI."setup/module/$id");
+    insert_form("module", $label, $fields, ADMIN_URI."setup/module/$id", $_ROUTER);
 }             

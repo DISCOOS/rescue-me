@@ -59,6 +59,28 @@
         }// newConfig
         
         
+        protected function validateAccount($account)
+        {
+            try {
+                
+                $client = new \SoapClient(UMS::WDSL_URL);
+                
+                // Perform dummy-check. Will fail with SoapException if credentials does not match
+                $client->doGetStatus($account, 0);
+                
+            }
+            catch(\Exception $e) 
+            {
+                if('Reference not found.' !== $e->getMessage())
+                {
+                    return $this->exception($e);                    
+                }
+            }
+            
+            return true;
+        }
+
+        
         protected function _send($from, $to, $message, $account)
         {
             try {
@@ -102,9 +124,9 @@
                 
         public function request($provider_ref, $number)
         {
-            $client = new \SoapClient(UMS::WDSL_URL);
-
             try {
+                
+                $client = new \SoapClient(UMS::WDSL_URL);
                 
                 $result = $client->doGetStatus($this->config->params(), $provider_ref);
                 

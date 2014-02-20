@@ -85,6 +85,31 @@
         }// newConfig
         
         
+        protected function validateAccount($account)
+        {
+            $user = $account['user'];
+            $api_id = $account['api_id'];
+            $password = $account['password'];
+            $baseurl = "http://api.clickatell.com";
+
+            // Auth call
+            $url = "$baseurl/http/auth?user=$user&password=$password&api_id=$api_id";
+
+            // Do auth call
+            $result = file($url);
+            
+            // Explode response (first line of the data returned)
+            $response = explode(":", $result[0]);
+            if($response[0] !== "OK")
+            {
+                return $this->errors(
+                    "Authentication failure: {$response[1]}"
+                );
+            }
+            return true;
+        }
+
+        
         protected function _send($from, $to, $message, $account)
         {
             $user = $account['user'];
@@ -185,8 +210,10 @@
         }
         
         private function errors($message, $code = Provider::FATAL) {
+            
             $this->error['code'] = $code;
             $this->error['message'] = $message;
+
             return false;
         }
         

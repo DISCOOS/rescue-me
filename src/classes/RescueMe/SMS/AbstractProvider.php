@@ -67,11 +67,13 @@
         /**
          * Set last error from exception.
          * @param \Exception $e Exception
+         * @param boolean $value Return value
          */
-        protected function exception(\Exception $e) {
+        protected function exception(\Exception $e, $value = false) {
             $this->error['code'] = $e->getCode();
             $this->error['message'] = $e->getMessage();
             trigger_error($this->error(), E_USER_WARNING);
+            return $value;
         }
         
         
@@ -122,16 +124,16 @@
             // Prepare
             unset($this->error);
             
-            if(!($code = \RescueMe\Locale::getDialCode($country)))
+            if(($code = \RescueMe\Locale::getDialCode($country)) === FALSE)
             {
                 return $this->fatal("Failed to get country dial code [$country]");
             }               
                 
-            if(!($code = $this->accept($code))) {
+            if(($code = $this->accept($code)) === FALSE) {
                 return $this->fatal("SMS provider does not accept country dial code [$code]");
             }
             
-            if(!($account = $this->validate($this->config()))) {
+            if(($account = $this->validateConfig($this->config())) === FALSE) {
                 return $this->fatal("SMS provider configuration is invalid");
             }
             
@@ -142,17 +144,60 @@
         
         /**
          * Validate account
-         * @param \RescueMe\Configuration $config Account
+         * @param \RescueMe\Configuration $config Account [optional, null - use current
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        protected function validate($config) {
+        public function validate($config = null) {
+            
+            $valid = false;
+            
+            if(isset($config) === FALSE){
+                $config = $this->config();
+            }
+            
+            $valid = ($account = $this->validateConfig($config)) !== FALSE;
+            
+            if($valid) {
+                $valid = $this->validateAccount($account);
+            }
+            
+            return $valid;
+            
+        }
+        
+        
+        /**
+         * Validate configuration
+         * 
+         * @param array $config Provider configuration
+         * 
+         * @return boolean Parameters if success, FALSE otherwise.
+         */
+        protected function validateConfig($config) {
+            
+            if(isset($config) === FALSE){
+                $config = $this->config();
+            }
+            
             foreach($config->params() as $property => $default) {
                 if($config->required($property) && empty($default)) {
                     return false;
                 }
             }
+            
             return $config->params();
+            
         }
+        
+        
+        /**
+         * Validate account with provider
+         * 
+         * @param array $config Provider configuration
+         * 
+         * @return boolean TRUE if success, FALSE otherwise.
+         */
+        protected abstract function validateAccount($config);    
 
         
         /**

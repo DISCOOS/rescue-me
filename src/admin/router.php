@@ -142,11 +142,19 @@
                 $config = array_exclude($_POST, array('type','class'));
                 $user_id = isset($_POST['user']) ? $_POST['class'] : 0;
                 
-                if(RescueMe\Module::set($_GET['id'], $_POST['type'], $_POST['class'], $config, $user_id)) {
+                $valid = RescueMe\Module::verify($_POST['type'], $_POST['class'], $config);
+                
+                if($valid !== TRUE) {
+                    $_ROUTER['message'] = $valid;
+                }
+                elseif(RescueMe\Module::set($_GET['id'], $_POST['type'], $_POST['class'], $config, $user_id)) {
                     header("Location: ".ADMIN_URI.'setup');
                     exit();
                 }
-                $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
+                else
+                {
+                    $_ROUTER['message'] = _('En feil oppstod ved registrering, prøv igjen');                    
+                }
             }
             
             break;

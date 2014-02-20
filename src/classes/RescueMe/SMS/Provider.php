@@ -33,6 +33,20 @@
         
         
         /**
+         * Validate configuration
+         * 
+         * Returns TRUE if configuration is valid, FALSE otherwise. 
+         * 
+         * Check Provider::errno() and Provider::error() for more information about if validate does not succeed.
+         * 
+         * @param \RescueMe\Configuration $config Account [optional, null - verify current]
+         * 
+         * @return boolean|string
+         */
+        public function validate($config = null);
+        
+        
+        /**
          * Send SMS message to given number.
          * 
          * @param string $from Sender

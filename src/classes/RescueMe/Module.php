@@ -110,11 +110,13 @@
          * 
          * @return boolean
          */
-        public static function exists($type, $user_id=null) 
+        public static function exists($type, $user_id = null) 
         {
-            $res = DB::select(self::TABLE, "*", Module::filter($type, $user_id));
+            $filter = Module::filter($type, $user_id);
             
-            return !DB::isEmpty($res);
+            $res = DB::select(self::TABLE, "COUNT(*)", $filter);
+            
+            return DB::isEmpty($res) === false;
         }
         
         
@@ -139,6 +141,57 @@
         
         
         /**
+         * Verify module configuration
+         * 
+         * @param integer $id Module id
+         * @param string $type Module type name
+         * @param string $impl Module implementation name
+         * @param array $config Module construction arguments as (name=>value) pairs
+         * @param integer $user_id
+         * 
+         * @return boolean TRUE if success, message otherwise. 
+         */
+        public static function verify($type, $impl, $config)
+        {
+            // Enfore namespace convension
+            $type = ltrim($type,"\\");
+            $impl = ltrim($impl,"\\");
+            
+            // Sanity checks
+            try
+            {
+                assert_types(array('string'=>$type,'string'=>$impl,'array'=>$config));
+            }
+            catch(\Exception $e)
+            {
+                return _($e->message());
+            }
+            
+            $module = prepare_values(Module::$fields, array($type, $impl, json_encode($config)));
+            
+            $module['module_id'] = 0;
+            
+            $module = new self($module);
+            
+            $instance = $module->newInstance();
+            
+            $valid = $instance === FALSE ? _("Failed to create instance of module $impl") : TRUE;
+            
+            if($valid === TRUE) {
+                if($instance instanceof SMS\Provider) {
+                    if($instance->validate() === FALSE) {
+                        $valid = $instance->error();
+                    }
+                }                
+            }
+            
+            return $valid;            
+            
+        }// set
+        
+        
+        
+        /**
          * Set module configuration
          * 
          * @param integer $id Module id
@@ -159,16 +212,14 @@
             assert_types(array('string'=>$type,'string'=>$impl,'array'=>$config));
             
             $values = prepare_values(Module::$fields, array($type, $impl, json_encode($config)));
-                
-            if(self::exists($type)) {
-                
+            
+            if(self::exists($id)) {
                 $res = DB::update(self::TABLE, $values, Module::filter($id, null));
             } 
             else {
-                
                 $res = DB::insert(self::TABLE, $values);
             }
-            
+
             return ($res === TRUE || is_numeric($res) && $res > 0);
             
         }// set
@@ -215,9 +266,11 @@
         /**
          * Create module instance.
          * 
+         * Returns module instance  of FALSE on error.
+         * 
          * @param boolean $empty Create empty instance if true
          * 
-         * @return object Module instance
+         * @return object|false 
          */
         public function newInstance($empty=false) {
             
