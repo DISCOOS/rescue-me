@@ -519,7 +519,7 @@
                 Logs::write(Logs::DB, LogLevel::INFO, "Altered $count database entities.", $executed);
             }            
             
-            return empty($executed) === FALSE;
+            return $executed;
         }
 
         private static function table($query)
