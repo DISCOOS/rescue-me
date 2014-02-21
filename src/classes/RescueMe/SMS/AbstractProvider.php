@@ -14,8 +14,12 @@
     
     use \RescueMe\DB;
     use \RescueMe\Locale;
+    use \Psr\Log\LogLevel;
+    use \RescueMe\Log\Logs;
+    use \RescueMe\Log\Logger;
     use \RescueMe\Properties;
     use \RescueMe\AbstractUses;
+    
     
 
     /**
@@ -71,8 +75,15 @@
          */
         protected function exception(\Exception $e, $value = false) {
             $this->error['code'] = $e->getCode();
-            $this->error['message'] = $e->getMessage();
-            trigger_error($this->error(), E_USER_WARNING);
+            $this->error['message'] = Logger::toString($e);
+            
+            Logs::write(
+                Logs::SYSTEM, 
+                LogLevel::ERROR, 
+                $e->getMessage(), 
+                $this->error
+            );
+            
             return $value;
         }
         
@@ -84,8 +95,33 @@
         protected function fatal($message) {
             $this->error['code'] = Provider::FATAL;
             $this->error['message'] = $message;
-            trigger_error($this->error(), E_USER_WARNING);
+            Logs::write(
+                Logs::SYSTEM, 
+                LogLevel::CRITICAL, 
+                $message, 
+                $this->error
+            );            
+            
+            return false;
         }
+        
+        
+        /**
+         * Set critical error
+         * @param string $message
+         */
+        protected function critical($message, $context = array()) {
+            Logs::write(
+                Logs::SYSTEM, 
+                LogLevel::CRITICAL, 
+                $message,
+                $context
+            );            
+            
+            return false;
+        }
+        
+        
         
         /**
          * Returns the error code for the most recent function call.
@@ -137,7 +173,25 @@
                 return $this->fatal("SMS provider configuration is invalid");
             }
             
-            return trim($this->_send($from, $code.$to, $message, $account));
+            $id = $this->_send($from, $code.$to, $message, $account);
+            
+            if(is_string($id)) {
+                $id = trim($id);
+            }
+                
+            $context = prepare_values(
+                array('from','to', 'message'), 
+                array($from, $code.$to, $message)
+            );
+            
+            if($id === FALSE) {
+                $context['error'] = $this->error();
+                Logs::write(Logs::SMS, LogLevel::ERROR, "Failed to send message to $code$to", $context);
+            } else {
+                Logs::write(Logs::SMS, LogLevel::INFO, "SMS sent to $code$to. Reference is $id.", $context);
+            }
+            
+            return $id;
             
         }// send
         
@@ -214,29 +268,28 @@
         /**
          * Update SMS delivery status.
          * 
-         * @param string $provider_ref
+         * @param string $reference
          * @param string $to International phone number
          * @param string $status Delivery status
          * @param \DateTime $datetime Time of delivery
          * @param string $errorDesc Delivery error description
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public function delivered($provider_ref, $to, $status, $datetime=null, $errorDesc='') {
+        public function delivered($reference, $to, $status, $datetime=null, $errorDesc='') {
             
-            if (empty($provider_ref) || empty($to) || empty($status)) {
-                trigger_error("Arguments missing", E_USER_WARNING);
-                return false;
+            if (empty($$reference) || empty($to) || empty($status)) {
+                return $this->critical("One or more required arguments are missing");
             }
                         
             // Get all missing with given reference
             $select = "SELECT `missing_id`, `missing_mobile_country`, `missing_mobile`  
                        FROM `missing` 
-                       WHERE `sms_provider` = '".DB::escape(get_class($this))."' AND `sms_provider_ref` = '".$provider_ref."';";
+                       WHERE `sms_provider` = '".DB::escape(get_class($this))."' AND `sms_provider_ref` = '".$reference."';";
             
             $result = DB::query($select);
             if(DB::isEmpty($result)) { 
-                trigger_error("Missing not found [$select]", E_USER_WARNING);
-                return false;
+                $context = array('sql' => $select);
+                return $this->critical("Found no missing associated with SMS reference $reference", $context);
             }
 
             while($row = $result->fetch_assoc()) {
@@ -252,10 +305,9 @@
                                SET `sms_delivery` = $delivered, `sms_error` = '".(string)$errorDesc."'
                                WHERE `missing_id` = {$row['missing_id']}";
 
-                    $res = DB::query($update);
-                    if(!$res) {
-                        trigger_error("Failed execute [$update]: " . DB::error(), E_USER_WARNING);                
-                        return false;
+                    if(DB::query($update) === FALSE) {
+                        $context = array('sql' => $update);
+                        $this->critical("Failed to update SMS delivery status for missing " . $row['missing_id'], $context);
                     }// if
                 }
                 

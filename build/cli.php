@@ -125,6 +125,9 @@
                     // Create Import
                     require('classes/RescueMe/Import.php');
                     require("$root/classes/RescueMe/DB.php");
+                    require("$root/classes/RescueMe/User.php");
+                    require("$root/classes/RescueMe/Log/Logs.php");
+                    require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
 
                     $import = new RescueMe\Import($opts[HOST], $opts[USERNAME], $opts[PASSWORD], $opts[DB], $root);
 
@@ -150,9 +153,12 @@
                     // Get database parameters
                     $opts = get_db_params($opts, $config);
 
-                    // Create Import
+                    // Create Export
                     require('classes/RescueMe/Export.php');
                     require("$root/classes/RescueMe/DB.php");
+                    require("$root/classes/RescueMe/User.php");
+                    require("$root/classes/RescueMe/Log/Logs.php");
+                    require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
 
                     $import = new RescueMe\Export($opts[HOST], $opts[USERNAME], $opts[PASSWORD], $opts[DB], $root);
 

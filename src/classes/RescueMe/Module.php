@@ -72,7 +72,7 @@
          * 
          * @return boolean|\RescueMe\Module
          */
-        public static function getAll($user_id=0)
+        public static function getAll($user_id = 0)
         {
             $res = DB::select(self::TABLE, "*", "`user_id`=$user_id");
             

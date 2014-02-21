@@ -102,7 +102,7 @@
     
     
     function is_function($value) {
-        return preg_match("#([A-Za-z0-9_]+)[\(\)]+#", $value) !== 0;
+        return preg_match("#^([A-Za-z0-9_]+)\(.*\)$#", $value) !== 0;
     }
     
     /** 
@@ -130,8 +130,7 @@
     /**
      * Escape string with "'"
      * 
-     * @param string $string
-     * @param string $delimiter"
+     * @param string $value
      * 
      */
     function str_escape($value) {

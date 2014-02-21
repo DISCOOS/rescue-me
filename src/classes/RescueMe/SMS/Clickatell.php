@@ -132,8 +132,6 @@
                 // Analyse message and determine if concatenation and unicode encoding is requried
                 list($text, $concat, $unicode) = $this->prepare($message);
                 
-                echo "unicode: $unicode <br>";
-                
                 // Require alpha and numeric sender id support
                 $require = 1;
                 $values = explode(',', Properties::get(Properties::SMS_REQUIRE, User::currentId()));

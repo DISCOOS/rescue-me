@@ -1,6 +1,25 @@
 -- --------------------------------------------------------
 
 -- 
+-- Structure for table `logs`
+-- 
+
+CREATE TABLE IF NOT EXISTS `logs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `level` varchar(20) NOT NULL,
+  `message` text NOT NULL,
+  `context` longtext,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `level` (`level`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
 -- Structure for table `missing`
 -- 
 
@@ -62,6 +81,22 @@ CREATE TABLE IF NOT EXISTS `operations` (
 -- --------------------------------------------------------
 
 -- 
+-- Structure for table `permissions`
+-- 
+
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `role_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `key` varchar(100) NOT NULL,
+  `value` int(11) NOT NULL DEFAULT '0',
+  KEY `key` (`key`),
+  KEY `role_id` (`role_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
 -- Structure for table `positions`
 -- 
 
@@ -90,6 +125,19 @@ CREATE TABLE IF NOT EXISTS `properties` (
   `name` varchar(50) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`property_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure for table `roles`
+-- 
+
+CREATE TABLE IF NOT EXISTS `roles` (
+  `user_id` int(11) NOT NULL,
+  `role_name` varchar(100) NOT NULL,
+  KEY `user_id` (`user_id`),
+  KEY `role_name` (`role_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

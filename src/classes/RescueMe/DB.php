@@ -12,6 +12,10 @@
     
     namespace RescueMe;
 
+    use \Psr\Log\LogLevel;
+    use \RescueMe\Log\Logs;
+    
+
     /**
      * Database class
      * 
@@ -241,14 +245,27 @@
             $fields = "`" . implode("`,`", array_keys($values)) . "`";
             $inserts = array();
             foreach($values as $value) {
-                if(is_string($value) && !($value === "NULL" || is_function($value)))
-                    $value = "'" . DB::escape($value) . "'";
+                if(is_string($value) && ($value === "NULL" || is_function($value)) === FALSE) {
+                    $value = str_escape(DB::escape($value));
+                }
                 $inserts[] = $value;
             }
             
             $query = "INSERT INTO `$table` ($fields) VALUES (". implode(",", $inserts) . ")";
             
-            return DB::query($query);
+            $res = DB::query($query);
+            
+            if($table !== 'logs')
+            {
+                if($res === FALSE)
+                {
+                    Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to insert ' . count($values) . " values into $table", DB::error());
+                } else {
+                    Logs::write(Logs::DB, LogLevel::INFO, 'Inserted ' . count($values) . " values into $table");
+                }
+            }
+            
+            return $res;
             
         }// insert
         
@@ -265,9 +282,19 @@
         {
             $query = "DELETE FROM `$table`";
             
-            if($filter) $query .= " WHERE $filter";            
+            $count = DB::select($table,'COUNT(*)', $filter);
             
-            return DB::query($query);
+            if($filter) $query .= " WHERE $filter";
+            
+            $res = DB::query($query);
+            
+            if($res === FALSE)
+            {
+                Logs::write(Logs::DB, LogLevel::ERROR, "Failed to delete $count rows from $table", DB::error());
+            } else {
+                Logs::write(Logs::DB, LogLevel::INFO, "Deleted $count rows from $table");
+            }
+            
             
         }// delete        
         
@@ -292,9 +319,15 @@
             $query .= implode(",", $updates);
             if($filter) $query .= " WHERE $filter";
             
-            var_dump($query);
+            $res = DB::query($query);
             
-            return DB::query($query);
+            if($res === FALSE)
+            {
+                Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to update ' . count($values) . " values in $table", DB::error());
+            } else {
+                Logs::write(Logs::DB, LogLevel::INFO, 'Updated ' . count($values) . " values in $table");
+            }
+            
             
         }// update
         
@@ -337,14 +370,15 @@
                 $error = mysqli_connect_error($this->mysqli);
                 throw new Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
-            $result = $mysqli->select_db($name);
-            if($result === FALSE)
+            $res = $mysqli->select_db($name);
+            if($res === FALSE)
             {
                 $sql = "CREATE DATABASE IF NOT EXISTS $name";
-                $result = $mysqli->query($sql) && $mysqli->select_db($name);
+                $res = $mysqli->query($sql) && $mysqli->select_db($name);
             }
             unset($mysqli);
-            return $result;
+            
+            return $res;
         }// create
         
         
@@ -425,15 +459,21 @@
                     if(!empty($skipped)) {
                         
                         // Add missing columns
-                        if(($altered = DB::alter($skipped)) === false) {
-                            return false;
+                        if(($altered = DB::alter($skipped))) {
+                            $executed = array_merge($executed, $altered);
                         }
-                        $executed = array_merge($executed, $altered);
                     }
                 }
             }
             
+            if(empty($executed) === FALSE)
+            {
+                $count = count($executed);
+                Logs::write(Logs::DB, LogLevel::INFO, "Imported $pathname ($count sentences executed).", $executed);
+            }            
+                        
             return $executed;
+            
         }// import
         
         
@@ -472,7 +512,14 @@
                     }
                 }
             }
-            return $executed;
+            
+            if(empty($executed) === FALSE)
+            {
+                $count = count($executed);
+                Logs::write(Logs::DB, LogLevel::INFO, "Altered $count database entities.", $executed);
+            }            
+            
+            return empty($executed) === FALSE;
         }
 
         private static function table($query)
@@ -569,6 +616,7 @@
          */
         public static function export($pathname, $charset="utf8")
         {
+            $count = 0;
             if(file_exists($pathname)){
                 unlink($pathname);
             }
@@ -588,8 +636,15 @@
                 $create = preg_replace("# AUTO_INCREMENT=[0-9]+#i", "", $create);
                 $create = preg_replace("#CHARSET=.+#i", "CHARSET=$charset", $create);
                 $lines .= "$create;\n\n";
+                $count++;
             }
+            
             file_put_contents($pathname, $lines);
+            
+            $name = (defined('DB_NAME') ? DB_NAME : "");
+            
+            Logs::write(Logs::DB, LogLevel::INFO, "Exported $count tables from $name", $pathname);
+            
             return $lines;
         }// export
 

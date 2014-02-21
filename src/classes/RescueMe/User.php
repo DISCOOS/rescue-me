@@ -11,6 +11,9 @@
      */
 
     namespace RescueMe;
+    
+    use \Psr\Log\LogLevel;
+    use \RescueMe\Log\Logs;
 
     /**
      * User class
@@ -160,9 +163,8 @@
             $select = "SELECT `op_id` FROM `missing` WHERE `sms_provider` = '".$provider."' AND `sms_provider_ref` = '".$reference."';";
 
             $result = DB::query($select);
-            if(DB::isEmpty($result)) { 
-                trigger_error("Missing not found", E_USER_WARNING);
-                return false;
+            if(DB::isEmpty($result)) {                 
+                return $this->error("No user id found. $provider reference $reference not found.");                
             }
             $row = $result->fetch_row();
             $operation = Operation::getOperation($row[0]);
@@ -179,8 +181,8 @@
          */
         public static function get($id) {
             
-            $res = DB::query("SELECT * FROM `users` WHERE `user_id` = $id");
-
+            $res = DB::select(self::TABLE,'*', "`user_id` = $id");
+            
             if (DB::isEmpty($res)) return false;
             
             $exclude = array("user_id", 'password');
@@ -212,9 +214,11 @@
          */
         public static function recover($email, $country, $mobile) {
             
-            $res = DB::query("SELECT user_id FROM `users` WHERE `email` = '$email' AND `mobile_country` = '$country' AND `mobile` = '$mobile'");
+            $filter = "email` = '$email' AND `mobile_country` = '$country' AND `mobile` = '$mobile'";
+            
+            $res = DB::select(self::TABLE,"user_id", $filter);
 
-            if (DB::isEmpty($res)) return false;
+            if(DB::isEmpty($res)) return false;
             
             $row = $res->fetch_row();
             
@@ -440,14 +444,14 @@
             if(empty($username) || empty($password))
                 return false;
             
-            $sql = "SELECT * FROM `users` WHERE `email` = '$username' AND `password` = '$password'";
+            $res = DB::select(self::TABLE, "*", "`email` = '$username' AND `password` = '$password'");
+
+            if(DB::isEmpty($res)) return false;    
             
-            $res = DB::query($sql);
+            $info = $res->fetch_assoc();
+            $info['password'] = $password;
             
-            if(mysqli_num_rows($res) == 1) {
-                return $this->_grant($res->fetch_assoc());
-            }            
-            return false;
+            return $this->_grant($info);
             
         }// logon
 
@@ -460,18 +464,25 @@
          * @return boolean
          */
         private function _verify($user_id, $password) {
-            $username = (int) $user_id;
-            $password = $password;
-            $qry = "SELECT * FROM `users` WHERE `user_id` = '$username' AND `password` = '$password'";
-            $sql = DB::query($qry);
-            if(mysqli_num_rows($sql) == 1) {
-                return $this->_grant(mysqli_fetch_assoc($sql));
-            }
-            return false;
+            
+            $user_id = (int)$user_id;
+            
+            $res = DB::select(self::TABLE,'*', "`user_id` = '$user_id' AND `password` = '$password'");            
+            
+            if(DB::isEmpty($res)) return false;            
+            
+            $info = $res->fetch_assoc();
+            $info['password'] = $password;
+            
+            return $this->_grant($info);
+            
         }// _verify
 
         
         private function _grant($info) {
+            
+            $isset = isset($_SESSION['logon']) && $_SESSION['logon'];
+            
             $_SESSION['logon'] = true;
             $_SESSION['user_id'] = $info['user_id'];
             $_SESSION['password'] = $info['password'];
@@ -487,7 +498,12 @@
                 }
             }
             
+            if($isset === FALSE) {
+                Logs::write(Logs::ACCESS, LogLevel::INFO, 'User logged in.');
+            }
+            
             return true;
+            
         }// _login_ok
 
         
@@ -555,9 +571,18 @@
          * Logout current user
          */
         public function logout() {
+            
+            $isset = isset($_SESSION['logon']) && $_SESSION['logon'];
+            
             unset($_SESSION['logon']);
             unset($_SESSION['user_id']);
             unset($_SESSION['password']);
+            
+            if($isset)
+            {
+                Logs::write(Logs::ACCESS, LogLevel::INFO, 'User logged out.', array(), $this->id);
+            }
+            
         }// logout
 
         
@@ -593,6 +618,20 @@
             return str_rnd($length);
         }// generate
     
+        
+        private function error($message, $context = array())
+        {
+            $context['code'] = DB::errno();
+            $context['error'] = DB::error();
+            Logs::write(
+                Logs::SYSTEM, 
+                LogLevel::ERROR, 
+                $message, 
+                $context
+            );
+                
+            return false;
+        }
         
 
     }// user

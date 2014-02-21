@@ -73,6 +73,10 @@
             $_ROUTER['name'] = ABOUT;
             $_ROUTER['view'] = $_GET['view'];
             break;
+        case 'logs':
+            $_ROUTER['name'] = _('Logs');
+            $_ROUTER['view'] = $_GET['view'];
+            break;
         case 'setup':
             $_ROUTER['name'] = SETUP;
             $_ROUTER['view'] = $_GET['view'];
