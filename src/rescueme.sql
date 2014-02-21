@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `message` text NOT NULL,
   `context` longtext,
   `user_id` int(11) NOT NULL,
+  `client_ip` varchar(40) NOT NULL DEFAULT 'UNKNOWN',
   PRIMARY KEY (`log_id`),
   KEY `level` (`level`),
   KEY `name` (`name`)

@@ -14,7 +14,6 @@
     
     use \RescueMe\DB;
     use \RescueMe\User;
-    use \Psr\Log\LogLevel;
 
     /**
      * Logs class
@@ -38,7 +37,8 @@
             "level", 
             "message", 
             "context", 
-            "user_id"
+            "user_id", 
+            "client_ip"
         );
         
         /**
@@ -164,23 +164,16 @@
                 $user_id = 0;
             }
             
-            $context = utf8_encode(json_encode($context));
-            $values = array($name, $level, $message, $context, $user_id);
+            $ip = get_client_ip();
+            $context = empty($context) ? '' : utf8_encode(json_encode($context));            
+            $values = array($name, $level, $message, $context, $user_id, $ip);
+            
             $values = prepare_values(self::$fields, $values);
             
             if(DB::insert(self::TABLE, $values) === false) {
                 
                 trigger_error(DB::escape(DB::error()), E_USER_WARNING);
                 
-                /*
-                $values = array(Logs::SYSTEM, LogLevel::ERROR, DB::error(), null, $user_id);
-                $values = prepare_values(self::$fields, $values);
-                
-                if(DB::insert(self::TABLE, $values) === false) {
-                    trigger_error(DB::escape(DB::error()), E_USER_WARNING);
-                }
-                 * 
-                 */
             }
         }
         
