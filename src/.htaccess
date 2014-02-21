@@ -1,5 +1,7 @@
 Options +FollowSymlinks -Indexes
 
+AddDefaultCharset off
+
 <IfModule mod_php5.c>
     
     php_value short_open_tag 1

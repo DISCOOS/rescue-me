@@ -2,7 +2,7 @@
     use RescueMe\Locale;    
     
 ?>
-<h3>Start sporing av savnet</h3>
+<h3 class="no-wrap"><?=_("Start sporing")?></h3>
 <?php if(isset($_ROUTER['message'])) { ?>
 	<div class="alert alert-error">
 		<strong>En feil oppsto!</strong><br />
@@ -15,8 +15,8 @@
 	<fieldset class="new-missing pull-left" style="margin-right: 2em;">
 		<legend>Den savnede</legend>
 
-		<label for="m_name">Savnedes fornavn</label>
-		<input class="input-block-level" type="text" id="m_name" name="m_name" placeholder="Fornavn" autofocus required>
+		<label for="m_name">Navn på sporing</label>
+		<input class="input-block-level" type="text" id="m_name" name="m_name" placeholder="Sted, landsdel, eller savnedes navn" autofocus required>
 
         <div class="row-fluid">
             <div class="span4">
@@ -29,17 +29,11 @@
                 <label for="m_mobile">Savnedes mobilnummer</label>
                 <input class="input-block-level" type="tel" id="m_mobile" name="m_mobile" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
             </div>
-            <div class="span8">
-                <label for="sms_text">SMS-tekst</label>
-                <textarea id="sms_text" name="sms_text" required><?=SMS_TEXT;?></textarea>
-                <div>(<i>%LINK%</i> blir automatisk erstattet med riktig lenke)</div>
-            </div>
         </div>
-        
-        
+                
 	</fieldset>
     
-	<fieldset class="new-missing pull-left">
+	<fieldset class="new-missing">
 		<legend>Rapporter til</legend>
 
         <div class="row-fluid">
@@ -56,37 +50,52 @@
         </div>
         
 	</fieldset>
-
+    
 	<div class="clearfix"></div>
-    <div class="alert alert-info">
-        <em>En SMS sendes automatisk til den savnede når sporing opprettes</em>
-        <button type="button" data-toggle="readmore" class="toggle btn btn-mini btn-info pull-right">Les mer</button>	
-        <div id="readmore" style="display:none;">
-            <h4>SMS-tekst</h4>
-            <div class="alert"><?= SMS_TEXT ?></div>
-            <h4>Sporingsside</h4>
-            <p>Når brukeren trykker på lenken åpnes en nettside som posisjonerer brukeren, 
-            og h*n må deretter godkjenne deling av posisjon i nettleseren.</p>
-            <p>
-                <strong>Lastetid</strong>
-                <br />
-                Nettsiden er 1,4Kb, noe som burde ta litt mindre enn ett sekund på dårlig mobilnett. 
-                Det er likevel viktig at brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes.
-            </p>
-            <p>
-                <strong>Gjentatt posisjonering</strong>
-                <br />
-                Hvis posisjonen er unøyaktig, vil nettsiden lastes på nytt igjen etter 10 sekunder.
-                Brukeren vil da se nedtellingen, og siden åpnes på nytt. Dette vil gjentas inntil 10 ganger.
-            <p>
-                Alle sporinger er tilgjengelig på admin-siden.
-            <p/>
-            <p>
-                <strong>OBS:</strong> Lastetiden vil mest sannsynlig være rimelig lik første åpning av sporingssiden.
-            </p>
+    
+	<fieldset class="new-missing pull-left">
+		<legend>SMS tekst</legend>
 
+        <div class="row-fluid">
+            <textarea class="field span12" id="sms_text" name="sms_text" required><?=SMS_TEXT?></textarea>
         </div>
-    </div>        
+
+        <div class="alert alert-info" style="position: relative;">
+            <div> 
+                <strong>RescueMe sender en SMS til den savnede når sporing opprettes</strong>. 
+                <span style="color: red;">Husk å sette inn <span class="label">%LINK%</span> 
+                slik at RescueMe kan sette inn med riktig lenke</span>.
+            </div>
+            <button type="button" data-toggle="readmore" class="toggle btn btn-mini btn-info"
+                    style="position: absolute; right: 0; bottom: 0;">Mer...</button>
+            <div id="readmore" style="display:none;">
+                <h4>Standard</h4>
+                <div class="alert"><?= SMS_TEXT ?></div>
+                <h4>Sporingsside</h4>
+                <p>Når brukeren trykker på lenken åpnes en nettside som posisjonerer brukeren, 
+                og h*n må deretter godkjenne deling av posisjon i nettleseren.</p>
+                <p>
+                    <strong>Lastetid</strong>
+                    <br />
+                    Nettsiden er 1,4Kb, noe som burde ta litt mindre enn ett sekund på dårlig mobilnett. 
+                    Det er likevel viktig at brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes.
+                </p>
+                <p>
+                    <strong>Gjentatt posisjonering</strong>
+                    <br />
+                    Hvis posisjonen er unøyaktig, vil nettsiden lastes på nytt igjen etter 10 sekunder.
+                    Brukeren vil da se nedtellingen, og siden åpnes på nytt. Dette vil gjentas inntil 10 ganger.
+                <p>
+                    Alle sporinger er tilgjengelig på <a href="<?=ADMIN_URI?>/missing/list">admin/missing/list</a>.
+                <p/>
+                <p>
+                    <strong>OBS:</strong> Lastetiden vil mest sannsynlig være rimelig lik første åpning av sporingssiden.
+                </p>
+
+            </div>
+        </div>
+        
+	</fieldset>
 
 	<div class="clearfix"></div>
     <button type="submit" class="btn btn-success">Opprett sporing</button>
