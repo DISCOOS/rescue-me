@@ -29,7 +29,7 @@
         
         const TABLE = "logs";
         
-        const SELECT = 'SELECT logs.*,users.name as user FROM `logs` JOIN `users` ON `users`.`user_id` = `logs`.`user_id`';
+        const SELECT = 'SELECT logs.*,users.name as user FROM `logs` LEFT JOIN `users` ON `users`.`user_id` = `logs`.`user_id`';
         
         private static $fields = array
         (

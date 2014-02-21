@@ -195,16 +195,18 @@
         public function handle($params) {
             
             // Required callback params: apiMsgId, to and status (optional: cliMsgId, timestamp, from and charge)
-            assert_isset_all($params,array('apiMsgId','to','status'));
+            if(assert_isset_all($params,array('apiMsgId','to','status'))) {
             
-            // Get timestamp
-            $when = isset($params['timestamp']) ? \DateTime::createFromFormat('U', $params['timestamp']) : new \DateTime();
-            
-            // Status description
-            $description = $this->status[$params['status']];
-            
-            // Update status
-            $this->delivered($params['apiMsgId'], $params['to'], $params['status'], $when, $description);
+                // Get timestamp
+                $when = isset($params['timestamp']) ? \DateTime::createFromFormat('U', $params['timestamp']) : new \DateTime();
+
+                // Status description
+                $description = $this->status[$params['status']];
+
+                // Update status
+                $this->delivered($params['apiMsgId'], $params['to'], $params['status'], $when, $description);
+                
+            }
         }
         
         private function errors($message, $code = Provider::FATAL) {

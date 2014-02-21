@@ -276,9 +276,10 @@
          * @return boolean TRUE if success, FALSE otherwise.
          */
         public function delivered($reference, $to, $status, $datetime=null, $errorDesc='') {
-            
-            if (empty($$reference) || empty($to) || empty($status)) {
-                return $this->critical("One or more required arguments are missing");
+                        
+            if(empty($reference) || empty($to) || empty($status)) {
+                $context['params'] = func_get_args();
+                return $this->critical("One or more required arguments are missing", $context);
             }
                         
             // Get all missing with given reference

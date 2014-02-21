@@ -125,10 +125,11 @@
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::ERROR, 
-                    "One or more required values are missing", 
+                    "One or more required arguments are missing", 
                     array(
                         'file' => __FILE__,
                         'method' => 'addMissing',
+                        'params' => func_get_args(),
                         'line' => $line,
                     )
                 );
@@ -178,10 +179,11 @@
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::ERROR, 
-                    "One or more required values are missing", 
+                    "One or more required arguments are missing", 
                     array(
                         'file' => __FILE__,
                         'method' => 'updateMissing',
+                        'params' => func_get_args(),
                         'line' => $line,
                     )
                 );
@@ -418,6 +420,8 @@
             if($res === FALSE) {
                 $context = array('sql' => $query);
                 $this->error('Failed to update status to ANSWERED for missing ' . $this->id, $context);
+            } else {
+                Logs::write(Logs::TRACE, LogLevel::INFO, "Missing {$this->id} has loaded tracking page");
             }
             return $res;
         }
@@ -435,6 +439,8 @@
             
             if($res === FALSE) {
                 $this->error('Failed to anonymize missing ' . $this->id, $values);
+            } else {
+                Logs::write(Logs::TRACE, LogLevel::INFO, "Missing {$this->id} has been anonymized");
             }
 
             return $res;
@@ -448,7 +454,7 @@
             if($code === FALSE) {
                 $context = array('code' => $country);
                 $this->error('Failed to get country dial code', $context);                
-            }
+            }            
             return $code;
         }
 

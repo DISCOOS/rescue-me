@@ -149,10 +149,11 @@
         
         public function handle($params) {
             
-            assert_isset_all($params,array('id','number','status'));
+            if(assert_isset_all($params,array('id','number','status'))) {
             
-            $this->delivered($params['id'], $params['number'], $params['status'], new \DateTime(),
-                    (isset($params['errorDesc']) ? $params['errorDesc'] : ''));
+                $this->delivered($params['id'], $params['number'], $params['status'], new \DateTime(),
+                        (isset($params['errorDesc']) ? $params['errorDesc'] : ''));
+            }
         }
         
 	

@@ -1,4 +1,7 @@
 <?php
+    
+    use Psr\Log\LogLevel;    
+    use RescueMe\Log\Logs;    
 
     function assert_types($values)
     {
@@ -10,24 +13,29 @@
     
     function assert_type($expected, $actual)
     {
-        if(!call_user_func("is_$expected", $actual))
+        if(call_user_func("is_$expected", $actual) === FALSE)
         {
             throw new Exception("[$actual] is not of type '$actual'.");
         }
     }
     
-    function assert_isset_all($values, $keys) {
+    function assert_isset_all($values, $keys, $message = '', $log = Logs::SYSTEM, $level = LogLevel::ERROR) {
         $keys = is_array($keys) ? $keys : array($keys);
         $missing = array();
         foreach($keys as $key) {
-            if(!isset($values[$key])) {
+            if(isset($values[$key]) === FALSE) {
                 $missing[] = $key;
             }
         }
         if(!empty($missing)) {
-            trigger_error("Keys are missing", E_USER_ERROR);
+            if($message) {
+                $message .= ". ";
+            }
+            Logs::write($log, $level, $message. "Missing values: ". implode(", ", $missing));
         }
+        return empty($missing) === FALSE;
     }
+    
 
     function prepare_values($fields, $values) 
     {
