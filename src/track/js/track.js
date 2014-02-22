@@ -1,4 +1,8 @@
-R.track = {};
+/*
+ * Define 'namespaces'
+ */
+
+R = install;
 
 /*
  * Accuracy of last location found
@@ -8,7 +12,7 @@ var lc = 1000000;
 /*
  * Get guery from track url
  */
-var q = R.toQuery(document.scripts.namedItem("track").src);
+var q = R.track;
 
 /*
  * Implement location algorithm
@@ -48,7 +52,7 @@ R.track.locate = function() {
     if (navigator.geolocation) {
         navigator.geolocation.change(sl, se, sp, {
             maxWait:q.wait,       
-            desiredAccuracy:q.desiredAcc});
+            desiredAccuracy:q.acc});
     }
     else {
         f.innerHTML = "Lokalisering st&oslash;ttes ikke av din telefon.";
@@ -232,7 +236,7 @@ navigator.geolocation.change = function (gls, gle, gp, o) {
      * Prepare options
      */
     if (!o.maxWait)            o.maxWait = q.wait; // Default 3 min
-    if (!o.desiredAccuracy)    o.desiredAccuracy = q.desiredAcc; // Default 20 meters
+    if (!o.desiredAccuracy)    o.desiredAccuracy = q.acc; // Default 20 meters
     if (!o.timeout)            o.timeout = o.maxWait; // Default to maxWait
 
     o.maximumAge = q.age; // Accept that old positions

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <? 
-    require_once('../config.php'); 
+    require_once('../config.php');
+    require_once('../min/lib/JSMin.php');
     
     use RescueMe\Missing;
     use RescueMe\Operation;
@@ -16,19 +17,34 @@
     
 } else { 
     
-    $missing = Missing::getMissing($_GET['id'], $_GET['phone']);
+    $id = $_GET['id'];
+    $phone = $_GET['phone'];
+    $missing = Missing::getMissing($id, $phone);
     
     if($missing !== false) {
-    
-        $id = Operation::getOperation($missing->op_id)->user_id;
-        $age = Properties::get(Properties::LOCATION_MAX_AGE, $id);
-        $wait = Properties::get(Properties::LOCATION_MAX_WAIT, $id);
-        $desiredAcc = Properties::get(Properties::LOCATION_DESIRED_ACC, $id);
         
-        $missing->answered();
+        $missing->answered();                
+        
+        // Create minified js
+        $track = JSMin::minify(file_get_contents(APP_PATH.'track/js/track.js'));
+        
+        $user_id = Operation::getOperation($missing->op_id)->user_id;
+
+        // Create install options
+        $options = array();
+        $options['track']['id'] = $id;
+        $options['track']['phone'] = $phone;
+        $options['track']['age'] = Properties::get(Properties::LOCATION_MAX_AGE, $user_id);
+        $options['track']['wait'] = Properties::get(Properties::LOCATION_MAX_WAIT, $user_id);
+        $options['track']['acc'] = Properties::get(Properties::LOCATION_DESIRED_ACC, $user_id);
+        
+        $install = get_rescueme_install($options);
+        
+        // Get js wrapped inside self-invoking function.
+        $js = "(function(window,document,install){".$track."}(window,document,$install));";
         
 ?>
-<script id="track" src="<?=APP_URI?>js/track.js?id=<?=$_GET['id']?>&phone=<?=$_GET['phone']?>&wait=<?=$wait?>&age=<?=$age?>&desiredAcc=<?=$desiredAcc?>"></script></head>
+<script id="track"><?=$js?></script></head>
 <body onLoad="R.track.locate();">
 <div align="center"><div style="max-width: 400px; min-height: 100px; position: relative;">
 <div id="f">Beregner posisjon...</div><span id="i"></span><br /><span id="s"></span></div>

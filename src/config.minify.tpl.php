@@ -49,12 +49,7 @@
             'map.js' => array
             (
                 '//admin/js/map.js'
-            ),
-            'track.js' => array
-            (
-                '//js/rescueme.js', 
-                '//track/js/track.js' 
-            ),            
+            )
             
         );        
     }// get_rescueme_minify_config
@@ -76,7 +71,7 @@
      * 
      * http://sarfraznawaz.wordpress.com/2012/01/26/javascript-self-invoking-functions/
      */
-    function rescueme_js($content, $type) {
+    function rescueme_minify_prepare($content, $type) {
 
         // Is content type JS?
         if ($type === Minify::TYPE_JS) {
@@ -101,5 +96,5 @@
         return $content;
     }
     
-    $min_serveOptions['postprocessor'] = 'rescueme_js';    
+    $min_serveOptions['postprocessor'] = 'rescueme_minify_prepare';    
     

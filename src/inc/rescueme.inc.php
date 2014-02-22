@@ -79,12 +79,12 @@
     /**
      * Get js install object as json string.
      */
-    function get_rescueme_install()
+    function get_rescueme_install($options=array())
     {
-        $app = array("url" => APP_URI);
-        $admin = array("url" => ADMIN_URI);
+        $options["app"] = array("url" => APP_URI);
+        $options["admin"] = array("url" => ADMIN_URI);
         
-        return str_replace('\\/', '/',json_encode(array("app" => $app, "admin" => $admin)));        
+        return str_replace('\\/', '/',json_encode($options));        
 
     }// get_rescueme_install
     

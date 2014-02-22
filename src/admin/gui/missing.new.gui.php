@@ -77,7 +77,7 @@
                 <p>
                     <strong>Lastetid</strong>
                     <br />
-                    Nettsiden er 1,4Kb, noe som burde ta litt mindre enn ett sekund på dårlig mobilnett. 
+                    Nettsiden er 1.7KB, noe som burde ta litt mindre enn ett sekund på dårlig mobilnett (2G).
                     Det er likevel viktig at brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes.
                 </p>
                 <p>
