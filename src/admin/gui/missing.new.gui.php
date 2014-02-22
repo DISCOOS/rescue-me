@@ -72,25 +72,29 @@
                 <h4>Standard</h4>
                 <div class="alert"><?= SMS_TEXT ?></div>
                 <h4>Sporingsside</h4>
-                <p>Når brukeren trykker på lenken åpnes en nettside som posisjonerer brukeren, 
-                og h*n må deretter godkjenne deling av posisjon i nettleseren.</p>
-                <p>
+                <p>Når brukeren trykker på lenken åpnes en nettside som vil forsøke å posisjonerer 
+                    mobiltelefonen. Brukeren må godkjenne deling av posisjon i nettleseren før posisjonen 
+                    kan bestemmes.
+                </p><p>
                     <strong>Lastetid</strong>
                     <br />
-                    Nettsiden er 1.7KB, noe som burde ta litt mindre enn ett sekund på dårlig mobilnett (2G).
-                    Det er likevel viktig at brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes.
-                </p>
-                <p>
+                    Nettsiden er komprimert (1.8KB). Det burde ta mindre enn ett sekund på dårlig 
+                    mobilnett (2G) å laste den ned. Det er likevel viktig at brukeren er tålmodig, og venter 
+                    lengre enn dette hvis siden ikke åpnes.
+                </p><p>
                     <strong>Gjentatt posisjonering</strong>
                     <br />
-                    Hvis posisjonen er unøyaktig, vil nettsiden lastes på nytt igjen etter 10 sekunder.
-                    Brukeren vil da se nedtellingen, og siden åpnes på nytt. Dette vil gjentas inntil 10 ganger.
-                <p>
+                    Hvis posisjonen er unøyaktig, vil nettsiden vente til posisjon med ønsket nøyaktighet 
+                    er funnet, eller maksimum ventetid er nådd. En nedtelling vises mens dette foregår. 
+                    Siste posisjon vises også til brukeren, slik at denne kan leses opp på telefonen, eller 
+                    sendes på SMS (be brukeren klikke på linken bak posisjonen).
+                <p/><p>
+                    Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid 
+                    (location.max.wait) og maximum alder på gammel posisjon (location.max.age) 
+                    kan konfigureres på siden<a href="<?=ADMIN_URI?>setup#general">Oppsett</a>.
+                <p/><p>
                     Alle sporinger er tilgjengelig på <a href="<?=ADMIN_URI?>/missing/list">admin/missing/list</a>.
                 <p/>
-                <p>
-                    <strong>OBS:</strong> Lastetiden vil mest sannsynlig være rimelig lik første åpning av sporingssiden.
-                </p>
 
             </div>
         </div>

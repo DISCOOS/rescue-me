@@ -6,6 +6,9 @@
     use RescueMe\Missing;
     use RescueMe\Operation;
     use RescueMe\Properties;
+    use RescueMe\Locale;
+    use Psr\Log\LogLevel;
+    use \RescueMe\Log\Logs;
 
 ?>
 <html><head><title><?=TITLE?></title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
@@ -34,6 +37,15 @@
         $options = array();
         $options['track']['id'] = $id;
         $options['track']['phone'] = $phone;
+        $options['track']['name'] = $missing->name;
+        
+        $country = $missing->alert_mobile['country'];
+        if(($code = Locale::getDialCode($country)) === FALSE)
+        {
+            Logs::write(Logs::SMS, LogLevel::ERROR, "Failed to get country code", $_GET);
+        }               
+        
+        $options['track']['to'] = $code . $missing->alert_mobile['mobile'];
         $options['track']['age'] = Properties::get(Properties::LOCATION_MAX_AGE, $user_id);
         $options['track']['wait'] = Properties::get(Properties::LOCATION_MAX_WAIT, $user_id);
         $options['track']['acc'] = Properties::get(Properties::LOCATION_DESIRED_ACC, $user_id);

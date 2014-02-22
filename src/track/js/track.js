@@ -170,7 +170,9 @@ R.track.locate = function() {
      */
     function ps(p) {
         p = p.coords;
-        return 'Din posisjon er: ' + p.longitude.toFixed(4) + 'E, ' + p.latitude.toFixed(4) + 'N';
+        c = p.longitude.toFixed(4) + 'E ' + p.latitude.toFixed(4) + 'N';
+        u = q.id + '|' + q.phone + '|' + c + '|' + q.name;
+        return 'Din posisjon er: ' + c + ' <a href="sms:' + q.to + '?body=' + u + '">SMS</a>';
     }
     
 }
