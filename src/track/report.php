@@ -24,5 +24,5 @@ else {
         $response = "Ugyldig id!";
     }
 }
-insert_message($response);
+echo $response;
 ?>

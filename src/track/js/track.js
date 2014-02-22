@@ -1,103 +1,157 @@
 R.track = {};
 
-var lastAcc = 1000000;
+/*
+ * Accuracy of last location found
+ */
+var lc = 1000000;
 
-var query = R.toQuery(document.scripts.namedItem("track").src);
+/*
+ * Get guery from track url
+ */
+var q = R.toQuery(document.scripts.namedItem("track").src);
 
+/*
+ * Implement location algorithm
+ */
 R.track.locate = function() {
-    var x = document.getElementById("feedback");
-    var sec = document.getElementById("sec");
-    var loadImg = null;
-    var countID = 0;
-    var count = (query.wait/1000);
+    
+    /*
+     * Countdown timer id
+     */
+    var cID = 0;
+    
+    /**
+     * Seconds until failure
+     */
+    var c = (q.wait/1000);
+    
+    /*
+     * Image element
+     */
+    var i = null;
+    
+    /*
+     * Feedback element
+     */
+    var f = document.getElementById("f");
+    
+    /*
+     * Countdown element
+     */    
+    var s = document.getElementById("s");
+    
+    /*
+     * Location element
+     */
+    var l = document.getElementById("l");
+    
     if (navigator.geolocation) {
-        navigator.geolocation.getAccurateCurrentPosition(showPosition, showError, showProgress, {
-            maxWait:query.wait,       
-            desiredAccuracy:query.desiredAcc});
+        navigator.geolocation.change(sl, se, sp, {
+            maxWait:q.wait,       
+            desiredAccuracy:q.desiredAcc});
     }
     else {
-        x.innerHTML = "Lokalisering st&oslash;ttes ikke av din telefon.";
+        f.innerHTML = "Lokalisering st&oslash;ttes ikke av din telefon.";
     }
     
-    function showProgress(position) {
-        x.innerHTML = 'Har funnet deg med '+Math.ceil(position.coords.accuracy)+ ' m n&oslash;yaktighet... <br />'
+    /*
+     * Show position
+     */
+    function sp(p) {
+        
+        f.innerHTML = 'Har funnet deg med '+Math.ceil(p.coords.accuracy)+ ' m n&oslash;yaktighet... <br />'
                            + 'Søker etter mer nøyaktig posisjon, vent litt...';        
-        if (countID === 0) {
-            loadImg=document.createElement("img");
-            loadImg.src="../../img/loading.gif"; //src of img attribute
-            document.getElementById("img").appendChild(loadImg); //append to body
-            sec.innerHTML = Math.floor(count / 60) +" m " + (count - Math.floor(count / 60) * 60) + " s";
-            countID = setTimeout(countdown, 1000);
+                   
+        l.innerHTML = ps(p);
+                   
+        if (cID === 0) {
+            i = document.createElement("img");
+            i.src=R.app.url+"img/loading.gif"; //src of img attribute
+            document.getElementById("i").appendChild(i); //append to body
+            s.innerHTML = Math.floor(c / 60) +" m " + (c - Math.floor(c / 60) * 60) + " s";
+            cID = setTimeout(dec, 1000);
         }
         
         // If the new position has improved by 10%, report it
-        if (position.coords.accuracy + (lastAcc*0.1) < lastAcc) {
-            lastAcc = position.coords.accuracy;
-            showPosition(position, false);
+        if (p.coords.accuracy + (lc*0.1) < lc) {
+            lc = p.coords.accuracy;
+            sp(p, false);
         }
     }
     
-    function countdown() {
-        if (count > 0) {
-            count -= 1;
-            sec.innerHTML = sec.innerHTML = Math.floor(count / 60) +" m " + (count - Math.floor(count / 60) * 60) + " s";
-            countID = setTimeout(countdown, 1000);
+    /*
+     * Decrement countdown
+     */
+    function dec() {
+        if (c > 0) {
+            c -= 1;
+            s.innerHTML = s.innerHTML = Math.floor(c / 60) +" m " + (c - Math.floor(c / 60) * 60) + " s";
+            cID = setTimeout(dec, 1000);
         }
         else {
-            sec.innerHTML = '';
-            if (loadImg !== null)
-                document.getElementById("img").removeChild(loadImg);
+            s.innerHTML = '';
+            if (i !== null)
+                document.getElementById("i").removeChild(i);
         }
     }
 
-    function showError(error) {
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                x.innerHTML = "Du m&aring; bekrefte at du gir tillatelse til &aring; vise posisjon."
+    /*
+     * Show error to client
+     */
+    function se(e) {
+        switch (e.code) {
+            case e.PERMISSION_DENIED:
+                f.innerHTML = "Du m&aring; bekrefte at du gir tillatelse til &aring; vise posisjon."
                 break;
-            case error.POSITION_UNAVAILABLE:
-                x.innerHTML = "Posisjon er utilgjengelig."
+            case e.POSITION_UNAVAILABLE:
+                f.innerHTML = "Posisjon er utilgjengelig."
                 break;
-            case error.TIMEOUT:
-                x.innerHTML = "Du m&aring; bekrefte at du gir tillatelse til &aring; vise posisjon raskere."
+            case e.TIMEOUT:
+                f.innerHTML = "Du m&aring; bekrefte at du gir tillatelse til &aring; vise posisjon raskere."
                 break;
-            case error.UNKNOWN_ERROR:
-                x.innerHTML = "Ukjent feil."
+            case e.UNKNOWN_ERROR:
+                f.innerHTML = "Ukjent feil."
                 break;
         }
     }
     
-    function showPosition(position, updateHTML) {
-        var y = position.coords;
+    /*
+     * Show location results
+     */
+    function sl(p, u) {
+        var y = p.coords;
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
+            xhr = new XMLHttpRequest();
         }
         else {// code for IE6, IE5
              try {
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
             } catch (e) {
-                xmlhttp = false;
+                xhr = false;
             }
         }
-
-        var url = R.app.url + "r/" + query.id + "/" + query.phone + "/" + (5) + "/" + y.latitude + "/" + y.longitude + "/" + y.accuracy + "/" + y.altitude;
         
-        if (xmlhttp !== false) {
+        l.innerHTML = ps(p);
+
+        var url = R.app.url + "r/" + q.id + "/" + q.phone + "/" + (5) + "/" + y.latitude + "/" + y.longitude + "/" + y.accuracy + "/" + y.altitude;
+        
+        if (xhr !== false) {
             
-            xmlhttp.onreadystatechange = function() {
-                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                    if (updateHTML) {
-                        x.innerHTML = xmlhttp.responseText;
-                        clearTimeout(countID);
-                        sec.innerHTML = '';
-                        if (loadImg !== null)
-                            document.getElementById("img").removeChild(loadImg);            
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    if (u) {
+                        f.innerHTML = xhr.responseText;
+                        s.innerHTML = '';
+                        clearTimeout(cID);
+                        
+                        if (i !== null)
+                            document.getElementById("i").removeChild(i);
                     }
                 }
             }
 
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
+            xhr.open("GET", url, true);
+            xhr.send();
         }
         
         // Fallback for those not supporting XMLhttprequest
@@ -106,50 +160,84 @@ R.track.locate = function() {
             window.location = url;
         }
     }
+    
+    /**
+     * Print position
+     */
+    function ps(p) {
+        p = p.coords;
+        return 'Din posisjon er: ' + p.longitude.toFixed(4) + 'E, ' + p.latitude.toFixed(4) + 'N';
+    }
+    
 }
 
-navigator.geolocation.getAccurateCurrentPosition = function (geolocationSuccess, geolocationError, geoprogress, options) {
-    var lastCheckedPosition;
-    var locationEventCount = 0;
+/**
+ * Handle geolocation change.
+ * 
+ * @param function gls GeoLocation successfully found
+ * @param function gle GeoLocation error occured
+ * @param function gp Geolocation progress occured
+ * @param object o Options: {maxWait, desiredAccuracy, timeout}
+ * @returns void
+ */
+navigator.geolocation.change = function (gls, gle, gp, o) {
     
-    options = options || {};
+    var prev;
+    var ec = 0;
+    
+    o = o || {};
 
-    var checkLocation = function (position) {
-        lastCheckedPosition = position;
-        ++locationEventCount;
+    /*
+     * Handle location checks
+     */
+    var cl = function (p) {
+        prev = p;
+        ++ec;
         // We ignore the first event unless it's the only one received because some devices seem to send a cached
         // location even when maxaimumAge is set to zero
-        if ((position.coords.accuracy <= options.desiredAccuracy) && (locationEventCount > 0)) {
-            clearTimeout(timerID);
-            navigator.geolocation.clearWatch(watchID);
-            foundPosition(position);
+        if ((p.coords.accuracy <= o.desiredAccuracy) && (ec > 0)) {
+            clearTimeout(tID);
+            navigator.geolocation.clearWatch(wID);
+            fp(p);
         } else {
-            geoprogress(position);
+            gp(p);
         }
     }
 
-    var stopTrying = function () {
-        navigator.geolocation.clearWatch(watchID);
-        foundPosition(lastCheckedPosition);
+    /*
+     * Stop trying to get location fix.
+     */
+    var st = function () {
+        navigator.geolocation.clearWatch(wID);
+        fp(prev);
     }
 
-    var onError = function (error) {
-        clearTimeout(timerID);
-        navigator.geolocation.clearWatch(watchID);
-        geolocationError(error);
+    /*
+     * Handle error events
+     */
+    var oe = function (e) {
+        clearTimeout(tID);
+        navigator.geolocation.clearWatch(wID);
+        gle(e);
     }
 
-    var foundPosition = function (position) {
-        geolocationSuccess(position, true);
+    /*
+     * Handle found position
+     */
+    var fp = function (p) {
+        gls(p, true);
     }
 
-    if (!options.maxWait)            options.maxWait = query.wait; // Default 3 min
-    if (!options.desiredAccuracy)    options.desiredAccuracy = query.desiredAcc; // Default 20 meters
-    if (!options.timeout)            options.timeout = options.maxWait; // Default to maxWait
+    /*
+     * Prepare options
+     */
+    if (!o.maxWait)            o.maxWait = q.wait; // Default 3 min
+    if (!o.desiredAccuracy)    o.desiredAccuracy = q.desiredAcc; // Default 20 meters
+    if (!o.timeout)            o.timeout = o.maxWait; // Default to maxWait
 
-    options.maximumAge = query.age; // Accept that old positions
-    options.enableHighAccuracy = true; // Force high accuracy (otherwise, why are you using this function?)
+    o.maximumAge = q.age; // Accept that old positions
+    o.enableHighAccuracy = true; // Force high accuracy (otherwise, why are you using this function?)
 
-    var watchID = navigator.geolocation.watchPosition(checkLocation, onError, options);
-    var timerID = setTimeout(stopTrying, options.maxWait); // Set a timeout that will abandon the location loop
+    var wID = navigator.geolocation.watchPosition(cl, oe, o);
+    var tID = setTimeout(st, o.maxWait); // Set a timeout that will abandon the location loop
 }
