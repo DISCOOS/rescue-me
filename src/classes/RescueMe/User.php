@@ -89,13 +89,9 @@
          */
         public static function isEmpty() {
             
-            $result = DB::query("SELECT count(*) FROM `users`");
+            $res = DB::count(User::TABLE);
             
-            if (DB::isEmpty($result)) return false;
-            
-            $row = $result->fetch_row();
-
-            return !$row[0];
+            return $res == 0;
             
         }// isEmpty
         
@@ -536,7 +532,10 @@
          * @return boolean
          */
         public function allow($access, $object, $condition = null) {
-            // Is administrator?
+            
+            $allow = false;
+            
+            // TODO: Check if administrator            
             
             
             
@@ -555,16 +554,21 @@
                     break;
             }
             
-            // Is permission possible?
+            // Is permission check possible?
             if(isset($sql))
             {
                 $res = DB::query($sql);
                 
-                return DB::isEmpty($res) === false;
+                if(DB::isEmpty($res) === FALSE) {
+                    
+                    $row = $res->fetch_row();
+                    
+                    $allow = ($row[0] > 0);
+                    
+                }
             }
             
-            // Unknown permission
-            return false;
+            return $allow;
         }
         
         /**

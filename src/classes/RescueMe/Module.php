@@ -55,7 +55,7 @@
         public static function install() {
             $modules = array();
             foreach(Module::$required as $type => $impl) {
-                if(!self::exists($type)) {
+                if(self::exists($type) === FALSE) {
                     $module = new $impl;
                     $id = self::add($type, $impl, $module->config()->params());
                     $modules[$id] = self::get($id);
@@ -114,7 +114,7 @@
         {
             $filter = Module::filter($type, $user_id);
             
-            $res = DB::select(self::TABLE, "COUNT(*)", $filter);
+            $res = DB::select(self::TABLE, "module_id", $filter);
             
             return DB::isEmpty($res) === false;
         }

@@ -203,6 +203,30 @@
             return call_user_func_array("sprintf",  $params);
         }
 
+        
+        /**
+         * Get row count
+         * 
+         * @param string $table
+         * @param string $filter
+         * @return boolean|integer
+         */
+        public static function count($table, $filter="") 
+        {
+            $query = "SELECT COUNT(*) FROM `$table`";
+            
+            if($filter) $query .= " WHERE $filter";
+            
+            $res = DB::query($query);
+            
+            if(DB::isEmpty($res)) return false;
+            
+            $row = $res->fetch_row();
+
+            return $row[0];
+            
+        }// count
+        
 
         /**
          * Get selection from given table
@@ -280,9 +304,9 @@
          */
         public static function delete($table, $filter='')
         {
-            $query = "DELETE FROM `$table`";
+            $count = DB::count($table, $filter);
             
-            $count = DB::select($table,'COUNT(*)', $filter);
+            $query = "DELETE FROM `$table`";
             
             if($filter) $query .= " WHERE $filter";
             
