@@ -60,20 +60,20 @@
             $smsURL = utf8_decode
             (
                   'https://sveve.no/SMS/AccountAdm?cmd=sms_count'
-                . '$user='.$account['user']
+                . '&user='.$account['user']
                 .(!empty($account['passwd']) ? '&passwd='.$account['passwd'] : '')
             );            
             
             // Start request
             $response = $this->invoke($smsURL);
             
-            if(isset($response['msg_ok_count']) && is_numeric($response['msg_ok_count']) && $response['msg_ok_count']>0)
+            $valid = strtolower($response) !== strtolower('feil brukernavn/passord');
+            if($valid === false)
             {
-                return true;
+                $this->error['code'] = Provider::FATAL;
+                $this->error['message'] = $response;
             }
-            
-            return $this->errors($response['errors']);
-            
+            return $valid;
         }
 
         
@@ -109,13 +109,16 @@
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            $res = curl_exec($curl);
-
-            ## INIT XML
-            $res = substr($res, strpos($res, '<sms>'));
-            $response = $this->_SVEVESMS_XML2Array($res);
+            $res = trim(curl_exec($curl));
             
-            return $response['response'];
+            ## INIT XML?
+            $xml = substr($res, strpos($res, '<sms>'));
+            if($xml !== $res)
+            {
+                $xml = $this->_SVEVESMS_XML2Array($xml);
+                $res = $xml['response'];
+            }
+            return $res;
         }
         
         

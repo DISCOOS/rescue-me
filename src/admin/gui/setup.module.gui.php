@@ -46,7 +46,15 @@ else
         );
     }
     
-    $label = _($module->type).": "._(isset($_GET['type']) ? $_GET['type'] : $module->impl);
+    // Prepare label and action url
+    $label = _($module->type).': ';
+    $action = ADMIN_URI."setup/module/$id";
+    if(isset($_GET['type'])) {
+        $action .= '?type='.$_GET['type'];
+        $label .= $_GET['type'];
+    } else {
+        $label .= $module->impl;
+    }
     
-    insert_form("module", $label, $fields, ADMIN_URI."setup/module/$id", $_ROUTER);
+    insert_form("module", $label, $fields, $action, $_ROUTER);
 }             
