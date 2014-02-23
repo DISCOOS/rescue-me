@@ -6,6 +6,7 @@
     use RescueMe\Missing;
     use RescueMe\Operation;
     use RescueMe\Properties;
+    use RescueMe\Roles;
 
     // Verify logon information
     $user = new User();
@@ -188,6 +189,7 @@
                 }
                 
                 $status = User::create($_POST['name'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['mobile']);
+                Roles::grant((int)$_POST['role'], $status->id);
                 if($status) {
                     header("Location: ".ADMIN_URI.'user/list');
                     exit();
@@ -214,7 +216,7 @@
                     $_ROUTER['message'] = 'Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn';
                 }
                 
-                if($user->update($_POST['name'], $_POST['email'], $_POST['country'], $_POST['mobile'])) {
+                if($user->update($_POST['name'], $_POST['email'], $_POST['country'], $_POST['mobile']) && Roles::grant((int)$_POST['role'], $id)) {
                     header("Location: ".ADMIN_URI.'user/list');
                     exit();
                 }
@@ -295,6 +297,52 @@
                 $_ROUTER['message'] = "User id is missing";
             }
             
+            break;
+            
+        case 'roles':
+            if (!$user->allow('read', 'roles')) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = _("Du mangler tilgang!");
+            }
+            else {
+                $_ROUTER['name'] = _('Roles');
+                $_ROUTER['view'] = $_GET['view'];
+            }
+            break;
+        
+        case 'roles/list':
+            if (!$user->allow('read', 'roles')) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = _("Du mangler tilgang!");
+            }
+            else {
+                $_ROUTER['name'] = _('Roles');
+                $_ROUTER['view'] = $_GET['view'];
+            }
+            break;
+        
+        case 'roles/edit':
+            if (!$user->allow('write', 'roles')) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = _("Du mangler tilgang!");
+            }
+            else {
+                $id = $_GET['id'];
+                $_ROUTER['name'] = _('Roles');
+                $_ROUTER['view'] = $_GET['view'];
+
+                // Process form?
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {               
+                    if(Roles::update($_POST['role_id'], $_POST['role'])) {
+                        header("Location: ".ADMIN_URI.'roles/list');
+                        exit();
+                    }
+                    $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Oppdatering ikke gjennomført, prøv igjen.';
+                }   
+            }
             break;
             
         case 'password/change':
@@ -450,7 +498,7 @@
             $_ROUTER['name'] = MISSING_PERSON;
             $_ROUTER['view'] = $_GET['view'];
             
-            if (!$user->allow('read', 'missing', $_GET['id'])) {
+            if (!$user->allow('read', 'operation', $_GET['id'])) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = _("Du mangler tilgang!");
@@ -476,7 +524,7 @@
                 $_ROUTER['message'] = "Id not found.";
 
             } 
-            if (!$user->allow('write', 'missing', $_GET['id'])) {
+            if (!$user->allow('write', 'operation', $_GET['id'])) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = _("Du mangler tilgang!");
@@ -545,7 +593,7 @@
                 $_ROUTER['message'] = "Id not found.";
 
             }
-            if (!$user->allow('write', 'missing', $_GET['id'])) {
+            if (!$user->allow('write', 'operation', $_GET['id'])) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = _("Du mangler tilgang!");

@@ -59,6 +59,13 @@
         'attributes' => 'required equalTo="#password"'
     );    
     $fields[] = $group;
+    $fields[] = array(
+        'id' => 'role',
+        'type' => 'select',
+        'value' => insert_options(\RescueMe\Roles::getAll(), '', false), 
+        'label' => _('Role'),
+        'attributes' => 'required'
+    );
 
     insert_form("user", _(NEW_USER), $fields, ADMIN_URI."user/new");
     

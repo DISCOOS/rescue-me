@@ -127,10 +127,17 @@ if(defined('USE_SILEX') && USE_SILEX) {
                     <li class="dropdown">
                         <a id="drop2" class="dropdown-toggle" data-toggle="dropdown"><?= SYSTEM ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                            <?  insert_item(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign"); ?>
+                            <? if ($user->allow('write', 'users')) { 
+                                insert_item(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign"); ?>
                             <li class="divider"></li>
+                            <? } if ($user->allow('read', 'users')) { ?>
                             <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
                             <li class="divider"></li>
+                            <? }
+                            if ($user->allow('read', 'roles')) { ?>
+                            <li id="roles"><a role="menuitem" href="<?= ADMIN_URI ?>roles/list"><b class="icon icon-th-list"></b><?= _('Roles') ?></a></li>
+                            <li class="divider"></li>
+                            <? } ?>
                             <li id="settings"><a href="<?= ADMIN_URI ?>setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
                             <li class="divider"></li>
                             <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?= _('Logs') ?></a></li>

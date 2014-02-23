@@ -81,6 +81,8 @@
          */
         public $mobile_country;
         
+        public $role;
+        
         
         /**
          * Check if one or more users exist
@@ -177,7 +179,7 @@
          */
         public static function get($id) {
             
-            $res = DB::select(self::TABLE,'*', "`user_id` = $id");
+            $res = DB::select(self::TABLE,'*', "`user_id` = ".(int)$id);
             
             if (DB::isEmpty($res)) return false;
             
@@ -193,6 +195,8 @@
             }
             
             $user->id = (int)$id;
+            $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$id);
+            $user->role = (int)$res->fetch_array()[0];
             
             return $user;
             
@@ -536,9 +540,14 @@
             $allow = false;
             
             // TODO: Check if administrator            
+                        
+            if ($user->role === NULL)
+                $user = self::get(self::currentId());
+            $perms = Roles::getPermissionsForRole($user->role);
+           
+            return (isset($perms[$object.'.'.$access]));
             
-            
-            
+            /*
             // Check conditions
             switch($object) {
                 case 'operation':
@@ -569,6 +578,7 @@
             }
             
             return $allow;
+             */
         }
         
         /**

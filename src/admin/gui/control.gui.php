@@ -59,7 +59,8 @@
     <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
     <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>" 
            placeholder="<?= isset($placeholder) ? $placeholder : $label ?>" 
-           class="input-block-level" <?= $attributes ?> value="<?= $value ?>">
+           class="input-block-level" <?= $attributes ?> 
+           <?php echo ($type==='checkbox' && $value === 'checked' ? 'checked="checked' : 'value="'.$value); ?>">
 </div>
 
 <? } ?>
