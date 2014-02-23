@@ -87,23 +87,43 @@
          * Close given operation
          * 
          * @param integer $id Operation id
+         * @param array $update Operation values
+         * 
          * @return boolean
          */
-        public static function closeOperation($id, $op_name = false) {
+        public static function closeOperation($id, $update = array()) {
+            
+            // Anonymize operation
+            if (isset($update['op_name']) === FALSE) {
+                $op_name = date('Y-m-d');
+            } else {
+                $op_name = $update['op_name'];
+            }
+            
+            // Overwrite existing values
+            $update = array_merge(
+                $update, 
+                prepare_values(
+                    array('op_closed','op_name'), 
+                    array('NOW()', $op_name)
+                )
+            );
+            
+            // Limit to legal values
+            $values = array();
+            foreach(self::$fields as $field) {
+                if(isset($update[$field])) {
+                    $values[$field] = $update[$field];
+                }
+            }
+                
 
             // Close operation
-            $res = DB::update(self::TABLE,array('op_closed' => 'NOW()'), "`op_id`=" . (int) $id);
+            $res = DB::update(self::TABLE, $values, "`op_id`=" . (int) $id);
 
             if($res === FALSE) {
                 return $this->error("Failed to close operation $id");
             }
-
-            // Anonymize operation
-            if ($op_name === FALSE) {
-                $op_name = date('Y-m-d');
-            }
-
-            Operation::set($id, 'op_name', $op_name);
 
             Logs::write(
                 Logs::TRACE, 

@@ -8,7 +8,7 @@
 
     if($missing !== false)
     {
-        Operation::getOperation($missing->op_id);
+        $operation = Operation::getOperation($missing->op_id);
         $user = User::get($operation->user_id);
         
         if(isset($_ROUTER['message'])) { 

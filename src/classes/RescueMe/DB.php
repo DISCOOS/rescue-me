@@ -319,6 +319,7 @@
                 Logs::write(Logs::DB, LogLevel::INFO, "Deleted $count rows from $table");
             }
             
+            return true;
             
         }// delete        
         
@@ -329,7 +330,7 @@
          * @param string $table
          * @param array $values
          * @param string $filter
-         * @return boolean
+         * @return boolean TRUE on success, FALSE otherswise.
          */
         public static function update($table, $values, $filter) 
         {
@@ -352,6 +353,7 @@
                 Logs::write(Logs::DB, LogLevel::INFO, 'Updated ' . count($values) . " values in $table");
             }
             
+            return true;
             
         }// update
         

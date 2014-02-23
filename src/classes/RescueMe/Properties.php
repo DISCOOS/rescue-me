@@ -38,6 +38,10 @@
         
         const LOCATION_DESIRED_ACC = "location.desired.accuracy";
         
+        const LOCATION_APPCACHE = "location.appcache";
+        const LOCATION_APPCACHE_VERSION = "version";
+        const LOCATION_APPCACHE_SETTINGS = "settings";
+        
         const SMS_REQUIRE = 'sms.require';
         const SMS_REQUIRE_MULTIPLE = 'multiple';
         const SMS_REQUIRE_UNICODE = 'unicode';
@@ -65,23 +69,33 @@
             
             self::LOCATION_MAX_AGE => array(
                 'type' => 'text',
-                'default' => '900000',
+                'default' => 900000,
                 'options' => false,
                 'description' => "Don't use positions older than maximum age (milliseconds)."
             ),
             
             self::LOCATION_MAX_WAIT => array(
                 'type' => 'text',
-                'default' => '180000',
+                'default' => 600000,
                 'options' => false,
                 'description' => "Give up finding location after maximum time (milliseconds)."
             ),
             
             self::LOCATION_DESIRED_ACC => array(
                 'type' => 'text',
-                'default' => '100',
+                'default' => 100,
                 'options' => false,
                 'description' => "Track until location with accuracy is found (meter)."
+            ),
+            
+            self::LOCATION_APPCACHE => array(
+                'type' => 'select',
+                'default' => 'none',
+                'options' => array(                   
+                    'none' => 'None',
+                    self::LOCATION_APPCACHE_SETTINGS => 'Settings'
+                 ),
+                'description' => "Make locate script available offline with HTML5 appcache."
             ),
             
             self::SMS_SENDER_ID => array(
@@ -452,7 +466,7 @@
                 case self::LOCATION_MAX_WAIT:
                 case self::LOCATION_DESIRED_ACC:
 
-                    if(!is_numeric($value)) {
+                    if(is_numeric($value) === false) {
                         return '"'.$value.'" is not a number';
                     }                        
 
@@ -460,12 +474,13 @@
                     
                 case self::SMS_REQUIRE:
                     
-                    if(empty($value)) {
+                    if(empty($value) === FALSE) {
                         return true;
                     }
                     
                 case self::SMS_OPTIMIZE:
                 case self::MAP_DEFAULT_BASE:
+                case self::LOCATION_APPCACHE:
                     
                     $array = is_array($value) ? $value : explode(",", $value);
                     

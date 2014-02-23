@@ -348,14 +348,14 @@
             }
             
             if (!$user->allow('write', 'operation', $_GET['id'])) {
+                
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = _("Du mangler tilgang!");
+                
             } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $operation = new RescueMe\Operation;
-                RescueMe\Operation::set($_GET['id'], 'op_ref', $_POST['op_ref']);
-                RescueMe\Operation::set($_GET['id'], 'op_comments', $_POST['op_comments']);
-                $status = RescueMe\Operation::closeOperation($_GET['id'], $_POST['op_name']);
+                
+                $status = RescueMe\Operation::closeOperation($_GET['id'], $_POST);
                 
                 $missings = Operation::getOperation($_GET['id'])->getAllMissing();
                 if($missings !== FALSE) {
@@ -399,7 +399,11 @@
                 $_ROUTER['message'] = _("Du mangler tilgang!");                
             } else {
 
-                header("Location: ".ADMIN_URI."missing/edit/{$_GET['id']}?reopen");
+                $operation = Operation::getOperation($_GET['id']);
+                $missings = $operation->getAllMissing();
+                $missing = reset($missings);
+                $missing_id = $missing->id;
+                header("Location: ".ADMIN_URI."missing/edit/{$missing_id}?reopen");
                 exit();
                 
             }
@@ -490,12 +494,14 @@
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         if($closed) {
-                            if(!Operation::reopenOperation($_GET['id'])) {
+                            if(Operation::reopenOperation($missing->op_id) === FALSE) {
                                 $_ROUTER['message'] = "Failed to reopen operation [{$missing->op_id}].";
                             }                        
                         }
-                        if(!isset($_ROUTER['message'])) {
-                            if($missing->updateMissing( $_POST['m_name'], $_POST['m_mobile_country'], $_POST['m_mobile'])) {
+                        
+                        if(isset($_ROUTER['message']) === false) {
+                            
+                            if($missing->updateMissing($_POST['m_name'], $_POST['m_mobile_country'], $_POST['m_mobile'])) {
 
                                 if(isset($_POST['resend'])) {
 
@@ -504,12 +510,11 @@
                                     }
                                 } 
 
-                                if(!isset($_ROUTER['message'])){
+                                if(isset($_ROUTER['message']) === FALSE){
                                     header("Location: ".ADMIN_URI."missing/list");
                                     exit();
                                 }
-
-                            } 
+                            }                            
                         }
                     }
                     

@@ -2,6 +2,8 @@ Options +FollowSymlinks -Indexes
 
 AddDefaultCharset off
 
+AddType application/x-httpd-php .appcache
+
 <IfModule mod_php5.c>
     
     php_value short_open_tag 1
@@ -23,20 +25,31 @@ AddDefaultCharset off
     # Rewrite sms callbacks
     RewriteRule ^sms/callback/([0-9]+)(.*)$ sms.php?request=callback&user=$1&$2 [QSA,L]
 
+    # Location request - appcache
+    RewriteCond %{SCRIPT_FILENAME} !-d  
+    RewriteCond %{SCRIPT_FILENAME} !-f  
+    RewriteRule ^l/([0-9]+)/.*appcache$ track/locate.appcache.php?id=$1 [L]
+    
+    # Location request - images
+    RewriteCond %{SCRIPT_FILENAME} !-d  
+    RewriteCond %{SCRIPT_FILENAME} !-f  
+    RewriteRule ^l/.*img/(.*)$ img/$1 [L]
+    
     # Location request - first try
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
     RewriteRule ^l/([0-9]+)/([0-9]*)$ track/locate.php?id=$1&phone=$2 [L]
 
-    # Location request - repeated tries
-    RewriteCond %{SCRIPT_FILENAME} !-d  
-    RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^l/([0-9]+)/([0-9]*)/([0-9]+)?$ track/locate.php?id=$1&phone=$2&attempt=$3 [L]
-
     # Location response
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^r/([0-9]+)/([0-9]*)/([0-9]+)/(.*)/(.*)/(.*)/(.+)$ track/report.php?id=$1&phone=$2&attempt=$3&lat=$4&lon=$5&acc=$6&alt=$7 [L]
+    RewriteRule ^r/([0-9]+)/([0-9]*)/(.*)/(.*)/(.*)/(.+)$ track/report.php?id=$1&phone=$2&lat=$3&lon=$4&acc=$5&alt=$6 [L]
+
+    # Location request - abort
+    RewriteCond %{SCRIPT_FILENAME} !-d  
+    RewriteCond %{SCRIPT_FILENAME} !-f  
+    RewriteRule ^a/([0-9]+)/([0-9]*)$ track/abort.php?id=$1&phone=$2 [L]
+
     
     
 </IfModule>
