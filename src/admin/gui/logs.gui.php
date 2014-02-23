@@ -70,7 +70,7 @@
 <? } ?>                                        
                     <td class="hidden-phone"><?= $row['level'] ?></td>
                     <td><?= $row['message'] ?></td>
-                    <td colspan="2"><?= empty($row['user']) ? _(System) : $row['user'] ?></td>
+                    <td colspan="2"><?= empty($row['user']) ? _('System') : $row['user'] ?></td>
                 </tr>
 <? }} ?>
                 

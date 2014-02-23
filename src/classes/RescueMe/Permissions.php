@@ -12,9 +12,6 @@
     
     namespace RescueMe;
     
-    use \Psr\Log\LogLevel;
-    use \RescueMe\Log\Logs;
-    
     /**
      * Permissions class
      * 
@@ -23,7 +20,7 @@
     class Permissions
     {
         private static $permissions = array(
-                                      'operation'=>array('read', 'write'), 
+                                      'operations'=>array('read', 'write'), 
                                       'logs'=>array('read'), 
                                       'users'=>array('read', 'write'),
                                       'settings'=>array('read', 'write'),

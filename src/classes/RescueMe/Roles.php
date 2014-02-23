@@ -12,9 +12,6 @@
     
     namespace RescueMe;
     
-    use \Psr\Log\LogLevel;
-    use \RescueMe\Log\Logs;
-    
     /**
      * Roles class
      * 
@@ -119,14 +116,34 @@
         public static function getPermissionsForRole($role_id) {
             $filter = '`role_id` = '.(int)$role_id."";
             
-            $res = DB::select('permissions', array('perm', 'value'), $filter, 'perm');
+            $res = DB::select('permissions', array('resource', 'access'), $filter, 'resource');
             
             $perms = array();
             while ($row = $res->fetch_assoc()) {
-                $perms[$row['perm'].'.'.$row['value']] = true;
+                $perms[$row['resource'].'.'.$row['access']] = true;
             }
             return $perms;
         }
+        
+        /**
+         * Get permissions for a role
+         * 
+         * @param string $role Role
+         * @return boolean|array
+         * 
+         */
+        public static function getPermissionsForUser($user_id) {
+            $filter = '`user_id` = '.(int)$user_id."";
+            
+            $res = DB::select('permissions', array('resource', 'access'), $filter, 'resource');
+            
+            $perms = array();
+            while ($row = $res->fetch_assoc()) {
+                $perms[$row['resource'].'.'.$row['access']] = true;
+            }
+            return $perms;
+        }
+        
         
         /**
          * Update permissions for a role
@@ -136,13 +153,14 @@
          * @return boolean
          */
         public static function update($role_id, $permissions) {
+            
             $filter = '`role_id` = '.(int)$role_id."";
             
-            $res = DB::delete("permissions", "role_id = ".(int)$role_id);
+            $res = DB::delete("permissions", $filter);
             
-            foreach ($permissions as $key => $value) {
+            foreach (array_keys($permissions) as $key) {
                 $perm = explode('.', $key);
-                $res = DB::insert("permissions", array('perm' => $perm[0], 'value' => $perm[1], 'role_id' => (int)$role_id));
+                $res = DB::insert("permissions", array('resource' => $perm[0], 'access' => $perm[1], 'role_id' => (int)$role_id));
                 
                 $res = DB::isEmpty($res) !== false;
                 

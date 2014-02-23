@@ -395,7 +395,7 @@
                 $_ROUTER['message'] = "Operasjon [{$_GET['id']}] finnes ikke.";
             }
             
-            if (!$user->allow('write', 'operation', $_GET['id'])) {
+            if (!$user->allow('write', 'operations', $_GET['id'])) {
                 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -441,7 +441,7 @@
                 $_ROUTER['message'] = "Operasjon [{$_GET['id']}] finnes ikke.";
             }
             
-            if (!$user->allow('write', 'operation', $_GET['id'])) {
+            if (!$user->allow('write', 'operations', $_GET['id'])) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = _("Du mangler tilgang!");                
@@ -498,7 +498,7 @@
             $_ROUTER['name'] = MISSING_PERSON;
             $_ROUTER['view'] = $_GET['view'];
             
-            if (!$user->allow('read', 'operation', $_GET['id'])) {
+            if (!$user->allow('read', 'operations', $_GET['id'])) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = _("Du mangler tilgang!");
@@ -524,7 +524,7 @@
                 $_ROUTER['message'] = "Id not found.";
 
             } 
-            if (!$user->allow('write', 'operation', $_GET['id'])) {
+            if (!$user->allow('write', 'operations', $_GET['id'])) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = _("Du mangler tilgang!");
@@ -593,7 +593,7 @@
                 $_ROUTER['message'] = "Id not found.";
 
             }
-            if (!$user->allow('write', 'operation', $_GET['id'])) {
+            if (!$user->allow('write', 'operations', $_GET['id'])) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = _("Du mangler tilgang!");

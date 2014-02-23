@@ -1,7 +1,6 @@
 <?  
     use RescueMe\Roles;
     use RescueMe\Permissions;
-    use \RescueMe\Locale;
     
     if(isset($_ROUTER['message'])) { 
         insert_error($_ROUTER['message']);
@@ -12,13 +11,14 @@
         
     $fields = array();
     
-    foreach ($all_perms as $key=>$value) {
-        foreach ($value as $key2=>$value2) {
+    foreach ($all_perms as $resource=>$permission) {
+        foreach ($permission as $access) {
+            $name = "$resource.$access";
             $fields[] = array(
-                'id' => 'role['.$key.'.'.$value2.']',
+                'id' => "role[$name]",
                 'type' => 'checkbox',
-                'value' => ($active_perms[$key.'.'.$value2] ? 'checked': ''),
-                'label' => $key.'.'.$value2
+                'value' => (isset($active_perms[$name]) ? 'checked': ''),
+                'label' => $name
             );
         }
     }
@@ -29,6 +29,8 @@
         'value' => $id
     );    
     
-    insert_form("roles", _('Edit role'). ': '.Roles::getAll()[$id], $fields, ADMIN_URI."roles/edit/$id");
+    $role = Roles::getAll();
+    
+    insert_form("roles", _('Edit role'). ': '.$role[$id], $fields, ADMIN_URI."roles/edit/$id");
     
 ?>

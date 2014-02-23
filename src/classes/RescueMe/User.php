@@ -174,10 +174,11 @@
          * Get user with given id
          * 
          * @param integer $id User id
+         * @param \RescueMe\User Update user instance
          * 
          * @return boolean|\RescueMe\User
          */
-        public static function get($id) {
+        public static function get($id, $user = null) {
             
             $res = DB::select(self::TABLE,'*', "`user_id` = ".(int)$id);
             
@@ -185,7 +186,9 @@
             
             $exclude = array("user_id", 'password');
 
-            $user = new User();
+            if($user === null) {
+                $user = new User();
+            }
             $row = $res->fetch_assoc();
             foreach($row as $property => $value){
                 
@@ -196,7 +199,10 @@
             
             $user->id = (int)$id;
             $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$id);
-            $user->role = (int)$res->fetch_array()[0];
+            if(DB::isEmpty($res) === FALSE) {
+                $row = $res->fetch_array();
+                $user->role = (int)$row[0];
+            }
             
             return $user;
             
@@ -531,21 +537,16 @@
          * Check if a user is authorized to access given object
          * 
          * @param string $access read/write
-         * @param string $object Check permission to given object
-         * @param mixed $condition Conditional access value
+         * @param string $resource resource to access
          * @return boolean
          */
-        public function allow($access, $object, $condition = null) {
-            
-            $allow = false;
+        public function allow($access, $resource) {
             
             // TODO: Check if administrator            
                         
-            if ($user->role === NULL)
-                $user = self::get(self::currentId());
-            $perms = Roles::getPermissionsForRole($user->role);
+            $perms = Roles::getPermissionsForUser($this->id);
            
-            return (isset($perms[$object.'.'.$access]));
+            return (isset($perms[$resource.'.'.$access]));
             
             /*
             // Check conditions

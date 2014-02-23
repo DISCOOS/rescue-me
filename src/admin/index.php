@@ -132,15 +132,13 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <li class="divider"></li>
                             <? } if ($user->allow('read', 'users')) { ?>
                             <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
-                            <li class="divider"></li>
-                            <? }
-                            if ($user->allow('read', 'roles')) { ?>
+                            <? } if ($user->allow('read', 'roles')) { ?>
                             <li id="roles"><a role="menuitem" href="<?= ADMIN_URI ?>roles/list"><b class="icon icon-th-list"></b><?= _('Roles') ?></a></li>
+                            <? } if ($user->allow('read', 'logs')) { ?>
+                            <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?= _('Logs') ?></a></li>
                             <li class="divider"></li>
                             <? } ?>
                             <li id="settings"><a href="<?= ADMIN_URI ?>setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
-                            <li class="divider"></li>
-                            <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?= _('Logs') ?></a></li>
                             <li class="divider"></li>                            
                             <li id="logout"><a data-toggle="modal" href="#confirm"><b class="icon icon-eject"></b><?= LOGOUT ?></a></li>
                         </ul>
