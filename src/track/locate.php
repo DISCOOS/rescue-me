@@ -37,6 +37,7 @@
         $options['track']['phone'] = $phone;
         $options['track']['name'] = $missing->name;
         $options['track']['delay'] = $delay;
+        $options['track']['msg'] = get_messages();
         
         $country = $missing->alert_mobile['country'];
         if(($code = Locale::getDialCode($country)) === FALSE)
@@ -58,18 +59,39 @@
 <html <?=$manifest?>><head><title><?=TITLE?></title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
 <script id="track"><?=$js?></script></head>
 <body onLoad="R.track.locate();">
-<div align="center"><div style="max-width: 400px; min-height: 100px; position: relative;">
-<div id="f"><?=$message?></div><span id="i"></span><br /><span id="s"></span></div>
-<hr /><div id="l" style="max-width: 400px; min-height: 50px; position: relative;"></div>
-<div style="max-width: 400px; position: relative;">
-<a href style="position: absolute; left: 0; bottom: 0;">Oppdater</a>
-<a href="<?=APP_URI?>a/<?=$_GET['id']?>/<?=$_GET['phone']?>" onclick="return confirm('Er du sikker?');" style="position: absolute; right: 0; bottom: 0;">Avbryt</a>
-</div>
+<div align="center"><div style="max-width: 400px; min-height: 100px;">
+<div id="f" style="margin-bottom: 10px"><?=$message?></div><span id="i"></span><br /><span id="s"></span></div>
+<hr />
+<div id="l" style="margin-bottom: 10px"></div>
+<a href="<?=APP_URI?>a/<?=$_GET['id']?>/<?=$_GET['phone']?>" onclick="return confirm('Er du sikker?');">Avbryt</a>
 </div>
 </body>    
-<? } else { ?>
+<? } else {
 
-<? insert_alert(_("Missing not found")) ?>
+    insert_alert(_("Missing not found"));
 
-<? } ?>
+} ?>
 </html>
+
+<? 
+    function get_messages() {
+        $msg = array();
+        $msg[0] = _('Lokalisering støttes ikke.');
+        $msg[1] = _('Fant posisjon med &#177;{0} m nøyaktighet.');
+        $msg[2] = _('Posisjon er gammel, sjekk om GPS er påslått!');
+        $msg[3] = _('Søker nøyaktigere posisjon...');
+        $msg[4] = _('Slå på tilgang til stedsinformasjon!');
+        $msg[5] = _('Posisjon er utilgjengelig.');
+        $msg[6] = _('Bekreft tillatelse til å vise posisjon raskere.');
+        $msg[7] = _('Ukjent feil.');
+        $msg[8] = _('Posisjon: <b>{0}</b>');
+        $msg[9] = _('Beregner posisjon...');
+        $msg[10] = _('Posisjon ikke sendt, sjekk datakobling.');
+        $msg[11] = _('Send posisjon som');
+        $msg[12] = _('Fant ingen posisjon.');
+        $msg[13] = _('Oppdater');
+        return $msg;
+    }
+    
+?>
+

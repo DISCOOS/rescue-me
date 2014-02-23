@@ -3,11 +3,17 @@
  */
 R = install;
 
+
 /*
- * Get guery from track url
+ * Get track options
  */
 var q = R.track;
 
+
+/*
+ * Get track messages
+ */
+var msg = R.track.msg;
 
 /**
  * Document reference
@@ -15,11 +21,21 @@ var q = R.track;
 var d = document;
 
 
-
 /*
  * Define reference
  */
 var ngl = navigator.geolocation;
+
+
+/*
+ * Last known position 
+ */
+var lc = null;
+
+/*
+ * Last known position accuracy
+ */
+var la = Infinity;
 
 
 /**
@@ -80,11 +96,10 @@ R.track.locate = function() {
         s.innerHTML = pt(w);
         cID = setTimeout(cd, 1000);
         
-    }
-    else {
-        f.innerHTML = "Lokalisering st&oslash;ttes ikke av din telefon.";
-    }
-    
+    } else {
+        // 'Location not supported on this device'
+        f.innerHTML = msg[1];
+    }    
     
     
     /*
@@ -94,13 +109,14 @@ R.track.locate = function() {
      */
     function sp(c, a) {
         
-        var m = 'Fant posisjon med '+Math.ceil(c.accuracy)+ ' m n&oslash;yaktighet... <br />';
+        // Notify position found with given accuracy
+        var m = msg[1].replace('{0}',Math.ceil(c.accuracy)) + '... <br />';
         
         // Tell client to check if GPS is off?
-        if(a > q.age) m += 'Posisjon er for gammel, sjekk om GPS er påslått!';
+        if(a > q.age) m += msg[2] + '<br />';
         
         // Continue listen for position changes    
-        m += 'Søker etter mer nøyaktig posisjon, vent litt...';
+        m += msg[3] + '<br />';
             
         // Update views
         f.innerHTML = m;        
@@ -119,7 +135,15 @@ R.track.locate = function() {
         else {
             s.innerHTML = '';
             i.innerHTML = '';
+            f.innerHTML = (lc === null ? msg[12] : pm(lc)) + rt();
         }
+    }
+    
+    /**
+     * Insert retry url
+     */
+    function rt() {
+        return '<p><a href>'+msg[13]+'</a></p>';
     }
 
     /*
@@ -128,16 +152,16 @@ R.track.locate = function() {
     function se(e) {
         switch (e.code) {
             case e.PERMISSION_DENIED:
-                f.innerHTML = "Du m&aring; sl&aring p&aring tilgang til &aring dele posisjonen din (systeminnstilling).";
+                f.innerHTML = msg[4];
                 break;
             case e.POSITION_UNAVAILABLE:
-                f.innerHTML = "Posisjon er utilgjengelig.";
+                f.innerHTML = msg[5];
                 break;
             case e.TIMEOUT:
-                f.innerHTML = "Du m&aring; bekrefte at du gir tillatelse til &aring; vise posisjon raskere.";
+                f.innerHTML = msg[6];
                 break;
             case e.UNKNOWN_ERROR:
-                f.innerHTML = "Ukjent feil.";
+                f.innerHTML = msg[7];
                 break;
         }
     }
@@ -167,27 +191,34 @@ R.track.locate = function() {
             
             xhr.onreadystatechange = function() {
                 
-                if (xhr.readyState === 4 && xhr.status === 200) {
+                if (xhr.readyState === 4) {
                     
-                    // Update message with response text?
-                    if(u) {
-                        f.innerHTML = xhr.responseText;
-                        s.innerHTML = '';
-                        i.innerHTML = '';
-                        clearTimeout(cID);                        
+                    if(xhr.status === 200) {
+                        // Update message with response text?
+                        if(u) {
+                            f.innerHTML = xhr.responseText + rt();
+                            s.innerHTML = '';
+                            i.innerHTML = '';
+                            clearTimeout(cID);                        
+                        } 
+                    } else {
+                        f.innerHTML = msg[10];
                     }
                 }
             }
 
             xhr.open("GET", url, true);
-            xhr.send();                
+            xhr.send();
             
-        }
-        
-        // Fallback for those not supporting XMLhttprequest
-        // Known: WP 7.8
-        else if (c.accuracy < 300) {
-            window.location = url;
+            // Detect connection timeouts
+            xhr.timeout = w;
+            xhr.ontimeout = function() { f.innerHTML = msg[10]; };
+          
+        // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
+        } else if (c.accuracy < 300) {
+            
+            // No error reporting implemented!!
+            window.location = url;            
         }
     }
     
@@ -197,12 +228,20 @@ R.track.locate = function() {
      */
     function ps(c) {
         var l = c.longitude.toFixed(4) + 'E ' + c.latitude.toFixed(4) + 'N';
+        return msg[8].replace('{0}',l);
+    }
+    
+    
+    /**
+     * Print SMS link
+     */
+    function pm(c) {
+        var l = c.longitude.toFixed(4) + 'E ' + c.latitude.toFixed(4) + 'N';
         var u = q.id + '|' + q.phone + '|' + l + '|' + q.name;
         var ua = navigator.userAgent.toLowerCase();
         var d = (ua.indexOf("iphone") > -1 || ua.indexOf("ipad") > -1) ? ';' : '?';
-        return 'Posisjon: <b>' + l + '</b> (<a href="sms:' + q.to + d + 'body=' + u + '">sms</a>)';
+        return msg[11]+' <a href="sms:'+q.to+d+'body='+u+'">SMS</a>';
     }
-    
     
     /**
      * Print time in minutes and seconds
@@ -228,10 +267,6 @@ R.track.locate = function() {
  * @returns void
  */
 R.track.change = function (gf, ge, gp, o) {
-
-    var lc;
-
-    var la = Infinity;
 
     o = o || {};
 
@@ -295,7 +330,7 @@ R.track.change = function (gf, ge, gp, o) {
 
     var wID = ngl.watchPosition(hc, he, o);
 
-    f.innerHTML = 'Beregner posisjon...';
+    f.innerHTML = msg[9];
 
     var tID = setTimeout(st, o.wait); // Set a timeout that will abandon the location loop
 };
