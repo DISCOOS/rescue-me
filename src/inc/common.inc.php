@@ -27,13 +27,14 @@
                 $missing[] = $key;
             }
         }
-        if(!empty($missing)) {
+        $valid = empty($missing);
+        if($valid === FALSE) {
             if($message) {
                 $message .= ". ";
             }
             Logs::write($log, $level, $message. "Missing values: ". implode(", ", $missing));
         }
-        return empty($missing) === FALSE;
+        return $valid;
     }
     
 
