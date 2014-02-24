@@ -608,7 +608,7 @@
             
             $allow = isset($perms[$resource.'.'.$access]);
             
-            if($allow) {
+            if($allow && $condition !== null) {
 
                 // Check conditions
                 switch($resource) {
