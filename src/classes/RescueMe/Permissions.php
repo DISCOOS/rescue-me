@@ -19,6 +19,15 @@
      */
     class Permissions
     {
+        const TABLE = 'permissions';
+        
+        private static $fields = array(
+            'role_id',
+            'user_id',
+            'access',
+            'resource'
+        );
+        
         private static $permissions = array(
                                       'operations'=>array('read', 'write'), 
                                       'logs'=>array('read'), 
@@ -36,5 +45,59 @@
             return self::$permissions ;
             
         }// getAll 
+        
+        
+        /**
+         * Check if permission is granted
+         * 
+         * @param integer $role_id Role id
+         * @param integer $user_id User id
+         * @param string $access Access operation
+         * @param string $resource Resource name
+         * 
+         * @return boolean
+         */
+        public static function allow($role_id, $user_id, $access, $resource) {
+            $filter = "(`user_id`={$user_id} OR `role_id`={$role_id}) AND `access`='$access' AND `resource`='$resource'";
+            $res = DB::count(self::TABLE, $filter);
+            return $res !== false && $res > 0;
+        }
+        
+        
+        /**
+         * Grant permission to role or user
+         * 
+         * @param integer $role_id Role
+         * @param integer $user_id User id
+         * @param string $access Access operation
+         * @param string $resource Resource name
+         * 
+         * @return boolean
+         */
+        public static function grant($role_id, $user_id, $access, $resource) {
+            $res = false;
+            if(self::allow($role_id, $user_id, $access, $resource) === false) {
+                $values = prepare_values(self::$fields, array($role_id, $user_id, $access, $resource));
+                $res = DB::insert(self::TABLE, $values);
+                $res = $res !== false;
+            }
+            return $res;            
+        }        
+        
+        
+        /**
+         * Revoke permission from role or user
+         * 
+         * @param integer $role_id Role
+         * @param integer $user_id User id
+         * @param string $access Access operation
+         * @param string $resource Resource name
+         * 
+         * @return boolean
+         */
+        public static function revoke($role_id, $user_id, $access, $resource) {
+            $filter = "(user_id={$user_id} OR `role_id`={$role_id}) AND `access` = $access AND `resource`=$resource";
+            return DB::delete(self::TABLE, $filter);
+        }        
         
     }// Permissions

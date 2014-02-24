@@ -19,7 +19,43 @@
      */
     class Roles
     {
-        private static $roles = array(1=>'Administrator', 2=>'Operator', 3=>'Personnel');
+        const TABLE = 'roles';
+        
+        private static $roles = array(
+            1=>'Administrator', 
+            2=>'Operator', 
+            3=>'Personnel'
+        );
+        
+        
+        /**
+         * Insert standard permissions for given role or user
+         * 
+         * @return integer Number of inserted permissions
+         */
+        public static function prepare($role_id, $user_id) {
+            
+            $count = 0;
+            
+            switch($role_id) {
+                
+                // Grant administrator default permissions
+                case 1:
+                    if(Permissions::grant($role_id, $user_id, 'read', 'logs')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'users')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'users')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'roles')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'roles')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'settings')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'settings')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'operations')) $count++;
+                    break;                    
+            }
+            
+            return $count;
+            
+       }
         
         
        /**
@@ -54,8 +90,8 @@
             
             if(self::has($role, $user_id) === false)
             {
-                $res = DB::delete('roles', 'user_id = '.(int)$user_id);
-                $res = DB::insert('roles', array('role_id'=>array_search($role, self::$roles), 'user_id' => (int)$user_id));
+                $res = DB::delete(self::TABLE, 'user_id = '.(int)$user_id);
+                $res = DB::insert(self::TABLE, array('role_id'=>array_search($role, self::$roles), 'user_id' => (int)$user_id));
                 
                 $res = DB::isEmpty($res) !== false;
             }
@@ -75,7 +111,7 @@
             
             $filter = '`user_id` = '.(int)$user_id." AND `role_name` ='$role'";
             
-            $res = DB::count('roles', $filter);
+            $res = DB::count(self::TABLE, $filter);
             
             return $res !== FALSE;
         }        

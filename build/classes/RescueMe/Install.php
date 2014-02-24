@@ -14,6 +14,7 @@
     
     use RescueMe\DB;
     use RescueMe\User;
+    use RescueMe\Roles;
     use RescueMe\Module;
 
     /**
@@ -261,15 +262,17 @@
             }// if
             info("DONE");            
            
+            info("  Initializing database....", INFO);
+            
+            $skipped = true;
+
             if(User::isEmpty())
             {
-                info("  Initializing database....", INFO);
-
-                $fullname = in("  Admin Full Name");
-                $username = in("  Admin Username (e-mail)");
-                $password = in("  Admin Password");
-                $country = in("  Admin Phone Country Code (ISO2)", Locale::getCurrentCountryCode());
-                $mobile = in("  Admin Phone Number Without Int'l Dial Code");
+                $fullname = in("    Admin Full Name");
+                $username = in("    Admin Username (e-mail)");
+                $password = in("    Admin Password");
+                $country = in("    Admin Phone Country Code (ISO2)", Locale::getCurrentCountryCode());
+                $mobile = in("    Admin Phone Number Without Int'l Dial Code");
 
                 if(!defined('SALT'))
                 {
@@ -277,14 +280,29 @@
                 }
                 if(User::create($fullname, $username, $password, $country, $mobile, 1) === FALSE) {
                     return error(ADMIN_NOT_CREATED." (".DB::error().")");
-                }// if                
-
-                info("  Initializing database....DONE", INFO);            
-            } else {
+                }// if
                 
-                // Ensure user 1 is administator
-                Roles::grant(1, 1);
-            }
+                $skipped = false;                
+                
+            } 
+            
+            // Prepare role permissions
+            if(($count = Roles::prepare(1,1)) > 0) {
+                info("    Add $count administrator permissions...OK", INFO);
+                $skipped = false;                
+            }            
+                
+
+            // Ensure user 1 is in the administator group
+            if(Roles::grant(1, 1)) {
+                info("    Add user 1 to administrator group...OK", INFO);
+                $skipped = false;                
+            } else {
+                info("    Add user 1 to administrator group...SKIPPED", INFO);
+            }            
+            
+            info("  Initializing database....".($skipped ? 'SKIPPED' : 'DONE'), INFO);
+            
         }
         
         private function initModules() {
