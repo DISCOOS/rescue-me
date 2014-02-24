@@ -21,6 +21,12 @@
     {
         const TABLE = 'roles';
         
+        private static $fields = array(
+            'user_id',
+            'role_id',
+            'role_name',
+        );
+        
         private static $roles = array(
             1=>'Administrator', 
             2=>'Operator', 
@@ -104,7 +110,11 @@
             {
                 $res = DB::delete(self::TABLE, 'user_id = '.(int)$user_id);
                 
-                $res = DB::insert(self::TABLE, array('role_id'=>array_search($role, self::$roles), 'user_id' => (int)$user_id));
+                $role_id = array_search($role, self::$roles);
+                
+                $values = prepare_values(Roles::$fields,array((int)$user_id, $role_id, $role));
+                
+                $res = DB::insert(self::TABLE, $values);
                 
                 $res = DB::isEmpty($res) !== false;
                 
