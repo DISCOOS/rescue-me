@@ -223,7 +223,7 @@
             
             $row = $res->fetch_row();
 
-            return $row[0];
+            return (int)$row[0];
             
         }// count
         

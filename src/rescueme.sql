@@ -86,8 +86,8 @@ CREATE TABLE IF NOT EXISTS `operations` (
 -- 
 
 CREATE TABLE IF NOT EXISTS `permissions` (
-  `role_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT '0',
   `access` varchar(100) NOT NULL,
   `resource` varchar(100) NOT NULL,
   KEY `role_id` (`role_id`),
@@ -138,7 +138,8 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `role_name` varchar(100) NOT NULL,
   `role_id` int(11) NOT NULL,
   KEY `user_id` (`user_id`),
-  KEY `role_name` (`role_name`)
+  KEY `role_name` (`role_name`),
+  KEY `role_id` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

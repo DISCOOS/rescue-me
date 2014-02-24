@@ -58,7 +58,7 @@
          * @return boolean
          */
         public static function allow($role_id, $user_id, $access, $resource) {
-            $filter = "(`user_id`={$user_id} OR `role_id`={$role_id}) AND `access`='$access' AND `resource`='$resource'";
+            $filter = "`role_id`={$role_id} AND `user_id`={$user_id} AND `access`='$access' AND `resource`='$resource'";
             $res = DB::count(self::TABLE, $filter);
             return $res !== false && $res > 0;
         }
@@ -77,6 +77,7 @@
         public static function grant($role_id, $user_id, $access, $resource) {
             $res = false;
             if(self::allow($role_id, $user_id, $access, $resource) === false) {
+                
                 $values = prepare_values(self::$fields, array($role_id, $user_id, $access, $resource));
                 $res = DB::insert(self::TABLE, $values);
                 $res = $res !== false;

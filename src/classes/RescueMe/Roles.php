@@ -39,17 +39,28 @@
             
             switch($role_id) {
                 
-                // Grant administrator default permissions
                 case 1:
-                    if(Permissions::grant($role_id, $user_id, 'read', 'logs')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'read', 'users')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'write', 'users')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'read', 'roles')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'write', 'roles')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'read', 'settings')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'write', 'settings')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'write', 'operations')) $count++;
+                    // Grant administrator default permissions
+                    if(Permissions::grant(1, $user_id, 'read', 'logs')) $count++;
+                    if(Permissions::grant(1, $user_id, 'read', 'users')) $count++;
+                    if(Permissions::grant(1, $user_id, 'write', 'users')) $count++;
+                    if(Permissions::grant(1, $user_id, 'read', 'roles')) $count++;
+                    if(Permissions::grant(1, $user_id, 'write', 'roles')) $count++;
+                    if(Permissions::grant(1, $user_id, 'read', 'settings')) $count++;
+                    if(Permissions::grant(1, $user_id, 'write', 'settings')) $count++;
+                    if(Permissions::grant(1, $user_id, 'read', 'operations')) $count++;
+                    if(Permissions::grant(1, $user_id, 'write', 'operations')) $count++;
+                    break;                    
+                case 2:
+                    // Grant operator default permissions
+                    if(Permissions::grant(2, $user_id, 'read', 'settings')) $count++;
+                    if(Permissions::grant(2, $user_id, 'write', 'settings')) $count++;
+                    if(Permissions::grant(2, $user_id, 'read', 'operations')) $count++;
+                    if(Permissions::grant(2, $user_id, 'write', 'operations')) $count++;
+                    break;                    
+                case 3:
+                    // Grant personell default permissions
+                    if(Permissions::grant(3, $user_id, 'read', 'operations')) $count++;
                     break;                    
             }
             

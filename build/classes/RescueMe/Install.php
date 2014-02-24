@@ -287,8 +287,16 @@
             } 
             
             // Prepare role permissions
-            if(($count = Roles::prepare(1,1)) > 0) {
+            if(($count = Roles::prepare(1,0)) > 0) {
                 info("    Add $count administrator permissions...OK", INFO);
+                $skipped = false;                
+            }            
+            if(($count = Roles::prepare(2,0)) > 0) {
+                info("    Add $count operator permissions...OK", INFO);
+                $skipped = false;                
+            }            
+            if(($count = Roles::prepare(3,0)) > 0) {
+                info("    Add $count personnel permissions...OK", INFO);
                 $skipped = false;                
             }            
                 
