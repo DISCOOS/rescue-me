@@ -427,14 +427,14 @@
                 
             } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
-                $status = RescueMe\Operation::closeOperation($_GET['id'], $_POST);
-                
                 $missings = Operation::getOperation($_GET['id'])->getAllMissing();
                 if($missings !== FALSE) {
                     foreach($missings as $id => $missing) {
                         $missing->anonymize($_POST['m_sex']. ' ('.$_POST['m_age'].')');
                     }
                 }
+                
+                $status = RescueMe\Operation::closeOperation($_GET['id'], $_POST);
                 
                 if ($status) {
                     header("Location: ".ADMIN_URI.'missing/list');

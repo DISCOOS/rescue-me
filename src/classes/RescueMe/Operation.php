@@ -31,6 +31,7 @@
             "alert_mobile",
             "op_ref", 
             "op_opened", 
+            "op_closed",
             "op_comments"
         );
 
@@ -221,7 +222,7 @@
                 (string) $op_comments
             );
 
-            $values = prepare_values(self::$fields, $values);
+            $values = prepare_values(array_exclude(self::$fields,'op_closed'), $values);
             $this->id = DB::insert(self::TABLE, $values);
 
             if($this->id === FALSE) {
