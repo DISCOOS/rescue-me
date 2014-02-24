@@ -81,6 +81,10 @@
          */
         public $mobile_country;
         
+        /**
+         * Role granted user.
+         * @var integer
+         */
         public $role = null;
         
         
@@ -256,9 +260,10 @@
          * @param string $password
          * @param string $country
          * @param string $mobile
+         * @param integer $role
          * @return boolean
          */
-        public static function create($name, $email, $password, $country, $mobile) {
+        public static function create($name, $email, $password, $country, $mobile, $role) {
             
             $username = User::safe(strtolower($email));
 
@@ -277,6 +282,8 @@
                 return $user;
             }
             
+            Roles::grant($role, $this->id);            
+            
             return false;
             
         }// create
@@ -291,7 +298,7 @@
          * @param string $mobile
          * @return boolean
          */
-        public function update($name, $email, $country, $mobile) {
+        public function update($name, $email, $country, $mobile, $role) {
             
             $username = User::safe(strtolower($email));
 
@@ -302,7 +309,8 @@
             
             $values = \prepare_values(User::$update, $values);
             
-            return DB::update(self::TABLE, $values, "user_id=$this->id");
+            return DB::update(self::TABLE, $values, "user_id=$this->id") && Roles::grant($role, $this->id);
+;
             
         }// update
         

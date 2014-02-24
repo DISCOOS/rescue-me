@@ -275,11 +275,15 @@
                 {
                     define('SALT', get($this->ini, 'SALT', null, false));
                 }
-                if(User::create($fullname, $username, $password, $country, $mobile) === FALSE) {
+                if(User::create($fullname, $username, $password, $country, $mobile, 1) === FALSE) {
                     return error(ADMIN_NOT_CREATED." (".DB::error().")");
                 }// if                
 
                 info("  Initializing database....DONE", INFO);            
+            } else {
+                
+                // Ensure user 1 is administator
+                Roles::grant(1, 1);
             }
         }
         

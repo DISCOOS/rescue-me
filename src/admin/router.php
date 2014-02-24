@@ -185,16 +185,22 @@
                 
                 $username = User::safe($_POST['email']);
                 if(empty($username)) {
-                    $_ROUTER['message'] = 'Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn';
+                    $_ROUTER['message'] = _('Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn');
                 }
                 
-                $status = User::create($_POST['name'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['mobile']);
-                Roles::grant((int)$_POST['role'], $status->id);
+                $status = User::create(
+                    $_POST['name'], 
+                    $_POST['email'], 
+                    $_POST['password'], 
+                    $_POST['country'], 
+                    $_POST['mobile'],
+                    (int)$_POST['role']
+                );
                 if($status) {
                     header("Location: ".ADMIN_URI.'user/list');
                     exit();
                 }
-                $_ROUTER['message'] = 'En feil oppstod ved registrering, prøv igjen';
+                $_ROUTER['message'] = _('En feil oppstod ved registrering, prøv igjen');
             }
             
             break;
@@ -213,14 +219,24 @@
                 
                 $username = User::safe($_POST['email']);
                 if(empty($username)) {
-                    $_ROUTER['message'] = 'Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn';
+                    $_ROUTER['message'] = 
+                        _('Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn');
                 }
                 
-                if($user->update($_POST['name'], $_POST['email'], $_POST['country'], $_POST['mobile']) && Roles::grant((int)$_POST['role'], $id)) {
+                $status = $user->update(
+                    $_POST['name'], 
+                    $_POST['email'], 
+                    $_POST['country'], 
+                    $_POST['mobile'],
+                    (int)$_POST['role']
+                );
+                
+                if($status) {
                     header("Location: ".ADMIN_URI.'user/list');
                     exit();
                 }
-                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';                
+                $_ROUTER['message'] = RescueMe\DB::errno() ? 
+                    RescueMe\DB::error() : _('Registrering ikke gjennomført, prøv igjen.');
             }   
             
             break;
@@ -237,14 +253,15 @@
                     $_ROUTER['message'] = "User '$id' " . _(" not found");
                 }
                 else if(!$user->delete()) {
-                    $_ROUTER['message'] = "'$user->name'" . _(" not deleted") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+                    $_ROUTER['message'] = "'$user->name'" . _(" not deleted") . ". ". 
+                        (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
                 }
                 else {
                     header("Location: ".ADMIN_URI.'user/list');
                     exit();
                 }            
             } else {
-                $_ROUTER['message'] = "User id is missing";
+                $_ROUTER['message'] = _("User id is missing");
             }
             
             break;
@@ -269,7 +286,7 @@
                 }            
             
             } else {
-                $_ROUTER['message'] = "User id is missing";
+                $_ROUTER['message'] = _("User id is missing");
             }
             
             break;
