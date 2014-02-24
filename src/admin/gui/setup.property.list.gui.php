@@ -2,15 +2,19 @@
     use RescueMe\User;
     use RescueMe\Properties;
     
-    $id = User::currentId();
+    if(isset($include) === FALSE) 
+        $include = ".*";
     
-    if(!isset($include)) $include = ".*";
+    if(empty($include) === FALSE) {
     
-    $pattern = '#'.$include.'#';
+        $id = User::currentId();
     
-    foreach(Properties::rows($id) as $name => $cells) {
-        if(preg_match($pattern, $name)) {
-            insert_row($name, $cells);
+        $pattern = '#'.$include.'#';
+
+        foreach(Properties::rows($id) as $name => $cells) {
+            if(preg_match($pattern, $name)) {
+                insert_row($name, $cells);
+            }
         }
     }
             

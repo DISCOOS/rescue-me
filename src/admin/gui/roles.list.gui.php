@@ -23,7 +23,7 @@
                 <td class="role name"><?=_($value) ?></td>
                 <td class="role editor">
                     <div class="btn-group pull-right">
-                        <a class="btn btn-small" href="<?=ADMIN_URI."roles/edit/$key"?>">
+                        <a class="btn btn-small" href="<?=ADMIN_URI."role/edit/$key"?>">
                             <b class="icon icon-edit"></b><?= EDIT ?>
                         </a>
                     </div>

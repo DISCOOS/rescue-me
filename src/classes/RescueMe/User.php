@@ -302,21 +302,32 @@
          * @param string $email
          * @param string $country
          * @param string $mobile
+         * @param mixed $role id or name
          * @return boolean
          */
-        public function update($name, $email, $country, $mobile, $role) {
+        public function update($name, $email, $country, $mobile, $role = null) {
+            
+            $res = false;
             
             $username = User::safe(strtolower($email));
 
-            if(empty($username))
-                return false;
+            if(empty($username) === FALSE)
+            {
+                $values = array((string)$name, (string)$email, (int)$mobile, (string)$country);
+
+                $values = prepare_values(User::$update, $values);
+
+                if(DB::update(self::TABLE, $values, "user_id=$this->id")) {
+                    
+                    $res = true; 
+                    if($role !== null) {
+                        $res =Roles::grant($role, $this->id);
+                    }
+                    
+                }
+            }
             
-            $values = array((string) $name, (string) $email,  (int) $mobile, (string) $country);
-            
-            $values = \prepare_values(User::$update, $values);
-            
-            return DB::update(self::TABLE, $values, "user_id=$this->id") && Roles::grant($role, $this->id);
-;
+            return $res;
             
         }// update
         
@@ -595,7 +606,42 @@
                         
             $perms = Roles::getPermissionsForRole($this->role_id);
             
-            return isset($perms[$resource.'.'.$access]);
+            $allow = isset($perms[$resource.'.'.$access]);
+            
+            if($allow) {
+
+                // Check conditions
+                switch($resource) {
+                    case 'operations':
+                        $sql = "SELECT COUNT(*) FROM `operations` 
+                            WHERE `op_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
+                        break;
+                    case 'missing':
+                        $sql = "SELECT COUNT(*) FROM `operations` 
+                            JOIN `missing` ON `missing`.`op_id` = `operations`.`op_id` 
+                            AND `missing`.`missing_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
+                        break;
+                    default:
+                        break;
+                }
+
+                // Check if user already own given resources
+                if(isset($sql))
+                {
+                    $res = DB::query($sql);
+
+                    if(DB::isEmpty($res) === FALSE) {
+
+                        $row = $res->fetch_row();
+
+                        $allow = ($row[0] > 0);
+
+                    }
+                }
+
+            }
+            
+            return $allow;
             
         }
         
