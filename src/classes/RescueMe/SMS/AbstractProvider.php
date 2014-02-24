@@ -288,33 +288,32 @@
                        WHERE `sms_provider` = '".DB::escape(get_class($this))."' AND `sms_provider_ref` = '".$reference."';";
             
             $result = DB::query($select);
-            if(DB::isEmpty($result)) { 
-                $context = array('sql' => $select);
-                return $this->critical("Found no missing associated with SMS reference $reference", $context);
-            }
+            if(DB::isEmpty($result) !== FALSE) { 
 
-            while($row = $result->fetch_assoc()) {
+                while($row = $result->fetch_assoc()) {
 
-                $code = Locale::getDialCode($row['missing_mobile_country']);
-                $number = $this->accept($code).$row['missing_mobile'];
+                    $code = Locale::getDialCode($row['missing_mobile_country']);
+                    $number = $this->accept($code).$row['missing_mobile'];
 
-                if(ltrim($number,'0') === ltrim($to,'0')) {
-                    
-                    $delivered = isset($datetime) ? "FROM_UNIXTIME({$datetime->getTimestamp()})" : "NULL";
+                    if(ltrim($number,'0') === ltrim($to,'0')) {
 
-                    $update = "UPDATE `missing` 
-                               SET `sms_delivery` = $delivered, `sms_error` = '".(string)$errorDesc."'
-                               WHERE `missing_id` = {$row['missing_id']}";
+                        $delivered = isset($datetime) ? "FROM_UNIXTIME({$datetime->getTimestamp()})" : "NULL";
 
-                    if(DB::query($update)) {
-                        Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
-                    } else {
-                        $context = array('sql' => $update);
-                        $this->critical("Failed to update SMS delivery status for missing " . $row['missing_id'], $context);
-                    }// if
+                        $update = "UPDATE `missing` 
+                                   SET `sms_delivery` = $delivered, `sms_error` = '".(string)$errorDesc."'
+                                   WHERE `missing_id` = {$row['missing_id']}";
+
+                        if(DB::query($update)) {
+                            Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
+                        } else {
+                            $context = array('sql' => $update);
+                            $this->critical("Failed to update SMS delivery status for missing " . $row['missing_id'], $context);
+                        }// if
+                    }
+
                 }
-                
             }
+            
             return true;
 
         }// delivered
