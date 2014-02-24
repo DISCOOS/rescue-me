@@ -86,7 +86,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
     }
     
     $user = User::current();
-    $id = $user->id;
+
 
 ?>
 <!DOCTYPE html>
@@ -126,10 +126,10 @@ if(defined('USE_SILEX') && USE_SILEX) {
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a id="drop3" class="dropdown-toggle" data-toggle="dropdown"><?= $user->name ?><b class="caret"></b></a>
+                        <a id="drop3" class="dropdown-toggle" data-toggle="dropdown"><?= _('System') ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-                            <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/edit/<?=$id?>"><b class="icon icon-user"></b><?=_('Konto')?></a></li>
-                            <li id="passwd"><a role="menuitem" href="<?= ADMIN_URI ?>password/change/<?=$id?>"><b class="icon icon-lock"></b><?=_('Endre passord')?></a></li>
+                            <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/edit/<?=$user->id?>"><b class="icon icon-user"></b><?=_('Konto')?></a></li>
+                            <li id="passwd"><a role="menuitem" href="<?= ADMIN_URI ?>password/change/<?=$user->id?>"><b class="icon icon-lock"></b><?=_('Endre passord')?></a></li>
                             <li class="divider"></li>
                             <? if ($user->allow('write', 'users')) { 
                                 insert_item(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign"); ?>

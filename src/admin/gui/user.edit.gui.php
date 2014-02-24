@@ -48,13 +48,15 @@
         'attributes' => 'required'
     );    
     $fields[] = $group;
-    $fields[] = array(
-        'id' => 'role',
-        'type' => 'select',
-        'value' => insert_options(\RescueMe\Roles::getAll(), $user->role_id, false), 
-        'label' => _('Role'),
-        'attributes' => 'required'
-    );
+    if (User::current()->allow('write', 'roles')) {
+        $fields[] = array(
+            'id' => 'role',
+            'type' => 'select',
+            'value' => insert_options(\RescueMe\Roles::getAll(), $user->role_id, false), 
+            'label' => _('Role'),
+            'attributes' => 'required'
+        );
+    }
     
     insert_form("user", _(EDIT_USER), $fields, ADMIN_URI."user/edit/$id");
     
