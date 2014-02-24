@@ -15,6 +15,7 @@
     }
     else
     {
+        
 ?>
     <table class="table table-striped">
         <thead>

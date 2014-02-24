@@ -164,6 +164,12 @@
     </table>
 </div>
     
+<?php
+    
+    insert_action(NEW_TRACE, ADMIN_URI."missing/new", "icon-plus-sign");
+    
+?>    
+    
 <script>
     R.toTab('tabs');
 </script>
