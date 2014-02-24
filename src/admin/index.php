@@ -84,6 +84,8 @@ if(defined('USE_SILEX') && USE_SILEX) {
     if(is_ajax_request()) {
         die();
     }
+    
+    $user = User::current();
 
 ?>
 <!DOCTYPE html>

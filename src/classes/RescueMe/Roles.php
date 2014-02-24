@@ -90,24 +90,27 @@
          * @return boolean
          */
         public static function grant($role, $user_id) {
-            if (is_int($role))
+            if (is_int($role)) {
                 $role = self::$roles[$role];
+            }
             
             if (!in_array($role, self::$roles)) {
                 return false;
             }
             
-            $res = false;
+            $res = true;
             
             if(self::has($role, $user_id) === false)
             {
                 $res = DB::delete(self::TABLE, 'user_id = '.(int)$user_id);
+                
                 $res = DB::insert(self::TABLE, array('role_id'=>array_search($role, self::$roles), 'user_id' => (int)$user_id));
                 
                 $res = DB::isEmpty($res) !== false;
+                
             }
             
-            return $res;            
+            return $res;
         }        
         
         /**
@@ -124,7 +127,7 @@
             
             $res = DB::count(self::TABLE, $filter);
             
-            return $res !== FALSE;
+            return $res !== FALSE && $res > 0;
         }        
         
         

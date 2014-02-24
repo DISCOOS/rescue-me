@@ -307,7 +307,7 @@
                                WHERE `missing_id` = {$row['missing_id']}";
 
                     if(DB::query($update)) {
-                        Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference delivery status is [$delivered]");
+                        Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
                     } else {
                         $context = array('sql' => $update);
                         $this->critical("Failed to update SMS delivery status for missing " . $row['missing_id'], $context);

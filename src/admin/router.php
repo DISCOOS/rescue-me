@@ -207,36 +207,43 @@
             
         case 'user/edit':
             
-            $id = $_GET['id'];
             $_ROUTER['name'] = USER;
             $_ROUTER['view'] = $_GET['view'];
-            
-            // Get requested user
-            $user = User::get($id);
             
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
+                // Get requested user
+                $id = $_GET['id'];
+                $user = User::get($id);           
                 $username = User::safe($_POST['email']);
-                if(empty($username)) {
+                
+                if($user === false) {
+                    $_ROUTER['message'] = 
+                        _("Bruker $id ikke funnet");
+                }
+                else if(empty($username)) {
                     $_ROUTER['message'] = 
                         _('Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn');
+                } else {
+                    
+                    $status = $user->update(
+                        $_POST['name'], 
+                        $_POST['email'], 
+                        $_POST['country'], 
+                        $_POST['mobile'],
+                        (int)$_POST['role']
+                    );
+
+                    if($status) {
+                        header("Location: ".ADMIN_URI.'user/list');
+                        exit();
+                    }
+                    $_ROUTER['message'] = RescueMe\DB::errno() ? 
+                        RescueMe\DB::error() : _('Registrering ikke gjennomført, prøv igjen.');
+                    
                 }
                 
-                $status = $user->update(
-                    $_POST['name'], 
-                    $_POST['email'], 
-                    $_POST['country'], 
-                    $_POST['mobile'],
-                    (int)$_POST['role']
-                );
-                
-                if($status) {
-                    header("Location: ".ADMIN_URI.'user/list');
-                    exit();
-                }
-                $_ROUTER['message'] = RescueMe\DB::errno() ? 
-                    RescueMe\DB::error() : _('Registrering ikke gjennomført, prøv igjen.');
             }   
             
             break;
@@ -248,11 +255,11 @@
             
             if(isset($_GET['id'])) {
                 $id = $_GET['id'];
-                $user = User::get($id);
-                if(!$user) {
+                $edit = User::get($id);
+                if($edit === false) {
                     $_ROUTER['message'] = "User '$id' " . _(" not found");
                 }
-                else if(!$user->delete()) {
+                else if($edit->delete() === false) {
                     $_ROUTER['message'] = "'$user->name'" . _(" not deleted") . ". ". 
                         (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
                 }
@@ -273,7 +280,7 @@
             
             if(isset($_GET['id'])) {
                 $id = $_GET['id'];
-                $user = User::get($id);
+                $edit = User::get($id);
                 if(!$user) {
                     $_ROUTER['message'] = "User '$id' " . _(" not found");
                 }
@@ -369,12 +376,12 @@
             $_ROUTER['view'] = $_GET['view'];
             
             // Get requested user
-            $user = User::get($id);
+            $edit = User::get($id);
             
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
-                if($user->password($_POST['password'])) {
+                if($edit->password($_POST['password'])) {
                     header("Location: ".ADMIN_URI.'user/list');
                     exit();
                 }

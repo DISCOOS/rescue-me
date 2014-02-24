@@ -106,7 +106,7 @@
             
             $res = DB::count(User::TABLE);
             
-            return $res == 0;
+            return $res !== FALSE && $res == 0;
             
         }// isEmpty
         
@@ -481,6 +481,32 @@
 
         
         /**
+         * Verify current user login credentials
+         * 
+         * @return boolean|User Returns User object if success, FALSE otherwise
+         */
+        public static function verify() {
+
+            $user = User::current();
+            
+            if($user !== false && isset($_SESSION['password']))
+            {
+                if($user->_verify($_SESSION['user_id'], $_SESSION['password'])) {
+                    return $user;
+                }
+                $user->logout();
+            }
+            elseif(isset($_POST['username']) && isset($_POST['password'])) {
+                $user = new User();
+                if($user->logon($_POST['username'], $_POST['password'])) {
+                    return $user;
+                }
+            }
+            return false;
+        }// verify
+        
+        
+        /**
          * Verify credentials
          * 
          * @param string $user_id
@@ -538,32 +564,6 @@
             
         }// _login_ok
 
-        
-        /**
-         * Verify current user login credentials
-         * 
-         * @return boolean|User Returns User object if success, FALSE otherwise
-         */
-        public static function verify() {
-
-            $user = User::current();
-            
-            if(isset($_SESSION['password']))
-            {
-                if($user->_verify($_SESSION['user_id'], $_SESSION['password'])) {
-                    return $user;
-                }
-                $user->logout();
-            }
-            elseif(isset($_POST['username']) && isset($_POST['password'])) {
-                $user = new User();
-                if($user->logon($_POST['username'], $_POST['password'])) {
-                    return $user;
-                }
-            }
-            return false;
-        }// verify
-        
         
         /**
          * Check if a user is authorized to access given object

@@ -6,7 +6,8 @@
         insert_error($_ROUTER['message']);
     } 
 
-    $user = User::get($_GET['id']);
+    $id = $_GET['id'];
+    $user = User::get($id);
     
     $fields = array();
     
@@ -54,7 +55,6 @@
         'label' => _('Role'),
         'attributes' => 'required'
     );
-    
     
     insert_form("user", _(EDIT_USER), $fields, ADMIN_URI."user/edit/$id");
     

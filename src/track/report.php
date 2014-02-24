@@ -15,9 +15,9 @@ else {
         $m->addPosition($_GET['lat'], $_GET['lon'], $acc, $_GET['alt'], $_SERVER['HTTP_USER_AGENT']);
         $response  = _("Din posisjon er mottatt (&#177;$acc m)").'<br/>';
         if ($_GET['acc'] > 500) {
-            $response .= _('Hold deg i ro, vi er på vei. <br>Prøv å gjøre deg mest mulig synlig fra lufta og bakken!');
+            $response .= _('Hold deg i ro, vi er på vei. <br>Gjøre deg mest mulig synlig fra lufta og bakken!');
         } else {
-            $response .= _('Hold deg i ro, vi er på vei. <br>Prøv å gjøre deg mest mulig synlig fra lufta og bakken!');
+            $response .= _('Hold deg i ro, vi er på vei. <br>Gjøre deg mest mulig synlig fra lufta og bakken!');
         }
     }
     else {
