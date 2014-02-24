@@ -322,7 +322,9 @@
             
             $id = $_GET['id'];
             
-            if(($id === User::currentId() || $user->allow('write', 'users')) === FALSE)
+            $access = $user->allow('write', 'users');
+            
+            if(($access || $id === User::currentId()) === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -357,7 +359,7 @@
                 );
 
                 if($status) {
-                    header("Location: ".ADMIN_URI.'user/list');
+                    header("Location: ".ADMIN_URI.($access ? 'user/list' : 'missing/list'));
                     exit();
                 }
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : _('Ikke gjennomført, prøv igjen.');
@@ -579,7 +581,7 @@
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 if(User::recover($_POST['email'], $_POST['country'], $_POST['mobile'])) {
-                    header("Location: ".ADMIN_URI.($_SESSION['logon'] ? 'user/list' : 'logon'));
+                    header("Location: ".ADMIN_URI.($_SESSION['logon'] ? 'admin' : 'logon'));
                     exit();
                 }
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Bruker eksisterer ikke.';
