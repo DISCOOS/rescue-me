@@ -514,6 +514,14 @@
                 }
             }
             
+            $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$this->id);
+            if(DB::isEmpty($res) === FALSE) {
+                $row = $res->fetch_array();
+                $this->role = (int)$row[0];
+            } else {
+                Logs::write(Logs::ACCESS, LogLevel::ERROR, "User {$this->id} have no role.");
+            }
+            
             if($isset === FALSE) {
                 Logs::write(Logs::ACCESS, LogLevel::INFO, 'User logged in.');
             }
