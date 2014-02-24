@@ -566,14 +566,6 @@
             
         case "password/recover":
             
-            if(isset($_GET['id']) === FALSE) {
-
-                $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
-                break;
-            } 
-            
             $_ROUTER['name'] = _("Recover Password");
             $_ROUTER['view'] = $_GET['view'];
             
