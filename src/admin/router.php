@@ -580,7 +580,7 @@
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
-                if(User::recover($_POST['email'], $_POST['country'], $_POST['mobile'])) {
+                if(User::recover($_POST['email'])) {
                     header("Location: ".ADMIN_URI.($_SESSION['logon'] ? 'admin' : 'logon'));
                     exit();
                 }

@@ -226,14 +226,12 @@
          * Recover user
          * 
          * @param string $email
-         * @param string $country
-         * @param string $mobile
          * 
          * @return boolean
          */
-        public static function recover($email, $country, $mobile) {
+        public static function recover($email, $send_to_email = true, $send_to_sms = true) {
             
-            $filter = "`email` = '$email' AND `mobile_country` = '$country' AND `mobile` = '$mobile'";
+            $filter = "`email` = '$email'";
             
             $res = DB::select(self::TABLE,"user_id", $filter);
 
