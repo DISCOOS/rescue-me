@@ -5,14 +5,12 @@ require(APP_PATH_INC.'locale.php'); // TODO: Move to ../config.php?
 
 
 use RescueMe\User;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
        
 if(defined('USE_SILEX') && USE_SILEX) {
     
     // Verify logon information
-    $user = new User();
-    $_SESSION['logon'] = $user->verify();
+    $user = User::verify();
+    $_SESSION['logon'] = ($user !== FALSE);
     
 	$TWIG = array(
         'APP_TITLE' => TITLE,

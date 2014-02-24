@@ -81,8 +81,17 @@
          */
         public $mobile_country;
         
-        public $role;
+        public $role = null;
         
+        
+        /**
+         * Prevent initialization of user object outside this class
+         */
+        protected final function __construct()
+        {
+            
+        }
+
         
         /**
          * Check if one or more users exist
@@ -452,9 +461,10 @@
             
             $res = DB::select(self::TABLE, "*", "`email` = '$username' AND `password` = '$password'");
 
-            if(DB::isEmpty($res)) return false;    
+            if(DB::isEmpty($res)) return false;
             
             $info = $res->fetch_assoc();
+            
             $info['password'] = $password;
             
             return $this->_grant($info);
@@ -514,24 +524,30 @@
 
         
         /**
-         * Verify current user credentials
+         * Verify current user login credentials
          * 
-         * @return boolean
+         * @return boolean|User Returns User object if success, FALSE otherwise
          */
-        public function verify() {
+        public static function verify() {
 
-            if(isset($_SESSION['user_id']) && isset($_SESSION['password']))
+            $user = User::current();
+            
+            if(isset($_SESSION['password']))
             {
-                if($this->_verify($_SESSION['user_id'], $_SESSION['password'])) {
-                    return true;
+                if($user->_verify($_SESSION['user_id'], $_SESSION['password'])) {
+                    return $user;
                 }
-                $this->logout();
+                $user->logout();
             }
             elseif(isset($_POST['username']) && isset($_POST['password'])) {
-                return $this->logon($_POST['username'], $_POST['password']);                
+                $user = new User();
+                if($user->logon($_POST['username'], $_POST['password'])) {
+                    return $user;
+                }
             }
             return false;
         }// verify
+        
         
         /**
          * Check if a user is authorized to access given object
@@ -542,9 +558,12 @@
          */
         public function allow($access, $resource) {
             
-            // TODO: Check if administrator            
+            if($this->role === null) {
+                return false;
+            }
                         
-            $perms = Roles::getPermissionsForUser($this->id);
+            $perms = Roles::getPermissionsForRole($this->role);
+            
            
             return (isset($perms[$resource.'.'.$access]));
             

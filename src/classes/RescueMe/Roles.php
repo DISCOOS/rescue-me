@@ -56,8 +56,10 @@
             {
                 $res = DB::delete('roles', "user_id = ".(int)$user_id);
                 $res = DB::insert("roles", array('role_id'=>array_search($role, self::$roles), 'user_id' => (int)$user_id));
+                
+                
 
-                $res = DB::isEmpty($res) !== false;                
+                $res = DB::isEmpty($res) !== false;
             }
             
             return $res;            

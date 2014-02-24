@@ -9,8 +9,8 @@
     use RescueMe\Roles;
 
     // Verify logon information
-    $user = new User();
-    $_SESSION['logon'] = $user->verify();
+    $user = User::verify();
+    $_SESSION['logon'] = ($user !== FALSE);
     
     // Force logon?
     if($_SESSION['logon'] == false) {
