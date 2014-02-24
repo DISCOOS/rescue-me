@@ -30,6 +30,7 @@
          */
         public function __construct($user='', $passwd='')
         {
+            parent::__construct(array());
             $this->config = $this->newConfig($user, $passwd);
         }// __construct
 
