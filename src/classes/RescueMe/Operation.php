@@ -222,7 +222,7 @@
                 (string) $op_comments
             );
 
-            $values = prepare_values(array_exclude(self::$fields,'op_closed'), $values);
+            $values = array_exclude(prepare_values(self::$fields, $values),'op_closed');
             $this->id = DB::insert(self::TABLE, $values);
 
             if($this->id === FALSE) {

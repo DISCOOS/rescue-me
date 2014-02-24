@@ -233,7 +233,7 @@
          */
         public static function recover($email, $country, $mobile) {
             
-            $filter = "email` = '$email' AND `mobile_country` = '$country' AND `mobile` = '$mobile'";
+            $filter = "`email` = '$email' AND `mobile_country` = '$country' AND `mobile` = '$mobile'";
             
             $res = DB::select(self::TABLE,"user_id", $filter);
 
@@ -247,7 +247,13 @@
             
             $message = "$password\nYour " . APP_URL . " password.";
             
-            return $user->send($message);
+            $res = $user->send($message);
+            if($res) {
+                Logs::write(Logs::ACCESS, LogLevel::INFO, "User {$row[0]} password recovery SMS sent", func_get_args());
+            } else {
+                Logs::write(Logs::ACCESS, LogLevel::ERROR, "User {$row[0]} password recovery SMS sent", func_get_args());
+            }
+            return $res;
             
         }// recover
         
@@ -371,6 +377,14 @@
             if($result !== false && isset_get($_SESSION,'user_id') == $this->id) {
                 $_SESSION['password'] = $password;
             }
+            
+            $res = $result !== false;
+            if($res) {
+                Logs::write(Logs::ACCESS, LogLevel::INFO, "User {$row[0]} password changed");
+            } else {
+                Logs::write(Logs::ACCESS, LogLevel::ERROR, "User {$row[0]} password change failed", $password);
+            }
+            
             
             return $result !== false;
             

@@ -1,11 +1,15 @@
 
 <?    
     
+    use RescueMe\User;
     use RescueMe\Locale;
     
     if(isset($_ROUTER['message'])) { 
         insert_error($_ROUTER['message']);
     } 
+    
+    $id = $_GET['id'];
+    $user = User::get($id);    
 
     $fields = array();
 
