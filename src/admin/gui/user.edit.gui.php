@@ -50,7 +50,7 @@
     $fields[] = array(
         'id' => 'role',
         'type' => 'select',
-        'value' => insert_options(\RescueMe\Roles::getAll(), $user->role, false), 
+        'value' => insert_options(\RescueMe\Roles::getAll(), $user->role_id, false), 
         'label' => _('Role'),
         'attributes' => 'required'
     );

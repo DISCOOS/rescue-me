@@ -85,7 +85,7 @@
          * Role granted user.
          * @var integer
          */
-        public $role = null;
+        public $role_id = null;
         
         
         /**
@@ -214,7 +214,7 @@
             $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$id);
             if(DB::isEmpty($res) === FALSE) {
                 $row = $res->fetch_array();
-                $user->role = (int)$row[0];
+                $user->role_id = (int)$row[0];
             }
             
             return $user;
@@ -525,7 +525,7 @@
             $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$this->id);
             if(DB::isEmpty($res) === FALSE) {
                 $row = $res->fetch_array();
-                $this->role = (int)$row[0];
+                $this->role_id = (int)$row[0];
             } else {
                 Logs::write(Logs::ACCESS, LogLevel::ERROR, "User {$this->id} have no role.");
             }
@@ -570,51 +570,19 @@
          * 
          * @param string $access read/write
          * @param string $resource resource to access
+         * @param mixed $condition Optional condition
          * @return boolean
          */
-        public function allow($access, $resource) {
+        public function allow($access, $resource, $condition = null) {
             
-            if($this->role === null) {
+            if($this->role_id === null) {
                 return false;
             }
                         
-            $perms = Roles::getPermissionsForRole($this->role);
+            $perms = Roles::getPermissionsForRole($this->role_id);
             
-           
-            return (isset($perms[$resource.'.'.$access]));
+            return isset($perms[$resource.'.'.$access]);
             
-            /*
-            // Check conditions
-            switch($object) {
-                case 'operation':
-                    $sql = "SELECT COUNT(*) FROM `operations` 
-                        WHERE `op_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
-                    break;
-                case 'missing':
-                    $sql = "SELECT COUNT(*) FROM `operations` 
-                        JOIN `missing` ON `missing`.`op_id` = `operations`.`op_id` 
-                        AND `missing`.`missing_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
-                    break;
-                default:
-                    break;
-            }
-            
-            // Is permission check possible?
-            if(isset($sql))
-            {
-                $res = DB::query($sql);
-                
-                if(DB::isEmpty($res) === FALSE) {
-                    
-                    $row = $res->fetch_row();
-                    
-                    $allow = ($row[0] > 0);
-                    
-                }
-            }
-            
-            return $allow;
-             */
         }
         
         /**
