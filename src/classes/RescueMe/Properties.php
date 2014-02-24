@@ -57,6 +57,7 @@
         const MAP_DEFAULT_BASE = 'map.default.base';
         const MAP_DEFAULT_TERRAIN = 'terrain';
         const MAP_DEFAULT_SATELLITE = 'satellite';
+        const MAP_DEFAULT_HYBRID = 'hybrid';
         
         public static $meta = array(
             
@@ -133,7 +134,8 @@
                 'options' => array(
                     'statkart.topo2' => 'Norway Topo2', 
                     self::MAP_DEFAULT_TERRAIN => 'Terrain', 
-                    self::MAP_DEFAULT_SATELLITE => 'Satellite'
+                    self::MAP_DEFAULT_SATELLITE => 'Satellite',
+                    self::MAP_DEFAULT_HYBRID => 'Hybrid'
                  ),
                 'description' => "Use given basemap as default (on refresh)."
             ),
