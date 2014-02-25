@@ -2,6 +2,8 @@
     use RescueMe\Roles;
     use RescueMe\Permissions;
     
+    $id = $_GET['id'];
+    
     if(isset($_ROUTER['message'])) { 
         insert_error($_ROUTER['message']);
     }

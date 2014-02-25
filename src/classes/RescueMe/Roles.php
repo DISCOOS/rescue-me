@@ -59,8 +59,6 @@
                     break;                    
                 case 2:
                     // Grant operator default permissions
-                    if(Permissions::grant(2, $user_id, 'read', 'settings')) $count++;
-                    if(Permissions::grant(2, $user_id, 'write', 'settings')) $count++;
                     if(Permissions::grant(2, $user_id, 'read', 'operations')) $count++;
                     if(Permissions::grant(2, $user_id, 'write', 'operations')) $count++;
                     break;                    

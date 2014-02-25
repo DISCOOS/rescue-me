@@ -87,20 +87,79 @@
             $_ROUTER['name'] = _('Logs');
             $_ROUTER['view'] = $_GET['view'];
             break;
+            
         case 'setup':
             
-            if($user->allow('read', 'settings') === FALSE)
-            {
-                $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
-                break;
-            }
-            
+            // Access control not neccessary, all logged inn users are allowed to edit own settings.
+                        
             $_ROUTER['name'] = SETUP;
             $_ROUTER['view'] = $_GET['view'];
             break;
 
+        case 'setup/module':
+            
+            if(isset($_GET['id']) === FALSE) {
+
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = "Id not found.";
+                break;
+            } 
+            
+            // Get user id
+            $id = $_GET['id'];
+            
+            $_ROUTER['name'] = SETUP;
+            $_ROUTER['view'] = $_GET['view'];
+
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+                $module = Module::get($id);
+
+                if($module !== true)
+                {
+                    $id = $module->user_id;
+                    
+                    if(($id === User::currentId() || $user->allow('read', 'settings')) === FALSE)
+                    {
+                        $_ROUTER['name'] = _("Illegal Operation");
+                        $_ROUTER['view'] = "404";
+                        $_ROUTER['message'] = _('Access denied');
+                        break;
+                    }
+                }
+
+            } else {
+
+                $config = array_exclude($_POST, array('type','class'));
+                $user_id = isset($_POST['user']) ? $_POST['user'] : 0;
+                
+                if(($user_id === User::currentId() || $user->allow('write', 'settings')) === FALSE)
+                {
+                    $_ROUTER['name'] = _("Illegal Operation");
+                    $_ROUTER['view'] = "404";
+                    $_ROUTER['message'] = _('Access denied');
+                    break;
+                }                
+
+                $valid = RescueMe\Module::verify($_POST['type'], $_POST['class'], $config);
+
+                if($valid !== TRUE) {
+                    $_ROUTER['message'] = $valid;
+                }
+                elseif(RescueMe\Module::set($_GET['id'], $_POST['type'], $_POST['class'], $config, $user_id)) {
+                    header("Location: ".ADMIN_URI.'setup');
+                    exit();
+                }
+                else
+                {
+                    $_ROUTER['message'] = _('Ikke gjennomført, prøv igjen');                    
+                }
+            }
+
+            break;
+            
         case Properties::OPTIONS_URI:
             
             // Process form?
@@ -169,70 +228,6 @@
             
             exit;
             
-            break;
-        case 'setup/module':
-            
-            if(isset($_GET['id']) === FALSE) {
-
-                $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
-                break;
-            } 
-            
-            // Get user id
-            $id = $_GET['id'];
-            
-            $_ROUTER['name'] = SETUP;
-            $_ROUTER['view'] = $_GET['view'];
-
-            // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-                $module = Module::get($id);
-
-                if($module !== true)
-                {
-                    $id = $module->user_id;
-
-                    if(($id === User::currentId() || $user->allow('read', 'settings')) === FALSE)
-                    {
-                        $_ROUTER['name'] = _("Illegal Operation");
-                        $_ROUTER['view'] = "404";
-                        $_ROUTER['message'] = _('Access denied');
-                        break;
-                    }
-                }
-
-            } else {
-
-                $config = array_exclude($_POST, array('type','class'));
-                $user_id = isset($_POST['user']) ? $_POST['user'] : 0;
-                
-                if(($user_id === User::currentId() || $user->allow('write', 'settings')) === FALSE)
-                {
-                    $_ROUTER['name'] = _("Illegal Operation");
-                    $_ROUTER['view'] = "404";
-                    $_ROUTER['message'] = _('Access denied');
-                    break;
-                }                
-
-                $valid = RescueMe\Module::verify($_POST['type'], $_POST['class'], $config);
-
-                if($valid !== TRUE) {
-                    $_ROUTER['message'] = $valid;
-                }
-                elseif(RescueMe\Module::set($_GET['id'], $_POST['type'], $_POST['class'], $config, $user_id)) {
-                    header("Location: ".ADMIN_URI.'setup');
-                    exit();
-                }
-                else
-                {
-                    $_ROUTER['message'] = _('Ikke gjennomført, prøv igjen');                    
-                }
-            }
-
-            break;
         case 'user':
             
             if(isset($_GET['id']) === FALSE) {
