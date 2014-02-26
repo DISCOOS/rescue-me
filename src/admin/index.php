@@ -86,7 +86,9 @@ if(defined('USE_SILEX') && USE_SILEX) {
     }
     
     $user = User::current();
-    $id = $user->id;
+    if($user instanceof User) {
+        $id = $user->id;
+    }
     
 ?>
 <!DOCTYPE html>

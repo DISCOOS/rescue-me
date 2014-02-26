@@ -1,36 +1,49 @@
 $(document).ready(function() {
+    
+    // Make x-editable inline
+    $.fn.editable.defaults.mode = 'inline';
 
+    // Prepare DOM
+    R.prepare(document.documentElement);
+  
+    // Add form validation
+    R.form.validate();
+
+});
+
+R.prepare = function(element) {
+    
     // Workaround for missing iphone click event delegation (needed to show dropdowns from nav-buttons),
     // see http://www.quirksmode.org/blog/archives/2010/09/click_event_del.html#c14807
-    $('[data-toggle=dropdown]').each(function() {
+    $(element).find('[data-toggle=dropdown]').each(function() {
         this.addEventListener('click', function() {
         }, false);
     });
 
-    $('.jQshake').effect('shake');
+    $(element).find('.jQshake').effect('shake');
 
-    $('li.user:not(.editor)').click(function() {
+    $(element).find('li.user:not(.editor)').click(function() {
         window.location.href = R.admin.url + 'user/' + $(this).attr('id');
     });
 
-    $('td.user:not(.editor)').click(function() {
+    $(element).find('td.user:not(.editor)').click(function() {
         window.location.href = R.admin.url + 'user/' + $(this).closest('tr').attr('id');
     });
 
-    $('li.missing').click(function() {
+    $(element).find('li.missing').click(function() {
         window.location.href = R.admin.url + 'missing/' + $(this).attr('id');
     });
 
-    $('li.position').click(function() {
+    $(element).find('li.position').click(function() {
         R.map.panTo($(this).attr('data-pan-to'));
     });
 
-    $('td.missing:not(.editor)').click(function() {
+    $(element).find('td.missing:not(.editor)').click(function() {
         window.location.href = R.admin.url + 'missing/' + $(this).closest('tr').attr('id');
     });
 
     var flagImg = null;
-    $('.country').change(function() {
+    $(element).find('.country').change(function() {
         if (flagImg != null) {
             document.getElementById("flag").removeChild(flagImg);
         }
@@ -41,29 +54,29 @@ $(document).ready(function() {
         document.getElementById("flag").appendChild(flagImg); //append to body
     });
 
-    $('ul.nav').find('li').each(function() {
+    $(element).find('ul.nav').find('li').each(function() {
         var id = $(this).attr('id');
         if (id !== undefined && id === R.view)
             $(this).addClass('active');
     });
 
     // Add toggle behavior
-    $('.toggle').click(function() {
+    $(element).find('.toggle').click(function() {
         $('#' + $(this).attr('data-toggle')).slideToggle();
     });
 
     // Add mailto:scheme urls
-    $('li.mailto, td.mailto').each(function() {
+    $(element).find('li.mailto, td.mailto').each(function() {
         $(this).html('<a href="mailto:' + $(this).html() + '">' + $(this).html() + '</a>');
     });
 
     // Add tel:scheme urls
-    $('li.tel, td.tel').each(function() {
+    $(element).find('li.tel, td.tel').each(function() {
         $(this).html('<a href="tel:' + $(this).html() + '">' + $(this).html() + '</a>');
     });
 
     // Add common RescueMe behaviors to modals
-    $('[data-toggle="modal"]').click(function() {
+    $(element).find('[data-toggle="modal"]').click(function() {
 
         // Class all visible modals
         $('.modal').each(function() {
@@ -81,7 +94,7 @@ $(document).ready(function() {
     });
 
     // Add capslock detection to modal forms
-    $('.modal').each(function() {
+    $(element).find('.modal').each(function() {
         $(this).on('shown', function() {
             $(this).find("form").each(function(i, e) {
                 R.form.validate($(e));
@@ -96,27 +109,24 @@ $(document).ready(function() {
     });
 
     // Add table filtering capability. Add class "searchable" to tbody element.
-    $('input.search-query').on('keyup', function() {
+    $(element).find('input.search-query').on('keyup', function() {
         var pattern = new RegExp($(this).val(), 'i');
         $('.searchable tr').hide();
         $('.searchable tr').filter(function() {
-            return pattern.test($(this).text());
+            text = $(this).text();
+            return pattern.test(text);
         }).show();
     });
 
     // Add form validation
-    R.form.validate();
+    R.form.validate($(element));
 
     // Add capslock listeners to password
     R.CapsLock.listen('[type="password"]');
 
-    // Make x-editable inline
-    $.fn.editable.defaults.mode = 'inline';
-
     // Register editables
-    $('.editable').editable({savenochange: true});
-
-});
+    $(element).find('.editable').editable({savenochange: true});    
+}
 
 R.ajax = function(url, element) {
 
@@ -146,4 +156,76 @@ R.geoname = function(lat, lon, callback) {
         }
         return callback(false);
     });
+};
+
+R.toTab = function(tabs) {
+    var tab;
+    var url = window.location.href;
+    var index = url.indexOf("#");
+    if(index === -1) {
+        tab = ':first';
+    } else {
+        tab = '[href="#'+url.substr(index + 1)+'"]';
+    }
+    $('#'+tabs+' a'+tab).click();
+};
+
+R.onTab = function(tabs) {
+    // Listen to named tab selections
+    $('#'+tabs+' a').click(function (e) {
+        var tab = $(e.target);
+        var href = tab.attr("href");
+        var index = href.indexOf("#");
+        if (index === -1) {
+            id = 'all';
+        } else {
+            id = href.substr(index + 1);
+            href = href.substr(0,index);
+        }        
+        var loader = R.loader(tab, '#loader.'+id);
+        $.ajax({
+           url: href+'?name='+id,
+           beforeSend: loader.show,
+           complete: loader.hide
+        }).done(function( data ) {
+            
+            // Insert elements in DOM and prepare
+            $('#'+id).html(data);
+            R.prepare('#'+id);
+            
+        });
+    });
+    R.toTab(tabs);
+}; 
+
+R.loader = function(target, index) {
+    
+    // Get or create ajax loader
+    var element;
+    var selector = $(index);
+    
+    if(selector.length === 0) {
+        
+        element = $('<img/>').
+                attr('id', 'loader').
+                attr('src',  R.app.url+'img/loading.gif').
+                addClass("loader");
+        
+        target.append(element)
+    } else {
+        element = $(selector[0]); 
+    }
+    
+    // Register global listeners listeners (p
+    var loader = {};
+    loader.show = function() {
+        element.show();
+    };
+    
+    loader.hide = function() {
+        element.hide();
+    };   
+    
+    return loader;
+    
 };

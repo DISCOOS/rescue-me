@@ -1,4 +1,6 @@
-<?
+<?    
+    ob_start();
+    
     use RescueMe\User;
     use RescueMe\Module;
     
@@ -12,6 +14,20 @@
 
         $pattern = '#'.$include.'#';
         
+?>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th width="25%"><?=_("Settings")?></th>
+            <th width="25%"></th>
+            <th width="50%">
+                <input type="search" class="input-medium search-query pull-right" placeholder="Search">
+            </th>            
+        </tr>
+    </thead>        
+    <tbody class="searchable">        
+<?
         foreach($modules as $id => $module) {
             
             if(preg_match($pattern, $module->type)) {
@@ -40,15 +56,21 @@
                 </div>
             </td>
         </tr>
-<?              
-                $instance = $module->newInstance();
-                if(($instance instanceof RescueMe\Uses)) {
+<?
+    $instance = $module->newInstance();
+    if($instance instanceof RescueMe\Uses) {
+
+        $inline = true;
+        $context = implode("|", $instance->uses());
+        echo require 'setup.property.list.ajax.php';
                     
-                    $include = implode("|", $instance->uses());
-                    require 'setup.property.list.gui.php';
-                    
-                }
-            }
-        }    
-    } 
-?>     
+    }}}} 
+?>    
+        
+    </tbody>
+</table>    
+        
+<?    
+    return ob_get_clean();
+    
+?>

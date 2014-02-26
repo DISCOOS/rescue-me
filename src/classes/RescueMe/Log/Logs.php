@@ -42,6 +42,12 @@
         );
         
         /**
+         * All logs
+         */
+        const ALL = "all";
+        
+        
+        /**
          * Access log
          */
         const ACCESS = "access";
@@ -91,6 +97,33 @@
         
         
         /**
+         * Get log titles
+         * @return array
+         */
+        public static function getTitles() {
+            return array(
+                Logs::ALL => _('All'),
+                Logs::TRACE => _('Trace'),
+                Logs::LOCATION => _('Locations'),
+                Logs::SMS => _('SMS'),
+                Logs::ACCESS => _('Access'),
+                Logs::DB =>  _('Database'),
+                Logs::SYSTEM => _('System'),
+            );            
+        }        
+        
+        /**
+         * Get log tile
+         * @param string $log Log name
+         * @return string
+         */
+        public static function getTitle($log) {
+            $titles = Logs::getTitles();            
+            return isset($titles[$log]) ? $titles[$log] : false;
+        }        
+        
+        
+        /**
          * Get all logs in database
          * 
          * @param array $logs Logs (optional, default: null - all)
@@ -99,16 +132,16 @@
          */
         public static function getAll($logs=null) {
             
-            if(isset($logs) === FALSE) {
+            if(isset($logs) === FALSE || in_array(Logs::ALL, $logs)) {
                 $logs = Logs::$all;
             }
             
-            foreach(Logs::$all as $name) {
+            foreach($logs as $name) {
                 $filter[] = "`logs`.`name`='$name'";
             } 
             $filter = implode($filter,' OR ');
             
-            $res = DB::query(Logs::SELECT . ' WHERE ' . $filter . ' ORDER BY `date` DESC');
+            $res = DB::query(Logs::SELECT . ' WHERE ' . $filter . ' ORDER BY `date` DESC LIMIT 20;');
             
             if (DB::isEmpty($res)) return false;
 
@@ -129,6 +162,10 @@
          * @return array|boolean
          */
         public static function get($name) {
+            
+            if($name === Logs::ALL) {
+                return Logs::getAll();
+            }
             
             $res = DB::query(Logs::SELECT . " WHERE `logs`.`name`='" . $name . "' ORDER BY `date` DESC");
 

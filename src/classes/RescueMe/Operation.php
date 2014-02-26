@@ -34,6 +34,9 @@
             "op_closed",
             "op_comments"
         );
+        
+        const OPEN = 'open';
+        const CLOSED = 'closed';
 
         public $id = -1;
         public $user_id = -1;
@@ -246,7 +249,7 @@
          * @param string $status NULL, 'open' or 'closed'
          * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
          */
-        public static function getAllOperations($status='open') {
+        public static function getAllOperations($status='open', $admin = false) {
             $user = User::current();
             // Get WHERE clause
             switch( $status ) {
@@ -258,11 +261,11 @@
                     $where = " IS NOT NULL";
                     break;
             }
+            
+            $owned = ($admin ? '' : "AND `".self::TABLE."`.`user_id` = ".(int)$user->id);
 
             $query = "SELECT `op_id`, `op_name` FROM `".self::TABLE."`
-                      WHERE `op_closed` {$where}
-                      AND `".self::TABLE."`.`user_id` = ".(int)$user->id."
-                      ORDER BY `op_opened` DESC";
+                      WHERE `op_closed` {$where} {$owned} ORDER BY `op_opened` DESC";
 
             $res = DB::query($query);
 
@@ -279,6 +282,7 @@
             return $operation_ids;
 
         } // getAllOperations
+        
 
         public function getAllMissing() {
             $query = "SELECT `missing_id`, `missing_name` FROM `missing`

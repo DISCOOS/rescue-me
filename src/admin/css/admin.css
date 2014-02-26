@@ -59,6 +59,13 @@ h3.pagetitle {
     color: lightgray;
 }
 
+.loader {
+    position: relative;
+    top: 50%;
+    z-index: 100;
+    margin-left: 0.5em;
+}
+
 /*==========================================
 / [Dashboard] page
 /=========================================*/

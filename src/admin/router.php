@@ -84,6 +84,13 @@
                 break;
             }
             
+            if(isset($_GET['name'])) {
+                
+                echo ajax_response("logs");
+
+                exit;
+            }
+            
             $_ROUTER['name'] = _('Logs');
             $_ROUTER['view'] = $_GET['view'];
             break;
@@ -99,7 +106,31 @@
                 $_ROUTER['message'] = _('Access denied');
                 break;
             }
-                        
+            
+            if(isset($_GET['name'])) {
+                
+                switch($_GET['name'])
+                {
+                    default:
+                    case 'general':
+                        $index = 'property.list';
+                        $include = "system.*|location.*";
+                        break;
+                    case 'sms':
+                        $index = 'module.list';
+                        $include = preg_quote("RescueMe\SMS\Provider");
+                        break;
+                    case 'maps':
+                        $index = 'property.list';
+                        $include = "map.*";
+                        break;
+                }
+                
+                echo ajax_response("setup", $index, $include);
+
+                exit;
+            }
+            
             $_ROUTER['name'] = SETUP;
             $_ROUTER['view'] = $_GET['view'];
             break;
@@ -293,7 +324,7 @@
                 
                 $username = User::safe($_POST['email']);
                 if(empty($username)) {
-                    $_ROUTER['message'] = _('Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn');
+                    $_ROUTER['message'] = _('Eposten må inneholde minst ett alfanumerisk tegn');
                 }
                 
                 $status = User::create(
@@ -602,7 +633,8 @@
             $_ROUTER['name'] = _('Avslutt operasjon');
             $_ROUTER['view'] = 'operation/close';
                         
-            if ($user->allow('write', 'operations', $id) === FALSE) {
+            if (($user->allow('write', 'operations', $id) 
+                || $user->allow('write', 'operations.all'))=== FALSE) {
                 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -645,7 +677,8 @@
             
             $id = $_GET['id'];
             
-            if ($user->allow('write', 'operations', $id) === FALSE) {
+            if (($user->allow('write', 'operations', $id) 
+                || $user->allow('write', 'operations.all'))=== FALSE) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = _("Access denied");
@@ -721,7 +754,7 @@
             
             if($missing !== FALSE){
                 
-                if(($user->allow('write', 'operations', $missing->op_id) || $user->allow('write', 'operations.all')) === FALSE) {
+                if(($user->allow('read', 'operations', $missing->op_id) || $user->allow('read', 'operations.all')) === FALSE) {
                 
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
@@ -747,6 +780,14 @@
                 break;                
             } 
             
+            if(isset($_GET['name'])) {
+                
+                echo ajax_response("missing.list",$_GET["name"]);
+                
+                exit;
+            }
+            
+            
             $_ROUTER['name'] = 'Alle savnede';
             $_ROUTER['view'] = $_GET['view'];
             break;
@@ -770,7 +811,8 @@
 
             if($missing !== FALSE){
                 
-                if ($user->allow('write', 'operations', $missing->op_id) === FALSE) {
+                if (($user->allow('write', 'operations', $missing->op_id) 
+                    || $user->allow('write', 'operations.all'))=== FALSE) {
 
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
@@ -840,7 +882,8 @@
             
             if($missing !== FALSE) {
 
-                if ($user->allow('write', 'operations', $missing->op_id) === FALSE) {
+                if (($user->allow('write', 'operations', $missing->op_id) 
+                    || $user->allow('write', 'operations.all'))=== FALSE) {
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
                     $_ROUTER['message'] = _("Access denied");
@@ -908,3 +951,11 @@
             $_ROUTER['message'] = print_r($_REQUEST,true);
             break;
     }       
+    
+    
+    function ajax_response($resource, $index = '', $context = '') {
+        if($index) {
+            $index = '.'.$index;
+        }
+        return require "ajax/$resource$index.ajax.php";
+    }

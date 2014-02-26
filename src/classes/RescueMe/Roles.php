@@ -12,6 +12,9 @@
     
     namespace RescueMe;
     
+    use \Psr\Log\LogLevel;
+    use \RescueMe\Log\Logs;
+    
     /**
      * Roles class
      * 
@@ -103,13 +106,13 @@
                 $role = self::$roles[$role];
             }
             
-            if (!in_array($role, self::$roles)) {
-                return false;
+            if (in_array($role, self::$roles) === FALSE) {
+                return Roles::error("Failed grant user $user_id unknown role $role", self::$roles);
             }
             
             $res = true;
             
-            if(self::has($role, $user_id) === false)
+            if(self::has($role, $user_id) === FALSE)
             {
                 $res = DB::delete(self::TABLE, 'user_id = '.(int)$user_id);
                 
@@ -117,13 +120,17 @@
                 
                 $values = prepare_values(Roles::$fields,array((int)$user_id, $role_id, $role));
                 
+                // Primary key is not an integer, returns 0 on success, FALSE otherwise
                 $res = DB::insert(self::TABLE, $values);
                 
-                $res = DB::isEmpty($res) !== false;
+                if($res !== 0) {
+                    return Roles::error("Failed grant user $user_id role $role", $values);
+                }                
                 
+                Roles::log("Granted user $user_id role $role", $res);
             }
             
-            return $res;
+            return true;
         }        
         
         /**
@@ -154,8 +161,8 @@
          */
         public static function revoke($role, $user_id) {
             
-            if (!in_array($role, self::$roles)) {
-                return false;
+            if (in_array($role, self::$roles) === false) {
+                return Roles::error("Failed revoke unknown role $role from user $user_id", self::$roles);
             }
             
             $res = false;
@@ -165,7 +172,11 @@
                 $res = DB::delete("roles", "role = '$role' AND user_id = ".(int)$user_id);
             }
             
-            return $res;
+            if($res === FALSE) {
+                Roles::error("Failed revoke role $role from user $user_id", func_get_args());
+            }            
+            
+            return Roles::log("Role $role_id revoked from user $user_id", $res);
             
         }
         
@@ -227,10 +238,41 @@
                 
                 $res = DB::insert("permissions", array('resource' => $perm[0], 'access' => $perm[1], 'role_id' => (int)$role_id));
                 
-                if ($res === false) 
-                    return false;
+                if ($res === false) {
+                    Roles::error("Failed update role $role_id permissions", func_get_args());
+                }
             }
-            return true;
+            
+            return Roles::log("Role $role_id permissions updated", $res);
         }
+        
+
+        private static function log($message, $level = LogLevel::INFO, $result = true)
+        {
+            $context['code'] = DB::errno();
+            $context['error'] = DB::error();
+            Logs::write(
+                Logs::ACCESS, 
+                $level, 
+                $message
+            );
+                
+            return $result;
+        }        
+        
+
+        private static function error($message, $context = array())
+        {
+            $context['code'] = DB::errno();
+            $context['error'] = DB::error();
+            Logs::write(
+                Logs::SYSTEM, 
+                LogLevel::ERROR, 
+                $message, 
+                $context
+            );
+                
+            return false;
+        }        
 
     }// Roles

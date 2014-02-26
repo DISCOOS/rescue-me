@@ -225,17 +225,21 @@
         /**
          * Recover user
          * 
-         * @param string $email
+         * @param string $email 
+         * @param array $methods 
          * 
          * @return boolean
          */
-        public static function recover($email, $send_to_email = true, $send_to_sms = true) {
+        public static function recover($email, $methods = null) {
             
             $filter = "`email` = '$email'";
             
             $res = DB::select(self::TABLE,"user_id", $filter);
 
-            if(DB::isEmpty($res)) return false;
+            if(DB::isEmpty($res)) 
+            {
+                return $this->error(_("User not found. Recovery password not sent."), func_get_args());                
+            }
             
             $row = $res->fetch_row();
             
@@ -245,13 +249,14 @@
             
             $message = "$password\nYour " . APP_URL . " password.";
             
-            $res = $user->send($message);
-            if($res) {
-                Logs::write(Logs::ACCESS, LogLevel::INFO, "User {$row[0]} password recovery SMS sent", func_get_args());
-            } else {
-                Logs::write(Logs::ACCESS, LogLevel::ERROR, "User {$row[0]} password recovery SMS sent", func_get_args());
-            }
-            return $res;
+            $res = $user->send($message, $methods);
+            
+            if($res !== false) {
+                return $this->log(_("Sent recovery password to user {$row[0]}"));
+            } 
+            
+            return $this->error(_("Failed to send recovery password to user {$row[0]}"), func_get_args());
+            
             
         }// recover
         
@@ -280,15 +285,20 @@
             
             $values = \prepare_values(User::$insert, $values);
             
+            $res = false;
+            
             if(($id = DB::insert(self::TABLE, $values)) !== false) {
                 $user = self::get($id);
                 $user->prepare();
-                return $user;
+                $res = Roles::grant($role, $user->id);
             }
             
-            Roles::grant($role, $this->id);            
+            if($res !== false) {
+                return $this->log(_("User {$user->id} created"));
+            } 
             
-            return false;
+            return $this->error(_("Failed to create user"), func_get_args());
+            
             
         }// create
         
@@ -325,7 +335,11 @@
                 }
             }
             
-            return $res;
+            if($res !== false) {
+                return $this->log("User {$this->id} updated");
+            } 
+            
+            return $this->error("Failed to update user {$this->id}", func_get_args());
             
         }// update
         
@@ -387,15 +401,11 @@
                 $_SESSION['password'] = $password;
             }
             
-            $res = $result !== false;
-            if($res) {
-                Logs::write(Logs::ACCESS, LogLevel::INFO, "User {$row[0]} password changed");
-            } else {
-                Logs::write(Logs::ACCESS, LogLevel::ERROR, "User {$row[0]} password change failed", $password);
-            }
+            if($result !== false) {
+                return $this->log("User {$this->id} password changed");
+            } 
             
-            
-            return $result !== false;
+            return $this->error("Failed to change user {$this->id} password", $password);
             
         }// password
         
@@ -409,9 +419,13 @@
             
             $values = \prepare_values(array("state"), array("deleted"));
             
-            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
+            $res = DB::update(self::TABLE, $values, "user_id=$this->id");
             
-            return $result !== false;
+            if($res !== false) {
+                return $this->log("User $this->id deleted");
+            }
+            
+            return $this->error("Failed to delete user $this->id", $this);
             
         }// delete        
 
@@ -425,9 +439,13 @@
             
             $values = \prepare_values(array("state"), array("disabled"));
             
-            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
+            $res = DB::update(self::TABLE, $values, "user_id=$this->id");
             
-            return $result !== false;
+            if($res !== false) {
+                return $this->log("User $this->id disabled");
+            }
+            
+            return $this->error("Failed to disable user $this->id", $this);
             
         }// disable        
 
@@ -441,9 +459,13 @@
             
             $values = \prepare_values(array("state"), array("NULL"));
             
-            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
+            $res = DB::update(self::TABLE, $values, "user_id=$this->id");
             
-            return $result !== false;
+            if($res !== false) {
+                return $this->log("User $this->id enabled");
+            }
+            
+            return $this->error("Failed to enable user $this->id", $this);
             
         }// disable     
         
@@ -452,21 +474,21 @@
          * Send message to user
          * 
          * @param string $message
+         * @param array $methods
          * 
          * @return boolean
          */
-        public function send($message) {
+        public function send($message, $methods) {
             
             $sms = Module::get("RescueMe\SMS\Provider", User::currentId())->newInstance();
             if(!$sms)
             {
-                insert_error("Failed to get SMS provider");
-                return false;
+                return $this->error("Failed to get SMS provider");
             }
 
             $res = $sms->send(SMS_FROM, $this->mobile_country, $this->mobile, $message);
-            if(!$res) {
-                insert_error($sms->error());
+            if($res === FALSE) {
+                $this->error($sms->error());
             }
             return $res;
             
@@ -692,6 +714,19 @@
             return str_rnd($length);
         }// generate
     
+        
+        private function log($message, $level = LogLevel::INFO, $result = true)
+        {
+            $context['code'] = DB::errno();
+            $context['error'] = DB::error();
+            Logs::write(
+                Logs::ACCESS, 
+                $level, 
+                $message
+            );
+                
+            return $result;
+        }                
         
         private function error($message, $context = array())
         {
