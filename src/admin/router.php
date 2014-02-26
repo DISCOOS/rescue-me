@@ -663,7 +663,7 @@
             
         case 'missing/new':
             
-            if ($user->allow('write', 'operations') === FALSE) {
+            if (($user->allow('write', 'operations') || $user->allow('write', 'operations.all')) === FALSE) {
                 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -721,7 +721,7 @@
             
             if($missing !== FALSE){
                 
-                if ($user->allow('write', 'operations', $missing->op_id) === FALSE) {
+                if(($user->allow('write', 'operations', $missing->op_id) || $user->allow('write', 'operations.all')) === FALSE) {
                 
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
@@ -739,7 +739,7 @@
             
         case 'missing/list':
             
-            if ($user->allow('read', 'operations') === FALSE) {
+            if (($user->allow('read', 'operations') || $user->allow('read', 'operations.all')) === FALSE) {
                 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";

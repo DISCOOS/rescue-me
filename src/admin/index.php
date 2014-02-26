@@ -120,9 +120,9 @@ if(defined('USE_SILEX') && USE_SILEX) {
                     <li class="dropdown">
                         <a id="drop1" class="dropdown-toggle" data-toggle="dropdown"><?= _('Sporing') ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                            <? if ($user->allow('read', 'operations')) { ?>
+                            <? if($user->allow('read', 'operations') || $user->allow('read', 'operations.all')) { ?>
                             <li id="new-missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/new"><b class="icon icon-plus-sign"></b><?= NEW_TRACE ?></a></li>
-                            <? } if ($user->allow('write', 'operations')) { ?>
+                            <? } if ($user->allow('write', 'operations') || $user->allow('write', 'operations.all')) { ?>
                              <li class="divider"></li>
                             <li id="missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/list"><b class="icon icon-th-list"></b><?= TRACES ?></a></li>
                             <? } ?>

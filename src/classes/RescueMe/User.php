@@ -612,8 +612,10 @@
                     case 'setup':               
                         return ($condition === null ? $this->id : $condition) === $this->id;
                     case 'operations':
-                        $sql = "SELECT COUNT(*) FROM `operations` 
-                            WHERE `op_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
+                        if($condition !== null) {
+                            $sql = "SELECT COUNT(*) FROM `operations` 
+                                WHERE `op_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
+                        }
                         break;
                     default:
                         break;
