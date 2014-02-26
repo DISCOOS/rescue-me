@@ -86,8 +86,8 @@ if(defined('USE_SILEX') && USE_SILEX) {
     }
     
     $user = User::current();
-
-
+    $id = $user->id;
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -131,10 +131,11 @@ if(defined('USE_SILEX') && USE_SILEX) {
                     <li class="dropdown">
                         <a id="drop3" class="dropdown-toggle" data-toggle="dropdown"><?= _('System') ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+                            <? if ($user->allow('write', 'user', $id) || $user->allow('write', 'user.all')) { ?>
                             <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/edit/<?=$user->id?>"><b class="icon icon-user"></b><?=_('Konto')?></a></li>
                             <li id="passwd"><a role="menuitem" href="<?= ADMIN_URI ?>password/change/<?=$user->id?>"><b class="icon icon-lock"></b><?=_('Endre passord')?></a></li>
                             <li class="divider"></li>
-                            <? if ($user->allow('write', 'user.all')) { 
+                            <? } if ($user->allow('write', 'user.all')) { 
                                 insert_item(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign"); ?>
                             <li class="divider"></li>
                             <? } if ($user->allow('read', 'user.all')) { ?>
@@ -144,9 +145,10 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <? } if ($user->allow('read', 'logs')) { ?>
                             <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?= _('Logs') ?></a></li>
                             <li class="divider"></li>
-                            <? } ?>
+                            <? } if ($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) { ?>
                             <li id="settings"><a href="<?= ADMIN_URI ?>setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
                             <li class="divider"></li>                            
+                            <? } ?>
                             <li id="logout"><a data-toggle="modal" href="#confirm"><b class="icon icon-eject"></b><?= LOGOUT ?></a></li>
                         </ul>
                     </li>

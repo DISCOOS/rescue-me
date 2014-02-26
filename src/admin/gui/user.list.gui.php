@@ -3,6 +3,10 @@
     use RescueMe\User;
 
     $users = User::getAll();
+    
+    $user = User::current();
+    
+    $allow = $user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all');
         
 ?>
 
@@ -56,7 +60,9 @@
                             <?insert_item(_("Endre passord"), ADMIN_URI."password/change/$id")?>
                             <?insert_item(_("Nullstill passord"), ADMIN_URI."password/recover/$id")?>
                             <li class="divider"></li>
-                            <?insert_item(_("Slett"), "#confirm-delete-$id", "", "", 'data-toggle="modal"')?>
+                            <?if($allow) {insert_item(_("Oppsett"), ADMIN_URI."setup/$id"); ?>
+                            <li class="divider"></li>
+                            <?} insert_item(_("Slett"), "#confirm-delete-$id", "", "", 'data-toggle="modal"')?>
                         </ul>
                     </div>
                 </td>

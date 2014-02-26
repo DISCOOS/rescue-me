@@ -156,6 +156,8 @@
             if($country !== false) {                
                 $name = ucwords(strtolower($country['country']));
                 if($phone) {
+            
+            
                     $dail_code = $country['dial_code'];
                     $name .=  " (" . (strlen($dail_code)<4 ? "+$dail_code" : $dail_code). ")";
                 }

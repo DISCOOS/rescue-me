@@ -203,7 +203,7 @@
             
             $defaults = self::getDefaults();
             
-            if(!isset($defaults[$name])) {
+            if(isset($defaults[$name]) === FALSE) {
                 return false;
             }
             
@@ -409,7 +409,6 @@
                     $rows[$name] = $cells;
                 }
             }
-            
             return $rows;
             
         }

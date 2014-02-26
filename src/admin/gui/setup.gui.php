@@ -1,5 +1,21 @@
 <h3><?=_("Systemoppsett")?></h3>
 
+<?php
+
+    use RescueMe\User;
+    
+    $id = isset($_GET['id']) ? $_GET['id'] : User::currentId();
+
+    $user = User::get($id); 
+    
+    if($user == false)
+    {
+        insert_alert("Ingen registrert");
+    }
+    else
+    {
+?>
+
     <ul id="tabs" class="nav nav-tabs">
       <li><a href="#general" data-toggle="tab"><?=_("General")?></a></li>
       <li><a href="#sms" data-toggle="tab"><?=_("SMS")?></a></li>
@@ -69,3 +85,5 @@
 <script>
     R.toTab('tabs');
 </script>
+
+<? } ?>
