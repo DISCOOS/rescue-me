@@ -15,12 +15,12 @@
     
     foreach ($all_perms as $resource=>$permission) {
         foreach ($permission as $access) {
-            $name = "$resource.$access";
+            $name = "$resource:$access";
             $fields[] = array(
                 'id' => "role[$name]",
                 'type' => 'checkbox',
                 'value' => (isset($active_perms[$name]) ? 'checked': ''),
-                'label' => $name
+                'label' => "$resource.$access"
             );
         }
     }

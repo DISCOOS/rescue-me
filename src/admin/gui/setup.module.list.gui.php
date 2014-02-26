@@ -2,7 +2,9 @@
     use RescueMe\User;
     use RescueMe\Module;
     
-    $modules = Module::getAll(User::currentId());
+    $id = isset($_GET['id']) ? $_GET['id'] : User::currentId();
+    
+    $modules = Module::getAll($id);
 
     if($modules !== false) {
 

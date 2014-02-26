@@ -29,11 +29,15 @@
         );
         
         private static $permissions = array(
-                                      'operations'=>array('read', 'write'), 
-                                      'logs'=>array('read'), 
-                                      'users'=>array('read', 'write'),
-                                      'settings'=>array('read', 'write'),
-                                      'roles'=>array('read', 'write'));
+            'logs'=>array('read'), 
+            'user'=>array('read', 'write'),
+            'user.all'=>array('read', 'write'),
+            'setup'=>array('read', 'write'),
+            'setup.all'=>array('read', 'write'),
+            'roles'=>array('read', 'write'),
+            'operations'=>array('read', 'write'), 
+            'operations.all'=>array('read', 'write')
+        );
         
        /**
          * Get all permissions

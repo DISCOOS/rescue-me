@@ -47,24 +47,29 @@
                 
                 case 1:
                     // Grant administrator default permissions
-                    if(Permissions::grant(1, $user_id, 'read', 'logs')) $count++;
-                    if(Permissions::grant(1, $user_id, 'read', 'users')) $count++;
-                    if(Permissions::grant(1, $user_id, 'write', 'users')) $count++;
-                    if(Permissions::grant(1, $user_id, 'read', 'roles')) $count++;
-                    if(Permissions::grant(1, $user_id, 'write', 'roles')) $count++;
-                    if(Permissions::grant(1, $user_id, 'read', 'settings')) $count++;
-                    if(Permissions::grant(1, $user_id, 'write', 'settings')) $count++;
-                    if(Permissions::grant(1, $user_id, 'read', 'operations')) $count++;
-                    if(Permissions::grant(1, $user_id, 'write', 'operations')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'logs')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'user.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'user.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'roles')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'roles')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'setup.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'setup.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'operations.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'operations.all')) $count++;
                     break;                    
                 case 2:
                     // Grant operator default permissions
-                    if(Permissions::grant(2, $user_id, 'read', 'operations')) $count++;
-                    if(Permissions::grant(2, $user_id, 'write', 'operations')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'user')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'user')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'setup')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'setup')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'operations')) $count++;
                     break;                    
                 case 3:
                     // Grant personell default permissions
-                    if(Permissions::grant(3, $user_id, 'read', 'operations')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'user')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
                     break;                    
             }
             
@@ -178,7 +183,7 @@
             
             $perms = array();
             while ($row = $res->fetch_assoc()) {
-                $perms[$row['resource'].'.'.$row['access']] = true;
+                $perms[$row['resource'].':'.$row['access']] = true;
             }
             return $perms;
         }
@@ -197,7 +202,7 @@
             
             $perms = array();
             while ($row = $res->fetch_assoc()) {
-                $perms[$row['resource'].'.'.$row['access']] = true;
+                $perms[$row['resource'].':'.$row['access']] = true;
             }
             return $perms;
         }
@@ -217,15 +222,15 @@
             $res = DB::delete("permissions", $filter);
             
             foreach (array_keys($permissions) as $key) {
-                $perm = explode('.', $key);
+                
+                $perm = explode(':', $key);
+                
                 $res = DB::insert("permissions", array('resource' => $perm[0], 'access' => $perm[1], 'role_id' => (int)$role_id));
                 
-                $res = DB::isEmpty($res) !== false;
-                
                 if ($res === false) 
-                    break;
+                    return false;
             }
-            return $res;
+            return true;
         }
 
     }// Roles

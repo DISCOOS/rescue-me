@@ -154,7 +154,8 @@
          */
         public static function isEmpty($res) 
         {
-            return ($res && mysqli_num_rows($res)) === false;
+            return isset($res) === FALSE || $res === FALSE || 
+                ($res instanceof mysqli_result) &&  mysqli_num_rows($res) === 0;
         }// isEmpty
         
         

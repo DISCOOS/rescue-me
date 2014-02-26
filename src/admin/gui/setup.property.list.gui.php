@@ -7,7 +7,7 @@
     
     if(empty($include) === FALSE) {
     
-        $id = User::currentId();
+        $id = isset($_GET['id']) ? $_GET['id'] : User::currentId();
     
         $pattern = '#'.$include.'#';
 

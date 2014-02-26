@@ -120,9 +120,12 @@ if(defined('USE_SILEX') && USE_SILEX) {
                     <li class="dropdown">
                         <a id="drop1" class="dropdown-toggle" data-toggle="dropdown"><?= _('Sporing') ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                            <? if ($user->allow('read', 'operations')) { ?>
                             <li id="new-missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/new"><b class="icon icon-plus-sign"></b><?= NEW_TRACE ?></a></li>
-                            <li class="divider"></li>
+                            <? } if ($user->allow('write', 'operations')) { ?>
+                             <li class="divider"></li>
                             <li id="missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/list"><b class="icon icon-th-list"></b><?= TRACES ?></a></li>
+                            <? } ?>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -131,10 +134,10 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/edit/<?=$user->id?>"><b class="icon icon-user"></b><?=_('Konto')?></a></li>
                             <li id="passwd"><a role="menuitem" href="<?= ADMIN_URI ?>password/change/<?=$user->id?>"><b class="icon icon-lock"></b><?=_('Endre passord')?></a></li>
                             <li class="divider"></li>
-                            <? if ($user->allow('write', 'users')) { 
+                            <? if ($user->allow('write', 'user.all')) { 
                                 insert_item(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign"); ?>
                             <li class="divider"></li>
-                            <? } if ($user->allow('read', 'users')) { ?>
+                            <? } if ($user->allow('read', 'user.all')) { ?>
                             <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
                             <? } if ($user->allow('read', 'roles')) { ?>
                             <li id="roles"><a role="menuitem" href="<?= ADMIN_URI ?>role/list"><b class="icon icon-th-list"></b><?= _('Roles') ?></a></li>

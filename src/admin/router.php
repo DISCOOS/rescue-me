@@ -90,7 +90,15 @@
             
         case 'setup':
             
-            // Access control not neccessary, all logged inn users are allowed to edit own settings.
+            $id = isset($_GET['id']) ? $_GET['id'] : $user->id;
+            
+            if(($user->allow('read', 'setup', $id) || $user->allow('read', 'setup.all')) === FALSE)
+            {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['message'] = _('Access denied');
+                break;
+            }
                         
             $_ROUTER['name'] = SETUP;
             $_ROUTER['view'] = $_GET['view'];
@@ -121,7 +129,7 @@
                 {
                     $id = $module->user_id;
                     
-                    if(($id === User::currentId() || $user->allow('read', 'settings')) === FALSE)
+                    if(($user->allow('read', 'setup', $id) || $user->allow('read', 'setup.all')) === FALSE)
                     {
                         $_ROUTER['name'] = _("Illegal Operation");
                         $_ROUTER['view'] = "404";
@@ -135,7 +143,7 @@
                 $config = array_exclude($_POST, array('type','class'));
                 $user_id = isset($_POST['user']) ? $_POST['user'] : 0;
                 
-                if(($user_id === User::currentId() || $user->allow('write', 'settings')) === FALSE)
+                if(($user->allow('write', 'setup', $user_id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
@@ -191,7 +199,7 @@
                 // Get user id
                 $id = $_GET['id'];
                 
-                if(($id === User::currentId() || $user->allow('write', 'settings')) === FALSE)
+                if(($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
@@ -240,7 +248,7 @@
             
             $id = $_GET['id'];
 
-            if(($id === User::currentId() || $user->allow('read', 'users')) === FALSE)
+            if(($user->allow('read', 'user', $id) || $user->allow('read', 'user.all'))=== FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -255,7 +263,7 @@
         
         case 'user/list':
             
-            if($user->allow('read', 'users') === FALSE)
+            if($user->allow('read', 'user.all') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -269,7 +277,7 @@
         
         case 'user/new':
             
-            if($user->allow('write', 'users') === FALSE)
+            if($user->allow('write', 'user.all') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -317,9 +325,9 @@
             
             $id = $_GET['id'];
             
-            $access = $user->allow('write', 'users');
+            $access = $user->allow('write', 'user.all');
             
-            if(($access || $id === User::currentId()) === FALSE)
+            if(($user->allow('write', 'user', $id) || $access)=== FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -375,7 +383,7 @@
                 break;
             } 
             
-            if($user->allow('write', 'users') === FALSE)
+            if($user->allow('write', 'user.all') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -414,7 +422,7 @@
                 break;
             } 
             
-            if($user->allow('write', 'users') === FALSE)
+            if($user->allow('write', 'user.all') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -450,7 +458,7 @@
                 break;
             } 
             
-            if($user->allow('write', 'users') === FALSE)
+            if($user->allow('write', 'user.all') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -532,7 +540,7 @@
             
             $id = $_GET['id'];
             
-            if(($id === User::currentId() || $user->allow('write', 'users')) === FALSE)
+            if(($user->allow('write', 'user', $id) || $user->allow('write', 'user.all')) === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";

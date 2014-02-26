@@ -604,20 +604,20 @@
                         
             $perms = Roles::getPermissionsForRole($this->role_id);
             
-            $allow = isset($perms[$resource.'.'.$access]);
+            $allow = isset($perms[$resource.':'.$access]);
             
             if($allow && $condition !== null) {
 
                 // Check conditions
                 switch($resource) {
-                    case 'operations':
-                        $sql = "SELECT COUNT(*) FROM `operations` 
-                            WHERE `op_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
+                    case 'user':
+                    case 'setup':                        
+                        return ($condition === $this->id);
                         break;
-                    case 'missing':
+                    case 'operations':
+                        $condition = (null ? $this->id : $condition);
                         $sql = "SELECT COUNT(*) FROM `operations` 
-                            JOIN `missing` ON `missing`.`op_id` = `operations`.`op_id` 
-                            AND `missing`.`missing_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
+                            WHERE `op_id`=".(int)$condition." AND `user_id`=".(int)$condition;
                         break;
                     default:
                         break;
