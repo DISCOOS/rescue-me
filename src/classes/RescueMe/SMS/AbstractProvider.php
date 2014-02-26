@@ -287,10 +287,11 @@
                        FROM `missing` 
                        WHERE `sms_provider` = '".DB::escape(get_class($this))."' AND `sms_provider_ref` = '".$reference."';";
             
-            $result = DB::query($select);
-            if(DB::isEmpty($result) !== FALSE) { 
+            $res = DB::query($select);
+            
+            if(DB::isEmpty($res) === FALSE) { 
 
-                while($row = $result->fetch_assoc()) {
+                while($row = $res->fetch_assoc()) {
 
                     $code = Locale::getDialCode($row['missing_mobile_country']);
                     $number = $this->accept($code).$row['missing_mobile'];
