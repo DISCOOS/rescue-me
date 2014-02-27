@@ -5,7 +5,7 @@ src/config.php
 src/config.minify.php
 src/vendor
 src/min/cache/
-
+src/composer.phar
 src/admin/.DS_Store
 
 src/tmp/twig.cache/.DS_Store
