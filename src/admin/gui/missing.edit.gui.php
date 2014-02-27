@@ -3,13 +3,14 @@
     use RescueMe\Locale;
     use RescueMe\Missing;
     use RescueMe\Operation;
+    
+    $id = input_get_int('id');
 
-    $missing = Missing::getMissing($_GET['id']);
+    $missing = Missing::getMissing($id);
 
     if($missing !== false)
     {
         $operation = Operation::getOperation($missing->op_id);
-        $user = User::get($operation->user_id);
         
         if(isset($_ROUTER['message'])) { 
             insert_error($_ROUTER['message']);

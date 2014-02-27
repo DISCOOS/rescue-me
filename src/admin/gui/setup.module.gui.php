@@ -1,7 +1,7 @@
 <?
 use RescueMe\Module;
 
-$id = $_GET['id'];
+$id = input_get_int('id');
 
 $module = Module::get($id);
 

@@ -97,7 +97,7 @@
             
         case 'setup':
             
-            $id = isset($_GET['id']) ? $_GET['id'] : $user->id;
+            $id = input_get_int('id',$user->id);
             
             if(($user->allow('read', 'setup', $id) || $user->allow('read', 'setup.all')) === FALSE)
             {
@@ -137,16 +137,13 @@
 
         case 'setup/module':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = "Id not found.";
                 break;
             } 
-            
-            // Get user id
-            $id = $_GET['id'];
             
             $_ROUTER['name'] = SETUP;
             $_ROUTER['view'] = $_GET['view'];
@@ -187,7 +184,7 @@
                 if($valid !== TRUE) {
                     $_ROUTER['message'] = $valid;
                 }
-                elseif(RescueMe\Module::set($_GET['id'], $_POST['type'], $_POST['class'], $config, $user_id)) {
+                elseif(RescueMe\Module::set($id, $_POST['type'], $_POST['class'], $config, $user_id)) {
                     header("Location: ".ADMIN_URI.'setup');
                     exit();
                 }
@@ -216,7 +213,7 @@
             
         case Properties::PUT_URI:
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -226,9 +223,6 @@
             
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                
-                // Get user id
-                $id = $_GET['id'];
                 
                 if(($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
@@ -269,7 +263,7 @@
             
         case 'user':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -277,8 +271,6 @@
                 break;
             } 
             
-            $id = $_GET['id'];
-
             if(($user->allow('read', 'user', $id) || $user->allow('read', 'user.all'))=== FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
@@ -346,7 +338,7 @@
             
         case 'user/edit':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id', User::currentId())) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -354,24 +346,21 @@
                 break;
             } 
             
-            $id = $_GET['id'];
-            
             $access = $user->allow('write', 'user.all');
             
-            if(($user->allow('write', 'user', $id) || $access)=== FALSE)
+            if(($access || $user->allow('write', 'user', $id))=== FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['message'] = _('Access denied 1');
                 break;
             }
-            
-
+ 
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Get requested user
-                $id = $_GET['id'];
+                $id = input_get_int('id', User::currentId());
                 $user = User::get($id);           
                 $username = User::safe($_POST['email']);
 
@@ -393,7 +382,7 @@
                 );
 
                 if($status) {
-                    header("Location: ".ADMIN_URI.($access ? 'user/list' : 'missing/list'));
+                    header("Location: ".ADMIN_URI.($access ? 'user/list' : 'admin'));
                     exit();
                 }
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : _('Ikke gjennomført, prøv igjen.');
@@ -406,7 +395,7 @@
 
         case 'user/delete':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -424,8 +413,6 @@
 
             $_ROUTER['name'] = USERS;
             $_ROUTER['view'] = 'user/list';
-            
-            $id = $_GET['id'];
             
             $edit = User::get($id);
             
@@ -445,7 +432,7 @@
             
         case 'user/disable':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -464,7 +451,6 @@
             $_ROUTER['name'] = USERS;
             $_ROUTER['view'] = 'user/list';
             
-            $id = $_GET['id'];
             $edit = User::get($id);
             if(!$user) {
                 $_ROUTER['message'] = "User '$id' " . _(" not found");
@@ -481,7 +467,7 @@
             
         case 'user/enable':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -500,7 +486,6 @@
             $_ROUTER['name'] = USERS;
             $_ROUTER['view'] = 'user/list';
             
-            $id = $_GET['id'];
             $user = User::get($id);
             if(!$user) {
                 $_ROUTER['message'] = "User '$id' " . _(" not found");
@@ -530,7 +515,7 @@
         
         case 'role/edit':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id', User::currentId())) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -561,7 +546,7 @@
             
         case 'password/change':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id', User::currentId())) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -569,9 +554,9 @@
                 break;
             } 
             
-            $id = $_GET['id'];
+            $allow = $user->allow('write', 'user.all');
             
-            if(($user->allow('write', 'user', $id) || $user->allow('write', 'user.all')) === FALSE)
+            if(($allow || $user->allow('write', 'user', $id)) === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -579,7 +564,6 @@
                 break;
             }
 
-            $id = isset($_GET['id']) ? $_GET['id'] : $user->id;
             $_ROUTER['name'] = _("Change Password");
             $_ROUTER['view'] = $_GET['view'];
             
@@ -590,7 +574,7 @@
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 if($edit->password($_POST['password'])) {
-                    header("Location: ".ADMIN_URI.'user/list');
+                    header("Location: ".ADMIN_URI.($allow ? 'user/list' : 'admin'));
                     exit();
                 }
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Ikke gjennomført, prøv igjen.';
@@ -613,22 +597,17 @@
                 $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Bruker eksisterer ikke.';
             }   
             
-            // Get requested user (only when logged in)
-            $user = $_SESSION['logon'] && isset($_GET['id']) ? User::get($_GET['id']) : null;            
-            
             break;
             
         case 'operation/close':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = "Id not found.";
                 break;
             } 
-            
-            $id = $_GET['id'];
             
             $_ROUTER['name'] = _('Avslutt operasjon');
             $_ROUTER['view'] = 'operation/close';
@@ -664,7 +643,7 @@
             
         case 'operation/reopen':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -674,8 +653,6 @@
             
             $_ROUTER['name'] = _('Gjenåpne operasjon');
             $_ROUTER['view'] = 'missing/list';
-            
-            $id = $_GET['id'];
             
             if (($user->allow('write', 'operations', $id) 
                 || $user->allow('write', 'operations.all'))=== FALSE) {
@@ -740,7 +717,7 @@
             
         case 'missing':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -748,8 +725,6 @@
                 break;
             } 
             
-            $id = $_GET['id'];
-
             $missing = Missing::getMissing($id);
             
             if($missing !== FALSE){
@@ -794,7 +769,7 @@
         
         case 'missing/edit':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -802,8 +777,6 @@
                 break;
             } 
             
-            $id = $_GET['id'];
-
             $missing = Missing::getMissing($id);
             
             $_ROUTER['name'] = EDIT_MISSING;
@@ -865,7 +838,7 @@
             
         case 'missing/resend':
             
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -875,8 +848,6 @@
             
             $_ROUTER['name'] = "Alle savnede";
             $_ROUTER['view'] = "missing/list";
-            
-            $id = $_GET['id'];
             
             $missing = Missing::getMissing($id);
             
@@ -916,13 +887,12 @@
                 break;
             } 
                 
-            if(isset($_GET['id']) === FALSE) {
+            if(($id = input_get_int('id')) === FALSE) {
 
                 echo '<span class="badge badge-important">Not found</span>';
 
             } else {
 
-                $id = $_GET['id'];
                 $missing = Missing::getMissing($id);
                 $module = Module::get("RescueMe\SMS\Provider", User::currentId());    
                 $sms = $module->newInstance();

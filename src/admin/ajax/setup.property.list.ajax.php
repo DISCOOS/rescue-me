@@ -7,7 +7,7 @@
     $include = (isset($context) ? $context : ".*");
     $inline = (isset($inline) && $inline ? true : false);
     
-    $id = isset($_GET['id']) ? $_GET['id'] : User::currentId();
+    $id = input_get_int('id', User::currentId());
 
     $pattern = '#'.$include.'#';
     

@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }   
 
 // Get requested user (only when logged in)
-$user = $_SESSION['logon'] && isset($_GET['id']) ? User::get($_GET['id']) : null; 
+$id = input_get_int('id');
+$user = $_SESSION['logon'] && $id ? User::get($id) : null; 
 
 $TWIG['countries'] = Locale::getCountryNames();
 $TWIG['selected_country'] = isset($user) ? $user->mobile_country : Locale::getCurrentCountryCode();

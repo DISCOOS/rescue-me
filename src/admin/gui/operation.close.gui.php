@@ -1,6 +1,8 @@
 <?
     use RescueMe\Operation;
-    $operation = Operation::getOperation($_GET['id']);
+    
+    $id = input_get_int('id');
+    $operation = Operation::getOperation($id);
     $missings = $operation === FALSE ? FALSE : $operation->getAllMissing();
     if($missings !== false)
     {

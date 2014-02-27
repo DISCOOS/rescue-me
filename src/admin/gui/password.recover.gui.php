@@ -11,7 +11,7 @@
     }
     
     
-    $id = $_GET['id'];
+    $id = input_get_int('id', User::currentId());
     $user = User::get($id);    
 
     $fields = array();
@@ -50,7 +50,7 @@
     
     $url = ADMIN_URI."password/recover";
     
-    if(isset($_GET['id'])) $url .= "/".$_GET['id'];
+    if($id) $url .= "/".$id;
     
     insert_form("user", "Nullstill passord", $fields, $url, array("submit" => "Reset", 'message' => $message));
     

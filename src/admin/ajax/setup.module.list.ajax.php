@@ -4,7 +4,7 @@
     use RescueMe\User;
     use RescueMe\Module;
     
-    $id = isset($_GET['id']) ? $_GET['id'] : User::currentId();
+    $id = input_get_int('id', User::currentId());
     
     $modules = Module::getAll($id);
 

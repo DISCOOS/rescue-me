@@ -1,8 +1,10 @@
 <?php
     use RescueMe\Missing;
     use RescueMe\Operation;
+    
+    $id = input_get_int('id');
 
-    $missing = Missing::getMissing($_GET['id']);
+    $missing = Missing::getMissing($id);
 
     if($missing === false)
     {

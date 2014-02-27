@@ -2,7 +2,8 @@
 
     use RescueMe\User;
 
-    $user = User::get($_GET['id']); 
+    $id = input_get_int('id', User::currentId());
+    $user = User::get($id); 
     
     if($user == false)
     {

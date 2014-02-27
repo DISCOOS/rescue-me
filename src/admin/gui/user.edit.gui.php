@@ -6,7 +6,7 @@
         insert_error($_ROUTER['message']);
     } 
 
-    $id = $_GET['id'];
+    $id = input_get_int('id', User::currentId());
     $user = User::get($id);
     
     $fields = array();

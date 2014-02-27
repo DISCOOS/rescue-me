@@ -141,7 +141,7 @@
             } 
             $filter = implode($filter,' OR ');
             
-            $res = DB::query(Logs::SELECT . ' WHERE ' . $filter . ' ORDER BY `date` DESC LIMIT 20;');
+            $res = DB::query(Logs::SELECT . ' WHERE ' . $filter . ' ORDER BY `date` DESC;');
             
             if (DB::isEmpty($res)) return false;
 

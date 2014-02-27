@@ -3,6 +3,36 @@
     use Psr\Log\LogLevel;    
     use RescueMe\Log\Logs;    
 
+    function input_get_int($key, $default = false) {
+        $value = filter_input(INPUT_GET, $key, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+
+    function input_get_email($key, $default = false) {
+        $value = filter_input(INPUT_GET, $key, FILTER_VALIDATE_EMAIL, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+    
+    function input_get_ip($key, $default = false) {
+        $value = filter_input(INPUT_GET, $key, FILTER_VALIDATE_IP, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+    
+    function input_get_url($key, $default = false) {
+        $value = filter_input(INPUT_GET, $key, FILTER_VALIDATE_URL, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+    
+    function input_get_float($key, $default = false) {
+        $value = filter_input(INPUT_GET, $key, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+    
+    function input_get_boolean($key, $default = false) {
+        $value = filter_input(INPUT_GET, $key, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+    
     function assert_types($values)
     {
         foreach($values as $type => $value)

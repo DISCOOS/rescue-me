@@ -175,7 +175,7 @@
 
             $result = DB::query($select);
             if(DB::isEmpty($result)) {                 
-                return $this->error("No user id found. $provider reference $reference not found.");                
+                return User::error("No user id found. $provider reference $reference not found.");                
             }
             $row = $result->fetch_row();
             $operation = Operation::getOperation($row[0]);
@@ -238,7 +238,7 @@
 
             if(DB::isEmpty($res)) 
             {
-                return $this->error(_("User not found. Recovery password not sent."), func_get_args());                
+                return User::error(_("User not found. Recovery password not sent."), func_get_args());                
             }
             
             $row = $res->fetch_row();
@@ -252,10 +252,10 @@
             $res = $user->send($message, $methods);
             
             if($res !== false) {
-                return $this->log(_("Sent recovery password to user {$row[0]}"));
+                return User::log(_("Sent recovery password to user {$row[0]}"));
             } 
             
-            return $this->error(_("Failed to send recovery password to user {$row[0]}"), func_get_args());
+            return User::error(_("Failed to send recovery password to user {$row[0]}"), func_get_args());
             
             
         }// recover
@@ -294,10 +294,10 @@
             }
             
             if($res !== false) {
-                return $this->log(_("User {$user->id} created"));
+                return User::log(_("User {$user->id} created"));
             } 
             
-            return $this->error(_("Failed to create user"), func_get_args());
+            return User::error(_("Failed to create user"), func_get_args());
             
             
         }// create
@@ -336,10 +336,10 @@
             }
             
             if($res !== false) {
-                return $this->log("User {$this->id} updated");
+                return User::log("User {$this->id} updated");
             } 
             
-            return $this->error("Failed to update user {$this->id}", func_get_args());
+            return User::error("Failed to update user {$this->id}", func_get_args());
             
         }// update
         
@@ -402,10 +402,10 @@
             }
             
             if($result !== false) {
-                return $this->log("User {$this->id} password changed");
+                return User::log("User {$this->id} password changed");
             } 
             
-            return $this->error("Failed to change user {$this->id} password", $password);
+            return User::error("Failed to change user {$this->id} password", $password);
             
         }// password
         
@@ -422,10 +422,10 @@
             $res = DB::update(self::TABLE, $values, "user_id=$this->id");
             
             if($res !== false) {
-                return $this->log("User $this->id deleted");
+                return User::log("User $this->id deleted");
             }
             
-            return $this->error("Failed to delete user $this->id", $this);
+            return User::error("Failed to delete user $this->id", $this);
             
         }// delete        
 
@@ -442,10 +442,10 @@
             $res = DB::update(self::TABLE, $values, "user_id=$this->id");
             
             if($res !== false) {
-                return $this->log("User $this->id disabled");
+                return User::log("User $this->id disabled");
             }
             
-            return $this->error("Failed to disable user $this->id", $this);
+            return User::error("Failed to disable user $this->id", $this);
             
         }// disable        
 
@@ -462,35 +462,49 @@
             $res = DB::update(self::TABLE, $values, "user_id=$this->id");
             
             if($res !== false) {
-                return $this->log("User $this->id enabled");
+                return User::log("User $this->id enabled");
             }
             
-            return $this->error("Failed to enable user $this->id", $this);
+            return User::error("Failed to enable user $this->id", $this);
             
         }// disable     
         
         
         /**
-         * Send message to user
+         * Send message to user devices
          * 
          * @param string $message
-         * @param array $methods
+         * @param array $devices Send to given devices {'sms','email'};
          * 
          * @return boolean
          */
-        public function send($message, $methods) {
+        public function send($message, $devices = array()) {
             
-            $sms = Module::get("RescueMe\SMS\Provider", User::currentId())->newInstance();
-            if(!$sms)
-            {
-                return $this->error("Failed to get SMS provider");
-            }
+            $sent = 0;
+            
+            $devices = array_map(function($device) { return strtolower($device);}, $devices);
+            
+            $devices = array_intersect(array('sms','email'), $devices);
+            
+            $all = empty($devices);
+            
+            if($all || in_array('sms', $devices)) {
+            
+                $sms = Module::get("RescueMe\SMS\Provider", User::currentId())->newInstance();
+                if(!$sms)
+                {
+                    return User::error("Failed to get SMS provider");
+                }
 
-            $res = $sms->send(SMS_FROM, $this->mobile_country, $this->mobile, $message);
-            if($res === FALSE) {
-                $this->error($sms->error());
+                $res = $sms->send(SMS_FROM, $this->mobile_country, $this->mobile, $message);
+                if($res === FALSE) {
+                    User::error($sms->error());
+                } else {
+                    $sent++;
+                }
             }
-            return $res;
+                
+            return $sent > 0;
             
         }// send
         
@@ -598,11 +612,11 @@
                 $row = $res->fetch_array();
                 $this->role_id = (int)$row[0];
             } else {
-                Logs::write(Logs::ACCESS, LogLevel::ERROR, "User {$this->id} have no role.");
+                User::error("User {$this->id} have no role.");
             }
             
             if($isset === FALSE) {
-                Logs::write(Logs::ACCESS, LogLevel::INFO, 'User logged in.');
+                User::log('User logged in.');
             }
             
             return true;
@@ -627,12 +641,12 @@
             $perms = Roles::getPermissionsForRole($this->role_id);
             
             if(($allow = isset($perms[$resource.':'.$access]))) {
-
+                
                 // Check conditions
                 switch($resource) {
                     case 'user':
                     case 'setup':               
-                        return ($condition === null ? $this->id : $condition) === $this->id;
+                        return (int)($condition === null ? $this->id : $condition) === $this->id;
                     case 'operations':
                         if($condition !== null) {
                             $sql = "SELECT COUNT(*) FROM `operations` 
@@ -715,7 +729,7 @@
         }// generate
     
         
-        private function log($message, $level = LogLevel::INFO, $result = true)
+        private static function log($message, $level = LogLevel::INFO, $result = true)
         {
             $context['code'] = DB::errno();
             $context['error'] = DB::error();
@@ -728,7 +742,7 @@
             return $result;
         }                
         
-        private function error($message, $context = array())
+        private static function error($message, $context = array())
         {
             $context['code'] = DB::errno();
             $context['error'] = DB::error();
