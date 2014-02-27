@@ -56,9 +56,9 @@
 </div>
 
 <?php require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
-<div id="map"></div>
+<div id="map" class="map"></div>
 <div id="sidebar">
-            <h4>Posisjoner &lt; 1km</h4>
+            <h4><?=_("Posisjoner &le; 1km")?></h4>
             <ul class="unstyled">
             <?php
 	$i = 0;
@@ -82,7 +82,7 @@
         }
         ?>
 	</ul>
-            <h4>Posisjoner &ge; 1km</h4>
+            <h4><?=_("Posisjoner &ge; 1km")?></h4>
             <ul class="unstyled">
         <?php
 	$i = 0;
@@ -126,6 +126,5 @@
 		<?= APP_URL."l/$missing->id/$missing->mobile"; ?>
 	</div>
 </div>
-<?php
-    }
-?>    
+
+<? } ?>    

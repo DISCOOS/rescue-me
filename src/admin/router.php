@@ -763,7 +763,7 @@
             }
             
             
-            $_ROUTER['name'] = 'Alle savnede';
+            $_ROUTER['name'] = _('Sporinger');
             $_ROUTER['view'] = $_GET['view'];
             break;
         
@@ -844,9 +844,9 @@
                 $_ROUTER['view'] = "404";
                 $_ROUTER['message'] = "Id not found.";
                 break;
-            } 
+            }
             
-            $_ROUTER['name'] = "Alle savnede";
+            $_ROUTER['name'] = _("Sporinger");
             $_ROUTER['view'] = "missing/list";
             
             $missing = Missing::getMissing($id);

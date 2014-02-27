@@ -28,14 +28,13 @@
             if (navigator.geolocation)
             {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    R.map.load(position.coords.latitude, position.coords.longitude, position.coords.accuracy, type);
+                    R.map.load('map', position.coords.latitude, position.coords.longitude, position.coords.accuracy, type);
                 });
             }
-            else{
 
-                // TODO: Add default location to properties/configuration, use Oslo for now.
-                R.map.load(10.75225, 59.91387, 30000, type);
-            }    
+            // TODO: Add default location to properties/configuration, use Oslo for now.
+            R.map.load('map', 10.75225, 59.91387, 30000, type);
+            
      <? } 
 
         $i = 0;
@@ -98,7 +97,7 @@
         if(typeof google !== "undefined") {
             initialize();
         } else {
-            $("map").html('<?=_("Google Maps not loaded")?>');
+            $("#map").html('<p class="map"><?=_("Google Maps not loaded")?></p>');
         }      
     });
     
