@@ -1,0 +1,9 @@
+{
+    "capslock": {
+        "on": "Cap-lock is on!"
+    },
+    "validate": {
+        "fill": "Please fill out this field",
+        "format": "Please match the required format"
+    }
+}

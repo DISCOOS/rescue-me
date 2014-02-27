@@ -83,8 +83,9 @@
     {
         $options["app"] = array("url" => APP_URI);
         $options["admin"] = array("url" => ADMIN_URI);
+        $options["lang"] = array("locale" => APP_LOCALE);
         
-        return str_replace('\\/', '/',json_encode($options));        
+        return str_replace('\\/', '/',json_encode($options));
 
     }// get_rescueme_install
     

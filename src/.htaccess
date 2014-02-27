@@ -18,9 +18,9 @@ AddType application/x-httpd-php .appcache
     #RewriteBase /
 
     # Rewrite resource URIs to minify
-    RewriteRule ^js/(.*\.js) min/?g=$1 [NE]
-    RewriteRule ^css/(.*\.css) min/?g=$1 [NE]
-    RewriteRule ^css/(.*\.less) min/?g=$1 [L,NE]
+    RewriteRule ^js/(.*\.js)$ min/?g=$1 [NE]
+    RewriteRule ^css/(.*\.css)$ min/?g=$1 [NE]
+    RewriteRule ^css/(.*\.less)$ min/?g=$1 [L,NE]
     
     # Rewrite sms callbacks
     RewriteRule ^sms/callback/([0-9]+)(.*)$ sms.php?request=callback&user=$1&$2 [QSA,L]

@@ -74,7 +74,7 @@ R.form.validate = function(selector) {
     });
     
     // Custom messages
-    $.validator.messages.required = "Please fill out this field.";
+    $.validator.messages.required = $.i18n.t("validate.fill");
     
     // Custom rules
     $.validator.addMethod("pattern", function(value, element, param) {
@@ -85,7 +85,7 @@ R.form.validate = function(selector) {
             param = new RegExp('^(?:' + param + ')$');
         }
         return param.test(value);
-    }, "Please match the required format.");
+    }, $.i18n.t("validate.format"));
 
 };
 

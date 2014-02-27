@@ -44,7 +44,7 @@ R.prepare = function(element) {
 
     var flagImg = null;
     $(element).find('.country').change(function() {
-        if (flagImg != null) {
+        if (flagImg !== null) {
             document.getElementById("flag").removeChild(flagImg);
         }
         else {
@@ -204,8 +204,7 @@ R.loader = function(target, index) {
     var element;
     var selector = $(index);
     
-    if(selector.length === 0) {
-        
+    if(selector.length === 0) {        
         element = $('<img/>').
                 attr('id', 'loader').
                 attr('src',  R.app.url+'img/loading.gif').

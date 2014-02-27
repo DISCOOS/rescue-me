@@ -36,13 +36,14 @@
             ),
             'admin.js' => array
             (
-                '//js/rescueme.js', 
                 '//js/jquery.min.js', 
                 '//js/jquery.ui-custom.min.js', 
                 '//js/jquery.validate.min.js', 
-                '//js/capslock.js',
                 '//js/bootstrap.min.js',
                 '//js/bootstrap-editable.min.js', 
+                '//js/i18next.min.js', 
+                '//js/rescueme.js', 
+                '//js/capslock.js',
                 '//js/validate.js',
                 '//admin/js/admin.js'
             ),

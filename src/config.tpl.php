@@ -26,6 +26,9 @@
     // RescueMe timesone
     define('TIMEZONE', 'UTC');
     
+    // RescueMe default locale
+    define('APP_LOCALE', 'en');
+    
     // RescueMe application paths
     define('APP_PATH', dirname(__FILE__).'/');
     define('APP_PATH_INC', APP_PATH.'inc/');
