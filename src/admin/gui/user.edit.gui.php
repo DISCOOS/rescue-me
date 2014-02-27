@@ -2,10 +2,6 @@
     use RescueMe\User;
     use \RescueMe\Locale;
     
-    if(isset($_ROUTER['error'])) { 
-        insert_error($_ROUTER['error']);
-    } 
-
     $id = input_get_int('id', User::currentId());
     $user = User::get($id);
     
@@ -58,6 +54,6 @@
         );
     }
     
-    insert_form("user", _(EDIT_USER), $fields, ADMIN_URI."user/edit/$id");
+    insert_form("user", _(EDIT_USER), $fields, ADMIN_URI."user/edit/$id", $_ROUTER);
     
 ?>

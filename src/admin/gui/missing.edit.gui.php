@@ -1,5 +1,4 @@
 <?
-    use RescueMe\User;
     use RescueMe\Locale;
     use RescueMe\Missing;
     use RescueMe\Operation;

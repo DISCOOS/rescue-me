@@ -319,20 +319,25 @@
             $res = false;
             
             $username = User::safe(strtolower($email));
-
+            
             if(empty($username) === FALSE)
             {
-                $values = array((string)$name, (string)$email, (int)$mobile, (string)$country);
+                $changed = $username !== strtolower(User::safe($this->email));
+                
+                // Ensure unique email
+                if($changed === FALSE || User::unique($email)) {
 
-                $values = prepare_values(User::$update, $values);
+                    $values = array((string)$name, (string)$email, (int)$mobile, (string)$country);
 
-                if(DB::update(self::TABLE, $values, "user_id=$this->id")) {
-                    
-                    $res = true; 
-                    if($role !== null) {
-                        $res =Roles::grant($role, $this->id);
+                    $values = prepare_values(User::$update, $values);
+
+                    if(DB::update(self::TABLE, $values, "user_id=$this->id")) {
+
+                        $res = true; 
+                        if($role !== null) {
+                            $res = Roles::grant($role, $this->id);
+                        }
                     }
-                    
                 }
             }
             

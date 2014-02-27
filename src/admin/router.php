@@ -296,6 +296,7 @@
             
             $_ROUTER['name'] = USERS;
             $_ROUTER['view'] = $_GET['view'];
+            
             break;
         
         case 'user/new':
@@ -311,7 +312,7 @@
             $_ROUTER['name'] = NEW_USER;
             $_ROUTER['view'] = $_GET['view'];
             
-            // Process form?
+           // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $username = User::safe($_POST['email']);
@@ -364,6 +365,9 @@
                 break;
             }
  
+            $_ROUTER['name'] = EDIT_USER;
+            $_ROUTER['view'] = 'user/edit';
+            
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -381,6 +385,14 @@
                     $_ROUTER['error'] = _('Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn');
                     break;
                 } 
+                
+                $next = $_POST['email'];
+                if(strtolower(User::safe($next)) !== strtolower(User::safe($user->email))) {
+                    if(User::unique($next) === false) {
+                        $_ROUTER['error'] = _('Bruker med samme epost finnes fra før');
+                        break;
+                    } 
+                }
 
                 $status = $user->update(
                     $_POST['name'], 
@@ -396,9 +408,6 @@
                 }
                 $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : _('Ikke gjennomført, prøv igjen.');
             }                
-            
-            $_ROUTER['name'] = EDIT_USER;
-            $_ROUTER['view'] = 'user/edit';
             
             break;
 
