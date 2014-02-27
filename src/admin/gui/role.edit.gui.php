@@ -4,8 +4,8 @@
     
     $id = input_get_int('id');
     
-    if(isset($_ROUTER['message'])) { 
-        insert_error($_ROUTER['message']);
+    if(isset($_ROUTER['error'])) { 
+        insert_error($_ROUTER['error']);
     }
     
     $all_perms = Permissions::getAll();

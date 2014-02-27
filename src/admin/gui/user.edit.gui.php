@@ -2,8 +2,8 @@
     use RescueMe\User;
     use \RescueMe\Locale;
     
-    if(isset($_ROUTER['message'])) { 
-        insert_error($_ROUTER['message']);
+    if(isset($_ROUTER['error'])) { 
+        insert_error($_ROUTER['error']);
     } 
 
     $id = input_get_int('id', User::currentId());

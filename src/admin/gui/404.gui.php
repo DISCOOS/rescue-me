@@ -17,5 +17,5 @@
 
 <h3><?=$_ROUTER['name']?></h3>
     
- <? insert_error($_ROUTER['message']); ?>
+ <? insert_error($_ROUTER['error']); ?>
 

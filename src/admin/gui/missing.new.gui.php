@@ -3,15 +3,17 @@
     
 ?>
 <h3 class="no-wrap"><?=_("Start sporing")?></h3>
-<?php if(isset($_ROUTER['message'])) { ?>
+<?php if(isset($_ROUTER['error'])) { ?>
 	<div class="alert alert-error">
 		<strong>En feil oppsto!</strong><br />
-		<?= $_ROUTER['message'] ?>
+		<?= $_ROUTER['error'] ?>
 	</div>
 
 <? } elseif(modules_exists("RescueMe\SMS\Provider")) { ?>
 
 <form method="post">
+    
+    
 	<fieldset class="new-missing pull-left" style="margin-right: 2em;">
 		<legend>Den savnede</legend>
 

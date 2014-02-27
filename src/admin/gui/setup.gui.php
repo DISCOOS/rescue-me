@@ -2,9 +2,9 @@
 
     use RescueMe\User;
     
-    if(isset($_ROUTER['message'])) {
-        insert_error($_ROUTER['message']);
-        unset($_ROUTER['message']);
+    if(isset($_ROUTER['error'])) {
+        insert_error($_ROUTER['error']);
+        unset($_ROUTER['error']);
     }
     
     $name = isset($_GET['name']) ? $_GET['name'] : 'general';

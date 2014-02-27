@@ -10,8 +10,8 @@
     
     $list = Operation::getAllOperations('closed', $admin);
     
-    if(isset($_ROUTER['message'])) {
-        insert_error($_ROUTER['message']);
+    if(isset($_ROUTER['error'])) {
+        insert_error($_ROUTER['error']);
     }
     
     if($list == false) { insert_alert(_("Ingen registrert"));  } else { ?>

@@ -12,8 +12,8 @@
     {
         $operation = Operation::getOperation($missing->op_id);
         
-        if(isset($_ROUTER['message'])) { 
-            insert_error($_ROUTER['message']);
+        if(isset($_ROUTER['error'])) { 
+            insert_error($_ROUTER['error']);
         } 
         elseif(modules_exists("RescueMe\SMS\Provider")) {
 

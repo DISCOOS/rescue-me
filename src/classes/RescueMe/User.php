@@ -278,8 +278,9 @@
 
             $password = User::hash($password);
 
-            if(empty($username) || empty($password))
+            if(empty($username) || empty($password) || User::unique($email) === false) {
                 return false;
+            }
             
             $values = array((string) $name, (string) $password, (string) $email, (int) $mobile, (string) $country);
             
@@ -707,13 +708,25 @@
 
         
         /**
-         * Make hashable string
+         * Make safe string
          * 
          * @param string $string
          * @return string
          */
         public static function safe($string) {
             return preg_replace('/[^a-z0-9.@_-]/', '', $string);
+        }// safe
+        
+
+        /**
+         * Check if user is unique
+         * 
+         * @param string $string
+         * @return string
+         */
+        public static function unique($email) {
+            $email = User::safe($email);
+            return $email && DB::count(self::TABLE, '`email` = '.  strtolower($email)) === 0;
         }// safe
         
 

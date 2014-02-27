@@ -20,6 +20,9 @@
 <? } ?>    
     <div id="<?= $id ?>-body" class="form-body">
     <?  
+        if(isset($actions['error'])) {
+            insert_error($actions['error']);  
+        }
         if(isset($actions['message'])) {     
             insert_alert($actions['message']);  
         }

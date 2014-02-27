@@ -4,8 +4,8 @@
     use RescueMe\User;
     use RescueMe\Locale;
     
-    if(isset($_ROUTER['message'])) { 
-        $message = insert_error($_ROUTER['message'], false);
+    if(isset($_ROUTER['error'])) { 
+        $message = insert_error($_ROUTER['error'], false);
     } else {
         $message = insert_message(_('Hvis brukeren finnes sendes det en reset link på SMS'), false);
     }

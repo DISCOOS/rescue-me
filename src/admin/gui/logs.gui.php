@@ -2,9 +2,9 @@
     
     use RescueMe\Log\Logs;
     
-    if(isset($_ROUTER['message'])) {
-        insert_error($_ROUTER['message']);
-        unset($_ROUTER['message']);
+    if(isset($_ROUTER['error'])) {
+        insert_error($_ROUTER['error']);
+        unset($_ROUTER['error']);
     }
     
     $log = isset($_GET['name']) ? $_GET['name'] : Logs::ALL;

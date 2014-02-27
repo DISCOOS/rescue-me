@@ -17,7 +17,7 @@
         
         // Set message?
         if(isset($_GET['view']) && !isset($_GET['uri']) && $_GET['view'] === 'logon') {
-            $_ROUTER['message'] = "Du har oppgitt feil brukernavn eller passord";
+            $_ROUTER['error'] = "Du har oppgitt feil brukernavn eller passord";
         }            
         
         // Force logon?
@@ -80,7 +80,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }
             
@@ -103,7 +103,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }
             
@@ -141,7 +141,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -161,7 +161,7 @@
                     {
                         $_ROUTER['name'] = _("Illegal Operation");
                         $_ROUTER['view'] = "404";
-                        $_ROUTER['message'] = _('Access denied');
+                        $_ROUTER['error'] = _('Access denied');
                         break;
                     }
                 }
@@ -175,14 +175,14 @@
                 {
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['message'] = _('Access denied');
+                    $_ROUTER['error'] = _('Access denied');
                     break;
                 }                
 
                 $valid = RescueMe\Module::verify($_POST['type'], $_POST['class'], $config);
 
                 if($valid !== TRUE) {
-                    $_ROUTER['message'] = $valid;
+                    $_ROUTER['error'] = $valid;
                 }
                 elseif(RescueMe\Module::set($id, $_POST['type'], $_POST['class'], $config, $user_id)) {
                     header("Location: ".ADMIN_URI.'setup');
@@ -190,7 +190,7 @@
                 }
                 else
                 {
-                    $_ROUTER['message'] = _('Ikke gjennomført, prøv igjen');                    
+                    $_ROUTER['error'] = _('Ikke gjennomført, prøv igjen');                    
                 }
             }
 
@@ -217,7 +217,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -228,7 +228,7 @@
                 {
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['message'] = _('Access denied');
+                    $_ROUTER['error'] = _('Access denied');
                     break;
                 }
                 
@@ -267,7 +267,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -275,7 +275,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }            
             
@@ -290,7 +290,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }            
             
@@ -304,7 +304,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }
             
@@ -316,8 +316,16 @@
                 
                 $username = User::safe($_POST['email']);
                 if(empty($username)) {
-                    $_ROUTER['message'] = _('Eposten må inneholde minst ett alfanumerisk tegn');
+                    $_ROUTER['error'] = _('Eposten må inneholde minst ett alfanumerisk tegn');
                 }
+                
+                if(User::unique($_POST['email']) === false) {
+                    $_ROUTER['error'] = _('Bruker med samme epost finnes fra før');
+                    break;
+                } 
+                
+                exit;
+                
                 
                 $status = User::create(
                     $_POST['name'], 
@@ -331,7 +339,7 @@
                     header("Location: ".ADMIN_URI.'user/list');
                     exit();
                 }
-                $_ROUTER['message'] = _('Ikke gjennomført, prøv igjen');
+                $_ROUTER['error'] = _('Ikke gjennomført, prøv igjen');
             }
             
             break;
@@ -342,7 +350,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -352,7 +360,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied 1');
+                $_ROUTER['error'] = _('Access denied 1');
                 break;
             }
  
@@ -361,15 +369,16 @@
 
                 // Get requested user
                 $id = input_get_int('id', User::currentId());
-                $user = User::get($id);           
-                $username = User::safe($_POST['email']);
-
+                
+                $user = User::get($id);
                 if($user === false) {
-                    $_ROUTER['message'] = _("Bruker $id ikke funnet");
+                    $_ROUTER['error'] = _("Bruker $id ikke funnet");
                     break;
                 }
+                
+                $username = User::safe($_POST['email']);
                 if(empty($username)) {
-                    $_ROUTER['message'] = _('Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn');
+                    $_ROUTER['error'] = _('Brukernavn er ikke sikkert. Eposten må inneholde minst ett alfanumerisk tegn');
                     break;
                 } 
 
@@ -385,7 +394,7 @@
                     header("Location: ".ADMIN_URI.($access ? 'user/list' : 'admin'));
                     exit();
                 }
-                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : _('Ikke gjennomført, prøv igjen.');
+                $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : _('Ikke gjennomført, prøv igjen.');
             }                
             
             $_ROUTER['name'] = EDIT_USER;
@@ -399,7 +408,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -407,7 +416,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }
 
@@ -417,10 +426,10 @@
             $edit = User::get($id);
             
             if($edit === false) {
-                $_ROUTER['message'] = "User '$id' " . _(" not found");
+                $_ROUTER['error'] = "User '$id' " . _(" not found");
             }
             else if($edit->delete() === false) {
-                $_ROUTER['message'] = "'$user->name'" . _(" not deleted") . ". ". 
+                $_ROUTER['error'] = "'$user->name'" . _(" not deleted") . ". ". 
                     (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
             }
             else {
@@ -436,7 +445,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -444,7 +453,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }
             
@@ -453,10 +462,10 @@
             
             $edit = User::get($id);
             if(!$user) {
-                $_ROUTER['message'] = "User '$id' " . _(" not found");
+                $_ROUTER['error'] = "User '$id' " . _(" not found");
             }
             else if(!$user->disable()) {
-                $_ROUTER['message'] = "'$user->name'" . _(" not disabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+                $_ROUTER['error'] = "'$user->name'" . _(" not disabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
             }
             else {
                 header("Location: ".ADMIN_URI.'user/list');
@@ -471,7 +480,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -479,7 +488,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }
             
@@ -488,10 +497,10 @@
             
             $user = User::get($id);
             if(!$user) {
-                $_ROUTER['message'] = "User '$id' " . _(" not found");
+                $_ROUTER['error'] = "User '$id' " . _(" not found");
             }
             else if(!$user->enable()) {
-                $_ROUTER['message'] = "'$user->name'" . _(" not enabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+                $_ROUTER['error'] = "'$user->name'" . _(" not enabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
             }
             else {
                 header("Location: ".ADMIN_URI.'user/list');
@@ -505,7 +514,7 @@
             if ($user->allow('read', 'roles') === FALSE) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _("Access denied");
+                $_ROUTER['error'] = _("Access denied");
                 break;
             }
             
@@ -519,7 +528,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -527,7 +536,7 @@
             if ($user->allow('write', 'roles') === FALSE) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _("Access denied");
+                $_ROUTER['error'] = _("Access denied");
                 break;
             }
             
@@ -540,7 +549,7 @@
                     header("Location: ".ADMIN_URI.'role/list');
                     exit();
                 }
-                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Ikke gjennomført, prøv igjen.';
+                $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Ikke gjennomført, prøv igjen.';
             }   
             break;
             
@@ -550,7 +559,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -560,7 +569,7 @@
             {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _('Access denied');
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }
 
@@ -577,7 +586,7 @@
                     header("Location: ".ADMIN_URI.($allow ? 'user/list' : 'admin'));
                     exit();
                 }
-                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Ikke gjennomført, prøv igjen.';
+                $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Ikke gjennomført, prøv igjen.';
             }   
             
             break;
@@ -594,7 +603,7 @@
                     header("Location: ".ADMIN_URI.($_SESSION['logon'] ? 'admin' : 'logon'));
                     exit();
                 }
-                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Bruker eksisterer ikke.';
+                $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Bruker eksisterer ikke.';
             }   
             
             break;
@@ -605,7 +614,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -617,7 +626,7 @@
                 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _("Access denied");
+                $_ROUTER['error'] = _("Access denied");
                 break;                
             } 
             
@@ -637,7 +646,7 @@
                     exit();
                 }
                 
-                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "Ikke gjennomført, prøv igjen.";
+                $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : "Ikke gjennomført, prøv igjen.";
             }
             break;
             
@@ -647,7 +656,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -658,7 +667,7 @@
                 || $user->allow('write', 'operations.all'))=== FALSE) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _("Access denied");
+                $_ROUTER['error'] = _("Access denied");
                 break;
             } 
             
@@ -677,7 +686,7 @@
                 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _("Access denied");
+                $_ROUTER['error'] = _("Access denied");
                 break;                
             } 
             
@@ -710,7 +719,7 @@
                     header("Location: ".ADMIN_URI.'missing/'.$missing->id);
                     exit();
                 }
-                $_ROUTER['message'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';
+                $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Registrering ikke gjennomført, prøv igjen.';
             }
             
             break;
@@ -721,7 +730,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -733,12 +742,12 @@
                 
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['message'] = _("Access denied");
+                    $_ROUTER['error'] = _("Access denied");
                     break;                
                 } 
 
             } else {
-                $_ROUTER['message'] = _("Missing $id not found");
+                $_ROUTER['error'] = _("Missing $id not found");
             }
 
             $_ROUTER['name'] = MISSING_PERSON;
@@ -751,7 +760,7 @@
                 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = _("Access denied");
+                $_ROUTER['error'] = _("Access denied");
                 break;                
             } 
             
@@ -773,7 +782,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             } 
             
@@ -789,7 +798,7 @@
 
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['message'] = _("Access denied");
+                    $_ROUTER['error'] = _("Access denied");
                     break;                
                 } 
 
@@ -800,22 +809,22 @@
 
                     if($closed) {
                         if(Operation::reopenOperation($missing->op_id) === FALSE) {
-                            $_ROUTER['message'] = "Failed to reopen operation [{$missing->op_id}].";
+                            $_ROUTER['error'] = "Failed to reopen operation [{$missing->op_id}].";
                         }                        
                     }
 
-                    if(isset($_ROUTER['message']) === false) {
+                    if(isset($_ROUTER['error']) === false) {
 
                         if($missing->updateMissing($_POST['m_name'], $_POST['m_mobile_country'], $_POST['m_mobile'])) {
 
                             if(isset($_POST['resend'])) {
 
                                 if($missing->sendSMS() === FALSE) {
-                                    $_ROUTER['message'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
+                                    $_ROUTER['error'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
                                 }
                             } 
 
-                            if(isset($_ROUTER['message']) === FALSE){
+                            if(isset($_ROUTER['error']) === FALSE){
                                 header("Location: ".ADMIN_URI."missing/list");
                                 exit();
                             }
@@ -827,11 +836,11 @@
                 if($closed && !isset($_GET['reopen'])) {
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['message'] = "Operation [$missing->op_id] is closed.";
+                    $_ROUTER['error'] = "Operation [$missing->op_id] is closed.";
                 }
 
             } else {
-                $_ROUTER['message'] = _("Missing $id not found");
+                $_ROUTER['error'] = _("Missing $id not found");
             }
             
             break;
@@ -842,7 +851,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Id not found.";
+                $_ROUTER['error'] = "Id not found.";
                 break;
             }
             
@@ -857,22 +866,22 @@
                     || $user->allow('write', 'operations.all'))=== FALSE) {
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['message'] = _("Access denied");
+                    $_ROUTER['error'] = _("Access denied");
                     break;
                 }
 
                 if(Operation::isOperationClosed($missing->op_id)) {
-                    $_ROUTER['message'] = _("Missing [$missing->id] is closed");
+                    $_ROUTER['error'] = _("Missing [$missing->id] is closed");
                 }
                 elseif($missing->sendSMS() === FALSE) {
-                    $_ROUTER['message'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
+                    $_ROUTER['error'] = "missing/resend/$id ikke gjennomført, prøv igjen.";
                 }
-                if(!isset($_ROUTER['message'])){
+                if(!isset($_ROUTER['error'])){
                     header("Location: ".ADMIN_URI."missing/list");
                     exit();
                 }
             } else {
-                $_ROUTER['message'] = _("Missing $id not found");
+                $_ROUTER['error'] = _("Missing $id not found");
             }
 
             break;            
@@ -883,7 +892,7 @@
 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
-                $_ROUTER['message'] = "Not an ajax request.";
+                $_ROUTER['error'] = "Not an ajax request.";
                 break;
             } 
                 
@@ -918,7 +927,7 @@
         default:
             $_ROUTER['name'] = _("Illegal Operation");
             $_ROUTER['view'] = "404";
-            $_ROUTER['message'] = print_r($_REQUEST,true);
+            $_ROUTER['error'] = print_r($_REQUEST,true);
             break;
     }       
     

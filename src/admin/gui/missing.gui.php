@@ -22,10 +22,10 @@
 ?>
 <h3 class="pagetitle"><?= $name ?></h3>
 <?php
-        if(isset($_ROUTER['message'])) { ?>
+        if(isset($_ROUTER['error'])) { ?>
 	<div class="alert alert-error">
 		<strong>En feil oppsto!</strong><br />
-		<?= $_ROUTER['message'] ?>
+		<?= $_ROUTER['error'] ?>
 	</div>
 <?
         }
