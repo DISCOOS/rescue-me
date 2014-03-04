@@ -268,7 +268,7 @@
                     $n = substr($n,2);
                     $n = round((float)$n / 100);
 
-                    $format = '%1$s %2$s';
+                    $format = '%1$03d %2$03d';
                     $position = sprintf($format,
                         $e,
                         $n
