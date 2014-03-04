@@ -303,16 +303,18 @@
                 case Properties::MAP_DEFAULT_FORMAT_DMS:
                     $lon = dec_to_dms($p->lon);
                     $lat = dec_to_dms($p->lat);
-                    $format = '%1$03d° %2$02d\' %3$02d\'\'';
+                    $format = '%1$03d° %2$02d\' %3$02.0f\'\'';
                     $lon = sprintf($format,
                         $lon['deg'],
                         $lon['min'],
                         $lon['sec']);
-                    $format = '%1$02d° %2$02d \'%3$02d\'\'';
+                    $format = '%1$02d° %2$02d \'%3$02.0f\'\'';
+                    var_dump($lat);
                     $lat = sprintf($format,
                         $lat['deg'],
                         $lat['min'],
                         $lat['sec']);
+                    
                     $format = '%1$sE %2$sN';
                     $position = sprintf($format,
                         $lon,

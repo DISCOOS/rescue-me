@@ -17,7 +17,7 @@
         $min = floor($tempma / 60);
         $des = $tempma - ($min * 60);
         $des = explode('.', $des);
-        $des = (int)$des[1];
+        $des = isset($des[1]) ? (int)$des[1] : 0;
 
         return array("deg" => $deg, "min" => $min, "des" => $des);
     }
@@ -38,12 +38,12 @@
 
         $tempma = (float)$tempma * 3600;
         $min = floor($tempma / 60);
-        $sec = floor($tempma - ($min * 60));
+        $sec = round($tempma - ($min * 60));
         $des = $tempma - ($min * 60) - $sec;
         $des = explode('.', $des);
-        $des = (int)$des[1];
+        $des = isset($des[1]) ? (int)$des[1] : 0;
 
-        return array("deg" => $deg, "min" => $min, "sec" => $sec, "des" => $des[1]);
+        return array("deg" => $deg, "min" => $min, "sec" => $sec, "des" => $des);
     }
     
     /**
