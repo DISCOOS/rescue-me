@@ -66,6 +66,11 @@ h3.pagetitle {
     margin-left: 0.5em;
 }
 
+.label {
+  font-size: 1.0em;
+  padding: 0.4em;
+}
+
 /*==========================================
 / [Dashboard] page
 /=========================================*/

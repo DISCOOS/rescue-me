@@ -12,7 +12,6 @@
 
     namespace RescueMe;
 
-    use \gPoint;
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
 
@@ -54,7 +53,6 @@
         public $mobile_country;
         public $alert_mobile;
 
-        public $last_UTM;
         public $last_pos;
         public $last_acc;
 
@@ -215,6 +213,7 @@
             if($this->id === -1)
                 return false;
 
+            // TODO: Add sort on timestamp
             $query = "SELECT `pos_id`, `acc`, `timestamp` FROM `positions` WHERE `missing_id` = " . (int) $this->id;
             $res = DB::query($query);
 
@@ -224,19 +223,16 @@
             while($row = $res->fetch_assoc()){
                 $this->positions[$row['timestamp']] = new Position($row['pos_id']);
             }
+            // TODO: Move to sql query
             krsort($this->positions);
 
             if(!is_array($this->positions) || count($this->positions) == 0) {
                 $this->last_pos = new Position();
                 $this->last_acc = -1;
-                $this->last_UTM = _('Aldri posisjoner');
             }
             else {
                 $this->last_pos = $this->positions[key($this->positions)];
-                $gPoint = new gPoint();
-                $gPoint->setLongLat($this->last_pos->lon, $this->last_pos->lat);
-                $gPoint->convertLLtoTM();
-                $this->last_UTM = strip_tags($gPoint->getNiceUTM());
+                $this->last_acc = $this->last_pos->acc;
             }
 
             return $this->positions;
@@ -248,10 +244,15 @@
             // Sanity check
             if($this->id === -1) return false;
 
-            $gPoint = new gPoint;
-            $gPoint->setLongLat($lon, $lat);
-            $gPoint->convertLLtoTM();
-            $this->last_UTM = strip_tags($gPoint->getNiceUTM());
+            $this->last_pos = new Position();
+            $this->last_pos->set(
+                array(
+                    'lat' => $lat,
+                    'lon' => $lon,
+                    'acc' => $acc,
+                    'alt' => alt
+                )
+            );
             $this->last_acc = $acc;
 
             // Send SMS 2?
@@ -383,7 +384,12 @@
                
             } else {
 
-                $module = Module::get("RescueMe\SMS\Provider", $this->user_id);
+                $user_id = User::currentId();
+                if(isset($user_id) === false) {
+                    $user_id = $this->user_id;
+                }
+                
+                $module = Module::get("RescueMe\SMS\Provider", $user_id);
 
                 $query = "UPDATE `missing` 
                             SET `sms_sent` = NOW(), `sms_delivery` = NULL, 
@@ -471,7 +477,12 @@
          */
         private function _sendSMS($country, $to, $message, $missing) {
 
-            $sms = Module::get("RescueMe\SMS\Provider", $this->user_id)->newInstance();
+            $user_id = User::currentId();
+            if(isset($user_id) === false) {
+                $user_id = $this->user_id;
+            }
+            
+            $sms = Module::get("RescueMe\SMS\Provider", $user_id)->newInstance();
             
             if($sms === FALSE)
             {
@@ -487,15 +498,19 @@
             if(strlen($to) == 11 && (int) $to == 0) {
                 $to = substr($to, 3);
             }
+            
+            $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
+            
+            $position = format_pos($this->last_pos, $format);
 
             $message = str_replace
             (
-                array('#missing_id', '#to', '#m_name', '#acc', '#UTM'), 
-                array($this->id, $to, $this->name, $this->last_acc, $this->last_UTM),
+                array('#missing_id', '#to', '#m_name', '#acc', '#pos'), 
+                array($this->id, $to, $this->name, $this->last_acc, $position),
                 $message
             );
 
-            $from = Properties::get(Properties::SMS_SENDER_ID, User::currentId());
+            $from = Properties::get(Properties::SMS_SENDER_ID, $user_id);
 
             $res = $sms->send($from, $country, $to, $message);
             

@@ -7,6 +7,7 @@
     use RescueMe\Module;
     use RescueMe\Missing;
     use RescueMe\Operation;
+    use RescueMe\Properties;
     
     $user_id = User::currentId();
     $admin = User::current()->allow("read", 'operations.all');
@@ -45,6 +46,7 @@
     $module = Module::get("RescueMe\SMS\Provider", User::currentId());
     $sms = $module->newInstance();
     $check = ($sms instanceof RescueMe\SMS\Check);
+    $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
     foreach($list as $id => $this_operation) {
         $owner = ($this_operation->user_id === $user_id);
         $missings = $this_operation->getAllMissing();
@@ -52,11 +54,11 @@
         $resend[$this_missing->id] = $this_missing;
         $this_missing->getPositions();
         if($this_missing->last_pos->timestamp>-1) {
-            $position = $this_missing->last_UTM;
+            $position = format_pos($this_missing->last_pos, $format);
             $received = format_since($this_missing->last_pos->timestamp);
         } else {
             $received = "";
-            $position = $this_missing->last_pos->human;
+            $position = format_pos(null, $format);
         }
         $sent = format_since($this_missing->sms_sent);
         if($check && !isset($this_missing->sms_delivery) && $this_missing->sms_provider === $module->impl) {

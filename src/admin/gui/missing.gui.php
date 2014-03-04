@@ -1,6 +1,8 @@
 <?php
+    use RescueMe\User;
     use RescueMe\Missing;
     use RescueMe\Operation;
+    use RescueMe\Properties;
     
     $id = input_get_int('id');
 
@@ -30,13 +32,15 @@
 <?
         }
         
-        if($missing->last_pos->timestamp>-1) {
-            $position = $missing->last_UTM;
-            $received = format_since($missing->last_pos->timestamp);
-        } else {
-            $received = "";
-            $position = $missing->last_pos->human;
-        }
+            $user_id = User::currentId();
+            $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
+            if($missing->last_pos->timestamp>-1) {
+                $position = format_pos($missing->last_pos, $format);
+                $received = format_since($missing->last_pos->timestamp);
+            } else {
+                $received = "";
+                $position = format_pos(null, $format);
+            }
         
 ?>
 

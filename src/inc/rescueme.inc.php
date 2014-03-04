@@ -1,5 +1,28 @@
 <?php
 
+    function dec_to_dem($dec)
+    {
+        // Converts decimal longitude / latitude to DM
+        // ( decimal minutes) 
+        // This is the piece of code which may appear to 
+        // be inefficient, but to avoid issues with floating
+        // point math we extract the integer part and the float
+        // part by using a string function.
+
+        $vars = explode(".", $dec);
+        $deg = $vars[0];
+        $tempma = "0." . $vars[1];
+
+        $tempma = (float)$tempma * 3600;
+        $min = floor($tempma / 60);
+        $des = $tempma - ($min * 60);
+        $des = explode('.', $des);
+        $des = (int)$des[1];
+
+        return array("deg" => $deg, "min" => $min, "des" => $des);
+    }
+    
+    
     function dec_to_dms($dec)
     {
         // Converts decimal longitude / latitude to DMS
@@ -13,11 +36,14 @@
         $deg = $vars[0];
         $tempma = "0." . $vars[1];
 
-        $tempma = $tempma * 3600;
+        $tempma = (float)$tempma * 3600;
         $min = floor($tempma / 60);
-        $sec = $tempma - ($min * 60);
+        $sec = floor($tempma - ($min * 60));
+        $des = $tempma - ($min * 60) - $sec;
+        $des = explode('.', $des);
+        $des = (int)$des[1];
 
-        return array("deg" => $deg, "min" => $min, "sec" => $sec);
+        return array("deg" => $deg, "min" => $min, "sec" => $sec, "des" => $des[1]);
     }
     
     /**

@@ -55,9 +55,17 @@
         const SMS_OPTIMIZE_ENCODING = 'encoding';
         
         const MAP_DEFAULT_BASE = 'map.default.base';
-        const MAP_DEFAULT_TERRAIN = 'terrain';
-        const MAP_DEFAULT_SATELLITE = 'satellite';
-        const MAP_DEFAULT_HYBRID = 'hybrid';
+        const MAP_DEFAULT_BASE_TERRAIN = 'terrain';
+        const MAP_DEFAULT_BASE_SATELLITE = 'satellite';
+        const MAP_DEFAULT_BASE_HYBRID = 'hybrid';
+        
+        const MAP_DEFAULT_FORMAT = 'map.default.format';
+        const MAP_DEFAULT_FORMAT_UTM = 'utm';
+        const MAP_DEFAULT_FORMAT_DD = 'dd';
+        const MAP_DEFAULT_FORMAT_DEM = 'dem';
+        const MAP_DEFAULT_FORMAT_DMS = 'dms';
+        const MAP_DEFAULT_FORMAT_6D = '6d';
+        
         
         public static $meta = array(
             
@@ -130,15 +138,29 @@
             
             self::MAP_DEFAULT_BASE => array(
                 'type' => 'select',
-                'default' => self::MAP_DEFAULT_TERRAIN,
+                'default' => self::MAP_DEFAULT_BASE_TERRAIN,
                 'options' => array(
                     'statkart.topo2' => 'Norway Topo2', 
-                    self::MAP_DEFAULT_TERRAIN => 'Terrain', 
-                    self::MAP_DEFAULT_SATELLITE => 'Satellite',
-                    self::MAP_DEFAULT_HYBRID => 'Hybrid'
+                    self::MAP_DEFAULT_BASE_TERRAIN => 'Terrain', 
+                    self::MAP_DEFAULT_BASE_SATELLITE => 'Satellite',
+                    self::MAP_DEFAULT_BASE_HYBRID => 'Hybrid'
                  ),
                 'description' => "Use given basemap as default (on refresh)."
             ),
+            
+            self::MAP_DEFAULT_FORMAT => array(
+                'type' => 'select',
+                'default' => self::MAP_DEFAULT_FORMAT_UTM,
+                'options' => array(                    
+                    self::MAP_DEFAULT_FORMAT_UTM => 'Full UTM',
+                    self::MAP_DEFAULT_FORMAT_6D => '6 digit MRGS',
+                    self::MAP_DEFAULT_FORMAT_DD => 'Decimal degrees',
+                    self::MAP_DEFAULT_FORMAT_DEM => 'Decimal minutes',
+                    self::MAP_DEFAULT_FORMAT_DMS => 'Degrees, minutes, seconds'
+                    
+                 ),
+                'description' => "Show coordinates using given map coordinate system"
+            )
         );
         
         public static function getDefaults() {
@@ -481,6 +503,7 @@
                     
                 case self::SMS_OPTIMIZE:
                 case self::MAP_DEFAULT_BASE:
+                case self::MAP_DEFAULT_FORMAT:
                 case self::LOCATION_APPCACHE:
                     
                     $array = is_array($value) ? $value : explode(",", $value);

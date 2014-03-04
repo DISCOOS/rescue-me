@@ -2,6 +2,8 @@
     
     use Psr\Log\LogLevel;    
     use RescueMe\Log\Logs;    
+    use RescueMe\Position;
+    use RescueMe\Properties;
 
     function input_get_int($key, $default = false) {
         $value = filter_input(INPUT_GET, $key, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
@@ -223,6 +225,113 @@
     function mysql_dt($time) {
         return date( 'Y-m-d H:i:s', $time );
     }
+    
+
+    /**
+     * Get formatted position
+     * 
+     * @param null|RescueMe\Position $p Position instance
+     * @param string $format Position format
+     * @param boolean $label Format as label
+     */
+    function format_pos($p, $format = 'utm', $label = true) {
+        
+        if(isset($p) === false) {
+            $success = false;
+            $position = _('Aldri posisjonert');
+        } else {
+            $success = true;
+            switch($format) {
+                default:
+                case Properties::MAP_DEFAULT_FORMAT_UTM:
+                    $gPoint = new gPoint();
+                    $gPoint->setLongLat($p->lon, $p->lat);
+                    $gPoint->convertLLtoTM();
+                    $format = '%1$s %2$07dE %3$07dN';
+                    $position = sprintf($format,
+                        $gPoint->Z(),
+                        floor($gPoint->E()),
+                        floor($gPoint->N())
+                    );
+                    break;
+                case Properties::MAP_DEFAULT_FORMAT_6D:
+
+                    $gPoint = new gPoint();
+                    $gPoint->setLongLat($p->lon, $p->lat);
+                    $gPoint->convertLLtoTM();
+
+                    $format = '%1$07d';
+                    $e = sprintf($format,floor($gPoint->E()));
+                    $e = substr($e,2);
+                    $e = round((float)$e / 100);
+                    $n = sprintf($format,floor($gPoint->N()));
+                    $n = substr($n,2);
+                    $n = round((float)$n / 100);
+
+                    $format = '%1$s %2$s';
+                    $position = sprintf($format,
+                        $e,
+                        $n
+                    );
+                    break;
+                case Properties::MAP_DEFAULT_FORMAT_DD:
+                    $format = '%1$sE %2$sN';
+                    $position = sprintf($format,
+                        $p->lon,
+                        $p->lat
+                    );
+                    break;                
+                case Properties::MAP_DEFAULT_FORMAT_DEM:
+                    $lon = dec_to_dem($p->lon);
+                    $lat = dec_to_dem($p->lat);                
+                    $format = '%1$02d° %2$02d.%3$.4s';
+                    $lon = sprintf($format,
+                        $lon['deg'],
+                        $lon['min'],
+                        (string)$lon['des']);
+                    $format = '%1$02d° %2$2d.%3$.4s';
+                    $lat = sprintf($format,
+                        $lat['deg'],
+                        $lat['min'],
+                        (string)$lat['des']);
+                    $format = '%1$sE %2$sN';
+                    $position = sprintf($format,
+                        $lon,
+                        $lat
+                     );
+                    break;
+                case Properties::MAP_DEFAULT_FORMAT_DMS:
+                    $lon = dec_to_dms($p->lon);
+                    $lat = dec_to_dms($p->lat);
+                    $format = '%1$03d° %2$02d\' %3$02d\'\'';
+                    $lon = sprintf($format,
+                        $lon['deg'],
+                        $lon['min'],
+                        $lon['sec']);
+                    $format = '%1$02d° %2$02d \'%3$02d\'\'';
+                    $lat = sprintf($format,
+                        $lat['deg'],
+                        $lat['min'],
+                        $lat['sec']);
+                    $format = '%1$sE %2$sN';
+                    $position = sprintf($format,
+                        $lon,
+                        $lat
+                     );
+                    break;
+            }
+        }
+        
+        if($label) {
+            $type = $success ? 'label-success' : 'label-warning';
+            $position = '<span class="label '.$type.' label-position">'. $position. '</span>';
+        }
+        
+        return $position;        
+        
+    }
+    
+    
     
     function get_client_ip() {
         

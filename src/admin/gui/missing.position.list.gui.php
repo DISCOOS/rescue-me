@@ -1,11 +1,20 @@
-<?php global $positions; ?>
+<?php 
+    
+    use RescueMe\User;
+    use RescueMe\Properties;
+    
+    global $positions; 
+    
+    $user_id = User::currentId();
+    
+?>
 
 <script src="<?=APP_URI?>js/map.js"></script>
 <script>
     var markers = {};
     var lastInfoWindow = {};
     
-    type = '<?=RescueMe\Properties::get('map.default.base', RescueMe\User::currentId())?>';
+    type = '<?=Properties::get(Properties::MAP_DEFAULT_BASE, $user_id)?>';
     
     function initialize() {
         <?php
@@ -38,12 +47,13 @@
      <? } 
 
         $i = 0;
+        
+        $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
+        
         foreach ($positions as $key=>$value) {
             $dms['lat'] = dec_to_dms($value->lat);
             $dms['lon'] = dec_to_dms($value->lon);
-                $gPoint = new gPoint;
-            $gPoint->setLongLat($value->lon, $value->lat);
-            $gPoint->convertLLtoTM();
+            $utm = format_pos($value, $format);
             echo "
             var color = 'green';
             if (".$value->acc." > 750)
@@ -69,10 +79,10 @@
 
             var infowindow_".$i." = new google.maps.InfoWindow({
                 content: '<u>Posisjon:</u><br /> '+
-                         '".$dms['lat']['deg']."&deg; ".$dms['lat']['min']."\' ".floor($dms['lat']['sec'])."\'\'<br />'+
-                         '".$dms['lon']['deg']."&deg; ".$dms['lon']['min']."\' ".floor($dms['lon']['sec'])."\'\'<br /><br />'+
+                         '".$dms['lat']['deg']."&deg; ".$dms['lat']['min']."\' ".$dms['lat']['sec']."\'\'<br />'+
+                         '".$dms['lon']['deg']."&deg; ".$dms['lon']['min']."\' ".$dms['lon']['sec']."\'\'<br /><br />'+
                          '<u>UTM:</u><br /> '+
-                         '".$gPoint->getNiceUTM()."<br /><br />'+
+                         '".$utm."<br /><br />'+
                                          '<u>H&oslash;yde:</u> ".$value->alt." moh<br />'+
                          '<u>N&oslash;yaktighet:</u> ".$value->acc." meter'
             });

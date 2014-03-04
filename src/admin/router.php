@@ -312,7 +312,7 @@
             $_ROUTER['name'] = NEW_USER;
             $_ROUTER['view'] = $_GET['view'];
             
-           // Process form?
+            // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $username = User::safe($_POST['email']);
@@ -479,7 +479,7 @@
             else {
                 header("Location: ".ADMIN_URI.'user/list');
                 exit();
-            }            
+            }
 
             break;
             

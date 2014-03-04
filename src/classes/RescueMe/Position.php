@@ -34,11 +34,19 @@
         function __construct($pos_id = -1)
         {
             $this->pos_id = (int) $pos_id;
-            $this->loadData();
+            $this->load();
+        }
+        
+        function set($data) {
+            $this->lat = isset_get($data,'lat');
+            $this->lon = isset_get($data,'lon');
+            $this->acc = isset_get($data,'acc');
+            $this->alt = isset_get($data,'alt');
+            $this->timestamp = isset_get($data,'timestamp', time());
         }
 
 
-        function loadData()
+        function load()
         {
             if($this->pos_id === -1)
                 return false;
@@ -49,13 +57,7 @@
 
             if(DB::isEmpty($res)) return false;
             
-            $row = $res->fetch_assoc();
-            $this->lat = $row['lat'];
-            $this->lon = $row['lon'];
-            $this->acc = $row['acc'];
-            $this->alt = $row['alt'];
-            $this->timestamp = $row['timestamp'];
-            $this->human = $this->timestamp;
+            $this->set($res->fetch_assoc());
         }
 
 
