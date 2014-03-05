@@ -61,6 +61,7 @@
         public $sms_delivery;
         public $sms_provider;
         public $sms_provider_ref;
+        public $sms_text;
 
         public $positions = array();
 
@@ -68,13 +69,11 @@
          * Get Missing instance
          * 
          * @param integer $id Missing id
-         * @param integer $phone Missing phone number (if more than one)
          * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
          */
-        public static function getMissing($id, $phone = -1){
+        public static function getMissing($id){
 
             $query = "SELECT * FROM `missing` WHERE `missing_id`=" . (int) $id;
-            if($phone !== -1) $query .= " AND `missing_mobile`=" . (int) $phone;
 
             $result = DB::query($query);
 
@@ -133,8 +132,6 @@
                 );
                 return false;
             }
-
-            $sms_text = str_replace('%LINK%', SMS_LINK, $sms_text);
 
             $values = array(
                 (string) $m_name, 
@@ -250,7 +247,7 @@
                     'lat' => $lat,
                     'lon' => $lon,
                     'acc' => $acc,
-                    'alt' => alt
+                    'alt' => $alt
                 )
             );
             $this->last_acc = $acc;
@@ -340,9 +337,15 @@
             
             if($posID !== FALSE) {               
                 
-                $this->positions[(int) time()] = new Position($posID);
+                $p = new Position($posID);
+                $this->positions[(int) time()] = $p;
                 
-                $message = 'Missing ' . $this->id . ' reported position ' . $gPoint->getNiceUTM();
+                $user_id = User::currentId();
+                if(isset($user_id) === false) {
+                    $user_id = $this->user_id;
+                }
+                $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
+                $message = 'Missing ' . $this->id . ' reported position ' . format_pos($p, $format);
                 
                 Logs::write(
                     Logs::TRACE, 
@@ -501,12 +504,12 @@
             
             $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
             
-            $position = format_pos($this->last_pos, $format);
-
+            $p = format_pos($this->last_pos, $format);
+            
             $message = str_replace
             (
-                array('#missing_id', '#to', '#m_name', '#acc', '#pos'), 
-                array($this->id, $to, $this->name, $this->last_acc, $position),
+                array('%LINK%', '#missing_id', '#to', '#m_name', '#acc', '#pos'), 
+                array(SMS_LINK,  crypt_id($this->id), $to, $this->name, $this->last_acc, $p),
                 $message
             );
 

@@ -3,12 +3,12 @@
     require_once('../config.php');
     require_once('../min/lib/JSMin.php');
     
+    use Psr\Log\LogLevel;
+    use RescueMe\Log\Logs;    
+    use RescueMe\Locale;
     use RescueMe\Missing;
     use RescueMe\Operation;
     use RescueMe\Properties;
-    use RescueMe\Locale;
-    use Psr\Log\LogLevel;
-    use \RescueMe\Log\Logs;    
     
     $delay = isset($message);
     
@@ -16,9 +16,9 @@
         $message = _('Beregner posisjon...');
     }
     
-    $id = $_GET['id'];
-    $phone = $_GET['phone'];
-    $missing = Missing::getMissing($id, $phone);
+    $id = input_get_hash('id');
+    
+    $missing = ($id === false ? false : Missing::getMissing(crypt_id($id,true)));
     
     if($missing !== false) {
         
@@ -34,7 +34,6 @@
         // Create install options
         $options = array();
         $options['track']['id'] = $id;
-        $options['track']['phone'] = $phone;
         $options['track']['name'] = $missing->name;
         $options['track']['delay'] = $delay;
         $options['track']['msg'] = get_messages();
@@ -63,7 +62,7 @@
 <div id="f" style="margin-bottom: 10px"><?=$message?></div><span id="i"></span><br /><span id="s"></span></div>
 <hr />
 <div id="l" style="margin-bottom: 10px"></div>
-<a href="<?=APP_URI?>a/<?=$_GET['id']?>/<?=$_GET['phone']?>" onclick="return confirm('Er du sikker?');">Avbryt</a>
+<a href="<?=APP_URI?>a/<?=$id?>" onclick="return confirm('Er du sikker?');"><?=_('Avbryt')?></a>
 </div>
 </body>    
 <? } else {

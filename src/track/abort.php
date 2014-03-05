@@ -4,16 +4,19 @@ require_once('../config.php');
 use \RescueMe\Missing;
 use \RescueMe\Operation;
 
-if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['phone'])) { 
-     $message = _('Illegal arguments');
-} 
-else {
+$id = input_get_hash('id');
+
+if ($id === false) { 
     
-    $m = Missing::getMissing($_GET['id'], $_GET['phone']);
+    $message = _('Illegal arguments');
+    
+} else {
+    
+    $m = Missing::getMissing(crypt_id($id,true));
     if($m !== false)
     {
         $op_name = _('Closed by missing ' . $m->id . ' ' . date('Y-m-d'));
-        if(Operation::closeOperation($m->op_id, $op_name)) {
+        if(Operation::closeOperation($m->op_id, array('op_name' => $op_name))) {
             
             $message = $m->name . ' ' . _('is aborted');
             

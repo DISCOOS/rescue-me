@@ -53,7 +53,7 @@
     // Dispatch view
     switch($_GET['view']) {
         case 'logon':
-            $_ROUTER['name'] = LOGON;
+            $_ROUTER['name'] = LOGIN;
             $_ROUTER['view'] = $_GET['view'];
             break;
         case 'logout':

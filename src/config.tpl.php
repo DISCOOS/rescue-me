@@ -88,7 +88,7 @@
     define('DELETE', 'Slett');
     define('CANCEL', 'Avbryt');
     define('START', 'Start');
-    define('LOGON', 'Logg inn');
+    define('LOGIN', 'Logg inn');
     define('LOGOUT', 'Logg ut');
     define('ALERT', 'Varsle');
     define('TRACE', 'Sporing');
@@ -107,7 +107,7 @@
     define('SETUP', 'Oppsett');
     define('ABOUT', 'Om '.TITLE);
     define('SMS_TEXT', 'Du er savnet! Trykk på lenken for at vi skal se hvor du er: %LINK%');
-    define('SMS_LINK', APP_URL.'l/#missing_id/#to');
+    define('SMS_LINK', APP_URL.'l/#missing_id');
     define('SMS_NOT_SENT', 'OBS: Varsel ble ikke sendt til "#m_name"');
     define('SMS2_TEXT', 'Om du har GPS på telefonen, anbefaler vi at du aktiverer dette. Vanligvis finner du dette under Innstillinger -> Generelt, eller Innstillinger -> Plassering');
     define('SMS_MB_TEXT', 'Mottatt posisjon på "#m_name": #pos (+/- #acc meter)! '.APP_URL.'admin/missing/#missing_id');

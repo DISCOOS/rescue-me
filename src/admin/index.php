@@ -17,7 +17,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
         'APP_URI' => APP_URI,
         'APP_ADMIN_URI' => ADMIN_URI,
         'GOOGLE_API_KEY' => GOOGLE_API_KEY,
-        'LOGON' => $_SESSION['logon'],
+        'LOGIN' => $_SESSION['logon'],
         'SMS_TEXT_MISSING' => SMS_TEXT,
         'SMS_TEXT_GUIDE'  => SMS2_TEXT
 	);

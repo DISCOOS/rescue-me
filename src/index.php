@@ -1,6 +1,7 @@
 <?php
     require('config.php');
     require('admin/router.php');    
+    
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +33,7 @@
                         
                  ?>  
                     
-                    <li id="logout"><a href="<?= ADMIN_URI ?>"><?= LOGON ?></a>
+                    <li id="logout"><a href="<?= ADMIN_URI ?>"><?= LOGIN ?></a>
                     
                 <?php 
                     

@@ -30,25 +30,25 @@ AddType application/x-httpd-php .appcache
     RewriteCond %{SCRIPT_FILENAME} !-f  
     RewriteRule ^l/.*img/(.*)$ img/$1 [L]
     
-    # Location request - first try
+    # Location request
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^l/([0-9]+)/([0-9]*)$ track/locate.php?id=$1&phone=$2 [L]
+    RewriteRule ^l/(.*)$ track/locate.php?id=$1 [L]
 
     # Location request - appcache
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^l/([0-9]+)/.*appcache$ track/locate.appcache.php?id=$1 [L]
+    RewriteRule ^l/(.*)/.*appcache$ track/locate.appcache.php?id=$1 [L]
     
     # Location request - abort
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^a/([0-9]+)/([0-9]*)$ track/abort.php?id=$1&phone=$2 [L]
+    RewriteRule ^a/(.*)$ track/abort.php?id=$1 [L]
 
     # Location report
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^r/([0-9]+)/([0-9]*)/(.*)/(.*)/(.*)/(.+)$ track/report.php?id=$1&phone=$2&lat=$3&lon=$4&acc=$5&alt=$6 [L]
+    RewriteRule ^r/(.*)/(.*)/(.*)/(.*)/(.+)$ track/report.php?id=$1&lat=$2&lon=$3&acc=$4&alt=$5 [L]
     
     
 </IfModule>

@@ -185,7 +185,7 @@ R.track.locate = function() {
         
         l.innerHTML = ps(c);
         
-        var url = R.app.url + "r/" + q.id + "/" + q.phone + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude;
+        var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude;
         
         if (xhr !== false) {
             
