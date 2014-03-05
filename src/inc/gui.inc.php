@@ -71,6 +71,12 @@
         return insert_message($html,$output);        
     }
 
+    function insert_warning($warning, $output=true) 
+    {
+        $html = '<div class="alert alert-warning">'.$warning.'</div>';
+        return insert_message($html,$output);        
+    }
+
     function insert_control($id, $type, $value, $label, $attributes='', $class='', $placeholder=null, $output=true)
     {
         ob_start();

@@ -824,7 +824,11 @@
 
                     if(isset($_ROUTER['error']) === false) {
 
-                        if($missing->updateMissing($_POST['m_name'], $_POST['m_mobile_country'], $_POST['m_mobile'])) {
+                        if($missing->updateMissing(
+                            $_POST['m_name'], 
+                            $_POST['m_mobile_country'], 
+                            $_POST['m_mobile'],
+                            $_POST['sms_text'])) {
 
                             if(isset($_POST['resend'])) {
 

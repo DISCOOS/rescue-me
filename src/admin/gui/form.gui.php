@@ -23,6 +23,9 @@
         if(isset($actions['error'])) {
             insert_error($actions['error']);  
         }
+        if(isset($actions['warning'])) {
+            insert_warning($actions['warning']);  
+        }
         if(isset($actions['message'])) {     
             insert_alert($actions['message']);  
         }

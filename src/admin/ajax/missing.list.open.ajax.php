@@ -26,14 +26,14 @@
             <tr>
                 <? if($admin) { ?>
                 <th width="20%"><?=_("Name")?></th>
-                <th width="5%" ><?= _('Mine') ?></th>
+                <th width="5%" class="hidden-phone"><?= _('Mine') ?></th>
                 <? } else { ?>
                 <th width="25%" colspan="2"> <?=_("Name")?> </th>
                 <? } ?>
-                <th class="hidden-phone" width="13%"><?=_("Sent")?></th>
-                <th class="hidden-phone" width="13%"><?=_("Delivered")?></th>
-                <th class="hidden-phone" width="13%"><?=_("Answered")?></th>
-                <th class="hidden-phone" width="13%"><?=_("Reported")?></th>
+                <th width="13%" class="hidden-phone"><?=_("Sent")?></th>
+                <th width="13%" class="hidden-phone"><?=_("Delivered")?></th>
+                <th width="13%" class="hidden-phone"><?=_("Answered")?></th>
+                <th width="13%" class="hidden-phone"><?=_("Reported")?></th>
                 <th width="17%"><?=_("Position")?></th>
                 <th>
                     <input type="search" class="input-medium search-query pull-right" placeholder="Search">
@@ -78,7 +78,7 @@
                 <tr id="<?= $this_missing->id ?>">
                     <? if($admin) { ?>
                     <td class="missing name"><?= $this_missing->name ?></td>
-                    <td class="missing name"><?=($owner ? '<b class="icon icon-ok"></b>' : '')?></td>
+                    <td class="missing name hidden-phone"><?=($owner ? '<b class="icon icon-ok"></b>' : '')?></td>
                     <? } else { ?>
                     <td class="missing name" colspan="2"><?= $this_missing->name ?></td>
                     <? } ?>

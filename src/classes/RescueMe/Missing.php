@@ -38,7 +38,8 @@
         (
             "missing_name", 
             "missing_mobile_country", 
-            "missing_mobile"
+            "missing_mobile",
+            "sms_text"
         );
 
         public $id = -1;
@@ -166,9 +167,9 @@
         }// addMissing
 
 
-        public function updateMissing($m_name, $m_mobile_country, $m_mobile){
+        public function updateMissing($m_name, $m_mobile_country, $m_mobile, $sms_text){
 
-            if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile)) {
+            if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($sms_text)) {
                 
                 $line = __LINE__;
                 Logs::write(
@@ -185,7 +186,7 @@
                 return false;
             }
 
-            $values = prepare_values(Missing::$update, array($m_name, $m_mobile_country, $m_mobile));
+            $values = prepare_values(Missing::$update, array($m_name, $m_mobile_country, $m_mobile, $sms_text));
 
             $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
             
@@ -193,7 +194,7 @@
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::INFO, 
-                    'Missing ' . $this->id . ' updated.', 
+                    'Missing ' . $this->id . ' updated.',
                     $values
                 );
             }

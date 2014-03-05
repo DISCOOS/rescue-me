@@ -58,10 +58,21 @@
             );
             $fields[] = $group;
             
-            if(!empty($operation->op_closed)) {
-                $actions['message'] = _("Merk: Dette vil gjenåpne operasjonen");
+            $fields[] = array(
+                'id' => 'sms_text',
+                'type' => 'text', 
+                'value' => $missing->sms_text,
+                'label' => _('SMS tekst'),
+                'class' => 'field ',
+                'attributes' => 'required'
+            );            
+            
+            $actions = array();
+            $actions['warning'] = _('Husk å sette inn %LINK% slik at RescueMe kan sette inn med riktig lenke.');
+            $actions['warning'] = '<span style="">' . $actions['warning'] . '</span>';
+            if(empty($operation->op_closed) === false) {
+                $actions['message'] = _("Merk: Dette vil gjenåpne operasjonen.");
             }
-            else $actions = array();
             
             insert_form("user", _(EDIT_MISSING), $fields, ADMIN_URI."missing/edit/$missing->id", $actions);
         }
