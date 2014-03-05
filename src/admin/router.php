@@ -318,15 +318,16 @@
                 $username = User::safe($_POST['email']);
                 if(empty($username)) {
                     $_ROUTER['error'] = _('Eposten må inneholde minst ett alfanumerisk tegn');
+                    break;
                 }
                 
-                if(User::unique($_POST['email']) === false) {
-                    $_ROUTER['error'] = _('Bruker med samme epost finnes fra før');
-                    break;
-                } 
-                
-                exit;
-                
+                $next = $_POST['email'];
+                if(strtolower(User::safe($next)) !== strtolower(User::safe($user->email))) {
+                    if(User::unique($next) === false) {
+                        $_ROUTER['error'] = _("Bruker med epost $next finnes fra før");
+                        break;
+                    } 
+                }
                 
                 $status = User::create(
                     $_POST['name'], 
@@ -389,7 +390,7 @@
                 $next = $_POST['email'];
                 if(strtolower(User::safe($next)) !== strtolower(User::safe($user->email))) {
                     if(User::unique($next) === false) {
-                        $_ROUTER['error'] = _('Bruker med samme epost finnes fra før');
+                        $_ROUTER['error'] = _("Bruker med epost $next finnes fra før");
                         break;
                     } 
                 }

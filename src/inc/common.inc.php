@@ -477,7 +477,7 @@
      * @copyright 2008 Kevin van Zonneveld (http://kevin.vanzonneveld.net)
      * @license   http://www.opensource.org/licenses/bsd-license.php New BSD Licence
      * @version   SVN: Release: $Id: alphaID.inc.php 344 2009-06-10 17:43:59Z kevin $
-     * @link    http://kevin.vanzonneveld.net/
+     * @link    http://kvz.io/blog/2009/06/10/create-short-ids-with-php-like-youtube-or-tinyurl/
      *
      * @param mixed   $in   String or long input to translate
      * @param boolean $to_num  Reverses translation when true
