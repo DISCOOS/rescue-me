@@ -127,7 +127,7 @@
 	</div>
 	<div class="info pull-left">
 		<label class="label label-important">Sporingslenke</label> 
-		<?= str_replace("#missing_id", crypt_id($missing->id), SMS_LINK); ?>
+		<?= str_replace("#missing_id", encrypt_id($missing->id), SMS_LINK); ?>
 	</div>
 </div>
 

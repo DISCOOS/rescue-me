@@ -18,7 +18,7 @@
     
     $id = input_get_hash('id');
     
-    $missing = ($id === false ? false : Missing::getMissing(crypt_id($id,true)));
+    $missing = ($id === false ? false : Missing::getMissing(edcrypt_id($id)));
     
     if($missing !== false) {
         

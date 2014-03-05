@@ -12,7 +12,7 @@ if ($id === false) {
     
 } else {
     
-    $m = Missing::getMissing(crypt_id($id,true));
+    $m = Missing::getMissing(decrypt_id($id));
     if($m !== false)
     {
         $op_name = _('Closed by missing ' . $m->id . ' ' . date('Y-m-d'));

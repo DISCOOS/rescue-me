@@ -4,7 +4,7 @@ require_once('../config.php');
 use RescueMe\Missing;
 
 
-$id = crypt_id(input_get_hash('id'),true);
+$id = decrypt_id(input_get_hash('id'));
 $acc = input_get_int('acc');
 $lat = input_get_float('lat');
 $lon = input_get_float('lon');

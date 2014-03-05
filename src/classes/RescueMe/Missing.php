@@ -510,7 +510,7 @@
             $message = str_replace
             (
                 array('%LINK%', '#missing_id', '#to', '#m_name', '#acc', '#pos'), 
-                array(SMS_LINK,  crypt_id($this->id), $to, $this->name, $this->last_acc, $p),
+                array(SMS_LINK,  encrypt_id($this->id), $to, $this->name, $this->last_acc, $p),
                 $message
             );
 

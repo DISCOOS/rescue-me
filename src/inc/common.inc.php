@@ -396,6 +396,14 @@
         return $decrypted;
     }    
     
+    function encrypt_id($in) {
+        return crypt_id($in, false);
+    }
+    
+    
+    function decrypt_id($in) {
+        return crypt_id($in, true);
+    }
     
     /**
      * Translates a number to a short alhanumeric version
@@ -486,7 +494,7 @@
      *
      * @return mixed string or long
      */
-    function crypt_id($in, $to_num = false, $pad_up = 3, $pass_key = SALT)
+    function crypt_id($in, $to_num = false, $pad_up = false, $pass_key = SALT)
     {
         if($in === false) {
             return false;
