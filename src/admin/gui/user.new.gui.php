@@ -66,14 +66,16 @@
     );    
     $fields[] = $group;
     
-    $value = isset($_POST['role']) ? $_POST['role'] : '';    
-    $fields[] = array(
-        'id' => 'role',
-        'type' => 'select',
-        'value' => insert_options(\RescueMe\Roles::getAll(), $value, false), 
-        'label' => _('Role'),
-        'attributes' => 'required'
-    );
+    if($user instanceof RescueMe\User && $user->allow('write', 'user.all')) {
+        $value = isset($_POST['role']) ? $_POST['role'] : '';    
+        $fields[] = array(
+            'id' => 'role',
+            'type' => 'select',
+            'value' => insert_options(\RescueMe\Roles::getAll(), $value, false), 
+            'label' => _('Role'),
+            'attributes' => 'required'
+        );
+    }
 
     insert_form("user", _(NEW_USER), $fields, ADMIN_URI."user/new", $_ROUTER);
     

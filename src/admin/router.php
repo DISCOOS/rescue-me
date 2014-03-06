@@ -38,7 +38,7 @@
         }            
         
         // Force logon?
-        if(!isset($_GET['view']) || $_GET['view'] !== 'password/recover') {
+        if(!isset($_GET['view']) || ($_GET['view'] !== 'password/recover' && $_GET['view'] !== 'user/new')) {
             
             // Redirect?
             if(isset($_GET['view']) && $_GET['view'] !== "logon") {
@@ -325,15 +325,22 @@
         
         case 'user/new':
             
-            if($user->allow('write', 'user.all') === FALSE)
+            // Defaults - request new user
+            $role = 2; // Default role is operator
+            $state = User::PENDING;
+            $redirect = APP_URI;
+            $_ROUTER['name'] = _("Request for new user");
+            
+            // Id admin and allowed to create users
+            if($user instanceof RescueMe\User && $user->allow('write', 'user.all'))
             {
-                $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = _('Access denied');
-                break;
+                $state = User::ACTIVE;
+                if ($_SERVER['REQUEST_METHOD'] === 'POST')
+                    $role = $_POST['role'];
+                $redirect = ADMIN_URI.'user/list';
+                $_ROUTER['name'] = _("New user");
             }
             
-            $_ROUTER['name'] = NEW_USER;
             $_ROUTER['view'] = $_GET['view'];
             
             // Process form?
@@ -359,10 +366,11 @@
                     $_POST['password'], 
                     $_POST['country'], 
                     $_POST['mobile'],
-                    (int)$_POST['role']
+                    (int)$role,
+                    $state
                 );
                 if($status) {
-                    header("Location: ".ADMIN_URI.'user/list');
+                    header("Location: ".$redirect);
                     exit();
                 }
                 $_ROUTER['error'] = _('Ikke gjennomført, prøv igjen');
@@ -507,6 +515,74 @@
                 exit();
             }
 
+            break;
+            
+       case 'user/approve':
+           if(($id = input_get_int('id')) === FALSE) {
+
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = "Id not found.";
+                break;
+            } 
+            
+            if($user->allow('write', 'user.all') === FALSE)
+            {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = _('Access denied');
+                break;
+            }
+            
+            $_ROUTER['name'] = USERS;
+            $_ROUTER['view'] = 'user/list';
+            
+            $edit = User::get($id);
+            if(!$edit) {
+                $_ROUTER['error'] = "User '$id' " . _(" not found");
+            }
+            else if($edit->approve() === false) {
+                $_ROUTER['error'] = "'$edit->name'" . _(" not approved") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+            }
+            else {
+                header("Location: ".ADMIN_URI.'user/list');
+                exit();
+            }            
+            
+            break;
+            
+       case 'user/reject':
+           if(($id = input_get_int('id')) === FALSE) {
+
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = "Id not found.";
+                break;
+            } 
+            
+            if($user->allow('write', 'user.all') === FALSE)
+            {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = _('Access denied');
+                break;
+            }
+            
+            $_ROUTER['name'] = USERS;
+            $_ROUTER['view'] = 'user/list';
+            
+            $edit = User::get($id);
+            if(!$edit) {
+                $_ROUTER['error'] = "User '$id' " . _(" not found");
+            }
+            else if($edit->reject() === false) {
+                $_ROUTER['error'] = "'$edit->name'" . _(" not rejected") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+            }
+            else {
+                header("Location: ".ADMIN_URI.'user/list');
+                exit();
+            }            
+            
             break;
             
         case 'user/enable':

@@ -361,9 +361,10 @@
          * @param string $country
          * @param string $mobile
          * @param integer $role
+         * @param string $state
          * @return boolean
          */
-        public static function create($name, $email, $password, $country, $mobile, $role) {
+        public static function create($name, $email, $password, $country, $mobile, $role, $state = User::ACTIVE) {
             
             $username = User::safe(strtolower($email));
 
@@ -373,7 +374,7 @@
                 return false;
             }
             
-            $values = array((string) $name, (string) $password, (string) $username, (int) $mobile, (string) $country, User::ACTIVE);
+            $values = array((string) $name, (string) $password, (string) $username, (int) $mobile, (string) $country, $state);
             
             $values = \prepare_values(User::$insert, $values);
             
@@ -526,7 +527,7 @@
          */
         public function delete() {
             
-            $values = \prepare_values(array("state"), array("deleted"));
+            $values = \prepare_values(array("state"), array(User::DELETED));
             
             $res = DB::update(self::TABLE, $values, "user_id=$this->id");
             
@@ -546,7 +547,7 @@
          */
         public function disable() {
             
-            $values = \prepare_values(array("state"), array("disabled"));
+            $values = \prepare_values(array("state"), array(User::DISABLED));
             
             $res = DB::update(self::TABLE, $values, "user_id=$this->id");
             
@@ -566,7 +567,7 @@
          */
         public function enable() {
             
-            $values = \prepare_values(array("state"), array("NULL"));
+            $values = \prepare_values(array("state"), array(User::ACTIVE));
             
             $res = DB::update(self::TABLE, $values, "user_id=$this->id");
             
@@ -578,11 +579,38 @@
             
         }// disable     
         
+        /**
+         * Approve a pending user.
+         * Will alert the user by mail and SMS.
+         * 
+         * @return boolean
+         */
+        public function approve() {
+            if ($this->enable()) {
+                $this->send(_("Your user has been approved.")." "._("Log in to").": ".ADMIN_URI, array('sms', 'email'));
+                return true;
+            }
+            return false;
+        }
         
+        /**
+         * Reject a pending user.
+         * Will alert the user by mail and SMS.
+         * 
+         * @return boolean
+         */
+        public function reject() {
+            if ($this->delete()) {
+                $this->send(_("Your user has NOT been approved."), array('sms', 'email'));
+                return true;
+            }
+            return false;
+        }
+
         /**
          * Send message to user devices
          * 
-         * @param string $message
+         * @param string $message The text to send
          * @param array $devices Send to given devices {'sms','email'};
          * 
          * @return boolean
