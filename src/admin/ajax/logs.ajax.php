@@ -47,11 +47,11 @@
             <th><?=_("Message")?></th>
             <th width="10%"><?=_("User")?></th>
             <th width="10%">
-                <input type="search" class="input-medium search-query pull-right" placeholder="Search">
+        <input type="text" class="input-medium search-query pull-right" data-class="logs" placeholder="Search">
             </th>            
         </tr>
     </thead>        
-    <tbody class="searchable">
+    <tbody class="searchable logs">
 
 <? foreach($lines as $id => $line) { ?>
 

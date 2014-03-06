@@ -11,9 +11,6 @@ $(document).ready(function() {
     // Prepare DOM
     R.prepare(document.documentElement, R.options);
   
-    // Add form validation
-    R.form.validate();
-
 });
 
 /**
@@ -114,7 +111,7 @@ R.prepare = function(element, options) {
             $(this).find('input[type="password"]').each(function(i, e) {
                 R.CapsLock.listen($(e));
             });
-        });  
+        });
         
         // Prevent backdrop
         $(this).attr("data-backdrop", false);
@@ -128,10 +125,18 @@ R.prepare = function(element, options) {
             text = $(this).text();
             return pattern.test(text);
         }).show();
+        
+        var target = $(this).attr('data-class');
+        
+        $('.'+target+'>.pagination').each(function() {
+           var pages = $(this).bootstrapPaginator('getPages'); 
+           alert(pages.current);
+        });
+        // TODO: Implement server side search
     });
 
     // Add form validation
-    R.form.validate($(element));
+    R.form.validate(element);
 
     // Add capslock listeners to password
     R.CapsLock.listen('[type="password"]');

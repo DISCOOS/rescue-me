@@ -3,7 +3,7 @@ R.form.validate = function(selector) {
     
     selector = typeof selector !== 'undefined' ? selector : "form";
     
-    $(selector).each(function(i,form) {
+    $(selector).find("form").each(function(i,form) {
         var message;
         var form = $(form);
         var invalid = undefined;
