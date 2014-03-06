@@ -31,7 +31,6 @@
                         $state = _('avventer godkjenning');
                         break;
                     default:
-                        var_dump($user);
                         break;
                 }
                 $_ROUTER['error'] = _('Brukeren'). ' ' . $state;

@@ -1,15 +1,16 @@
 <?    
-    ob_start();
+    $inline = (isset($inline) && $inline ? true : false);
     
     use RescueMe\User;
     use RescueMe\Properties;
     
     $include = (isset($context) ? $context : ".*");
-    $inline = (isset($inline) && $inline ? true : false);
     
     $id = input_get_int('id', User::currentId());
 
     $pattern = '#'.$include.'#';
+    
+    ob_start();
     
     if($inline === false) { ?>
 
@@ -27,6 +28,7 @@
 
 <? } 
 
+
     foreach(Properties::rows($id) as $name => $cells) {
         if(preg_match($pattern, $name)) {
             insert_row($name, $cells);
@@ -38,7 +40,8 @@
     </tbody>
 </table>    
         
- <? }
+ <? } 
  
-    return create_ajax_response(ob_get_clean());
-?>
+    return $inline ? ob_get_clean() : create_ajax_response(ob_get_clean()); 
+ 
+ ?>

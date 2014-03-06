@@ -13,7 +13,6 @@
         if(!isset($include)) $include = ".*";
 
         $pattern = '#'.$include.'#';
-        
 ?>
 
 <table class="table table-striped">
@@ -57,12 +56,14 @@
             </td>
         </tr>
 <?
-    $instance = $module->newInstance();
-    if($instance instanceof RescueMe\Uses) {
+            $instance = $module->newInstance();
+            if($instance instanceof RescueMe\Uses) {
 
-        $inline = true;
-        $context = implode("|", $instance->uses());
-        echo require 'setup.property.list.ajax.php';
+                $inline = true;
+                $context = implode("|", $instance->uses());
+
+                echo include 'setup.property.list.ajax.php';
+
                     
     }}}} 
 ?>    
@@ -72,4 +73,4 @@
         
 <?    
     return create_ajax_response(ob_get_clean());    
-?>
+?>en
