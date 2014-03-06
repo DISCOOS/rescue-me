@@ -24,11 +24,13 @@
 </ul>
 <div class="tab-content" style="width: auto; overflow: visible">       
 <? foreach($names as $name) { $active = ($name === $log ? 'active' : ''); ?>
-    <div id="<?=$name?>" class="tab-pane <?=$active?>"></div>    
+    <div id="<?=$name?>" class="tab-pane <?=$active?>">
+        <div class="pagination"></div>
+    </div>    
 <? } ?>  
 </div>
     
 <script>
-    R.onTab('tabs');
+    R.tabs('tabs');
 </script>
     

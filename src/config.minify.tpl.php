@@ -41,6 +41,7 @@
                 '//js/jquery.validate.min.js', 
                 '//js/bootstrap.min.js',
                 '//js/bootstrap-editable.min.js', 
+                '//js/bootstrap-paginator.min.js', 
                 '//js/i18next.min.js', 
                 '//js/rescueme.js', 
                 '//js/capslock.js',

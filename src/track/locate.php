@@ -18,7 +18,7 @@
     
     $id = input_get_hash('id');
     
-    $missing = ($id === false ? false : Missing::getMissing(edcrypt_id($id)));
+    $missing = ($id === false ? false : Missing::get(decrypt_id($id)));
     
     if($missing !== false) {
         
@@ -29,7 +29,7 @@
         // Create minified js
         $track = JSMin::minify(file_get_contents(APP_PATH.'track/js/track.js'));
         
-        $user_id = Operation::getOperation($missing->op_id)->user_id;
+        $user_id = Operation::get($missing->op_id)->user_id;
 
         // Create install options
         $options = array();
@@ -38,13 +38,13 @@
         $options['track']['delay'] = $delay;
         $options['track']['msg'] = get_messages();
         
-        $country = $missing->alert_mobile['country'];
+        $country = $missing->alert_mobile_country;
         if(($code = Locale::getDialCode($country)) === FALSE)
         {
             Logs::write(Logs::SMS, LogLevel::ERROR, "Failed to get country code", $_GET);
         }               
         
-        $options['track']['to'] = $code . $missing->alert_mobile['mobile'];
+        $options['track']['to'] = $code . $missing->alert_mobile;
         $options['track']['age'] = Properties::get(Properties::LOCATION_MAX_AGE, $user_id);
         $options['track']['wait'] = Properties::get(Properties::LOCATION_MAX_WAIT, $user_id);   
         $options['track']['acc'] = Properties::get(Properties::LOCATION_DESIRED_ACC, $user_id);

@@ -66,6 +66,19 @@ h3.pagetitle {
     margin-left: 0.5em;
 }
 
+.loader .container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px; 
+    margin-top: -50px; 
+    text-align:center;
+    z-index:1234;
+    overflow: auto;
+    width: 100px;
+    height: 100px;
+}
+
 .label {
   font-size: 1.0em;
   padding: 0.4em;

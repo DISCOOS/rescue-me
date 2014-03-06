@@ -20,8 +20,12 @@
 </ul>
 
 <div class="tab-content" style="width: auto; overflow: visible">
-    <div id="open" class="tab-pane <?=($state === Operation::OPEN ? 'active' : '')?>"></div>
-    <div id="closed" class="tab-pane <?=($state === Operation::CLOSED ? 'active' : '')?>"></div>
+    <div id="open" class="tab-pane <?=($state === Operation::OPEN ? 'active' : '')?>">
+        <div class="pagination"></div>
+    </div>
+    <div id="closed" class="tab-pane <?=($state === Operation::CLOSED ? 'active' : '')?>">
+        <div class="pagination"></div>
+    </div>
 </div>    
 
 <?php
@@ -30,6 +34,6 @@
 ?>    
     
 <script>
-    R.onTab('tabs');
+    R.tabs('tabs');
 </script>
     

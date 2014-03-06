@@ -16,7 +16,7 @@ if ($id === false || $lat === false || $lon === false || $acc === false) {
      
 } else {
     
-    $m = Missing::getMissing($id);
+    $m = Missing::get($id);
     
     if($m !== false)
     {

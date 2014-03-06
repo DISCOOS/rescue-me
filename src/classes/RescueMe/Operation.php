@@ -11,8 +11,9 @@
 
     namespace RescueMe;
 
-    use \Psr\Log\LogLevel;
-    use \RescueMe\Log\Logs;
+    use Psr\Log\LogLevel;
+    use RescueMe\Log\Logs;
+    use RescueMe\Missing;
     
     /**
      * Operation class
@@ -47,7 +48,7 @@
          * @param integer $id Operation id
          * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
          */
-        public static function getOperation($id){
+        public static function get($id){
             $query = "SELECT * FROM `".self::TABLE."` WHERE `op_id`=" . (int) $id;
             $res = DB::query($query);
 
@@ -63,7 +64,7 @@
             }
 
             return $operation;
-        }// getOperation
+        }// get
 
 
         /**
@@ -72,7 +73,7 @@
          * @param integer $id Operation id
          * @return boolean TRUE if closed (or not found), FALSE otherwise.
          */
-        public static function isOperationClosed($id) {
+        public static function isClosed($id) {
 
             $query = "SELECT op_closed FROM `".self::TABLE."` WHERE `op_id`=" . (int) $id;
             $res = DB::query($query);
@@ -95,7 +96,7 @@
          * 
          * @return boolean
          */
-        public static function closeOperation($id, $update = array()) {
+        public static function close($id, $update = array()) {
             
             // Anonymize operation
             if (isset($update['op_name']) === FALSE) {
@@ -164,7 +165,7 @@
          * @param integer $id Operation id
          * @return boolean
          */
-        public static function reopenOperation($id) {
+        public static function reopen($id) {
 
             $res = DB::update(self::TABLE,array('op_closed' => 'NULL'), "`op_id`=" . (int) $id);
 
@@ -182,6 +183,22 @@
             return $res;
 
         }
+        
+        
+        public function getData() {
+            return array
+            (
+                "op_id" => (int) $this->op_id, 
+                "user_id" => (int) $this->user_id, 
+                "op_name" => $this->op_name, 
+                "alert_mobile_country" => $this->alert_mobile_country,
+                "alert_mobile" => $this->alert_mobile,
+                "op_ref" => $this->op_ref, 
+                "op_opened" => $this->op_opened, 
+                "op_closed" => $this->op_closed,
+                "op_comments" => $this->op_comments
+            );
+        }        
 
 
         /**
@@ -195,7 +212,7 @@
          * @param string $op_comments Any comments to the operation
          * @return boolean
          */
-        public function addOperation(
+        public function add(
             $op_name, $user_id, $alert_mobile_country, 
             $alert_mobile, $op_ref = '', $op_comments = ''){
 
@@ -208,7 +225,7 @@
                     "One or more required values are missing", 
                     array(
                         'file' => __FILE__,
-                        'method' => 'addOperation',
+                        'method' => 'add',
                         'line' => $line,
                     )
                 );
@@ -239,9 +256,9 @@
                 );                
             }        
 
-            return self::getOperation($this->id);
+            return self::get($this->id);
 
-        }// addOperation
+        }// add
 
         /**
          * Get all operations
@@ -249,7 +266,7 @@
          * @param string $status NULL, 'open' or 'closed'
          * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
          */
-        public static function getAllOperations($status='open', $admin = false) {
+        public static function getAll($status='open', $admin = false) {
             $user = User::current();
             // Get WHERE clause
             switch( $status ) {
@@ -269,37 +286,23 @@
 
             $res = DB::query($query);
 
-            if (DB::isEmpty($res)) 
+            if (DB::isEmpty($res))
                 return false;
 
             $operation_ids = array();
             while ($row = $res->fetch_assoc()) {
                 $operation = new Operation();
-                $operation = $operation->getOperation($row['op_id']);
+                $operation = $operation->get($row['op_id']);
                 $operation_ids[$row['op_id']] = $operation;
             }
 
             return $operation_ids;
 
-        } // getAllOperations
+        } // getAll
         
 
-        public function getAllMissing() {
-            $query = "SELECT `missing_id`, `missing_name` FROM `missing`
-                        WHERE `op_id` = ".(int)$this->id." 
-                        ORDER BY `missing_name`";
-
-           $res = DB::query($query);
-
-            if (DB::isEmpty($res)) 
-                return false;
-
-            $missings = array();
-            while ($row = $res->fetch_assoc()) {
-                $missing = Missing::getMissing($row['missing_id']);
-                $missings[$row['missing_id']] = $missing;
-            }
-            return $missings;
+        public function getAllMissing($admin = false, $start = 0, $max = false) {
+            return Missing::getAll('`missing`.`op_id` = ' .(int)$this->id, $admin, $start, $max);
         }
 
         public function getAlertMobile() {

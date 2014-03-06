@@ -1,12 +1,15 @@
 <?
+    use RescueMe\User;
     use RescueMe\Operation;
     
     $id = input_get_int('id');
-    $operation = Operation::getOperation($id);
-    $missings = $operation === FALSE ? FALSE : $operation->getAllMissing();
+    $operation = Operation::get($id);
+    $admin = User::current()->allow("read", 'operations.all');
+    
+    $missings = $operation === FALSE ? FALSE : $operation->getAllMissing($admin);
     if($missings !== false)
     {
-        $missing = current($missings);   
+        $missing = current($missings);
         $missing->getPositions();
         
         if(isset($_ROUTER['error'])) { 

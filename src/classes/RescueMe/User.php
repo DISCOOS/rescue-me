@@ -35,7 +35,8 @@
             "password", 
             "email", 
             "mobile",
-            "mobile_country"
+            "mobile_country",
+            "state"
         );
         
         private static $update = array
@@ -46,6 +47,46 @@
             "mobile_country"
         );
         
+        
+        /**
+         * All users
+         */
+        const ALL = "all";
+        
+        
+        /**
+         * Active users
+         */
+        const ACTIVE = 'active';
+        
+        
+        /**
+         * Disabled users
+         */
+        const DISABLED = 'disabled';
+        
+        
+        /**
+         * Pending users
+         */
+        const PENDING = 'pending';
+        
+        
+        /**
+         * Deleted users
+         */
+        const DELETED = 'deleted';
+        
+        
+        /**
+         * Array of user states
+         */
+        public static $all = array(
+            self::ACTIVE,
+            self::DISABLED,
+            self::PENDING,
+            self::DELETED
+        );
         
         /**
          * User id
@@ -89,6 +130,13 @@
         
         
         /**
+         * User state
+         * @var integer
+         */
+        public $state = null;
+        
+        
+        /**
          * Prevent initialization of user object outside this class
          */
         protected final function __construct()
@@ -112,21 +160,64 @@
         
         
         /**
+         * Get user state titles
+         * @return array
+         */
+        public static function getTitles() {
+            return array(
+                User::ACTIVE => _('Active'),
+                User::PENDING => _('Pending'),
+                User::DISABLED => _('Disabled'),
+                User::DELETED => _('Deleted'),
+                User::ALL => _('All')
+            );            
+        }        
+        
+        
+        /**
+         * Count number of users
+         * 
+         * @param array $states User state (optional, default: null, values: {'pending', 'disabled', 'deleted'})
+         * 
+         * @return boolean|array
+         */
+        public static function count($states=null) {
+            
+            if(isset($states) === FALSE || in_array(User::ALL, $states)) {
+                $states = User::$all;
+            }
+            
+            foreach(isset($states) ? $states : array() as $state) {
+                $filter[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
+            } 
+            $filter = implode($filter," OR ");
+            
+            return DB::count(self::TABLE, $filter);
+            
+        }// count
+        
+        
+        /**
          * Get all users in database
          * 
          * @param array $states User state (optional, default: null, values: {'pending', 'disabled', 'deleted'})
          * 
          * @return boolean|array
          */
-        public static function getAll($states=null) {
+        public static function getAll($states = null, $start = 0, $max = false) {
             
-            $states = isset($states) ? $states : array("", "NULL","pending","disabled");
+            if(isset($states) === FALSE || in_array(User::ALL, $states)) {
+                $states = User::$all;
+            }
+            
             foreach(isset($states) ? $states : array() as $state) {
-                $filter[] = $state === "NULL" ? "`state` IS NULL" : "`state`='$state'";
+                $filter[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
             } 
             $filter = implode($filter," OR ");
             
-            $res = DB::select(self::TABLE, "*", $filter, "`state`, `name`");
+            $limit = ($max === false ? '' : "$start, $max");
+            
+            $res = DB::select(self::TABLE, "*", $filter, "`state`, `name`", $limit);
             
             if (DB::isEmpty($res)) return false;
 
@@ -146,7 +237,7 @@
          * @return integer|null.
          */
         public static function currentId() {
-            return isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+            return (int)isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
         }
 
         
@@ -178,7 +269,7 @@
                 return User::error("No user id found. $provider reference $reference not found.");                
             }
             $row = $result->fetch_row();
-            $operation = Operation::getOperation($row[0]);
+            $operation = Operation::get($row[0]);
             return $operation ? $operation->user_id : false;
         }
 
@@ -205,7 +296,7 @@
             $row = $res->fetch_assoc();
             foreach($row as $property => $value){
                 
-                if(!in_array($property, $exclude)) { 
+                if(in_array($property, $exclude) === false) { 
                     $user->$property = $value;
                 }
             }
@@ -282,7 +373,7 @@
                 return false;
             }
             
-            $values = array((string) $name, (string) $password, (string) $email, (int) $mobile, (string) $country);
+            $values = array((string) $name, (string) $password, (string) $username, (int) $mobile, (string) $country, User::ACTIVE);
             
             $values = \prepare_values(User::$insert, $values);
             
@@ -304,6 +395,18 @@
         }// create
         
 
+        /**
+         * Check if one or more users exist
+         * 
+         * @return boolean
+         */
+        public function isState($state) {
+            
+            return $this->state === $state || is_null($this->state) && $state === User::ACTIVE;
+            
+        }// isEmpty
+        
+        
         /**
          * Update user
          * 
@@ -532,9 +635,14 @@
             if(empty($username) || empty($password))
                 return false;
             
-            $res = DB::select(self::TABLE, "*", "`email` = '$username' AND `password` = '$password'");
-
-            if(DB::isEmpty($res)) return false;
+            $filter = "`email` = '$username' AND `password` = '$password'";
+            
+            $res = DB::select(self::TABLE, "*", $filter);
+            
+            if(DB::isEmpty($res)) {
+                $this->logout();
+                return false;
+            }
             
             $info = $res->fetch_assoc();
             
@@ -543,31 +651,61 @@
             return $this->_grant($info);
             
         }// logon
+        
+        
+        /**
+         * Logout current user
+         */
+        public function logout() {
+            
+            $isset = isset($_SESSION['logon']) && $_SESSION['logon'];
+            
+            // Unset all of the session variables.
+            $_SESSION = array();
+
+            // If it's desired to kill the session, also delete the session cookie.
+            // Note: This will destroy the session, and not just the session data!
+            if (ini_get("session.use_cookies")) {
+                $params = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
+            }
+
+            // Finally, destroy the session.
+            session_destroy();                
+            
+            if($isset)
+            {
+                // Notify
+                Logs::write(Logs::ACCESS, LogLevel::INFO, 'User logged out.', array(), $this->id);
+            }
+            
+        }// logout        
 
         
         /**
          * Verify current user login credentials
          * 
-         * @return boolean|User Returns User object if success, FALSE otherwise
+         * @return boolean|string|User Returns User object if success, illegal state or FALSE if illegal credentials 
          */
         public static function verify() {
+            
+            $state = false;
 
             $user = User::current();
             
             if($user !== false && isset($_SESSION['password']))
             {
-                if($user->_verify($_SESSION['user_id'], $_SESSION['password'])) {
-                    return $user;
-                }
-                $user->logout();
+                $state = $user->_verify($_SESSION['user_id'], $_SESSION['password']);
             }
             elseif(isset($_POST['username']) && isset($_POST['password'])) {
                 $user = new User();
-                if($user->logon($_POST['username'], $_POST['password'])) {
-                    return $user;
-                }
+                $state = $user->logon($_POST['username'], $_POST['password']);
             }
-            return false;
+                        
+            return $state === true ? $user : $state;
         }// verify
         
         
@@ -576,15 +714,20 @@
          * 
          * @param string $user_id
          * @param string $password
-         * @return boolean
+         * @return boolean|string
          */
         private function _verify($user_id, $password) {
             
             $user_id = (int)$user_id;
             
-            $res = DB::select(self::TABLE,'*', "`user_id` = '$user_id' AND `password` = '$password'");            
+            $filter = "`user_id` = '$user_id' AND `password` = '$password'";
             
-            if(DB::isEmpty($res)) return false;            
+            $res = DB::select(self::TABLE,'*', $filter);
+            
+            if(DB::isEmpty($res)) {
+                $this->logout();
+                return false;
+            }
             
             $info = $res->fetch_assoc();
             $info['password'] = $password;
@@ -596,12 +739,7 @@
         
         private function _grant($info) {
             
-            $isset = isset($_SESSION['logon']) && $_SESSION['logon'];
-            
-            $_SESSION['logon'] = true;
-            $_SESSION['user_id'] = $info['user_id'];
-            $_SESSION['password'] = $info['password'];
-            
+            $granted = true;
             $this->id = (int)$info['user_id'];
             
             $exclude = array("user_id", 'password');
@@ -619,13 +757,25 @@
                 $this->role_id = (int)$row[0];
             } else {
                 User::error("User {$this->id} have no role.");
+            }                
+            
+            $granted = $this->isState(User::ACTIVE);
+            
+            $isset = isset($_SESSION['logon']) && $_SESSION['logon'];
+            
+            if($granted) {
+                $_SESSION['logon'] = true;
+                $_SESSION['user_id'] = $info['user_id'];
+                $_SESSION['password'] = $info['password'];
+            } else {
+                $this->logout();
             }
             
-            if($isset === FALSE) {
-                User::log('User logged in.');
+            if($isset === false) {
+                User::log($granted ? 'User logged in.' : 'Logon not granted. User is ' . $this->state);
             }
             
-            return true;
+            return $granted ? true : $this->state;
             
         }// _login_ok
 
@@ -683,24 +833,6 @@
             
         }
         
-        /**
-         * Logout current user
-         */
-        public function logout() {
-            
-            $isset = isset($_SESSION['logon']) && $_SESSION['logon'];
-            
-            unset($_SESSION['logon']);
-            unset($_SESSION['user_id']);
-            unset($_SESSION['password']);
-            
-            if($isset)
-            {
-                Logs::write(Logs::ACCESS, LogLevel::INFO, 'User logged out.', array(), $this->id);
-            }
-            
-        }// logout
-
         
         /**
          * Make hash
@@ -719,7 +851,7 @@
          * @return string
          */
         public static function safe($string) {
-            return preg_replace('/[^a-z0-9.@_-]/', '', $string);
+            return preg_replace('/[^a-z0-9.@_\-\+]/', '', $string);
         }// safe
         
 

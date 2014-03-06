@@ -6,7 +6,7 @@
     
     $id = input_get_int('id');
 
-    $missing = Missing::getMissing($id);
+    $missing = Missing::get($id);
 
     if($missing === false)
     {
@@ -17,7 +17,7 @@
     
         $positions = $missing->getPositions();
         $name = $missing->name;
-        if(Operation::isOperationClosed($missing->op_id)) {
+        if(Operation::isClosed($missing->op_id)) {
             $name .= " ("._("Closed").")";
         }
 

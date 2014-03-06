@@ -4,12 +4,14 @@
     use RescueMe\Operation;
     
     $id = input_get_int('id');
+    
+    $admin = $user->allow('write', 'operations.all');
 
-    $missing = Missing::getMissing($id);
+    $missing = Missing::get($id, $admin);
 
     if($missing !== false)
     {
-        $operation = Operation::getOperation($missing->op_id);
+        $operation = Operation::get($missing->op_id);
         
         if(isset($_ROUTER['error'])) { 
             insert_error($_ROUTER['error']);

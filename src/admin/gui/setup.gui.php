@@ -26,5 +26,5 @@
 </div>
 
 <script>
-    R.onTab('tabs');
+    R.tabs('tabs');
 </script>

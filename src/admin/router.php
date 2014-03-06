@@ -10,18 +10,36 @@
 
     // Verify logon information
     $user = User::verify();
-    $_SESSION['logon'] = ($user !== FALSE);
+    $granted = ($user instanceof User);
     
     // Force logon?
-    if($_SESSION['logon'] == false) {
+    if($granted === false) {
         
         // Set message?
         if(isset($_GET['view']) && !isset($_GET['uri']) && $_GET['view'] === 'logon') {
-            $_ROUTER['error'] = "Du har oppgitt feil brukernavn eller passord";
+            if($user === false) {
+                $_ROUTER['error'] = _('Du har oppgitt feil brukernavn eller passord');
+            } else {                
+                switch($user) {
+                    case User::DELETED:
+                        $state = _('er slettet');
+                        break;
+                    case User::DISABLED:
+                        $state = _('er deaktivert');
+                        break;
+                    case User::PENDING:
+                        $state = _('avventer godkjenning');
+                        break;
+                    default:
+                        var_dump($user);
+                        break;
+                }
+                $_ROUTER['error'] = _('Brukeren'). ' ' . $state;
+            }
         }            
         
         // Force logon?
-        if(!isset($_GET['view']) || $_GET['view'] !== "password/recover") {
+        if(!isset($_GET['view']) || $_GET['view'] !== 'password/recover') {
             
             // Redirect?
             if(isset($_GET['view']) && $_GET['view'] !== "logon") {
@@ -294,6 +312,13 @@
                 break;
             }            
             
+            if(isset($_GET['name'])) {
+                
+                echo ajax_response("user.list");
+
+                exit;
+            }            
+            
             $_ROUTER['name'] = USERS;
             $_ROUTER['view'] = $_GET['view'];
             
@@ -471,11 +496,12 @@
             $_ROUTER['view'] = 'user/list';
             
             $edit = User::get($id);
-            if(!$user) {
+            
+            if(!$edit) {
                 $_ROUTER['error'] = "User '$id' " . _(" not found");
             }
-            else if(!$user->disable()) {
-                $_ROUTER['error'] = "'$user->name'" . _(" not disabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+            else if($edit->disable() === false) {
+                $_ROUTER['error'] = "'$edit->name'" . _(" not disabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
             }
             else {
                 header("Location: ".ADMIN_URI.'user/list');
@@ -505,12 +531,12 @@
             $_ROUTER['name'] = USERS;
             $_ROUTER['view'] = 'user/list';
             
-            $user = User::get($id);
-            if(!$user) {
+            $edit = User::get($id);
+            if(!$edit) {
                 $_ROUTER['error'] = "User '$id' " . _(" not found");
             }
-            else if(!$user->enable()) {
-                $_ROUTER['error'] = "'$user->name'" . _(" not enabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+            else if($edit->enable() === false) {
+                $_ROUTER['error'] = "'$edit->name'" . _(" not enabled") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
             }
             else {
                 header("Location: ".ADMIN_URI.'user/list');
@@ -630,9 +656,10 @@
             
             $_ROUTER['name'] = _('Avslutt operasjon');
             $_ROUTER['view'] = 'operation/close';
+            
+            $admin = $user->allow('write', 'operations.all');
                         
-            if (($user->allow('write', 'operations', $id) 
-                || $user->allow('write', 'operations.all'))=== FALSE) {
+            if (($user->allow('write', 'operations', $id)  || $admin)=== FALSE) {
                 
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
@@ -642,14 +669,14 @@
             
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
-                $missings = Operation::getOperation($id)->getAllMissing();
+                $missings = Operation::get($id)->getAllMissing($admin);
                 if($missings !== FALSE) {
                     foreach($missings as $missing) {
                         $missing->anonymize($_POST['m_sex']. ' ('.$_POST['m_age'].')');
                     }
                 }
                 
-                $status = RescueMe\Operation::closeOperation($id, $_POST);
+                $status = RescueMe\Operation::close($id, $_POST);
                 
                 if ($status) {
                     header("Location: ".ADMIN_URI.'missing/list');
@@ -673,16 +700,17 @@
             $_ROUTER['name'] = _('Gjenåpne operasjon');
             $_ROUTER['view'] = 'missing/list';
             
-            if (($user->allow('write', 'operations', $id) 
-                || $user->allow('write', 'operations.all'))=== FALSE) {
+            $admin = $user->allow('write', 'operations.all');
+            
+            if (($user->allow('write', 'operations', $id)  || $admin)=== FALSE) {
                 $_ROUTER['name'] = _("Illegal Operation");
                 $_ROUTER['view'] = "404";
                 $_ROUTER['error'] = _("Access denied");
                 break;
             } 
             
-            $operation = Operation::getOperation($id);
-            $missings = $operation->getAllMissing();
+            $operation = Operation::get($id);
+            $missings = $operation->getAllMissing($admin);
             $missing = reset($missings);
             $missing_id = $missing->id;
             header("Location: ".ADMIN_URI."missing/edit/{$missing_id}?reopen");
@@ -709,7 +737,7 @@
                 
                 $operation = new RescueMe\Operation;
                 
-                $operation = $operation->addOperation(
+                $operation = $operation->add(
                     $_POST['m_name'], 
                     $user->id, 
                     $_POST['mb_mobile_country'], 
@@ -718,7 +746,7 @@
                 if (strpos($_POST['sms_text'], '%LINK%')===false)
                         $_POST['sms_text'] .= ' %LINK%';
                 
-                $missing = Missing::addMissing(
+                $missing = Missing::add(
                     $_POST['m_name'], 
                     $_POST['m_mobile_country'], 
                     $_POST['m_mobile'], 
@@ -744,11 +772,13 @@
                 break;
             } 
             
-            $missing = Missing::getMissing($id);
+            $missing = Missing::get($id);
             
             if($missing !== FALSE){
                 
-                if(($user->allow('read', 'operations', $missing->op_id) || $user->allow('read', 'operations.all')) === FALSE) {
+                $admin = $user->allow('read', 'operations.all');
+                
+                if(($user->allow('read', 'operations', $missing->op_id) || $admin) === FALSE) {
                 
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
@@ -796,36 +826,37 @@
                 break;
             } 
             
-            $missing = Missing::getMissing($id);
+            $admin = $user->allow('write', 'operations.all');
+            
+            $missing = Missing::get($id);
             
             $_ROUTER['name'] = EDIT_MISSING;
             $_ROUTER['view'] = $_GET['view'];
 
             if($missing !== FALSE){
                 
-                if (($user->allow('write', 'operations', $missing->op_id) 
-                    || $user->allow('write', 'operations.all'))=== FALSE) {
+                if (($user->allow('write', 'operations', $missing->op_id)  || $admin)=== FALSE) {
 
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
                     $_ROUTER['error'] = _("Access denied");
                     break;                
-                } 
-
-                $closed = Operation::isOperationClosed($missing->op_id);
+                }                
+                
+                $closed = Operation::isClosed($missing->op_id);
 
                 // Process form?
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     if($closed) {
-                        if(Operation::reopenOperation($missing->op_id) === FALSE) {
+                        if(Operation::reopen($missing->op_id) === FALSE) {
                             $_ROUTER['error'] = "Failed to reopen operation [{$missing->op_id}].";
                         }                        
                     }
 
                     if(isset($_ROUTER['error']) === false) {
 
-                        if($missing->updateMissing(
+                        if($missing->update(
                             $_POST['m_name'], 
                             $_POST['m_mobile_country'], 
                             $_POST['m_mobile'],
@@ -872,19 +903,20 @@
             $_ROUTER['name'] = _("Sporinger");
             $_ROUTER['view'] = "missing/list";
             
-            $missing = Missing::getMissing($id);
+            $missing = Missing::get($id);
             
             if($missing !== FALSE) {
 
-                if (($user->allow('write', 'operations', $missing->op_id) 
-                    || $user->allow('write', 'operations.all'))=== FALSE) {
+                $admin = $user->allow('write', 'operations.all');
+
+                if (($user->allow('write', 'operations', $missing->op_id) || $admin)=== FALSE) {
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
                     $_ROUTER['error'] = _("Access denied");
                     break;
                 }
 
-                if(Operation::isOperationClosed($missing->op_id)) {
+                if(Operation::isClosed($missing->op_id)) {
                     $_ROUTER['error'] = _("Missing [$missing->id] is closed");
                 }
                 elseif($missing->sendSMS() === FALSE) {
@@ -912,28 +944,45 @@
                 
             if(($id = input_get_int('id')) === FALSE) {
 
-                echo '<span class="badge badge-important">Not found</span>';
+                echo _('Missing id');
 
             } else {
 
-                $missing = Missing::getMissing($id);
-                $module = Module::get("RescueMe\SMS\Provider", User::currentId());    
-                $sms = $module->newInstance();
+                $missing = Missing::get($id);
+                
+                if($missing !== FALSE) {
 
-                if($sms instanceof RescueMe\SMS\Check) {
-                    if($missing !== FALSE && $missing->sms_provider === $module->impl) {
-                        $code = Locale::getDialCode($missing->mobile_country);
-                        $code = $sms->accept($code);
-                        $ref = $missing->sms_provider_ref;
-                        if(!empty($ref) && $sms->request($ref,$code.$missing->mobile)) {
+                    $admin = $user->allow('read', 'operations.all');
 
-                            $missing = Missing::getMissing($id);
+                    if (($user->allow('read', 'operations', $missing->op_id) || $admin)=== FALSE) {
+                        
+                        echo _("Access denied");
+                        
+                    } else {
+                        
+                        $module = Module::get("RescueMe\SMS\Provider", User::currentId());    
+                        $sms = $module->newInstance();
 
-                        }
+                        if($sms instanceof RescueMe\SMS\Check) {
+                            if($missing !== FALSE && $missing->sms_provider === $module->impl) {
+                                $code = Locale::getDialCode($missing->mobile_country);
+                                $code = $sms->accept($code);
+                                $ref = $missing->sms_provider_ref;
+                                if(!empty($ref) && $sms->request($ref,$code.$missing->mobile)) {
+
+                                    $missing = Missing::get($id);
+
+                                }
+                            }
+
+                        } 
+                        $timestamp = $missing !== false ? $missing->sms_delivery : null;
+
+                        echo format_since($timestamp);
                     }
-
-                } 
-                echo format_since($missing->sms_delivery);
+                } else {
+                    echo _("Missing not found");
+                }
             }
 
             exit;
@@ -943,12 +992,4 @@
             $_ROUTER['view'] = "404";
             $_ROUTER['error'] = print_r($_REQUEST,true);
             break;
-    }       
-    
-    
-    function ajax_response($resource, $index = '', $context = '') {
-        if($index) {
-            $index = '.'.$index;
-        }
-        return require "ajax/$resource$index.ajax.php";
     }

@@ -32,6 +32,8 @@
         
         const SYSTEM_COUNTRY = "system.country";
         
+        const SYSTEM_PAGE_SIZE = "system.page.size";
+        
         const LOCATION_MAX_WAIT = "location.max.wait";
         
         const LOCATION_MAX_AGE = "location.max.age";
@@ -74,6 +76,13 @@
                 'default' => '',
                 'options' => true,
                 'description' => "Use given country as default country code (phone number prefix)."
+            ),
+            
+            self::SYSTEM_PAGE_SIZE => array(
+                'type' => 'text',
+                'default' => 25,
+                'options' => false,
+                'description' => "Maximum number of lines per page (pagination)"
             ),
             
             self::LOCATION_MAX_AGE => array(
@@ -485,6 +494,7 @@
 
                     break;
 
+                case self::SYSTEM_PAGE_SIZE:
                 case self::LOCATION_MAX_AGE:
                 case self::LOCATION_MAX_WAIT:
                 case self::LOCATION_DESIRED_ACC:

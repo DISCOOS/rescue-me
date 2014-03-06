@@ -2,7 +2,6 @@
 <?    
     
     use RescueMe\User;
-    use RescueMe\Locale;
     
     if(isset($_ROUTER['error'])) { 
         $message = insert_error($_ROUTER['error'], false);
@@ -23,7 +22,7 @@
     $group['value'][] = array(
         'id' => 'email',
         'type' => 'email', 
-        'value' => isset($user) ? $user->email : '',
+        'value' => ($user ? $user->email : ''),
         'label' => _('E-mail'),
         'class' => 'span3',
         'attributes' => 'required'

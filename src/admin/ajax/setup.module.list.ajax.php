@@ -71,6 +71,5 @@
 </table>    
         
 <?    
-    return ob_get_clean();
-    
+    return create_ajax_response(ob_get_clean());    
 ?>

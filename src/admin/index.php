@@ -10,7 +10,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
     
     // Verify logon information
     $user = User::verify();
-    $_SESSION['logon'] = ($user !== FALSE);
+    $_SESSION['logon'] = ($user instanceof User);
     
 	$TWIG = array(
         'APP_TITLE' => TITLE,
@@ -104,7 +104,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
         <? if(GOOGLE_API_KEY !== '') { ?>
         <script src="//maps.googleapis.com/maps/api/js?key=<?=GOOGLE_API_KEY?>&sensor=false"></script>
         <? } ?>
-        <script src="<?=APP_URI?>js/admin.js"></script>
+        <script src="<?=APP_URI?>js/admin.js"></script>            
     </head>
 
     <body>
@@ -113,7 +113,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
             
             <div class="masthead">
                 <a class="lead no-wrap" href="<?=APP_URI?>"><b><?= TITLE ?></b></a>                    
-                <ul class="nav nav-pills pull-right" style="display: <?= $_SESSION['logon'] ? 'block' : 'none' ?>;">
+                <ul class="nav nav-pills pull-right" style="display: <?= isset($_SESSION['logon']) ? 'block' : 'none' ?>;">
             <?php 
                 
                 if(($logon = isset($_SESSION['logon']) && $_SESSION['logon']) === true) {

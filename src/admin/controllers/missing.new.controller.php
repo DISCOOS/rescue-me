@@ -24,7 +24,7 @@ if(sizeof($missing_modules) > 0) {
         require_once(APP_PATH_INC.'common.inc.php');
         
 		$operation = new RescueMe\Operation;
-		$operation = $operation->addOperation(
+		$operation = $operation->add(
 			$_POST['m_name'], 
 			$user->id, 
 			$_POST['mb_mobile_country'], //"NO", 
@@ -34,7 +34,7 @@ if(sizeof($missing_modules) > 0) {
 	        $TWIG['message']['header'] = _('Could not initiate trace');
 	        $TWIG['message']['body']   = _('System error: could not initiate operation');
 		} else {
-			$missing = Missing::addMissing(
+			$missing = Missing::add(
 				$_POST['m_name'], 
 				$_POST['m_mobile_country'], 
 				$_POST['m_mobile'], $operation->id);

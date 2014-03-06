@@ -1,20 +1,32 @@
 $(document).ready(function() {
     
+    R.options = R.options || {
+        size: "normal", 
+        alignment: "center"
+    };
+    
     // Make x-editable inline
     $.fn.editable.defaults.mode = 'inline';
-
+    
     // Prepare DOM
-    R.prepare(document.documentElement);
+    R.prepare(document.documentElement, R.options);
   
     // Add form validation
     R.form.validate();
 
 });
 
-R.prepare = function(element) {
+/**
+ * Prepare RescueMe elements
+ * @param element 
+ * @param options
+ */
+R.prepare = function(element, options) {
+    
+    options = options || {};
     
     // Workaround for missing iphone click event delegation (needed to show dropdowns from nav-buttons),
-    // see http://www.quirksmode.org/blog/archives/2010/09/click_event_del.html#c14807
+    //      see http://www.quirksmode.org/blog/archives/2010/09/click_event_del.html#c14807
     $(element).find('[data-toggle=dropdown]').each(function() {
         this.addEventListener('click', function() {
         }, false);
@@ -125,23 +137,39 @@ R.prepare = function(element) {
     R.CapsLock.listen('[type="password"]');
 
     // Register editables
-    $(element).find('.editable').editable({savenochange: true});    
+    $(element).find('.editable').editable({savenochange: true});
+    
+    // Register paginators
+    $(element).find('.pagination').each(function() { R.paginator(this, options) });
+    
 }
 
-R.ajax = function(url, element) {
+R.ajax = function(url, element, data, done) {
 
-    var restore = $(element).html();
-
+    data = data || {};
+    done = done || function( data ) { 
+        $(element).html(data); 
+    };
+    
+    var loader = R.loader(element);
     var timeout = setTimeout(function() {
-        $(element).html(restore);
+        loader.hide();
     }, 30000);
 
-    $(element).append(' <img src="' + R.app.url + 'img/loading.gif" alt="Wait...">');
 
-    $.ajax(url).done(function(data) {
-        clearTimeout(timeout);
-        $(element).html(data);
-    });
+    $.ajax({
+        url: url,
+        data: data,
+        beforeSend: loader.show,
+        complete: loader.hide
+     }).done(function( data ) {
+         
+         clearTimeout(timeout);
+         
+         done(data);
+
+     });
+
 };
 
 // Used in operation.close.gui.php to get the place of a location
@@ -158,51 +186,11 @@ R.geoname = function(lat, lon, callback) {
     });
 };
 
-R.toTab = function(tabs) {
-    var tab;
-    var url = window.location.href;
-    var index = url.indexOf("#");
-    if(index === -1) {
-        tab = ':first';
-    } else {
-        tab = '[href="#'+url.substr(index + 1)+'"]';
-    }
-    $('#'+tabs+' a'+tab).click();
-};
-
-R.onTab = function(tabs) {
-    // Listen to named tab selections
-    $('#'+tabs+' a').click(function (e) {
-        var tab = $(e.target);
-        var href = tab.attr("href");
-        var index = href.indexOf("#");
-        if (index === -1) {
-            id = 'all';
-        } else {
-            id = href.substr(index + 1);
-            href = href.substr(0,index);
-        }        
-        var loader = R.loader(tab, '#loader.'+id);
-        $.ajax({
-           url: href+'?name='+id,
-           beforeSend: loader.show,
-           complete: loader.hide
-        }).done(function( data ) {
-            
-            // Insert elements in DOM and prepare
-            $('#'+id).html(data);
-            R.prepare('#'+id);
-            
-        });
-    });
-    R.toTab(tabs);
-}; 
-
-R.loader = function(target, index) {
+R.loader = function(target) {
     
     // Get or create ajax loader
     var element;
-    var selector = $(index);
+    var selector = $('#loader');
     
     if(selector.length === 0) {        
         element = $('<img/>').
@@ -210,10 +198,22 @@ R.loader = function(target, index) {
                 attr('src',  R.app.url+'img/loading.gif').
                 addClass("loader");
         
-        target.append(element)
     } else {
         element = $(selector[0]); 
     }
+    
+    if(target === null) {
+        if(R.loader.container === undefined) {
+            R.loader.container = $(document.createElement('div')).addClass('loader container');
+            $(document.body).prepend(R.loader.container);
+        }
+        target = 'loader container';
+    } 
+
+    // Move to target
+    element.detach();
+    $(target).append(element)                
+    
     
     // Register global listeners listeners (p
     var loader = {};
@@ -228,3 +228,115 @@ R.loader = function(target, index) {
     return loader;
     
 };
+
+R.toTab = function(tabs) {
+    var tab;
+    var url = window.location.href;
+    var index = url.indexOf("#");
+    if(index === -1) {
+        tab = ':first';
+    } else {
+        tab = '[href="#'+url.substr(index + 1)+'"]';
+    }
+    $('#'+tabs+' a'+tab).click();
+};
+
+R.tabs = function(tabs) {
+    
+    // Listen to named tab selections
+    $('#'+tabs+' a').click(function (e) {
+        var tab = $(e.target);
+        var href = tab.attr("href");
+        var index = href.indexOf("#");
+        var id = 'all';
+        if (index !== -1) {
+            id = href.substr(index + 1);
+            href = href.substr(0,index);
+        }   
+        
+        var target = '#'+id;
+        var data = { name: id };
+        var list = $('#'+id).find('.pagination'); 
+        if(list.length > 0) {
+            target += '>.page-content';
+            list.each(function() {
+                var $this = $(this);
+                $this.bootstrapPaginator('show', 1);
+                $this.data('url', href);
+                $this.data('name', id);
+                $this.data('content', target);
+            });
+        } 
+
+        R.ajax(href, tab, data, function( data ) {
+
+            try {
+                var response = JSON.parse(data);
+            } catch ($e) {
+                response = {html: data, options: {}};
+            }
+
+            // Insert elements in DOM and prepare
+            $(target).html(response.html);
+            R.prepare(target, response.options);
+            
+            // Set pagination options?
+            if(list.length > 0) {
+                list.bootstrapPaginator(response.options);
+            }
+
+        });
+
+    });
+    R.toTab(tabs);
+};
+
+R.paginator = function(element, options) {
+    
+    options = options || {};
+    
+    var $element = $(element);
+    
+    options.shouldShowPage = function(type, page, current) { 
+        return true; 
+    };
+    
+    options.onPageClicked = function(e, originalEvent, type, page) { 
+        
+        e.stopImmediatePropagation();
+        
+        var target = e.target;
+
+        var data = {
+            name : $(target).data('name'),
+            page : page
+        };
+        
+        var url = $(target).data('url');
+        var content = $(target).data('content');
+        
+        R.ajax(url, null, data, function(data) {
+            
+            try {
+                var response = JSON.parse(data);
+            } catch ($e) {
+                response = {html: data, options: {}};
+            }
+
+            // Insert elements in DOM and prepare
+            $(content).html(response.html);
+            $(target).bootstrapPaginator("show", page);
+
+            R.prepare(content, response.options);
+        });
+        
+    };    
+    
+    var content = $(document.createElement('div')).addClass('page-content');
+    
+    $element.parent().prepend(content);
+    
+    $element.bootstrapPaginator(options);
+    
+};
+

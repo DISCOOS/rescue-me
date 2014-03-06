@@ -29,7 +29,11 @@
         
         const TABLE = "logs";
         
-        const SELECT = 'SELECT logs.*,users.name as user FROM `logs` LEFT JOIN `users` ON `users`.`user_id` = `logs`.`user_id`';
+        const JOIN = 'LEFT JOIN `users` ON `users`.`user_id` = `logs`.`user_id`';
+        
+        const COUNT = 'SELECT COUNT(*) FROM `logs` ';
+        
+        const SELECT = 'SELECT logs.*,users.name as user FROM `logs`';
         
         private static $fields = array
         (
@@ -123,6 +127,66 @@
         }        
         
         
+        private static function select($filter=array(), $logs=array(), $start = 0, $max = false){
+            
+            $query  = Logs::SELECT . ' ' . Logs::JOIN;
+            
+            $where = $filter ? array($filter) : array();
+            
+            if(empty($logs) === false) {
+                $where[] = "`logs`.`name` IN ('" . implode($logs,"' OR '") . "')";
+            }            
+            
+            if(empty($where) === false) {
+                $query .= ' WHERE (' .implode(') AND (', $where) . ')';
+            }
+            
+            $query .= ' ORDER BY `date` DESC';
+            
+            if($max !== false) {
+                $query .=  " LIMIT $start, $max";
+            }            
+            
+            return $query;
+        }
+        
+        
+        /**
+         * Get number of lines in given logs
+         * 
+         * @param string $name Log name
+         * 
+         * @return integer|boolean
+         */
+        public static function countAll($logs, $filter = '') {
+            
+            if(isset($logs) === FALSE || in_array(Logs::ALL, $logs)) {
+                $logs = Logs::$all;
+            }
+            
+            $query  = Logs::COUNT . ' ' . Logs::JOIN;
+            
+            $where = $filter ? array($filter) : array();
+            
+            if(empty($logs) === false) {
+                $where[] = "`logs`.`name` IN ('" . implode($logs,"' OR '") . "')";
+            }            
+            
+            if(empty($where) === false) {
+                $query .= ' WHERE (' .implode(') AND (', $where) . ')';
+            }            
+            
+            $res = DB::query($query);
+
+            if (DB::isEmpty($res)) return false;
+            
+            $row = $res->fetch_row();
+            return $row[0];
+            
+        }// get         
+        
+        
+        
         /**
          * Get all logs in database
          * 
@@ -130,18 +194,15 @@
          * 
          * @return array|boolean
          */
-        public static function getAll($logs=null) {
+        public static function getAll($logs = null, $start = 0, $max = false) {
             
             if(isset($logs) === FALSE || in_array(Logs::ALL, $logs)) {
                 $logs = Logs::$all;
             }
             
-            foreach($logs as $name) {
-                $filter[] = "`logs`.`name`='$name'";
-            } 
-            $filter = implode($filter,' OR ');
+            $select = Logs::select('', $logs, $start, $max);
             
-            $res = DB::query(Logs::SELECT . ' WHERE ' . $filter . ' ORDER BY `date` DESC;');
+            $res = DB::query($select);
             
             if (DB::isEmpty($res)) return false;
 
@@ -155,27 +216,29 @@
         
         
         /**
+         * Get number of lines in given log
+         * 
+         * @param string $name Log name
+         * 
+         * @return integer|boolean
+         */
+        public static function count($name, $filter = '') {
+            
+            return Logs::countAll(array($name), $filter);
+            
+        }// get        
+        
+        
+        /**
          * Get log with given name
          * 
          * @param string $name Log name
          * 
          * @return array|boolean
          */
-        public static function get($name) {
+        public static function get($name, $start = 0, $max = false) {
             
-            if($name === Logs::ALL) {
-                return Logs::getAll();
-            }
-            
-            $res = DB::query(Logs::SELECT . " WHERE `logs`.`name`='" . $name . "' ORDER BY `date` DESC");
-
-            if (DB::isEmpty($res)) return false;
-            
-            $logs = array();
-            while ($log = $res->fetch_assoc()) {
-                $logs[$log['log_id']] = $log;
-            }
-            return $logs;
+            return Logs::getAll(array($name), $start, $max);
             
         }// get
         

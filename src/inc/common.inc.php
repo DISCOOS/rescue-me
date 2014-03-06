@@ -209,19 +209,23 @@
      * @param string $timestamp mysql timestamp
      */
     function format_since($timestamp) {
-        $ts = (int)(time() - strtotime($timestamp));
-        $since = "~"._("sec");
-        if($ts > 0) {
-            if($ts < 60) {
-                $since = "$ts "._("sec");
-            }
-            else if($ts < 2*60*60) {
-                $since = (int)($ts/60)." "._("min");                        
-            }
-            else {
-                $since = format_dt($timestamp);
-            }
-        }        
+        if(isset($timestamp)) {
+            $ts = (int)(time() - strtotime($timestamp));
+            $since = "~"._("sec");
+            if($ts > 0) {
+                if($ts < 60) {
+                    $since = "$ts "._("sec");
+                }
+                else if($ts < 2*60*60) {
+                    $since = (int)($ts/60)." "._("min");                        
+                }
+                else {
+                    $since = format_dt($timestamp);
+                }
+            }        
+        } else {
+            $since = _('Ukjent');
+        }
         return $since;
     }
     
@@ -397,12 +401,12 @@
     }    
     
     function encrypt_id($in) {
-        return crypt_id($in, false);
+        return crypt_id($in, false, 3);
     }
     
     
     function decrypt_id($in) {
-        return crypt_id($in, true);
+        return crypt_id($in, true, 3);
     }
     
     /**

@@ -12,11 +12,11 @@ if ($id === false) {
     
 } else {
     
-    $m = Missing::getMissing(decrypt_id($id));
+    $m = Missing::get(decrypt_id($id));
     if($m !== false)
     {
         $op_name = _('Closed by missing ' . $m->id . ' ' . date('Y-m-d'));
-        if(Operation::closeOperation($m->op_id, array('op_name' => $op_name))) {
+        if(Operation::close($m->op_id, array('op_name' => $op_name))) {
             
             $message = $m->name . ' ' . _('is aborted');
             

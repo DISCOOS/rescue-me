@@ -1,5 +1,7 @@
 <?php
 
+    use RescueMe\Properties;
+    
     function dec_to_dem($dec)
     {
         // Converts decimal longitude / latitude to DM
@@ -120,4 +122,48 @@
     function is_ajax_request() {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
     }        
+    
+    
+    /**
+     * Converts ajax request into response.
+     * 
+     * Returns json string with structure {html: 'string', options: 'array'}
+     * 
+     * @param string $resource Resource name
+     * @param string $index Resource index
+     * @param array $context Resouce context
+     * @return string
+     */
+    function ajax_response($resource, $index = '', $context = '') {
+        
+        if($index) {
+            $index = '.'.$index;
+        }
+        
+        return require "ajax/$resource$index.ajax.php";
+        
+    }
+    
+    function create_paginator($current, $total, $user_id) {
+        
+        $options['size'] =  'normal';
+        $options['alignment'] = 'center';
+        $options['currentPage'] = $current;
+        $options['totalPages'] = $total;
+        
+        return $options;
+    }
+    
+    
+    function create_ajax_response($html, $options = array()) {
+        
+        $response = array();
+        $response['html'] = $html;
+        $response['options'] = $options;
+
+        return json_encode($response);
+        
+    }
+    
+    
 ?>

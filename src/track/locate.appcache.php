@@ -6,7 +6,7 @@ use RescueMe\Missing;
 use RescueMe\Properties;
 
 $id = $_GET['id'];
-$missing = Missing::getMissing($id);
+$missing = Missing::get($id);
 
 if($missing !== false) {
     $version = VERSION;

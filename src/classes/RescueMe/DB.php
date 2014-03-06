@@ -137,6 +137,8 @@
                 throw new Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
             
+            //var_dump($sql);
+            
             $result = DB::instance()->mysqli->query($sql);
             if($result == true && strpos($sql, "INSERT") !== false) {
                 return DB::instance()->mysqli->insert_id;
@@ -212,7 +214,7 @@
          * @param string $filter
          * @return boolean|integer
          */
-        public static function count($table, $filter="") 
+        public static function count($table, $filter='') 
         {
             $query = "SELECT COUNT(*) FROM `$table`";
             
@@ -236,11 +238,12 @@
          * @param mixed $fields
          * @param string $filter
          * @param string $order
+         * @param string $limit
          * @return boolean|\mysqli_result
          */
-        public static function select($table, $fields="*", $filter="", $order="") 
+        public static function select($table, $fields='*', $filter='', $order='', $limit = '') 
         {
-            if(is_string($fields) && in_array(strtoupper($fields), array("*","COUNT(*)")) === FALSE) {
+            if(is_string($fields) && in_array(strtoupper($fields), array('*','COUNT(*)')) === FALSE) {
                 $fields = "`" . ltrim(rtrim($fields,"`"),"`") . "`";
             }
             elseif (is_array($fields)) {
@@ -252,6 +255,8 @@
             if($filter) $query .= " WHERE $filter";
             
             if($order) $query .= " ORDER BY $order";
+            
+            if($limit) $query .= " LIMIT $limit";
             
             return DB::query($query);
             

@@ -3,18 +3,24 @@
     ob_start();
     
     use RescueMe\User;
-    use RescueMe\Operation;
-    
-    $user_id = User::currentId();
-    $admin = User::current()->allow("read", 'operations.all');
-    
-    $list = Operation::getAllOperations('closed', $admin);
+    use RescueMe\Missing;
+    use RescueMe\Properties;
     
     if(isset($_ROUTER['error'])) {
         insert_error($_ROUTER['error']);
     }
     
-    if($list == false) { insert_alert(_("Ingen registrert"));  } else { ?>
+    $user = User::current();
+    $user_id = $user->id;
+    $admin = User::current()->allow("read", 'operations.all');
+    
+    $list = Missing::countAll('op_closed IS NOT NULL', $admin);
+    
+    $page = input_get_int('page', 1);
+    $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
+    $start = $max * ($page - 1);
+    
+    if($list === false || $list <= $start) { insert_alert(_("Ingen registrert"));  } else { ?>
 
     <table class="table table-striped">
         <thead>
@@ -31,10 +37,15 @@
         </thead>        
         <tbody class="searchable">
 <?
-    foreach($list as $id => $this_operation) {
-        $owner = ($this_operation->user_id === $user_id);
-        $missings = $this_operation->getAllMissing();
-        $this_missing = current($missings);
+    // Create pagination options
+    $total = ceil($list/$max);
+    $options = create_paginator(1, $total, $user_id);
+    
+    // Get missing
+    $list = Missing::getAll('op_closed IS NOT NULL', $admin, $start, $max);
+    
+    foreach($list as $id => $this_missing) {
+        $owner = ($this_missing->user_id === $user_id);
 ?>
             <tr id="<?= $this_missing->id ?>">
                 <? if($admin) { ?>
@@ -43,7 +54,7 @@
                 <? } else { ?>
                 <td class="missing name" colspan="2"> <?= $this_missing->name ?> </td>
                 <? } ?>
-                <td class="missing date"><?= format_dt($this_operation->op_closed) ?></td>
+                <td class="missing date"><?= format_dt($this_missing->op_closed) ?></td>
                 <td class="missing editor">
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/$id"?>">
@@ -52,13 +63,18 @@
                     </div>
                 </td>
             </tr>
-<? }} ?>
+            
+    <? }} ?>
 
         </tbody>
     </table>
     
 <?php
     
-    return ob_get_clean();
+    if(isset($options) === false) {
+        $options = create_paginator(1, 1, $user_id);         
+    }
+    
+    return create_ajax_response(ob_get_clean(), $options);
     
 ?>

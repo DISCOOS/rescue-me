@@ -2,15 +2,33 @@
     
     ob_start();
     
+    use RescueMe\User;
     use RescueMe\Log\Logs;
+    use RescueMe\Properties;
     
     $log = isset($_GET['name']) && $_GET['name'] ? $_GET['name'] : Logs::ALL;
     
-    $lines = Logs::get($log);
+    $user_id = User::currentId();
+    $page = input_get_int('page', 1);
+    $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
+    $start = $max * ($page - 1);
+    
+    $lines = Logs::count($log);
     
     $all = ($log === Logs::ALL);
     
-    sleep(3);
+    if( $lines === false || $lines <= $start ) {
+        
+        $options = create_paginator(1, 1, $user_id);         
+        
+    } else {
+        
+        $total = ceil($lines/$max);
+        $options = create_paginator(1, $total, $user_id);        
+        
+        $lines = Logs::get($log, $start, $max);
+        
+    }
     
 ?>
 
@@ -54,5 +72,5 @@
 </table>
 
 <?    
-    return ob_get_clean();
+    return create_ajax_response(ob_get_clean(), $options);
 ?>

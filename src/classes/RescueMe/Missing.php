@@ -12,8 +12,10 @@
 
     namespace RescueMe;
 
-    use \Psr\Log\LogLevel;
-    use \RescueMe\Log\Logs;
+    use Psr\Log\LogLevel;
+    use RescueMe\Log\Logs;
+    use RescueMe\User;
+    use RescueMe\Operation;
 
     /**
      * Missing class
@@ -23,7 +25,13 @@
     class Missing
     {
         const TABLE = "missing";
+        
+        const SELECT = 'SELECT `missing`.*, `missing`.`op_id`, `user_id`, `op_closed`, `alert_mobile_country`, `alert_mobile` FROM `missing`';
+        
+        const JOIN = 'LEFT JOIN `operations` ON `operations`.`op_id` = `missing`.`op_id`';
 
+        const COUNT = 'SELECT COUNT(*) FROM `missing`';
+        
         private static $fields = array
         (
             "missing_name", 
@@ -33,7 +41,7 @@
             "op_id",
             "sms_text"
         );
-
+        
         private static $update = array
         (
             "missing_name", 
@@ -52,7 +60,9 @@
         public $name;
         public $mobile;
         public $mobile_country;
+        
         public $alert_mobile;
+        public $alert_mobile_country;
 
         public $last_pos;
         public $last_acc;
@@ -65,6 +75,76 @@
         public $sms_text;
 
         public $positions = array();
+        
+        private static function select($filter='', $admin = false, $start = 0, $max = false){
+            
+            $query  = Missing::SELECT . ' ' . Missing::JOIN;
+            
+            $where = $filter ? array($filter) : array();
+            
+            if($admin === false) {                
+                $where[] = '`operations`.`user_id` = ' . User::currentId();
+            } 
+            
+            if(empty($where) === false) {
+                $query .= ' WHERE (' .implode(') AND (', $where) . ')';
+            }
+            
+            $query .= ' ORDER BY `missing_reported` DESC';
+            
+            if($max !== false) {
+                $query .=  " LIMIT $start, $max";
+            }            
+            
+            return $query;
+        }
+        
+
+        public static function countAll($filter='', $admin = false) {
+            
+            $query  = Missing::COUNT . ' ' . Missing::JOIN;
+            
+            $where = $filter ? array($filter) : array();
+            
+            if($admin === false) {                
+                $where[] = '`operations`.`user_id` = ' . User::currentId();
+            } 
+            
+            if(empty($where) === false) {
+                $query .= ' WHERE (' .implode(') AND (', $where) . ')';
+            }
+            
+            $res = DB::query($query);
+
+            if (DB::isEmpty($res)) return false;
+            
+            $row = $res->fetch_row();
+            return $row[0];
+        }        
+        
+        
+        public static function getAll($filter='', $admin = false, $start = 0, $max = false) {
+            
+            $select = Missing::select($filter, $admin, $start, $max);
+            
+            $res = DB::query($select);
+
+            if (DB::isEmpty($res)) 
+                return false;
+            
+            $missings = array();
+            while ($row = $res->fetch_assoc()) {                
+                $id = $row['missing_id'];
+                $missing = new Missing();
+                $missings[$id] = $missing->set($id, $row);
+            }
+            return $missings;
+        }        
+        
+        public static function count($id, $admin = false) {
+            return Missing::countAll('`missing_id`=' . (int) $id, $admin);
+        }
+        
 
         /**
          * Get Missing instance
@@ -72,22 +152,20 @@
          * @param integer $id Missing id
          * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
          */
-        public static function getMissing($id){
+        public static function get($id, $admin = true){
 
-            $query = "SELECT * FROM `missing` WHERE `missing_id`=" . (int) $id;
-
-            $result = DB::query($query);
-
-            if(DB::isEmpty($result)) {
+            $res = DB::query(Missing::select('`missing_id`=' . (int) $id, $admin));
+            
+            if(DB::isEmpty($res)) {
                 return false;
             }
 
-            $row = $result->fetch_assoc();
+            $row = $res->fetch_assoc();
 
             $missing = new Missing();
-            return $missing->setMissing($id, $row);
+            return $missing->set($id, $row);
 
-        }// getMissing
+        }// get
 
 
         /**
@@ -98,24 +176,23 @@
          * 
          * @return \RescueMe\Missing
          */
-        private function setMissing($id, $values) {
+        private function set($id, $values) {
 
-            $this->id = $id;
+            $this->id = (int)$id;
 
             foreach($values as $key => $val){
                 $property = str_replace('missing_', '', $key);
                 $this->$property = $val;
             }
-
-            $operation = Operation::getOperation($this->op_id);
-            $this->user_id = $operation->user_id;
-            $this->alert_mobile = $operation->getAlertMobile();
-
+            
+            // Hack: Find out why datatype is string
+            $this->user_id = (int)$this->user_id;            
+            
             return $this;
         }
 
 
-        public static function addMissing($m_name, $m_mobile_country, $m_mobile, $sms_text, $op_id){
+        public static function add($m_name, $m_mobile_country, $m_mobile, $sms_text, $op_id){
 
             if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($op_id) || empty($sms_text)) {
                 
@@ -126,13 +203,21 @@
                     "One or more required arguments are missing", 
                     array(
                         'file' => __FILE__,
-                        'method' => 'addMissing',
+                        'method' => 'add',
                         'params' => func_get_args(),
                         'line' => $line,
                     )
                 );
                 return false;
             }
+            
+            $operation = Operation::get($op_id);
+            
+            if($operation === false) {
+                
+                return $this->error("Missing not added. Operation $op_id does not exist.");
+            }
+            
 
             $values = array(
                 (string) $m_name, 
@@ -151,9 +236,11 @@
             }
 
             // Reuse values (optimization)
-            $values = array_exclude($values,'missing_reported');            
+            $values = array_exclude($values, 'missing_reported');            
+            $values = array_merge($values, $operation->getData());
+            
             $missing = new Missing();
-            $missing->setMissing($id, $values);
+            $missing->set($id, $values);
             
             Logs::write(
                 Logs::TRACE, 
@@ -164,10 +251,10 @@
             
             return $missing->sendSMS() ? $missing : false;
 
-        }// addMissing
+        }// add
 
 
-        public function updateMissing($m_name, $m_mobile_country, $m_mobile, $sms_text){
+        public function update($m_name, $m_mobile_country, $m_mobile, $sms_text){
 
             if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($sms_text)) {
                 
@@ -178,7 +265,7 @@
                     "One or more required arguments are missing", 
                     array(
                         'file' => __FILE__,
-                        'method' => 'updateMissing',
+                        'method' => 'update',
                         'params' => func_get_args(),
                         'line' => $line,
                     )
@@ -204,7 +291,7 @@
 
             return $res;
 
-        }// updateMissing
+        }// update
 
 
         public function getPositions(){
@@ -257,7 +344,7 @@
             if((int) $acc > 500 && sizeof($this->positions) > 1){
                 
                 // Update this object
-                $this->getMissing($this->id);
+                $this->get($this->id);
 
                 // Is SMS2 already sent
                 if($this->sms2_sent == 'false'){
@@ -297,8 +384,8 @@
             else if($this->sms_mb_sent == 'false') {
 
                 if($this->_sendSMS(
-                    $this->alert_mobile['country'], 
-                    $this->alert_mobile['mobile'], 
+                    $this->alert_mobile_country, 
+                    $this->alert_mobile, 
                     SMS_MB_TEXT, 
                     true) === FALSE) {
                     
@@ -306,7 +393,7 @@
                         Logs::TRACE, 
                         LogLevel::ERROR, 
                         'Failed to send SMS with position from missing ' . $this->id,
-                        $this->alert_mobile
+                        array($this->alert_mobile_country, $this->alert_mobile)
                     );
                     
                     
@@ -380,8 +467,8 @@
             if($res === FALSE) {
                 
                $this->_sendSMS(
-                   $this->alert_mobile['country'], 
-                   $this->alert_mobile['mobile'], 
+                   $this->alert_mobile_country, 
+                   $this->alert_mobile,
                    SMS_NOT_SENT, 
                    true
                );               
