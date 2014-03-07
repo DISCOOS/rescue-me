@@ -421,7 +421,7 @@
          */
         public function isState($state) {
             
-            return $this->state === $state || is_null($this->state) && $state === User::ACTIVE;
+            return $this->state === $state;
             
         }// isEmpty
         
@@ -605,7 +605,7 @@
          */
         public function approve() {
             if ($this->enable()) {
-                $this->send(_("Your user has been approved.")." "._("Log in to").": ".APP_URL, array('sms', 'email'));
+                $this->send(_("Your user has been approved.")." "._("Log in to")." ".APP_URL, array('sms', 'email'));
                 return true;
             }
             return false;

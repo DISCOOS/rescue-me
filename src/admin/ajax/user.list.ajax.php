@@ -38,9 +38,9 @@
         foreach($users as $id => $user) { $editable = (User::DELETED === $user->state ? '' : 'user') ?>
             
             <tr id="<?= $id ?>">
-                <td class="<?=$editable?> name <?=$all ? $user->state : ''?>"> <?=
-                    $all && User::DELETED === $user->state ? '<strike>' . $user->name . '</strike>' : $user->name
-                ?> </td>
+                <td class="<?=$editable?> name <?=$all ? $user->state : ''?>"> 
+                <?=$all && User::DELETED === $user->state ? '<strike>' . $user->name . '</strike>' : $user->name ?> 
+                </td>
                 <td class="<?=$editable?> tel"><?= isset($user->mobile)?$user->mobile : ''?></td>
                 <td class="<?=$editable?> mailto hidden-phone"><?= isset($user->email)?$user->email : ''?></td>
                 <td class="<?=$editable?> editor">
@@ -58,7 +58,7 @@
                                 if(User::DISABLED === $user->state) {
                                     insert_item(_("Reaktiver"), ADMIN_URI."user/enable/$id");
                                 } elseif(User::PENDING === $user->state) {
-                                    insert_item(_("Godkjent"), ADMIN_URI."user/approve/$id");                                    
+                                    insert_item(_("Godkjenn..."), ADMIN_URI."user/edit/$id?approve");                                    
                                     insert_item(_("Avvis"), ADMIN_URI."user/reject/$id");
                                 } else {
                                     insert_item(_("Deaktiver"), ADMIN_URI."user/disable/$id");                                    

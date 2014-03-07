@@ -11,11 +11,11 @@
     # Admin-page (edit, delete, details: with id)
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^(.*)/([0-9]+)/?(.*) index.php?view=$1&id=$2&q=$3 [L,QSA]
+    RewriteRule ^(.*)/([0-9]+)/?(.*) index.php?view=$1&id=$2 [L,QSA]
 
     # Admin-page (new, lists: no id)
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f
-    RewriteRule ^(.*[^/])/?(.*)$ index.php?view=$1&q=$2 [L,QSA]
+    RewriteRule ^(.*[^/])/?(.*)$ index.php?view=$1 [L,QSA]
 
 </IfModule>

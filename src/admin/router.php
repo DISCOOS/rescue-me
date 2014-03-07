@@ -96,7 +96,7 @@
             if($user->allow('read', 'logs') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
+                $_ROUTER['view'] = "403";
                 $_ROUTER['error'] = _('Access denied');
                 break;
             }
@@ -119,7 +119,7 @@
             if(($user->allow('read', 'setup', $id) || $user->allow('read', 'setup.all')) === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
+                $_ROUTER['view'] = "403";
                 $_ROUTER['error'] = _('Access denied');
                 break;
             }
@@ -177,7 +177,7 @@
                     if(($user->allow('read', 'setup', $id) || $user->allow('read', 'setup.all')) === FALSE)
                     {
                         $_ROUTER['name'] = _("Illegal Operation");
-                        $_ROUTER['view'] = "404";
+                        $_ROUTER['view'] = "403";
                         $_ROUTER['error'] = _('Access denied');
                         break;
                     }
@@ -191,7 +191,7 @@
                 if(($user->allow('write', 'setup', $user_id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
                     $_ROUTER['name'] = _("Illegal Operation");
-                    $_ROUTER['view'] = "404";
+                    $_ROUTER['view'] = "403";
                     $_ROUTER['error'] = _('Access denied');
                     break;
                 }                
@@ -244,7 +244,7 @@
                 if(($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
                     $_ROUTER['name'] = _("Illegal Operation");
-                    $_ROUTER['view'] = "404";
+                    $_ROUTER['view'] = "403";
                     $_ROUTER['error'] = _('Access denied');
                     break;
                 }
@@ -291,7 +291,7 @@
             if(($user->allow('read', 'user', $id) || $user->allow('read', 'user.all'))=== FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
+                $_ROUTER['view'] = "403";
                 $_ROUTER['error'] = _('Access denied');
                 break;
             }            
@@ -306,7 +306,7 @@
             if($user->allow('read', 'user.all') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
+                $_ROUTER['view'] = "403";
                 $_ROUTER['error'] = _('Access denied');
                 break;
             }            
@@ -353,12 +353,10 @@
                 }
                 
                 $next = $_POST['email'];
-                if(strtolower(User::safe($next)) !== strtolower(User::safe($user->email))) {
-                    if(User::unique($next) === false) {
-                        $_ROUTER['error'] = _("Bruker med epost $next finnes fra før");
-                        break;
-                    } 
-                }
+                if(User::unique($next) === false) {
+                    $_ROUTER['error'] = _("Bruker med epost $next finnes fra før");
+                    break;
+                } 
                 
                 if (strlen($_POST['password']) < 8) {
                     $_ROUTER['error'] = _("Password must be at least 8 characters long");
@@ -403,22 +401,24 @@
             if(($access || $user->allow('write', 'user', $id))=== FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = _('Access denied 1');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = _('Access denied');
                 break;
             }
+            
+            $approve = isset($_GET['approve']);
  
-            $_ROUTER['name'] = EDIT_USER;
+            $_ROUTER['name'] = $approve ? _('Godkjenn bruker') : _(EDIT_USER);
             $_ROUTER['view'] = 'user/edit';
             
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+                
                 // Get requested user
                 $id = input_get_int('id', User::currentId());
                 
-                $user = User::get($id);
-                if($user === false) {
+                $edit = User::get($id);
+                if($edit === false) {
                     $_ROUTER['error'] = _("Bruker $id ikke funnet");
                     break;
                 }
@@ -430,14 +430,14 @@
                 } 
                 
                 $next = $_POST['email'];
-                if(strtolower(User::safe($next)) !== strtolower(User::safe($user->email))) {
+                if(strtolower(User::safe($next)) !== strtolower(User::safe($edit->email))) {
                     if(User::unique($next) === false) {
                         $_ROUTER['error'] = _("Bruker med epost $next finnes fra før");
                         break;
                     } 
                 }
-
-                $status = $user->update(
+                
+                $status = $edit->update(
                     $_POST['name'], 
                     $_POST['email'], 
                     $_POST['country'], 
@@ -446,14 +446,115 @@
                 );
 
                 if($status) {
-                    header("Location: ".ADMIN_URI.($access ? 'user/list' : 'admin'));
+                    
+                    if($approve) {
+                        
+                        if($edit->isState(User::PENDING) === false) {
+                            $_ROUTER['error'] = _("Bruker $id kan ikke godkjennes");
+                            break;
+                        }
+                        
+                        $url = 'user/approve/'.$edit->id;
+                    } else {
+                        $url = $access ? 'user/list' : 'admin';                        
+                    }           
+                    
+                    header("Location: ".ADMIN_URI.$url);
                     exit();
                 }
-                $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : _('Ikke gjennomført, prøv igjen.');
+                $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : _('Endring ikke utført, prøv igjen.');
             }                
             
             break;
+       case 'user/approve':
+           
+            if(($id = input_get_int('id')) === FALSE) {
 
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = "Id not found.";
+                break;
+            } 
+            
+            $access = $user->allow('write', 'user.all');
+            
+            if(($access || $user->allow('write', 'user', $id))=== FALSE)
+            {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = _('Access denied');
+                break;
+            }
+            
+            $_ROUTER['name'] = _('Bruker godkjent');
+            $_ROUTER['view'] = 'user/pending';
+            
+            $edit = User::get($id);
+            if($edit === false) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['error'] = _("Bruker $id ikke funnet");
+                break;
+            }
+            
+            if($edit->isState(User::PENDING) === false) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['error'] = _("Bruker $id kan ikke godkjennes");
+                break;
+            }
+            
+            if($edit->approve() === false) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['error'] = "'$edit->name'" . _(" not approved") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+                break;
+            }         
+            
+            $_ROUTER['message'] = _("En melding er sendt til <b>{$edit->name}</b>.");
+                
+            break;
+
+       case 'user/reject':
+           
+           if(($id = input_get_int('id')) === FALSE) {
+
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = "Id not found.";
+                break;
+            } 
+            
+            if($user->allow('write', 'user.all') === FALSE)
+            {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = _('Access denied');
+                break;
+            }
+            
+            $_ROUTER['name'] = _('Bruker avvist');
+            $_ROUTER['view'] = 'user/pending';
+            
+            $edit = User::get($id);
+            if($edit === false) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['error'] = _("Bruker $id ikke funnet");
+                break;
+            }
+            
+            if($edit->isState(User::PENDING) === false) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['error'] = _("Bruker $id kan ikke godkjennes");
+                break;
+            }
+            
+            if($edit->reject() === false) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['error'] = "'$edit->name'" . _(" not rejected") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
+            }
+            
+            $_ROUTER['message'] = _("En melding er sendt til <b>{$edit->name}</b>.");
+            
+            break;
+            
         case 'user/delete':
             
             if(($id = input_get_int('id')) === FALSE) {
@@ -467,7 +568,7 @@
             if($user->allow('write', 'user.all') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
+                $_ROUTER['view'] = "403";
                 $_ROUTER['error'] = _('Access denied');
                 break;
             }
@@ -504,7 +605,7 @@
             if($user->allow('write', 'user.all') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
+                $_ROUTER['view'] = "403";
                 $_ROUTER['error'] = _('Access denied');
                 break;
             }
@@ -527,74 +628,6 @@
 
             break;
             
-       case 'user/approve':
-           if(($id = input_get_int('id')) === FALSE) {
-
-                $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = "Id not found.";
-                break;
-            } 
-            
-            if($user->allow('write', 'user.all') === FALSE)
-            {
-                $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = _('Access denied');
-                break;
-            }
-            
-            $_ROUTER['name'] = USERS;
-            $_ROUTER['view'] = 'user/list';
-            
-            $edit = User::get($id);
-            if(!$edit) {
-                $_ROUTER['error'] = "User '$id' " . _(" not found");
-            }
-            else if($edit->approve() === false) {
-                $_ROUTER['error'] = "'$edit->name'" . _(" not approved") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
-            }
-            else {
-                header("Location: ".ADMIN_URI.'user/edit/'.$id);
-                exit();
-            }            
-            
-            break;
-            
-       case 'user/reject':
-           if(($id = input_get_int('id')) === FALSE) {
-
-                $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = "Id not found.";
-                break;
-            } 
-            
-            if($user->allow('write', 'user.all') === FALSE)
-            {
-                $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = _('Access denied');
-                break;
-            }
-            
-            $_ROUTER['name'] = USERS;
-            $_ROUTER['view'] = 'user/list';
-            
-            $edit = User::get($id);
-            if(!$edit) {
-                $_ROUTER['error'] = "User '$id' " . _(" not found");
-            }
-            else if($edit->reject() === false) {
-                $_ROUTER['error'] = "'$edit->name'" . _(" not rejected") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
-            }
-            else {
-                header("Location: ".ADMIN_URI.'user/list');
-                exit();
-            }            
-            
-            break;
-            
         case 'user/enable':
             
             if(($id = input_get_int('id')) === FALSE) {
@@ -608,7 +641,7 @@
             if($user->allow('write', 'user.all') === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
+                $_ROUTER['view'] = "403";
                 $_ROUTER['error'] = _('Access denied');
                 break;
             }
@@ -689,7 +722,7 @@
             if(($allow || $user->allow('write', 'user', $id)) === FALSE)
             {
                 $_ROUTER['name'] = _("Illegal Operation");
-                $_ROUTER['view'] = "404";
+                $_ROUTER['view'] = "403";
                 $_ROUTER['error'] = _('Access denied');
                 break;
             }

@@ -21,7 +21,7 @@
                 <ul class="nav nav-pills pull-right">
                 <?php 
                     
-                    if($_SESSION['logon']) {
+                    if(isset_get($_SESSION, 'logon', false)) {
                         
                  ?>
                     <li id="start"><a href="<?= ADMIN_URI ?>start"><?= START ?></a></li>

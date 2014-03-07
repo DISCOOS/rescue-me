@@ -2,6 +2,10 @@
     use RescueMe\User;
     use \RescueMe\Locale;
     
+    $approve = isset($_GET['approve']);
+ 
+    
+    
     $id = input_get_int('id', User::currentId());
     $user = User::get($id);
     
@@ -54,6 +58,11 @@
         );
     }
     
-    insert_form("user", _(EDIT_USER), $fields, ADMIN_URI."user/edit/$id", $_ROUTER);
+    if($approve) {
+        $_ROUTER['submit'] = ('Godkjenn');
+        insert_form("user", _('Godkjenn bruker'), $fields,  ADMIN_URI."user/approve/$id", $_ROUTER);
+    } else {
+        insert_form("user",_(EDIT_USER), $fields, ADMIN_URI."user/edit/$id", $_ROUTER);
+    }
     
 ?>
