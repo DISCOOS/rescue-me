@@ -42,12 +42,20 @@
             
             // Redirect?
             if(isset($_GET['view']) && $_GET['view'] !== "logon") {
+                
+                if(is_ajax_request()) {
+                    echo json_encode(false);
+                    exit;
+                }
+                
                 $params = array();
                 $url = $_GET['view'];
                 foreach(array_exclude($_GET, array('view','uri')) as $key => $value) {
                     $params[] = "$key=$value";
                 }
+                
                 header("Location: ".ADMIN_URI."logon?uri=". urlencode("$url?".implode("&",$params)));
+                
             }
             
             $_GET['view'] = 'logon';

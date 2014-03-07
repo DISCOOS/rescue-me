@@ -288,13 +288,21 @@ R.tabs = function(tabs) {
                 response = {html: data, options: {}};
             }
 
-            // Insert elements in DOM and prepare
-            $(target).html(response.html);
-            R.prepare(target, response.options);
+            if(response === false) {
+
+                location.reload();
+
+            } else {
             
-            // Set pagination options?
-            if(list.length > 0) {
-                list.bootstrapPaginator(response.options);
+                // Insert elements in DOM and prepare
+                $(target).html(response.html);
+                R.prepare(target, response.options);
+
+                // Set pagination options?
+                if(list.length > 0) {
+                    list.bootstrapPaginator(response.options);
+                }
+                
             }
 
         });
@@ -347,16 +355,22 @@ R.paginator.search = function(paginator, page, filter) {
         } catch ($e) {
             response = {html: data, options: {}};
         }
-
-        // Insert elements in DOM and prepare
-        $(target).html(response.html);
-        R.prepare(target, response.options);
         
-        // Show page as selected
-        response.options.currentPage = page;
-        $(paginator).bootstrapPaginator(response.options);
-        $(paginator).bootstrapPaginator("show", page);
+        if(response === false) {
+            
+            location.reload();
+            
+        } else {
+            // Insert elements in DOM and prepare
+            $(target).html(response.html);
+            R.prepare(target, response.options);
 
+            // Show page as selected
+            response.options.currentPage = page;
+            $(paginator).bootstrapPaginator(response.options);
+            $(paginator).bootstrapPaginator("show", page);
+
+        }
     });    
 }
 
