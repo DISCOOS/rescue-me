@@ -174,6 +174,18 @@
         }        
         
         
+        public static function filter($values, $operand) {
+            
+            $fields = array(
+                '`users`.`name`', 
+                '`users`.`email`', 
+                '`users`.`mobile`');
+
+            return DB::filter($fields, $values, $operand);
+            
+        }
+        
+        
         /**
          * Count number of users
          * 
@@ -181,16 +193,19 @@
          * 
          * @return boolean|array
          */
-        public static function count($states=null) {
+        public static function count($states=null, $filter = '') {
             
             if(isset($states) === FALSE || in_array(User::ALL, $states)) {
                 $states = User::$all;
             }
             
+            $where = array();
             foreach(isset($states) ? $states : array() as $state) {
-                $filter[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
+                $where[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
             } 
-            $filter = implode($filter," OR ");
+            if(empty($where) === false) {
+                $filter = '(' . $filter . ') AND ' . implode($where," OR ");
+            }
             
             return DB::count(self::TABLE, $filter);
             
@@ -204,16 +219,19 @@
          * 
          * @return boolean|array
          */
-        public static function getAll($states = null, $start = 0, $max = false) {
+        public static function getAll($states = null, $filter = '', $start = 0, $max = false) {
             
             if(isset($states) === FALSE || in_array(User::ALL, $states)) {
                 $states = User::$all;
             }
             
+            $where = array();
             foreach(isset($states) ? $states : array() as $state) {
-                $filter[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
+                $where[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
             } 
-            $filter = implode($filter," OR ");
+            if(empty($where) === false) {
+                $filter = '(' . $filter . ') AND ' . implode($where," OR ");
+            }
             
             $limit = ($max === false ? '' : "$start, $max");
             

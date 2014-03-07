@@ -15,39 +15,27 @@
     
     $all = (User::ALL === $state);
     
-    $users = User::count(array($state));
+    $filter = User::filter(isset_get($_GET, 'filter', ''), 'OR');    
+    
+    $users = User::count(array($state), $filter);
     
     $allow = $user->allow('write', 'setup', $user_id) || $user->allow('write', 'setup.all');
         
-    if($users == false)
-    {
-        insert_alert("Ingen registrert");
+    if($users == false) {?>
+
+        <tr><td colspan="4"><?=_("Ingen brukere funnet")?></td></tr>
+
+<?
+        $options = create_paginator(1, 1, $user_id);        
         
-        $options = create_paginator(1, 1, $user_id);
+    } else {
         
-    }
-    else
-    {
         $total = ceil($users/$max);
         $options = create_paginator(1, $total, $user_id);        
         
-        $users = User::getAll(array($state), $start, $max);
+        $users = User::getAll(array($state), $filter, $start, $max);
         
-?>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th><?=_("Name")?></th>
-                <th><?=_("Mobile")?></th>
-                <th class="hidden-phone"><?=_("E-mail")?></th>
-                <th>
-                    <input type="search" class="input-medium search-query pull-right" placeholder="Search">
-                </th>            
-            </tr>
-        </thead>        
-        <tbody class="searchable">
-            
-<? foreach($users as $id => $user) { $editable = (User::DELETED === $user->state ? '' : 'user') ?>
+        foreach($users as $id => $user) { $editable = (User::DELETED === $user->state ? '' : 'user') ?>
             
             <tr id="<?= $id ?>">
                 <td class="<?=$editable?> name <?=$all ? $user->state : ''?>"> <?=
@@ -89,10 +77,10 @@
                 </td>
             </tr>
             
-    <? } ?>
-        </tbody>
-    </table>    
-<?  } 
+    <? 
+        
+        }
+    } 
 
     if($state === User::ACTIVE) {
 

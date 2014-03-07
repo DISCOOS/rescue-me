@@ -76,6 +76,14 @@
 
         public $positions = array();
         
+        public static function filter($values, $operand) {
+            
+            $fields = array('`missing`.`missing_name`');
+
+            return DB::filter($fields, $values, $operand);
+            
+        }
+        
         private static function select($filter='', $admin = false, $start = 0, $max = false){
             
             $query  = Missing::SELECT . ' ' . Missing::JOIN;

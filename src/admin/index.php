@@ -131,7 +131,10 @@ if(defined('USE_SILEX') && USE_SILEX) {
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a id="drop3" class="dropdown-toggle" data-toggle="dropdown"><?= _('System') ?><b class="caret"></b></a>
+                        <a id="drop3" class="dropdown-toggle no-wrap" data-toggle="dropdown">
+                            <span class="visible-desktop"><?= $user->name ?><b class="caret"></b></span>
+                            <span class="visible-phone"><?= _('System') ?><b class="caret"></b></span>
+                        </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                             <? if ($user->allow('write', 'user', $id) || $user->allow('write', 'user.all')) { ?>
                             <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/edit/<?=$user->id?>"><b class="icon icon-user"></b><?=_('Konto')?></a></li>

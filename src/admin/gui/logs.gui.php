@@ -24,8 +24,32 @@
 </ul>
 <div class="tab-content" style="width: auto; overflow: visible">       
 <? foreach($names as $name) { $active = ($name === $log ? 'active' : ''); ?>
-    <div id="<?=$name?>" class="tab-pane <?=$active?>">
-        <div class="pagination"></div>
+    <div id="<?=$name?>" data-target=".searchable" class="tab-pane <?=$active?>">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+        <? if($name === Logs::ALL) { ?>                    
+                    <th width="12%"><?=_("Dato")?></th>
+                    <th width="8%"><?=_("Log")?></th>
+        <? } else { ?>                    
+                    <th width="12%" colspan="2"><?=_("Dato")?></th>
+        <? } ?>                                        
+                    <th width="8%" class="hidden-phone"><?=_("Level")?></th>
+                    <th><?=_("Message")?></th>
+                    <th width="10%"><?=_("User")?></th>
+                    <th width="10%">
+                        <input type="text" 
+                               class="input-medium search-query pull-right" 
+                               data-target="<?=$name?> .searchable"
+                               data-source="<?=$name?> .pagination"
+                               placeholder="Search">
+                    </th>            
+                </tr>
+            </thead>        
+            <tbody class="searchable">
+            </tbody>
+        </table>
+        <div class="pagination" data-target="<?=$name?> .searchable"></div>
     </div>    
 <? } ?>  
 </div>

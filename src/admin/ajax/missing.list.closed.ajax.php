@@ -14,35 +14,29 @@
     $user_id = $user->id;
     $admin = User::current()->allow("read", 'operations.all');
     
-    $list = Missing::countAll('op_closed IS NOT NULL', $admin);
+    $filter = '(op_closed IS NOT NULL)';
+    if(isset($_GET['filter'])) {
+        $filter .= ' AND ' . Missing::filter(isset_get($_GET, 'filter', ''), 'OR');
+    }
+    
+    $list = Missing::countAll($filter, $admin);
     
     $page = input_get_int('page', 1);
     $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
     $start = $max * ($page - 1);
     
-    if($list === false || $list <= $start) { insert_alert(_("Ingen registrert"));  } else { ?>
+    if($list === false || $list <= $start) { ?>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <? if($admin) { ?>
-                <th width="20%"><?=_("Name")?></th>
-                <th width="5%" ><?= _('Mine') ?></th>
-                <? } else { ?>
-                <th width="25%" colspan="2"> <?=_("Name")?> </th>
-                <? } ?>
-                <th width="55%"><?=_("Closed")?></th>
-                <th width="10%"></th>            
-            </tr>
-        </thead>        
-        <tbody class="searchable">
-<?
+        <tr><td colspan="<?=$admin ? 4 : 3?>"><?=_('Ingen registrert')?></td></tr>
+
+<? } else { 
+        
     // Create pagination options
     $total = ceil($list/$max);
     $options = create_paginator(1, $total, $user_id);
     
     // Get missing
-    $list = Missing::getAll('op_closed IS NOT NULL', $admin, $start, $max);
+    $list = Missing::getAll($filter, $admin, $start, $max);
     
     foreach($list as $id => $this_missing) {
         $owner = ($this_missing->user_id === $user_id);
@@ -64,12 +58,8 @@
                 </td>
             </tr>
             
-    <? }} ?>
+<? }} 
 
-        </tbody>
-    </table>
-    
-<?php
     
     if(isset($options) === false) {
         $options = create_paginator(1, 1, $user_id);         

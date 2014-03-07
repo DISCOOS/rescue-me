@@ -46,8 +46,8 @@
                     "password" => $password
                 ),
                 array(
-                    "company" => _("company"),
-                    "department" => _("department"),
+                    "company" => _("Company ID"),
+                    "department" => _("User ID"),
                     "password" => _("password")
                 ),
                 array(

@@ -415,6 +415,33 @@
         
         
         /**
+         * Build string matching filter from fields and values
+         * @param array $fields Fully qualified table names
+         * @param array $values Values to match
+         * @param type $operand Operand between each predicate
+         * @return string
+         */
+        public static function filter($fields, $values, $operand) {
+            
+            $fields = is_array($fields) ? $fields : array($fields);
+            $values = is_array($values) ? $values : array($values);
+            
+            $filter = '';
+            $columns = count($fields) === 1 ? reset($fields) : 'CONCAT_WS('. implode(',',$fields) . ')';
+
+            foreach($values as $value) {
+                $filter[] = "$columns LIKE '%{$value}%'";
+            }
+            
+            if(empty($filter) === false) {
+                $filter = '(' . implode(") $operand (", $filter) . ')';
+            }
+            
+            return $filter;
+        }
+        
+        
+        /**
          * Import SQL dump into database.
          * 
          * @param string $pathname Path to file

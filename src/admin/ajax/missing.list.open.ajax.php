@@ -16,71 +16,59 @@
     $user_id = $user->id;
     $admin = User::current()->allow("read", 'operations.all');
     
-    $list = Missing::countAll('op_closed IS NULL', $admin);
+    $filter = '(op_closed IS NULL)';
+    if(isset($_GET['filter'])) {
+        $filter .= ' AND ' . Missing::filter(isset_get($_GET, 'filter', ''), 'OR');
+    }
+    
+    $list = Missing::countAll($filter, $admin);
     
     $page = input_get_int('page', 1);
     $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
     $start = $max * ($page - 1);
     
-    if($list === false || $list <= $start) { insert_alert(_("Ingen registrert"));  } else { ?>
+    if($list === false || $list <= $start) { ?>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <? if($admin) { ?>
-                <th width="20%"><?=_("Name")?></th>
-                <th width="5%" class="hidden-phone"><?= _('Mine') ?></th>
-                <? } else { ?>
-                <th width="25%" colspan="2"> <?=_("Name")?> </th>
-                <? } ?>
-                <th width="13%" class="hidden-phone"><?=_("Sent")?></th>
-                <th width="13%" class="hidden-phone"><?=_("Delivered")?></th>
-                <th width="13%" class="hidden-phone"><?=_("Answered")?></th>
-                <th width="13%" class="hidden-phone"><?=_("Reported")?></th>
-                <th width="17%"><?=_("Position")?></th>
-                <th>
-                    <input type="search" class="input-medium search-query pull-right" placeholder="Search">
-                </th>            
-            </tr>
-        </thead>        
-        <tbody class="searchable">
-<?
-    // Create pagination options
-    $total = ceil($list/$max);
-    $options = create_paginator(1, $total, $user_id);
-    
-    // Get missing
-    $list = Missing::getAll('op_closed IS NULL', $admin, $start, $max);
-    
-    // Enable manual SMS delivery status check?
-    $module = Module::get("RescueMe\SMS\Provider", User::currentId());
-    $sms = $module->newInstance();
-    $check = ($sms instanceof RescueMe\SMS\Check);
-    $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
-    foreach($list as $id => $this_missing) {
-        $owner = ($this_missing->user_id == $user_id);
-        $resend[$this_missing->id] = $this_missing;
-        $this_missing->getPositions();
-        if($this_missing->last_pos->timestamp>-1) {
-            $position = format_pos($this_missing->last_pos, $format);
-            $received = format_since($this_missing->last_pos->timestamp);
-        } else {
-            $received = "";
-            $position = format_pos(null, $format);
-        }
-        $sent = format_since($this_missing->sms_sent);
-        if($check && !isset($this_missing->sms_delivery) && $this_missing->sms_provider === $module->impl) {
-            $code = Locale::getDialCode($this_missing->mobile_country);
-            $code = $sms->accept($code);
-            $ref = $this_missing->sms_provider_ref;
-            if(!empty($ref) && $sms->request($ref,$code.$this_missing->mobile)) {
-                $this_missing = Missing::get($this_missing->id);
+        <tr><td colspan="<?=$admin ? 8 : 7?>"><?=_('Ingen registert')?></td></tr>
+
+<? } else { 
+        
+        // Create pagination options
+        $total = ceil($list/$max);
+        $options = create_paginator(1, $total, $user_id);
+
+        // Get missing
+        $list = Missing::getAll($filter, $admin, $start, $max);
+
+        // Enable manual SMS delivery status check?
+        $module = Module::get("RescueMe\SMS\Provider", User::currentId());
+        $sms = $module->newInstance();
+        $check = ($sms instanceof RescueMe\SMS\Check);
+        $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
+        foreach($list as $id => $this_missing) {
+            $owner = ($this_missing->user_id == $user_id);
+            $resend[$this_missing->id] = $this_missing;
+            $this_missing->getPositions();
+            if($this_missing->last_pos->timestamp>-1) {
+                $position = format_pos($this_missing->last_pos, $format);
+                $received = format_since($this_missing->last_pos->timestamp);
+            } else {
+                $received = "";
+                $position = format_pos(null, $format);
             }
-        }
-        $answered = format_since($this_missing->answered);
-        $delivered = format_since($this_missing->sms_delivery);
-        if (empty($delivered))
-            $delivered = _('Ukjent');
+            $sent = format_since($this_missing->sms_sent);
+            if($check && !isset($this_missing->sms_delivery) && $this_missing->sms_provider === $module->impl) {
+                $code = Locale::getDialCode($this_missing->mobile_country);
+                $code = $sms->accept($code);
+                $ref = $this_missing->sms_provider_ref;
+                if(!empty($ref) && $sms->request($ref,$code.$this_missing->mobile)) {
+                    $this_missing = Missing::get($this_missing->id);
+                }
+            }
+            $answered = format_since($this_missing->answered);
+            $delivered = format_since($this_missing->sms_delivery);
+            if (empty($delivered))
+                $delivered = _('Ukjent');
 
 ?>
             <tr id="<?= $this_missing->id ?>">
@@ -124,10 +112,8 @@
                     </div>
                 </td>
             </tr>
-<? }} ?>
-        </tbody>
-    </table>
-<?  
+<? }} 
+
     if (empty($resend) === false) {
         foreach($resend as $id => $this_missing) {
             // Insert resend confirmation

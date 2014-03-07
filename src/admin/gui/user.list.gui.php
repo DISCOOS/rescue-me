@@ -24,8 +24,26 @@
 </ul>
 <div class="tab-content" style="width: auto; overflow: visible">       
 <? foreach($states as $state) { $active = ($name === $state ? 'active' : ''); ?>
-    <div id="<?=$state?>" class="tab-pane <?=$active?>">
-        <div class="pagination"></div>
+    <div id="<?=$state?>" data-target=".searchable" class="tab-pane <?=$active?>">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><?=_("Name")?></th>
+                    <th><?=_("Mobile")?></th>
+                    <th class="hidden-phone"><?=_("E-mail")?></th>
+                    <th>
+                        <input type="text" 
+                               class="input-medium search-query pull-right" 
+                               data-target="<?=$state?> .searchable"
+                               data-source="<?=$state?> .pagination"
+                               placeholder="Search">
+                    </th>            
+                </tr>
+            </thead>        
+            <tbody class="searchable">
+            </tbody>
+        </table>    
+        <div class="pagination" data-target="<?=$name?> .searchable"></div>
     </div>    
 <? } ?>  
 </div>

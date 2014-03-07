@@ -33,7 +33,7 @@
         
         const COUNT = 'SELECT COUNT(*) FROM `logs` ';
         
-        const SELECT = 'SELECT logs.*,users.name as user FROM `logs`';
+        const SELECT = 'SELECT `logs`.*, `users`.`name` as user FROM `logs`';
         
         private static $fields = array
         (
@@ -127,7 +127,20 @@
         }        
         
         
-        private static function select($filter=array(), $logs=array(), $start = 0, $max = false){
+        public static function filter($values, $operand) {
+            
+            $fields = array(
+                '`logs`.`name`', 
+                '`logs`.`level`', 
+                '`logs`.`message`',
+                '`users`.`name`');
+
+            return DB::filter($fields, $values, $operand);
+            
+        }
+        
+        
+        private static function select($filter='', $logs=array(), $start = 0, $max = false){
             
             $query  = Logs::SELECT . ' ' . Logs::JOIN;
             
@@ -174,7 +187,9 @@
             
             if(empty($where) === false) {
                 $query .= ' WHERE (' .implode(') AND (', $where) . ')';
-            }            
+            }           
+            
+            //var_dump($query);
             
             $res = DB::query($query);
 
@@ -194,13 +209,13 @@
          * 
          * @return array|boolean
          */
-        public static function getAll($logs = null, $start = 0, $max = false) {
+        public static function getAll($logs = null, $filter = '', $start = 0, $max = false) {
             
             if(isset($logs) === FALSE || in_array(Logs::ALL, $logs)) {
                 $logs = Logs::$all;
             }
             
-            $select = Logs::select('', $logs, $start, $max);
+            $select = Logs::select($filter, $logs, $start, $max);
             
             $res = DB::query($select);
             
@@ -236,9 +251,9 @@
          * 
          * @return array|boolean
          */
-        public static function get($name, $start = 0, $max = false) {
+        public static function get($name, $filter = '', $start = 0, $max = false) {
             
-            return Logs::getAll(array($name), $start, $max);
+            return Logs::getAll(array($name), $filter, $start, $max);
             
         }// get
         

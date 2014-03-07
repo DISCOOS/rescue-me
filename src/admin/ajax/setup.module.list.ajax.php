@@ -61,8 +61,10 @@
 
                 $inline = true;
                 $context = implode("|", $instance->uses());
-
-                echo include 'setup.property.list.ajax.php';
+                
+                if($context) {
+                    echo include 'setup.property.list.ajax.php';
+                }
 
                     
     }}}} 

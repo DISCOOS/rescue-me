@@ -8,12 +8,14 @@
     
     $log = isset($_GET['name']) && $_GET['name'] ? $_GET['name'] : Logs::ALL;
     
+    $filter = Logs::filter(isset_get($_GET, 'filter', ''), 'OR');    
+    
     $user_id = User::currentId();
     $page = input_get_int('page', 1);
     $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
     $start = $max * ($page - 1);
     
-    $lines = Logs::count($log);
+    $lines = Logs::count($log, $filter);
     
     $all = ($log === Logs::ALL);
     
@@ -26,36 +28,22 @@
         $total = ceil($lines/$max);
         $options = create_paginator(1, $total, $user_id);        
         
-        $lines = Logs::get($log, $start, $max);
+        $lines = Logs::get($log, $filter, $start, $max);
         
     }
     
 ?>
 
-<? if($lines == false) { insert_alert(_("Ingen loggføringer i <b>" . Logs::getTitle($log)) . '</b>');  } else { ?>
+<? if($lines == false) { ?>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-<? if($all) { ?>                    
-            <th width="12%"><?=_("Dato")?></th>
-            <th width="8%"><?=_("Log")?></th>
-<? } else { ?>                    
-            <th width="12%" colspan="2"><?=_("Dato")?></th>
-<? } ?>                                        
-            <th width="8%" class="hidden-phone"><?=_("Level")?></th>
-            <th><?=_("Message")?></th>
-            <th width="10%"><?=_("User")?></th>
-            <th width="10%">
-        <input type="text" class="input-medium search-query pull-right" data-class="logs" placeholder="Search">
-            </th>            
-        </tr>
-    </thead>        
-    <tbody class="searchable logs">
+        <tr><td colspan="6"><?=_("Ingen loggføringer funnet")?></td></tr>
 
-<? foreach($lines as $id => $line) { ?>
+<? } else { 
+    
+    foreach($lines as $id => $line) { ?>
 
         <tr id="<?= $id ?>">
+            
 <? if($all) { ?>                    
             <td><?= format_dt($line['date']) ?></td>
             <td><?= $line['name'] ?></td>
@@ -66,11 +54,7 @@
             <td><?= $line['message'] ?></td>
             <td colspan="2"><?= empty($line['user']) ? _('System') : $line['user'] ?></td>
         </tr>
-<? }} ?>
+<? }} 
 
-    </tbody>
-</table>
-
-<?    
     return create_ajax_response(ob_get_clean(), $options);
 ?>

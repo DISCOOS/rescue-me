@@ -118,21 +118,28 @@ R.prepare = function(element, options) {
     });
 
     // Add table filtering capability. Add class "searchable" to tbody element.
-    $(element).find('input.search-query').on('keyup', function() {
-        var pattern = new RegExp($(this).val(), 'i');
-        $('.searchable tr').hide();
-        $('.searchable tr').filter(function() {
+    $(element).find('input.search-query').bind('keyup', function() {
+        
+        var search = $(this).val();
+        
+        var target = '#' + $(this).attr('data-target');
+        
+        var pattern = new RegExp(search, 'i');
+        $(target).find('.searchable tr').hide();
+        $(target).find('.searchable tr').filter(function() {
             text = $(this).text();
             return pattern.test(text);
         }).show();
+       
+        var source = '#' + $(this).attr('data-source');
         
-        var target = $(this).attr('data-class');
-        
-        $('.'+target+'>.pagination').each(function() {
-           var pages = $(this).bootstrapPaginator('getPages'); 
-           alert(pages.current);
+        $(source).each(function() {
+            
+            var pages = $(this).bootstrapPaginator('getPages');
+           
+            R.paginator.search(this, pages.current, search);
+            
         });
-        // TODO: Implement server side search
     });
 
     // Add form validation
@@ -261,15 +268,15 @@ R.tabs = function(tabs) {
         
         var target = '#'+id;
         var data = { name: id };
-        var list = $('#'+id).find('.pagination'); 
+        var list = $(target).find('.pagination'); 
         if(list.length > 0) {
-            target += '>.page-content';
+            target += ' ' + $(target).attr('data-target');
             list.each(function() {
                 var $this = $(this);
                 $this.bootstrapPaginator('show', 1);
                 $this.data('url', href);
                 $this.data('name', id);
-                $this.data('content', target);
+                $this.data('target', target);
             });
         } 
 
@@ -310,38 +317,46 @@ R.paginator = function(element, options) {
         
         e.stopImmediatePropagation();
         
-        var target = e.target;
+        R.paginator.search(e.target, page, $(e.target).data('filter'));
 
-        var data = {
-            name : $(target).data('name'),
-            page : page
-        };
-        
-        var url = $(target).data('url');
-        var content = $(target).data('content');
-        
-        R.ajax(url, null, data, function(data) {
-            
-            try {
-                var response = JSON.parse(data);
-            } catch ($e) {
-                response = {html: data, options: {}};
-            }
-
-            // Insert elements in DOM and prepare
-            $(content).html(response.html);
-            $(target).bootstrapPaginator("show", page);
-
-            R.prepare(content, response.options);
-        });
-        
     };    
-    
-    var content = $(document.createElement('div')).addClass('page-content');
-    
-    $element.parent().prepend(content);
-    
+       
     $element.bootstrapPaginator(options);
     
 };
+
+R.paginator.search = function(paginator, page, filter) {
+    
+    filter = filter || '';
+    
+    var data = {
+        name: $(paginator).data('name'),
+        page: page,
+        filter: filter
+    };    
+    
+    var url = $(paginator).data('url');
+    var target = $(paginator).data('target');
+    
+    $(paginator).data('filter', filter);    
+
+    R.ajax(url, null, data, function(data) {
+
+        try {
+            var response = JSON.parse(data);
+        } catch ($e) {
+            response = {html: data, options: {}};
+        }
+
+        // Insert elements in DOM and prepare
+        $(target).html(response.html);
+        R.prepare(target, response.options);
+        
+        // Show page as selected
+        response.options.currentPage = page;
+        $(paginator).bootstrapPaginator(response.options);
+        $(paginator).bootstrapPaginator("show", page);
+
+    });    
+}
 
