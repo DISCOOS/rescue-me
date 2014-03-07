@@ -77,6 +77,6 @@
         );
     }
 
-    insert_form("user", _(NEW_USER), $fields, ADMIN_URI."user/new", $_ROUTER);
-    
+    insert_form("user", $_ROUTER['name'], $fields, ADMIN_URI."user/new", $_ROUTER);
+   
 ?>

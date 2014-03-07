@@ -8,5 +8,6 @@
     <input name="username" type="email" class="input-block-level" placeholder="E-postadresse" required autofocus></input>
     <input name="password" type="password" class="input-block-level" placeholder="Passord" data-content="Caps-lock is on!" required></input>
     <button class="btn btn-large btn-primary" type="submit">Logg inn</button>
-    <a class="pull-right" href="<?= ADMIN_URI."password/recover" ?>">Glemt passordet?</a>
+    <a class="pull-right" href="<?= ADMIN_URI."password/recover" ?>">Glemt passordet?</a><br />
+    <a class="pull-right" href="<?= ADMIN_URI."user/new" ?>">Be om bruker</a>
 </form>

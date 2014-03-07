@@ -360,6 +360,16 @@
                     } 
                 }
                 
+                if (strlen($_POST['password']) < 8) {
+                    $_ROUTER['error'] = _("Password must be at least 8 characters long");
+                    break;
+                }
+                
+                if ($_POST['password'] !== $_POST['repeat-pwd']) {
+                    $_ROUTER['error'] = _("Passwords do not match");
+                    break;
+                }
+                
                 $status = User::create(
                     $_POST['name'], 
                     $_POST['email'], 
@@ -545,7 +555,7 @@
                 $_ROUTER['error'] = "'$edit->name'" . _(" not approved") . ". ". (RescueMe\DB::errno() ? RescueMe\DB::error() : '');
             }
             else {
-                header("Location: ".ADMIN_URI.'user/list');
+                header("Location: ".ADMIN_URI.'user/edit/'.$id);
                 exit();
             }            
             
@@ -692,6 +702,16 @@
             
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                
+                if (strlen($_POST['password']) < 8) {
+                    $_ROUTER['error'] = _("Password must be at least 8 characters long");
+                    break;
+                }
+                
+                if ($_POST['password'] !== $_POST['repeat-pwd']) {
+                    $_ROUTER['error'] = _("Passwords do not match");
+                    break;
+                }
                 
                 if($edit->password($_POST['password'])) {
                     header("Location: ".ADMIN_URI.($allow ? 'user/list' : 'admin'));

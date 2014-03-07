@@ -587,7 +587,7 @@
          */
         public function approve() {
             if ($this->enable()) {
-                $this->send(_("Your user has been approved.")." "._("Log in to").": ".ADMIN_URI, array('sms', 'email'));
+                $this->send(_("Your user has been approved.")." "._("Log in to").": ".APP_URL, array('sms', 'email'));
                 return true;
             }
             return false;
