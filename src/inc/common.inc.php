@@ -190,7 +190,7 @@
      */
     function format_dt($timestamp) {        
         $time = strtotime($timestamp);
-        return date(date('Y', $time) === date('Y') ? 'd.M H:i' : $timestamp, strtotime($timestamp));
+        return date(date('Y', $time) === date('Y') ? 'd.m H:i' : $timestamp, strtotime($timestamp));
     }
     
     /**

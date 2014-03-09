@@ -43,8 +43,10 @@ R.prepare = function(element, options) {
         window.location.href = R.admin.url + 'missing/' + $(this).attr('id');
     });
 
-    $(element).find('li.position').click(function() {
-        R.map.panTo($(this).attr('data-pan-to'));
+    $(element).find('li.position,.label-position').click(function() {
+        if(R.map.panTo !== undefined) {
+            R.map.panTo($(this).attr('data-pan-to'));
+        }
     });
 
     $(element).find('td.missing:not(.editor)').click(function() {
@@ -141,6 +143,8 @@ R.prepare = function(element, options) {
             
         });
     });
+    
+    $(element).find('[rel="tooltip"]').tooltip();
 
     // Add form validation
     R.form.validate(element);

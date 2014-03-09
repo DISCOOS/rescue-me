@@ -35,7 +35,7 @@
                     <th width="13%" class="hidden-phone"><?=_("Delivered")?></th>
                     <th width="13%" class="hidden-phone"><?=_("Answered")?></th>
                     <th width="13%" class="hidden-phone"><?=_("Reported")?></th>
-                    <th width="17%"><?=_("Position")?></th>
+                    <th width="13%"><?=_("Position")?></th>
                     <th>
                          <input type="text" 
                                class="input-medium search-query pull-right" 

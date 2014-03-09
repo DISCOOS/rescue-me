@@ -1,7 +1,8 @@
-@colour-rodekors: #da2727;
-@colour-logo: #000;
-@colour-border: #cacaca;
-@colour-background: #e7e7e7;
+@color-rm: #da2727;
+@color-logo: #000;
+@color-border: #cacaca;
+@color-background: #e7e7e7;
+
 /*==========================================
 / Design
 /=========================================*/
@@ -26,10 +27,25 @@ body {
 
 h3.pagetitle {
     margin-bottom: 0px;
+    display:block;
+    width:100%;
+    padding:0;
+    font-size:21px;
+    line-height:40px;
+    color:#333333;
+    border:0;
+    border-bottom:1px solid #e5e5e5;
 }
+
+hr {
+    border:0 !important;
+    border-bottom:1px solid #e5e5e5 !important;
+}
+
 .clickable {
     cursor: pointer;
 }
+
 .border-radius ( @radius ) {
     border-radius:@radius;
     -moz-border-radius:@radius;
@@ -73,7 +89,7 @@ h3.pagetitle {
     margin-left: -50px; 
     margin-top: -50px; 
     text-align:center;
-    z-index:1234;
+    z-index: 1234;
     overflow: auto;
     width: 100px;
     height: 100px;
@@ -149,19 +165,20 @@ h3.pagetitle {
 .user div.name, td.name {
     font-weight: bold;
     white-space: nowrap;
-    color: @colour-rodekors;
+    color: @color-rm;
 }
 
 /*==========================================
 / [Missing List] page
 /=========================================*/
 .missing {
-    .clickable;
+    cursor: pointer;
     background-color: #f1f1f1;
 }
+
 .missing div.name {
     font-weight: bold;
-    color: @colour-rodekors;
+    color: @color-rm;
 }
 
 /*==========================================
@@ -170,22 +187,147 @@ h3.pagetitle {
 .infos .info {
     margin-right: 10px;
 }
+
 li.position {
-    .clickable;
+    cursor: pointer;
     margin: 4px 0px 4px 0px;
     padding: 2px 4px 2px 4px;
     background-color: #fff;
 }
+
+.label-position {
+    cursor: pointer;    
+}
+
 .position time {
     float: right;
     font-size: 12px;
 }
+
 .position div {
     float: left;
 }
 
 .papermappos {
     text-decoration: underline;
+}
+
+#tracking {
+    position: relative;
+    width: 700px;
+    max-width: 700px;
+    max-height: 700px;
+    padding: 25px;
+    text-align: center;
+    margin-left: -50px;
+    margin-right: auto;
+}
+
+#tracking .span
+{
+    width: 100px;
+    text-align: center;
+    margin-left:0 !important;
+}
+
+#tracking .icon
+{
+    width: 14px;
+    height: 14px;
+    padding: 2px;
+    margin: 0;
+}
+
+
+#tracking .tracking-bar
+{
+    position: relative;
+    left: -35px;
+    width: 70px;
+    height: 1.5em;
+    border-bottom: 0.5em solid #ddd;
+}
+
+#tracking .tracking-bar.pass 
+{
+    border-bottom: 0.5em solid #468847;
+}
+
+#tracking .tracking-bar.warning
+{
+    border-bottom: 0.5em solid #f89406;
+}
+
+#tracking .tracking-bar.fail
+{
+    border-bottom: 0.5em solid #da2727;
+}
+
+#tracking :first-child > .tracking-bar 
+{
+    border: 0px;
+}
+
+#tracking .icon.alarm
+{
+    background-position: -22px -146px;
+}
+
+
+#tracking .icon.sent 
+{
+    background-position: -70px -1px;
+}
+
+#tracking .icon.delivered
+{
+    background-position: -94px -122px;
+}
+
+#tracking .icon.response
+{
+    background-position: -94px -146px;
+}
+
+#tracking .icon.located
+{
+    background-position: -310px -26px;
+}
+
+#tracking .tracking-bar > .icon  {
+    position: relative;
+    float: right;
+    left: 24px;
+    top: 1.1em;
+    width: 14px;
+    height: 14px;
+    padding: 2px;
+ 	border-radius: 10em;
+    -webkit-border-radius: 10em;
+	-moz-border-radius: 10em;
+    vertical-align: middle;
+    background-color:  #ddd;
+    background-position: -286px 2px;
+    background-image: url("../img/glyphicons-halflings-white.png");
+}
+
+#tracking .tracking-bar.pass > .icon {
+    background-color:  #468847;
+}
+
+#tracking .tracking-bar.warning > .icon {
+    background-color:  #f89406;
+    background-position: -94px -94px;
+}
+
+#tracking .tracking-bar.fail > .icon {    
+    background-color: #da2727;
+    background-position: -310px 2px;
+}
+
+#tracking .tracking-details
+{
+    margin-top: 15px;
 }
 
 #map {
@@ -204,10 +346,11 @@ li.position {
 }
 
 #sidebar {
-    margin: 0px 0px 0px 0px;
+    margin: 0;
     padding-left: 5px;
+    padding-right: 5px;
     float: left;
-    width: 200px;
+    width: 300px;
     height: 500px;
     border: 1px solid lightgray;
     border-left: 0px;
@@ -232,10 +375,10 @@ li.position {
 }
 .contact img {
     float: left;
-    background: @colour-background;
+    background: @color-background;
     padding: 5px;
     margin: 0px 5px 0px 0px;
-    border: 1px solid @colour-border;
+    border: 1px solid @color-border;
     .border-radius(3px);
 }
 .contact .name {
