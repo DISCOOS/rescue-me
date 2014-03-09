@@ -139,7 +139,7 @@
                     default:
                     case 'general':
                         $index = 'property.list';
-                        $include = "system.*|location.*";
+                        $include = "system.*|location.*|trace.*";
                         break;
                     case 'sms':
                         $index = 'module.list';

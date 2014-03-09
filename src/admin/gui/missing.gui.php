@@ -34,45 +34,56 @@
     <?
         }
 
-            $user_id = User::currentId();
-            $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
-            if($missing->last_pos->timestamp>-1) {
-                $position = format_pos($missing->last_pos, $format);
-                $located = format_since($missing->last_pos->timestamp);
-            } else {
-                $position = format_pos(null, $format);
-            }
-            $alerted = format_since($missing->reported);
-            if($missing->sms_sent !== null) {
-                $sent = format_since($missing->sms_sent);
-            } else {
-                $sent = _('Ukjent');
-            }            
-            if($missing->sms_delivery !== null) {
-                $delivered = format_since($missing->sms_delivery);
-            } else {
-                $delivered = _('Ukjent');
-            }            
-            if($missing->answered !== null) {
-                $response = format_since($missing->answered);
-            } else {
-                $response = _('Ukjent');
-            }            
-                
-            insert_tracking_bar($missing);
+        $user_id = User::currentId();
+        $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
+        $top = (Properties::get(Properties::TRACE_BAR_LOCATION, $user_id) === Properties::TOP);
+        $collaped = (Properties::get(Properties::TRACE_BAR_STATE, $user_id) === Properties::COLLAPSED);
+        $details = explode(',',Properties::get(Properties::TRACE_DETAILS, $user_id));
+        if($missing->last_pos->timestamp>-1) {
+            $position = format_pos($missing->last_pos, $format);
+            $located = format_since($missing->last_pos->timestamp);
+        } else {
+            $position = format_pos(null, $format);
+        }
+        if($missing->sms_sent !== null) {
+            $sent = format_since($missing->sms_sent);
+        } else {
+            $sent = _('Ukjent');
+        }            
+        if($missing->sms_delivery !== null) {
+            $delivered = format_since($missing->sms_delivery);
+        } else {
+            $delivered = _('Ukjent');
+        }            
+        if($missing->answered !== null) {
+            $response = format_since($missing->answered);
+        } else {
+            $response = _('Ukjent');
+        }            
+
+        if($top) {
+            insert_trace_bar($missing, $collaped);
+        }
+            
     ?>
     
-    <div class="clearfix"></div>
-    
     <div class="infos clearfix pull-left">
+    <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
         <div class="info pull-left">
             <label class="label label-info position" data-pan-to="<?= count($positions) ?>">
                 <?=_('Siste posisjon')?></label> <?= $position ?>
         </div>
-    <? if (!empty($located)) { ?>
+    <? } if (empty($located) === false && in_array(Properties::TRACE_DETAILS_LOCATION_TIME, $details)) { ?>
         <div class="info pull-left no-wrap">
             <label class="label label-info"><?=_('Posisjon mottatt')?></label> 
             <span class="label label-success"><?= $located ?></span>
+        </div>
+    <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_URL, $details)) { ?>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=_('Sporingslenke')?></label> 
+            <span class="label label-success">
+                <?= str_replace("#missing_id", encrypt_id($missing->id), SMS_LINK); ?>
+            </span>
         </div>
     <? } ?>
     </div>
@@ -122,20 +133,23 @@
             }
             $i++;
         }
-            if ($displayed === false) {
-                echo '<li class="position clearfix well well-small">'._('Ingen').'</li>';
-            }
+        
+        if ($displayed === false) {
+            echo '<li class="position clearfix well well-small">'._('Ingen').'</li>';
+        }
         ?>
+                
         </ul>
     </div>
+    
+    <div class="infos clearfix pull-left ">    
+                
+    <?
+        if($top === false) {
+            insert_trace_bar($missing, $collaped);
+        }
+    ?>
 
-    <div class="infos clearfix pull-left">
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=_('Sporingslenke')?></label> 
-            <span class="label label-success">
-                <?= str_replace("#missing_id", encrypt_id($missing->id), SMS_LINK); ?>
-            </span>
-        </div>
     </div>
 </div>
 

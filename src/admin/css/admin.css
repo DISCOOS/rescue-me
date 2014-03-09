@@ -26,15 +26,16 @@ body {
 }
 
 h3.pagetitle {
-    margin-bottom: 0px;
+    margin-bottom: 5px;
     display:block;
     width:100%;
     padding:0;
     font-size:21px;
     line-height:40px;
     color:#333333;
-    border:0;
+    /*border:0;
     border-bottom:1px solid #e5e5e5;
+    */
 }
 
 hr {
@@ -98,6 +99,16 @@ hr {
 .label {
   font-size: 1.0em;
   padding: 0.4em;
+}
+
+.pull-right li:last-child .dropdown-menu:after {
+    left: auto;
+    right: 13px;
+}
+
+.pull-right li:last-child .dropdown-menu {
+    left: auto;
+    right: 0;
 }
 
 /*==========================================
@@ -212,25 +223,26 @@ li.position {
     text-decoration: underline;
 }
 
-#tracking {
+#trace {
     position: relative;
     width: 700px;
     max-width: 700px;
-    max-height: 700px;
-    padding: 25px;
+    min-height: 40px;
+    padding: 10px 25px;
     text-align: center;
     margin-left: -50px;
     margin-right: auto;
 }
 
-#tracking .span
+#trace .span
 {
     width: 100px;
+    min-height: 0px;
     text-align: center;
     margin-left:0 !important;
 }
 
-#tracking .icon
+#trace .icon
 {
     width: 14px;
     height: 14px;
@@ -239,66 +251,65 @@ li.position {
 }
 
 
-#tracking .tracking-bar
+#trace .trace-bar
 {
     position: relative;
     left: -35px;
     width: 70px;
-    height: 1.5em;
+    height: 1.2em;
     border-bottom: 0.5em solid #ddd;
 }
 
-#tracking .tracking-bar.pass 
+#trace .trace-bar.pass 
 {
     border-bottom: 0.5em solid #468847;
 }
 
-#tracking .tracking-bar.warning
+#trace .trace-bar.warning
 {
     border-bottom: 0.5em solid #f89406;
 }
 
-#tracking .tracking-bar.fail
+#trace .trace-bar.fail
 {
     border-bottom: 0.5em solid #da2727;
 }
 
-#tracking :first-child > .tracking-bar 
+#trace :first-child > .trace-bar 
 {
     border: 0px;
 }
 
-#tracking .icon.alarm
+#trace .icon.alarm
 {
     background-position: -22px -146px;
 }
 
-
-#tracking .icon.sent 
+#trace .icon.sent 
 {
     background-position: -70px -1px;
 }
 
-#tracking .icon.delivered
+#trace .icon.delivered
 {
     background-position: -94px -122px;
 }
 
-#tracking .icon.response
+#trace .icon.response
 {
     background-position: -94px -146px;
 }
 
-#tracking .icon.located
+#trace .icon.located
 {
     background-position: -310px -26px;
 }
 
-#tracking .tracking-bar > .icon  {
+#trace .trace-bar > .icon  {
     position: relative;
     float: right;
     left: 24px;
-    top: 1.1em;
+    top: 0.8em;
     width: 14px;
     height: 14px;
     padding: 2px;
@@ -311,21 +322,81 @@ li.position {
     background-image: url("../img/glyphicons-halflings-white.png");
 }
 
-#tracking .tracking-bar.pass > .icon {
+#trace .trace-bar.pass > .icon {
     background-color:  #468847;
 }
 
-#tracking .tracking-bar.warning > .icon {
+#trace .trace-bar.pass > .icon.alarm {
+    background-position: -22px -142px;
+}
+
+#trace .trace-bar.pass > .icon.sent {
+    background-position: -70px 2px;
+}
+
+#trace .trace-bar.pass > .icon.delivered {
+    background-position: -94px -118px;
+}
+
+#trace .trace-bar.pass > .icon.response {
+    background-position: -94px -142px;
+}
+
+#trace .trace-bar.pass > .icon.located {
+    background-position: -310px -22px;
+}
+
+#trace .trace-bar.warning > .icon {
     background-color:  #f89406;
     background-position: -94px -94px;
 }
 
-#tracking .tracking-bar.fail > .icon {    
+#trace .trace-bar.warning > .icon.alarm {
+    background-position: -22px -142px;
+}
+
+#trace .trace-bar.warning > .icon.sent {
+    background-position: -70px 2px;
+}
+
+#trace .trace-bar.warning > .icon.delivered {
+    background-position: -94px -118px;
+}
+
+#trace .trace-bar.warning > .icon.response {
+    background-position: -94px -142px;
+}
+
+#trace .trace-bar.warning > .icon.located {
+    background-position: -310px -22px;
+}
+
+#trace .trace-bar.fail > .icon {    
     background-color: #da2727;
     background-position: -310px 2px;
 }
 
-#tracking .tracking-details
+#trace .trace-bar.fail > .icon.alarm {
+    background-position: -22px -142px;
+}
+
+#trace .trace-bar.fail > .icon.sent {
+    background-position: -70px 2px;
+}
+
+#trace .trace-bar.fail > .icon.delivered {
+    background-position: -94px -118px;
+}
+
+#trace .trace-bar.fail > .icon.response {
+    background-position: -94px -142px;
+}
+
+#trace .trace-bar.fail > .icon.located {
+    background-position: -310px -22px;
+}
+
+#trace .trace-details
 {
     margin-top: 15px;
 }
@@ -347,6 +418,7 @@ li.position {
 
 #sidebar {
     margin: 0;
+    margin-bottom: 5px;
     padding-left: 5px;
     padding-right: 5px;
     float: left;

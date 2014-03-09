@@ -124,7 +124,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
                 if(($logon = isset($_SESSION['logon']) && $_SESSION['logon']) === true) {
 
              ?>
-                    <li class="dropdown">
+                    <li class="dropdown visible-phone">
                         <a id="drop1" class="dropdown-toggle" data-toggle="dropdown"><?= _('Sporing') ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                             <? if($user->allow('read', 'operations') || $user->allow('read', 'operations.all')) { ?>
@@ -134,7 +134,15 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <li id="missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/list"><b class="icon icon-th-list"></b><?= TRACES ?></a></li>
                             <? } ?>
                         </ul>
+                        <? if($user->allow('read', 'operations') || $user->allow('read', 'operations.all')) { ?>
+                    <li class="hidden-phone">
+                        <a role="menuitem" href="<?= ADMIN_URI ?>missing/new"><?= NEW_TRACE ?></a>
                     </li>
+                        <? } if ($user->allow('write', 'operations') || $user->allow('write', 'operations.all')) { ?>
+                    <li class="hidden-phone">
+                        <a role="menuitem" href="<?= ADMIN_URI ?>missing/list"><?= TRACES ?></a>
+                    </li>
+                        <? } ?>
                     <li class="dropdown">
                         <a id="drop3" class="dropdown-toggle no-wrap" data-toggle="dropdown">
                             <span class="visible-desktop"><?= $user->name ?><b class="caret"></b></span>

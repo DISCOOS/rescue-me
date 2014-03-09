@@ -48,7 +48,7 @@
         min-height: 255px;
     }
     
-    #tracking div {
+    #trace div {
         float: left !important;
     }
     
@@ -74,32 +74,32 @@
         clear: left;
         float: left;
         height: auto;
-        width: 320px;
-        min-width: 320px;
-        min-height: 320px;
+        width: 340px;
+        min-width: 340px;
+        min-height: 340px;
     }
 
     #sidebar {
         clear: left;
         float: left;
-        width: 310px;
+        width: 330px;
         height: auto;
-        min-width: 310px;
-        min-height: 310px;
+        min-width: 330px;
+        min-height: 330px;
         border: 1px solid lightgray;
         border-top: 0px;
     }
     
-    #tracking {
+    #trace {
         margin-left: -25px;
     }
 
-    #tracking .span
+    #trace .span
     {
         width: 70px;
     }
     
-    #tracking .tracking-bar
+    #trace .trace-bar
     {
         width: 40px;
         left: -20px;

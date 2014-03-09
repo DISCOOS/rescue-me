@@ -210,26 +210,26 @@
         return $html;
     }
     
-    function insert_tracking_bar($missing, $output=true) {
+    function insert_trace_bar($missing, $collapsed = false, $output=true) {
         
         $timeout = (time() - $missing->reported > 3*60*60*1000);
         
-        $tracking['alerted']['state'] = 'pass';
-        $tracking['alerted']['time'] = format_since($missing->reported);
-        $tracking['alerted']['tooltip'] = _('Sporing opprettet');
+        $trace['alerted']['state'] = 'pass';
+        $trace['alerted']['time'] = format_since($missing->reported);
+        $trace['alerted']['tooltip'] = _('Sporing opprettet');
         if($missing->sms_sent !== null) {
-            $tracking['sent']['state'] = 'pass';
-            $tracking['sent']['time'] = format_since($missing->sms_sent);
-            $tracking['sent']['tooltip'] = _('SMS er sendt');
+            $trace['sent']['state'] = 'pass';
+            $trace['sent']['time'] = format_since($missing->sms_sent);
+            $trace['sent']['tooltip'] = _('SMS er sendt');
         } else {
-            $tracking['sent']['state'] = 'fail';
-            $tracking['sent']['time'] = f_('Ukjent');
-            $tracking['sent']['tooltip'] = _('SMS er ikke sendt. Sjekk logg.');
+            $trace['sent']['state'] = 'fail';
+            $trace['sent']['time'] = f_('Ukjent');
+            $trace['sent']['tooltip'] = _('SMS er ikke sendt. Sjekk logg.');
         }            
         if($missing->sms_delivery !== null) {
-            $tracking['delivered']['state'] = 'pass';
-            $tracking['delivered']['time'] = format_since($missing->sms_delivery);
-            $tracking['delivered']['tooltip'] = _('SMS er mottatt');
+            $trace['delivered']['state'] = 'pass';
+            $trace['delivered']['time'] = format_since($missing->sms_delivery);
+            $trace['delivered']['tooltip'] = _('SMS er mottatt');
         } else {
             
             $state = '';
@@ -240,21 +240,21 @@
             } elseif($missing->sms_sent) {
                 $state = 'warning';
             } 
-            $tracking['delivered']['state'] = $state;
-            $tracking['delivered']['time'] = _('Ukjent');
+            $trace['delivered']['state'] = $state;
+            $trace['delivered']['time'] = _('Ukjent');
             switch($state)
             {
                 case 'warning':
-                    $tracking['delivered']['tooltip'] = 
+                    $trace['delivered']['tooltip'] = 
                         _('SMS er levert, men leveranserapport fra SMS leverandør ikke mottatt.');
                     break;
                 case 'fail':
-                    $tracking['delivered']['tooltip'] = 
+                    $trace['delivered']['tooltip'] = 
                     _('SMS ikke levert på tre timer. Telefonen kan være tom for ' . 
                         ' strøm eller utenfor dekning.');
                     break;
                 default:
-                    $tracking['delivered']['tooltip'] = 
+                    $trace['delivered']['tooltip'] = 
                     _('SMS sannsynligvis ikke levert. Telefonen kan være tom for ' . 
                         ' strøm eller utenfor dekning.');
                     break;
@@ -264,44 +264,44 @@
             }
         }            
         if($missing->answered !== null) {
-            $tracking['response']['state'] = 'pass';
-            $tracking['response']['time'] = format_since($missing->answered);
-            $tracking['response']['tooltip'] = _('Sporingsside er lastet ned');
+            $trace['response']['state'] = 'pass';
+            $trace['response']['time'] = format_since($missing->answered);
+            $trace['response']['tooltip'] = _('Sporingsside er lastet ned');
         } else {
-            $tracking['response']['state'] = '';
-            $tracking['response']['time'] = _('Ukjent');
-            $tracking['response']['tooltip'] = _('Sporingsside er ikke lastet ned.' . 
+            $trace['response']['state'] = '';
+            $trace['response']['time'] = _('Ukjent');
+            $trace['response']['tooltip'] = _('Sporingsside er ikke lastet ned.' . 
                 ' Telefonen kan være tom for strøm, utenfor dekning, støtte for lokalisering ' .
                 ' kan være slått av eller ikke mulig, eller brukeren valgte å ikke dele ' .
                 ' posisjonen med deg.');
         }            
         if($missing->last_pos->timestamp>-1) {
-            $tracking['located']['state'] = 'pass';
-            $tracking['located']['time'] = format_since($missing->last_pos->timestamp);
-            $tracking['located']['tooltip'] = _('Telefon er lokalisert');
+            $trace['located']['state'] = 'pass';
+            $trace['located']['time'] = format_since($missing->last_pos->timestamp);
+            $trace['located']['tooltip'] = _('Telefon er lokalisert');
         } else {
             
             // Give up after 3  hours
             if($timeout) {
-                $tracking['located']['state'] = '';
+                $trace['located']['state'] = '';
             } else {
-                $tracking['located']['state'] = 'fail';
+                $trace['located']['state'] = 'fail';
             }            
             if($missing->answered !== null) {
-                $tracking['located']['tooltip'] = _('Sporingsside er lastet ned, ' . 
+                $trace['located']['tooltip'] = _('Sporingsside er lastet ned, ' . 
                     ' men ingen posisjon er mottatt. Telefonen kan være tom for strøm, ' .
                     ' utenfor dekning, støtte for lokalisering kan være slått av eller ' .
                     ' ikke tilgjengelig (ingen GPS eller GPS er avslått), eller brukeren valgte ' . 
                     ' å ikke dele posisjonen.');
             } else {
-                $tracking['located']['tooltip'] = _('Sporingsside er ikke lastet ned. ' . 
+                $trace['located']['tooltip'] = _('Sporingsside er ikke lastet ned. ' . 
                     ' Telefonen kan være tom for strøm eller utenfor dekning.');
             }
-            $tracking['located']['time'] = _('Ukjent');            
+            $trace['located']['time'] = _('Ukjent');            
         }
         
         ob_start();
-        require(ADMIN_PATH . "gui/missing.tracking.gui.php");
+        require(ADMIN_PATH . "gui/missing.trace.gui.php");
         $html = ob_get_clean();
         if($output) {
             echo $html;

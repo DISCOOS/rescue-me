@@ -24,6 +24,14 @@
     {
         const TABLE = "properties";
         
+        const ALL = "all";
+        const SHOW = "show";
+        const HIDE = "hide";
+        const TOP = "top";
+        const BOTTOM = "bottom";
+        const EXPANED = "expanded";
+        const COLLAPSED = "collaped";
+        
         const GET_URI = 'property/get';
         
         const PUT_URI = 'property/put';
@@ -43,6 +51,15 @@
         const LOCATION_APPCACHE = "location.appcache";
         const LOCATION_APPCACHE_VERSION = "version";
         const LOCATION_APPCACHE_SETTINGS = "settings";
+        
+        const TRACE_BAR_STATE = "trace.bar.state";
+        
+        const TRACE_BAR_LOCATION = "trace.bar.location";
+        
+        const TRACE_DETAILS = "trace.details";
+        const TRACE_DETAILS_LOCATION = "trace.details.location";
+        const TRACE_DETAILS_LOCATION_TIME = "trace.details.location.time";
+        const TRACE_DETAILS_LOCATION_URL = "trace.details.location.url";
         
         const SMS_REQUIRE = 'sms.require';
         const SMS_REQUIRE_MULTIPLE = 'multiple';
@@ -116,6 +133,37 @@
                 'description' => "Make locate script available offline with HTML5 appcache."
             ),
             
+            self::TRACE_BAR_STATE => array(
+                'type' => 'select',
+                'default' => self::EXPANED,
+                'options' => array(                   
+                    self::EXPANED => 'Expanded',
+                    self::COLLAPSED => 'Collapsed',
+                 ),
+                'description' => "Trace trace bar layout state."
+            ),
+            
+            self::TRACE_BAR_LOCATION => array(
+                'type' => 'select',
+                'default' => self::TOP,
+                'options' => array(                   
+                    self::TOP => 'Top',
+                    self::BOTTOM => 'Bottom',
+                 ),
+                'description' => "Trace trace bar location."
+            ),
+            
+            self::TRACE_DETAILS => array(
+                'type' => 'checklist',
+                'default' => '',
+                'options' => array(                   
+                    self::TRACE_DETAILS_LOCATION => 'Last location',
+                    self::TRACE_DETAILS_LOCATION_TIME => 'Last timestamp',
+                    self::TRACE_DETAILS_LOCATION_URL => 'Location URL'
+                 ),
+                'description' => "Show trace details"
+            ),
+            
             self::SMS_SENDER_ID => array(
                 'type' => 'text',
                 'default' => SMS_FROM,
@@ -175,6 +223,7 @@
         public static function getDefaults() {
             $defaults = array();
             self::$meta[self::SYSTEM_COUNTRY]['default'] = Locale::getDefaultCountryCode();
+            self::$meta[self::TRACE_DETAILS]['default'] = implode(',', array_keys(self::$meta[self::TRACE_DETAILS]['options']));
             foreach(self::$meta as $name => $property){
                 $defaults[$name] = $property['default'];
             }
@@ -327,6 +376,7 @@
                 case self::SYSTEM_COUNTRY:
                     return Locale::getCountryName($value);
                 case self::SMS_REQUIRE:
+                case self::TRACE_DETAILS:
                     $selected = array();
                     if(empty($value)) {
                         return _("None");
@@ -456,6 +506,7 @@
         public static final function ensure($name, $value) {
             switch($name) {
                 case self::SMS_REQUIRE:
+                case self::TRACE_DETAILS:
                     
                     if(is_array($value)) {
                         $value = implode(",", $value);
@@ -506,6 +557,7 @@
                     break;
                     
                 case self::SMS_REQUIRE:
+                case self::TRACE_DETAILS:
                     
                     if(empty($value) === FALSE) {
                         return true;
@@ -515,6 +567,8 @@
                 case self::MAP_DEFAULT_BASE:
                 case self::MAP_DEFAULT_FORMAT:
                 case self::LOCATION_APPCACHE:
+                case self::TRACE_BAR_STATE:
+                case self::TRACE_BAR_LOCATION:
                     
                     $array = is_array($value) ? $value : explode(",", $value);
                     
