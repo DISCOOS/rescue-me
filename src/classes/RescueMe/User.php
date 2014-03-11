@@ -204,7 +204,10 @@
                 $where[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
             } 
             if(empty($where) === false) {
-                $filter = '(' . $filter . ') AND ' . implode($where," OR ");
+                if (empty($filter) === false) {
+                    $filter = '(' . $filter . ') AND ';
+                }
+                $filter .= implode($where," OR ");
             }
             
             return DB::count(self::TABLE, $filter);

@@ -12,14 +12,21 @@
     $titles = RescueMe\User::getTitles();
     
     $states = array();
-    
+    $num_pending = User::count(array(User::PENDING));
+    if ($num_pending === 0) {
+        $num_pending = '';
+    }
 ?>
 
 <h3><?=_("Users")?></h3>
 
 <ul id="tabs" class="nav nav-tabs">
 <? foreach($titles as $state => $title) { $states[] = $state; ?>
-  <li><a href="#<?=$state?>" data-toggle="tab"><?=$title?></a></li>
+  <li><a href="#<?=$state?>" data-toggle="tab"><?=$title?>
+  <? if ($state == User::PENDING) { ?>
+          <span class="badge badge-important"><?= $num_pending ?></span>
+  <? } ?>
+      </a   ></li>
 <? } ?>  
 </ul>
 <div class="tab-content" style="width: auto; overflow: visible">       

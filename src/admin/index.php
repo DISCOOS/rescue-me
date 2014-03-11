@@ -90,6 +90,11 @@ if(defined('USE_SILEX') && USE_SILEX) {
         $id = $user->id;
     }
     
+    $num_pending = User::count(array(User::PENDING));
+    if ($num_pending === 0) {
+        $num_pending = '';
+    }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -144,7 +149,8 @@ if(defined('USE_SILEX') && USE_SILEX) {
                                 insert_item(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign"); ?>
                             <li class="divider"></li>
                             <? } if ($user->allow('read', 'user.all')) { ?>
-                            <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?= USERS ?></a></li>
+                            <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b>
+                                <?= USERS ?> <span class="badge badge-important"><?= $num_pending ?></span></a></li>
                             <? } if ($user->allow('read', 'roles')) { ?>
                             <li id="roles"><a role="menuitem" href="<?= ADMIN_URI ?>role/list"><b class="icon icon-th-list"></b><?= _('Roles') ?></a></li>
                             <? } if ($user->allow('read', 'logs')) { ?>
