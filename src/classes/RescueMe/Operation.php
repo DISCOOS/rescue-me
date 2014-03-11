@@ -26,8 +26,9 @@
 
         private static $fields = array
         (
-            "user_id", 
+            "op_type", 
             "op_name", 
+            "user_id", 
             "alert_mobile_country",
             "alert_mobile",
             "op_ref", 
@@ -36,11 +37,22 @@
             "op_comments"
         );
         
+        const TRACE = 'trace';
+        
+        const TEST = 'test';
+        
+        const EXERCISE = 'exercise';
+        
+        
         const OPEN = 'open';
         const CLOSED = 'closed';
 
         public $id = -1;
         public $user_id = -1;
+        
+        public static function titles() {
+            return array('trace' => _('Sporing'), 'test' => _('Test'), 'exercise' => _('Øvelse'));
+        }
 
         /**
          * Get Operation instance
@@ -204,6 +216,7 @@
         /**
          * Add a new operation
          * 
+         * @param string $op_type Operation type
          * @param string $op_name Operation name
          * @param int $user_id User ID of the "owner" (Tip: often $_SESSION['user_id'])
          * @param string $alert_mobile_country Country code (ISO)
@@ -213,10 +226,10 @@
          * @return boolean
          */
         public function add(
-            $op_name, $user_id, $alert_mobile_country, 
+            $op_type, $op_name, $user_id, $alert_mobile_country, 
             $alert_mobile, $op_ref = '', $op_comments = ''){
 
-            if(empty($op_name) || empty($user_id) || empty($alert_mobile_country) || empty($alert_mobile)) {
+            if(empty($op_type) || empty($op_name) || empty($user_id) || empty($alert_mobile_country) || empty($alert_mobile)) {
 
                 $line = __LINE__;
                 Logs::write(
@@ -233,18 +246,19 @@
             }
 
             $values = array(
-                (int) $user_id, 
+                (string) $op_type, 
                 (string) $op_name, 
+                (int) $user_id, 
                 (string) $alert_mobile_country, 
                 (string) $alert_mobile, 
                 (string) $op_ref, 
                 "NOW()", 
                 (string) $op_comments
             );
-
+            
             $values = array_exclude(prepare_values(self::$fields, $values),'op_closed');
             $this->id = DB::insert(self::TABLE, $values);
-
+            
             if($this->id === FALSE) {
                 $this->error("Failed to create operation", $values);
             } else {

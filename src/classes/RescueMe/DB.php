@@ -170,7 +170,7 @@
          */
         public static function escape($string)
         {
-           return DB::instance()->mysqli->escape_string($string);
+           return DB::instance()->mysqli->real_escape_string($string);
         }// escape
         
         
@@ -276,7 +276,7 @@
             $inserts = array();
             foreach($values as $value) {
                 if(is_string($value) && ($value === "NULL" || is_function($value)) === FALSE) {
-                    $value = str_escape(DB::escape($value));
+                    $value = '"'.DB::escape($value).'"';
                 }
                 $inserts[] = $value;
             }
@@ -289,7 +289,11 @@
             {
                 if($res === FALSE)
                 {
-                    Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to insert ' . count($values) . " values into $table", DB::error());
+                    $context['query'] = $query;
+                    $context['error'] = DB::error();
+                    var_dump($query);
+                    var_dump($context['error']);
+                    Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to insert ' . count($values) . " values into $table", $context);
                 } else {
                     Logs::write(Logs::DB, LogLevel::INFO, 'Inserted ' . count($values) . " values into $table");
                 }

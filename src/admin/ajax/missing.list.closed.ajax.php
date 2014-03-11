@@ -35,6 +35,9 @@
     $total = ceil($list/$max);
     $options = create_paginator(1, $total, $user_id);
     
+    // Get operation types
+    $types = RescueMe\Operation::titles();
+    
     // Get missing
     $list = Missing::getAll($filter, $admin, $start, $max);
     
@@ -42,13 +45,15 @@
         $owner = ($this_missing->user_id === $user_id);
 ?>
             <tr id="<?= $this_missing->id ?>">
-                <? if($admin) { ?>
-                <td class="missing name"><?= $this_missing->name ?></td>
-                <td class="missing name"><?=($owner ? '<b class="icon icon-ok"></b>' : '')?></td>
-                <? } else { ?>
-                <td class="missing name" colspan="2"> <?= $this_missing->name ?> </td>
-                <? } ?>
+                <td class="missing name"><?= $types[$this_missing->op_type] ?></td>
+                <td class="missing name"> <?= $this_missing->name ?> </td>
                 <td class="missing date"><?= format_dt($this_missing->op_closed) ?></td>
+                <? if($admin) { ?>
+                <td class="missing name hidden-phone"><?= $this_missing->user_name ?></td>
+                <td class="missing editor">
+                <? } else { ?>
+                <td class="missing editor" colspan="2">
+                <? } ?>
                 <td class="missing editor">
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/$id"?>">

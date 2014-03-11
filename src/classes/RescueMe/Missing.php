@@ -26,11 +26,11 @@
     {
         const TABLE = "missing";
         
-        const SELECT = 'SELECT `missing`.*, `missing`.`op_id`, `user_id`, `op_closed`, `alert_mobile_country`, `alert_mobile` FROM `missing`';
+        const SELECT = 'SELECT `missing`.*, `missing`.`op_id`, `users`.`user_id`, `op_type`, `op_closed`, `alert_mobile_country`, `alert_mobile`, `users`.`name` FROM `missing`';
         
-        const JOIN = 'LEFT JOIN `operations` ON `operations`.`op_id` = `missing`.`op_id`';
+        const JOIN = 'LEFT JOIN `operations` ON `operations`.`op_id` = `missing`.`op_id` LEFT JOIN `users` ON `operations`.`user_id` = `users`.`user_id`';
 
-        const COUNT = 'SELECT COUNT(*) FROM `missing`';
+        const COUNT = 'SELECT COUNT(*), `users`.`name` AS `user_name` FROM `missing`';
         
         private static $fields = array
         (
@@ -53,11 +53,13 @@
         public $id = -1;
         public $op_id;
         public $user_id;
+        public $user_name;
 
         public $answered;
         public $reported;
 
         public $name;
+        public $type;
         public $mobile;
         public $mobile_country;
         
@@ -78,7 +80,10 @@
         
         public static function filter($values, $operand) {
             
-            $fields = array('`missing`.`missing_name`');
+            $fields = array(
+                '`missing`.`missing_name`', 
+                '`users`.`name`',
+                '`operations`.`op_type`');
 
             return DB::filter($fields, $values, $operand);
             
@@ -189,8 +194,12 @@
             $this->id = (int)$id;
 
             foreach($values as $key => $val){
-                $property = str_replace('missing_', '', $key);
-                $this->$property = $val;
+                if($key === 'name') {
+                    $this->user_name = $val;
+                } else {
+                    $property = str_replace('missing_', '', $key);                
+                    $this->$property = $val;
+                }
             }
             
             // Hack: Find out why datatype is string
@@ -575,7 +584,7 @@
          * @return mixed|array Message id if success, errors otherwise (array).
          */
         private function _sendSMS($country, $to, $message, $missing) {
-
+            
             $user_id = User::currentId();
             if(isset($user_id) === false) {
                 $user_id = $this->user_id;

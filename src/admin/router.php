@@ -874,6 +874,7 @@
                 $operation = new RescueMe\Operation;
                 
                 $operation = $operation->add(
+                    $_POST['m_type'],
                     $_POST['m_name'], 
                     $user->id, 
                     $_POST['mb_mobile_country'], 
@@ -942,7 +943,14 @@
             
             if(isset($_GET['name'])) {
                 
-                echo ajax_response("missing.list",$_GET["name"]);
+                if($_GET["name"] === 'closed') {
+
+                    echo ajax_response('missing.list','closed');
+                    
+                } else {
+
+                    echo ajax_response('missing.list','open');                   
+                }
                 
                 exit;
             }

@@ -6,17 +6,23 @@
     use RescueMe\Locale;
     use RescueMe\Module;
     use RescueMe\Missing;
+    use RescueMe\Operation;
     use RescueMe\Properties;
     
     if(isset($_ROUTER['error'])) {
         insert_error($_ROUTER['error']);
     }
     
+    $type = isset($_GET['name']) === false || $_GET['name'] === 'open' ? Operation::TRACE : $_GET['name'];
+    
     $user = User::current();
     $user_id = $user->id;
     $admin = User::current()->allow("read", 'operations.all');
     
-    $filter = '(op_closed IS NULL)';
+    $filter = "(op_type = '$type') AND (op_closed IS NULL)";
+    
+    //$_GET['filter'] = 'sven';
+    
     if(isset($_GET['filter'])) {
         $filter .= ' AND ' . Missing::filter(isset_get($_GET, 'filter', ''), 'OR');
     }
@@ -37,6 +43,9 @@
         $total = ceil($list/$max);
         $options = create_paginator(1, $total, $user_id);
 
+        // Get operation types
+        $types = RescueMe\Operation::titles();
+        
         // Get missing
         $list = Missing::getAll($filter, $admin, $start, $max);
 
@@ -72,18 +81,18 @@
 
 ?>
             <tr id="<?= $this_missing->id ?>">
-                <? if($admin) { ?>
                 <td class="missing name"><?= $this_missing->name ?></td>
-                <td class="missing name hidden-phone"><?=($owner ? '<b class="icon icon-ok"></b>' : '')?></td>
-                <? } else { ?>
-                <td class="missing name" colspan="2"><?= $this_missing->name ?></td>
-                <? } ?>
                 <td class="missing sent hidden-phone"><?= $sent ?></td>
                 <td id="delivered-<?=$id?>" class="missing delivered hidden-phone"><?= $delivered ?></td>
                 <td id="responded-<?=$id?>" class="missing answered hidden-phone"><?= $answered ?></td>
                 <td class="missing received hidden-phone"><?= $received ?></td>
                 <td class="missing position"><?= $position ?></td>
+                <? if($admin) { ?>
+                <td class="missing name hidden-phone"><?= $this_missing->user_name ?></td>
                 <td class="missing editor">
+                <? } else { ?>
+                <td class="missing editor" colspan="2">
+                <? } ?>
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."missing/edit/$this_missing->id"?>">
                             <b class="icon icon-edit"></b><?= EDIT ?>

@@ -68,10 +68,11 @@ CREATE TABLE IF NOT EXISTS `modules` (
 CREATE TABLE IF NOT EXISTS `operations` (
   `op_id` int(6) NOT NULL AUTO_INCREMENT,
   `user_id` int(6) NOT NULL,
+  `op_type` enum('trace','test','exercise') NOT NULL,
   `op_name` varchar(255) NOT NULL,
   `alert_mobile_country` char(4) NOT NULL,
   `alert_mobile` varchar(25) NOT NULL,
-  `op_ref` varchar(255) NOT NULL,
+  `op_ref` varchar(255) DEFAULT NULL,
   `op_opened` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `op_closed` timestamp NULL DEFAULT NULL,
   `op_comments` text NOT NULL,

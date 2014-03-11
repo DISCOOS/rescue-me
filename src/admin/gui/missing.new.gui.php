@@ -15,9 +15,9 @@
     
     
 	<fieldset class="new-missing pull-left" style="margin-right: 2em;">
-		<legend>Den savnede</legend>
+		<legend><?=_('Den savnede')?></legend>
 
-		<label for="m_name">Navn på sporing</label>
+		<label for="m_name"><?=_('Navn på sporing')?></label>
 		<input class="input-block-level" type="text" id="m_name" name="m_name" placeholder="Sted, landsdel, eller savnedes navn" autofocus required>
 
         <div class="row-fluid">
@@ -36,7 +36,7 @@
 	</fieldset>
     
 	<fieldset class="new-missing">
-		<legend>Rapporter til</legend>
+		<legend><?=_('Rapporter til')?></legend>
 
         <div class="row-fluid">
             <div class="span4">
@@ -46,7 +46,7 @@
                 </select>
             </div>
             <div class="span8">
-                <label for="m_mobile">Mobilnummer</label>
+                <label for="m_mobile"><?=_('Mobilnummer')?></label>
                 <input class="input-block-level" type="tel" id="m_mobile" name="mb_mobile" value="<?=$user->mobile?>" placeholder="Kun siffer, ingen mellomrom" required pattern="[0-9]*">
             </div>
         </div>
@@ -56,7 +56,7 @@
 	<div class="clearfix"></div>
     
 	<fieldset class="new-missing pull-left">
-		<legend>SMS tekst</legend>
+		<legend><?=_('SMS tekst')?></legend>
 
         <div class="row-fluid">
             <textarea class="field span12" id="sms_text" name="sms_text" required><?=SMS_TEXT?></textarea>
@@ -103,9 +103,20 @@
         
 	</fieldset>
 
+    
 	<div class="clearfix"></div>
-    <button type="submit" class="btn btn-success">Opprett sporing</button>
-	
+    
+	<fieldset class="new-missing pull-left">
+        <div class="row-fluid">
+            <button type="submit" class="btn btn-success span3"><?=_('Opprett')?></button>
+            <div class="span4">
+                <select id="m_type" name="m_type" class="input-block-level" >
+                    <? insert_options(RescueMe\Operation::titles(), 'trace'); ?>
+                </select>            
+            </div>
+        </div>
+    </fieldset>
+
 </form>
 
 <? } ?>

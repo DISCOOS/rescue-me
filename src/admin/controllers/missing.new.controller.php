@@ -25,6 +25,7 @@ if(sizeof($missing_modules) > 0) {
         
 		$operation = new RescueMe\Operation;
 		$operation = $operation->add(
+			'trace', 
 			$_POST['m_name'], 
 			$user->id, 
 			$_POST['mb_mobile_country'], //"NO", 
