@@ -12,10 +12,7 @@
         $missing = current($missings);
         $missing->getPositions();
         
-        if(isset($_ROUTER['error'])) { 
-            insert_error($_ROUTER['error']);
-        } 
-        elseif(modules_exists("RescueMe\SMS\Provider")) {
+        if(modules_exists("RescueMe\SMS\Provider")) {
 
             $fields = array();
 
@@ -77,8 +74,9 @@
             if(!empty($operation->op_closed)) {
                 $actions['message'] = _("Merk: Dette vil gjenåpne operasjonen");
             }
-            else 
+            else {
                 $actions['message'] = _("Merk: Dette vil slette navn og mobilnummer til savnede permanent (av personvernhensyn).");
+            }
             
             insert_form("user", _("Avslutt operasjon"), $fields, ADMIN_URI."operation/close/$operation->id", $actions);
             

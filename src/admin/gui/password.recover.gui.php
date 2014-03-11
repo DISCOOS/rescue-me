@@ -51,6 +51,9 @@
     
     if($id) $url .= "/".$id;
     
-    insert_form("user", "Nullstill passord", $fields, $url, array("submit" => "Reset", 'message' => $message));
+    $_ROUTER["submit"] = _("Reset");
+    $_ROUTER['message'] = $message;
+    
+    insert_form("user", "Nullstill passord", $fields, $url, $_ROUTER);
     
 ?>

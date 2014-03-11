@@ -755,7 +755,7 @@
                 }
                 
                 if($edit->password($_POST['password'])) {
-                    header("Location: ".ADMIN_URI.($allow ? 'user/list' : 'admin'));
+                    header("Location: ".ADMIN_URI.($allow ? 'user/list' : ''));
                     exit();
                 }
                 $_ROUTER['error'] = RescueMe\DB::errno() ? RescueMe\DB::error() : 'Ikke gjennomført, prøv igjen.';

@@ -1,10 +1,6 @@
 <?    
     use RescueMe\User;
     
-    if(isset($_ROUTER['error'])) { 
-        insert_error($_ROUTER['error']);
-    } 
-
     $id = input_get_int('id', User::currentId());
     $user = User::get($id);
     
@@ -31,6 +27,6 @@
     );    
     $fields[] = $group;
 
-    insert_form("user", $user->name, $fields, ADMIN_URI."password/change/$user->id");
+    insert_form("user", $user->name, $fields, ADMIN_URI."password/change/$user->id", $_ROUTER);
     
 ?>

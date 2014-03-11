@@ -4,10 +4,6 @@
     
     $id = input_get_int('id');
     
-    if(isset($_ROUTER['error'])) { 
-        insert_error($_ROUTER['error']);
-    }
-    
     $all_perms = Permissions::getAll();
     $active_perms = Roles::getPermissionsForRole($id);
         
@@ -33,6 +29,6 @@
     
     $role = Roles::getAll();
     
-    insert_form("roles", _('Edit role'). ': '.$role[$id], $fields, ADMIN_URI."role/edit/$id");
+    insert_form("roles", _('Edit role'). ': '.$role[$id], $fields, ADMIN_URI."role/edit/$id", $_ROUTER);
     
 ?>

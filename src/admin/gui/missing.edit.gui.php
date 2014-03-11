@@ -13,10 +13,7 @@
     {
         $operation = Operation::get($missing->op_id);
         
-        if(isset($_ROUTER['error'])) { 
-            insert_error($_ROUTER['error']);
-        } 
-        elseif(modules_exists("RescueMe\SMS\Provider")) {
+        if(modules_exists("RescueMe\SMS\Provider")) {
 
             $fields = array();
 
