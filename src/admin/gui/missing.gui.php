@@ -31,6 +31,7 @@
             <strong>En feil oppsto!</strong><br />
             <?= $_ROUTER['error'] ?>
         </div>
+    
     <?
         }
 
@@ -43,25 +44,13 @@
             $pan_to = 'data-pan-to="'. (count($positions)-1) . '"';
             $position = format_pos($missing->last_pos, $format, true, $pan_to);
             $located = format_since($missing->last_pos->timestamp);
+            $located_state = "success";
         } else {
             $pan_to = '';
             $position = format_pos(null, $format);
+            $located = _('Unkjent');
+            $located_state = "warning";
         }
-        if($missing->sms_sent !== null) {
-            $sent = format_since($missing->sms_sent);
-        } else {
-            $sent = _('Ukjent');
-        }            
-        if($missing->sms_delivery !== null) {
-            $delivered = format_since($missing->sms_delivery);
-        } else {
-            $delivered = _('Ukjent');
-        }            
-        if($missing->answered !== null) {
-            $response = format_since($missing->answered);
-        } else {
-            $response = _('Ukjent');
-        }            
 
         if($top) {
             insert_trace_bar($missing, $collaped);
@@ -70,15 +59,16 @@
     ?>
     
     <div class="infos clearfix pull-left">
+        
     <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
-        <div class="info pull-left">
+        <div class="info pull-left no-wrap">
             <label class="label label-info label-position" <?=$pan_to?>>
                 <?=_('Siste posisjon')?></label> <?= $position ?>
         </div>
-    <? } if (empty($located) === false && in_array(Properties::TRACE_DETAILS_LOCATION_TIME, $details)) { ?>
+    <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_TIME, $details)) { ?>
         <div class="info pull-left no-wrap">
             <label class="label label-info"><?=_('Posisjon mottatt')?></label> 
-            <span class="label label-success"><?= $located ?></span>
+            <span class="label label-<?=$located_state?>"><?= $located ?></span>
         </div>
     <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_URL, $details)) { ?>
         <div class="info pull-left no-wrap">

@@ -212,7 +212,7 @@
     
     function insert_trace_bar($missing, $collapsed = false, $output=true) {
         
-        $timeout = (time() - $missing->reported > 3*60*60*1000);
+        $timeout = (time() - strtotime($missing->reported)) > 3*60*60*1000;
         
         $trace['alerted']['state'] = 'pass';
         $trace['alerted']['time'] = format_since($missing->reported);
@@ -233,12 +233,10 @@
         } else {
             
             $state = '';
-            if($missing->answered !== null) {
+            if($missing->answered !== null || $missing->sms_sent !== null) {
                 $state = 'warning';
             } elseif($timeout) {
                 $state = 'fail'; 
-            } elseif($missing->sms_sent) {
-                $state = 'warning';
             } 
             $trace['delivered']['state'] = $state;
             $trace['delivered']['time'] = _('Ukjent');
@@ -280,13 +278,13 @@
             $trace['located']['time'] = format_since($missing->last_pos->timestamp);
             $trace['located']['tooltip'] = _('Telefon er lokalisert');
         } else {
-            
-            // Give up after 3  hours
-            if($timeout) {
+
+            if($missing->answered !== null || $missing->sms_sent !== null) {
                 $trace['located']['state'] = '';
-            } else {
-                $trace['located']['state'] = 'fail';
-            }            
+            } elseif($timeout) {
+                $trace['located']['state'] = 'fail'; 
+            } 
+            
             if($missing->answered !== null) {
                 $trace['located']['tooltip'] = _('Sporingsside er lastet ned, ' . 
                     ' men ingen posisjon er mottatt. Telefonen kan være tom for strøm, ' .

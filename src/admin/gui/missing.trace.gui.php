@@ -1,4 +1,4 @@
-<div id="trace" class="infos clearfix pull-left">
+<div id="trace">
     <div class="container-fluid pull-left">
         <div class="row-fluid <?=($collapsed ? 'hidden' : '')?>">
             <div class="span" 
