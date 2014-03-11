@@ -233,10 +233,10 @@
         } else {
             
             $state = '';
-            if($timeout) {
-                $state = 'fail';                                
-            } elseif($missing->answered !== null) {
-                $state = 'pass';                
+            if($missing->answered !== null) {
+                $state = 'warning';
+            } elseif($timeout) {
+                $state = 'fail'; 
             } elseif($missing->sms_sent) {
                 $state = 'warning';
             } 

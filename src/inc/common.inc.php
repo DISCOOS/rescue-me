@@ -241,9 +241,10 @@
      * @param null|RescueMe\Position $p Position instance
      * @param string $format Position format
      * @param boolean $label Format as label
+     * @param string Label attributes
      */
-    function format_pos($p, $format = 'utm', $label = true) {
-        
+    function format_pos($p, $format = 'utm', $label = true, $attributes = '') {
+
         if(isset($p) === false) {
             $success = false;
             $position = _('Aldri posisjonert');
@@ -334,7 +335,7 @@
         
         if($label) {
             $type = $success ? 'label-success' : 'label-warning';
-            $position = '<span class="label '.$type.' label-position">'. $position. '</span>';
+            $position = '<span class="label ' . $type . ' label-position" ' . $attributes. '>'. $position. '</span>';
         }
         
         return $position;        

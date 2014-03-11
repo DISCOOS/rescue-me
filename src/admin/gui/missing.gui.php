@@ -40,9 +40,11 @@
         $collaped = (Properties::get(Properties::TRACE_BAR_STATE, $user_id) === Properties::COLLAPSED);
         $details = explode(',',Properties::get(Properties::TRACE_DETAILS, $user_id));
         if($missing->last_pos->timestamp>-1) {
-            $position = format_pos($missing->last_pos, $format);
+            $pan_to = 'data-pan-to="'. (count($positions)-1) . '"';
+            $position = format_pos($missing->last_pos, $format, true, $pan_to);
             $located = format_since($missing->last_pos->timestamp);
         } else {
+            $pan_to = '';
             $position = format_pos(null, $format);
         }
         if($missing->sms_sent !== null) {
@@ -70,7 +72,7 @@
     <div class="infos clearfix pull-left">
     <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
         <div class="info pull-left">
-            <label class="label label-info position" data-pan-to="<?= count($positions) ?>">
+            <label class="label label-info label-position" <?=$pan_to?>>
                 <?=_('Siste posisjon')?></label> <?= $position ?>
         </div>
     <? } if (empty($located) === false && in_array(Properties::TRACE_DETAILS_LOCATION_TIME, $details)) { ?>
