@@ -126,10 +126,10 @@ R.prepare = function(element, options) {
         
         var target = '#' + $(this).attr('data-target');
         
-        var pattern = new RegExp(search, 'i');
+        var pattern = new RegExp(search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
         $(target).find('.searchable tr').hide();
         $(target).find('.searchable tr').filter(function() {
-            text = $(this).text();
+            var text = $(this).text();            
             return pattern.test(text);
         }).show();
        
