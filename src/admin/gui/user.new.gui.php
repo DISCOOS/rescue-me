@@ -9,7 +9,7 @@
         'type' => 'text',
         'value' => $value, 
         'label' => _('Full name'),        
-        'attributes' => 'required'
+        'attributes' => 'required autofocus'
     );
     
     $group = array(

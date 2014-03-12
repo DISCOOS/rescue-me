@@ -46,6 +46,8 @@ else
         );
     }
     
+    $fields[2]['attributes'] .= ' autofocus';
+    
     // Prepare label and action url
     $label = _($module->type).': ';
     $action = ADMIN_URI."setup/module/$id";

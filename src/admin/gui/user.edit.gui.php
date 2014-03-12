@@ -16,7 +16,7 @@
         'type' => 'text', 
         'value' => $user->name, 
         'label' => _('Full name'),
-        'attributes' => 'required'
+        'attributes' => 'required autofocus'
     );
     
     $group = array(

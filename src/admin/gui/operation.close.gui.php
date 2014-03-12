@@ -21,7 +21,7 @@
                 'type' => 'text', 
                 'value' => $operation->op_name,
                 'label' => _('Aksjonsnavn'),
-                'attributes' => 'required'
+                'attributes' => 'required autofocus'
             );
             
             $fields[] = array(
