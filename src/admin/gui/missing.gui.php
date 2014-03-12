@@ -48,18 +48,19 @@
         } else {
             $pan_to = '';
             $position = format_pos(null, $format);
-            $located = _('Unkjent');
+            $located = _('Ukjent');
             $located_state = "warning";
         }
 
-        if($top) {
-            insert_trace_bar($missing, $collaped);
-        }
-            
     ?>
     
-    <div class="infos clearfix pull-left">
+    <div class="infos clearfix">
         
+    <? if($top) { insert_trace_bar($missing, $collaped); } ?>
+        
+    </div>
+
+    <div class="infos pull-left">
     <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
         <div class="info pull-left no-wrap">
             <label class="label label-info label-position" <?=$pan_to?>>
@@ -70,16 +71,9 @@
             <label class="label label-info"><?=_('Posisjon mottatt')?></label> 
             <span class="label label-<?=$located_state?>"><?= $located ?></span>
         </div>
-    <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_URL, $details)) { ?>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=_('Sporingslenke')?></label> 
-            <span class="label label-success">
-                <?= str_replace("#missing_id", encrypt_id($missing->id), SMS_LINK); ?>
-            </span>
-        </div>
     <? } ?>
     </div>
-
+    
     <? require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
     <div id="map" class="map"></div>
     <div id="sidebar">
@@ -133,16 +127,31 @@
                 
         </ul>
     </div>
-    
-    <div class="infos clearfix pull-left ">    
-                
-    <?
-        if($top === false) {
-            insert_trace_bar($missing, $collaped);
-        }
-    ?>
 
-    </div>
+    <div class="clearfix"></div>
+    
+    <? if($top === false) { insert_trace_bar($missing, $collaped); } ?>
+    
+    <div class="infos clearfix pull-left">
+        
+    <? if (in_array(Properties::TRACE_DETAILS_REFERENCE, $details)) { ?>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=_('Referanse')?></label> 
+            <span class="label label-<?=empty($missing->op_ref) ? 'warning' : 'success' ?>">
+                <?= empty($missing->op_ref) ? _('Ukjent') : $missing->op_ref ?>
+            </span>
+        </div>
+    <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_URL, $details)) { ?>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=_('Sporingslenke')?></label> 
+            <span class="label label-success">
+                <?= str_replace("#missing_id", encrypt_id($missing->id), SMS_LINK); ?>
+            </span>
+        </div>
+    <? } ?>
+    </div>    
+                
+    
 </div>
 
     <? } ?>    

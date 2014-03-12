@@ -234,6 +234,10 @@ li.position {
     margin-right: auto;
 }
 
+#trace.expanded {
+    min-height: 100px;    
+}
+
 #trace .span
 {
     width: 100px;
@@ -429,16 +433,27 @@ li.position {
 }
 
 /*==========================================
-/ [New Alert] form
+/ [trace/new] form
 /=========================================*/
 
 .new-missing {
-    width: 45%;
+    position: relative; 
+    top: 0px;
+    width: 48%;
 }
 
-#readmore h4 {
+form.well button[type="submit"] {
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
+#readmore {
+    display:none;
     margin: 10px 0px 5px 0px;
 }
+
+
+
 /*==========================================
 / [About] page
 /=========================================*/

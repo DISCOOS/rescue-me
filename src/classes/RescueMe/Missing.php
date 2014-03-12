@@ -26,7 +26,7 @@
     {
         const TABLE = "missing";
         
-        const SELECT = 'SELECT `missing`.*, `missing`.`op_id`, `users`.`user_id`, `op_type`, `op_closed`, `alert_mobile_country`, `alert_mobile`, `users`.`name` FROM `missing`';
+        const SELECT = 'SELECT `missing`.*, `missing`.`op_id`, `users`.`user_id`, `op_type`, `op_ref`, `op_closed`, `alert_mobile_country`, `alert_mobile`, `users`.`name` FROM `missing`';
         
         const JOIN = 'LEFT JOIN `operations` ON `operations`.`op_id` = `missing`.`op_id` LEFT JOIN `users` ON `operations`.`user_id` = `users`.`user_id`';
 
@@ -52,6 +52,7 @@
 
         public $id = -1;
         public $op_id;
+        public $op_ref;
         public $user_id;
         public $user_name;
 

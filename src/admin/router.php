@@ -878,7 +878,8 @@
                     $_POST['m_name'], 
                     $user->id, 
                     $_POST['mb_mobile_country'], 
-                    $_POST['mb_mobile']);
+                    $_POST['mb_mobile'],
+                    $_POST['op_ref']);
                 
                 if (strpos($_POST['sms_text'], '%LINK%')===false)
                         $_POST['sms_text'] .= ' %LINK%';

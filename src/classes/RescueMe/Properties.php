@@ -57,6 +57,7 @@
         const TRACE_BAR_LOCATION = "trace.bar.location";
         
         const TRACE_DETAILS = "trace.details";
+        const TRACE_DETAILS_REFERENCE = "trace.reference";
         const TRACE_DETAILS_LOCATION = "trace.details.location";
         const TRACE_DETAILS_LOCATION_TIME = "trace.details.location.time";
         const TRACE_DETAILS_LOCATION_URL = "trace.details.location.url";
@@ -157,6 +158,7 @@
                 'type' => 'checklist',
                 'default' => '',
                 'options' => array(                   
+                    self::TRACE_DETAILS_REFERENCE => 'Operation reference',
                     self::TRACE_DETAILS_LOCATION => 'Last location',
                     self::TRACE_DETAILS_LOCATION_TIME => 'Last timestamp',
                     self::TRACE_DETAILS_LOCATION_URL => 'Location URL'

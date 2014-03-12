@@ -1,4 +1,4 @@
-<div id="trace">
+<div id="trace" class="<?=($collapsed ? '' : 'expanded')?>">
     <div class="container-fluid pull-left">
         <div class="row-fluid <?=($collapsed ? 'hidden' : '')?>">
             <div class="span" 
