@@ -75,7 +75,7 @@
 
         </div>
         
-        <div class="">
+        <div class="new-missing pull-left">
             
             <fieldset>
                 <legend><?=_('Melding')?></legend>
