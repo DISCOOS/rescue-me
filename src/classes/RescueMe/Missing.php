@@ -209,7 +209,7 @@
             return $this;
         }
 
-
+        
         public static function add($m_name, $m_mobile_country, $m_mobile, $sms_text, $op_id){
 
             if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($op_id) || empty($sms_text)) {
@@ -341,6 +341,27 @@
             return $this->positions;
         }// getPositions
 
+        /**
+         * Get the most accurate position that's newer than a given minutes.
+         * @param type $maxAge How many minutes old.
+         * @return boolean|array
+         */
+        private function getMostAccurate($maxAge = 15) {
+            if($this->id === -1)
+                return false;
+
+            $query = "SELECT `pos_id`, `acc`, `lat`, `lon`, `timestamp` FROM `positions`" .
+                    " WHERE `missing_id` = " . (int) $this->id .
+                    " AND `timestamp` > NOW() - INTERVAL ".(int)$maxAge." MINUTE" .
+                    " ORDER BY `acc` LIMIT 1";
+            
+            $res = DB::query($query);
+
+            if(!$res) return false;
+            $row = $res->fetch_assoc();
+            if ($row === NULL) return false;
+            return $row;
+        }
 
         public function addPosition($lat, $lon, $acc, $alt, $useragent = ''){
 
@@ -357,6 +378,9 @@
                 )
             );
             $this->last_acc = $acc;
+            
+            $best_acc = $this->getMostAccurate();
+            $best_acc = $best_acc['acc'];
 
             // Send SMS 2?
             if((int) $acc > 500 && sizeof($this->positions) > 1){
@@ -399,7 +423,8 @@
             }
 
             // Alert person of concern if an accurate position is logged
-            else if($this->sms_mb_sent == 'false') {
+            // Always send first position and if the accuracy improves by 20%
+            else if(($this->sms_mb_sent == 'false') || $acc < $best_acc * 0.8) {
 
                 if($this->_sendSMS(
                     $this->alert_mobile_country, 
@@ -474,7 +499,7 @@
                 $this->error('Failed to insert position for missing ' . $this->id, $values);
                 
             }            
-
+            
         }// addPosition
 
 
@@ -610,7 +635,7 @@
             
             $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
             
-            $p = format_pos($this->last_pos, $format);
+            $p = format_pos($this->last_pos, $format, false);
             
             $message = str_replace
             (
