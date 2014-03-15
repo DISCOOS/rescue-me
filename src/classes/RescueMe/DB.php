@@ -136,9 +136,7 @@
                 $error = mysqli_connect_error(DB::instance()->mysqli);
                 throw new Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
-            
-            //var_dump($sql);
-            
+                        
             $result = DB::instance()->mysqli->query($sql);
             if($result == true && strpos($sql, "INSERT") !== false) {
                 return DB::instance()->mysqli->insert_id;
@@ -291,8 +289,6 @@
                 {
                     $context['query'] = $query;
                     $context['error'] = DB::error();
-                    var_dump($query);
-                    var_dump($context['error']);
                     Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to insert ' . count($values) . " values into $table", $context);
                 } else {
                     Logs::write(Logs::DB, LogLevel::INFO, 'Inserted ' . count($values) . " values into $table");

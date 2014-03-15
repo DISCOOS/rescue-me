@@ -320,7 +320,6 @@
                         $lon['min'],
                         $lon['sec']);
                     $format = '%1$02d° %2$02d \'%3$02.0f\'\'';
-                    var_dump($lat);
                     $lat = sprintf($format,
                         $lat['deg'],
                         $lat['min'],

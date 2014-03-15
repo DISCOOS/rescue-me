@@ -188,9 +188,7 @@
             if(empty($where) === false) {
                 $query .= ' WHERE (' .implode(') AND (', $where) . ')';
             }           
-            
-            //var_dump($query);
-            
+                        
             $res = DB::query($query);
 
             if (DB::isEmpty($res)) return false;
