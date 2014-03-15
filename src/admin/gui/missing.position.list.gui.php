@@ -78,13 +78,10 @@
 
 
             var infowindow_".$i." = new google.maps.InfoWindow({
-                content: '<u>Posisjon:</u><br /> '+
-                         '".$dms['lat']['deg']."&deg; ".$dms['lat']['min']."\' ".$dms['lat']['sec']."\'\'<br />'+
-                         '".$dms['lon']['deg']."&deg; ".$dms['lon']['min']."\' ".$dms['lon']['sec']."\'\'<br /><br />'+
-                         '<u>".Properties::text(Properties::MAP_DEFAULT_FORMAT, $user_id).":</u><br /> '+
-                         '".$utm."<br /><br />'+
+                content: '<u>".Properties::text(Properties::MAP_DEFAULT_FORMAT, $user_id).":</u><br /> '+
+                         '".  addslashes($utm)."<br /><br />'+
                                          '<u>H&oslash;yde:</u> ".$value->alt." moh<br />'+
-                         '<u>N&oslash;yaktighet:</u> ".$value->acc." meter'
+                         '<u>N&oslash;yaktighet:</u> ± ".$value->acc." meter'
             });
 
             google.maps.event.addListener(marker_".$i.", 'click', function() {
