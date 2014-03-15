@@ -81,7 +81,7 @@
                 content: '<u>Posisjon:</u><br /> '+
                          '".$dms['lat']['deg']."&deg; ".$dms['lat']['min']."\' ".$dms['lat']['sec']."\'\'<br />'+
                          '".$dms['lon']['deg']."&deg; ".$dms['lon']['min']."\' ".$dms['lon']['sec']."\'\'<br /><br />'+
-                         '<u>UTM:</u><br /> '+
+                         '<u>".Properties::text(Properties::MAP_DEFAULT_FORMAT, $user_id).":</u><br /> '+
                          '".$utm."<br /><br />'+
                                          '<u>H&oslash;yde:</u> ".$value->alt." moh<br />'+
                          '<u>N&oslash;yaktighet:</u> ".$value->acc." meter'
