@@ -310,6 +310,25 @@
             return $res;
 
         }// update
+        
+        // TODO: Merge with getPositions()!
+        public function getAjaxPositions($num) {
+            if($this->id === -1)
+                return false;
+            
+            $query = "SELECT `pos_id` FROM `positions` WHERE `missing_id` = " . (int) $this->id
+                    . " ORDER BY `timestamp` LIMIT ".$num.",100";
+            $res = DB::query($query);
+
+            if(!$res) return false;
+            
+            $positions = array();
+            while($row = $res->fetch_assoc()){
+                $positions[] = new Position($row['pos_id']);
+            }
+            
+            return $positions;
+        } // getAjaxPositions
 
 
         public function getPositions(){
@@ -346,7 +365,7 @@
          * @param type $maxAge How many minutes old.
          * @return boolean|array
          */
-        private function getMostAccurate($maxAge = 15) {
+        public function getMostAccurate($maxAge = 15) {
             if($this->id === -1)
                 return false;
 

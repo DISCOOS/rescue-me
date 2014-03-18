@@ -78,53 +78,10 @@
     <div id="map" class="map"></div>
     <div id="sidebar">
         <h4><?=_("Posisjoner &le; 1km")?></h4>
-        <ul class="unstyled">
-                <?
-        $i = 0;
-        $displayed = false;
-
-        foreach ($positions as $key=>$value) {
-            if ($value->acc < 1000) { 
-                        $displayed = true;
-                        $timestamp = date('Y-m-d H:i:s', strtotime($value->timestamp));
-                        ?>
-                <li class="position text-left clearfix well well-small" data-pan-to="<?= $i ?>">
-                    <span><?=format_pos($value, $format, false)?> &plusmn; <?= $value->acc ?> m</span>
-                    <time datetime="<?= $timestamp ?>"><?= format_since($value->timestamp) ?></time>
-                </li>
-            <?
-            }
-            $i++;
-        } 
-            if (!$displayed) {
-                echo '<li class="position clearfix well well-small">'._('Ingen').'</li>';
-            }
-        ?>
+        <ul class="unstyled" id="under1km">
         </ul>
         <h4><?=_("Posisjoner &ge; 1km")?></h4>
-        <ul class="unstyled">
-        <?
-        $i = 0;
-            $displayed = false;
-        foreach ($positions as $key=>$value) {
-            if ($value->acc >= 1000) { 
-                $displayed = true;
-                $timestamp = date('Y-m-d H:i:s', strtotime($value->timestamp)); 
-        ?>
-                <li class="position text-left clearfix well well-small" data-pan-to="<?= $i ?>">
-                    <span><?=format_pos($value, $format, false)?> &plusmn; <?= $value->acc ?> m</span>
-                    <time datetime="<?= $timestamp ?>"><?= format_since($value->timestamp) ?></time>
-                </li>
-        <?
-            }
-            $i++;
-        }
-        
-        if ($displayed === false) {
-            echo '<li class="position clearfix well well-small">'._('Ingen').'</li>';
-        }
-        ?>
-                
+        <ul class="unstyled" id="over1km">               
         </ul>
     </div>
 
