@@ -3,7 +3,78 @@
     use Psr\Log\LogLevel;    
     use RescueMe\Log\Logs;    
     use RescueMe\Properties;
+    
+    function dec_to_dms($dec)
+    {
+        // Converts decimal longitude / latitude to DMS
+        // ( Degrees / minutes / seconds ) 
+        // This is the piece of code which may appear to 
+        // be inefficient, but to avoid issues with floating
+        // point math we extract the integer part and the float
+        // part by using a string function.
 
+        $vars = explode(".", $dec);
+        $deg = $vars[0];
+        $tempma = "0." . $vars[1];
+
+        $tempma = (float)$tempma * 3600;
+        $min = floor($tempma / 60);
+        $sec = round($tempma - ($min * 60));
+        $des = $tempma - ($min * 60) - $sec;
+        $des = explode('.', $des);
+        $des = isset($des[1]) ? (int)$des[1] : 0;
+
+        return array("deg" => $deg, "min" => $min, "sec" => $sec, "des" => $des);
+    }
+    
+    
+    function is_ajax_request() {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }        
+    
+    
+    /**
+     * Converts ajax request into response.
+     * 
+     * Returns json string with structure {html: 'string', options: 'array'}
+     * 
+     * @param string $resource Resource name
+     * @param string $index Resource index
+     * @param array $context Resouce context
+     * @return string
+     */
+    function ajax_response($resource, $index = '', $context = '') {
+        
+        if($index) {
+            $index = '.'.$index;
+        }
+        
+        return require "ajax/$resource$index.ajax.php";
+        
+    }
+    
+    function create_paginator($current, $total, $user_id) {
+        
+        $options['size'] =  'normal';
+        $options['alignment'] = 'center';
+        $options['currentPage'] = $current;
+        $options['totalPages'] = $total;
+        
+        return $options;
+    }
+    
+    
+    function create_ajax_response($html, $options = array()) {
+        
+        $response = array();
+        $response['html'] = $html;
+        $response['options'] = $options;
+
+        return json_encode($response);
+        
+    }
+    
+    
     function input_get_int($key, $default = false) {
         $value = filter_input(INPUT_GET, $key, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
         return $value === false ? $default : $value;
@@ -39,6 +110,11 @@
         return $value === false ? $default : $value;
     }
 
+    function input_get_string($key, $default = false) {
+        $value = filter_input(INPUT_GET, $key, FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+    
     function assert_types($values)
     {
         foreach($values as $type => $value)
@@ -68,7 +144,7 @@
             if($message) {
                 $message .= ". ";
             }
-            Logs::write($log, $level, $message. "Missing values: ". implode(", ", $missing));
+            Logs::write($log, $level, $message. sprintf(MISSING_VALUES_S, implode(", ", $missing)));
         }
         return $valid;
     }
@@ -122,28 +198,6 @@
         }
         return $values;
     }
-    
-    
-    function modules_exists($module, $_ = null) {
-        
-        $missing = array();
-        
-        foreach(func_get_args() as $module) {
-            if(!RescueMe\Module::exists($module))
-            {
-                $missing[] = $module;
-            }
-        }    
-        
-        if(defined('USE_SILEX') && USE_SILEX)
-        	return empty($missing);
-        
-        if(!empty($missing)) {
-            insert_errors(_("Missing modules").' ( <a href="'.ADMIN_URI.'setup">'. _("Configure"). "</a>): ", $missing);
-        }
-        
-        return empty($missing);
-    }    
     
     
     function is_function($value) {
@@ -211,20 +265,20 @@
     function format_since($timestamp) {
         if(isset($timestamp)) {
             $ts = (int)(time() - strtotime($timestamp));
-            $since = "~"._("sec");
+            $since = "~".UNIT_SECOND;
             if($ts > 0) {
                 if($ts < 60) {
-                    $since = "$ts "._("sec");
+                    $since = "$ts ".UNIT_SECOND;
                 }
                 else if($ts < 2*60*60) {
-                    $since = (int)($ts/60)." "._("min");                        
+                    $since = (int)($ts/60)." ".UNIT_MINUTE;
                 }
                 else {
                     $since = format_dt($timestamp);
                 }
             }        
         } else {
-            $since = _('Ukjent');
+            $since = UNKNOWN;
         }
         return $since;
     }
@@ -247,7 +301,7 @@
 
         if(isset($p) === false) {
             $success = false;
-            $position = _('Aldri posisjonert');
+            $position = UNKNOWN;
         } else {
             $success = true;
             switch($format) {
@@ -318,7 +372,6 @@
                         $lon['min'],
                         $lon['sec']);
                     $format = '%1$02d° %2$02d \'%3$02.0f\'\'';
-                    var_dump($lat);
                     $lat = sprintf($format,
                         $lat['deg'],
                         $lat['min'],

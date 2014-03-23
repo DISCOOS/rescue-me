@@ -8,6 +8,11 @@
     # Rewrite URLs like "/..." to "index.php?view=..."
     #RewriteRule ^(.*)$ index.php?view=$1 [L,QSA]
     
+    # JSON requests (locale etc)
+    RewriteCond %{SCRIPT_FILENAME} !-d
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteRule ^json/locale.json$ locale/translate.json.php [L,QSA]
+
     # Admin-page (edit, delete, details: with id)
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  

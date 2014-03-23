@@ -1,6 +1,6 @@
       <div class="jumbotron">
-        <h1>Kom i gang</h1>
-        <p class="lead">Bruk savnedes mobiltelefon for et enklere oppdrag.</p>
-        <a class="btn btn-large btn-danger" href="<?= ADMIN_URI ?>missing/new">Start sporing</a>
-        <a class="btn btn-large btn-info" href="<?= ADMIN_URI ?>missing/list">Se aktive sporinger</a>
+        <h1><?=T_('Get started')?></h1>
+        <p class="lead"><?=T_('Use mobile phone to trace persons fast and easy.')?></p>
+        <a class="btn btn-large btn-danger" href="<?= ADMIN_URI ?>missing/new"><?=START_NEW_TRACE?></a>
+        <a class="btn btn-large btn-info" href="<?= ADMIN_URI ?>missing/list"><?=SEE_ACTIVE_TRACES?></a>
       </div>

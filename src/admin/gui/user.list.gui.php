@@ -18,7 +18,7 @@
     }
 ?>
 
-<h3><?=_("Users")?></h3>
+<h3><?=T_("Users")?></h3>
 
 <ul id="tabs" class="nav nav-tabs">
 <? foreach($titles as $state => $title) { $states[] = $state; ?>
@@ -35,9 +35,9 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><?=_("Name")?></th>
-                    <th><?=_("Mobile")?></th>
-                    <th class="hidden-phone"><?=_("E-mail")?></th>
+                    <th><?=T_("Name")?></th>
+                    <th><?=T_("Mobile")?></th>
+                    <th class="hidden-phone"><?=T_("E-mail")?></th>
                     <th>
                         <input type="text" 
                                class="input-medium search-query pull-right" 

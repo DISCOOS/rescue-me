@@ -107,7 +107,7 @@
         if(typeof google !== "undefined") {
             initialize();
         } else {
-            $("#map").html('<p class="map"><?=_("Google Maps not loaded")?></p>');
+            $("#map").html('<p class="map"><?=T_("Google Maps not loaded")?></p>');
         }      
     });
     

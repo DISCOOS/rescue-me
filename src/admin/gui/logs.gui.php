@@ -15,7 +15,7 @@
     
 ?>
 
-<h3><?=_("Logs")?></h3>
+<h3><?=T_("Logs")?></h3>
 
 <ul id="tabs" class="nav nav-tabs">
 <? foreach($titles as $name => $title) { $names[] = $name; ?>
@@ -29,20 +29,20 @@
             <thead>
                 <tr>
         <? if($name === Logs::ALL) { ?>                    
-                    <th width="12%"><?=_("Dato")?></th>
-                    <th width="8%"><?=_("Log")?></th>
+                    <th width="12%"><?=DATE?></th>
+                    <th width="8%"><?=LOG?></th>
         <? } else { ?>                    
-                    <th width="12%" colspan="2"><?=_("Dato")?></th>
+                    <th width="12%" colspan="2"><?=DATE?></th>
         <? } ?>                                        
-                    <th width="8%" class="hidden-phone"><?=_("Level")?></th>
-                    <th><?=_("Message")?></th>
-                    <th width="10%"><?=_("User")?></th>
+                    <th width="8%" class="hidden-phone"><?=LEVEL?></th>
+                    <th><?=MESSAGE?></th>
+                    <th width="10%"><?=USER?></th>
                     <th width="10%">
                         <input type="text" 
                                class="input-medium search-query pull-right" 
                                data-target="<?=$name?> .searchable"
                                data-source="<?=$name?> .pagination"
-                               placeholder="Search">
+                               placeholder="<?=SEARCH?>">
                     </th>            
                 </tr>
             </thead>        

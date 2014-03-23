@@ -36,7 +36,7 @@
 
 <? if($lines == false) { ?>
 
-        <tr><td colspan="6"><?=_("Ingen loggføringer funnet")?></td></tr>
+        <tr><td colspan="6"><?=NONE_FOUND?></td></tr>
 
 <? } else { 
     
@@ -52,7 +52,7 @@
 <? } ?>                                        
             <td class="hidden-phone"><?= $line['level'] ?></td>
             <td><?= $line['message'] ?></td>
-            <td colspan="2"><?= empty($line['user']) ? _('System') : $line['user'] ?></td>
+            <td colspan="2"><?= empty($line['user']) ? T_('System') : $line['user'] ?></td>
         </tr>
 <? }} 
 

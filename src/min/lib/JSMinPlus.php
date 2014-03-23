@@ -6,7 +6,7 @@
  * Minifies a javascript file using a javascript parser
  *
  * This implements a PHP port of Brendan Eich's Narcissus open source javascript engine (in javascript)
- * References: http://en.wikipedia.org/wiki/Narcissus_(JavaScript_engine)
+ * References: http://en.wikipedia.org/wiki/NarcissusT_(JavaScript_engine)
  * Narcissus sourcecode: http://mxr.mozilla.org/mozilla/source/js/narcissus/
  * JSMinPlus weblog: http://crisp.tweakblogs.net/blog/cat/716
  *

@@ -223,30 +223,32 @@ li.position {
     text-decoration: underline;
 }
 
-#trace {
+.trace {
     position: relative;
+    left: -30px;
+    float: left;
     width: 700px;
+    min-width: 400px;
     max-width: 700px;
     min-height: 40px;
-    padding: 10px 25px;
+    padding: 10px;
     text-align: center;
-    margin-left: -50px;
-    margin-right: auto;
 }
 
-#trace.expanded {
+.trace.expanded {
     min-height: 100px;    
 }
 
-#trace .span
+.trace .span
 {
+    float: left;
     width: 100px;
     min-height: 0px;
     text-align: center;
     margin-left:0 !important;
 }
 
-#trace .icon
+.trace .icon
 {
     width: 14px;
     height: 14px;
@@ -255,7 +257,7 @@ li.position {
 }
 
 
-#trace .trace-bar
+.trace .trace-bar
 {
     position: relative;
     left: -35px;
@@ -264,52 +266,52 @@ li.position {
     border-bottom: 0.5em solid #ddd;
 }
 
-#trace .trace-bar.pass 
+.trace .trace-bar.pass 
 {
     border-bottom: 0.5em solid #468847;
 }
 
-#trace .trace-bar.warning
+.trace .trace-bar.warning
 {
     border-bottom: 0.5em solid #f89406;
 }
 
-#trace .trace-bar.fail
+.trace .trace-bar.fail
 {
     border-bottom: 0.5em solid #da2727;
 }
 
-#trace :first-child > .trace-bar 
+.trace :first-child > .trace-bar 
 {
     border: 0px;
 }
 
-#trace .icon.alarm
+.trace .icon.alarm
 {
     background-position: -22px -146px;
 }
 
-#trace .icon.sent 
+.trace .icon.sent 
 {
     background-position: -70px -1px;
 }
 
-#trace .icon.delivered
+.trace .icon.delivered
 {
     background-position: -94px -122px;
 }
 
-#trace .icon.response
+.trace .icon.response
 {
     background-position: -94px -146px;
 }
 
-#trace .icon.located
+.trace .icon.located
 {
     background-position: -310px -26px;
 }
 
-#trace .trace-bar > .icon  {
+.trace .trace-bar > .icon  {
     position: relative;
     float: right;
     left: 24px;
@@ -326,81 +328,81 @@ li.position {
     background-image: url("../img/glyphicons-halflings-white.png");
 }
 
-#trace .trace-bar.pass > .icon {
+.trace .trace-bar.pass > .icon {
     background-color:  #468847;
 }
 
-#trace .trace-bar.pass > .icon.alarm {
+.trace .trace-bar.pass > .icon.alarm {
     background-position: -22px -142px;
 }
 
-#trace .trace-bar.pass > .icon.sent {
+.trace .trace-bar.pass > .icon.sent {
     background-position: -70px 2px;
 }
 
-#trace .trace-bar.pass > .icon.delivered {
+.trace .trace-bar.pass > .icon.delivered {
     background-position: -94px -118px;
 }
 
-#trace .trace-bar.pass > .icon.response {
+.trace .trace-bar.pass > .icon.response {
     background-position: -94px -142px;
 }
 
-#trace .trace-bar.pass > .icon.located {
+.trace .trace-bar.pass > .icon.located {
     background-position: -310px -22px;
 }
 
-#trace .trace-bar.warning > .icon {
+.trace .trace-bar.warning > .icon {
     background-color:  #f89406;
     background-position: -94px -94px;
 }
 
-#trace .trace-bar.warning > .icon.alarm {
+.trace .trace-bar.warning > .icon.alarm {
     background-position: -22px -142px;
 }
 
-#trace .trace-bar.warning > .icon.sent {
+.trace .trace-bar.warning > .icon.sent {
     background-position: -70px 2px;
 }
 
-#trace .trace-bar.warning > .icon.delivered {
+.trace .trace-bar.warning > .icon.delivered {
     background-position: -94px -118px;
 }
 
-#trace .trace-bar.warning > .icon.response {
+.trace .trace-bar.warning > .icon.response {
     background-position: -94px -142px;
 }
 
-#trace .trace-bar.warning > .icon.located {
+.trace .trace-bar.warning > .icon.located {
     background-position: -310px -22px;
 }
 
-#trace .trace-bar.fail > .icon {    
+.trace .trace-bar.fail > .icon {    
     background-color: #da2727;
     background-position: -310px 2px;
 }
 
-#trace .trace-bar.fail > .icon.alarm {
+.trace .trace-bar.fail > .icon.alarm {
     background-position: -22px -142px;
 }
 
-#trace .trace-bar.fail > .icon.sent {
+.trace .trace-bar.fail > .icon.sent {
     background-position: -70px 2px;
 }
 
-#trace .trace-bar.fail > .icon.delivered {
+.trace .trace-bar.fail > .icon.delivered {
     background-position: -94px -118px;
 }
 
-#trace .trace-bar.fail > .icon.response {
+.trace .trace-bar.fail > .icon.response {
     background-position: -94px -142px;
 }
 
-#trace .trace-bar.fail > .icon.located {
+.trace .trace-bar.fail > .icon.located {
     background-position: -310px -22px;
 }
 
-#trace .trace-details
+.trace .trace-details
 {
     margin-top: 15px;
 }
@@ -442,7 +444,7 @@ li.position {
     width: 48%;
 }
 
-form.well button[type="submit"] {
+form.well button[type="submit"].new-missing {
     margin-right: 1em;
     margin-bottom: 1em;
 }

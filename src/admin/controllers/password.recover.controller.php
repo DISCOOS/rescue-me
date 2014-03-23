@@ -8,8 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ".ADMIN_URI.($_SESSION['logon'] ? 'user/list' : 'logon'));
         exit();
     }
-	$TWIG['message'] = array('header' => _('Could not reset password:'),
-							 'body' => RescueMe\DB::errno() ? RescueMe\DB::error() : _('User does not exist')
+	$TWIG['message'] = array('header' => T_('Could not reset password:'),
+							 'body' => RescueMe\DB::errno() ? RescueMe\DB::error() : T_('User does not exist')
 							 );
 }   
 

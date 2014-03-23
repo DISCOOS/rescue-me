@@ -20,7 +20,7 @@
                 'id' => 'op_name',
                 'type' => 'text', 
                 'value' => $operation->op_name,
-                'label' => _('Aksjonsnavn'),
+                'label' => OPERATION_NAME,
                 'attributes' => 'required autofocus'
             );
             
@@ -28,8 +28,8 @@
                 'id' => 'op_ref',
                 'type' => 'text', 
                 'value' => $operation->op_ref, 
-                'label' => _('Aksjonsreferanse'),
-                'placeholder' => _('SAR- eller AMIS-nr'),
+                'label' => REFERENCE,
+                'placeholder' => REFERENCE_EXAMPLES,
                 'attributes' => ''
             );
                         
@@ -37,8 +37,8 @@
                 'id' => 'op_comments',
                 'type' => 'text', 
                 'value' => $operation->op_comments, 
-                'label' => _('Kommentarer'),
-                'placeholder' => _('Kort beskrivelse'),
+                'label' => COMMENTS,
+                'placeholder' => SHORT_DESCRIPTION,
                 'attributes' => ''
             );            
             
@@ -52,12 +52,12 @@
                 'type' => 'select', 
                 'value' => insert_options(
                     array(
-                        _('Mann') => _('Mann'), 
-                        _('Dame') => _('Dame')
+                        MAN => MAN, 
+                        WOMAN => WOMAN
                     ), 
                     null, 
                     false), 
-                'label' => _('Kjønn'),
+                'label' => GENDER,
                 'class' => 'span3',
                 'attributes' => 'required'
             );
@@ -65,20 +65,20 @@
                 'id' => 'm_age',
                 'type' => 'num', 
                 'value' => '', 
-                'label' => _('Alder'),
+                'label' => AGE,
                 'class' => 'span3',
                 'attributes' => 'required pattern="[0-9]*"'
             );    
             $fields[] = $group;                                    
             
             if(!empty($operation->op_closed)) {
-                $actions['message'] = _("Merk: Dette vil gjenåpne operasjonen");
+                $actions['message'] = NOTE_THIS_WILL_REOPEN_OPERATION;
             }
             else {
-                $actions['message'] = _("Merk: Dette vil slette navn og mobilnummer til savnede permanent (av personvernhensyn).");
+                $actions['message'] = T_("Note: This will permanently delete name and mobile numbers (privacy conserns)");
             }
             
-            insert_form("user", _("Avslutt operasjon"), $fields, ADMIN_URI."operation/close/$operation->id", $actions);
+            insert_form("user", CLOSE_OPERATION, $fields, ADMIN_URI."operation/close/$operation->id", $actions);
             
             if (is_numeric($missing->last_pos->lat)) {
             ?>
@@ -98,5 +98,5 @@
             }
         }
     } else { ?> 
-<h3 class="pagetitle"><?= _("Avslutt operasjon") ?></h3>
-<?  insert_alert('Ingen registrert'); } ?>
+<h3 class="pagetitle"><?= CLOSE_OPERATION ?></h3>
+<?  insert_alert(NONE_FOUND); } ?>

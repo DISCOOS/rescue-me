@@ -164,7 +164,7 @@
             }
             catch(\Exception $e)
             {
-                return _($e->message());
+                return $e->message();
             }
             
             $module = prepare_values(Module::$fields, array($type, $impl, json_encode($config)));
@@ -175,19 +175,15 @@
             
             $instance = $module->newInstance();
             
-            $valid = $instance === FALSE ? _("Failed to create instance of module $impl") : TRUE;
+            $valid = $instance === FALSE ? sprintf(FAILED_TO_CREATE_INSTANCE_OF_MODULE_S,$impl) : TRUE;
             
-            if($valid === TRUE) {
-                if($instance instanceof SMS\Provider) {
-                    if($instance->validate() === FALSE) {
-                        $valid = $instance->error();
-                    }
-                }                
+            if($valid === TRUE && ($instance instanceof SMS\Provider) && $instance->validate() === FALSE) {
+                $valid = $instance->error();
             }
             
-            return $valid;            
+            return $valid;
             
-        }// set
+        }// verify
         
         
         

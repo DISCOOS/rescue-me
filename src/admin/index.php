@@ -1,8 +1,6 @@
 <?php
     
-require('../config.php');
-require(APP_PATH_INC.'locale.php'); // TODO: Move to ../config.php?
-
+require('config.php');
 
 use RescueMe\User;
        
@@ -18,8 +16,8 @@ if(defined('USE_SILEX') && USE_SILEX) {
         'APP_ADMIN_URI' => ADMIN_URI,
         'GOOGLE_API_KEY' => GOOGLE_API_KEY,
         'LOGIN' => $_SESSION['logon'],
-        'SMS_TEXT_MISSING' => SMS_TEXT,
-        'SMS_TEXT_GUIDE'  => SMS2_TEXT
+        'SMS_TEXT_MISSING' => ALERT_SMS_TRACE,
+        'SMS_TEXT_GUIDE'  => ALERT_SMS_2
 	);
     
 	$app = new Silex\Application();
@@ -55,7 +53,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
 		if(file_exists($controller))
 			require_once($controller);
         
-		$TWIG['VIEW'] = _('Dashboard');
+		$TWIG['VIEW'] = T_('Dashboard');
 	    return $app['twig']->render("$module.twig", $TWIG);
         
 	})->value('module', 'start')->assert('module', "logon|start|logout");
@@ -76,7 +74,8 @@ if(defined('USE_SILEX') && USE_SILEX) {
 	$app->run();
 	
 	die();
-} else 
+    
+} else {                   
     
     require('router.php');
 
@@ -95,7 +94,8 @@ if(defined('USE_SILEX') && USE_SILEX) {
         $num_pending = '';
     }
     
-?>
+}?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -109,7 +109,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
         <? if(GOOGLE_API_KEY !== '') { ?>
         <script src="//maps.googleapis.com/maps/api/js?key=<?=GOOGLE_API_KEY?>&sensor=false"></script>
         <? } ?>
-        <script src="<?=APP_URI?>js/admin.js"></script>            
+        <script type="text/javascript" src="<?=APP_URI?>js/admin.js"></script>            
     </head>
 
     <body>
@@ -125,7 +125,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
 
              ?>
                     <li class="dropdown visible-phone">
-                        <a id="drop1" class="dropdown-toggle" data-toggle="dropdown"><?= _('Sporing') ?><b class="caret"></b></a>
+                        <a id="drop1" class="dropdown-toggle" data-toggle="dropdown"><?= TRACE ?><b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                             <? if($user->allow('read', 'operations') || $user->allow('read', 'operations.all')) { ?>
                             <li id="new-missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/new"><b class="icon icon-plus-sign"></b><?= NEW_TRACE ?></a></li>
@@ -146,12 +146,12 @@ if(defined('USE_SILEX') && USE_SILEX) {
                     <li class="dropdown">
                         <a id="drop3" class="dropdown-toggle no-wrap" data-toggle="dropdown">
                             <span class="visible-desktop"><?= $user->name ?><b class="caret"></b></span>
-                            <span class="visible-phone"><?= _('System') ?><b class="caret"></b></span>
+                            <span class="visible-phone"><?= SYSTEM ?><b class="caret"></b></span>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                             <? if ($user->allow('write', 'user', $id) || $user->allow('write', 'user.all')) { ?>
-                            <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/edit/<?=$user->id?>"><b class="icon icon-user"></b><?=_('Konto')?></a></li>
-                            <li id="passwd"><a role="menuitem" href="<?= ADMIN_URI ?>password/change/<?=$user->id?>"><b class="icon icon-lock"></b><?=_('Endre passord')?></a></li>
+                            <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/edit/<?=$user->id?>"><b class="icon icon-user"></b><?=ACCOUNT?></a></li>
+                            <li id="passwd"><a role="menuitem" href="<?= ADMIN_URI ?>password/change/<?=$user->id?>"><b class="icon icon-lock"></b><?=CHANGE_PASSWORD?></a></li>
                             <li class="divider"></li>
                             <? } if ($user->allow('write', 'user.all')) { 
                                 insert_item(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign"); ?>
@@ -159,9 +159,9 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <? } if ($user->allow('read', 'user.all')) { ?>
                             <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?=USERS?> <span class="badge badge-important"><?= $num_pending ?></span></a></li>
                             <? } if ($user->allow('read', 'roles')) { ?>
-                            <li id="roles"><a role="menuitem" href="<?= ADMIN_URI ?>role/list"><b class="icon icon-th-list"></b><?= _('Roles') ?></a></li>
+                            <li id="roles"><a role="menuitem" href="<?= ADMIN_URI ?>role/list"><b class="icon icon-th-list"></b><?=ROLES?></a></li>
                             <? } if ($user->allow('read', 'logs')) { ?>
-                            <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?= _('Logs') ?></a></li>
+                            <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?= LOGS ?></a></li>
                             <li class="divider"></li>
                             <? } if ($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) { ?>
                             <li id="settings"><a href="<?= ADMIN_URI ?>setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
@@ -187,7 +187,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
                 if($logon) {
                     
                     // Insert modal confirmations
-                    insert_dialog_confirm("confirm", "Bekreft", "Vil du logge ut?", ADMIN_URI."logout");
+                    insert_dialog_confirm("confirm", CONFIRM, DO_YOU_WANT_TO_LOGOUT, ADMIN_URI."logout");
                     
                 }                
                 

@@ -1,3 +1,10 @@
+// Initialize i18n support (async)
+i18n.init({ 
+    useLocalStorage: false,
+    getAsync: false,
+    resGetPath: R.admin.url+'json/locale.json'
+});
+
 $(document).ready(function() {
     
     R.options = R.options || {
@@ -61,7 +68,7 @@ R.prepare = function(element, options) {
         else {
             flagImg = document.createElement("img");
         }
-        flagImg.src = "../img/flags/" + this.value + ".png"; //src of img attribute
+        flagImg.src = R.app.url+"img/flags/" + this.value + ".png"; //src of img attribute
         document.getElementById("flag").appendChild(flagImg); //append to body
     });
 
@@ -87,10 +94,12 @@ R.prepare = function(element, options) {
     });
 
     // Add common RescueMe behaviors to modals
-    $(element).find('[data-toggle="modal"]').click(function() {
+    $(element).find('[data-toggle="modal"]').click(function(e) {
+        
+        var target = $(this);
 
         // Class all visible modals
-        $('.modal').each(function() {
+        target.find('.modal').each(function() {
             if (typeof $(this).modal === 'function') {
                 // Hide this modal?
                 if ($(this).is(":visible") === true) {
@@ -98,9 +107,20 @@ R.prepare = function(element, options) {
                 }
             }
         });
+        
+        var href = target.attr('href');
+        var id = target.attr('data-target');
+        if(id !== undefined && href.indexOf('#') !== 0) {
+            
+            // Cancel default behavior
+            e.preventDefault();
+            
+            R.modal.load(href, id);
+            
+        } 
 
         // Update modal header
-        $('#dialog-label').html($(this).attr("data-title"));
+        target.find('#dialog-label').html($(this).attr("data-title"));
 
     });
 
@@ -117,6 +137,9 @@ R.prepare = function(element, options) {
         
         // Prevent backdrop
         $(this).attr("data-backdrop", false);
+        
+        // Prevent remote content from loading
+        $(this).attr("data-remote", false);
     });
 
     // Add table filtering capability. Add class "searchable" to tbody element.
@@ -188,6 +211,29 @@ R.ajax = function(url, element, data, done) {
 
 };
 
+R.modal = {};
+R.modal.load = function(url, target, data) {
+    
+    data = data || {};
+    var parent = target;
+    
+    R.ajax(url, parent, data, function(data) {
+
+        try {
+            var response = JSON.parse(data);
+        } catch ($e) {
+            var response = {html: data, options: {}};
+        }
+
+        if(response !== false) {
+            // Insert elements in DOM and prepare                    
+            var target = $(parent).find('.modal-body');
+            target.html(response.html);
+            R.prepare(target, response.options);
+        }
+    });
+};
+
 // Used in operation.close.gui.php to get the place of a location
 R.geoname = function(lat, lon, callback) {
     var geocoder = new google.maps.Geocoder();
@@ -247,13 +293,16 @@ R.loader = function(target) {
 
 R.toTab = function(tabs) {
     var tab;
+    var hash = '';
     var url = window.location.href;
     var index = url.indexOf("#");
     if(index === -1) {
-        tab = ':first';
+        tab = ':first';        
     } else {
-        tab = '[href="#'+url.substr(index + 1)+'"]';
+        hash = url.substr(index + 1);
+        tab = '[href="#'+hash+'"]';
     }
+    location.hash = hash;
     $('#'+tabs+' a'+tab).click();
 };
 
@@ -270,6 +319,7 @@ R.tabs = function(tabs) {
             href = href.substr(0,index);
         }   
         
+        location.hash = id;        
         var target = '#'+id;
         var data = { name: id };
         var list = $(target).find('.pagination'); 
@@ -376,5 +426,4 @@ R.paginator.search = function(paginator, page, filter) {
 
         }
     });    
-}
-
+};

@@ -71,10 +71,10 @@
                     Callback::PROPERTY => Callback::URL.\RescueMe\User::currentId(),
                 ),
                 array(
-                    "api_id" => _("API ID"),
-                    "user" => _("User"),
-                    "password" => _("Password"),
-                    "callback" => _("Callback"),
+                    "api_id" => API_ID,
+                    "user" => USER,
+                    "password" => PASSWORD,
+                    "callback" => CALLBACK,
                 ),
                 array(
                     "user",

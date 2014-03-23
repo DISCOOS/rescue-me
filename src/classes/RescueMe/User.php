@@ -165,11 +165,11 @@
          */
         public static function getTitles() {
             return array(
-                User::ACTIVE => _('Active'),
-                User::PENDING => _('Pending'),
-                User::DISABLED => _('Disabled'),
-                User::DELETED => _('Deleted'),
-                User::ALL => _('All')
+                User::ACTIVE => ACTIVE,
+                User::PENDING => PENDING,
+                User::DISABLED => DISABLED,
+                User::DELETED => DELETED,
+                User::ALL => ALL
             );            
         }        
         
@@ -350,7 +350,7 @@
 
             if(DB::isEmpty($res)) 
             {
-                return User::error(_("User not found. Recovery password not sent."), func_get_args());                
+                return User::error(USER_NOT_FOUND.' '.RECOVERY_PASSWORD_NOT_SENT, func_get_args());                
             }
             
             $row = $res->fetch_row();
@@ -359,15 +359,15 @@
             
             $password = $user->reset();
             
-            $message = "$password\nYour " . APP_URL . " password.";
+            $message = $password."\n".sprintf(YOUR_SINGLE_USE_S_PASSWORD, TITLE);
             
             $res = $user->send($message, $methods);
             
             if($res !== false) {
-                return User::log(_("Sent recovery password to user {$row[0]}"));
+                return User::log(sprintf(RECOVERY_PASSWORD_SENT_TO_S, $row[0]));
             } 
             
-            return User::error(_("Failed to send recovery password to user {$row[0]}"), func_get_args());
+            return User::error(sprintf(FAILED_TO_SEND_RECOVERY_PASSWORD_TO_S,$row[0]), func_get_args());
             
             
         }// recover
@@ -408,10 +408,10 @@
             }
             
             if($res !== false) {
-                return User::log(_("User {$user->id} created"));
+                return User::log(sprintf(USER_S_CREATED,$user->id));
             } 
             
-            return User::error(_("Failed to create user"), func_get_args());
+            return User::error(FAILED_TO_CREATE_USER, func_get_args());
             
             
         }// create
@@ -608,7 +608,8 @@
          */
         public function approve() {
             if ($this->enable()) {
-                $this->send(_("Your user has been approved.")." "._("Log in to")." ".APP_URL, array('sms', 'email'));
+                $message = sprintf(YOUR_S_ACCOUNT_IS_APPROVED, TITLE). ' ' . sprintf(LOG_IN_TO_S, APP_URL); 
+                $this->send($message, array('sms', 'email'));
                 return true;
             }
             return false;
@@ -622,7 +623,7 @@
          */
         public function reject() {
             if ($this->delete()) {
-                $this->send(_("Your user has NOT been approved."), array('sms', 'email'));
+                $this->send(sprintf(YOUR_S_ACCOUNT_IS_REJECTED,TITLE), array('sms', 'email'));
                 return true;
             }
             return false;
@@ -851,7 +852,7 @@
                 switch($resource) {
                     case 'user':
                     case 'setup':               
-                        return (int)($condition === null ? $this->id : $condition) === $this->id;
+                        return ($condition === null ? $this->id : $condition) == $this->id;
                     case 'operations':
                         if($condition !== null) {
                             $sql = "SELECT COUNT(*) FROM `operations` 

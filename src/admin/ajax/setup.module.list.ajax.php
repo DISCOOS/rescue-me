@@ -18,7 +18,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th width="25%"><?=_("Settings")?></th>
+            <th width="25%"><?=T_("Settings")?></th>
             <th width="25%"></th>
             <th width="50%">
                 <input type="search" class="input-medium search-query pull-right" placeholder="Search">
@@ -33,8 +33,8 @@
                 $classes = \Inspector::subclassesOf($module->type);
 ?>
         <tr id="<?= $id ?>">
-            <td class="module type"> <?=_($module->type)?> </td>
-            <td class="module impl"> <?=_($module->impl)?> </td>
+            <td class="module type"> <?=T_($module->type)?> </td>
+            <td class="module impl"> <?=T_($module->impl)?> </td>
             <td class="editor">
                 <div class="btn-group pull-right">
                     <a class="btn btn-small" href="<?=ADMIN_URI."setup/module/$id"?>">

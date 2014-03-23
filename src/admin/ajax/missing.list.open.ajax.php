@@ -21,8 +21,6 @@
     
     $filter = "(op_type = '$type') AND (op_closed IS NULL)";
     
-    //$_GET['filter'] = 'sven';
-    
     if(isset($_GET['filter'])) {
         $filter .= ' AND ' . Missing::filter(isset_get($_GET, 'filter', ''), 'OR');
     }
@@ -31,20 +29,18 @@
     
     $page = input_get_int('page', 1);
     $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
+    
     $start = $max * ($page - 1);
     
     if($list === false || $list <= $start) { ?>
 
-        <tr><td colspan="<?=$admin ? 8 : 7?>"><?=_('Ingen registert')?></td></tr>
+        <tr><td colspan="<?=$admin ? 8 : 7?>"><?=NONE_FOUND?></td></tr>
 
 <? } else { 
         
         // Create pagination options
         $total = ceil($list/$max);
         $options = create_paginator(1, $total, $user_id);
-
-        // Get operation types
-        $types = RescueMe\Operation::titles();
         
         // Get missing
         $list = Missing::getAll($filter, $admin, $start, $max);
@@ -55,7 +51,6 @@
         $check = ($sms instanceof RescueMe\SMS\Check);
         $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
         foreach($list as $id => $this_missing) {
-            $owner = ($this_missing->user_id == $user_id);
             $resend[$this_missing->id] = $this_missing;
             $this_missing->getPositions();
             if($this_missing->last_pos->timestamp>-1) {
@@ -77,7 +72,7 @@
             $answered = format_since($this_missing->answered);
             $delivered = format_since($this_missing->sms_delivery);
             if (empty($delivered))
-                $delivered = _('Ukjent');
+                $delivered = UNKNOWN;
 
 ?>
             <tr id="<?= $this_missing->id ?>">
@@ -103,18 +98,18 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a role="menuitem" href="<?=ADMIN_URI."operation/close/$this_missing->op_id"?>">
-                                    <b class="icon icon-off"></b><?= _('Avslutt operasjon') ?>
+                                    <b class="icon icon-off"></b><?= CLOSE_OPERATION ?>
                                 </a>
                             </li>
                             <li>
                                 <a role="menuitem" href="#confirm-resend-<?=$this_missing->id?>" data-toggle="modal">
-                                    <b class="icon icon-envelope"></b><?= _('Send SMS på nytt') ?>
+                                    <b class="icon icon-envelope"></b><?= RESEND_SMS ?>
                                 </a>
                             </li>                                
                             <li class="divider"></li>
                             <li>
                                 <a role="menuitem" onclick="R.ajax('<?=ADMIN_URI."missing/check/$this_missing->id"?>','#delivered-<?=$this_missing->id?>');">
-                                    <b class="icon icon-refresh"></b><?= _('Sjekk leveringsstatus') ?>
+                                    <b class="icon icon-refresh"></b><?= T_('Check SMS delivery status') ?>
                                 </a>
                            </li>   
                         </ul>
@@ -128,8 +123,8 @@
             // Insert resend confirmation
             insert_dialog_confirm(
                 "confirm-resend-$id", 
-                "Bekreft", 
-                _("Vil du sende SMS til <u>$this_missing->name</u> på nytt?"), 
+                CONFIRM, 
+                sprintf(T_('Do you want to resend SMS to %1$s?'),"<u>{$this_missing->name}</u>"),
                 ADMIN_URI."missing/resend/{$id}"
             );
         }

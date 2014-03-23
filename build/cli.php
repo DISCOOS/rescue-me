@@ -238,6 +238,13 @@
                     // Escape version
                     $ini['VERSION'] = str_escape(isset_get($ini,'VERSION',"source"));
                     
+                    // Get host specific defaults
+                    require("$root/classes/RescueMe/Locale.php");
+                    $locale = RescueMe\Locale::getDefaultLocale();
+                    $ini['SYSTEM_LOCALE'] = $locale;
+                    $codes = preg_split("#[_-]#", $locale);
+                    $ini['COUNTRY_PREFIX'] = isset($codes[1]) ? $codes[1] : 'US';
+                    
                     // Get default configuration parameters
                     $config = get_config_params($root);
                     $ini = array_merge($ini, $config);
@@ -260,16 +267,14 @@
                         $ini['DB_NAME']          = str_escape(in("DB Name", get($ini, "DB_NAME", "rescueme")));
                         $ini['DB_USERNAME']      = str_escape(in("DB Username", get($ini, "DB_USERNAME", "root")));
                         $ini['DB_PASSWORD']      = str_escape(in("DB Password", get($ini, "DB_PASSWORD", "''")));
-                        $ini['DEFAULT_COUNTRY']  = str_escape(in("Default Country (ISO2)", get($ini, "DEFAULT_COUNTRY")));
-
+                        $ini['COUNTRY_PREFIX']   = str_escape(strtoupper(in("Default Country Code (ISO2)", get($ini, "COUNTRY_PREFIX"))));
+                        $ini['DEFAULT_LOCALE']   = str_escape(in("Default Language (locale, ISO2)", get($ini, "DEFAULT_LOCALE")));
                         $ini['TIMEZONE']         = str_escape(in_timezone($ini));
-
                         $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
-                        
                         $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
                         
                         echo PHP_EOL;
-                    }
+                    } 
                     
                     // Configure only?
                     if($action !== CONFIGURE) {

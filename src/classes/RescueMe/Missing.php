@@ -37,6 +37,7 @@
             "missing_name", 
             "missing_mobile_country", 
             "missing_mobile", 
+            "missing_locale", 
             "missing_reported",
             "op_id",
             "sms_text"
@@ -47,6 +48,7 @@
             "missing_name", 
             "missing_mobile_country", 
             "missing_mobile",
+            "missing_locale", 
             "sms_text"
         );
 
@@ -61,6 +63,7 @@
 
         public $name;
         public $type;
+        public $locale = DEFAULT_LOCALE;
         public $mobile;
         public $mobile_country;
         
@@ -210,9 +213,9 @@
         }
 
 
-        public static function add($m_name, $m_mobile_country, $m_mobile, $sms_text, $op_id){
+        public static function add($m_name, $m_mobile_country, $m_mobile,  $m_locale, $sms_text, $op_id){
 
-            if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($op_id) || empty($sms_text)) {
+            if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($m_locale) || empty($op_id) || empty($sms_text)) {
                 
                 $line = __LINE__;
                 Logs::write(
@@ -241,6 +244,7 @@
                 (string) $m_name, 
                 (string) $m_mobile_country, 
                 (int)$m_mobile, 
+                (string)$m_locale, 
                 "NOW()", 
                 (int) $op_id, 
                 $sms_text
@@ -272,9 +276,9 @@
         }// add
 
 
-        public function update($m_name, $m_mobile_country, $m_mobile, $sms_text){
+        public function update($m_name, $m_mobile_country, $m_mobile, $m_locale, $sms_text){
 
-            if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($sms_text)) {
+            if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($m_locale) || empty($sms_text)) {
                 
                 $line = __LINE__;
                 Logs::write(
@@ -291,7 +295,7 @@
                 return false;
             }
 
-            $values = prepare_values(Missing::$update, array($m_name, $m_mobile_country, $m_mobile, $sms_text));
+            $values = prepare_values(Missing::$update, array($m_name, $m_mobile_country, $m_mobile, $m_locale, $sms_text));
 
             $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
             
@@ -366,11 +370,11 @@
 
                 // Is SMS2 already sent
                 if($this->sms2_sent == 'false'){
-
+                    
                     if($this->_sendSMS(
                         $this->mobile_country, 
                         $this->mobile, 
-                        SMS2_TEXT, 
+                        T_locale(DOMAIN_SMS, $this->locale, 'ALERT_SMS_2'), 
                         true) === FALSE) {
                         
                         $context = array(
@@ -404,8 +408,7 @@
                 if($this->_sendSMS(
                     $this->alert_mobile_country, 
                     $this->alert_mobile, 
-                    SMS_MB_TEXT, 
-                    true) === FALSE) {
+                    T_locale(DOMAIN_SMS, $this->locale, 'ALERT_SMS_LOCATION_UPDATE'), false) === FALSE) {
                     
                     Logs::write(
                         Logs::TRACE, 
@@ -481,14 +484,14 @@
         public function sendSMS(){
 
             $res = $this->_sendSMS($this->mobile_country, $this->mobile, $this->sms_text, true);
-
+            
             if($res === FALSE) {
                 
                $this->_sendSMS(
                    $this->alert_mobile_country, 
                    $this->alert_mobile,
-                   SMS_NOT_SENT, 
-                   true
+                   T_locale(DOMAIN_SMS, $this->locale, 'ALERT_SMS_NOT_SENT'), 
+                   false
                );               
                
             } else {
@@ -610,12 +613,14 @@
             
             $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
             
-            $p = format_pos($this->last_pos, $format);
+            $p = format_pos($this->last_pos, $format, false);
+            
+            $id = $missing ? encrypt_id($this->id) : $this->id;
             
             $message = str_replace
             (
                 array('%LINK%', '#missing_id', '#to', '#m_name', '#acc', '#pos'), 
-                array(SMS_LINK,  encrypt_id($this->id), $to, $this->name, $this->last_acc, $p),
+                array(LOCATE_URL,  $id, $to, $this->name, $this->last_acc, $p),
                 $message
             );
 

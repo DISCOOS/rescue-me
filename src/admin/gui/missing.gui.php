@@ -10,7 +10,7 @@
 
     if($missing === false)
     {
-        insert_alert('Ingen registrert');
+        insert_alert(NONE_FOUND);
     }
     else
     {        
@@ -18,7 +18,7 @@
         $positions = $missing->getPositions();
         $name = $missing->name;
         if(Operation::isClosed($missing->op_id)) {
-            $name .= " ("._("Closed").")";
+            $name .= " (".CLOSED.")";
         }
 
 ?>
@@ -28,7 +28,6 @@
         if(isset($_ROUTER['error'])) { ?>
     
         <div class="alert alert-error">
-            <strong>En feil oppsto!</strong><br />
             <?= $_ROUTER['error'] ?>
         </div>
     
@@ -48,27 +47,23 @@
         } else {
             $pan_to = '';
             $position = format_pos(null, $format);
-            $located = _('Ukjent');
+            $located = UNKNOWN;
             $located_state = "warning";
         }
 
     ?>
     
-    <div class="infos clearfix">
-        
     <? if($top) { insert_trace_bar($missing, $collaped); } ?>
         
-    </div>
-
     <div class="infos pull-left">
     <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
         <div class="info pull-left no-wrap">
             <label class="label label-info label-position" <?=$pan_to?>>
-                <?=_('Siste posisjon')?></label> <?= $position ?>
+                <?=LAST_LOCATION?></label> <?= $position ?>
         </div>
     <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_TIME, $details)) { ?>
         <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=_('Posisjon mottatt')?></label> 
+            <label class="label label-info"><?=LOCATION_RECEIVED?></label> 
             <span class="label label-<?=$located_state?>"><?= $located ?></span>
         </div>
     <? } ?>
@@ -77,7 +72,7 @@
     <? require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
     <div id="map" class="map"></div>
     <div id="sidebar">
-        <h4><?=_("Posisjoner &le; 1km")?></h4>
+        <h4><?=sprintf(LOCATIONS_LESS_EQUAL,'1 km')?></h4>
         <ul class="unstyled">
                 <?
         $i = 0;
@@ -97,11 +92,11 @@
             $i++;
         } 
             if (!$displayed) {
-                echo '<li class="position clearfix well well-small">'._('Ingen').'</li>';
+                echo '<li class="position clearfix well well-small">'.NONE.'</li>';
             }
         ?>
         </ul>
-        <h4><?=_("Posisjoner &ge; 1km")?></h4>
+        <h4><?=sprintf(LOCATIONS_GREATER_THAN,'1 km')?></h4>
         <ul class="unstyled">
         <?
         $i = 0;
@@ -121,7 +116,7 @@
         }
         
         if ($displayed === false) {
-            echo '<li class="position clearfix well well-small">'._('Ingen').'</li>';
+            echo '<li class="position clearfix well well-small">'.NONE.'</li>';
         }
         ?>
                 
@@ -136,16 +131,16 @@
         
     <? if (in_array(Properties::TRACE_DETAILS_REFERENCE, $details)) { ?>
         <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=_('Referanse')?></label> 
+            <label class="label label-info"><?=REFERENCE?></label> 
             <span class="label label-<?=empty($missing->op_ref) ? 'warning' : 'success' ?>">
-                <?= empty($missing->op_ref) ? _('Ukjent') : $missing->op_ref ?>
+                <?= empty($missing->op_ref) ? UNKNOWN : $missing->op_ref ?>
             </span>
         </div>
     <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_URL, $details)) { ?>
         <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=_('Sporingslenke')?></label> 
+            <label class="label label-info"><?=LOCATION_LINK?></label> 
             <span class="label label-success">
-                <?= str_replace("#missing_id", encrypt_id($missing->id), SMS_LINK); ?>
+                <?= str_replace("#missing_id", encrypt_id($missing->id), LOCATE_URL); ?>
             </span>
         </div>
     <? } ?>

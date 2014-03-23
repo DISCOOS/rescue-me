@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `missing` (
   `missing_name` char(255) NOT NULL,
   `missing_mobile_country` char(4) NOT NULL,
   `missing_mobile` varchar(25) NOT NULL,
+  `missing_locale` varchar(10) NOT NULL,
   `sms_sent` timestamp NULL DEFAULT NULL,
   `sms_delivery` timestamp NULL DEFAULT NULL,
   `sms_provider` varchar(255) DEFAULT NULL,
@@ -141,6 +142,22 @@ CREATE TABLE IF NOT EXISTS `roles` (
   KEY `user_id` (`user_id`),
   KEY `role_name` (`role_name`),
   KEY `role_id` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure for table `templates`
+-- 
+
+CREATE TABLE IF NOT EXISTS `templates` (
+  `template_id` int(11) NOT NULL AUTO_INCREMENT,
+  `template_type` enum('message') NOT NULL DEFAULT 'message',
+  `template_name` varchar(50) NOT NULL,
+  `template_locale` varchar(10) NOT NULL,
+  `template_content` text NOT NULL,
+  PRIMARY KEY (`template_id`),
+  KEY `template_name` (`template_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

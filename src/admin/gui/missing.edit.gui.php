@@ -21,7 +21,7 @@
                 'id' => 'm_name',
                 'type' => 'text', 
                 'value' => $missing->name,
-                'label' => _('Savnedes navn'),
+                'label' => NAME,
                 'attributes' => 'required'
             );
 
@@ -30,21 +30,21 @@
                 'class' => 'row-fluid'
             );
             
-            $code = empty($missing->mobile_country) ? Locale::getCurrentCountryCode() : $missing->mobile_country;
+            $country = empty($missing->mobile_country) ? Locale::getCurrentCountryCode() : $missing->mobile_country;
             
             $group['value'][] = array(
                 'id' => 'm_mobile_country',
                 'type' => 'select', 
-                'value' => insert_options(Locale::getCountryNames(), $code, false), 
-                'label' => _('Land-kode'),
-                'class' => 'span2',
+                'value' => insert_options(Locale::getCountryNames(), $country, false), 
+                'label' => COUNTRY_CODE,
+                'class' => 'span3',
                 'attributes' => 'required'
             );    
             $group['value'][] = array(
                 'id' => 'm_mobile',
                 'type' => 'tel', 
                 'value' => $missing->mobile, 
-                'label' => _('Savnedes mobiltelefon'),
+                'label' => MOBILE_PHONE,
                 'class' => 'span3',
                 'attributes' => 'required pattern="[0-9]*"'
             );
@@ -52,29 +52,59 @@
                 'id' => 'resend',
                 'type' => 'checkbox', 
                 'value' => '0', 
-                'label' => _('Send SMS på nytt'),
+                'label' => SEND_SMS,
                 'class' => 'span3'
             );
             $fields[] = $group;
             
-            $fields[] = array(
-                'id' => 'sms_text',
-                'type' => 'text', 
-                'value' => $missing->sms_text,
-                'label' => _('SMS tekst'),
-                'class' => 'field ',
+            $group = array(
+                'type' => 'group',
+                'class' => 'row-fluid'
+            );
+            
+            $locale = empty($missing->locale) ? Locale::getCurrentLocale() : $missing->locale;
+            
+            $group['value'][] = array(
+                'id' => 'm_locale',
+                'type' => 'select', 
+                'value' => insert_options(Locale::getLanguageNames(), $locale, false), 
+                'label' => LANGUAGE,
+                'class' => 'span2',
                 'attributes' => 'required'
             );            
             
+            $group['value'][] = array(
+                'id' => 'sms_text',
+                'type' => 'text', 
+                'value' => $missing->sms_text,
+                'label' => SMS,
+                'class' => 'span8',
+                'attributes' => 'required'
+            );            
+            
+            $select = "message/list?id=library&select=m_locale&input=sms_text&locale=$locale";            
+            
+            $group['value'][] = array(
+                'type' => 'html', 
+                'value' => '<a class="btn span12" data-toggle="modal" data-target="#library" href="'.ADMIN_URI.$select.'">' .
+                           '<b class="icon icon-book"></b>'.SELECT.'...</a>',
+                'label' => LIBRARY,
+                'class' => 'span2'
+            );            
+            $fields[] = $group;
+           
             $actions = array();
-            $actions['warning'] = _('Husk å sette inn %LINK% slik at RescueMe kan sette inn med riktig lenke.');
+            $actions['warning'] = sprintf(REMEMBER_TO_INCLUDE_LINK,'<span class="label">%LINK%</span>',TITLE);
             $actions['warning'] = '<span style="">' . $actions['warning'] . '</span>';
             if(empty($operation->op_closed) === false) {
-                $actions['message'] = _("Merk: Dette vil gjenåpne operasjonen.");
+                $actions['message'] = NOTE_THIS_WILL_REOPEN_OPERATION;
             }
             
-            insert_form("user", _(EDIT_MISSING), $fields, ADMIN_URI."missing/edit/$missing->id", $actions);
+            insert_form("user", EDIT_TRACE, $fields, ADMIN_URI."missing/edit/$missing->id", $actions);
+            
+            insert_dialog_selector("library", LIBRARY, LOADING);
+            
         }
     } else { ?> 
-<h3 class="pagetitle"><?= _(EDIT_MISSING) ?></h3>
-<?  insert_alert('Ingen registrert'); } ?>
+<h3 class="pagetitle"><?= EDIT_TRACE ?></h3>
+<?  insert_alert(NONE_FOUND); } ?>

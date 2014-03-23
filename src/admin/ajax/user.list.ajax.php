@@ -23,7 +23,7 @@
         
     if($users == false) {?>
 
-        <tr><td colspan="4"><?=_("Ingen brukere funnet")?></td></tr>
+        <tr><td colspan="4"><?=NONE_FOUND?></td></tr>
 
 <?
         $options = create_paginator(1, 1, $user_id);        
@@ -56,21 +56,21 @@
                         <ul class="dropdown-menu">
                             <?
                                 if(User::DISABLED === $user->state) {
-                                    insert_item(_("Reaktiver"), ADMIN_URI."user/enable/$id");
+                                    insert_item(ENABLE, ADMIN_URI."user/enable/$id");
                                 } elseif(User::PENDING === $user->state) {
-                                    insert_item(_("Godkjenn..."), ADMIN_URI."user/edit/$id?approve");                                    
-                                    insert_item(_("Avvis"), ADMIN_URI."user/reject/$id");
+                                    insert_item(APPROVE, ADMIN_URI."user/edit/$id?approve");                                    
+                                    insert_item(DENY, ADMIN_URI."user/reject/$id");
                                 } else {
-                                    insert_item(_("Deaktiver"), ADMIN_URI."user/disable/$id");                                    
+                                    insert_item(DISABLE, ADMIN_URI."user/disable/$id");                                    
                                 }
                             ?>
                             <li class="divider"></li>
-                            <?insert_item(_("Endre passord"), ADMIN_URI."password/change/$id")?>
-                            <?insert_item(_("Nullstill passord"), ADMIN_URI."password/recover/$id")?>
+                            <?insert_item(CHANGE_PASSWORD, ADMIN_URI."password/change/$id")?>
+                            <?insert_item(RESET_PASSWORD, ADMIN_URI."password/recover/$id")?>
                             <li class="divider"></li>
-                            <?if($allow) {insert_item(_("Oppsett"), ADMIN_URI."setup/$id"); ?>
+                            <?if($allow) {insert_item(SETUP, ADMIN_URI."setup/$id"); ?>
                             <li class="divider"></li>
-                            <?} insert_item(_("Slett"), "#confirm-delete-$id", "", "", 'data-toggle="modal"')?>
+                            <?} insert_item(DELETE, "#confirm-delete-$id", "", "", 'data-toggle="modal"')?>
                         </ul>
                     </div>
                 <? } ?>

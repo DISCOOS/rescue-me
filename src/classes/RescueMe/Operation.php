@@ -51,7 +51,7 @@
         public $user_id = -1;
         
         public static function titles() {
-            return array('trace' => _('Sporing'), 'test' => _('Test'), 'exercise' => _('Øvelse'));
+            return array('trace' => TRACE, 'test' => TEST, 'exercise' => EXERCISE);
         }
 
         /**
