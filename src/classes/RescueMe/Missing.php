@@ -314,6 +314,25 @@
             return $res;
 
         }// update
+        
+        // TODO: Merge with getPositions()!
+        public function getAjaxPositions($num) {
+            if($this->id === -1)
+                return false;
+            
+            $query = "SELECT `pos_id` FROM `positions` WHERE `missing_id` = " . (int) $this->id
+                    . " ORDER BY `timestamp` LIMIT ".$num.",100";
+            $res = DB::query($query);
+
+            if(!$res) return false;
+            
+            $positions = array();
+            while($row = $res->fetch_assoc()){
+                $positions[] = new Position($row['pos_id']);
+            }
+            
+            return $positions;
+        } // getAjaxPositions
 
 
         public function getPositions(){
@@ -345,6 +364,27 @@
             return $this->positions;
         }// getPositions
 
+        /**
+         * Get the most accurate position that's newer than a given minutes.
+         * @param type $maxAge How many minutes old.
+         * @return boolean|array
+         */
+        public function getMostAccurate($maxAge = 15) {
+            if($this->id === -1)
+                return false;
+
+            $query = "SELECT `pos_id`, `acc`, `lat`, `lon`, `timestamp` FROM `positions`" .
+                    " WHERE `missing_id` = " . (int) $this->id .
+                    " AND `timestamp` > NOW() - INTERVAL ".(int)$maxAge." MINUTE" .
+                    " ORDER BY `acc` LIMIT 1";
+            
+            $res = DB::query($query);
+
+            if(!$res) return false;
+            $row = $res->fetch_assoc();
+            if ($row === NULL) return false;
+            return $row;
+        }
 
         public function addPosition($lat, $lon, $acc, $alt, $useragent = ''){
 
@@ -361,6 +401,9 @@
                 )
             );
             $this->last_acc = $acc;
+            
+            $best_acc = $this->getMostAccurate();
+            $best_acc = $best_acc['acc'];
 
             // Send SMS 2?
             if((int) $acc > 500 && sizeof($this->positions) > 1){
@@ -403,7 +446,8 @@
             }
 
             // Alert person of concern if an accurate position is logged
-            else if($this->sms_mb_sent == 'false') {
+            // Always send first position and if the accuracy improves by 20%
+            else if(($this->sms_mb_sent == 'false') || $acc < $best_acc * 0.8) {
 
                 if($this->_sendSMS(
                     $this->alert_mobile_country, 

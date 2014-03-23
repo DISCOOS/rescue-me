@@ -124,6 +124,40 @@
             $_ROUTER['view'] = $_GET['view'];
             break;
             
+        case 'positions':
+            if (is_ajax_request() === FALSE) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = "Not an ajax request.";
+                break;
+            }
+
+            if (($id = input_get_int('id')) === FALSE) {
+                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = "Id not found.";
+                break;
+            }
+
+            $admin = $user->allow('write', 'operations.all');
+            $missing = Missing::get($id);
+
+            if ($missing !== FALSE) {
+                if (($user->allow('write', 'operations', $missing->op_id) || $admin) === FALSE) {
+                    $_ROUTER['name'] = _("Illegal Operation");
+                    $_ROUTER['view'] = "404";
+                    $_ROUTER['error'] = _("Access denied");
+                    break;
+                }
+                
+                echo ajax_response("positions");
+                
+            } else {
+                $_ROUTER['error'] = _("Missing $id not found");
+            }
+
+            break;
+            
         case 'setup':
             
             $id = input_get_int('id',$user->id);

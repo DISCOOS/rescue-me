@@ -28,6 +28,7 @@
         if(isset($_ROUTER['error'])) { ?>
     
         <div class="alert alert-error">
+            <strong>En feil oppsto!</strong><br />
             <?= $_ROUTER['error'] ?>
         </div>
     
@@ -73,54 +74,10 @@
     <div id="map" class="map"></div>
     <div id="sidebar">
         <h4><?=sprintf(LOCATIONS_LESS_EQUAL,'1 km')?></h4>
-        <ul class="unstyled">
-                <?
-        $i = 0;
-        $displayed = false;
-
-        foreach ($positions as $key=>$value) {
-            if ($value->acc < 1000) { 
-                        $displayed = true;
-                        $timestamp = date('Y-m-d H:i:s', strtotime($value->timestamp));
-                        ?>
-                <li class="position text-left clearfix well well-small" data-pan-to="<?= $i ?>">
-                    <span><?=format_pos($value, $format, false)?> &plusmn; <?= $value->acc ?> m</span>
-                    <time datetime="<?= $timestamp ?>"><?= format_since($value->timestamp) ?></time>
-                </li>
-            <?
-            }
-            $i++;
-        } 
-            if (!$displayed) {
-                echo '<li class="position clearfix well well-small">'.NONE.'</li>';
-            }
-        ?>
+        <ul class="unstyled" id="under1km"></ul>
         </ul>
         <h4><?=sprintf(LOCATIONS_GREATER_THAN,'1 km')?></h4>
-        <ul class="unstyled">
-        <?
-        $i = 0;
-            $displayed = false;
-        foreach ($positions as $key=>$value) {
-            if ($value->acc >= 1000) { 
-                $displayed = true;
-                $timestamp = date('Y-m-d H:i:s', strtotime($value->timestamp)); 
-        ?>
-                <li class="position text-left clearfix well well-small" data-pan-to="<?= $i ?>">
-                    <span><?=format_pos($value, $format, false)?> &plusmn; <?= $value->acc ?> m</span>
-                    <time datetime="<?= $timestamp ?>"><?= format_since($value->timestamp) ?></time>
-                </li>
-        <?
-            }
-            $i++;
-        }
-        
-        if ($displayed === false) {
-            echo '<li class="position clearfix well well-small">'.NONE.'</li>';
-        }
-        ?>
-                
-        </ul>
+        <ul class="unstyled" id="over1km"></ul>
     </div>
 
     <div class="clearfix"></div>

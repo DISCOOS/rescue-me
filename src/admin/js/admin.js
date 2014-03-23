@@ -241,7 +241,7 @@ R.geoname = function(lat, lon, callback) {
     geocoder.geocode({'latLng': latlng}, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
             if (results[1]) {
-                return callback(results[1].address_components[0].long_name);
+                return callback(results[3].address_components[0].long_name);
             }
         }
         return callback(false);

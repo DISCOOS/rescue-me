@@ -48,8 +48,8 @@ if(typeof google !== "undefined") {
         map.mapTypes.set('statkart.topo2', new R.map.StatkartMapType("Norway Topo2", "topo2"));
 
         google.maps.event.addListener(map, 'click', function() {
-            if (lastInfoWindow[0] !== null) {
-                lastInfoWindow[0].close();
+            if (lastInfoWindow !== null) {
+                lastInfoWindow.close();
             }
         });
 
@@ -88,9 +88,9 @@ if(typeof google !== "undefined") {
     };
 
     R.map.panTo = function (markerNo) {
-        if (lastInfoWindow[0] !== undefined) {
-            lastInfoWindow[0].close();
-            lastInfoWindow[0] = undefined;
+        if (lastInfoWindow !== null) {
+            lastInfoWindow.close();
+            lastInfoWindow = null;
         }
         map.panTo(markers[markerNo].getPosition());
         map.setZoom(R.map.getZoom(markers[markerNo].acc));

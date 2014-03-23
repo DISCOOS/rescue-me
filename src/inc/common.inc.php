@@ -338,10 +338,12 @@
                     );
                     break;
                 case Properties::MAP_DEFAULT_FORMAT_DD:
-                    $format = '%1$sE %2$sN';
+                    // 4 decimalplaces gives accuracy of ~ 10 m. 
+                    // Will padd to 4 decimalplaces.
+                    $format = '%1.4fE %2.4fN';
                     $position = sprintf($format,
-                        $p->lon,
-                        $p->lat
+                        round($p->lon, 4),
+                        round($p->lat, 4)
                     );
                     break;                
                 case Properties::MAP_DEFAULT_FORMAT_DEM:

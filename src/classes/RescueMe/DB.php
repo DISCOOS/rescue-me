@@ -136,9 +136,7 @@
                 $error = mysqli_connect_error(DB::instance()->mysqli);
                 throw new Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
-            
-            //var_dump($sql);
-            
+                        
             $result = DB::instance()->mysqli->query($sql);
             if($result == true && strpos($sql, "INSERT") !== false) {
                 return DB::instance()->mysqli->insert_id;
