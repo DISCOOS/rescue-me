@@ -405,12 +405,12 @@
                 
                 $next = $_POST['email'];
                 if(User::unique($next) === false) {
-                    $_ROUTER['error'] = sprintff(USER_WITH_EMAIL_S_ALREADY_EXISTS, $next);
+                    $_ROUTER['error'] = sprintf(USER_WITH_EMAIL_S_ALREADY_EXISTS, $next);
                     break;
                 } 
                 
                 if (strlen($_POST['password']) < 8) {
-                    $_ROUTER['error'] = sprintff(USER_WITH_EMAIL_S_ALREADY_EXISTS, 8);
+                    $_ROUTER['error'] = sprintf(USER_WITH_EMAIL_S_ALREADY_EXISTS, 8);
                     break;
                 }
                 
@@ -484,7 +484,7 @@
                 $next = $_POST['email'];
                 if(strtolower(User::safe($next)) !== strtolower(User::safe($edit->email))) {
                     if(User::unique($next) === false) {
-                        $_ROUTER['error'] = sprintff(USER_WITH_EMAIL_S_ALREADY_EXISTS, $next);
+                        $_ROUTER['error'] = sprintf(USER_WITH_EMAIL_S_ALREADY_EXISTS, $next);
                         break;
                     } 
                 }
@@ -502,7 +502,7 @@
                     if($approve) {
                         
                         if($edit->isState(User::PENDING) === false) {
-                            $_ROUTER['error'] = sprintff(USER_S_CANNOT_BE_APPROVED, $id);
+                            $_ROUTER['error'] = sprintf(USER_S_CANNOT_BE_APPROVED, $id);
                             break;
                         }
                         
@@ -545,13 +545,13 @@
             $edit = User::get($id);
             if($edit === false) {
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = sprintff(USER_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
                 break;
             }
             
             if($edit->isState(User::PENDING) === false) {
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = sprintff(USER_S_CANNOT_BE_APPROVED, $id);
+                $_ROUTER['error'] = sprintf(USER_S_CANNOT_BE_APPROVED, $id);
                 break;
             }
             
@@ -562,7 +562,7 @@
                 break;
             }         
             
-            $_ROUTER['message'] = sprintff(MESSAGE_SENT_TO," <b>{$edit->name}</b>.");
+            $_ROUTER['message'] = sprintf(MESSAGE_SENT_TO," <b>{$edit->name}</b>.");
                 
             break;
 
@@ -590,13 +590,13 @@
             $edit = User::get($id);
             if($edit === false) {
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = sprintff(USER_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
                 break;
             }
             
             if($edit->isState(User::PENDING) === false) {
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = sprintff(USER_S_CANNOT_BE_APPROVED, $id);
+                $_ROUTER['error'] = sprintf(USER_S_CANNOT_BE_APPROVED, $id);
                 break;
             }
             
@@ -606,7 +606,7 @@
                     OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
             }
             
-            $_ROUTER['message'] = sprintff(MESSAGE_SENT_TO," <b>{$edit->name}</b>.");
+            $_ROUTER['message'] = sprintf(MESSAGE_SENT_TO," <b>{$edit->name}</b>.");
             
             break;
             
@@ -634,10 +634,10 @@
             $edit = User::get($id);
             
             if($edit === false) {
-                $_ROUTER['error'] = sprintff(USER_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
             }
             else if($edit->delete() === false) {
-                $_ROUTER['error'] = sprintff(USER_S_NOT_DELETED, $id) . ". ". 
+                $_ROUTER['error'] = sprintf(USER_S_NOT_DELETED, $id) . ". ". 
                     (DB::errno() ? DB::error() : '');
             }
             else {
@@ -671,10 +671,10 @@
             $edit = User::get($id);
             
             if(!$edit) {
-                $_ROUTER['error'] = sprintff(USER_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
             }
             else if($edit->disable() === false) {
-                $_ROUTER['error'] = sprintff(USER_S_NOT_DISABLED, $id) . ". ". (DB::errno() ? DB::error() : '');
+                $_ROUTER['error'] = sprintf(USER_S_NOT_DISABLED, $id) . ". ". (DB::errno() ? DB::error() : '');
             }
             else {
                 header("Location: ".ADMIN_URI.'user/list');
@@ -706,10 +706,10 @@
             
             $edit = User::get($id);
             if(!$edit) {
-                $_ROUTER['error'] = sprintff(USER_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
             }
             else if($edit->enable() === false) {
-                $_ROUTER['error'] = sprintff(USER_S_NOT_ENABLED, $id) . ". ". (DB::errno() ? DB::error() : '');
+                $_ROUTER['error'] = sprintf(USER_S_NOT_ENABLED, $id) . ". ". (DB::errno() ? DB::error() : '');
             }
             else {
                 header("Location: ".ADMIN_URI.'user/list');
@@ -1120,7 +1120,7 @@
                 }
 
                 if(Operation::isClosed($missing->op_id)) {
-                    $_ROUTER['error'] = sprintff(TRACE_S_IS_CLOSED, $missing->id);
+                    $_ROUTER['error'] = sprintf(TRACE_S_IS_CLOSED, $missing->id);
                 }
                 elseif($missing->sendSMS() === FALSE) {
                     $_ROUTER['error'] = OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);;

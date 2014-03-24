@@ -54,7 +54,6 @@
                 <? } else { ?>
                 <td class="missing editor" colspan="2">
                 <? } ?>
-                <td class="missing editor">
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/{$this_missing->op_id}"?>">
                             <b class="icon icon-edit"></b><?= REOPEN ?>
