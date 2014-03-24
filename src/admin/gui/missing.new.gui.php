@@ -26,7 +26,7 @@
 
     <div class="form-body">
         
-        <div class="new-missing pull-left">
+        <div class="column pull-left">
     
             <fieldset>
                 <legend><?=NAME?></legend>
@@ -55,7 +55,7 @@
             
         </div>
         
-        <div class="new-missing pull-right">
+        <div class="column pull-right">
             
             <fieldset>
                 <legend><?=REFERENCE?></legend>
@@ -84,7 +84,7 @@
 
         </div>
         
-        <div class="clearfix">
+        <div class="fill">
             
             <fieldset>
                 <legend><?=MESSAGE?></legend>
@@ -110,26 +110,27 @@
             </fieldset>
         </div>
     <? if(Properties::get(Properties::TRACE_ALERT_NEW, $id) === Properties::YES) { ?>
-        <div class="alert alert-info" style="margin-top: 1em;">
-            <div> 
-                <span style="color: red;"><?= sprintf(REMEMBER_TO_INCLUDE_LINK,'<span class="label">%LINK%</span>',TITLE)?>
-            </div>
-            <button type="button" data-toggle="readmore" class="toggle btn btn-mini btn-info"
-                    style="position: absolute; right: 0; top: 0;"><?=MORE?>...</button>
+        <div class="fill">            
+            <div class="alert alert-info">
+                <button type="button" data-toggle="readmore" class="toggle btn btn-mini btn-info corner-ul">
+                <?=MORE?>...</button>
 
-            <div id="readmore" style="display:none;">
-                <br />
-                <h4><?=T_('Standard message')?></h4>
-                <br />
-                <div class="alert"><?=$sms_text?></div>
-                <h4><?=T_('Location script')?></h4>
-                <p><?=T_('When the user clicks on the link a webpage is downloaded which contain a script that attempts to locate the mobile phone. The user must authorize the script access before location can be determined')?><p/>
-                <h5><?=T_('Script download time')?></h5>
-                <p><?=T_('The location script is compressed (gzip, 1.8KB). Is should not take more than a second to download this even on a low-bandwidth network (2G). If it does, the user must be patient and wait until the script is downloaded.')?><p/>
-                <h5><?=T_('Repeated localization')?></h5>
-                <p><?=T_('If the location is inaccurate, the script will continue to listen for location updates until desired accuracy or maximum wait time is is reached. A count-down is shown during this time. Last known location is presented to the user, which allow the user to read out the location over the phone or send ith with an SMS (tell the user to click on the link presented to the user when the script timed out)')?>
-                <p><?=sprintf(T_('Desired accurary (location.desired.accuracy), maximum wait time (location.max.wait) and maximum location age (location.max.age) can be configured on page %1$s'),'<a href="'.ADMIN_URI.'setup#general">' . SETUP .' </a>.')?><p/>
-                <p><?=T_('All traces are listed at')?> <a href="<?=ADMIN_URI?>missing/list">admin/missing/list</a>.<p/>
+                <?= sprintf(REMEMBER_TO_INCLUDE_LINK,'<span class="label">%LINK%</span>',TITLE)?>
+
+                <div id="readmore" style="display: none;">
+                    <br />
+                    <h4><?=T_('Standard message')?></h4>
+                    <br />
+                    <div class="alert"><?=$sms_text?></div>
+                    <h4><?=T_('Location script')?></h4>
+                    <p><?=T_('When the user clicks on the link a webpage is downloaded which contain a script that attempts to locate the mobile phone. The user must authorize the script access before location can be determined')?><p/>
+                    <h5><?=T_('Script download time')?></h5>
+                    <p><?=T_('The location script is compressed (gzip, 1.8KB). Is should not take more than a second to download this even on a low-bandwidth network (2G). If it does, the user must be patient and wait until the script is downloaded.')?><p/>
+                    <h5><?=T_('Repeated localization')?></h5>
+                    <p><?=T_('If the location is inaccurate, the script will continue to listen for location updates until desired accuracy or maximum wait time is is reached. A count-down is shown during this time. Last known location is presented to the user, which allow the user to read out the location over the phone or send ith with an SMS (tell the user to click on the link presented to the user when the script timed out)')?>
+                    <p><?=sprintf(T_('Desired accurary (location.desired.accuracy), maximum wait time (location.max.wait) and maximum location age (location.max.age) can be configured on page %1$s'),'<a href="'.ADMIN_URI.'setup#general">' . SETUP .' </a>.')?><p/>
+                    <p><?=T_('All traces are listed at')?> <a href="<?=ADMIN_URI?>missing/list">admin/missing/list</a>.<p/>
+                </div>
             </div>
         </div>
     <? } ?>   
@@ -139,7 +140,7 @@
         
 	<div class="form-footer">
          <div class="row-fluid">
-            <button type="submit" class="btn btn-success span2 new-missing"><b class="icon icon-envelope icon-white"></b><?=CREATE?></button>
+            <button type="submit" class="btn btn-success span2 column"><b class="icon icon-envelope icon-white"></b><?=CREATE?></button>
             <select id="m_type" name="m_type" class="span2" >
                 <? insert_options(RescueMe\Operation::titles(), 'trace'); ?>
             </select>            

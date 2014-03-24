@@ -438,13 +438,21 @@ li.position {
 / [trace/new] form
 /=========================================*/
 
-.new-missing {
+.column {
     position: relative; 
     top: 0px;
     width: 48%;
 }
 
-form.well button[type="submit"].new-missing {
+.fill {
+    position: relative; 
+    left: 0px; 
+    float: left;
+    width: 100%; 
+    padding-bottom: 20px;
+}
+
+form.well button[type="submit"].column {
     margin-right: 1em;
     margin-bottom: 1em;
 }
@@ -452,6 +460,12 @@ form.well button[type="submit"].new-missing {
 #readmore {
     display:none;
     margin: 10px 0px 5px 0px;
+}
+
+.corner-ul {
+    position: absolute; 
+    top: 0;
+    right: 0; 
 }
 
 
