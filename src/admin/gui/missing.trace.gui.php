@@ -80,19 +80,19 @@
         </div>
         <div class="row-fluid trace-details <?=($collapsed ? 'hidden' : '')?>">
             <div class="span">
-                <small><?= $trace['alerted']['time'] ?></small>
+                <time datetime="<?=$trace['alerted']['timestamp']?>"><?= $trace['alerted']['time'] ?></time>
             </div>
             <div class="span">
-                <small><?= $trace['sent']['time'] ?></small>
+                <time datetime="<?=$trace['sent']['timestamp']?>"><?= $trace['sent']['time'] ?></time>
             </div>
             <div class="span">
-                <small><?= $trace['delivered']['time'] ?></small>
+                <time datetime="<?=$trace['delivered']['timestamp']?>"><?= $trace['delivered']['time'] ?></time>
             </div>
             <div class="span">
-                <small><?= $trace['response']['time'] ?></small>
+                <time datetime="<?=$trace['response']['timestamp']?>"><?= $trace['response']['time'] ?></time>
             </div>
             <div class="span">
-                <small><?= $trace['located']['time'] ?></small>
+                <time datetime="<?=$trace['located']['timestamp']?>"><?= $trace['located']['time'] ?></time>
             </div>
         </div>    
     </div>

@@ -216,19 +216,23 @@
         
         $trace['alerted']['state'] = 'pass';
         $trace['alerted']['time'] = format_since($missing->reported);
+        $trace['alerted']['timestamp'] = $missing->reported;
         $trace['alerted']['tooltip'] = _('Sporing opprettet');
         if($missing->sms_sent !== null) {
             $trace['sent']['state'] = 'pass';
             $trace['sent']['time'] = format_since($missing->sms_sent);
+            $trace['sent']['timestamp'] = $missing->sms_sent;
             $trace['sent']['tooltip'] = _('SMS er sendt');
         } else {
             $trace['sent']['state'] = 'fail';
             $trace['sent']['time'] = f_('Ukjent');
+            $trace['sent']['timestamp'] = '';
             $trace['sent']['tooltip'] = _('SMS er ikke sendt. Sjekk logg.');
         }            
         if($missing->sms_delivery !== null) {
             $trace['delivered']['state'] = 'pass';
             $trace['delivered']['time'] = format_since($missing->sms_delivery);
+            $trace['delivered']['timestamp'] = $missing->sms_delivery;
             $trace['delivered']['tooltip'] = _('SMS er mottatt');
         } else {
             
@@ -240,6 +244,7 @@
             } 
             $trace['delivered']['state'] = $state;
             $trace['delivered']['time'] = _('Ukjent');
+            $trace['delivered']['timestamp'] = '';
             switch($state)
             {
                 case 'warning':
@@ -264,10 +269,12 @@
         if($missing->answered !== null) {
             $trace['response']['state'] = 'pass';
             $trace['response']['time'] = format_since($missing->answered);
+            $trace['response']['timestamp'] = $missing->answered;
             $trace['response']['tooltip'] = _('Sporingsside er lastet ned');
         } else {
             $trace['response']['state'] = '';
             $trace['response']['time'] = _('Ukjent');
+            $trace['response']['timestamp'] = '';
             $trace['response']['tooltip'] = _('Sporingsside er ikke lastet ned.' . 
                 ' Telefonen kan være tom for strøm, utenfor dekning, støtte for lokalisering ' .
                 ' kan være slått av eller ikke mulig, eller brukeren valgte å ikke dele ' .
@@ -276,6 +283,7 @@
         if($missing->last_pos->timestamp>-1) {
             $trace['located']['state'] = 'pass';
             $trace['located']['time'] = format_since($missing->last_pos->timestamp);
+            $trace['located']['timestamp'] = $missing->last_pos->timestamp;
             $trace['located']['tooltip'] = _('Telefon er lokalisert');
         } else {
 
@@ -296,6 +304,7 @@
                     ' Telefonen kan være tom for strøm eller utenfor dekning.');
             }
             $trace['located']['time'] = _('Ukjent');            
+            $trace['located']['timestamp'] = '';     
         }
         
         ob_start();

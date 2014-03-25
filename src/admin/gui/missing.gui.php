@@ -77,10 +77,10 @@
     <? require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
     <div id="map" class="map"></div>
     <div id="sidebar">
-        <h4><?=_("Posisjoner &le; 1km")?></h4>
+        <h4 class="hide" id="under1kmtitle"><?=_("Posisjoner &le; 1km")?></h4>
         <ul class="unstyled" id="under1km">
         </ul>
-        <h4><?=_("Posisjoner &ge; 1km")?></h4>
+        <h4 class="hide" id="over1kmtitle"><?=_("Posisjoner &ge; 1km")?></h4>
         <ul class="unstyled" id="over1km">               
         </ul>
     </div>

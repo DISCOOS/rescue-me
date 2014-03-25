@@ -3,7 +3,7 @@ R.map = {};
 R.map.icons = new Array();
 
 if(typeof google !== "undefined") {
-    
+
     R.map.icons["red"] = new google.maps.MarkerImage(
             "http://www.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png",
             // This marker is 32 pixels wide by 32 pixels tall.
@@ -97,7 +97,7 @@ if(typeof google !== "undefined") {
     };
 
     R.map.getZoom = function (acc) {
-        if (acc > 0 && acc < 200)
+        if (acc >= 0 && acc < 200)
             return 16;
         else if (acc > 0 && acc < 750)
             return 15;
@@ -107,5 +107,93 @@ if(typeof google !== "undefined") {
             return 13;
         else
             return 11;
+    };
+    
+    R.map.addPosition = function(lat, lon, acc, alt, posText, posTextClean, timestamp) {
+        var color = 'green';
+        if (acc > 750)
+            color = 'red';
+        else if (acc > 400)
+            color = 'yellow';
+        
+        markerNo = markers.length;
+        
+        markers[markerNo] = new google.maps.Marker({
+                  map: map,
+                  position: new google.maps.LatLng(lat, lon),
+                  draggable: false,
+                  icon: R.map.getMarkerImage(color),
+                  title: '+/- '+acc+' meter ('+R.format_dtg(timestamp)+')'
+            });
+        circles[markerNo] = new google.maps.Circle({
+                  strokeColor: color,
+                  fillOpacity: 0.1,
+                  map: map,
+                  radius: acc
+            });
+        circles[markerNo].bindTo('center', markers[markerNo], 'position');
+        infowindows[markerNo] = new google.maps.InfoWindow({
+                content: '<u>'+posFormat+':</u><br /> '+
+                         posText+'<br /><br />'+
+                         '<u>H&oslash;yde:</u> '+alt +' moh<br />'+
+                         '<u>N&oslash;yaktighet:</u> ± '+acc+' meter'
+            });
+         R.map.bindMarker(markers[markerNo], map, infowindows[markerNo])
+         markers[markerNo].acc = acc;
+
+         var li = $("<li/>", {"class": "position text-left clearfix well well-small", 
+                              "id": "position-"+markerNo,
+                              "data-pan-to": markerNo});
+        
+        R.map.bindLiElement(li, markers[markerNo], map, infowindows[markerNo]);
+        var span = $("<span/>").html(posTextClean + ' &plusmn; '+acc+' m');
+        var time = $("<time/>", {"datetime": timestamp}).text(R.format_since(timestamp));
+                
+        span.append(time);
+        li.append(span);
+
+         if (acc <= 1000) {
+            $('#under1km').prepend(li);
+            $('#under1kmtitle').show();
+         }
+         else {
+            $('#over1km').prepend(li);
+            $('#over1kmtitle').show();
+         }
+    };
+    
+    R.map.showInfoWindow = function(marker, map, infowindow) {
+        if (lastInfoWindow !== null) {
+                lastInfoWindow.close();
+            }
+        lastInfoWindow = infowindow;
+        infowindow.open(map,marker);
+    };
+    
+    R.map.ajaxAddPos = function(data) {
+        try {
+            var p = $.parseJSON(data.html.trim());
+            R.map.addPosition(p.lat, p.lon, parseInt(p.acc), p.alt, p.posText, 
+                        p.posTextClean, p.timestamp);
+            R.map.panTo(markers.length-1);
+        } catch(err) {
+            // TODO: Handle multiple new positions!
+            // Currently, it doesn't handle more than one position per request
+            // If there are more, a SyntaxError is triggered - workaround with reload
+            location.reload();
+        }
+    };
+    
+    R.map.bindMarker = function(marker, map, infowindow) {
+        google.maps.event.addListener(marker, 'click', function() { 
+            R.map.showInfoWindow(marker, map, infowindow)
+	}); 
+    };
+    
+    R.map.bindLiElement = function(li, marker, map, infowindow) {
+        li.click(function() {
+            R.map.panTo(li.attr('data-pan-to'));
+            R.map.showInfoWindow(marker, map, infowindow);
+        });
     };
 }

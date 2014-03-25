@@ -315,6 +315,20 @@ R.tabs = function(tabs) {
     R.toTab(tabs);
 };
 
+R.longFetch = function(url, done, data, interval, calling_func) {
+        $.ajax({
+          type: "GET",
+          url: url,
+          data: data,
+          dataType:'json',
+          async: true,
+          cache: false,
+          success: done,
+          complete: calling_func,
+          timeout: interval
+     });
+};
+
 R.paginator = function(element, options) {
     
     options = options || {};
@@ -378,3 +392,58 @@ R.paginator.search = function(paginator, page, filter) {
     });    
 }
 
+R.format_since = function(timestamp) {
+    if (timestamp === undefined) {
+        return false;
+    }
+    var d = new Date(timestamp.replace(/-/g, "/"));
+    var ts = (+new Date().getTime() - d.getTime());
+    ts = Math.floor(ts/1000);
+
+    var since = "~ sec";
+    if(ts >= 0) {
+        if(ts < 60) {
+            since = ts+" sec";
+        }
+        else if(ts < 2*60*60) {
+            since = Math.floor(ts/60)+" min";                        
+        }
+        else {
+            since = R.format_dtg(timestamp);
+        }
+    }        
+    return since;
+}
+
+R.format_dtg = function(timestamp) {
+    var d = new Date(timestamp.replace(/-/g, "/"));
+    var min = d.getMinutes();
+    if (min < 10) {
+        min = "0"+min;
+    }
+    var hour = d.getHours();
+    if (hour < 10) {
+        hour = "0"+hour;
+    }
+    var day = d.getDate();
+    if (day < 10) {
+        day = 0+day;
+    }
+    var month = (d.getMonth()+1);
+    if (month < 10) {
+        month = "0"+month;
+    }
+    var date = day+"."+month;
+    if (d.getFullYear() !== new Date().getFullYear()) {
+        date = date+"."+d.getFullYear().toString().substr(2,2);
+    }
+
+    return date+" "+hour+":"+min;
+}
+
+R.updateTimes = function() {
+    $("time").each(function( ) {
+       var since = R.format_since($(this).attr('datetime'));
+       $(this).text(since);
+   });
+}
