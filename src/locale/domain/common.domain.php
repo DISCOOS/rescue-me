@@ -54,6 +54,9 @@
         define('PASSWORD',T_('Password'));
         define('CALLBACK',T_('Callback'));
         
+        define('KEY',T_('Key'));
+        define('SECRET',T_('Secret'));
+        
         define('USER_ID', T_('User ID'));
         define('COMPANY_ID', T_('Company ID'));
 

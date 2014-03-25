@@ -36,6 +36,7 @@ else
         
         $readonly = ($property === \RescueMe\SMS\Callback::PROPERTY) && ($impl instanceof \RescueMe\SMS\Callback);
         $attributes = array($config->required($property) ? "required" : '', ($readonly ? "readonly" : ''));
+        $default = ($property === \RescueMe\SMS\Callback::PROPERTY) ? APP_URL.$default : $default;
         
         $fields[] = array(
             'id' => "$property",
