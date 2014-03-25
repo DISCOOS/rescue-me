@@ -1,44 +1,44 @@
-<div id="trace" class="<?=($collapsed ? '' : 'expanded')?>">
+<div class="trace <?=($collapsed ? '' : 'expanded')?>">
     <div class="container-fluid pull-left">
         <div class="row-fluid <?=($collapsed ? 'hidden' : '')?>">
             <div class="span" 
-                 title="<?=_('Når sporing ble opprettet')?>" 
+                 title="<?=T_('When trace was registered')?>" 
                  rel="tooltip" data-placement="right">
                 <b class="icon alarm icon-bullhorn"></b>
             </div>
             <div class="span" 
-                 title="<?=_('Når SMS ble sendt')?>" rel="tooltip">
+                 title="<?=T_('When SMS was sent')?>" rel="tooltip">
                 <b class="icon sent icon-envelope"></b>
             </div>
             <div class="span" 
-                 title="<?=_('Når SMS ble levert til telefonen')?>" rel="tooltip">
+                 title="<?=T_('When SMS was delivered to mobile')?>" rel="tooltip">
                 <b class="icon delivered icon-eye-open"></b>
             </div>
             <div class="span" 
-                 title="<?=_('Når sporingssiden ble lastet ned')?>" rel="tooltip">
+                 title="<?=T_('When location script was downloaded')?>" rel="tooltip">
                 <b class="icon response icon-thumbs-up"></b>
             </div>
             <div class="span" 
-                 title="<?=_('Når siste posisjon ble mottatt')?>" 
+                 title="<?=T_('When last location was received')?>" 
                  rel="tooltip" data-placement="left">
                 <b class="icon located icon-flag"></b>
             </div>
         </div>
         <div class="row-fluid <?=($collapsed ? 'hidden' : '')?>">
             <div class="span">
-                <?=_('Alerted')?>
+                <?=ALERTED?>
             </div>
             <div class="span">
-                <?=_('Sent')?>
+                <?=SENT?>
             </div>
             <div class="span">
-                <?=_('Delivered')?>
+                <?=DELIVERED?>
             </div>
             <div class="span">
-                <?=_('Response')?>
+                <?=RESPONSE?>
             </div>
             <div class="span">
-                <?=_('Located')?>
+                <?=LOCATED?>
             </div>
         </div>
         <div class="row-fluid">

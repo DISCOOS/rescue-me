@@ -336,28 +336,30 @@
 
 
         public function getPositions(){
-            if($this->id === -1)
+            if($this->id === -1) {
                 return false;
+            }
 
-            // TODO: Add sort on timestamp
-            $query = "SELECT `pos_id`, `acc`, `timestamp` FROM `positions` WHERE `missing_id` = " . (int) $this->id;
+            $query = "SELECT `pos_id`, `acc`, `timestamp` FROM `positions` "
+                    . "WHERE `missing_id` = " . (int) $this->id
+                    . " ORDER BY `timestamp`";
             $res = DB::query($query);
 
-            if(!$res) return false;
+            if(!$res) {
+                return false;
+            }
 
             $this->positions = array();
             while($row = $res->fetch_assoc()){
-                $this->positions[$row['timestamp']] = new Position($row['pos_id']);
+                $this->positions[] = new Position($row['pos_id']);
             }
-            // TODO: Move to sql query
-            krsort($this->positions);
 
             if(!is_array($this->positions) || count($this->positions) == 0) {
                 $this->last_pos = new Position();
                 $this->last_acc = -1;
             }
             else {
-                $this->last_pos = $this->positions[key($this->positions)];
+                $this->last_pos = $this->positions[(sizeof($this->positions)-1)];
                 $this->last_acc = $this->last_pos->acc;
             }
 
@@ -491,7 +493,7 @@
             if($posID !== FALSE) {               
                 
                 $p = new Position($posID);
-                $this->positions[(int) time()] = $p;
+                $this->positions[] = $p;
                 
                 $user_id = User::currentId();
                 if(isset($user_id) === false) {
