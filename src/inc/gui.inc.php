@@ -80,7 +80,7 @@
     function insert_control($id, $type, $value, $label, $attributes='', $class='', $placeholder=null, $output=true)
     {
         ob_start();
-        require(ADMIN_PATH . "gui/control.gui.php");
+        require(APP_PATH . "gui/control.gui.php");
         $html = ob_get_clean();
         if($output) {
             echo $html;
@@ -131,7 +131,7 @@
 //    function insert_progress($percent=100, $output=true)
 //    {
 //        ob_start();
-//        require(ADMIN_PATH . "gui/progress.gui.php");
+//        require(APP_PATH . "gui/progress.gui.php");
 //        $html = ob_get_clean();
 //        if($output) echo $html;
 //        return $html;
@@ -141,7 +141,7 @@
     function insert_form($id, $title, $fields, $action=null, $actions=null, $output=true)
     {
         ob_start();
-        require(ADMIN_PATH . "gui/form.gui.php");
+        require(APP_PATH . "gui/form.gui.php");
         $html = ob_get_clean();
         if($output) {
             echo $html;
@@ -153,7 +153,7 @@
 //    {
 //        $class = $visible ? "" : "fade hide";
 //        ob_start();        
-//        require(ADMIN_PATH . "gui/form.dialog.gui.php");
+//        require(APP_PATH . "gui/form.dialog.gui.php");
 //        $html = ob_get_clean();
 //        if($output) echo $html;
 //        return $html;
@@ -162,7 +162,7 @@
     function insert_dialog_confirm($id, $title, $message, $action, $output=true)
     {
         ob_start();
-        require(ADMIN_PATH . "gui/confirm.dialog.gui.php");
+        require(APP_PATH . "gui/confirm.dialog.gui.php");
         $html = ob_get_clean();
         if($output) {
             echo $html;
@@ -171,9 +171,20 @@
     }        
     
     
+    function insert_dialog_selector($id, $title, $content, $action = null, $output=true)
+    {
+        ob_start();
+        require(APP_PATH . "gui/selector.dialog.gui.php");
+        $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }        
+    
     function insert_table($id, $rows, $searchable=true, $output=true) {
         ob_start();
-        require(ADMIN_PATH . "gui/table.gui.php");
+        require(APP_PATH . "gui/table.gui.php");
         $html = ob_get_clean();
         if($output) {
             echo $html;
@@ -202,117 +213,10 @@
     function insert_row($id, $cells, $attributes='', $class='', $output=true)
     {
         ob_start();
-        require(ADMIN_PATH . "gui/row.gui.php");
+        require(APP_PATH . "gui/row.gui.php");
         $html = ob_get_clean();
         if($output) {
             echo $html;
         }
         return $html;
-    }
-    
-    function insert_trace_bar($missing, $collapsed = false, $output=true) {
-        
-        $timeout = (time() - strtotime($missing->reported)) > 3*60*60*1000;
-        
-        $trace['alerted']['state'] = 'pass';
-        $trace['alerted']['time'] = format_since($missing->reported);
-        $trace['alerted']['timestamp'] = $missing->reported;
-        $trace['alerted']['tooltip'] = _('Sporing opprettet');
-        if($missing->sms_sent !== null) {
-            $trace['sent']['state'] = 'pass';
-            $trace['sent']['time'] = format_since($missing->sms_sent);
-            $trace['sent']['timestamp'] = $missing->sms_sent;
-            $trace['sent']['tooltip'] = _('SMS er sendt');
-        } else {
-            $trace['sent']['state'] = 'fail';
-            $trace['sent']['time'] = f_('Ukjent');
-            $trace['sent']['timestamp'] = '';
-            $trace['sent']['tooltip'] = _('SMS er ikke sendt. Sjekk logg.');
-        }            
-        if($missing->sms_delivery !== null) {
-            $trace['delivered']['state'] = 'pass';
-            $trace['delivered']['time'] = format_since($missing->sms_delivery);
-            $trace['delivered']['timestamp'] = $missing->sms_delivery;
-            $trace['delivered']['tooltip'] = _('SMS er mottatt');
-        } else {
-            
-            $state = '';
-            if($missing->answered !== null || $missing->sms_sent !== null) {
-                $state = 'warning';
-            } elseif($timeout) {
-                $state = 'fail'; 
-            } 
-            $trace['delivered']['state'] = $state;
-            $trace['delivered']['time'] = _('Ukjent');
-            $trace['delivered']['timestamp'] = '';
-            switch($state)
-            {
-                case 'warning':
-                    $trace['delivered']['tooltip'] = 
-                        _('SMS er levert, men leveranserapport fra SMS leverandør ikke mottatt.');
-                    break;
-                case 'fail':
-                    $trace['delivered']['tooltip'] = 
-                    _('SMS ikke levert på tre timer. Telefonen kan være tom for ' . 
-                        ' strøm eller utenfor dekning.');
-                    break;
-                default:
-                    $trace['delivered']['tooltip'] = 
-                    _('SMS sannsynligvis ikke levert. Telefonen kan være tom for ' . 
-                        ' strøm eller utenfor dekning.');
-                    break;
-            }
-            if($state) {
-            } else {
-            }
-        }            
-        if($missing->answered !== null) {
-            $trace['response']['state'] = 'pass';
-            $trace['response']['time'] = format_since($missing->answered);
-            $trace['response']['timestamp'] = $missing->answered;
-            $trace['response']['tooltip'] = _('Sporingsside er lastet ned');
-        } else {
-            $trace['response']['state'] = '';
-            $trace['response']['time'] = _('Ukjent');
-            $trace['response']['timestamp'] = '';
-            $trace['response']['tooltip'] = _('Sporingsside er ikke lastet ned.' . 
-                ' Telefonen kan være tom for strøm, utenfor dekning, støtte for lokalisering ' .
-                ' kan være slått av eller ikke mulig, eller brukeren valgte å ikke dele ' .
-                ' posisjonen med deg.');
-        }            
-        if($missing->last_pos->timestamp>-1) {
-            $trace['located']['state'] = 'pass';
-            $trace['located']['time'] = format_since($missing->last_pos->timestamp);
-            $trace['located']['timestamp'] = $missing->last_pos->timestamp;
-            $trace['located']['tooltip'] = _('Telefon er lokalisert');
-        } else {
-
-            if($missing->answered !== null || $missing->sms_sent !== null) {
-                $trace['located']['state'] = '';
-            } elseif($timeout) {
-                $trace['located']['state'] = 'fail'; 
-            } 
-            
-            if($missing->answered !== null) {
-                $trace['located']['tooltip'] = _('Sporingsside er lastet ned, ' . 
-                    ' men ingen posisjon er mottatt. Telefonen kan være tom for strøm, ' .
-                    ' utenfor dekning, støtte for lokalisering kan være slått av eller ' .
-                    ' ikke tilgjengelig (ingen GPS eller GPS er avslått), eller brukeren valgte ' . 
-                    ' å ikke dele posisjonen.');
-            } else {
-                $trace['located']['tooltip'] = _('Sporingsside er ikke lastet ned. ' . 
-                    ' Telefonen kan være tom for strøm eller utenfor dekning.');
-            }
-            $trace['located']['time'] = _('Ukjent');            
-            $trace['located']['timestamp'] = '';     
-        }
-        
-        ob_start();
-        require(ADMIN_PATH . "gui/missing.trace.gui.php");
-        $html = ob_get_clean();
-        if($output) {
-            echo $html;
-        }
-        return $html;
-    }
-    
+    }    

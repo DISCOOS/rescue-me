@@ -1,0 +1,9 @@
+{
+    "capslock": {
+        "on": "CAPSLOCK_IS_ON"
+    },
+    "validate": {
+        "fill": "PLEASE_FILL_OUT_THIS_FIELD",
+        "format": "PLEASE_MATCH_THE_REQUIRED_FORMAT"
+    }
+}

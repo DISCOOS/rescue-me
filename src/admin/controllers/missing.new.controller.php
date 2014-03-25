@@ -12,11 +12,11 @@ if(!RescueMe\Module::exists("RescueMe\SMS\Provider"))
 
 if(sizeof($missing_modules) > 0) {
 	$TWIG['error'] = array('header' => sizeof($missing_modules) > 1 
-										? _('Missing modules!') 
-										: _('Missing module!'),
+										? T_('Missing modules!') 
+										: T_('Missing module!'),
 						   'body' => sizeof($missing_modules) > 1 
-						   				? _('The system is missing following modules!') 
-						   				: _('The system is missing following module!'),
+						   				? T_('The system is missing following modules!') 
+						   				: T_('The system is missing following module!'),
 						   'data' => implode(', ', $missing_modules));
 } else {
 	if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -32,8 +32,8 @@ if(sizeof($missing_modules) > 0) {
 			$_POST['mb_mobile']);
 
 		if(!$operation) {
-	        $TWIG['message']['header'] = _('Could not initiate trace');
-	        $TWIG['message']['body']   = _('System error: could not initiate operation');
+	        $TWIG['message']['header'] = T_('Could not initiate trace');
+	        $TWIG['message']['body']   = T_('System error: could not initiate operation');
 		} else {
 			$missing = Missing::add(
 				$_POST['m_name'], 
@@ -44,8 +44,8 @@ if(sizeof($missing_modules) > 0) {
 				header("Location: ".ADMIN_URI.'missing/'.$operation->id);
 				exit();
 			}
-	        $TWIG['message']['header'] = _('Could not initiate trace');
-	        $TWIG['message']['body']   =  RescueMe\DB::errno() ? 'DB Error: '. RescueMe\DB::error() : _('Please try again');
+	        $TWIG['message']['header'] = T_('Could not initiate trace');
+	        $TWIG['message']['body']   =  RescueMe\DB::errno() ? 'DB Error: '. RescueMe\DB::error() : T_('Please try again');
 	    }
     }
 	$TWIG['countries'] = Locale::getCountryNames();

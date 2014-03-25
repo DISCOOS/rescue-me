@@ -106,13 +106,13 @@
          */
         public static function getTitles() {
             return array(
-                Logs::ALL => _('All'),
-                Logs::TRACE => _('Trace'),
-                Logs::LOCATION => _('Locations'),
-                Logs::SMS => _('SMS'),
-                Logs::ACCESS => _('Access'),
-                Logs::DB =>  _('Database'),
-                Logs::SYSTEM => _('System'),
+                Logs::ALL => ALL,
+                Logs::TRACE => TRACES,
+                Logs::LOCATION => LOCATIONS,
+                Logs::SMS => SMS,
+                Logs::ACCESS => ACCESS,
+                Logs::DB =>  DATABASE,
+                Logs::SYSTEM => SYSTEM,
             );            
         }        
         
@@ -188,7 +188,7 @@
             if(empty($where) === false) {
                 $query .= ' WHERE (' .implode(') AND (', $where) . ')';
             }           
-                        
+            
             $res = DB::query($query);
 
             if (DB::isEmpty($res)) return false;

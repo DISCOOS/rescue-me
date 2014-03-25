@@ -4,16 +4,6 @@ R = install;
 // Allow one "version" per window
 window.R = R;
 
-// Initialize i18n support (async)
-i18n.init({ 
-    lng: R.lang.locale,
-    fallbackLng: R.lang.locale,
-    useLocalStorage: false,
-    getAsync: false,
-    resGetPath: R.app.url+'js/locales/__lng__/__ns__.json'
-});
-
-
 /**
  * Extract query key-value pairs from given ur
  * @param string url Url
@@ -29,4 +19,20 @@ R.toQuery = function(url) {
         query[param[0]] = (param.length > 1 ? param[1]: '');
     }
     return query;
+};
+
+R.cookie = {};
+R.cookie.get = function(name, use) {
+    
+    use = use || null;
+
+    name = name + "=";
+    var ca = document.cookie.split(';');
+    
+    for(var i=0; i<ca.length; i++) {
+    var c = ca[i].trim();
+        if (c.indexOf(name)===0) 
+            return c.substring(name.length,c.length);
+    }
+    return use;
 };

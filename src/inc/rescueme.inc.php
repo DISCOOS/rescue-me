@@ -1,54 +1,5 @@
 <?php
 
-    use RescueMe\Properties;
-    
-    function dec_to_dem($dec)
-    {
-        // Converts decimal longitude / latitude to DM
-        // ( decimal minutes) 
-        // This is the piece of code which may appear to 
-        // be inefficient, but to avoid issues with floating
-        // point math we extract the integer part and the float
-        // part by using a string function.
-
-        $vars = explode(".", $dec);
-        $deg = $vars[0];
-        $tempma = "0." . $vars[1];
-
-        $tempma = (float)$tempma * 3600;
-        $min = floor($tempma / 60);
-        $des = $tempma - ($min * 60);
-        $des = explode('.', $des);
-        $des = isset($des[1]) ? (int)$des[1] : 0;
-
-        return array("deg" => $deg, "min" => $min, "des" => $des);
-    }
-    
-    
-    function dec_to_dms($dec)
-    {
-        // Converts decimal longitude / latitude to DMS
-        // ( Degrees / minutes / seconds ) 
-        // This is the piece of code which may appear to 
-        // be inefficient, but to avoid issues with floating
-        // point math we extract the integer part and the float
-        // part by using a string function.
-
-        $vars = explode(".", $dec);
-        $deg = $vars[0];
-        $tempma = "0." . $vars[1];
-
-        $tempma = (float)$tempma * 3600;
-        $min = floor($tempma / 60);
-        $sec = round($tempma - ($min * 60));
-        $des = $tempma - ($min * 60) - $sec;
-        $des = explode('.', $des);
-        $des = isset($des[1]) ? (int)$des[1] : 0;
-
-        return array("deg" => $deg, "min" => $min, "sec" => $sec, "des" => $des);
-    }
-    
-    
     /**
      * Get application path relative to $_SERVER['SERVER_NAME'];
      * 
@@ -110,60 +61,36 @@
      */
     function get_rescueme_install($options=array())
     {
-        $options["app"] = array("url" => APP_URI);
-        $options["admin"] = array("url" => ADMIN_URI);
-        $options["lang"] = array("locale" => APP_LOCALE);
+        $options['app'] = array('url' => APP_URI);
+        $options['admin'] = array('url' => ADMIN_URI);
+        $options['locale'] = DEFAULT_LOCALE;
         
         return str_replace('\\/', '/',json_encode($options));
 
     }// get_rescueme_install
     
     
-    function is_ajax_request() {
-        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
-    }        
-    
-    
-    /**
-     * Converts ajax request into response.
-     * 
-     * Returns json string with structure {html: 'string', options: 'array'}
-     * 
-     * @param string $resource Resource name
-     * @param string $index Resource index
-     * @param array $context Resouce context
-     * @return string
-     */
-    function ajax_response($resource, $index = '', $context = '') {
-        
-        if($index) {
-            $index = '.'.$index;
-        }
-        
-        return require "ajax/$resource$index.ajax.php";
-        
-    }
-    
-    function create_paginator($current, $total, $user_id) {
-        
-        $options['size'] =  'normal';
-        $options['alignment'] = 'center';
-        $options['currentPage'] = $current;
-        $options['totalPages'] = $total;
-        
-        return $options;
-    }
-    
-    
-    function create_ajax_response($html, $options = array()) {
-        
-        $response = array();
-        $response['html'] = $html;
-        $response['options'] = $options;
+    function dec_to_dem($dec)
+    {
+        // Converts decimal longitude / latitude to DM
+        // ( decimal minutes) 
+        // This is the piece of code which may appear to 
+        // be inefficient, but to avoid issues with floating
+        // point math we extract the integer part and the float
+        // part by using a string function.
 
-        return json_encode($response);
-        
+        $vars = explode(".", $dec);
+        $deg = $vars[0];
+        $tempma = "0." . $vars[1];
+
+        $tempma = (float)$tempma * 3600;
+        $min = floor($tempma / 60);
+        $des = $tempma - ($min * 60);
+        $des = explode('.', $des);
+        $des = isset($des[1]) ? (int)$des[1] : 0;
+
+        return array("deg" => $deg, "min" => $min, "des" => $des);
     }
     
-    
+
 ?>

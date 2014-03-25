@@ -24,6 +24,8 @@
     {
         const TABLE = "properties";
         
+        const NO = 'no';
+        const YES = 'yes';
         const ALL = "all";
         const SHOW = "show";
         const HIDE = "hide";
@@ -38,7 +40,9 @@
         
         const OPTIONS_URI = 'property/options';
         
-        const SYSTEM_COUNTRY = "system.country";
+        const SYSTEM_COUNTRY_PREFIX = "system.country.prefix";
+        
+        const SYSTEM_LOCALE = "system.locale";
         
         const SYSTEM_PAGE_SIZE = "system.page.size";
         
@@ -51,6 +55,8 @@
         const LOCATION_APPCACHE = "location.appcache";
         const LOCATION_APPCACHE_VERSION = "version";
         const LOCATION_APPCACHE_SETTINGS = "settings";
+        
+        const TRACE_ALERT_NEW = "trace.alert.new";
         
         const TRACE_BAR_STATE = "trace.bar.state";
         
@@ -89,11 +95,18 @@
         
         public static $meta = array(
             
-            self::SYSTEM_COUNTRY => array(
+            self::SYSTEM_COUNTRY_PREFIX => array(
                 'type' => 'select',
                 'default' => '',
                 'options' => true,
-                'description' => "Use given country as default country code (phone number prefix)."
+                'description' => "Use phone number prefix for given country as default."
+            ),
+            
+            self::SYSTEM_LOCALE => array(
+                'type' => 'select',
+                'default' => '',
+                'options' => true,
+                'description' => "Use given language (locale)."
             ),
             
             self::SYSTEM_PAGE_SIZE => array(
@@ -132,6 +145,16 @@
                     self::LOCATION_APPCACHE_SETTINGS => 'Settings'
                  ),
                 'description' => "Make locate script available offline with HTML5 appcache."
+            ),
+            
+            self::TRACE_ALERT_NEW => array(
+                'type' => 'select',
+                'default' => self::YES,
+                'options' => array(                   
+                    self::YES => 'Yes',
+                    self::NO => 'No',
+                 ),
+                'description' => "Show warning about link merge field and information about trace script?"
             ),
             
             self::TRACE_BAR_STATE => array(
@@ -224,7 +247,8 @@
         
         public static function getDefaults() {
             $defaults = array();
-            self::$meta[self::SYSTEM_COUNTRY]['default'] = Locale::getDefaultCountryCode();
+            self::$meta[self::SYSTEM_LOCALE]['default'] = Locale::getDefaultLocale();
+            self::$meta[self::SYSTEM_COUNTRY_PREFIX]['default'] = Locale::getDefaultCountryCode();
             self::$meta[self::TRACE_DETAILS]['default'] = implode(',', array_keys(self::$meta[self::TRACE_DETAILS]['options']));
             foreach(self::$meta as $name => $property){
                 $defaults[$name] = $property['default'];
@@ -297,7 +321,7 @@
                 switch($name) {
                     case self::SMS_REQUIRE:
                         return "";
-                }
+               }
                 
                 return $defaults[$name];
             }
@@ -375,13 +399,15 @@
         public static final function text($name, $user_id=0) {
             $value = self::get($name, $user_id);
             switch($name) {
-                case self::SYSTEM_COUNTRY:
+                case self::SYSTEM_COUNTRY_PREFIX:
                     return Locale::getCountryName($value);
+                case self::SYSTEM_LOCALE:
+                    return Locale::getLanguageName($value);
                 case self::SMS_REQUIRE:
                 case self::TRACE_DETAILS:
                     $selected = array();
                     if(empty($value)) {
-                        return _("None");
+                        return NONE;
                     }
                     foreach(explode(',', $value) as $option) {
                         $selected[] = self::$meta[$name]['options'][$option];
@@ -417,14 +443,21 @@
          * Get property value options
          * 
          * @param string $name Property
-         * @return type
+         * @param integer $user_id
+         * 
+         * @return mixed
          */
-        public static final function options($name) {
+        public static final function options($name, $user_id=0) {
             $options = array();
             switch($name) {
-                case self::SYSTEM_COUNTRY:
-                    foreach(Locale::getCountryNames(true) as $code => $country) {
+                case self::SYSTEM_COUNTRY_PREFIX:
+                    foreach(Locale::getCountryNames() as $code => $country) {
                         $options[] = array('value' =>  $code, 'text' => $country);
+                    }
+                    break;
+                case self::SYSTEM_LOCALE:
+                    foreach(Locale::getLanguageNames() as $value => $name) {
+                        $options[] = array('value' => $value, 'text' => $name);
                     }
                     break;
                 default:
@@ -447,7 +480,7 @@
          * @return string
          */
         public static final function description($name) {
-            return _(self::$meta[$name]['description']);
+            return self::$meta[$name]['description'];
         }
         
         
@@ -474,7 +507,7 @@
 
                     $cells = array();
 
-                    $cells[] = array('value' => _($name));
+                    $cells[] = array('value' => $name);
 
                     $type = self::type($name);
 
@@ -533,16 +566,27 @@
          * 
          * @param string $name
          * @param mixed $value
+         * @param integer $user_id
          * 
          * @return boolean|string TRUE if allowed, error message otherwise.
          */
-        public static final function accept($name, $value) {
+        public static final function accept($name, $value, $user_id = 0) {
             // Verify setting
             switch($name) {
-                case self::SYSTEM_COUNTRY:
+                case self::SYSTEM_COUNTRY_PREFIX:
 
-                    if(!Locale::accept($value)) {
-                        return 'Locale "'.$value.'" not accepted';
+                    if(Locale::accept($value) === FALSE) {
+                        return 'Country code "'.$value.'" not accepted';
+                    }                        
+
+                    break;
+                    
+                case self::SYSTEM_LOCALE:
+                    
+                    list($language, $country) = preg_split("#[_-]#", $value);
+                    
+                    if(Locale::accept($country, $language) === FALSE) {
+                        return 'Language code "'.$value.'" not accepted';
                     }                        
 
                     break;
@@ -569,6 +613,7 @@
                 case self::MAP_DEFAULT_BASE:
                 case self::MAP_DEFAULT_FORMAT:
                 case self::LOCATION_APPCACHE:
+                case self::TRACE_ALERT_NEW:
                 case self::TRACE_BAR_STATE:
                 case self::TRACE_BAR_LOCATION:
                     
@@ -603,8 +648,8 @@
             
             return true;
         }
-                
-
+        
+        
         /**
          * Get property filter
          * 

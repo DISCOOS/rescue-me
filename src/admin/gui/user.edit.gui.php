@@ -15,7 +15,7 @@
         'id' => 'name',
         'type' => 'text', 
         'value' => $user->name, 
-        'label' => _('Full name'),
+        'label' => FULL_NAME,
         'attributes' => 'required autofocus'
     );
     
@@ -27,7 +27,7 @@
         'id' => 'country',
         'type' => 'select', 
         'value' => insert_options(Locale::getCountryNames(), $user->mobile_country, false), 
-        'label' => _('Mobile country'),
+        'label' => MOBILE_COUNTRY,
         'class' => 'span2',
         'attributes' => 'required'
     );    
@@ -35,7 +35,7 @@
         'id' => 'mobile',
         'type' => 'tel', 
         'value' => $user->mobile, 
-        'label' => _('Mobile'),
+        'label' => MOBILE_PHONE,
         'class' => 'span2',
         'attributes' => 'required pattern="[0-9]*"'
     );
@@ -43,7 +43,7 @@
         'id' => 'email',
         'type' => 'email', 
         'value' => $user->email, 
-        'label' => _('E-mail'),
+        'label' => EMAIL,
         'class' => 'span3',
         'attributes' => 'required'
     );    
@@ -53,16 +53,16 @@
             'id' => 'role',
             'type' => 'select',
             'value' => insert_options(\RescueMe\Roles::getAll(), $user->role_id, false), 
-            'label' => _('Role'),
+            'label' => ROLE,
             'attributes' => 'required'
         );
     }
     
     if($approve) {
-        $_ROUTER['submit'] = ('Godkjenn');
-        insert_form("user", _('Godkjenn bruker'), $fields,  ADMIN_URI."user/approve/$id", $_ROUTER);
+        $_ROUTER['submit'] = APPROVE;
+        insert_form("user", APPROVE_USER, $fields,  ADMIN_URI."user/approve/$id", $_ROUTER);
     } else {
-        insert_form("user",_(EDIT_USER), $fields, ADMIN_URI."user/edit/$id", $_ROUTER);
+        insert_form("user",EDIT_USER, $fields, ADMIN_URI."user/edit/$id", $_ROUTER);
     }
     
 ?>

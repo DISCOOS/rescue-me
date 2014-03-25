@@ -12,6 +12,8 @@
     
     namespace RescueMe\SMS;
     
+    use RescueMe\Properties;
+    
 
     /**
      * SMS class
@@ -30,7 +32,9 @@
          */
         public function __construct($company='', $department='', $password='')
         {
-            parent::__construct();
+            parent::__construct(array(
+                Properties::SMS_SENDER_ID
+            ));
             $this->config = $this->newConfig($company, $department, $password);
             
         }// __construct
@@ -46,9 +50,9 @@
                     "password" => $password
                 ),
                 array(
-                    "company" => _("Company ID"),
-                    "department" => _("User ID"),
-                    "password" => _("password")
+                    "company" => COMPANY_ID,
+                    "department" => USER_ID,
+                    "password" => PASSWORD
                 ),
                 array(
                     "company", 

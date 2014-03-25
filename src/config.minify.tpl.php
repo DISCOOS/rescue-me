@@ -20,6 +20,7 @@
             ),
             'index.js' => array
             (
+                '//js/i18next.min.js', 
                 '//js/rescueme.js', 
                 '//js/jquery.min.js', 
                 '//js/bootstrap.min.js'
@@ -92,11 +93,10 @@
             require '../config.php';
             
             // Replace all data urls
-            $content = preg_replace('#url\("/#', 'url("'.APP_URI, $content);
+            $content = preg_replace('#url\(([\'"])/#', 'url($1'.APP_URI, $content);
 
         }
         return $content;
     }
     
-    $min_serveOptions['postprocessor'] = 'rescueme_minify_prepare';    
-    
+    $min_serveOptions['postprocessor'] = 'rescueme_minify_prepare';

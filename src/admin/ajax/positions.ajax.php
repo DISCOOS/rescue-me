@@ -1,9 +1,12 @@
 <?php
+ob_start();
+
+use RescueMe\User;
 use RescueMe\Missing;
 use RescueMe\Properties;
 
-ob_start();
 $num = (int)$_GET['num'];
+$user_id = User::currentId();
 $missing = Missing::get((int)$_GET['id']);
 $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
 

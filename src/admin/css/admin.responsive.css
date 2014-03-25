@@ -58,10 +58,15 @@
     }
     
     /* Fit formsets on single row */
-    .new-missing {
+    .column {
         width: 100%;
     }    
-
+    
+    /* Make textareas at least 6 rows high */
+    textarea {
+        height: 4em;
+    }
+    
 }
 
 /* ==========================================
@@ -90,16 +95,16 @@
         border-top: 0px;
     }
     
-    #trace {
-        margin-left: -25px;
+    .trace {
+        left: -10px;
     }
 
-    #trace .span
+    .trace .span
     {
         width: 70px;
     }
     
-    #trace .trace-bar
+    .trace .trace-bar
     {
         width: 40px;
         left: -20px;
@@ -122,10 +127,14 @@
     }
     
     /* Fit formsets on single row */
-    .new-missing {
-        width: 100%;        
+    .column {
+        width: 100%;
     }    
     
+    /* Make textareas at least 6 rows high */
+    textarea {
+        height: 6em;
+    }
 
 }
 

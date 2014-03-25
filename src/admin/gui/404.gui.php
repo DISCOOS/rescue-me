@@ -11,7 +11,9 @@
 	 * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
 	 */
     
-    header("HTTP/1.0 404 Not Found");
+    if(headers_sent() === false) {
+        header("HTTP/1.0 404 Not Found");
+    }
     
 ?>
 

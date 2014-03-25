@@ -17,7 +17,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th width="25%"><?=_("Settings")?></th>
+            <th width="25%"><?=T_("Settings")?></th>
             <th width="25%"></th>
             <th width="50%">
                 <input type="search" class="input-medium search-query pull-right" placeholder="Search">

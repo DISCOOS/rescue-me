@@ -19,4 +19,4 @@
     
 </p>
 
-<a class="btn btn-primary" href="<?=ADMIN_URI?><?=($admin ? 'user/list#pending' : '')?>"><?=_('Fortsett')?></a>
+<a class="btn btn-primary" href="<?=ADMIN_URI?><?=($admin ? 'user/list#pending' : '')?>"><?=_CONTINUE?></a>

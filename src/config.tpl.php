@@ -11,7 +11,7 @@
     }
     
     // TODO: Add to install/configure
-    define('DEBUG', false); 
+    define('DEBUG', true); 
     
     // Allow usage on command line
     if(php_sapi_name() !== 'cli') session_start();
@@ -20,33 +20,30 @@
     // Still in early development!
     define('USE_SILEX', false);
     
+    // RescueMe custom constants
+    define('TITLE','RescueMe');
+    
     // RescueMe constants
     define('VERSION', file_get_contents($verfile));
     
     // RescueMe timesone
     define('TIMEZONE', 'UTC');
     
-    // RescueMe default locale
-    define('APP_LOCALE', 'en');
+    // RescueMe locale
+    define('COUNTRY_PREFIX', 'US');
+    define('DEFAULT_LOCALE', 'en_US');
     
     // RescueMe application paths
-    define('APP_PATH', dirname(__FILE__).'/');
-    define('APP_PATH_INC', APP_PATH.'inc/');
-    define('APP_PATH_CLASS', APP_PATH.'classes/');
+    define('APP_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
+    define('APP_PATH_INC', APP_PATH.'inc'.DIRECTORY_SEPARATOR);
+    define('APP_PATH_CLASS', APP_PATH.'classes'.DIRECTORY_SEPARATOR);
+    define('APP_PATH_LOCALE', APP_PATH.'locale'.DIRECTORY_SEPARATOR);
 
-    // RescueMe administration paths
-    define('ADMIN_PATH', APP_PATH.'admin/');
-    define('ADMIN_PATH_INC', ADMIN_PATH.'inc/');
-    define('ADMIN_PATH_GUI', ADMIN_PATH.'gui/');
-    define('ADMIN_PATH_CLASS', ADMIN_PATH.'classes/');
-    
     // Import class loaders
     require('vendor/autoload.php');
     
-    // Include resources
-    require('inc/common.inc.php');
-    require('inc/rescueme.inc.php');
-    require('inc/gui.inc.php');
+    // Include boostrap resources
+    require(APP_PATH_INC.'rescueme.inc.php');
     
     // RescueMe application URI
     define('APP_URI', get_rescueme_uri());
@@ -56,6 +53,15 @@
 
     // RescueMe administration URI
     define('ADMIN_URI', APP_URI.'admin/');
+    
+    // RescueMe derived URLs
+    define('LOCATE_URL', APP_URL.'l/#missing_id');
+    define('ADMIN_TRACE_URL', APP_URL.'admin/missing/#missing_id');
+        
+    // Include dependent resources
+    foreach(array('locale', 'common', 'gui') as $lib) {
+        require(APP_PATH_INC.$lib.'.inc.php');
+    }
     
     // RescueMe salt value
     define('SALT', '');
@@ -71,46 +77,6 @@
     define('DB_NAME', 'rescueme');
     define('DB_USERNAME', 'root');
     define('DB_PASSWORD', '');
-    
-    // RescueMe custom constants
-    define('TITLE', 'RescueMe');
-    define('DEFAULT_COUNTRY', 'US');
-
-    // RescueMe message constants
-    define('NO', 'Nei');
-    define('YES', 'Ja');
-    define('SAVE', 'Lagre');
-    define('CREATE', 'Opprett');    
-    define('NEW', 'Ny');
-    define('ADD', 'Legg til');
-    define('EDIT', 'Endre');
-    define('REMOVE', 'Fjern');
-    define('DELETE', 'Slett');
-    define('CANCEL', 'Avbryt');
-    define('START', 'Start');
-    define('LOGIN', 'Logg inn');
-    define('LOGOUT', 'Logg ut');
-    define('ALERT', 'Varsle');
-    define('TRACE', 'Sporing');
-    define('TRACES', 'Sporinger');
-    define('NEW_TRACE', 'Ny sporing');    
-    define('MISSING_PERSON', 'Savnet');
-    define('MISSING_PERSONS', 'Savnede');
-    define('USER', 'Bruker');
-    define('USERS', 'Brukere');
-    define('NEW_USER', 'Ny bruker');
-    define('EDIT_USER', 'Endre bruker');
-    define('EDIT_MISSING', 'Endre savnet');
-    define('OVERVIEW', 'Oversikt');
-    define('DASHBOARD', 'Dashboard');
-    define('SYSTEM', 'System');
-    define('SETUP', 'Oppsett');
-    define('ABOUT', 'Om '.TITLE);
-    define('SMS_TEXT', 'Du er savnet! Trykk på lenken for at vi skal se hvor du er: %LINK%');
-    define('SMS_LINK', APP_URL.'l/#missing_id');
-    define('SMS_NOT_SENT', 'OBS: Varsel ble ikke sendt til "#m_name"');
-    define('SMS2_TEXT', 'Om du har GPS på telefonen, anbefaler vi at du aktiverer dette. Vanligvis finner du dette under Innstillinger -> Generelt, eller Innstillinger -> Plassering');
-    define('SMS_MB_TEXT', 'Mottatt posisjon på "#m_name": #pos (+/- #acc meter)! '.APP_URL.'admin/missing/#missing_id');
     
     // Set current timezone
     if(date_default_timezone_set(TIMEZONE) === FALSE) {

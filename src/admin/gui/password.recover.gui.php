@@ -6,7 +6,7 @@
     if(isset($_ROUTER['error'])) { 
         $message = insert_error($_ROUTER['error'], false);
     } else {
-        $message = insert_message(_('Hvis brukeren finnes sendes det en reset link på SMS'), false);
+        $message = insert_message(T_('If user exist a SMS with reset link is sent to registered mobile phone'), false);
     }
     
     
@@ -23,7 +23,7 @@
         'id' => 'email',
         'type' => 'email', 
         'value' => ($user ? $user->email : ''),
-        'label' => _('E-mail'),
+        'label' => T_('E-mail'),
         'class' => 'span3',
         'attributes' => 'required'
     );    
@@ -32,7 +32,7 @@
         'id' => 'send-sms',
         'type' => 'checkbox', 
         'value' => 'checked',
-        'label' => _('Send to SMS'),
+        'label' => T_('Send to SMS'),
         'class' => 'span2',
         'attributes' => 'required'
     );    
@@ -40,7 +40,7 @@
         'id' => 'send-email',
         'type' => 'checkbox', 
         'value' => 'checked',
-        'label' => _('Send to e-mail'),
+        'label' => T_('Send to e-mail'),
         'class' => 'span2',
         'attributes' => 'required'
     );    
@@ -51,7 +51,7 @@
     
     if($id) $url .= "/".$id;
     
-    $_ROUTER["submit"] = _("Reset");
+    $_ROUTER["submit"] = T_("Reset");
     $_ROUTER['message'] = $message;
     
     insert_form("user", "Nullstill passord", $fields, $url, $_ROUTER);

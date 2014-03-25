@@ -29,6 +29,6 @@
     
     $role = Roles::getAll();
     
-    insert_form("roles", _('Edit role'). ': '.$role[$id], $fields, ADMIN_URI."role/edit/$id", $_ROUTER);
+    insert_form("roles", T_('Edit role'). ': '.$role[$id], $fields, ADMIN_URI."role/edit/$id", $_ROUTER);
     
 ?>

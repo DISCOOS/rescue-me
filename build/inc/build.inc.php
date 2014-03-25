@@ -22,7 +22,6 @@
     define('DONE', "DONE");
     define('FAILED', "FAILED");
     define('CANCELLED', "CANCELLED");
-    define('NOT_FOUND', "not found");
     define('RM_DIR_FAILED', "remove directory failed");
     define('DIR_EXISTS', "directory exists");
     define('MAKE_DIR_FAILED', "make directory failed");
@@ -492,7 +491,7 @@
         $config = file_get_contents($file);
         $config = get_define_array($config, array
         (
-            'SALT', 'TITLE', 'SMS_FROM', 'DEFAULT_COUNTRY', 
+            'SALT', 'TITLE', 'SMS_FROM', 'COUNTRY_PREFIX', 'DEFAULT_LOCALE', 
             'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD',
             'GOOGLE_API_KEY', 'TIMEZONE'
         ));        

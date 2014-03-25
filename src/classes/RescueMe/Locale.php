@@ -20,7 +20,179 @@
      */
     class Locale
     {
+        private static $current;
         private static $countries;
+        
+        /**
+         * Get default locale (immutable)
+         * 
+         * @return boolean|string
+         */
+        public static function getDefaultLocale() {
+            
+            if(defined('DEFAULT_LOCALE')) {
+                return DEFAULT_LOCALE;
+            }            
+            
+            $locale = false;
+            
+            if(!isset($locale) && extension_loaded("intl")) {
+                $locale = \locale_get_default();
+            }
+            
+            return $locale;
+            
+        }        
+        
+        
+        /**
+         * Get current locale (mutable)
+         * 
+         * @return boolean|string
+         */
+        public static function getCurrentLocale() {
+            
+            if(isset($_SESSION['locale'])) {
+                return $_SESSION['locale'];
+            }
+            
+            $locale = false;
+            
+            if(!isset($locale) && extension_loaded("intl")) {
+                $locale = \locale_get_default();
+            }
+            
+            return $locale;
+            
+        }        
+        
+        
+                
+        /**
+         * Get ISO2 language code from locale
+         * 
+         * @param string $locale Locale
+         * 
+         * @return array
+         */
+        public static function getCountryLanguage($locale) {
+            $code = preg_split("#[_-]#", $locale);
+            return isset($code[0]) ? $code[0] : false;
+        }        
+        
+
+        /**
+         * Get ISO2 code of current language
+         * 
+         * See <a href="http://www.icu-project.org/apiref/icu4c/uloc_8h.html#details">ICU's function uloc_getDefault</a>.
+         * 
+         * @return boolean|string ISO Country code, FALSE otherwise.
+         */
+        public static function getCurrentCountryLanguage() {
+            
+            if(($locale = self::getCurrentLocale()) !== FALSE) {
+                return self::getCountryLanguage($locale);
+            }
+            
+            return self::getDefaultCountryLanguage();
+        }        
+        
+
+        /**
+         * Get default language code (immutable)
+         * 
+         * @return boolean|string
+         */
+        public static function getDefaultCountryLanguage() {
+            
+            if(($locale = self::getDefaultLocale()) !== FALSE) {
+                return self::getCountryLanguage($locale);
+            }
+            
+            return false;
+            
+        }        
+                
+
+        /**
+         * Get country name
+         * 
+         * @param string $country ISO2 Country code
+         * @param string $language ISO2 Language code
+         *  
+         * @return string Country $code ISO2 country code
+         * 
+         */
+        public static function getLanguageName($locale) {
+
+            list($country, ) = preg_split("#[_-]#", $locale);
+            
+            if($country) {
+            
+                $country = self::getCountryInfo($country);
+
+                if($country !== false) {                
+                    foreach($country['language'] as $name => $match) {
+
+                        if($locale === $match) {
+                            return $name;
+                        }
+                    }
+                }
+            }
+            
+            return false;
+            
+        }
+        
+        
+        /**
+         * Get locales
+         *  
+         * @param boolean $supported Supported only
+         * 
+         * @return array Country languages (locale => name)
+         */
+        public static function getLocales($supported = true) {
+            $locales = array('en_US');
+            $countries = Locale::getCountryInfo();                
+            if($countries !== FALSE) {
+                foreach($countries as $country) {
+                    foreach($country['language'] as $name => $locale) {
+                        if($locale !== 'en_US' && ($supported === FALSE || is_dir(APP_PATH_LOCALE.$locale))) {
+                            $locales[] = $locale;
+                        }
+                    }
+                } 
+            }
+            return $locales;
+        }
+        
+        
+        /**
+         * Get country dial code
+         *  
+         * @param string $code ISO country code
+         * 
+         * @return array Country languages (locale => name)
+         */
+        public static function getLanguageNames($code = false, $supported = true) {
+            $languages = false;
+            $countries = Locale::getCountryInfo($code);                
+            if($countries !== FALSE) {
+                $countries = is_array($countries) ? $countries : array($countries);
+                foreach($countries as $country) {
+                    foreach($country['language'] as $name => $locale) {
+                        if($supported === FALSE || is_dir(APP_PATH_LOCALE.$locale) || $locale === 'en_US') {
+                            $languages[$locale] = $name;
+                        }
+                    }
+                } 
+            }
+            return $languages;
+        }
+        
+        
         
         /**
          * Get ISO2 Country Code from locale
@@ -30,7 +202,7 @@
          * @return array
          */
         public static function getCountryCode($locale) {
-            $code = split("[_-]", $locale);
+            $code = preg_split("#[_-]#", $locale);
             $code = strtoupper(isset($code[1]) ? $code[1] : $code[0]);
             return self::accept($code) ? $code : false;
         }        
@@ -45,7 +217,7 @@
          */
         public static function getCurrentCountryCode() {
             
-            $code = Properties::get(Properties::SYSTEM_COUNTRY);
+            $code = Properties::get(Properties::SYSTEM_COUNTRY_PREFIX);
             
             if(isset($code)) {
                 return $code;
@@ -62,8 +234,8 @@
          */
         public static function getDefaultCountryCode() {
             
-            if(defined('DEFAULT_COUNTRY')) {
-                return DEFAULT_COUNTRY;
+            if(defined('COUNTRY_PREFIX')) {
+                return COUNTRY_PREFIX;
             }
             
             $locale = self::getDefaultLocale();
@@ -74,38 +246,37 @@
             
             return false;
             
-        }        
-                
-        
+        }
         
         
         /**
-         * Get default locale (immutable)
+         * Check if ISO2 Country Code (and associated language) is accepted
          * 
-         * @return boolean|string
-         */
-        public static function getDefaultLocale() {
-            
-            $locale = false;
-            
-            if(!isset($locale) && extension_loaded("intl")) {
-                $locale = \locale_get_default();
-            }
-            
-            return $locale;
-            
-        }        
-                
-        /**
-         * Check if ISO2 Country Code is accepted
-         * 
-         * @param string $code
+         * @param string $country Country code
+         * @param mixed $language Language code
          * 
          * @return boolean
          */
-        public static function accept($code) {
+        public static function accept($country, $language = false) {
+            $accept = ($info = self::getCountryInfo($country)) !== false;
             
-            return (self::getCountryInfo($code) !== false);
+            if($accept) {
+                
+                if($language !== FALSE) {
+                    
+                    $locale = $language.'_'.$country;
+                    
+                    foreach($country['language'] as $name => $locale) {
+                        if(is_dir(APP_PATH_LOCALE.$locale) || $locale === 'en_US') {
+                            $accept = true;
+                            break;
+                        }
+                    }
+                    
+                }
+            }
+            
+            return $accept;
             
         }
         
@@ -138,13 +309,14 @@
             return $codes;
         }        
         
+        
         /**
          * Get country name
          * 
          * @param string $code ISO2 Country code
          * @param boolean $phone Include dial code if TRUE
          *  
-         * @return string Country $code ISO2 country code
+         * @return string Country name
          * 
          */
         public static function getCountryName($code, $phone=true) {
@@ -201,8 +373,17 @@
          */
         public static function getCountryInfo($code=false)
         {
-            if(!isset(self::$countries)) {
-                self::$countries = require 'countries.php';
+            $locale = self::getCurrentLocale();
+            if(isset(self::$countries) === false || $locale !== self::$current) {
+                
+                list($domain) = set_system_locale(DOMAIN_LOCALES, $locale);
+                
+                self::$countries = require implode(DIRECTORY_SEPARATOR, array(APP_PATH_LOCALE, 'locales', 'countries.php'));
+                
+                set_system_locale($domain, $locale);
+                
+                self::$current = $locale;
+                
             }
             
             if($code) {

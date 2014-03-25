@@ -13,13 +13,13 @@
     
 ?>
 
-<h3><?=_("Sporinger")?></h3>
+<h3><?=TRACES?></h3>
 
 <ul id="tabs" class="nav nav-tabs">
-  <li><a href="#open" data-toggle="tab"><?=_("Åpne")?></a></li>
-  <li><a href="#test" data-toggle="tab"><?=_("Tester")?></a></li>
-  <li><a href="#exercise" data-toggle="tab"><?=_("Øvelser")?></a></li>
-  <li><a href="#closed" data-toggle="tab"><?=_("Lukkede")?></a></li>
+  <li><a href="#open" data-toggle="tab"><?=OPEN?></a></li>
+  <li><a href="#test" data-toggle="tab"><?=TESTS?></a></li>
+  <li><a href="#exercise" data-toggle="tab"><?=EXERCISES?></a></li>
+  <li><a href="#closed" data-toggle="tab"><?=CLOSED?></a></li>
 </ul>
 
 <div class="tab-content" style="width: auto; overflow: visible">
@@ -27,14 +27,14 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="20%"><?=_("Name")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Sent")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Delivered")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Answered")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Reported")?></th>
-                    <th width="13%"><?=_("Position")?></th>
+                    <th width="20%"><?=NAME?></th>
+                    <th width="13%" class="hidden-phone"><?=SENT?></th>
+                    <th width="13%" class="hidden-phone"><?=DELIVERED?></th>
+                    <th width="13%" class="hidden-phone"><?=ANSWERED?></th>
+                    <th width="13%" class="hidden-phone"><?=REPORTED?></th>
+                    <th width="13%"><?=LOCATION?></th>
                     <? if($admin) { ?>
-                    <th width="5%" class="hidden-phone"><?= _('Bruker') ?></th>
+                    <th width="5%" class="hidden-phone"><?=USER?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -44,7 +44,7 @@
                                class="input-medium search-query pull-right" 
                                data-target="open .searchable"
                                data-source="open .pagination"
-                               placeholder="Search">
+                               placeholder="<?=SEARCH?>">
                     </th>            
                 </tr>
             </thead>        
@@ -57,14 +57,14 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="20%"><?=_("Name")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Sent")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Delivered")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Answered")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Reported")?></th>
-                    <th width="13%"><?=_("Position")?></th>
+                    <th width="20%"><?=NAME?></th>
+                    <th width="13%" class="hidden-phone"><?=SENT?></th>
+                    <th width="13%" class="hidden-phone"><?=DELIVERED?></th>
+                    <th width="13%" class="hidden-phone"><?=ANSWERED?></th>
+                    <th width="13%" class="hidden-phone"><?=REPORTED?></th>
+                    <th width="13%"><?=LOCATION?></th>
                     <? if($admin) { ?>
-                    <th width="5%" class="hidden-phone"><?= _('Bruker') ?></th>
+                    <th width="5%" class="hidden-phone"><?=USER?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -74,8 +74,8 @@
                                class="input-medium search-query pull-right" 
                                data-target="open .searchable"
                                data-source="open .pagination"
-                               placeholder="Search">
-                    </th>            
+                               placeholder="<?=SEARCH?>">
+                    </th>              
                 </tr>
             </thead>        
             <tbody class="searchable">
@@ -87,14 +87,14 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="20%"><?=_("Name")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Sent")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Delivered")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Answered")?></th>
-                    <th width="13%" class="hidden-phone"><?=_("Reported")?></th>
-                    <th width="13%"><?=_("Position")?></th>
+                    <th width="20%"><?=NAME?></th>
+                    <th width="13%" class="hidden-phone"><?=SENT?></th>
+                    <th width="13%" class="hidden-phone"><?=DELIVERED?></th>
+                    <th width="13%" class="hidden-phone"><?=ANSWERED?></th>
+                    <th width="13%" class="hidden-phone"><?=REPORTED?></th>
+                    <th width="13%"><?=LOCATION?></th>
                     <? if($admin) { ?>
-                    <th width="5%" class="hidden-phone"><?= _('Bruker') ?></th>
+                    <th width="5%" class="hidden-phone"><?=USER?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -104,8 +104,8 @@
                                class="input-medium search-query pull-right" 
                                data-target="open .searchable"
                                data-source="open .pagination"
-                               placeholder="Search">
-                    </th>            
+                               placeholder="<?=SEARCH?>">
+                    </th>              
                 </tr>
             </thead>        
             <tbody class="searchable">
@@ -117,11 +117,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="10%"><?=_("Type")?></th>
-                    <th width="20%"><?=_("Name")?></th>
-                    <th width="20%"><?=_("Closed")?></th>
+                    <th width="10%"><?=TYPE?></th>
+                    <th width="20%"><?=NAME?></th>
+                    <th width="20%"><?=CLOSED?></th>
                     <? if($admin) { ?>
-                    <th width="20%" class="hidden-phone"><?= _('Bruker') ?></th>
+                    <th width="20%" class="hidden-phone"><?= USER ?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -130,7 +130,7 @@
                                class="input-medium search-query pull-right" 
                                data-target="closed .searchable"
                                data-source="closed .pagination"
-                               placeholder="Search">
+                               placeholder="<?=SEARCH?>">
                     </th>            
                 </tr>
             </thead>        

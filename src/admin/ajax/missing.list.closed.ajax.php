@@ -27,7 +27,7 @@
     
     if($list === false || $list <= $start) { ?>
 
-        <tr><td colspan="<?=$admin ? 4 : 3?>"><?=_('Ingen registrert')?></td></tr>
+        <tr><td colspan="<?=$admin ? 4 : 3?>"><?=NONE_FOUND?></td></tr>
 
 <? } else { 
         
@@ -54,10 +54,9 @@
                 <? } else { ?>
                 <td class="missing editor" colspan="2">
                 <? } ?>
-                <td class="missing editor">
                     <div class="btn-group pull-right">
-                        <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/$id"?>">
-                            <b class="icon icon-edit"></b><?= _('Gjenåpne') ?>
+                        <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/{$this_missing->op_id}"?>">
+                            <b class="icon icon-edit"></b><?= REOPEN ?>
                         </a>
                     </div>
                 </td>

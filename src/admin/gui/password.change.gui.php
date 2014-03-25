@@ -14,14 +14,14 @@
     $group['value'][] = array(
         'id' => 'password',
         'type' => 'password', 
-        'label' => _('Password'),
+        'label' => T_('Password'),
         'class' => 'span3',
         'attributes' => 'required'
     );
     $group['value'][] = array(
         'id' => 'repeat-pwd',
         'type' => 'password', 
-        'label' => _('Repeat Password'),
+        'label' => T_('Repeat Password'),
         'class' => 'span3 offset1',
         'attributes' => 'required equalTo="#password"'
     );    

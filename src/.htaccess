@@ -23,7 +23,7 @@ AddType application/x-httpd-php .appcache
     RewriteRule ^css/(.*\.less)$ min/?g=$1 [L,NE]
     
     # Rewrite sms callbacks
-    RewriteRule ^sms/callback/([0-9]+)(.*)$ sms.php?request=callback&user=$1&$2 [QSA,L]
+    RewriteRule ^sms/callback/([0-9]+)(.*)$ sms/handle.php?request=callback&user=$1&$2 [QSA,L]
 
     # Location request - images
     RewriteCond %{SCRIPT_FILENAME} !-d  
@@ -33,22 +33,22 @@ AddType application/x-httpd-php .appcache
     # Location request
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^l/(.*)$ track/locate.php?id=$1 [L]
+    RewriteRule ^l/(.*)$ trace/locate.php?id=$1 [L]
 
     # Location request - appcache
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^l/(.*)/.*appcache$ track/locate.appcache.php?id=$1 [L]
+    RewriteRule ^l/(.*)/.*appcache$ trace/locate.appcache.php?id=$1 [L]
     
     # Location request - abort
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^a/(.*)$ track/abort.php?id=$1 [L]
+    RewriteRule ^a/(.*)$ trace/abort.php?id=$1 [L]
 
     # Location report
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^r/(.*)/(.*)/(.*)/(.*)/(.+)$ track/report.php?id=$1&lat=$2&lon=$3&acc=$4&alt=$5 [L]
+    RewriteRule ^r/(.*)/(.*)/(.*)/(.*)/(.*)$ trace/report.php?id=$1&lat=$2&lon=$3&acc=$4&alt=$5 [L]
     
     
 </IfModule>

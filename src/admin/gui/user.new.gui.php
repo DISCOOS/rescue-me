@@ -8,7 +8,7 @@
         'id' => 'name',
         'type' => 'text',
         'value' => $value, 
-        'label' => _('Full name'),        
+        'label' => T_('Full name'),        
         'attributes' => 'required autofocus'
     );
     
@@ -22,7 +22,7 @@
         'id' => 'country',
         'type' => 'select', 
         'value' => insert_options(Locale::getCountryNames(), $value, false), 
-        'label' => _('Mobile country'),
+        'label' => T_('Mobile country'),
         'class' => 'span2',
         'attributes' => 'required'
     );    
@@ -32,7 +32,7 @@
         'id' => 'mobile',
         'type' => 'tel',
         'value' => $value, 
-        'label' => _('Mobile'),
+        'label' => T_('Mobile'),
         'class' => 'span2',
         'attributes' => 'required pattern="[0-9]*"',
         'value' => $value
@@ -43,7 +43,7 @@
         'id' => 'email',
         'type' => 'email',
         'value' => $value, 
-        'label' => _('E-mail'),
+        'label' => T_('E-mail'),
         'class' => 'span3',
         'attributes' => 'required'
     );    
@@ -53,14 +53,14 @@
     $group['value'][] = array(
         'id' => 'password',
         'type' => 'password', 
-        'label' => _('Password'),
+        'label' => T_('Password'),
         'class' => 'span3',
         'attributes' => 'required'
     );
     $group['value'][] = array(
         'id' => 'repeat-pwd',
         'type' => 'password', 
-        'label' => _('Repeat Password'),
+        'label' => T_('Repeat Password'),
         'class' => 'span3 offset1',
         'attributes' => 'required equalTo="#password"'
     );    
@@ -72,7 +72,7 @@
             'id' => 'role',
             'type' => 'select',
             'value' => insert_options(\RescueMe\Roles::getAll(), $value, false), 
-            'label' => _('Role'),
+            'label' => T_('Role'),
             'attributes' => 'required'
         );
     }
