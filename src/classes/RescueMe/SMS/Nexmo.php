@@ -165,8 +165,10 @@
             if(assert_isset_all($params,array('messageId','msisdn','status'))) {
             
                 $this->delivered($params['messageId'], $params['msisdn'], 
-                        $this->errorcodes[(int)$params['status']].' ('.$params['status'].')', 
-                        new \DateTime(), (isset($params['err-code']) ? $params['err-code'] : ''));
+                        $params['status'], new \DateTime(), 
+                        (isset($params['err-code']) ? 
+                        $this->errorcodes[(int)$params['err-code']].' ('.$params['err-code'].')' 
+                        : ''));
             }
         }
         
