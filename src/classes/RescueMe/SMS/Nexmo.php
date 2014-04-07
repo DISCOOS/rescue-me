@@ -110,13 +110,15 @@
             // Start request
             $response = $this->invoke($smsURL);
             
-            if (isset($response['message-count']) && is_numeric($response['message-count']) && $response['message-count']>0)
+            if (isset($response['messages'][0]['status']) && 
+                    $response['messages'][0]['status']==="0")
             {
                 // Get first id
                 return $response['messages'][0]['message-id'];
             }
             
-            return $this->errors(utf8_encode($response['messages'][0]['error-text']));
+            return $this->errors(array(array('fatal'=>utf8_encode($response['messages'][0]['error-text']),
+                                       'number'=>$response['messages'][0]['status'])));
         } // _send
         
         private function invoke($url) {
@@ -150,7 +152,6 @@
             $messages = array();
             foreach($errors as $error) {
                 if(isset($error['fatal'])) {
-                    $error['number'] = Provider::FATAL;
                     $error['message'] = $error['fatal'];
                 }
                 $messages[] = $error['number'].":".$error['message'];
