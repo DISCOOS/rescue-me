@@ -22,14 +22,14 @@ var posFormat = '<?=Properties::text(Properties::MAP_DEFAULT_FORMAT, $user_id)?>
 <script>   
     function initialize() {
         <?php
-        foreach ($positions as $key=>$value) {
-            if ($value->acc < 1000) {
+        foreach (array_reverse($positions) as $key=>$value) {
+            if ($value->acc < Properties::get(Properties::LOCATION_DESIRED_ACC, $user_id)*0) {
                 $centerMap = $value;
                 break;
             }
         }
         if(!isset($centerMap)) {
-            $centerMap = reset($positions);
+            $centerMap = end($positions);
         }
 
         if($centerMap !== false) { ?>
