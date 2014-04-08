@@ -105,6 +105,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <link rel="shortcut icon" href="<?=APP_URI?>img/favicon.ico" >
+        <link rel="apple-touch-icon" href="<?=APP_URI?>img/rescueme-non-trans.png" >
         <link href="<?=APP_URI?>css/admin.css" rel="stylesheet">
         <? if(GOOGLE_API_KEY !== '') { ?>
         <script src="//maps.googleapis.com/maps/api/js?key=<?=GOOGLE_API_KEY?>&sensor=false"></script>
