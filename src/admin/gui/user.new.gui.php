@@ -22,7 +22,7 @@
         'id' => 'country',
         'type' => 'select', 
         'value' => insert_options(Locale::getCountryNames(), $value, false), 
-        'label' => T_('Mobile country'),
+        'label' => COUNTRY_CODE,
         'class' => 'span2',
         'attributes' => 'required'
     );    
@@ -32,7 +32,7 @@
         'id' => 'mobile',
         'type' => 'tel',
         'value' => $value, 
-        'label' => T_('Mobile'),
+        'label' => MOBILE_PHONE,
         'class' => 'span2',
         'attributes' => 'required pattern="[0-9]*"',
         'value' => $value
@@ -43,9 +43,9 @@
         'id' => 'email',
         'type' => 'email',
         'value' => $value, 
-        'label' => T_('E-mail'),
+        'label' => EMAIL,
         'class' => 'span3',
-        'attributes' => 'required'
+        'attributes' => 'required email'
     );    
     $fields[] = $group;
     
@@ -53,9 +53,9 @@
     $group['value'][] = array(
         'id' => 'password',
         'type' => 'password', 
-        'label' => T_('Password'),
+        'label' => PASSWORD,
         'class' => 'span3',
-        'attributes' => 'required'
+        'attributes' => 'required minlength="8"'
     );
     $group['value'][] = array(
         'id' => 'repeat-pwd',
@@ -72,7 +72,7 @@
             'id' => 'role',
             'type' => 'select',
             'value' => insert_options(\RescueMe\Roles::getAll(), $value, false), 
-            'label' => T_('Role'),
+            'label' => ROLE,
             'attributes' => 'required'
         );
     }

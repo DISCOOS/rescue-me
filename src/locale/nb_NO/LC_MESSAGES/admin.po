@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-21 14:06+0100\n"
-"PO-Revision-Date: 2014-03-21 14:06+0100\n"
+"POT-Creation-Date: 2014-04-12 01:07+0100\n"
+"PO-Revision-Date: 2014-04-12 01:07+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <support@discoos.org>\n"
 "Language: \n"
@@ -25,27 +25,37 @@ msgstr "Du har oppgitt feil brukernavn eller passord"
 msgid "Logs"
 msgstr "Logger"
 
-#: admin/router.php:748
+#: admin/router.php:129
+#: admin/router.php:136
+#: admin/router.php:147
+msgid "Illegal Operation"
+msgstr "Ulovlig operasjon"
+
+#: admin/router.php:149
+msgid "Access denied"
+msgstr "Ingen tilgang"
+
+#: admin/router.php:785
 msgid "Change Password"
 msgstr "Bytt passord"
 
-#: admin/router.php:758
+#: admin/router.php:795
 msgid "Password must be at least 8 characters long"
 msgstr "Passordet må være minst 8 tegn"
 
-#: admin/router.php:763
+#: admin/router.php:800
 msgid "Passwords do not match"
 msgstr "Passordene stemmer ikke"
 
-#: admin/router.php:780
+#: admin/router.php:817
 msgid "Recover Password"
 msgstr "Gjenopprett passord"
 
-#: admin/router.php:806
+#: admin/router.php:843
 msgid "Close operation"
 msgstr "Avslutt operasjon"
 
-#: admin/router.php:1105
+#: admin/router.php:1142
 msgid "Not an ajax request"
 msgstr "Ikke en ajax-forespørsel"
 
@@ -93,23 +103,10 @@ msgstr "Innstillinger"
 msgid "Full name"
 msgstr "Fullt navn"
 
-#: admin/gui/user.new.gui.php:25
-msgid "Mobile country"
-msgstr "Mobil land"
-
-#: admin/gui/user.new.gui.php:56
-#: admin/gui/password.change.gui.php:17
-msgid "Password"
-msgstr "Passord"
-
 #: admin/gui/user.new.gui.php:63
 #: admin/gui/password.change.gui.php:24
 msgid "Repeat Password"
 msgstr "Gjenta passord"
-
-#: admin/gui/user.new.gui.php:75
-msgid "Role"
-msgstr "Rolle"
 
 #: admin/gui/missing.trace.gui.php:5
 msgid "When trace was registered"
@@ -188,9 +185,13 @@ msgstr "Modul"
 msgid "No module found. Run install script."
 msgstr "Ingen modul funnet. Kjør installeringsskript."
 
-#: admin/gui/missing.position.list.gui.php:110
+#: admin/gui/missing.position.list.gui.php:73
 msgid "Google Maps not loaded"
 msgstr "Google Maps ikke lastet"
+
+#: admin/gui/password.change.gui.php:17
+msgid "Password"
+msgstr "Passord"
 
 #: admin/gui/role.list.gui.php:8
 msgid "Roles"
@@ -450,6 +451,10 @@ msgstr "Språk"
 msgid "Operation name"
 msgstr "Aksjonsnavn"
 
+#: admin/locale/admin.domain.php:50
+msgid "Role"
+msgstr "Rolle"
+
 #: admin/locale/admin.domain.php:53
 msgid "Username not safe"
 msgstr "Brukernavn er ikke sikker"
@@ -514,10 +519,6 @@ msgstr "Gjenåpne"
 msgid "Reopen operation"
 msgstr "Gjenåpne operasjon"
 
-#: admin/locale/admin.domain.php:72
-msgid "Access denied"
-msgstr "Ingen tilgang"
-
 #: admin/locale/admin.domain.php:73
 msgid "Setting"
 msgstr "Innstillinger"
@@ -577,6 +578,10 @@ msgstr "Avvis bruker"
 #: admin/locale/admin.domain.php:88
 msgid "Approve user..."
 msgstr "Godkjenn bruker..."
+
+#: admin/locale/admin.domain.php:89
+msgid "Mobile country"
+msgstr "Mobil land"
 
 #: admin/locale/admin.domain.php:90
 msgid "User approved"
@@ -948,9 +953,6 @@ msgstr "Konfigurer"
 
 #~ msgid "Closed"
 #~ msgstr "Lukket"
-
-#~ msgid "Operation"
-#~ msgstr "Aksjon"
 
 #~ msgid "Illegal"
 #~ msgstr "Ulovlig"

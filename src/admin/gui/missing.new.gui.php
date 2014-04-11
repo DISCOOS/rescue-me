@@ -22,7 +22,7 @@
         <?= $_ROUTER['error'] ?>
     </div>
 
-<? } elseif(modules_exists("RescueMe\SMS\Provider")) { ?>
+<? } elseif(modules_exists('RescueMe\SMS\Provider')) { ?>
 
     <div class="form-body">
         

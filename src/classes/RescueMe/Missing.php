@@ -590,8 +590,6 @@
                     $module = Module::get("RescueMe\\SMS\\Provider", $missing->user_id);
                     $sms = $module->newInstance();
                     
-                    var_dump($sms);
-                    
                     if($missing->sms_provider === $module->impl && ($sms instanceof Check)) {
                         
                         $code = Locale::getDialCode($missing->mobile_country);

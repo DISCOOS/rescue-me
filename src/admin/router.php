@@ -408,7 +408,7 @@
                 } 
                 
                 if (strlen($_POST['password']) < 8) {
-                    $_ROUTER['error'] = sprintf(USER_WITH_EMAIL_S_ALREADY_EXISTS, 8);
+                    $_ROUTER['error'] = sprintf(PASSWORD_MUST_BE_AT_LEAST_D_CHARACTERS_LONG, 8);
                     break;
                 }
                 

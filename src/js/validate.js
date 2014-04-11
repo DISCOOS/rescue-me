@@ -74,8 +74,12 @@ R.form.validate = function(selector) {
     });
     
     // Custom messages
-    $.validator.messages.required = $.i18n.t("validate.fill");
-    
+    $.validator.messages.email = $.i18n.t("validate.email");
+    $.validator.messages.required = $.i18n.t("validate.required");
+    $.validator.messages.minlength = $.i18n.t("validate.minlength");
+    $.validator.messages.equalTo = $.i18n.t("validate.equalto");
+
+
     // Custom rules
     $.validator.addMethod("pattern", function(value, element, param) {
         if (this.optional(element)) {

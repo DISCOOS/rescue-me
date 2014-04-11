@@ -93,7 +93,10 @@
         define('FAILED_TO_LOAD_MODULE_S', T_('Failed to load [%1$s].'));
         define('FAILED_TO_GET_COUNTRY_CODE', T_('Failed to get country code.'));
         define('PLEASE_FILL_OUT_THIS_FIELD', T_('Please fill out this field.'));
+        define('PLEASE_ENTER_A_VALID_EMAIL_ADDRESS', T_('Please enter a valid email address.'));
+        define('PLEASE_ENTER_AT_LEAST_D_CHARACTERS', T_('Please enter at least {0} characters.'));
         define('PLEASE_MATCH_THE_REQUIRED_FORMAT', T_('Please match the required format.'));
+        define('PLEASE_ENTER_THE_SAME_VALUE_AGAIN', T_('Please enter the same value again.'));
         define('SMS_REQUEST_S_NOT_SUPPORTED', T_('SMS request [%1$s] not supported.'));
         define('MODULE_S1_DOES_NOT_SUPPORT_S2', T_('[%1$s] does not support [%2$s].'));
         define('FAILED_TO_CREATE_INSTANCE_OF_MODULE_S', T_('Failed to create instance of module [%1$s].'));
