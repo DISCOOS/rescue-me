@@ -68,7 +68,7 @@
         /**
          * Get all modules
          * 
-         * @param integer $user_id
+         * @param integer $user_id 
          * 
          * @return boolean|\RescueMe\Module
          */
@@ -93,6 +93,7 @@
          * Get module filter
          * 
          * @param mixed $type Module id or type
+         * @param mixed $user_id User id
          * 
          * @return string
          */
@@ -231,7 +232,7 @@
          * 
          * @return Module id if success, FALSE otherwise. 
          */
-        public static function add($type, $impl, $config, $user_id=0)
+        public static function add($type, $impl, $config, $user_id = 0)
         {
             // Enfore namespace convension
             $type = ltrim($type,"\\");

@@ -15,6 +15,7 @@
     use Psr\Log\LogLevel;
     use RescueMe\Log\Logs;
     use RescueMe\User;
+    use RescueMe\Module;
     use RescueMe\Operation;
 
     /**
@@ -566,6 +567,45 @@
             return $res;
 
         }// sendSMS
+        
+        
+        /**
+         * Check missing state
+         * 
+         * @param integer $id
+         * @param boolean $admin
+         * 
+         * @return Missing|boolean
+         */
+        public static function check($id, $admin = true) {
+            
+            $missing = Missing::get($id, $admin);
+            
+            // Is check required?
+            if($missing !== false) { 
+                
+                if(empty($missing->sms_delivery) === true 
+                && empty($missing->sms_provider_ref) !== false) {
+                    
+                    
+                    $module = Module::get("RescueMe\SMS\Provider", $this->user_id);
+                    $sms = $module->newInstance();
+
+                    if($missing->sms_provider === $module->impl && 
+                        ($sms instanceof RescueMe\SMS\Check)) {
+                        
+                        $code = Locale::getDialCode($missing->mobile_country);
+                        $code = $sms->accept($code);
+                        if($sms->request($missing->sms_provider_ref,$code.$missing->mobile)) {
+                            $missing = Missing::get($id);
+                        }
+                    }
+                }
+            }
+            
+            return $missing;
+            
+        }
 
 
         /**

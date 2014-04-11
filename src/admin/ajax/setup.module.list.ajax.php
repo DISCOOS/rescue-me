@@ -7,7 +7,7 @@
     $id = input_get_int('id', User::currentId());
     
     $modules = Module::getAll($id);
-
+    
     if($modules !== false) {
 
         if(!isset($include)) $include = ".*";

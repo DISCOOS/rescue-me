@@ -206,17 +206,15 @@
             
             $id = input_get_int('id');
             
-            $module = Module::get($id, $user->id);
+            $module = Module::get($id);
 
             $_ROUTER['name'] = SETUP;
             $_ROUTER['view'] = $_GET['view'];
 
             if($module === false)
             {
-                if($edit === false) {
-                    $_ROUTER['error'] = MODULE.' '.$id.' ' .ucfirst(NOT_FOUND);
-                    break;
-                }
+                $_ROUTER['error'] = MODULE.' '.$id.' ' .ucfirst(NOT_FOUND);
+                break;
             }
                 
             $user_id = $module->user_id;
@@ -250,7 +248,7 @@
                     $_ROUTER['error'] = $valid;
                 }
                 elseif(RescueMe\Module::set($id, $_POST['type'], $_POST['class'], $config, $user_id)) {
-                    header("Location: ".ADMIN_URI.'setup');
+                    header("Location: ".ADMIN_URI.'setup/'.$user_id);
                     exit();
                 }
                 else
@@ -967,7 +965,7 @@
                 break;
             } 
             
-            $missing = Missing::get($id);
+            $missing = Missing::check($id);
             
             if($missing !== FALSE){
                 
@@ -1151,41 +1149,25 @@
 
             } else {
 
-                $missing = Missing::get($id);
-                
+                $admin = $user->allow('read', 'operations.all');
+
+                $missing = Missing::check($id, $admin);
+
                 if($missing !== FALSE) {
+                
+                    if (($admin || $user->allow('read', 'operations', $missing->op_id))=== FALSE) {
 
-                    $admin = $user->allow('read', 'operations.all');
-
-                    if (($user->allow('read', 'operations', $missing->op_id) || $admin)=== FALSE) {
-                        
                         echo ACCESS_DENIED;
-                        
+
                     } else {
                         
-                        $module = Module::get("RescueMe\SMS\Provider", User::currentId());    
-                        $sms = $module->newInstance();
-
-                        if($sms instanceof RescueMe\SMS\Check) {
-                            if($missing !== FALSE && $missing->sms_provider === $module->impl) {
-                                $code = Locale::getDialCode($missing->mobile_country);
-                                $code = $sms->accept($code);
-                                $ref = $missing->sms_provider_ref;
-                                if(!empty($ref) && $sms->request($ref,$code.$missing->mobile)) {
-
-                                    $missing = Missing::get($id);
-
-                                }
-                            }
-
-                        } 
-                        $timestamp = $missing !== false ? $missing->sms_delivery : null;
-
-                        echo format_since($timestamp);
+                        echo format_since($missing->sms_delivery);
+                        
                     }
                 } else {
-                    echo sprintf(TRACE_S_NOT_FOUND, $id);
+                    echo UNKNOWN;
                 }
+                
             }
 
             exit;
