@@ -254,13 +254,16 @@ R.loader = function(target) {
 
 R.toTab = function(tabs) {
     var tab;
+    var hash = '';
     var url = window.location.href;
     var index = url.indexOf("#");
     if(index === -1) {
         tab = ':first';
     } else {
-        tab = '[href="#'+url.substr(index + 1)+'"]';
+        hash = url.substr(index + 1);
+        tab = '[href="#'+hash+'"]';
     }
+    location.hash = hash;
     $('#'+tabs+' a'+tab).click();
 };
 
@@ -275,8 +278,9 @@ R.tabs = function(tabs) {
         if (index !== -1) {
             id = href.substr(index + 1);
             href = href.substr(0,index);
-        }   
-        
+        }
+
+        location.hash = id;
         var target = '#'+id;
         var data = { name: id };
         var list = $(target).find('.pagination'); 
