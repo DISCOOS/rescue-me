@@ -14,9 +14,7 @@
 
     use Psr\Log\LogLevel;
     use RescueMe\Log\Logs;
-    use RescueMe\User;
-    use RescueMe\Module;
-    use RescueMe\Operation;
+    use RescueMe\SMS\Check;
 
     /**
      * Missing class
@@ -168,6 +166,8 @@
          * Get Missing instance
          * 
          * @param integer $id Missing id
+         * @param boolean $admin Administrator flag
+         *
          * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
          */
         public static function get($id, $admin = true){
@@ -190,8 +190,8 @@
          * Set missing data from mysqli_result.
          * 
          * @param integer $id Missing id.
-         * @param \mysqli_result $result Recordset.
-         * 
+         * @param array $values Missing values
+         *
          * @return \RescueMe\Missing
          */
         private function set($id, $values) {
@@ -207,7 +207,7 @@
                 }
             }
             
-            // Hack: Find out why datatype is string
+            // Hack: Find out why data type is string
             $this->user_id = (int)$this->user_id;            
             
             return $this;
@@ -237,7 +237,7 @@
             
             if($operation === false) {
                 
-                return $this->error("Missing not added. Operation $op_id does not exist.");
+                return Missing::error("Missing not added. Operation $op_id does not exist.");
             }
             
 
@@ -255,7 +255,7 @@
             $id = DB::insert(self::TABLE, $values);
 
             if($id === FALSE) {
-                return $this->error('Failed to insert missing');
+                return Missing::error('Failed to insert missing');
             }
 
             // Reuse values (optimization)
@@ -309,7 +309,7 @@
                 );
             }
             else {
-                $this->error('Failed to update missing ' . $this->id);
+                Missing::error('Failed to update missing ' . $this->id);
             }                
 
             return $res;
@@ -369,7 +369,7 @@
 
         /**
          * Get the most accurate position that's newer than a given minutes.
-         * @param type $maxAge How many minutes old.
+         * @param integer $maxAge How many minutes old.
          * @return boolean|array
          */
         public function getMostAccurate($maxAge = 15) {
@@ -441,7 +441,7 @@
                         
                         if(DB::query($query) === FALSE){
                             $context = array('sql' => $query);
-                            $this->error('Failed to update SMS status for missing ' . $this->id, $context);
+                            Missing::error('Failed to update SMS status for missing ' . $this->id, $context);
                         }
                         
                     }
@@ -471,7 +471,7 @@
 
                     if(DB::query($query) === FALSE) {
                         $context = array('sql' => $query);
-                        $this->error('Failed to update SMS status for missing ' . $this->id, $context);
+                        Missing::error('Failed to update SMS status for missing ' . $this->id, $context);
                     }
                 }
 
@@ -521,7 +521,7 @@
                 
             } else {
                 
-                $this->error('Failed to insert position for missing ' . $this->id, $values);
+                Missing::error('Failed to insert position for missing ' . $this->id, $values);
                 
             }            
 
@@ -558,7 +558,7 @@
 
                 if(DB::query($query) === FALSE) {
                     
-                    $this->error('Failed to update SMS status for missing ' . $this->id);
+                    Missing::error('Failed to update SMS status for missing ' . $this->id);
                     
                 }
                 
@@ -585,14 +585,14 @@
             if($missing !== false) { 
                 
                 if(empty($missing->sms_delivery) === true 
-                && empty($missing->sms_provider_ref) !== false) {
+                && empty($missing->sms_provider_ref) === false) {
                     
-                    
-                    $module = Module::get("RescueMe\SMS\Provider", $this->user_id);
+                    $module = Module::get("RescueMe\\SMS\\Provider", $missing->user_id);
                     $sms = $module->newInstance();
-
-                    if($missing->sms_provider === $module->impl && 
-                        ($sms instanceof RescueMe\SMS\Check)) {
+                    
+                    var_dump($sms);
+                    
+                    if($missing->sms_provider === $module->impl && ($sms instanceof Check)) {
                         
                         $code = Locale::getDialCode($missing->mobile_country);
                         $code = $sms->accept($code);
@@ -623,7 +623,7 @@
 
             if($res === FALSE) {
                 $context = array('sql' => $query);
-                $this->error('Failed to update status to ANSWERED for missing ' . $this->id, $context);
+                Missing::error('Failed to update status to ANSWERED for missing ' . $this->id, $context);
             } else {
                 Logs::write(Logs::TRACE, LogLevel::INFO, "Missing {$this->id} has loaded tracking page");
             }
@@ -642,7 +642,7 @@
             $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
             
             if($res === FALSE) {
-                $this->error('Failed to anonymize missing ' . $this->id, $values);
+                Missing::error('Failed to anonymize missing ' . $this->id, $values);
             } else {
                 Logs::write(Logs::TRACE, LogLevel::INFO, "Missing {$this->id} has been anonymized");
             }
@@ -657,7 +657,7 @@
 
             if($code === FALSE) {
                 $context = array('code' => $country);
-                $this->error('Failed to get country dial code', $context);                
+                Missing::error('Failed to get country dial code', $context);
             }            
             return $code;
         }
@@ -680,7 +680,7 @@
                 $user_id = $this->user_id;
             }
             
-            $sms = Module::get("RescueMe\SMS\Provider", $user_id)->newInstance();
+            $sms = Module::get('RescueMe\SMS\Provider', $user_id)->newInstance();
             
             if($sms === FALSE)
             {
@@ -754,7 +754,7 @@
         }
         
         
-        private function error($message, $context = array())
+        private static function error($message, $context = array())
         {
             $context['code'] = DB::errno();
             $context['error'] = DB::error();
