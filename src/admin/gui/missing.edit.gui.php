@@ -5,7 +5,7 @@
     
     $id = input_get_int('id');
     
-    $admin = $user->allow('write', 'operations.all');
+    $admin = $edit->allow('write', 'operations.all');
 
     $missing = Missing::get($id, $admin);
 

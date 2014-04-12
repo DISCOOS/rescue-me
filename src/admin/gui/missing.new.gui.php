@@ -71,12 +71,12 @@
                     <div class="span4">
                         <label for="mb_mobile_country"><?=COUNTRY_CODE?></label>
                         <select class="input-block-level" id="mb_mobile_country" name="mb_mobile_country" placeholder="<?=SELECT_COUNTRY?>" required>
-                            <?= insert_options(Locale::getCountryNames(), $user->mobile_country, false); ?>
+                            <?= insert_options(Locale::getCountryNames(), $edit->mobile_country, false); ?>
                         </select>
                     </div>
                     <div class="span8">
                         <label for="m_mobile"><?=PHONE_NUMBER?></label>
-                        <input class="input-block-level" type="tel" id="m_mobile" name="mb_mobile" value="<?=$user->mobile?>" placeholder="<?=NUMBERS_ONLY_NO_SPACES?>" required pattern="[0-9]*">
+                        <input class="input-block-level" type="tel" id="m_mobile" name="mb_mobile" value="<?=$edit->mobile?>" placeholder="<?=NUMBERS_ONLY_NO_SPACES?>" required pattern="[0-9]*">
                     </div>
                 </div>
 

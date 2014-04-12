@@ -1,9 +1,11 @@
 <?
     use \RescueMe\User;
     use \RescueMe\Locale;
+
+    $user = User::current();
     
     $fields = array();
-    
+
     $value = isset($_POST['name']) ? $_POST['name'] : '';
     $fields[] = array(
         'id' => 'name',
@@ -54,6 +56,7 @@
         'id' => 'password',
         'type' => 'password', 
         'label' => PASSWORD,
+        'placeholder' => sprintf(MINIMUM_D_CHARACTERS,8),
         'class' => 'span3',
         'attributes' => 'required minlength="8"'
     );
@@ -61,34 +64,46 @@
         'id' => 'repeat-pwd',
         'type' => 'password', 
         'label' => T_('Repeat Password'),
+        'placeholder' => sprintf(MINIMUM_D_CHARACTERS,8),
         'class' => 'span3 offset1',
         'attributes' => 'required equalTo="#password"'
     );
 
-    $admin = ($user instanceof RescueMe\User && $user->allow('write', 'user.all'));
+    $fields[] = $group;
 
-    if($admin) {
+    $group = array(
+        'type' => 'group',
+        'class' => 'row-fluid'
+    );
+
+    if($user !== false && $user->allow('write', 'roles')) {
+        $value = isset($_POST['role']) ? $_POST['role'] : '';
+        $group['value'][] = array(
+            'id' => 'role',
+            'type' => 'select',
+            'value' => insert_options(\RescueMe\Roles::getAll(), $value, false),
+            'label' => ROLE,
+            'attributes' => 'required',
+            'class' => 'span4'
+        );
+    }
+
+    if($user !== false && $user->allow('write', 'user.all')) {
+        $value = isset($_POST['use_system_sms_provider']) ? $_POST['use_system_sms_provider'] : '';
         $group['value'][] = array(
             'id' => 'use_system_sms_provider',
             'type' => 'checkbox',
-            'value' => 'checked',
+            'value' => $value ? 'checked' : '1',
             'label' => USE_SYSTEM_SMS_PROVIDER,
             'class' => 'span3'
         );
     }
-    $fields[] = $group;
-    
-    if($admin) {
-        $value = isset($_POST['role']) ? $_POST['role'] : '';    
-        $fields[] = array(
-            'id' => 'role',
-            'type' => 'select',
-            'value' => insert_options(\RescueMe\Roles::getAll(), $value, false), 
-            'label' => ROLE,
-            'attributes' => 'required'
-        );
-    }
 
+
+    if(isset($group['value'])) {
+        $fields[] = $group;
+    }
+    
     insert_form("user", $_ROUTER['name'], $fields, ADMIN_URI."user/new", $_ROUTER);
    
 ?>

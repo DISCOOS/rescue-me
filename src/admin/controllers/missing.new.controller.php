@@ -27,7 +27,7 @@ if(sizeof($missing_modules) > 0) {
 		$operation = $operation->add(
 			'trace', 
 			$_POST['m_name'], 
-			$user->id, 
+			$edit->id,
 			$_POST['mb_mobile_country'], //"NO", 
 			$_POST['mb_mobile']);
 
@@ -52,6 +52,6 @@ if(sizeof($missing_modules) > 0) {
 	
 	// POSSIBLE BUG IF USER IS SET
 	
-	$TWIG['selected_country'] = isset($user) ? Locale::getCountryCode($user->mobile_country) : Locale::getCurrentCountryCode();
+	$TWIG['selected_country'] = isset($edit) ? Locale::getCountryCode($edit->mobile_country) : Locale::getCurrentCountryCode();
 }
 

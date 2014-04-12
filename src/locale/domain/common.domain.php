@@ -90,6 +90,8 @@
         define('LOG_IN_TO_S', T_('Log in to %1$s.'));
         define('YOUR_S_ACCOUNT_IS_REJECTED', T_('Your %1$s account request is rejected.'));
 
+        define('MINIMUM_D_CHARACTERS', T_('Minimum %1$s characters'));
+
         define('FAILED_TO_LOAD_MODULE_S', T_('Failed to load [%1$s].'));
         define('FAILED_TO_GET_COUNTRY_CODE', T_('Failed to get country code.'));
         define('PLEASE_FILL_OUT_THIS_FIELD', T_('Please fill out this field.'));

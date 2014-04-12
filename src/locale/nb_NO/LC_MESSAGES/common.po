@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-12 01:07+0100\n"
-"PO-Revision-Date: 2014-04-12 01:08+0100\n"
+"POT-Creation-Date: 2014-04-12 15:16+0100\n"
+"PO-Revision-Date: 2014-04-12 15:16+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <support@discoos.org>\n"
 "Language: \n"
@@ -299,44 +299,49 @@ msgstr "Din %1$s kontoforespørsel er avvist."
 
 #: locale/domain/common.domain.php:93
 #, php-format
+msgid "Minimum %1$s characters"
+msgstr "Minimum %1$s tegn"
+
+#: locale/domain/common.domain.php:95
+#, php-format
 msgid "Failed to load [%1$s]."
 msgstr "Klarte ikke å laste [%1$s]."
 
-#: locale/domain/common.domain.php:94
+#: locale/domain/common.domain.php:96
 msgid "Failed to get country code."
 msgstr "Klarte ikke å finne landkode."
 
-#: locale/domain/common.domain.php:95
+#: locale/domain/common.domain.php:97
 msgid "Please fill out this field."
 msgstr "Vennligst fyll ut feltet."
 
-#: locale/domain/common.domain.php:96
+#: locale/domain/common.domain.php:98
 msgid "Please enter a valid email address."
 msgstr "Vennligst oppgi en lovlig e-postadresse."
 
-#: locale/domain/common.domain.php:97
+#: locale/domain/common.domain.php:99
 msgid "Please enter at least {0} characters."
 msgstr "Passordet må være minst {0} tegn."
 
-#: locale/domain/common.domain.php:98
+#: locale/domain/common.domain.php:100
 msgid "Please match the required format."
 msgstr "Vennligst skriv riktig format."
 
-#: locale/domain/common.domain.php:99
+#: locale/domain/common.domain.php:101
 msgid "Please enter the same value again."
 msgstr "Vennligst skriv inn samme verdi på nytt"
 
-#: locale/domain/common.domain.php:100
+#: locale/domain/common.domain.php:102
 #, php-format
 msgid "SMS request [%1$s] not supported."
 msgstr "SMS forespørsel  [%1$s] ikke støttet."
 
-#: locale/domain/common.domain.php:101
+#: locale/domain/common.domain.php:103
 #, php-format
 msgid "[%1$s] does not support [%2$s]."
 msgstr "[%1$s] støtter ikke [%2$s]."
 
-#: locale/domain/common.domain.php:102
+#: locale/domain/common.domain.php:104
 #, php-format
 msgid "Failed to create instance of module [%1$s]."
 msgstr "Kunne ikke opprette instanse av modul  [%1$s]."

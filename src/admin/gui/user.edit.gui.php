@@ -7,14 +7,14 @@
     
     
     $id = input_get_int('id', User::currentId());
-    $user = User::get($id);
+    $edit = User::get($id);
     
     $fields = array();
     
     $fields[] = array(
         'id' => 'name',
         'type' => 'text', 
-        'value' => $user->name, 
+        'value' => $edit->name,
         'label' => FULL_NAME,
         'attributes' => 'required autofocus'
     );
@@ -26,7 +26,7 @@
     $group['value'][] = array(
         'id' => 'country',
         'type' => 'select', 
-        'value' => insert_options(Locale::getCountryNames(), $user->mobile_country, false), 
+        'value' => insert_options(Locale::getCountryNames(), $edit->mobile_country, false),
         'label' => MOBILE_COUNTRY,
         'class' => 'span2',
         'attributes' => 'required'
@@ -34,7 +34,7 @@
     $group['value'][] = array(
         'id' => 'mobile',
         'type' => 'tel', 
-        'value' => $user->mobile, 
+        'value' => $edit->mobile,
         'label' => MOBILE_PHONE,
         'class' => 'span2',
         'attributes' => 'required pattern="[0-9]*"'
@@ -42,7 +42,7 @@
     $group['value'][] = array(
         'id' => 'email',
         'type' => 'email', 
-        'value' => $user->email, 
+        'value' => $edit->email,
         'label' => EMAIL,
         'class' => 'span3',
         'attributes' => 'required'
@@ -60,7 +60,7 @@
         $group['value'][] = array(
             'id' => 'role',
             'type' => 'select',
-            'value' => insert_options(\RescueMe\Roles::getAll(), $user->role_id, false), 
+            'value' => insert_options(\RescueMe\Roles::getAll(), $edit->role_id, false),
             'label' => ROLE,
             'attributes' => 'required',
             'class' => 'span4'
