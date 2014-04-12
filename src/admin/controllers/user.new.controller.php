@@ -7,8 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(empty($username)) {
         $TWIG['message'] = T_('Invalid e-mail. Please enter a correct e-mail address');
     } else {	    
-	    $status = User::create($_POST['name'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['mobile']);
-	    if($status) {
+	    $user = User::create($_POST['name'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['mobile']);
+	    if($user !== false) {
 	        header("Location: ".ADMIN_URI.'user/list');
 	        exit();
 	    }

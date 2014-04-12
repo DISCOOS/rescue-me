@@ -96,6 +96,7 @@
         define('NO_SPACES', T_('No spaces'));
         define('COUNTRY_CODE', T_('Country code'));
         define('REFERENCE', T_('Reference'));
+        define('COMMENTS', T_('Comments'));
         define('REFERENCE_EXAMPLES', T_('Operation number, etc.'));
         define('REPORT_TO', T_('Report to'));
         define('MOBILE_PHONE', T_('Mobile phone'));
@@ -130,7 +131,9 @@
         define('TRACE_SCRIPT_NOT_DOWNLOADED', T_('Trace script not downloaded.'));
         define('TRACE_SCRIPT_DOWNLOADED_BUT_LOCATION_NOT_RECEIVED',
             T_('Trace script is downloaded, but not location is received.'));
-        
+        define('USE_SYSTEM_SMS_PROVIDER', T_('Use system SMS provider'));
+        define('SYSTEM_SETUP', T_('System setup'));
+
         define('IS_DELETED', sentence(array(IS,DELETED)));
         define('IS_ENABLED', sentence(array(IS,ENABLED)));
         define('IS_DISABLED', sentence(array(IS,DISABLED)));

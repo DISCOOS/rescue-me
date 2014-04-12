@@ -279,9 +279,13 @@
                 {
                     define('SALT', get($this->ini, 'SALT', null, false));
                 }
-                if(User::create($fullname, $username, $password, $country, $mobile, 1) === FALSE) {
+                $user = User::create($fullname, $username, $password, $country, $mobile, 1);
+                if($user === FALSE) {
                     return error(ADMIN_NOT_CREATED." (".DB::error().")");
                 }// if
+
+                // Prepare user modules
+                $user->prepare();
                 
                 $skipped = false;                
                 

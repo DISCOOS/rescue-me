@@ -31,11 +31,11 @@
         
         public $user_id;
         
-        private static $required = array("RescueMe\SMS\Provider" => "RescueMe\SMS\UMS"); 
+        private static $required = array('RescueMe\SMS\Provider' => 'RescueMe\SMS\UMS');
         
         /**
          * Constructor
-         * @param type $module Module definition
+         * @param array $module Module definition
          */
         private function __construct($module)
         {
@@ -127,7 +127,7 @@
          * @param mixed $type Module id or type
          * @param integer $user_id
          * 
-         * @return boolean
+         * @return Module|boolean
          */
         public static function get($type, $user_id=null)
         {
@@ -144,17 +144,15 @@
         /**
          * Verify module configuration
          * 
-         * @param integer $id Module id
          * @param string $type Module type name
          * @param string $impl Module implementation name
          * @param array $config Module construction arguments as (name=>value) pairs
-         * @param integer $user_id
-         * 
+         *
          * @return boolean TRUE if success, message otherwise. 
          */
         public static function verify($type, $impl, $config)
         {
-            // Enfore namespace convension
+            // Enforce namespace convention
             $type = ltrim($type,"\\");
             $impl = ltrim($impl,"\\");
             
@@ -195,13 +193,12 @@
          * @param string $type Module type name
          * @param string $impl Module implementation name
          * @param array $config Module construction arguments as (name=>value) pairs
-         * @param integer $user_id
-         * 
+         *
          * @return boolean TRUE if success, FALSE otherwise. 
          */
         public static function set($id, $type, $impl, $config)
         {
-            // Enfore namespace convension
+            // Enforce namespace convention
             $type = ltrim($type,"\\");
             $impl = ltrim($impl,"\\");
             
@@ -234,7 +231,7 @@
          */
         public static function add($type, $impl, $config, $user_id = 0)
         {
-            // Enfore namespace convension
+            // Enforce namespace convention
             $type = ltrim($type,"\\");
             $impl = ltrim($impl,"\\");
             
@@ -246,8 +243,8 @@
             return DB::insert(self::TABLE, $values);
             
         }// set
-        
-        
+
+
         /**
          * Get new configuration
          * 
@@ -255,8 +252,8 @@
          * 
          */
         public function newConfig() {
-            $module = new $this->impl;
-            return $module->config();
+            $instance = new $this->impl;
+            return $instance->config();
         }        
         
         
@@ -274,8 +271,10 @@
             $reflect  = new \ReflectionClass($this->impl);
             
             $invoke = array($reflect,'newInstance');
+
+            $config[0] = $this->user_id;
             
-            $config = $empty ? $this->newConfig()->params() : $this->config;
+            $config = array_merge($config, ($empty ? $this->newConfig()->params() : $this->config));
             
             return call_user_func_array($invoke, $config);
         }

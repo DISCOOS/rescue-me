@@ -94,6 +94,7 @@
         /**
          * Check if property is required
          * @param string $property
+         * @return mixed
          */
         public function required($property) {
             return in_array($property, $this->required);

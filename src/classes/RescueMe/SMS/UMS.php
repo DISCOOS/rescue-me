@@ -12,6 +12,7 @@
     
     namespace RescueMe\SMS;
     
+    use RescueMe\Configuration;
     use RescueMe\Properties;
     
 
@@ -23,14 +24,18 @@
     class UMS extends AbstractProvider implements Check
     {
         const WDSL_URL = "https://secure.ums.no/soap/sms/1.6/?wsdl";
-        
+
         /**
-         * constructor for SMS
+         * Constructor
+         *
+         * @param int $user_id RescueMe user id (not used)
+         * @param string $company UMS company id
+         * @param string $department UMS user id
+         * @param string $password UMS webservice password
          *
          * @since 13. June 2013
-         *
          */
-        public function __construct($company='', $department='', $password='')
+        public function __construct($user_id=0, $company='', $department='', $password='')
         {
             parent::__construct(array(
                 Properties::SMS_SENDER_ID
@@ -42,7 +47,7 @@
         
         private function newConfig($company='', $department='', $password='')
         {
-            return new \RescueMe\Configuration
+            return new Configuration
             (
                 array(
                     "company" => $company,

@@ -7,7 +7,11 @@
         unset($_ROUTER['error']);
     }
     
-    $name = isset($_GET['name']) ? $_GET['name'] : 'general';
+    $name = input_get_string('name', 'general');
+
+    $id = input_get_int('id', User::currentId());
+
+    $user = $id > 0 ? User::get($id)->name : SYSTEM;
     
     
 ?>
@@ -18,6 +22,7 @@
   <li><a href="#design" data-toggle="tab"><?=DESIGN?></a></li>
   <li><a href="#sms" data-toggle="tab"><?=SMS?></a></li>
   <li><a href="#maps" data-toggle="tab"><?=MAPS?></a></li>
+  <li class="pull-right"><?=$user?></li>
 </ul>
 
 <div class="tab-content" style="width: auto; overflow: visible">

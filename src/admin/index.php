@@ -153,8 +153,11 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <? if ($user->allow('write', 'user', $id) || $user->allow('write', 'user.all')) { ?>
                             <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/edit/<?=$user->id?>"><b class="icon icon-user"></b><?=ACCOUNT?></a></li>
                             <li id="passwd"><a role="menuitem" href="<?= ADMIN_URI ?>password/change/<?=$user->id?>"><b class="icon icon-lock"></b><?=CHANGE_PASSWORD?></a></li>
+                            <? } if ($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) { ?>
+                            <li id="user_settings"><a href="<?= ADMIN_URI ?>setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
+                            <? } ?>
                             <li class="divider"></li>
-                            <? } if ($user->allow('write', 'user.all')) { 
+                            <? if ($user->allow('write', 'user.all')) {
                                 insert_item(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign"); ?>
                             <li class="divider"></li>
                             <? } if ($user->allow('read', 'user.all')) { ?>
@@ -164,8 +167,8 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <? } if ($user->allow('read', 'logs')) { ?>
                             <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?= LOGS ?></a></li>
                             <li class="divider"></li>
-                            <? } if ($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) { ?>
-                            <li id="settings"><a href="<?= ADMIN_URI ?>setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
+                            <? } if ($user->allow('write', 'setup.all')) { ?>
+                            <li id="system_settings"><a href="<?= ADMIN_URI ?>setup/0"><b class="icon icon-wrench"></b><?= SYSTEM_SETUP ?></a></li>
                             <li class="divider"></li>                            
                             <? } ?>
                             <li id="logout"><a data-toggle="modal" href="#confirm"><b class="icon icon-eject"></b><?= LOGOUT ?></a></li>

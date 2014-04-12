@@ -12,7 +12,8 @@
     
     namespace RescueMe\SMS;
     
-    use RescueMe\Properties;    
+    use RescueMe\Configuration;
+    use RescueMe\Properties;
 
     /**
      * Nexmo class
@@ -38,27 +39,28 @@
         /**
          * Constructor
          *
+         * @param integer $user_id RescueMe user id
          * @param string $account_key Nexmo account-key
          * @param string $account_secret Nexmo account-secret
          *
          * @since 25. March 2014
          * 
          */
-        public function __construct($account_key='', $account_secret='')
+        public function __construct($user_id=0, $account_key='', $account_secret='')
         {
             parent::__construct(array(
                 Properties::SMS_SENDER_ID
             ));
-            $this->config = $this->newConfig($account_key, $account_secret);
+            $this->config = $this->newConfig($user_id, $account_key, $account_secret);
         }// __construct
 
-        private function newConfig($account_key='', $account_secret='')
+        private function newConfig($user_id=0, $account_key='', $account_secret='')
         {
-            return new \RescueMe\Configuration(
+            return new Configuration(
                 array(
                     "key" => $account_key,
                     "secret" => $account_secret,
-                    Callback::PROPERTY => Callback::URL.\RescueMe\User::currentId(),
+                    Callback::PROPERTY => Callback::URL.$user_id,
                 ),
                 array(
                     "key" => KEY,

@@ -12,9 +12,6 @@
     
     namespace RescueMe;
     
-    use RescueMe\Locale;
-    
-    
     /**
      * Properties class
      * 
@@ -31,7 +28,7 @@
         const HIDE = "hide";
         const TOP = "top";
         const BOTTOM = "bottom";
-        const EXPANED = "expanded";
+        const EXPANDED = "expanded";
         const COLLAPSED = "collaped";
         
         const GET_URI = 'property/get';
@@ -159,9 +156,9 @@
             
             self::TRACE_BAR_STATE => array(
                 'type' => 'select',
-                'default' => self::EXPANED,
+                'default' => self::EXPANDED,
                 'options' => array(                   
-                    self::EXPANED => 'Expanded',
+                    self::EXPANDED => 'Expanded',
                     self::COLLAPSED => 'Collapsed',
                  ),
                 'description' => "Trace trace bar layout state."
@@ -244,15 +241,37 @@
                 'description' => "Show coordinates using given map coordinate system"
             )
         );
+
+        private static $synced = false;
+
         
-        public static function getDefaults() {
+        public static function getDefaults($force = false) {
+
             $defaults = array();
-            self::$meta[self::SYSTEM_LOCALE]['default'] = Locale::getDefaultLocale();
-            self::$meta[self::SYSTEM_COUNTRY_PREFIX]['default'] = Locale::getDefaultCountryCode();
-            self::$meta[self::TRACE_DETAILS]['default'] = implode(',', array_keys(self::$meta[self::TRACE_DETAILS]['options']));
-            foreach(self::$meta as $name => $property){
+
+            if($force || Properties::$synced === false) {
+
+                Properties::$synced = true;
+
+                self::$meta[self::SYSTEM_LOCALE]['default'] = Locale::getDefaultLocale();
+                self::$meta[self::SYSTEM_COUNTRY_PREFIX]['default'] = Locale::getDefaultCountryCode();
+                self::$meta[self::TRACE_DETAILS]['default'] =
+                    implode(',', array_keys(self::$meta[self::TRACE_DETAILS]['options']));
+
+                $res = DB::select(self::TABLE, "*", "`user_id`=0");
+
+                if(DB::isEmpty($res) === false) {
+                    while ($row = $res->fetch_assoc()) {
+                        self::$meta[$row['name']]['default'] = $row['value'];
+                    }
+                }
+            }
+
+            // Collect defaults from meta
+            foreach(self::$meta as $name => $property) {
                 $defaults[$name] = $property['default'];
             }
+
             return $defaults;
         }
         

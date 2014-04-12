@@ -1,4 +1,5 @@
-<?    
+<?
+    use \RescueMe\User;
     use \RescueMe\Locale;
     
     $fields = array();
@@ -34,8 +35,7 @@
         'value' => $value, 
         'label' => MOBILE_PHONE,
         'class' => 'span2',
-        'attributes' => 'required pattern="[0-9]*"',
-        'value' => $value
+        'attributes' => 'required pattern="[0-9]*"'
     );
     
     $value = isset($_POST['email']) ? $_POST['email'] : '';
@@ -63,10 +63,22 @@
         'label' => T_('Repeat Password'),
         'class' => 'span3 offset1',
         'attributes' => 'required equalTo="#password"'
-    );    
+    );
+
+    $admin = ($user instanceof RescueMe\User && $user->allow('write', 'user.all'));
+
+    if($admin) {
+        $group['value'][] = array(
+            'id' => 'use_system_sms_provider',
+            'type' => 'checkbox',
+            'value' => 'checked',
+            'label' => USE_SYSTEM_SMS_PROVIDER,
+            'class' => 'span3'
+        );
+    }
     $fields[] = $group;
     
-    if($user instanceof RescueMe\User && $user->allow('write', 'user.all')) {
+    if($admin) {
         $value = isset($_POST['role']) ? $_POST['role'] : '';    
         $fields[] = array(
             'id' => 'role',

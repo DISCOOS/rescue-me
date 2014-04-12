@@ -47,10 +47,10 @@
         /**
          * Constructor
          *
-         * @param string $uses 
+         * @param mixed $uses Uses
          *
          * @since 29. September 2013
-         * 
+         *
          */
         public function __construct($uses=Properties::SMS_SENDER_ID)
         {
@@ -70,8 +70,11 @@
         
         /**
          * Set last error from exception.
+         *
          * @param \Exception $e Exception
          * @param boolean $value Return value
+         *
+         * @return boolean
          */
         protected function exception(\Exception $e, $value = false) {
             $this->error['code'] = $e->getCode();
@@ -91,6 +94,8 @@
         /**
          * Set fatal error
          * @param string $message
+         *
+         * @return boolean
          */
         protected function fatal($message) {
             $this->error['code'] = Provider::FATAL;
@@ -108,7 +113,11 @@
         
         /**
          * Set critical error
+         *
          * @param string $message
+         * @param array $context
+         *
+         * @return boolean
          */
         protected function critical($message, $context = array()) {
             Logs::write(
@@ -149,7 +158,7 @@
          * Send SMS message to given number.
          * 
          * @param string $from Sender
-         * @param string $code International dial code
+         * @param string $country International dial code
          * @param string $to Recipient phone number without dial code
          * @param string $message Message text
          * 
@@ -160,7 +169,7 @@
             // Prepare
             unset($this->error);
             
-            if(($code = \RescueMe\Locale::getDialCode($country)) === FALSE)
+            if(($code = Locale::getDialCode($country)) === FALSE)
             {
                 return $this->fatal("Failed to get country dial code [$country]");
             }               
@@ -202,8 +211,6 @@
          * @return boolean TRUE if success, FALSE otherwise.
          */
         public function validate($config = null) {
-            
-            $valid = false;
             
             if(isset($config) === FALSE){
                 $config = $this->config();

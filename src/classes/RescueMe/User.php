@@ -342,7 +342,7 @@
          * 
          * @return boolean
          */
-        public static function recover($email, $methods = null) {
+        public static function recover($email, $methods = array()) {
             
             $filter = "`email` = '$email'";
             
@@ -383,10 +383,12 @@
          * @param string $mobile
          * @param integer $role
          * @param string $state
-         * @return boolean
+         * @return User|boolean
          */
         public static function create($name, $email, $password, $country, $mobile, $role, $state = User::ACTIVE) {
-            
+
+            $user = false;
+
             $username = User::safe(strtolower($email));
 
             $password = User::hash($password);
@@ -403,12 +405,11 @@
             
             if(($id = DB::insert(self::TABLE, $values)) !== false) {
                 $user = self::get($id);
-                $user->prepare();
                 $res = Roles::grant($role, $user->id);
             }
             
             if($res !== false) {
-                return User::log(sprintf(USER_S_CREATED,$user->id));
+                return User::log(sprintf(USER_S_CREATED, $user->id), LogLevel::INFO, $user);
             } 
             
             return User::error(FAILED_TO_CREATE_USER, func_get_args());
@@ -419,6 +420,8 @@
 
         /**
          * Check if one or more users exist
+         *
+         * @param string $state State name
          * 
          * @return boolean
          */
@@ -477,18 +480,33 @@
 
         /**
          * Prepare user modules if not already exist
+         *
+         * @param boolean $copy Copy system modules if true, empty otherwise.
          * 
          * @return boolean TRUE if changes was made, FALSE otherwise.
          */
-        public function prepare() {
+        public function prepare($copy = false) {
             $changed = false;
             $modules = Module::getAll();
-            if($modules != false) {
+            if($modules !== false) {
                 foreach($modules as $module) {
-                    if(!Module::exists($module->type, $this->id)) {
-                        Module::add($module->type, $module->impl, $module->newConfig()->params(), $this->id);
+                    if(Module::exists($module->type, $this->id) === false) {
+
+                        $params = $copy ? $module->config : $module->newConfig()->params();
+                        Module::add($module->type, $module->impl, $params, $this->id);
                         $changed = true;
+
+                    } elseif($copy) {
+
+                        $type = $module->type;
+                        $impl = $module->impl;
+                        $params = $module->config;
+                        $module = Module::get($module->type, $this->id);
+                        Module::set($module->id, $type, $impl, $params);
+                        $changed = true;
+
                     }
+
                 }           
             }
             return $changed;
@@ -649,7 +667,7 @@
             
             if($all || in_array('sms', $devices)) {
             
-                $sms = Module::get("RescueMe\SMS\Provider", User::currentId())->newInstance();
+                $sms = Module::get('RescueMe\SMS\Provider', User::currentId())->newInstance();
                 if(!$sms)
                 {
                     return User::error("Failed to get SMS provider");

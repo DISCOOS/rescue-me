@@ -2,7 +2,6 @@
 
     use RescueMe\DB;
     use RescueMe\User;
-    use RescueMe\Locale;
     use RescueMe\Module;
     use RescueMe\Missing;
     use RescueMe\Operation;
@@ -232,15 +231,20 @@
 
             } else {
 
-                $config = array_exclude($_POST, array('type','class'));
-                
                 if(($user->allow('write', 'setup', $user_id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
                     $_ROUTER['name'] = ILLEGAL_OPERATION;
                     $_ROUTER['view'] = "403";
                     $_ROUTER['error'] = ACCESS_DENIED;
                     break;
-                }                
+                }
+
+                $config = array_exclude($_POST, array('type','class'));
+
+                if(isset($config[\RescueMe\SMS\Callback::PROPERTY])) {
+                    $config[\RescueMe\SMS\Callback::PROPERTY] =
+                        str_replace(APP_URL, '', $config[\RescueMe\SMS\Callback::PROPERTY]);
+                }
 
                 $valid = RescueMe\Module::verify($_POST['type'], $_POST['class'], $config);
 
@@ -384,8 +388,9 @@
             if($user instanceof RescueMe\User && $user->allow('write', 'user.all'))
             {
                 $state = User::ACTIVE;
-                if ($_SERVER['REQUEST_METHOD'] === 'POST')
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $role = $_POST['role'];
+                }
                 $redirect = ADMIN_URI.'user/list';
                 $_ROUTER['name'] = NEW_USER;
             }
@@ -417,7 +422,7 @@
                     break;
                 }
                 
-                $status = User::create(
+                $user = User::create(
                     $_POST['name'], 
                     $_POST['email'], 
                     $_POST['password'], 
@@ -426,7 +431,11 @@
                     (int)$role,
                     $state
                 );
-                if($status) {
+
+                if($user !== false) {
+
+                    $user->prepare(input_get_string('use_system_sms_provider', false));
+
                     header("Location: ".$redirect);
                     exit();
                 }
@@ -506,9 +515,14 @@
                         
                         $url = 'user/approve/'.$edit->id;
                     } else {
-                        $url = $access ? 'user/list' : 'admin';                        
-                    }           
-                    
+                        $url = $access ? 'user/list' : 'admin';
+                    }
+
+                    // Configure given user to use system modules?
+                    if(input_post_string('use_system_sms_provider')) {
+                        $edit->prepare(true);
+                    }
+
                     header("Location: ".ADMIN_URI.$url);
                     exit();
                 }

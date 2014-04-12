@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-12 01:07+0100\n"
-"PO-Revision-Date: 2014-04-12 01:07+0100\n"
+"POT-Creation-Date: 2014-04-12 14:42+0100\n"
+"PO-Revision-Date: 2014-04-12 14:42+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <support@discoos.org>\n"
 "Language: \n"
@@ -17,45 +17,45 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: admin\n"
 
-#: admin/router.php:22
+#: admin/router.php:21
 msgid "You have entered wrong username or password"
 msgstr "Du har oppgitt feil brukernavn eller passord"
 
-#: admin/router.php:123
+#: admin/router.php:122
 msgid "Logs"
 msgstr "Logger"
 
-#: admin/router.php:129
-#: admin/router.php:136
-#: admin/router.php:147
+#: admin/router.php:128
+#: admin/router.php:135
+#: admin/router.php:146
 msgid "Illegal Operation"
 msgstr "Ulovlig operasjon"
 
-#: admin/router.php:149
+#: admin/router.php:148
 msgid "Access denied"
 msgstr "Ingen tilgang"
 
-#: admin/router.php:785
+#: admin/router.php:799
 msgid "Change Password"
 msgstr "Bytt passord"
 
-#: admin/router.php:795
+#: admin/router.php:809
 msgid "Password must be at least 8 characters long"
 msgstr "Passordet må være minst 8 tegn"
 
-#: admin/router.php:800
+#: admin/router.php:814
 msgid "Passwords do not match"
 msgstr "Passordene stemmer ikke"
 
-#: admin/router.php:817
+#: admin/router.php:831
 msgid "Recover Password"
 msgstr "Gjenopprett passord"
 
-#: admin/router.php:843
+#: admin/router.php:857
 msgid "Close operation"
 msgstr "Avslutt operasjon"
 
-#: admin/router.php:1142
+#: admin/router.php:1156
 msgid "Not an ajax request"
 msgstr "Ikke en ajax-forespørsel"
 
@@ -99,7 +99,7 @@ msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
 msgid "Settings"
 msgstr "Innstillinger"
 
-#: admin/gui/user.new.gui.php:11
+#: admin/gui/user.new.gui.php:12
 msgid "Full name"
 msgstr "Fullt navn"
 
@@ -618,139 +618,151 @@ msgid "Reference"
 msgstr "Aksjonsreferanse"
 
 #: admin/locale/admin.domain.php:99
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: admin/locale/admin.domain.php:100
 msgid "Operation number, etc."
 msgstr "SAR- eller AMIS-nr"
 
-#: admin/locale/admin.domain.php:100
+#: admin/locale/admin.domain.php:101
 msgid "Report to"
 msgstr "Rapporter til"
 
-#: admin/locale/admin.domain.php:101
+#: admin/locale/admin.domain.php:102
 msgid "Mobile phone"
 msgstr "Mobiltelefon"
 
-#: admin/locale/admin.domain.php:102
+#: admin/locale/admin.domain.php:103
 msgid "Phone number"
 msgstr "Mobilnummer"
 
-#: admin/locale/admin.domain.php:103
+#: admin/locale/admin.domain.php:104
 msgid "Send to"
 msgstr "Send til"
 
-#: admin/locale/admin.domain.php:104
+#: admin/locale/admin.domain.php:105
 msgid "Start new trace"
 msgstr "Start ny sporing"
 
-#: admin/locale/admin.domain.php:105
+#: admin/locale/admin.domain.php:106
 msgid "See active traces"
 msgstr "Se aktive sporinger"
 
-#: admin/locale/admin.domain.php:106
+#: admin/locale/admin.domain.php:107
 msgid "More"
 msgstr "Mer"
 
-#: admin/locale/admin.domain.php:107
+#: admin/locale/admin.domain.php:108
 msgid "Resend SMS"
 msgstr "Send SMS på nytt"
 
-#: admin/locale/admin.domain.php:108
+#: admin/locale/admin.domain.php:109
 msgid "None found"
 msgstr "Ingen funnet"
 
-#: admin/locale/admin.domain.php:109
+#: admin/locale/admin.domain.php:110
 #, php-format
 msgid "Locations &le; %1$s"
 msgstr "Lokasjoner &le; %1$s"
 
-#: admin/locale/admin.domain.php:110
+#: admin/locale/admin.domain.php:111
 #, php-format
 msgid "Locations &gt; %1$s"
 msgstr "Lokasjoner  &gt; %1$s"
 
-#: admin/locale/admin.domain.php:111
+#: admin/locale/admin.domain.php:112
 msgid "Location link"
 msgstr "Sporingslink"
 
-#: admin/locale/admin.domain.php:112
+#: admin/locale/admin.domain.php:113
 #, php-format
 msgid "Remember to include %1$s so that %2$s can replace it with the actual trace url."
 msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
 
-#: admin/locale/admin.domain.php:113
+#: admin/locale/admin.domain.php:114
 msgid "Note: This will reopen this operation"
 msgstr "Merk: Dette vil gjenåpne aksjonen"
 
-#: admin/locale/admin.domain.php:114
+#: admin/locale/admin.domain.php:115
 msgid "Send SMS"
 msgstr "Send SMS"
 
-#: admin/locale/admin.domain.php:115
+#: admin/locale/admin.domain.php:116
 msgid "Trace started"
 msgstr "Sporing startet"
 
-#: admin/locale/admin.domain.php:116
+#: admin/locale/admin.domain.php:117
 msgid "SMS sent"
 msgstr "SMS er sendt"
 
-#: admin/locale/admin.domain.php:117
+#: admin/locale/admin.domain.php:118
 msgid "SMS not sent."
 msgstr "SMS er ikke sendt."
 
-#: admin/locale/admin.domain.php:118
+#: admin/locale/admin.domain.php:119
 msgid "Check log."
 msgstr "Sjekk logg."
 
-#: admin/locale/admin.domain.php:119
+#: admin/locale/admin.domain.php:120
 msgid "SMS received."
 msgstr "SMS er mottatt."
 
-#: admin/locale/admin.domain.php:121
+#: admin/locale/admin.domain.php:122
 msgid "SMS is delivered, but delivery report from SMS provider not received."
 msgstr "SMS er levert, men leveranserapport fra SMS leverandør ikke mottatt."
 
-#: admin/locale/admin.domain.php:122
+#: admin/locale/admin.domain.php:123
 #, php-format
 msgid "SMS not delivered after %1$d hours."
 msgstr "SMS ikke levert på %1$d timer."
 
-#: admin/locale/admin.domain.php:123
+#: admin/locale/admin.domain.php:124
 msgid "The phone may be out of power or coverage."
 msgstr "Telefonen kan være tom for  strøm eller utenfor dekning."
 
-#: admin/locale/admin.domain.php:125
+#: admin/locale/admin.domain.php:126
 msgid "The phone may be out of power, out of coverage, support for localization can be turned off or not possible, or the user chose not to share their location with you."
 msgstr "Telefonen kan være tom for strøm, utenfor dekning, støtte for lokalisering kan være slått av eller ikke mulig, eller brukeren valgte å ikke dele posisjonen med deg."
 
-#: admin/locale/admin.domain.php:127
+#: admin/locale/admin.domain.php:128
 msgid "SMS probably not delivered."
 msgstr "SMS er sannsynligvis ikke levert."
 
-#: admin/locale/admin.domain.php:128
+#: admin/locale/admin.domain.php:129
 msgid "Mobile located"
 msgstr "Telefon er lokalisert"
 
-#: admin/locale/admin.domain.php:129
+#: admin/locale/admin.domain.php:130
 msgid "Trace script downloaded."
 msgstr "Sporingsskript er lastet ned"
 
-#: admin/locale/admin.domain.php:130
+#: admin/locale/admin.domain.php:131
 msgid "Trace script not downloaded."
 msgstr "Sporingsskript er ikke lastet ned."
 
-#: admin/locale/admin.domain.php:132
+#: admin/locale/admin.domain.php:133
 msgid "Trace script is downloaded, but not location is received."
 msgstr "Sporingsside er lastet ned, men ingen posisjon er mottatt."
 
-#: admin/locale/admin.domain.php:147
+#: admin/locale/admin.domain.php:134
+msgid "Use system SMS provider"
+msgstr "Bruk systemets SMS leverandør"
+
+#: admin/locale/admin.domain.php:135
+msgid "System setup"
+msgstr "Systemoppsett"
+
+#: admin/locale/admin.domain.php:150
 msgid "About"
 msgstr "Om"
 
-#: admin/locale/admin.domain.php:159
+#: admin/locale/admin.domain.php:162
 #, php-format
 msgid "User with e-mail %1$s"
 msgstr "Bruker med e-post %1$s"
 
-#: admin/locale/admin.domain.php:164
+#: admin/locale/admin.domain.php:167
 msgid "cannot be approved"
 msgstr "kunne ikke godkjennes"
 

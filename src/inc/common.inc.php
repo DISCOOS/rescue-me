@@ -114,6 +114,46 @@
         $value = filter_input(INPUT_GET, $key, FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
         return $value === false ? $default : $value;
     }
+
+    function input_post_int($key, $default = false) {
+        $value = filter_input(INPUT_POST, $key, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+
+    function input_post_email($key, $default = false) {
+        $value = filter_input(INPUT_POST, $key, FILTER_VALIDATE_EMAIL, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+
+    function input_post_ip($key, $default = false) {
+        $value = filter_input(INPUT_POST, $key, FILTER_VALIDATE_IP, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+
+    function input_post_url($key, $default = false) {
+        $value = filter_input(INPUT_POST, $key, FILTER_VALIDATE_URL, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+
+    function input_post_float($key, $default = false) {
+        $value = filter_input(INPUT_POST, $key, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+
+    function input_post_boolean($key, $default = false) {
+        $value = filter_input(INPUT_POST, $key, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+
+    function input_post_hash($key, $default = false) {
+        $value = filter_input(INPUT_POST, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
+
+    function input_post_string($key, $default = false) {
+        $value = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+        return $value === false ? $default : $value;
+    }
     
     function assert_types($values)
     {

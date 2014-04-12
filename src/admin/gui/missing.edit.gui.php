@@ -13,7 +13,7 @@
     {
         $operation = Operation::get($missing->op_id);
         
-        if(modules_exists("RescueMe\SMS\Provider")) {
+        if(modules_exists('RescueMe\SMS\Provider')) {
 
             $fields = array();
 

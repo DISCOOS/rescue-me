@@ -12,7 +12,8 @@
     
     namespace RescueMe\SMS;
     
-    use RescueMe\Properties;    
+    use RescueMe\Configuration;
+    use RescueMe\Properties;
 
     /**
      * Sveve class
@@ -24,28 +25,29 @@
         /**
          * Constructor
          *
+         * @param integer $user_id RescueMe user id
          * @param string $user Sveve user credentials
          * @param string $passwd Sveve user credentials (optional)
          *
          * @since 13. June 2013
          * 
          */
-        public function __construct($user='', $passwd='')
+        public function __construct($user_id=0, $user='', $passwd='')
         {
             parent::__construct(array(
                 Properties::SMS_SENDER_ID
             ));
-            $this->config = $this->newConfig($user, $passwd);
+            $this->config = $this->newConfig($user_id, $user, $passwd);
         }// __construct
 
         
-        private function newConfig($user='', $passwd='')
+        private function newConfig($user_id=0, $user='', $passwd='')
         {
-            return new \RescueMe\Configuration(
+            return new Configuration(
                 array(
                     "user" => $user,
                     "passwd" => $passwd,
-                    Callback::PROPERTY => Callback::URL.\RescueMe\User::currentId(),
+                    Callback::PROPERTY => Callback::URL.$user_id,
                 ),
                 array(
                     "user" => USER,

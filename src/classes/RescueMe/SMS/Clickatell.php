@@ -12,6 +12,7 @@
     
     namespace RescueMe\SMS;
 
+    use RescueMe\Configuration;
     use RescueMe\User;
     use RescueMe\Properties;
     
@@ -41,14 +42,15 @@
         /**
          * Constructor
          *
-         * @param string $user Clickatell user credentials
+         * @param integer $user_id RescueMe user id
+         * @param string $api_id Clickatell user credentials
          * @param string $user Clickatell user credentials
          * @param string $passwd Clickatell user credentials (optional)
          *
          * @since 13. June 2013
          * 
          */
-        public function __construct($api_id='', $user='', $passwd='')
+        public function __construct($user_id=0, $api_id='', $user='', $passwd='')
         {
             parent::__construct(
                 array(
@@ -57,18 +59,18 @@
                     Properties::SMS_REQUIRE
                 )
             );
-            $this->config = $this->newConfig($api_id, $user, $passwd);
+            $this->config = $this->newConfig($user_id, $api_id, $user, $passwd);
         }// __construct
 
         
-        private function newConfig($api_id='', $user='', $password='')
+        private function newConfig($user_id=0, $api_id='', $user='', $password='')
         {
-            return new \RescueMe\Configuration(
+            return new Configuration(
                 array(
                     "api_id" => $api_id,
                     "user" => $user,
                     "password" => $password,
-                    Callback::PROPERTY => Callback::URL.\RescueMe\User::currentId(),
+                    Callback::PROPERTY => Callback::URL.$user_id,
                 ),
                 array(
                     "api_id" => API_ID,
