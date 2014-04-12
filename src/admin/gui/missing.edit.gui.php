@@ -1,11 +1,14 @@
 <?
+    use RescueMe\User;
     use RescueMe\Locale;
     use RescueMe\Missing;
     use RescueMe\Operation;
     
     $id = input_get_int('id');
-    
-    $admin = $edit->allow('write', 'operations.all');
+
+    $user = User::current();
+
+    $admin = $user->allow('write', 'operations.all');
 
     $missing = Missing::get($id, $admin);
 
