@@ -389,7 +389,7 @@
             return $row;
         }
 
-        public function addPosition($lat, $lon, $acc, $alt, $useragent = ''){
+        public function addPosition($lat, $lon, $acc, $alt, $timestamp, $useragent = ''){
 
             // Sanity check
             if($this->id === -1) return false;
@@ -400,7 +400,8 @@
                     'lat' => $lat,
                     'lon' => $lon,
                     'acc' => $acc,
-                    'alt' => $alt
+                    'alt' => $alt,
+                    'timestamp' => $timestamp
                 )
             );
             $this->last_acc = $acc;

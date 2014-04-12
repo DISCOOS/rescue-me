@@ -171,7 +171,7 @@ R.trace.locate = function() {
      * @param c position coordinates
      * @param u update view flag
      */
-    function rp(c, u) {
+    function rp(c, timestamp, u) {
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
             xhr = new XMLHttpRequest();
         }
@@ -185,7 +185,7 @@ R.trace.locate = function() {
         
         l.innerHTML = ps(c);
         
-        var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude;
+        var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude + "/" + timestamp;
         
         if (xhr !== false) {
             
@@ -285,12 +285,12 @@ R.trace.change = function (gf, ge, gp, o) {
         // received because some devices seem to send a cached
         // location even when maxaimumAge is set to zero!
         if((q <= o.acc) && a <= o.age) {
-            gf(p.coords, true);
+            gf(p.coords, p.timestamp, true);
             clearTimeout(tID);
             ngl.clearWatch(wID);
         // If the new position has improved by 10%, report it
         } else if (q < la * 0.9) {
-            gf(p.coords, false);
+            gf(p.coords, p.timestamp, false);
             la = q;            
         } else {
             gp(lc, a);
