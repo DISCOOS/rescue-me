@@ -56,7 +56,7 @@
                 ),
                 array(
                     "company" => COMPANY_ID,
-                    "department" => USER_ID,
+                    "department" => DEPARTMENT_ID,
                     "password" => PASSWORD
                 ),
                 array(

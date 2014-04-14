@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-12 15:16+0100\n"
-"PO-Revision-Date: 2014-04-12 15:16+0100\n"
+"POT-Creation-Date: 2014-04-14 15:24+0100\n"
+"PO-Revision-Date: 2014-04-14 15:25+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <support@discoos.org>\n"
 "Language: \n"
@@ -197,151 +197,155 @@ msgstr "User ID"
 msgid "Company ID"
 msgstr "Company ID"
 
-#: locale/domain/common.domain.php:63
+#: locale/domain/common.domain.php:62
+msgid "Department ID"
+msgstr "Department ID"
+
+#: locale/domain/common.domain.php:64
 msgid "min"
 msgstr "min"
 
-#: locale/domain/common.domain.php:64
+#: locale/domain/common.domain.php:65
 msgid "sec"
 msgstr "sek"
 
-#: locale/domain/common.domain.php:66
+#: locale/domain/common.domain.php:67
 msgid "Calculating..."
 msgstr "Kalkulerer..."
 
-#: locale/domain/common.domain.php:67
+#: locale/domain/common.domain.php:68
 msgid "Are you sure?"
 msgstr "Er du sikker?"
 
-#: locale/domain/common.domain.php:69
+#: locale/domain/common.domain.php:70
 msgid "Forgot your password?"
 msgstr "Glemt passordet?"
 
-#: locale/domain/common.domain.php:70
+#: locale/domain/common.domain.php:71
 msgid "Don't have an account?"
 msgstr "Har du ikke en konto?"
 
-#: locale/domain/common.domain.php:71
+#: locale/domain/common.domain.php:72
 msgid "Sign up here"
 msgstr "Registrer deg her"
 
-#: locale/domain/common.domain.php:73
+#: locale/domain/common.domain.php:74
 msgid "Change password"
 msgstr "Endre passord"
 
-#: locale/domain/common.domain.php:74
+#: locale/domain/common.domain.php:75
 msgid "Reset password"
 msgstr "Nullstill passord"
 
-#: locale/domain/common.domain.php:75
+#: locale/domain/common.domain.php:76
 msgid "Do you want to logout?"
 msgstr "Vil du logge ut?"
 
-#: locale/domain/common.domain.php:77
+#: locale/domain/common.domain.php:78
 msgid "Caps-lock is on!"
 msgstr "Caps-lock er på!"
 
-#: locale/domain/common.domain.php:78
+#: locale/domain/common.domain.php:79
 #, php-format
 msgid "Missing values: %1$s"
 msgstr "Verdier mangler: %1$s"
 
-#: locale/domain/common.domain.php:79
+#: locale/domain/common.domain.php:80
 msgid "No parameters found"
 msgstr "Ingen parameter funnet"
 
-#: locale/domain/common.domain.php:81
+#: locale/domain/common.domain.php:82
 msgid "User not found."
 msgstr "Bruker ikke funnet"
 
-#: locale/domain/common.domain.php:82
+#: locale/domain/common.domain.php:83
 #, php-format
 msgid "User %1$s is created."
 msgstr "Bruker %1$s er opprettet."
 
-#: locale/domain/common.domain.php:83
+#: locale/domain/common.domain.php:84
 msgid "Failed to create user."
 msgstr "Kunne ikke opprette bruker."
 
-#: locale/domain/common.domain.php:84
+#: locale/domain/common.domain.php:85
 #, php-format
 msgid "Recovery password sent to user %1$s."
 msgstr "Engangspassord sendt til bruker %1$s."
 
-#: locale/domain/common.domain.php:85
+#: locale/domain/common.domain.php:86
 msgid "Recovery password not sent."
 msgstr "Engangspassord ikke sendt."
 
-#: locale/domain/common.domain.php:86
+#: locale/domain/common.domain.php:87
 #, php-format
 msgid "Failed to send recovery password to user %1$s."
 msgstr "Kunne sende engangspassord til bruker %1$s."
 
-#: locale/domain/common.domain.php:87
+#: locale/domain/common.domain.php:88
 #, php-format
 msgid "Your single-use %1$s password."
 msgstr "Ditt %1$s  engangspassord."
 
-#: locale/domain/common.domain.php:89
+#: locale/domain/common.domain.php:90
 #, php-format
 msgid "Your %1$s account is approved."
 msgstr "Din %1$s kontoforespørsel er godkjent."
 
-#: locale/domain/common.domain.php:90
+#: locale/domain/common.domain.php:91
 #, php-format
 msgid "Log in to %1$s."
 msgstr "Logg inn her %1$s."
 
-#: locale/domain/common.domain.php:91
+#: locale/domain/common.domain.php:92
 #, php-format
 msgid "Your %1$s account request is rejected."
 msgstr "Din %1$s kontoforespørsel er avvist."
 
-#: locale/domain/common.domain.php:93
+#: locale/domain/common.domain.php:94
 #, php-format
 msgid "Minimum %1$s characters"
 msgstr "Minimum %1$s tegn"
 
-#: locale/domain/common.domain.php:95
+#: locale/domain/common.domain.php:96
 #, php-format
 msgid "Failed to load [%1$s]."
 msgstr "Klarte ikke å laste [%1$s]."
 
-#: locale/domain/common.domain.php:96
+#: locale/domain/common.domain.php:97
 msgid "Failed to get country code."
 msgstr "Klarte ikke å finne landkode."
 
-#: locale/domain/common.domain.php:97
+#: locale/domain/common.domain.php:98
 msgid "Please fill out this field."
 msgstr "Vennligst fyll ut feltet."
 
-#: locale/domain/common.domain.php:98
+#: locale/domain/common.domain.php:99
 msgid "Please enter a valid email address."
 msgstr "Vennligst oppgi en lovlig e-postadresse."
 
-#: locale/domain/common.domain.php:99
+#: locale/domain/common.domain.php:100
 msgid "Please enter at least {0} characters."
 msgstr "Passordet må være minst {0} tegn."
 
-#: locale/domain/common.domain.php:100
+#: locale/domain/common.domain.php:101
 msgid "Please match the required format."
 msgstr "Vennligst skriv riktig format."
 
-#: locale/domain/common.domain.php:101
+#: locale/domain/common.domain.php:102
 msgid "Please enter the same value again."
 msgstr "Vennligst skriv inn samme verdi på nytt"
 
-#: locale/domain/common.domain.php:102
+#: locale/domain/common.domain.php:103
 #, php-format
 msgid "SMS request [%1$s] not supported."
 msgstr "SMS forespørsel  [%1$s] ikke støttet."
 
-#: locale/domain/common.domain.php:103
+#: locale/domain/common.domain.php:104
 #, php-format
 msgid "[%1$s] does not support [%2$s]."
 msgstr "[%1$s] støtter ikke [%2$s]."
 
-#: locale/domain/common.domain.php:104
+#: locale/domain/common.domain.php:105
 #, php-format
 msgid "Failed to create instance of module [%1$s]."
 msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
