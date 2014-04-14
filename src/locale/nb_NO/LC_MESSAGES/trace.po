@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-19 23:41+0100\n"
-"PO-Revision-Date: 2014-03-19 23:41+0100\n"
+"POT-Creation-Date: 2014-04-14 15:21+0100\n"
+"PO-Revision-Date: 2014-04-14 15:21+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <support@discoos.org>\n"
 "Language: \n"
@@ -71,7 +71,7 @@ msgid "Location is unavailable."
 msgstr "Lokasjon er ikke tilgjengelig"
 
 #: trace/locale/trace.domain.php:19
-msgid "Plese approve access to location faster."
+msgid "Please approve access to location faster."
 msgstr "Vennligst bekreft tilgang til lokasjonsdata raskere."
 
 #: trace/locale/trace.domain.php:20

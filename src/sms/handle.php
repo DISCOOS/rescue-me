@@ -37,7 +37,7 @@
         } 
         else {
 
-            $module = Module::get("RescueMe\SMS\Provider", $_GET['user']);
+            $module = Module::get('RescueMe\SMS\Provider', $_GET['user']);
 
             $sms = $module->newInstance();
 

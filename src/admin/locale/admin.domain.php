@@ -133,6 +133,8 @@
             T_('Trace script is downloaded, but not location is received.'));
         define('USE_SYSTEM_SMS_PROVIDER', T_('Use system SMS provider'));
         define('SYSTEM_SETUP', T_('System setup'));
+        define('REQUEST_SENT', T_('Request sent'));
+        define('YOU_WILL_RECEIVE_AN_SMS_WHEN_THE_REQUEST_IS_PROCESSED', T_('You will receive an SMS when the request is processed.'));
 
         define('IS_DELETED', sentence(array(IS,DELETED)));
         define('IS_ENABLED', sentence(array(IS,ENABLED)));

@@ -2,10 +2,6 @@
 <p>
 <?
     
-    use RescueMe\User;
-    
-    $admin = User::current()->allow('read', 'user.all');
-    
     if(isset($_ROUTER['error'])) {
         
         insert_error($_ROUTER['error']); 
@@ -19,4 +15,4 @@
     
 </p>
 
-<a class="btn btn-primary" href="<?=ADMIN_URI?><?=($admin ? 'user/list#pending' : '')?>"><?=_CONTINUE?></a>
+<a class="btn btn-primary" href="<?=$_ROUTER['continue']?>"><?=_CONTINUE?></a>

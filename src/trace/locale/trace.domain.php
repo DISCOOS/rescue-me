@@ -16,7 +16,7 @@
         define('WAITING_FOR_HIGHER_ACCURACY', T_('Waiting for higher accuracy...'));
         define('TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA', T_('Turn on permission to access location data!'));
         define('LOCATION_IS_UNAVAILABLE', T_('Location is unavailable.'));
-        define('PLEASE_APPROVE_ACCESS_TO_LOCATION_FASTER', T_('Plese approve access to location faster.'));
+        define('PLEASE_APPROVE_ACCESS_TO_LOCATION_FASTER', T_('Please approve access to location faster.'));
         define('UNKNOWN_ERROR', T_('Unknown error.'));
         define('LOCATION_S', T_('Location: {0}'));
         define('LOCATION_NOT_SENT_CHECK_DATA_CONNECTION', T_('Location not sent, check data connection.'));

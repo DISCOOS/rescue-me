@@ -384,8 +384,10 @@
             $redirect = APP_URI;
             $_ROUTER['name'] = REQUEST_NEW_USER;
             
-            // Id admin and allowed to create users
-            if($user instanceof RescueMe\User && $user->allow('write', 'user.all'))
+            $admin = ($user instanceof RescueMe\User) && $user->allow('write', 'user.all');
+            
+            // Admins are allowed to create users
+            if($admin)
             {
                 $state = User::ACTIVE;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -435,9 +437,17 @@
                 if($user !== false) {
 
                     $user->prepare(input_get_string('use_system_sms_provider', false));
-
-                    header("Location: ".$redirect);
-                    exit();
+                    
+                    if($admin === false) {
+                        $_ROUTER['name'] = REQUEST_SENT;
+                        $_ROUTER['view'] = 'continue';
+                        $_ROUTER['continue'] = $redirect;
+                        $_ROUTER['message'] = YOU_WILL_RECEIVE_AN_SMS_WHEN_THE_REQUEST_IS_PROCESSED;
+                        break;
+                    } else {                   
+                        header("Location: ".$redirect);
+                        exit();
+                    }
                 }
                 $_ROUTER['error'] = OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
 
@@ -551,9 +561,6 @@
                 break;
             }
             
-            $_ROUTER['name'] = USER_APPROVED;
-            $_ROUTER['view'] = 'user/pending';
-            
             $edit = User::get($id);
             if($edit === false) {
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
@@ -574,6 +581,9 @@
                 break;
             }         
             
+            $_ROUTER['name'] = USER_APPROVED;
+            $_ROUTER['view'] = 'continue';
+            $_ROUTER['continue'] = ADMIN_URI . ($access ? 'user/list#pending' : '');            
             $_ROUTER['message'] = sprintf(MESSAGE_SENT_TO," <b>{$edit->name}</b>.");
                 
             break;
@@ -596,9 +606,6 @@
                 break;
             }
             
-            $_ROUTER['name'] = REJECT_USER;
-            $_ROUTER['view'] = 'user/pending';
-            
             $edit = User::get($id);
             if($edit === false) {
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
@@ -616,8 +623,12 @@
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
                 $_ROUTER['error'] = DB::errno() ? DB::error() : 
                     OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                break;
             }
             
+            $_ROUTER['name'] = REJECT_USER;
+            $_ROUTER['view'] = 'continue';
+            $_ROUTER['continue'] = ADMIN_URI . 'user/list#pending';            
             $_ROUTER['message'] = sprintf(MESSAGE_SENT_TO," <b>{$edit->name}</b>.");
             
             break;

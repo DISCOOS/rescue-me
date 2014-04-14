@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-12 14:42+0100\n"
-"PO-Revision-Date: 2014-04-12 14:42+0100\n"
+"POT-Creation-Date: 2014-04-14 14:53+0100\n"
+"PO-Revision-Date: 2014-04-14 14:53+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <support@discoos.org>\n"
 "Language: \n"
@@ -35,27 +35,27 @@ msgstr "Ulovlig operasjon"
 msgid "Access denied"
 msgstr "Ingen tilgang"
 
-#: admin/router.php:799
+#: admin/router.php:809
 msgid "Change Password"
 msgstr "Bytt passord"
 
-#: admin/router.php:809
+#: admin/router.php:819
 msgid "Password must be at least 8 characters long"
 msgstr "Passordet må være minst 8 tegn"
 
-#: admin/router.php:814
+#: admin/router.php:824
 msgid "Passwords do not match"
 msgstr "Passordene stemmer ikke"
 
-#: admin/router.php:831
+#: admin/router.php:841
 msgid "Recover Password"
 msgstr "Gjenopprett passord"
 
-#: admin/router.php:857
+#: admin/router.php:867
 msgid "Close operation"
 msgstr "Avslutt operasjon"
 
-#: admin/router.php:1156
+#: admin/router.php:1166
 msgid "Not an ajax request"
 msgstr "Ikke en ajax-forespørsel"
 
@@ -99,12 +99,12 @@ msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
 msgid "Settings"
 msgstr "Innstillinger"
 
-#: admin/gui/user.new.gui.php:12
+#: admin/gui/user.new.gui.php:14
 msgid "Full name"
 msgstr "Fullt navn"
 
-#: admin/gui/user.new.gui.php:63
-#: admin/gui/password.change.gui.php:24
+#: admin/gui/user.new.gui.php:66
+#: admin/gui/password.change.gui.php:25
 msgid "Repeat Password"
 msgstr "Gjenta passord"
 
@@ -128,44 +128,44 @@ msgstr "Når lokaliseringsskript ble nedlastet"
 msgid "When last location was received"
 msgstr "Når siste lokasjon ble mottatt"
 
-#: admin/gui/missing.new.gui.php:34
+#: admin/gui/missing.new.gui.php:36
 msgid "Place, region or country"
 msgstr "Sted, region eller land"
 
-#: admin/gui/missing.new.gui.php:122
+#: admin/gui/missing.new.gui.php:124
 msgid "Standard message"
 msgstr "Standard melding"
 
-#: admin/gui/missing.new.gui.php:125
+#: admin/gui/missing.new.gui.php:127
 msgid "Location script"
 msgstr "Lokasjonsskript"
 
-#: admin/gui/missing.new.gui.php:126
+#: admin/gui/missing.new.gui.php:128
 msgid "When the user clicks on the link a webpage is downloaded which contain a script that attempts to locate the mobile phone. The user must authorize the script access before location can be determined"
 msgstr "Når brukeren trykker på linken åpnes en nettside med et script som vil forsøke å posisjonerer mobiltelefonen. Brukeren må godkjenne deling av posisjon i nettleseren før posisjonen kan bestemmes."
 
-#: admin/gui/missing.new.gui.php:127
+#: admin/gui/missing.new.gui.php:129
 msgid "Script download time"
 msgstr "Nedlastingstid"
 
-#: admin/gui/missing.new.gui.php:128
+#: admin/gui/missing.new.gui.php:130
 msgid "The location script is compressed (gzip, 1.8KB). Is should not take more than a second to download this even on a low-bandwidth network (2G). If it does, the user must be patient and wait until the script is downloaded."
 msgstr "Skriptet er komprimert (1.8KB). Det burde ta mindre enn ett sekund på dårlig mobilnett (2G) å laste den ned. Det er likevel viktig at brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes."
 
-#: admin/gui/missing.new.gui.php:129
+#: admin/gui/missing.new.gui.php:131
 msgid "Repeated localization"
 msgstr "Gjentatt lokalisering"
 
-#: admin/gui/missing.new.gui.php:130
+#: admin/gui/missing.new.gui.php:132
 msgid "If the location is inaccurate, the script will continue to listen for location updates until desired accuracy or maximum wait time is is reached. A count-down is shown during this time. Last known location is presented to the user, which allow the user to read out the location over the phone or send ith with an SMS (tell the user to click on the link presented to the user when the script timed out)"
 msgstr "Hvis posisjonen er unøyaktig, vil nettsiden vente til posisjon med ønsket nøyaktighet er funnet, eller maksimum ventetid er nådd. En nedtelling vises mens dette foregår. Siste posisjon vises også til brukeren, slik at denne kan leses opp på telefonen, eller sendes på SMS (be brukeren klikke på linken bak posisjonen)."
 
-#: admin/gui/missing.new.gui.php:131
+#: admin/gui/missing.new.gui.php:133
 #, php-format
 msgid "Desired accurary (location.desired.accuracy), maximum wait time (location.max.wait) and maximum location age (location.max.age) can be configured on page %1$s"
 msgstr " Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location.max.wait) og maximum alder på gammel posisjon (location.max.age) kan konfigureres på siden %1$s"
 
-#: admin/gui/missing.new.gui.php:132
+#: admin/gui/missing.new.gui.php:134
 msgid "All traces are listed at"
 msgstr "Alle sporinger er listet på denne siden"
 
@@ -753,16 +753,24 @@ msgstr "Bruk systemets SMS leverandør"
 msgid "System setup"
 msgstr "Systemoppsett"
 
-#: admin/locale/admin.domain.php:150
+#: admin/locale/admin.domain.php:136
+msgid "Request sent"
+msgstr "Forespørsel sendt"
+
+#: admin/locale/admin.domain.php:137
+msgid "You will receive an SMS when the request is processed."
+msgstr "Du vil motta en SMS når forespørselen er behandlet."
+
+#: admin/locale/admin.domain.php:152
 msgid "About"
 msgstr "Om"
 
-#: admin/locale/admin.domain.php:162
+#: admin/locale/admin.domain.php:164
 #, php-format
 msgid "User with e-mail %1$s"
 msgstr "Bruker med e-post %1$s"
 
-#: admin/locale/admin.domain.php:167
+#: admin/locale/admin.domain.php:169
 msgid "cannot be approved"
 msgstr "kunne ikke godkjennes"
 

@@ -548,7 +548,7 @@
                     $user_id = $this->user_id;
                 }
                 
-                $module = Module::get("RescueMe\SMS\Provider", $user_id);
+                $module = Module::get('RescueMe\SMS\Provider', $user_id);
 
                 $query = "UPDATE `missing` 
                             SET `sms_sent` = NOW(), `sms_delivery` = NULL, 
