@@ -72,6 +72,7 @@
         public $last_pos;
         public $last_acc;
 
+        public $sms_sent;
         public $sms2_sent;
         public $sms_mb_sent;
         public $sms_delivery;
@@ -275,6 +276,28 @@
             return $missing->sendSMS() ? $missing : false;
 
         }// add
+
+        /**
+         * Load missing data from database
+         *
+         * @param boolean $admin Administrator flag
+         *
+         * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
+         */
+        public function load($admin = true){
+
+            $res = DB::query(Missing::select('`missing_id`=' . (int) $this->id, $admin));
+
+            if(DB::isEmpty($res)) {
+                return false;
+            }
+
+            $row = $res->fetch_assoc();
+
+            return $this->set($this->id, $row);
+
+        }// get
+
 
 
         public function update($m_name, $m_mobile_country, $m_mobile, $m_locale, $sms_text){
@@ -561,7 +584,10 @@
                     Missing::error('Failed to update SMS status for missing ' . $this->id);
                     
                 }
-                
+
+                // Load data from database
+                $res = $this->load();
+
             }
 
             return $res;

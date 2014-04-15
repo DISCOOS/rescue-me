@@ -142,9 +142,11 @@
 </div>    
 
 <?php
-    
-    insert_action(NEW_TRACE, ADMIN_URI."missing/new", "icon-plus-sign");    
-?>    
+
+    // Insert actions
+    insert_action(NEW_TRACE, ADMIN_URI."missing/new", "icon-plus-sign");
+
+    insert_dialog_selector("library", LIBRARY, LOADING);?>
     
 <script>
     R.tabs('tabs');

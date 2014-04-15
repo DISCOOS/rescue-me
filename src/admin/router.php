@@ -1120,43 +1120,41 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
-                break;
-            }
-            
-            $_ROUTER['name'] = TRACES;
-            $_ROUTER['view'] = "missing/list";
-            
-            $missing = Missing::get($id);
-            
-            if($missing !== FALSE) {
+                echo ID_NOT_FOUND;
 
-                $admin = $user->allow('write', 'operations.all');
-
-                if (($user->allow('write', 'operations', $missing->op_id) || $admin)=== FALSE) {
-                    $_ROUTER['name'] = ILLEGAL_OPERATION;
-                    $_ROUTER['view'] = "404";
-                    $_ROUTER['error'] = ACCESS_DENIED;
-                    break;
-                }
-
-                if(Operation::isClosed($missing->op_id)) {
-                    $_ROUTER['error'] = sprintf(TRACE_S_IS_CLOSED, $missing->id);
-                }
-                elseif($missing->sendSMS() === FALSE) {
-                    $_ROUTER['error'] = OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);;
-                }
-                if(!isset($_ROUTER['error'])){
-                    header("Location: ".ADMIN_URI."missing/list");
-                    exit();
-                }
             } else {
-                $_ROUTER['error'] = sprintf(TRACE_S_NOT_FOUND, $id);
+
+                $missing = Missing::get($id);
+
+                if($missing !== FALSE) {
+
+                    $admin = $user->allow('write', 'operations.all');
+
+                    if (($user->allow('write', 'operations', $missing->op_id) || $admin)=== FALSE) {
+
+                        echo ACCESS_DENIED;
+
+                    } else if(Operation::isClosed($missing->op_id)) {
+
+                        echo sprintf(TRACE_S_IS_CLOSED, $missing->id);
+
+                    } elseif($missing->sendSMS() === FALSE) {
+
+                        echo SMS_NOT_SENT;
+
+                    } else {
+
+                        echo format_since($missing->sms_sent);
+
+                    }
+                } else {
+
+                    echo sprintf(TRACE_S_NOT_FOUND, $id);
+
+               }
             }
 
-            break;            
+            exit;
 
         case 'missing/check':
             

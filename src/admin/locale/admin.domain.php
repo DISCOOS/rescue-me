@@ -134,7 +134,15 @@
         define('USE_SYSTEM_SMS_PROVIDER', T_('Use system SMS provider'));
         define('SYSTEM_SETUP', T_('System setup'));
         define('REQUEST_SENT', T_('Request sent'));
-        define('YOU_WILL_RECEIVE_AN_SMS_WHEN_THE_REQUEST_IS_PROCESSED', T_('You will receive an SMS when the request is processed.'));
+        define('YOU_WILL_RECEIVE_AN_SMS_WHEN_THE_REQUEST_IS_PROCESSED',
+            T_('You will receive an SMS when the request is processed.'));
+        define('DO_YOU_WANT_TO_CLOSE_S', T_('Do you want to close %1$s?'));
+        define('DO_YOU_WANT_TO_REOPEN_S', T_('Do you want to reopen %1$s?'));
+        define('DO_YOU_WANT_TO_RESENT_SMS_TO_S', T_('Do you want to resend SMS to %1$s?'));
+        define('DO_YOU_WANT_TO_ENABLE_S', T_('Do you want to enable %1$s?'));
+        define('DO_YOU_WANT_TO_DISABLE_S', T_('Do you want to disable %1$s?'));
+        define('DO_YOU_WANT_TO_DELETE_S', T_('Do you want to delete %1$s?'));
+        define('CHECK_SMS_DELIVERY_STATUS', T_('Check SMS delivery status'));
 
         define('IS_DELETED', sentence(array(IS,DELETED)));
         define('IS_ENABLED', sentence(array(IS,ENABLED)));

@@ -32,11 +32,15 @@
     
     $start = $max * ($page - 1);
     
-    if($list === false || $list <= $start) { ?>
+    if($list === false || $list <= $start) {
+        $options = array();
+ ?>
 
         <tr><td colspan="<?=$admin ? 8 : 7?>"><?=NONE_FOUND?></td></tr>
 
-<? } else { 
+ <? } else {
+
+        $resend = array();
         
         // Create pagination options
         $total = ceil($list/$max);
@@ -46,7 +50,7 @@
         $list = Missing::getAll($filter, $admin, $start, $max);
 
         // Enable manual SMS delivery status check?
-        $module = Module::get("RescueMe\SMS\Provider", User::currentId());
+        $module = Module::get('RescueMe\SMS\Provider', User::currentId());
         $sms = $module->newInstance();
         $check = ($sms instanceof RescueMe\SMS\Check);
         $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
@@ -77,7 +81,7 @@
 ?>
             <tr id="<?= $this_missing->id ?>">
                 <td class="missing name"><?= $this_missing->name ?></td>
-                <td class="missing sent hidden-phone"><?= $sent ?></td>
+                <td id="sent-<?=$id?>" class="missing sent hidden-phone"><?= $sent ?></td>
                 <td id="delivered-<?=$id?>" class="missing delivered hidden-phone"><?= $delivered ?></td>
                 <td id="responded-<?=$id?>" class="missing answered hidden-phone"><?= $answered ?></td>
                 <td class="missing received hidden-phone"><?= $received ?></td>
@@ -97,39 +101,30 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a role="menuitem" href="<?=ADMIN_URI."operation/close/$this_missing->op_id"?>">
+                                <a role="menuitem" data-toggle="modal"
+                                   href="<?=ADMIN_URI."operation/close/{$this_missing->op_id}"?>" >
                                     <b class="icon icon-off"></b><?= CLOSE_OPERATION ?>
                                 </a>
                             </li>
                             <li>
-                                <a role="menuitem" href="#confirm-resend-<?=$this_missing->id?>" data-toggle="modal">
+                                <a role="menuitem" data-toggle="modal" data-target="#confirm"
+                                   data-content="<?=sprintf(DO_YOU_WANT_TO_RESENT_SMS_TO_S,"<u>{$this_missing->name}</u>")?>"
+                                   data-onclick="R.ajax('<?=ADMIN_URI."missing/resend/{$this_missing->id}"?>','#sent-<?=$this_missing->id?>');" >
                                     <b class="icon icon-envelope"></b><?= RESEND_SMS ?>
                                 </a>
                             </li>                                
                             <li class="divider"></li>
                             <li>
                                 <a role="menuitem" onclick="R.ajax('<?=ADMIN_URI."missing/check/$this_missing->id"?>','#delivered-<?=$this_missing->id?>');">
-                                    <b class="icon icon-refresh"></b><?= T_('Check SMS delivery status') ?>
+                                    <b class="icon icon-refresh"></b><?=CHECK_SMS_DELIVERY_STATUS?>
                                 </a>
                            </li>   
                         </ul>
                     </div>
                 </td>
             </tr>
-<? }} 
+<?  }}
 
-    if (empty($resend) === false) {
-        foreach($resend as $id => $this_missing) {
-            // Insert resend confirmation
-            insert_dialog_confirm(
-                "confirm-resend-$id", 
-                CONFIRM, 
-                sprintf(T_('Do you want to resend SMS to %1$s?'),"<u>{$this_missing->name}</u>"),
-                ADMIN_URI."missing/resend/{$id}"
-            );
-        }
-    }
-    
     if(isset($options) === false) {
         $options = create_paginator(1, 1, $user_id);         
     }
