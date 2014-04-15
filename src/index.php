@@ -11,6 +11,7 @@
         <meta charset="utf-8">
         <title><?= TITLE ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="apple-mobile-web-app-title" content="<?=TITLE?>" >
         <link rel="shortcut icon" href="img/favicon.ico" >
         <link rel="apple-touch-icon" href="<?=APP_URI?>img/rescueme-non-trans.png" >
         <link href="css/index.css" rel="stylesheet">

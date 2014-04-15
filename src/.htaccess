@@ -48,7 +48,7 @@ AddType application/x-httpd-php .appcache
     # Location report
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^r/(.*)/(.*)/(.*)/(.*)/(.*)$ trace/report.php?id=$1&lat=$2&lon=$3&acc=$4&alt=$5 [L]
+    RewriteRule ^r/(.*)/(.*)/(.*)/(.*)/(.*)/(.*)$ trace/report.php?id=$1&lat=$2&lon=$3&acc=$4&alt=$5&timestamp=$6 [L]
     
     
 </IfModule>

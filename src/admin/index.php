@@ -103,6 +103,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
         <title><?= $_ROUTER['name']." (".TITLE.")" ?></title>
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="apple-mobile-web-app-title" content="<?=TITLE?>" >
         
         <link rel="shortcut icon" href="<?=APP_URI?>img/favicon.ico" >
         <link rel="apple-touch-icon" href="<?=APP_URI?>img/rescueme-non-trans.png" >
