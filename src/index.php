@@ -46,7 +46,12 @@
                  ?>                               
                 </ul>
             </div>
-            <?php require_once('gui/about.gui.php'); ?>
+            <?
+                require('gui/about.gui.php');
+                if(is_file(realpath('footer.php'))) {
+                    require('footer.php');
+                }
+            ?>
         </div>
     </body>
 </html>
