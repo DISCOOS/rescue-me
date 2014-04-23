@@ -24,13 +24,13 @@
 	<img src="http://graph.facebook.com/svenove/picture" />
 	<div class="name">Sven-Ove Bjerkan</div>
 	<div class="phone">988 46 414</div>
-	<div class="mail">ikt@ntrkh.no</div>
+	<div class="mail">sven-ove@discoos.org</div>
 </div>
 <div class="contact span3">
 	<img src="http://graph.facebook.com/mariusmandal/picture" />
 	<div class="name">Marius Mandal</div>
 	<div class="phone">928 37 360</div>
-	<div class="mail">mariusmandal@gmail.com</div>
+	<div class="mail">mariusmandal@discoos.org</div>
 </div>
 <div class="contact span3">
 	<img src="http://graph.facebook.com/kengulb/picture" />
