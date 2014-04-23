@@ -5,7 +5,7 @@ function modules_exists($module, $_ = null) {
     $missing = array();
 
     foreach(func_get_args() as $module) {
-        if(!RescueMe\Module::exists($module))
+        if(!RescueMe\Modules::exists($module))
         {
             $missing[] = $module;
         }
