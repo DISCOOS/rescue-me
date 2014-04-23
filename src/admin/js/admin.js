@@ -329,55 +329,53 @@ R.tabs = function(tabs) {
     $('#'+tabs+' a').click(function (e) {
         var tab = $(e.target);
         var href = tab.attr("href");
-        var index = href.indexOf("#");
-        var id = 'all';
-        if (index !== -1) {
-            id = href.substr(index + 1);
-            href = href.substr(0,index);
-        }
-
-        location.hash = id;
-        var target = '#'+id;
-        var data = { name: id };
-        var list = $(target).find('.pagination'); 
-        if(list.length > 0) {
-            target += ' ' + $(target).attr('data-target');
-            list.each(function() {
-                var $this = $(this);
-                $this.bootstrapPaginator('show', 1);
-                $this.data('url', href);
-                $this.data('name', id);
-                $this.data('target', target);
-            });
-        } 
-
-        R.ajax(href, tab, data, function( data ) {
-
-            try {
-                var response = JSON.parse(data);
-            } catch ($e) {
-                response = {html: data, options: {}};
+        if(href !== undefined) {
+            var id = 'all';
+            var index = href.indexOf("#");
+            if (index !== -1) {
+                id = href.substr(index + 1);
+                href = href.substr(0,index);
             }
 
-            if(response === false) {
+            location.hash = id;
+            var target = '#'+id;
+            var data = { name: id };
+            var list = $(target).find('.pagination'); 
+            if(list.length > 0) {
+                target += ' ' + $(target).attr('data-target');
+                list.each(function() {
+                    var $this = $(this);
+                    $this.bootstrapPaginator('show', 1);
+                    $this.data('url', href);
+                    $this.data('name', id);
+                    $this.data('target', target);
+                });
+            } 
 
-                location.reload();
+            R.ajax(href, tab, data, function( data ) {
 
-            } else {
-            
-                // Insert elements in DOM and prepare
-                $(target).html(response.html);
-                R.prepare(target, response.options);
-
-                // Set pagination options?
-                if(list.length > 0) {
-                    list.bootstrapPaginator(response.options);
+                try {
+                    var response = JSON.parse(data);
+                } catch ($e) {
+                    response = {html: data, options: {}};
                 }
-                
-            }
 
-        });
+                if(response === false) {
 
+                    location.reload();
+
+                } else {            
+                    // Insert elements in DOM and prepare
+                    $(target).html(response.html);
+                    R.prepare(target, response.options);
+
+                    // Set pagination options?
+                    if(list.length > 0) {
+                        list.bootstrapPaginator(response.options);
+                    }
+                }                
+            });
+        }
     });
     R.toTab(tabs);
 };
