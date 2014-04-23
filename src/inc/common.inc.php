@@ -385,19 +385,35 @@
                 case Properties::MAP_DEFAULT_FORMAT_DD:
                     // 4 decimal places gives accuracy of ~ 10 m.
 
-                    $format = $axis ? '%1.4f°' : '%1.4f';
-                    $lat = sprintf($format, $p->lat);
-                    $lon = sprintf($format, $p->lon);
+                    $lat = floatval($p->lat);
+                    $wrap = $axis && (abs($lat) !== $lat);
+                    $n = $wrap ? 'S' : 'N';
 
-                    $format = $axis ? 'N%1$s E%2$s' : '%1$s %2$s';
+                    $lon = floatval($p->lon);
+                    $wrap = $axis && (abs($lon) !== $lon);
+                    $e = $wrap ? 'W' : 'E';
+
+                    $format = $axis ? '%1.4f°' : '%1.4f';
+                    $lat = sprintf($format, abs($lat));
+                    $lon = sprintf($format, abs($lon));
+
+                    $format = $axis ? $n.'%1$s '.$e.'%2$s' : '%1$s %2$s';
                     $position = sprintf($format, $lat, $lon);
 
                     break;
                 case Properties::MAP_DEFAULT_FORMAT_DEM:
-                    $lat = dec_to_dem($p->lat);
-                    $lon = dec_to_dem($p->lon);
 
-                    $format = $unit ? '%1$02d° %2$2d.%3$.3s\'' : '%1$02d %2$2d.%3$.3s';
+                    $lat = floatval($p->lat);
+                    $wrap = $axis && (abs($lat) !== $lat);
+                    $n = $wrap ? 'S' : 'N';
+                    $lat = dec_to_dem(abs($lat));
+
+                    $lon = floatval($p->lon);
+                    $wrap = $axis && (abs($lon) !== $lon);
+                    $e = $wrap ? 'W' : 'E';
+                    $lon = dec_to_dem(abs($lon));
+
+                    $format = $unit ? "%1$02d° %2$2d.%3$.3s'" : '%1$02d %2$2d.%3$.3s';
                     $lat = sprintf($format,
                         $lat['deg'],
                         $lat['min'],
@@ -408,7 +424,7 @@
                         $lon['min'],
                         (string)$lon['des']);
 
-                    $format = $axis ? 'N%1$s E%2$s' : '%1$s %2$s';
+                    $format = $axis ? $n.'%1$s '.$e.'%2$s' : '%1$s %2$s';
                     $position = sprintf($format,
                         $lat,
                         $lon
@@ -416,21 +432,29 @@
                     break;
 
                 case Properties::MAP_DEFAULT_FORMAT_DMS:
-                    $lat = dec_to_dms($p->lat);
-                    $lon = dec_to_dms($p->lon);
+
+                    $lat = floatval($p->lat);
+                    $wrap = $axis && (abs($lat) !== $lat);
+                    $n = $wrap ? 'S' : 'N';
+                    $lat = dec_to_dem(abs($lat));
+
+                    $lon = floatval($p->lon);
+                    $wrap = $axis && (abs($lon) !== $lon);
+                    $e = $wrap ? 'W' : 'E';
+                    $lon = dec_to_dem(abs($lon));
 
                     $format = $unit ? "%1$02d° %2$02d' %3$02.0f''" : '%1$02d %2$02d %3$02.0f';
                     $lat = sprintf($format,
-                        $lat['deg'].($unit ? '°' : ''),
-                        $lat['min'].($unit ? "'" : ''),
-                        $lat['sec'].($unit ? "''" : ''));
+                        $lat['deg'],
+                        $lat['min'],
+                        $lat['sec']);
 
                     $lon = sprintf($format,
-                        $lon['deg'].($unit ? '°' : ''),
-                        $lon['min'].($unit ? "'" : ''),
-                        $lon['sec'].($unit ? "''" : ''));
+                        $lon['deg'],
+                        $lon['min'],
+                        $lon['sec']);
 
-                    $format = $axis ? 'N%1$s E%2$s' : '%1$s %2$s';
+                    $format = $axis ? $n.'%1$s '.$e.'%2$s' : '%1$s %2$s';
                     $position = sprintf($format,
                         $lat,
                         $lon

@@ -93,6 +93,8 @@
 
         const MAP_FORMAT_UNIT = 'map.format.unit';
 
+        const MAP_FORMAT_WRAP = 'map.format.wrap';
+
 
         public static $meta = array(
             
@@ -263,6 +265,16 @@
                     self::NO => 'No',
                 ),
                 'description' => "Show coordinate units when appropriate?"
+            ),
+
+            self::MAP_FORMAT_WRAP => array(
+                'type' => 'select',
+                'default' => self::YES,
+                'options' => array(
+                    self::YES => 'Yes',
+                    self::NO => 'No',
+                ),
+                'description' => "Wrap negative coordinates?"
             )
 
 
@@ -657,6 +669,7 @@
                 case self::SMS_OPTIMIZE:
                 case self::MAP_FORMAT_AXIS:
                 case self::MAP_FORMAT_UNIT:
+                case self::MAP_FORMAT_WRAP:
                 case self::MAP_DEFAULT_BASE:
                 case self::MAP_DEFAULT_FORMAT:
                 case self::LOCATION_APPCACHE:
