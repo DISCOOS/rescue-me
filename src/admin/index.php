@@ -14,7 +14,6 @@ if(defined('USE_SILEX') && USE_SILEX) {
         'APP_TITLE' => TITLE,
         'APP_URI' => APP_URI,
         'APP_ADMIN_URI' => ADMIN_URI,
-        'GOOGLE_API_KEY' => GOOGLE_API_KEY,
         'LOGIN' => $_SESSION['logon'],
         'SMS_TEXT_MISSING' => ALERT_SMS_TRACE,
         'SMS_TEXT_GUIDE'  => ALERT_SMS_2
@@ -108,10 +107,8 @@ if(defined('USE_SILEX') && USE_SILEX) {
         <link rel="shortcut icon" href="<?=APP_URI?>img/favicon.ico" >
         <link rel="apple-touch-icon" href="<?=APP_URI?>img/rescueme-non-trans.png" >
         <link href="<?=APP_URI?>css/admin.css" rel="stylesheet">
-        <? if(GOOGLE_API_KEY !== '') { ?>
-        <script src="//maps.googleapis.com/maps/api/js?key=<?=GOOGLE_API_KEY?>&sensor=false"></script>
-        <? } ?>
-        <script type="text/javascript" src="<?=APP_URI?>js/admin.js"></script>            
+        <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" src="<?=APP_URI?>js/admin.js"></script>
     </head>
 
     <body>

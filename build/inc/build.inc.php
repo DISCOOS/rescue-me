@@ -492,8 +492,7 @@
         $config = get_define_array($config, array
         (
             'SALT', 'TITLE', 'SMS_FROM', 'COUNTRY_PREFIX', 'DEFAULT_LOCALE', 
-            'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD',
-            'GOOGLE_API_KEY', 'TIMEZONE'
+            'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD', 'TIMEZONE'
         ));        
         return $config;
     }

@@ -270,7 +270,6 @@
                         $ini['COUNTRY_PREFIX']   = str_escape(strtoupper(in("Default Country Code (ISO2)", get($ini, "COUNTRY_PREFIX"))));
                         $ini['DEFAULT_LOCALE']   = str_escape(in("Default Language (locale, ISO2)", get($ini, "DEFAULT_LOCALE")));
                         $ini['TIMEZONE']         = str_escape(in_timezone($ini));
-                        $ini['GOOGLE_API_KEY']   = str_escape(in("Google API key", get($ini, "GOOGLE_API_KEY", "''"), NONE, false));
                         $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
                         
                         echo PHP_EOL;

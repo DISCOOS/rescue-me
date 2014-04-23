@@ -142,8 +142,7 @@
                 'DB_PASSWORD'       => $this->ini['DB_PASSWORD'],
                 'COUNTRY_PREFIX'   => $this->ini['COUNTRY_PREFIX'],
                 'DEFAULT_LOCALE'  => $this->ini['DEFAULT_LOCALE'],
-                'TIMEZONE'          => $this->ini['TIMEZONE'],
-                'GOOGLE_API_KEY'    => $this->ini['GOOGLE_API_KEY']
+                'TIMEZONE'          => $this->ini['TIMEZONE']
             ));
             
             // Create config.php
