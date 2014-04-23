@@ -327,30 +327,35 @@
     function mysql_dt($time) {
         return date( 'Y-m-d H:i:s', $time );
     }
-    
+
 
     /**
      * Get formatted position
-     * 
+     *
      * @param null|RescueMe\Position $p Position instance
-     * @param string $format Position format
-     * @param boolean $label Format as label
-     * @param string Label attributes
+     * @param string|array $params Format parameters.
+     * @param string|boolean $label Set true or label attributes to return label, false otherwise.
+     *
+     * @return string
      */
-    function format_pos($p, $format = 'utm', $label = true, $attributes = '') {
+    function format_pos($p, $params = array(), $label = true) {
 
         if(isset($p) === false) {
             $success = false;
             $position = UNKNOWN;
         } else {
             $success = true;
-            switch($format) {
+            $type = isset_get($params, Properties::MAP_DEFAULT_FORMAT, Properties::MAP_DEFAULT_FORMAT_UTM);
+            $axis = isset_get($params, Properties::MAP_FORMAT_AXIS, Properties::YES) === Properties::YES;
+            $unit = isset_get($params, Properties::MAP_FORMAT_UNIT, Properties::YES) === Properties::YES;
+
+            switch($type) {
                 default:
                 case Properties::MAP_DEFAULT_FORMAT_UTM:
                     $gPoint = new gPoint();
                     $gPoint->setLongLat($p->lon, $p->lat);
                     $gPoint->convertLLtoTM();
-                    $format = '%1$s %2$07dE %3$07dN';
+                    $format = $axis ? '%1$s E%2$07d N%3$07d' : '%1$s %2$07d %3$07d';
                     $position = sprintf($format,
                         $gPoint->Z(),
                         floor($gPoint->E()),
@@ -371,72 +376,83 @@
                     $n = substr($n,2);
                     $n = round((float)$n / 100);
 
-                    $format = '%1$03d %2$03d';
+                    $format = $axis ? 'E%1$03d N%2$03d' : '%1$03d %2$03d';
                     $position = sprintf($format,
                         $e,
                         $n
                     );
                     break;
                 case Properties::MAP_DEFAULT_FORMAT_DD:
-                    // 4 decimalplaces gives accuracy of ~ 10 m. 
-                    // Will padd to 4 decimalplaces.
-                    $format = '%1.4fE %2.4fN';
-                    $position = sprintf($format,
-                        round($p->lon, 4),
-                        round($p->lat, 4)
-                    );
-                    break;                
+                    // 4 decimal places gives accuracy of ~ 10 m.
+
+                    $format = $axis ? '%1.4f°' : '%1.4f';
+                    $lat = sprintf($format, $p->lat);
+                    $lon = sprintf($format, $p->lon);
+
+                    $format = $axis ? 'N%1$s E%2$s' : '%1$s %2$s';
+                    $position = sprintf($format, $lat, $lon);
+
+                    break;
                 case Properties::MAP_DEFAULT_FORMAT_DEM:
+                    $lat = dec_to_dem($p->lat);
                     $lon = dec_to_dem($p->lon);
-                    $lat = dec_to_dem($p->lat);                
-                    $format = '%1$02d° %2$02d.%3$.4s';
-                    $lon = sprintf($format,
-                        $lon['deg'],
-                        $lon['min'],
-                        (string)$lon['des']);
-                    $format = '%1$02d° %2$2d.%3$.4s';
+
+                    $format = $unit ? '%1$02d° %2$2d.%3$.3s\'' : '%1$02d %2$2d.%3$.3s';
                     $lat = sprintf($format,
                         $lat['deg'],
                         $lat['min'],
                         (string)$lat['des']);
-                    $format = '%1$sE %2$sN';
-                    $position = sprintf($format,
-                        $lon,
-                        $lat
-                     );
-                    break;
-                case Properties::MAP_DEFAULT_FORMAT_DMS:
-                    $lon = dec_to_dms($p->lon);
-                    $lat = dec_to_dms($p->lat);
-                    $format = '%1$03d° %2$02d\' %3$02.0f\'\'';
+
+                    $format = $unit ? '%1$03d° %2$02d.%3$.3s\'' : '%1$03d %2$02d.%3$.3s' ;
                     $lon = sprintf($format,
                         $lon['deg'],
                         $lon['min'],
-                        $lon['sec']);
-                    $format = '%1$02d° %2$02d \'%3$02.0f\'\'';
-                    $lat = sprintf($format,
-                        $lat['deg'],
-                        $lat['min'],
-                        $lat['sec']);
-                    
-                    $format = '%1$sE %2$sN';
+                        (string)$lon['des']);
+
+                    $format = $axis ? 'N%1$s E%2$s' : '%1$s %2$s';
                     $position = sprintf($format,
-                        $lon,
-                        $lat
-                     );
+                        $lat,
+                        $lon
+                    );
+                    break;
+
+                case Properties::MAP_DEFAULT_FORMAT_DMS:
+                    $lat = dec_to_dms($p->lat);
+                    $lon = dec_to_dms($p->lon);
+
+                    $format = $unit ? "%1$02d° %2$02d' %3$02.0f''" : '%1$02d %2$02d %3$02.0f';
+                    $lat = sprintf($format,
+                        $lat['deg'].($unit ? '°' : ''),
+                        $lat['min'].($unit ? "'" : ''),
+                        $lat['sec'].($unit ? "''" : ''));
+
+                    $format = $unit ? "%1$03d° %2$02d' %3$02.0f''" : '%1$02d %2$02d %3$02.0f';
+                    $lon = sprintf($format,
+                        $lon['deg'].($unit ? '°' : ''),
+                        $lon['min'].($unit ? "'" : ''),
+                        $lon['sec'].($unit ? "''" : ''));
+
+                    $format = $axis ? 'N%1$s E%2$s' : '%1$s %2$s';
+                    $position = sprintf($format,
+                        $lat,
+                        $lon
+                    );
                     break;
             }
         }
-        
-        if($label) {
+
+        if($label !== false) {
             $type = $success ? 'label-success' : 'label-warning';
+            $attributes = is_string($label) ? $label : '';
             $position = '<span class="label ' . $type . ' label-position" ' . $attributes. '>'. $position. '</span>';
         }
-        
-        return $position;        
-        
+
+        return $position;
+
     }
-    
+
+
+
     
     
     function get_client_ip() {

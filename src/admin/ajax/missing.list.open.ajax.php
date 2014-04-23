@@ -53,16 +53,16 @@
         $module = Module::get('RescueMe\SMS\Provider', User::currentId());
         $sms = $module->newInstance();
         $check = ($sms instanceof RescueMe\SMS\Check);
-        $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
+        $params = Properties::getAll($user_id);
         foreach($list as $id => $this_missing) {
             $resend[$this_missing->id] = $this_missing;
             $this_missing->getPositions();
             if($this_missing->last_pos->timestamp>-1) {
-                $position = format_pos($this_missing->last_pos, $format);
+                $position = format_pos($this_missing->last_pos, $params);
                 $received = format_since($this_missing->last_pos->timestamp);
             } else {
                 $received = "";
-                $position = format_pos(null, $format);
+                $position = format_pos(null, $params);
             }
             $sent = format_since($this_missing->sms_sent);
             if($check && !isset($this_missing->sms_delivery) && $this_missing->sms_provider === $module->impl) {

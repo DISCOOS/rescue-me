@@ -525,8 +525,8 @@
                 if(isset($user_id) === false) {
                     $user_id = $this->user_id;
                 }
-                $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
-                $message = 'Missing ' . $this->id . ' reported position ' . format_pos($p, $format);
+                $params = Properties::getAll($user_id);
+                $message = 'Missing ' . $this->id . ' reported position ' . format_pos($p, $params);
                 
                 Logs::write(
                     Logs::TRACE, 
@@ -722,10 +722,9 @@
             if(strlen($to) == 11 && (int) $to == 0) {
                 $to = substr($to, 3);
             }
-            
-            $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
-            
-            $p = format_pos($this->last_pos, $format, false);
+
+            $params = Properties::getAll($user_id);
+            $p = format_pos($this->last_pos, $params, false);
             
             $id = $missing ? encrypt_id($this->id) : $this->id;
             

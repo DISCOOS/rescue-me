@@ -88,8 +88,12 @@
         const MAP_DEFAULT_FORMAT_DEM = 'dem';
         const MAP_DEFAULT_FORMAT_DMS = 'dms';
         const MAP_DEFAULT_FORMAT_6D = '6d';
-        
-        
+
+        const MAP_FORMAT_AXIS = 'map.format.axis';
+
+        const MAP_FORMAT_UNIT = 'map.format.unit';
+
+
         public static $meta = array(
             
             self::SYSTEM_COUNTRY_PREFIX => array(
@@ -238,8 +242,30 @@
                     self::MAP_DEFAULT_FORMAT_DMS => 'Degrees, minutes, seconds'
                     
                  ),
-                'description' => "Show coordinates using given map coordinate system"
+                'description' => "Show coordinates in given format"
+            ),
+
+            self::MAP_FORMAT_AXIS => array(
+                'type' => 'select',
+                'default' => self::YES,
+                'options' => array(
+                    self::YES => 'Yes',
+                    self::NO => 'No',
+                ),
+                'description' => "Show axis label with coordinates when appropriate?"
+            ),
+
+            self::MAP_FORMAT_UNIT => array(
+                'type' => 'select',
+                'default' => self::YES,
+                'options' => array(
+                    self::YES => 'Yes',
+                    self::NO => 'No',
+                ),
+                'description' => "Show coordinate units when appropriate?"
             )
+
+
         );
 
         private static $synced = false;
@@ -629,13 +655,15 @@
                     }
                     
                 case self::SMS_OPTIMIZE:
+                case self::MAP_FORMAT_AXIS:
+                case self::MAP_FORMAT_UNIT:
                 case self::MAP_DEFAULT_BASE:
                 case self::MAP_DEFAULT_FORMAT:
                 case self::LOCATION_APPCACHE:
                 case self::TRACE_ALERT_NEW:
                 case self::TRACE_BAR_STATE:
                 case self::TRACE_BAR_LOCATION:
-                    
+
                     $array = is_array($value) ? $value : explode(",", $value);
                     
                     foreach($array as $value)
