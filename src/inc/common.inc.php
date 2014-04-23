@@ -403,7 +403,6 @@
                         $lat['min'],
                         (string)$lat['des']);
 
-                    $format = $unit ? '%1$03d° %2$02d.%3$.3s\'' : '%1$03d %2$02d.%3$.3s' ;
                     $lon = sprintf($format,
                         $lon['deg'],
                         $lon['min'],
@@ -426,7 +425,6 @@
                         $lat['min'].($unit ? "'" : ''),
                         $lat['sec'].($unit ? "''" : ''));
 
-                    $format = $unit ? "%1$03d° %2$02d' %3$02.0f''" : '%1$02d %2$02d %3$02.0f';
                     $lon = sprintf($format,
                         $lon['deg'].($unit ? '°' : ''),
                         $lon['min'].($unit ? "'" : ''),
