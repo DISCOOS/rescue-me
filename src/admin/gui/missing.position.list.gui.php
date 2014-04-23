@@ -56,8 +56,8 @@ var posFormat = '<?=Properties::text(Properties::MAP_DEFAULT_FORMAT, $user_id)?>
         ksort($positions);
         
         foreach ($positions as $key=>$value) {
-            $posText = format_pos($value, $params);
-            $posTextClean = format_pos($value, $params, false);
+            $posText = str_replace("'", "\\'", format_pos($value, $params));
+            $posTextClean = str_replace("'", "\\'", format_pos($value, $params, false));
             echo "R.map.addPosition($value->lat, $value->lon, $value->acc, $value->alt,".
                     "'".$posText."', '$posTextClean','".$value-> timestamp."');";
             $i++;
