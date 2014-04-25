@@ -614,7 +614,7 @@
                 return User::log("User $this->id enabled");
             }
             
-            return User::error("Failed to enable user $this->id", $this);
+            return User::error("Failed to enable user $this->id");
             
         }// disable     
         
@@ -626,7 +626,7 @@
          */
         public function approve() {
             if ($this->enable()) {
-                $message = sprintf(YOUR_S_ACCOUNT_IS_APPROVED, TITLE). ' ' . sprintf(LOG_IN_TO_S, ADMIN_URL); 
+                $message = sprintf(YOUR_S_ACCOUNT_IS_APPROVED, TITLE). ' ' . sprintf(LOG_IN_TO_S, APP_URL);
                 $this->send($message, array('sms', 'email'));
                 return true;
             }
