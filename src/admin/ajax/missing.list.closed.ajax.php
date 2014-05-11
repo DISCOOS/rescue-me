@@ -25,11 +25,13 @@
     $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
     $start = $max * ($page - 1);
     
-    if($list === false || $list <= $start) { ?>
+    if($list === false || $list <= $start) {
+        $options = array();
+?>
 
         <tr><td colspan="<?=$admin ? 4 : 3?>"><?=NONE_FOUND?></td></tr>
 
-<? } else { 
+<? } else {
         
     // Create pagination options
     $total = ceil($list/$max);

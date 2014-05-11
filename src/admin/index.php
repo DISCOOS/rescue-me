@@ -172,7 +172,10 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <li id="system_settings"><a href="<?= ADMIN_URI ?>setup/0"><b class="icon icon-wrench"></b><?= SYSTEM_SETUP ?></a></li>
                             <li class="divider"></li>                            
                             <? } ?>
-                            <li id="logout"><a data-toggle="modal" href="#confirm"><b class="icon icon-eject"></b><?= LOGOUT ?></a></li>
+                            <li id="logout"><a data-toggle="modal" data-target="#confirm"
+                                data-content="<?=DO_YOU_WANT_TO_LOGOUT?>"
+                                data-href="<?=ADMIN_URI.'logout'?>"
+                            ><b class="icon icon-eject"></b><?= LOGOUT ?></a></li>
                         </ul>
                     </li>
                     
@@ -188,27 +191,17 @@ if(defined('USE_SILEX') && USE_SILEX) {
             <div>
             
             <?php
-                
-                if($logon) {
-                    
-                    // Insert modal confirmations
-                    insert_dialog_confirm("confirm", CONFIRM, DO_YOU_WANT_TO_LOGOUT, ADMIN_URI."logout");
-                    
-                }                
-                
-                require('gui/' . str_replace("/",".",$_ROUTER['view']) . '.gui.php'); 
-                
+
+                // Insert confirm dialog
+                insert_dialog_confirm("confirm");
+
+
+                require('gui/' . str_replace("/",".",$_ROUTER['view']) . '.gui.php');
+
             ?>
                 
             </div>                
         </div>
         
-        <!-- Modal container filled by bootstrap.js -->
-        <? 
-            
-//            insert_form_dialog("dialog", isset($dialog) ? $dialog : "", insert_progress(100, false));
-            
-        ?>
-
     </body>
 </html>

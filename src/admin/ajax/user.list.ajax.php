@@ -56,21 +56,41 @@
                         <ul class="dropdown-menu">
                             <?
                                 if(User::DISABLED === $user->state) {
-                                    insert_item(ENABLE, ADMIN_URI."user/enable/$id");
-                                } elseif(User::PENDING === $user->state) {
+                            ?>
+                            <li>
+                                <a role="menuitem" data-toggle="modal" data-target="#confirm"
+                                   data-content="<?=sprintf(DO_YOU_WANT_TO_ENABLE_S,"<u>{$user->name}</u>")?>"
+                                   data-href="<?=ADMIN_URI."user/enable/$id?>"?>">
+                                    <?= ENABLE ?>
+                                </a>
+                            </li>
+                            <? } elseif(User::PENDING === $user->state) {
                                     insert_item(APPROVE, ADMIN_URI."user/edit/$id?approve");                                    
                                     insert_item(DENY, ADMIN_URI."user/reject/$id");
-                                } else {
-                                    insert_item(DISABLE, ADMIN_URI."user/disable/$id");                                    
-                                }
+                               } else {
                             ?>
+                            <li>
+                                <a role="menuitem" data-toggle="modal" data-target="#confirm"
+                                   data-content="<?=sprintf(DO_YOU_WANT_TO_DISABLE_S,"<u>{$user->name}</u>")?>"
+                                   data-href="<?=ADMIN_URI."user/disable/$id?>"?>">
+                                    <?= DISABLE ?>
+                                </a>
+                            </li>
+                            <? } ?>
                             <li class="divider"></li>
                             <?insert_item(CHANGE_PASSWORD, ADMIN_URI."password/change/$id")?>
                             <?insert_item(RESET_PASSWORD, ADMIN_URI."password/recover/$id")?>
                             <li class="divider"></li>
-                            <?if($allow) {insert_item(SETUP, ADMIN_URI."setup/$id"); ?>
+                            <?if($allow) {insert_item(SETUP, ADMIN_URI."setup/$id", "icon icon-wrench"); ?>
                             <li class="divider"></li>
-                            <?} insert_item(DELETE, "#confirm-delete-$id", "", "", 'data-toggle="modal"')?>
+                            <? } ?>
+                            <li>
+                                <a role="menuitem" data-toggle="modal" data-target="#confirm"
+                                   data-content="<?=sprintf(DO_YOU_WANT_TO_DELETE_S,"<u>{$user->name}</u>")?>"
+                                   data-href="<?=ADMIN_URI."user/delete/$id?>"?>">
+                                    <b class="icon icon-trash"></b><?= DELETE ?>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 <? } ?>

@@ -99,7 +99,7 @@ R.prepare = function(element, options) {
         var target = $(this);
 
         // Class all visible modals
-        target.find('.modal').each(function() {
+        $(element).find('.modal').each(function() {
             if (typeof $(this).modal === 'function') {
                 // Hide this modal?
                 if ($(this).is(":visible") === true) {
@@ -110,17 +110,34 @@ R.prepare = function(element, options) {
 
         var href = target.attr('href');
         var id = target.attr('data-target');
-        if(id !== undefined && href.indexOf('#') !== 0) {
+        if(id !== undefined && href !== undefined && href.indexOf('#') !== 0) {
 
             // Cancel default behavior
             e.preventDefault();
 
             R.modal.load(href, id);
-
         }
 
-        // Update modal header
-        target.find('#dialog-label').html($(this).attr("data-title"));
+        // Update modal header, content and action
+        if(target.attr("data-title") !== undefined) {
+            $(id).find('.modal-label').html(target.attr("data-title"));
+        }
+        if(target.attr("data-content") !== undefined) {
+            $(id).find('.modal-body').html(target.attr("data-content"));
+        }
+        if(target.attr("data-href") !== undefined) {
+            $(id).find('.btn-primary').attr('href', target.attr("data-href"));
+        } else {
+            $(id).find('.btn-primary').removeAttr();
+        }
+        if(target.attr("data-onclick") !== undefined) {
+            var modal = $(id).find('.btn-primary');
+            modal.attr('onclick', target.attr("data-onclick"));
+            modal.attr('data-dismiss','modal');
+            modal.attr('aria-hidden','true');
+        } else {
+            $(id).find('.btn-primary').removeAttr();
+        }
 
     });
 

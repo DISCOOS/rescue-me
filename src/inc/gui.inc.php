@@ -159,7 +159,7 @@
 //        return $html;
 //    }
     
-    function insert_dialog_confirm($id, $title, $message, $action, $output=true)
+    function insert_dialog_confirm($id, $title = CONFIRM, $message = null, $action = null, $output=true)
     {
         ob_start();
         require(APP_PATH . "gui/confirm.dialog.gui.php");

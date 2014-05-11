@@ -59,6 +59,7 @@
         
         define('USER_ID', T_('User ID'));
         define('COMPANY_ID', T_('Company ID'));
+        define('DEPARTMENT_ID', T_('Department ID'));
 
         define('UNIT_MINUTE', T_('min'));
         define('UNIT_SECOND', T_('sec'));
