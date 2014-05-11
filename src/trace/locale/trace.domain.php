@@ -15,6 +15,9 @@
         define('LOCATION_IS_OLD_CHECK_IF_GPS_IS_ON', T_('Location is old, check if GPS is on!'));
         define('WAITING_FOR_HIGHER_ACCURACY', T_('Waiting for higher accuracy...'));
         define('TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA', T_('Turn on permission to access location data!'));
+        define('IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA', T_('Go to Settings -> General -> Privacy -> Location services -> On.'));
+        define('IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA2', T_('Also, scroll down and make sure it is set to "On" for Safari as well.'));
+        define('IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA3', T_('Then, click "Update" below.'));
         define('LOCATION_IS_UNAVAILABLE', T_('Location is unavailable.'));
         define('PLEASE_APPROVE_ACCESS_TO_LOCATION_FASTER', T_('Plese approve access to location faster.'));
         define('UNKNOWN_ERROR', T_('Unknown error.'));

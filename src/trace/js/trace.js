@@ -152,7 +152,7 @@ R.trace.locate = function() {
     function se(e) {
         switch (e.code) {
             case e.PERMISSION_DENIED:
-                f.innerHTML = msg[4];
+                f.innerHTML = msg[4]+rt();
                 break;
             case e.POSITION_UNAVAILABLE:
                 f.innerHTML = msg[5];

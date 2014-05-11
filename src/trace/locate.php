@@ -29,6 +29,11 @@
 
         // Create minified js
         $trace = JSMin::minify(file_get_contents(APP_PATH.'trace/js/trace.js'));
+        
+        // Is iPhone?
+        if (strstr($_SERVER['HTTP_USER_AGENT'],'iPhone')) {
+            $extra = JSMin::minify(file_get_contents(APP_PATH.'trace/js/iPhone.js'));
+        }
 
         $user_id = Operation::get($missing->op_id)->user_id;
 
@@ -57,7 +62,9 @@
 
     ?>
     <html <?=$manifest?>><head><title><?=TITLE?></title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
-    <script id="trace"><?=$js?></script></head><body onLoad="R.trace.locate();"><div align="center"><div style="max-width: 400px; min-height: 100px;">
+    <script id="trace"><?=$js?></script>
+    <?php if (isset($extra)) { ?><script id="extra"><?=$extra?></script><?php } ?>
+    </head><body onLoad="R.trace.locate();"><div align="center"><div style="max-width: 400px; min-height: 100px;">
     <div id="f" style="margin-bottom: 10px"><?=$message?></div><span id="i"></span><br /><span id="s"></span></div><hr />
     <div id="l" style="margin-bottom: 10px"></div><a href="<?=APP_URI?>a/<?=$id?>" onclick="return confirm('<?=ARE_YOU_SURE?>');"><?=CANCEL?></a></div></body> 
     <? } else {
@@ -91,6 +98,11 @@
         $msg[11] = SEND_LOCATION_AS;
         $msg[12] = LOCATION_NOT_FOUND;
         $msg[13] = UPDATE;
+        if (strstr($_SERVER['HTTP_USER_AGENT'],'iPhone')) {
+            $msg[14] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA;
+            $msg[15] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA2;
+            $msg[16] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA3;
+        }
         return $msg;
     }
     
