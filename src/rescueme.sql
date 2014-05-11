@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS `positions` (
   `lon` double NOT NULL,
   `acc` int(5) NOT NULL,
   `alt` int(4) NOT NULL,
+  `timestamp_device` timestamp NULL DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_agent` varchar(255) NOT NULL,
   PRIMARY KEY (`pos_id`),

@@ -479,17 +479,18 @@
             }
 
             // Insert new position
-            $values = prepare_values(array('missing_id', 'lat', 'lon', 'acc', 'alt', 'user_agent'), 
+            $values = prepare_values(array('missing_id', 'lat', 'lon', 'acc', 'alt', 'timestamp_device', 'user_agent'), 
                 array(
                     (int) $this->id,
                     (float)$lat,
                     (float)$lon,
                     (int) $acc,
                     (int) $alt,
+                    date('Y-m-d H:i:s', $timestamp),
                     $useragent
                 )
             );
-            
+
             $posID = DB::insert('positions', $values);
             
             if($posID !== FALSE) {               
