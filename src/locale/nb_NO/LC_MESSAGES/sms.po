@@ -113,7 +113,7 @@ msgstr "Mottatt posisjon på #m_name: #pos (±#acc m)!"
 #~ msgstr "Når SMS ble sendt"
 
 #~ msgid "When SMS was delivered to mobile"
-#~ msgstr "Npr SMS ble levert til telefonen"
+#~ msgstr "Når SMS ble levert til telefonen"
 
 #~ msgid "When location script was downloaded"
 #~ msgstr "Når lokaliseringsskript ble nedlastet"
