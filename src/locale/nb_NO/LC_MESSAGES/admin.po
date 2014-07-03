@@ -117,7 +117,7 @@ msgstr "Når SMS ble sendt"
 
 #: admin/gui/missing.trace.gui.php:14
 msgid "When SMS was delivered to mobile"
-msgstr "Npr SMS ble levert til telefonen"
+msgstr "Når SMS ble levert til telefonen"
 
 #: admin/gui/missing.trace.gui.php:18
 msgid "When location script was downloaded"
