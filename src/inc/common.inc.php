@@ -774,7 +774,7 @@
         }
         
         $out = '';
-        $index = 'x7dHFEqtzhWQU19iZnL3rXmSpyJu68bIcOsa45EKVlPMAgj02CkvBeNfwoYTDG';
+        $index = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $base = strlen($index);
 
         if($pass_key !== null)
