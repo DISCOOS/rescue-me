@@ -60,7 +60,7 @@
             begin(EXTRACT);
             
             // Notify
-            info("  Extracting [$this->src] to [$this->root]...", INFO, NONE);
+            info("  Extracting [$this->src] to [$this->root]...", BUILD_INFO, NEWLINE_NONE);
             
             // Do not overwrite existing
             if(file_exists($this->root) === TRUE) {
@@ -69,7 +69,7 @@
 
             // Ensure source exists
             if(!file_exists($this->src) === TRUE) {
-                return error(sprintf("%s ".NOT_FOUND, $this->src));
+                return error(sprintf("[%s] not found", $this->src));
             }// if
             
             // Escape Phar context (HACK...)

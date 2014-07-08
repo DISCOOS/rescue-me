@@ -1,7 +1,6 @@
 <?php
     
-	require(APP_PATH_INC.'php-gettext/gettext.inc');
-    
+	require(__DIR__.DIRECTORY_SEPARATOR.'php-gettext/gettext.inc');
     
     define('DOMAIN_SMS', 'sms');
     define('DOMAIN_ADMIN', 'admin');
@@ -9,7 +8,7 @@
     define('DOMAIN_COMMON', 'common'); 
     define('DOMAIN_LOCALES', 'locales'); 
     define('ENCODING', 'UTF-8');
-    
+
     $locale = 'en_US'.ENCODING;
     
     // Ensure period in floats
@@ -36,11 +35,15 @@
     function set_system_locale($domain = DOMAIN_COMMON, $locale = DEFAULT_LOCALE) {
         
         $encoding = 'UTF-8';
-        $previous = array(
-            isset_get($_SESSION, 'domain', DOMAIN_COMMON),
-            isset_get($_SESSION, 'locale', DEFAULT_LOCALE)
-        );
-        
+        if(isset($_SESSION)) {
+            $previous = array(
+                isset_get($_SESSION, 'domain', DOMAIN_COMMON),
+                isset_get($_SESSION, 'locale', DEFAULT_LOCALE)
+            );
+        } else {
+            $previous = array(DOMAIN_COMMON,DEFAULT_LOCALE);
+        }
+
         // Use drop-in fallback replacement in case gettext extension is not available
         T_setLocale(LC_TIME, "$locale.$encoding");
         T_setLocale(LC_MESSAGES, "$locale.$encoding");
@@ -48,10 +51,10 @@
         // Define shared domains
         define_domain(DOMAIN_COMMON, $encoding);
         define_domain(DOMAIN_LOCALES, $encoding);
-        
+
         // Define given domain
         define_domain($domain, $encoding);
-        
+
         $_SESSION['domain'] = $domain;
         $_SESSION['locale'] = $locale;
         
@@ -78,10 +81,10 @@
         } else {
             $path = APP_PATH.(implode(DIRECTORY_SEPARATOR,array($domain, 'locale', $domain.'.domain.php')));
         }
-        if(is_file($path)) {
+
+        if(realpath($path) !== false) {
             require $path;
         }
-        
     }
     
     /**

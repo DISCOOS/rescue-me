@@ -1,88 +1,54 @@
 <?php
 
-    $verfile = dirname(__FILE__).DIRECTORY_SEPARATOR."VERSION";
-    
-    if(!file_exists($verfile)) {
-        
-        require "setup.php";
-        
-        die();
-        
-    }
-    
-    // TODO: Add to install/configure
-    define('DEBUG', true); 
-    
-    // Allow usage on command line
-    if(php_sapi_name() !== 'cli') session_start();
+    // Define constants
+    define('HELP',"help");
+    define('NAME',"name");
+    define('ACTION',"action");
+    define('VERSION',"version");
+    define('STATUS',"status");
+    define('IMPORT',"import");
+    define('EXPORT',"export");
+    define('EXTRACT', "extract");
+    define('PACKAGE',"package");
+    define('INSTALL',"install");
+    define('CONFIGURE',"configure");
+    define('UNINSTALL',"uninstall");
+    define('ARCHIVE',"archive");
+    define('SRC_DIR',"src-dir");
+    define('IMPORT_DIR',"import-dir");
+    define('EXPORT_DIR',"export-dir");
+    define('BUILD_DIR',"build-dir");
+    define('DIST_DIR',"dist-dir");
+    define('EXTRACT_DIR',"extract-dir");
+    define('INSTALL_DIR',"install-dir");
+    define('PARAM_DB',"db");
+    define('PARAM_HOST',"host");
+    define('PARAM_USERNAME',"username");
+    define('PARAM_PASSWORD',"password");
 
-    // Silex routing instead of router.php
-    // Still in early development!
-    define('USE_SILEX', false);
-    
-    // RescueMe custom constants
-    define('TITLE','RescueMe');
-    
-    // RescueMe constants
-    define('VERSION', file_get_contents($verfile));
-    
-    // RescueMe timesone
-    define('TIMEZONE','Europe/Oslo');
-    
-    // RescueMe locale
-    define('COUNTRY_PREFIX','NO');
-    define('DEFAULT_LOCALE','nb_NO');
-    
-    // RescueMe application paths
-    define('APP_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
-    define('APP_PATH_INC', APP_PATH.'inc'.DIRECTORY_SEPARATOR);
-    define('APP_PATH_CLASS', APP_PATH.'classes'.DIRECTORY_SEPARATOR);
-    define('APP_PATH_LOCALE', APP_PATH.'locale'.DIRECTORY_SEPARATOR);
+    define('DEFAULT_LOCALE','en_US');
 
-    // Import class loaders
-    require('vendor/autoload.php');
-    
-    // Include boostrap resources
-    require(APP_PATH_INC.'rescueme.inc.php');
-    
-    // RescueMe application URI
-    define('APP_URI', get_rescueme_uri());
-    
-    // RescueMe application URL
-    define('APP_URL', get_rescueme_url());
+    // Include build resources
+    require 'inc/build.inc.php';
 
-    // RescueMe administration URI
-    define('ADMIN_URI', APP_URI.'admin/');
-    
-    // RescueMe derived URLs
-    define('LOCATE_URL', APP_URL.'l/#missing_id');
-    define('ADMIN_TRACE_URL', APP_URL.'admin/missing/#missing_id');
-        
+    // Get source path if exists
+    $src = realpath(implode(DIRECTORY_SEPARATOR,array(dirname(__FILE__),'..','src')));
+
     // Include dependent resources
-    foreach(array('locale', 'common', 'gui') as $lib) {
-        require(APP_PATH_INC.$lib.'.inc.php');
-    }
-    
-    // RescueMe salt value
-    define('SALT','SAVNETntrkH');
+    if($src === false) {
 
-    // SMS integration constants
-    define('SMS_FROM','RescueMe');
+        if(in_phar() === false) {
+            fatal('Unexpected build state. Source path not found.');
+        }
+        $inc = 'inc'.DIRECTORY_SEPARATOR;
+        $required = array('common');
 
-    // RescueMe database constants
-    define('DB_HOST','127.0.0.1');
-    define('DB_NAME','rescueme');
-    define('DB_USERNAME','root');
-    define('DB_PASSWORD','root');
-    
-    // Set current timezone
-    if(date_default_timezone_set(TIMEZONE) === FALSE) {
-        trigger_error("Failed to set timesone to [" . TIMEZONE . "]");
+    } else {
+        $inc = implode(DIRECTORY_SEPARATOR,array(dirname(__FILE__),'..','src','inc')).DIRECTORY_SEPARATOR;
+        $required = array('common');
     }
-    
-    // Control debugging
-    use_soap_error_handler(DEBUG);
-    error_reporting(DEBUG ? ~0 : 0);
-    ini_set('display_errors', DEBUG ? 1 : 0);
-    
+    foreach($required as $lib) {
+        require($inc.$lib.'.inc.php');
+    }
+
 ?>

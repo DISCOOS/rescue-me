@@ -87,7 +87,8 @@
             begin(EXPORT);
             
             // Notify
-            info("  Exporting [".$this->db."] into [$this->root".DIRECTORY_SEPARATOR."rescueme.sql]....", INFO, NONE);
+            info("  Exporting [".$this->db."] into [$this->root".DIRECTORY_SEPARATOR."rescueme.sql]....",
+                BUILD_INFO, NEWLINE_NONE);
 
             // Connect to database
             DB::instance()->connect($this->host, $this->username, $this->password, $this->db);

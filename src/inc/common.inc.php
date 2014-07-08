@@ -1,9 +1,144 @@
 <?php
     
-    use Psr\Log\LogLevel;    
+    use Psr\Log\LogLevel;
     use RescueMe\Log\Logs;    
     use RescueMe\Properties;
-    
+
+    /**
+     * Perform system sanity checks
+     *
+     * @param string $action Action-sensitive check
+     *
+     * @return array True if successful, array of string otherwise
+     */
+    function system_checks($action='') {
+
+        $status = array();
+
+        $action = strtolower($action);
+
+        if(ini_get("short_open_tag") !== "1") {
+            $status[] = array(E_USER_ERROR, "php.ini value 'short_open_tag' must be '1'");
+        }
+        if(ini_get("date.timezone") === FALSE) {
+            $status[] = array(E_USER_ERROR, "php.ini value 'date.timezone' is not set");
+        }
+        if(extension_loaded('curl') === false) {
+            $message[] = 'Extension "curl" is not installed correctly';
+            if(is_win()) {
+                $message[] = 'Uncomment "extension = php_curl.dll" in php.ini';
+            } else {
+                $message[] = 'Run "sudo apt-get install php5-curl"';
+            }
+            $status[] = array(E_USER_ERROR, $message);
+        }
+
+        if($action === "install" || $action == "configure") {
+            if(os_command_exists("php") === FALSE) {
+                $message[] = "php-cli is not configured correctly";
+                if(is_win()) {
+                    $message[] = 'Run php installer again and select "Script Executable"';
+                } else {
+                    $message[] = 'Run "sudo apt-get install php5-cli"';
+                }
+                $status[] = array(E_USER_ERROR, $message);
+            }
+            if(extension_loaded("intl") === false) {
+                $message[] = "Extension 'intl' should be enabled for better locale handling.";
+                if(is_win()) {
+                    $message[] = 'Uncomment "extension = php_intl.dll" in php.ini';
+                } else {
+                    $message[] = 'Run "sudo apt-get install php5-intl"';
+                }
+                $status[] = array(E_USER_WARNING, $message);
+            }
+            if(extension_loaded("gettext") === false) {
+                $message[] = 'Extension "gettext" should be enabled for better locale support.';
+                if(is_win()) {
+                    $message[] = 'Uncomment "extension = php_gettext.dll" in php.ini';
+                } else {
+                    $message[] = 'Run "sudo apt-get install php5-gettext"';
+                }
+                $status[] = array(E_USER_WARNING, $message);
+            }
+        }
+
+        return empty($status) ? true : $status;
+    }
+
+    /**
+     * Download given url to given file
+     * @param string $url
+     * @param string $file
+     * @return boolean
+     */
+    function download($url, $file) {
+
+        // File to save the contents to
+        $fp = fopen($file, 'w+');
+
+        // Replace spaces with %20
+        $ch = curl_init(str_replace(" ","%20", $url));
+
+        curl_setopt($ch, CURLOPT_TIMEOUT, 50);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $result;
+    }
+
+    /**
+     * Check if command exists on host OS.
+     * @param string $command
+     * @return boolean
+     */
+    function os_command_exists($command)
+    {
+        $whereIsCommand = is_win() ? 'where' : 'which';
+
+            $pipes = array();
+        $process = proc_open(
+            "$whereIsCommand $command", array(
+                0 => array("pipe", "r"), //STDIN
+                1 => array("pipe", "w"), //STDOUT
+                2 => array("pipe", "w"), //STDERR
+            ), $pipes
+        );
+        if($process !== false)
+        {
+            $stdout = stream_get_contents($pipes[1]);
+            $stderr = stream_get_contents($pipes[2]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            proc_close($process);
+
+            return $stdout != '';
+        }
+
+        return false;
+    }
+
+    function is_osx() {
+        $uname = strtolower(php_uname());
+        return (strpos($uname, "darwin") !== false);
+    }
+
+
+    function is_linux() {
+        $uname = strtolower(php_uname());
+        return (strpos($uname, "linux") !== false);
+    }
+
+
+    function is_win() {
+        $uname = strtolower(php_uname());
+        return (strpos($uname, "win") !== false) && !is_osx();
+    }
+
     function dec_to_dms($dec)
     {
         // Converts decimal longitude / latitude to DMS

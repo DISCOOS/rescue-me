@@ -12,37 +12,10 @@
 
     // Only run this when executed on the CLI
     if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
-        
-        // Define constants
-        define('HELP',"help");
-        define('NAME',"name");
-        define('ACTION',"action");
-        define('VERSION',"version");
-        define('STATUS',"status");
-        define('IMPORT',"import");
-        define('EXPORT',"export");
-        define('EXTRACT', "extract");
-        define('PACKAGE',"package");
-        define('INSTALL',"install");
-        define('CONFIGURE',"configure");
-        define('UNINSTALL',"uninstall");
-        define('ARCHIVE',"archive");
-        define('SRC_DIR',"src-dir");
-        define('IMPORT_DIR',"import-dir");
-        define('EXPORT_DIR',"export-dir");
-        define('BUILD_DIR',"build-dir");
-        define('DIST_DIR',"dist-dir");
-        define('EXTRACT_DIR',"extract-dir");
-        define('INSTALL_DIR',"install-dir");
-        define('DB',"db");
-        define('HOST',"host");
-        define('USERNAME',"username");
-        define('PASSWORD',"password");
-        
-        // Include resources
-        require 'inc/build.inc.php';
-        require (in_phar() ? '' : dirname(__FILE__).'/../src/').'inc/common.inc.php';
-        
+
+        // Configure build
+        require __DIR__ . DIRECTORY_SEPARATOR . 'config.php';
+
         // Get options
         $opts = parse_opts($argv, array('h'));
 
@@ -50,8 +23,24 @@
         $action = $opts[ACTION];
         
         // Perform sanity checks on php host system
-        system_checks($action);
-        
+        $halt = false;
+        $status = system_checks($action);
+        if($status !== true) {
+            foreach($status as $error) {
+                list($code, $message) = $error;
+                error(implode(PHP_EOL.'--> ',$message));
+                if($code === E_USER_ERROR) {
+                    $halt = $error;
+                }
+            }
+        }
+
+        // Failure?
+        if($halt !== false) {
+            echo PHP_EOL;
+            exit($halt);
+        }
+
         // Get error message?
         $msg = (empty($action) ? "Show help: -h | help ACTION" : null);        
         
@@ -61,7 +50,7 @@
         // Print help with error message?
         if(isset($msg))  print_help(HELP, "Show help: -h");
         
-        info("rescueme build script", SUCCESS); echo PHP_EOL;
+        info("rescueme build script", BUILD_SUCCESS); echo PHP_EOL;
         
         execute(array($action => $opts));
         
@@ -92,7 +81,7 @@
             switch($action)
             {
                 case STATUS:
-                    
+
                     // Get default paths
                     $root = get_safe_dir($opts, INSTALL_DIR, "src");
                     
@@ -101,9 +90,9 @@
 
                     $status = new RescueMe\Status($root);
 
-                    // Status unsuccessfull?
+                    // Status unsuccessful?
                     if(($config = $status->execute()) === false) {
-                       done($action, ERROR);
+                       done($action, BUILD_ERROR);
                     }// if                        
                     
                     break;
@@ -124,16 +113,22 @@
 
                     // Create Import
                     require('classes/RescueMe/Import.php');
+                    // Include dependent resources
                     require("$root/classes/RescueMe/DB.php");
                     require("$root/classes/RescueMe/User.php");
                     require("$root/classes/RescueMe/Log/Logs.php");
                     require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
 
-                    $import = new RescueMe\Import($opts[HOST], $opts[USERNAME], $opts[PASSWORD], $opts[DB], $root);
+                    $import = new RescueMe\Import(
+                        $opts[PARAM_HOST],
+                        $opts[PARAM_USERNAME],
+                        $opts[PARAM_PASSWORD],
+                        $opts[PARAM_DB],
+                        $root);
 
-                    // Import unsuccessfull?
+                    // Import unsuccessful?
                     if($import->execute() !== true) {
-                       done($action, ERROR);
+                       done($action, BUILD_ERROR);
                     }// if
 
                     break;
@@ -160,11 +155,16 @@
                     require("$root/classes/RescueMe/Log/Logs.php");
                     require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
 
-                    $import = new RescueMe\Export($opts[HOST], $opts[USERNAME], $opts[PASSWORD], $opts[DB], $root);
+                    $import = new RescueMe\Export(
+                        $opts[PARAM_HOST],
+                        $opts[PARAM_USERNAME],
+                        $opts[PARAM_PASSWORD],
+                        $opts[PARAM_DB],
+                        $root);
 
-                    // Export unsuccessfull?
+                    // Export unsuccessful?
                     if($import->execute() !== true) {
-                       done($action, ERROR);
+                       done($action, BUILD_ERROR);
                     }// if                        
 
                     break;
@@ -195,9 +195,9 @@
                     require('classes/RescueMe/Package.php');
                     $package = new RescueMe\Package($opts['v'], $build, $src, $dist);
 
-                    // Package unsuccessfull?
+                    // Package unsuccessful?
                     if($package->execute() !== true) {
-                       done($action, ERROR);
+                       done($action, BUILD_ERROR);
                     }// if
                     
                     break;
@@ -205,7 +205,7 @@
                 case EXTRACT:
 
                     // Skip?
-                    if(!in_phar()) print_help();
+                    if(in_phar() === false) print_help();
                     
                     // Get parameters
                     $src = get($opts, ARCHIVE, "src.zip", false);
@@ -218,7 +218,7 @@
 
                     // Execute extraction
                     if($extract->execute() !== true) {
-                        done($action, ERROR);
+                        done($action, BUILD_ERROR);
                     }// if
 
                     break;
@@ -227,7 +227,7 @@
                 case CONFIGURE:
                     
                     // Skip?
-                    if(in_phar() && $action === CONFIGURE || !in_phar() && $action === INSTALL) print_help();
+                    if(in_phar() && $action === CONFIGURE || in_phar() == false && $action === INSTALL) print_help();
                     
                     // Get paths
                     $root = get_safe_dir($opts, INSTALL_DIR, in_phar() ? getcwd() : "src");
@@ -239,12 +239,10 @@
                     $ini['VERSION'] = str_escape(isset_get($ini,'VERSION',"source"));
                     
                     // Get host specific defaults
-                    require("$root/classes/RescueMe/Locale.php");
-                    $locale = RescueMe\Locale::getDefaultLocale();
-                    $ini['SYSTEM_LOCALE'] = $locale;
+                    $locale = (extension_loaded("intl") ? \locale_get_default() : DEFAULT_LOCALE);
                     $codes = preg_split("#[_-]#", $locale);
                     $ini['COUNTRY_PREFIX'] = isset($codes[1]) ? $codes[1] : 'US';
-                    
+
                     // Get default configuration parameters
                     $config = get_config_params($root);
                     $ini = array_merge($ini, $config);
@@ -271,12 +269,12 @@
                         $ini['DEFAULT_LOCALE']   = str_escape(in("Default Language (locale, ISO2)", get($ini, "DEFAULT_LOCALE")));
                         $ini['TIMEZONE']         = str_escape(in_timezone($ini));
                         $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
-                        
+
                         echo PHP_EOL;
                     } 
                     
-                    // Configure only?
-                    if($action !== CONFIGURE) {
+                    // Install only?
+                    if($action === INSTALL) {
 
                         // Uninstall?
                         if(file_exists(realpath($root)))
@@ -296,13 +294,19 @@
                     }
                     
                     require('classes/RescueMe/Install.php');
-                    
+
+                    define('APP_PATH', $root.DIRECTORY_SEPARATOR);
+                    define('APP_PATH_LOCALE', APP_PATH.'locale'.DIRECTORY_SEPARATOR);
+                    require("$root/inc/locale.inc.php");
+
+                    set_system_locale(DOMAIN_ADMIN, $locale);
+
                     // Create install
                     $install = new RescueMe\Install($root, $ini, $silent, $update);
 
                     // Execute installation
                     if($install->execute() !== true) {
-                        done($action, ERROR); break;
+                        done($action, BUILD_ERROR); break;
                     }// if
                     
  
@@ -311,7 +315,7 @@
                 case UNINSTALL:
                     
                     // Skip?
-                    if(!in_phar()) break;
+                    if(in_phar() === false) print_help();
                     
                     // Import classes
                     require('classes/RescueMe/Uninstall.php');
@@ -321,9 +325,9 @@
 
                     $uninstall = new RescueMe\Uninstall($root);
 
-                    // Unistall successfull?
+                    // Uninstall successful?
                     if($uninstall->execute() !== true) {
-                       done($action, ERROR);
+                       done($action, BUILD_ERROR);
                     }// if
 
                     break;
@@ -361,11 +365,12 @@
      * @param string $msg Message
      * @param int $status Exit status
      */
-    function print_help($action = HELP, $msg = null, $status = ERROR)
+    function print_help($action = HELP, $msg = null, $status = BUILD_ERROR)
     {
         switch($action)
         {
             case STATUS:
+
                 info("RescueMe Status Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme status [OPTIONS]' . PHP_EOL;
                 echo "OPTIONS:" . PHP_EOL;
@@ -373,6 +378,10 @@
                 echo "        -h            Display this help" . PHP_EOL;                
                 break;
             case IMPORT:
+
+                // Skip?
+                if(in_phar()) print_help();
+
                 info("RescueMe Import Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme import [OPTIONS]' . PHP_EOL;
                 echo "OPTIONS:" . PHP_EOL;
@@ -384,6 +393,10 @@
                 echo "        -h            Display this help" . PHP_EOL;                
                 break;
             case EXPORT:
+
+                // Skip?
+                if(in_phar()) print_help();
+
                 info("RescueMe Export Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme export [OPTIONS]' . PHP_EOL;
                 echo "OPTIONS:" . PHP_EOL;
@@ -396,6 +409,10 @@
                 echo "        -h            Display this help" . PHP_EOL;                
                 break;
             case EXTRACT:
+
+                // Skip?
+                if(in_phar() === false) print_help();
+
                 info("RescueMe Extraction Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme extract [OPTIONS]' . PHP_EOL;
                 echo "OPTIONS:" . PHP_EOL;
@@ -404,6 +421,10 @@
                 echo "        -h            Display this help" . PHP_EOL;                
                 break;
             case PACKAGE:
+
+                // Skip?
+                if(in_phar()) print_help();
+
                 info("RescueMe Package Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme package -v VERSION [OPTIONS]' . PHP_EOL;
                 echo "PARAMETERS:" . PHP_EOL;
@@ -417,7 +438,7 @@
             case INSTALL:
                 
                 // Skip?
-                if(!in_phar()) print_help();
+                if(in_phar() === false) print_help();
                 
                 info("RescueMe Install Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme install [OPTIONS]... ' . PHP_EOL;
@@ -443,7 +464,7 @@
             case UNINSTALL:
                 
                 // Skip?
-                if(!in_phar()) print_help();
+                if(in_phar() === false) print_help();
                 
                 info("RescueMe Uninstall Script" . (isset($msg) ? " - " . $msg : ""));
                 echo 'Usage: rescueme uninstall [OPTIONS]... ' . PHP_EOL;
@@ -459,16 +480,16 @@
                 echo "        -h            Display this help" . PHP_EOL;                
                 echo "ACTION:" . PHP_EOL;
                 echo "        status        Show RescueMe status (parameters)" . PHP_EOL;
-                if(!in_phar()) {
+                if(in_phar()) {
+                    echo "        extract       Extract RescueMe" . PHP_EOL;
+                    echo "        install       Install RescueMe" . PHP_EOL;
+                    echo "        uninstall     Uninstall RescueMe" . PHP_EOL;
+                }
+                else {
                     echo "        import        Import RescueMe database (sql->db)" . PHP_EOL;
                     echo "        export        Export RescueMe database (db->sql)" . PHP_EOL;
                     echo "        configure     Configure RescueMe source (dev)" . PHP_EOL;
                     echo "        package       Package RescueMe as executable phar-archive" . PHP_EOL;
-                }
-                else {
-                    echo "        extract       Extract RescueMe" . PHP_EOL;
-                    echo "        install       Install RescueMe" . PHP_EOL;
-                    echo "        uninstall     Uninstall RescueMe" . PHP_EOL;
                 }
                 echo "        help          Display help about an action" . PHP_EOL;
                 

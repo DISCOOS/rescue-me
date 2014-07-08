@@ -11,15 +11,14 @@
 	 */
     
     // Define common constants
-    define('PRE', -1);
-    define('NONE', 0);
-    define('POST', 1);
-    define('BOTH', 2);
-    define('ERROR', -1);
-    define('SUCCESS', 0);
-    define('CANCEL', 1);
-    define('INFO', 'INFO');
-    define('DONE', "DONE");
+    define('NEWLINE_PRE', -1);
+    define('NEWLINE_NONE', 0);
+    define('NEWLINE_POST', 1);
+    define('NEWLINE_BOTH', 2);
+    define('BUILD_ERROR', -1);
+    define('BUILD_SUCCESS', 0);
+    define('BUILD_INFO', 1);
+    define('BUILD_CANCEL', 2);
     define('FAILED', "FAILED");
     define('CANCELLED', "CANCELLED");
     define('RM_DIR_FAILED', "remove directory failed");
@@ -43,92 +42,6 @@
     define('COLOR_INFO', 'info');
     define('COLOR_ERROR', 'error');
     define('COLOR_SUCCESS', 'success');
-    
-    /**
-     * Perform system sanity checks
-     * 
-     * @param string $action Action-senitive check
-     */
-    function system_checks($action='') {
-        
-        $status = SUCCESS;
-        
-        $action = strtolower($action);
-        
-        if(ini_get("short_open_tag") !== "1") {
-            $status = error("php.ini value 'short_open_tag' must be '1'");
-        }
-        if(ini_get("date.timezone") === FALSE) {
-            $status = error("php.ini value 'date.timezone' is not set");
-        }
-        if(os_command_exists("php") === FALSE) {
-            $status = error("php-cli is not configured correctly");
-            if(is_win()) {
-                info('   Run php installer again and select "Script Executable"', ERROR);
-            } else {
-                info('   Run "sudo apt-get install php5-cli"', ERROR);
-            }
-            
-        }
-        
-        if($action === "install" || $action == "configure") {
-            if(!extension_loaded("intl")) {
-                info("Extension 'intl' should be enabled for better locale handling.\n", ERROR);
-                if(is_win()) {
-                    info('   Uncomment "extension = php_intl.dll" in php.ini', ERROR);
-                } else {
-                    info('   Run "sudo apt-get install php5-intl"', ERROR);
-                }
-            }        
-            if(!extension_loaded("gettext")) {
-                info("Extension 'gettext' should be enabled for better locale support.\n", ERROR);
-                if(is_win()) {
-                    info('   Uncomment "extension = php_gettext.dll" in php.ini', ERROR);
-                } else {
-                    info('   Run "sudo apt-get install php5-gettext"', ERROR);
-                }
-            }        
-        }
-        
-        // Failure?
-        if($status !== SUCCESS) {
-            echo PHP_EOL;
-            exit($status);
-        }
-    }
-    
-
-    /**
-     * Check if command exists on host OS.
-     * @param string $command
-     * @return boolean
-     */
-    function os_command_exists($command)
-    {
-        $whereIsCommand = is_win() ? 'where' : 'which';
-
-        $pipes = array();
-        $process = proc_open(
-            "$whereIsCommand $command", array(
-            0 => array("pipe", "r"), //STDIN
-            1 => array("pipe", "w"), //STDOUT
-            2 => array("pipe", "w"), //STDERR
-            ), $pipes
-        );
-        if($process !== false)
-        {
-            $stdout = stream_get_contents($pipes[1]);
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[1]);
-            fclose($pipes[2]);
-            proc_close($process);
-
-            return $stdout != '';
-        }
-
-        return false;
-    }    
-    
 
     /**
      * Parses parameters into an array.
@@ -143,6 +56,8 @@
      *
      * @param array $params List of parameters
      * @param array $noopt List of parameters without values
+     *
+     * @return array
      */
     function parse_opts($params, $noopt = array()) {
         
@@ -237,8 +152,8 @@
             }// if
         }// if
     }// add_folder_to_zip
-    
-    
+
+
     /**
      * Check if string ends with given substring.
      * @param string $search
@@ -382,13 +297,13 @@
      * 
      * @param string $message Message
      * @param string $default Default value
-     * @param integer $newline Message newline [optional, default: NONE]
+     * @param integer $newline Message newline [optional, default: NEWLINE_NONE]
      * @param boolean $required Required value.
      * @param boolean $echo Echo entered value.
      * 
      * @return string Answer 
      */
-    function in($message, $default=NULL, $newline=NONE, $required=true, $echo=true) {
+    function in($message, $default=NULL, $newline=NEWLINE_NONE, $required=true, $echo=true) {
         $isset = isset($default) && (!empty($default) || $default == 0 && $default !== '');
         out(($isset ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
         $answer = fgets(STDIN);
@@ -398,7 +313,7 @@
             return in($message, $default, $newline, $required, $echo);
         }
         if($echo) {
-            out("$message: $answer", POST, COLOR_SUCCESS);
+            out("$message: $answer", NEWLINE_POST, COLOR_SUCCESS);
         }
         return trim($answer);
     }// in
@@ -444,16 +359,16 @@
         if(!isset($timezone) || empty($timezone) || trim($timezone,"'") == '') {            
             $timezone = $default;
         }
-        $timezone = in("Timesone",$timezone, NONE, true, false);
+        $timezone = in("Timesone",$timezone, NEWLINE_NONE, true, false);
         $old = error_reporting(E_ALL ^ E_NOTICE);
         $current = date_default_timezone_get();
         if(@date_default_timezone_set(trim($timezone,"'")) === FALSE) {
-            out("Invalid timezone: $timezone", POST, COLOR_SUCCESS);
+            out("Invalid timezone: $timezone", NEWLINE_POST, COLOR_SUCCESS);
             return in_timezone($opts, $default);
         }
         error_reporting($old);
         date_default_timezone_set($current);
-        out("Timesone: $timezone", POST, COLOR_SUCCESS);
+        out("Timesone: $timezone", NEWLINE_POST, COLOR_SUCCESS);
         return $timezone;
     }
 
@@ -493,7 +408,7 @@
         (
             'SALT', 'TITLE', 'SMS_FROM', 'COUNTRY_PREFIX', 'DEFAULT_LOCALE', 
             'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD', 'TIMEZONE'
-        ));        
+        ));
         return $config;
     }
     
@@ -530,10 +445,10 @@
     function get_db_params($opts, $config, $ensure=false) {
 
         // Get database parameters
-        $db = get($opts, DB, isset_get($config, "DB_NAME", ""), false);
-        $host = get( $opts, HOST, isset_get($config, "DB_HOST", ""), false);
-        $username = get($opts, USERNAME, isset_get($config, "DB_USERNAME", ""), false);
-        $password = get($opts, PASSWORD, isset_get($config, "DB_PASSWORD", ""), false);
+        $db = get($opts, PARAM_DB, isset_get($config, "DB_NAME", ""), false);
+        $host = get( $opts, PARAM_HOST, isset_get($config, "DB_HOST", ""), false);
+        $username = get($opts, PARAM_USERNAME, isset_get($config, "DB_USERNAME", ""), false);
+        $password = get($opts, PARAM_PASSWORD, isset_get($config, "DB_PASSWORD", ""), false);
 
         // Ensure missing parameters?
         if($ensure) {
@@ -544,10 +459,10 @@
         } 
         
         // Trim values
-        $opts[DB] = trim($db, "'");
-        $opts[HOST] = trim($host, "'");
-        $opts[USERNAME] = trim($username, "'");
-        $opts[PASSWORD] = trim($password, "'");            
+        $opts[PARAM_DB] = trim($db, "'");
+        $opts[PARAM_HOST] = trim($host, "'");
+        $opts[PARAM_USERNAME] = trim($username, "'");
+        $opts[PARAM_PASSWORD] = trim($password, "'");
                
         // Finished
         return $opts;        
@@ -595,7 +510,7 @@
      */
     function begin($action)
     {
-        info("rescueme [$action]...", SUCCESS);
+        info("rescueme [$action]...", BUILD_SUCCESS);
     }// done
 
     
@@ -608,15 +523,15 @@
      * 
      * @return void
      */
-    function done($action, $status = SUCCESS, $newline=POST)
+    function done($action, $status = BUILD_SUCCESS, $newline=NEWLINE_POST)
     {
         switch($status) { 
-            case ERROR: 
-                fatal("rescueme [$action]...".FAILED.PHP_EOL, ERROR, $newline);
-            case CANCEL: 
-                fatal("rescueme [$action]...".CANCELLED.PHP_EOL, CANCEL, $newline);
+            case BUILD_ERROR:
+                fatal("rescueme [$action]...".FAILED.PHP_EOL, BUILD_ERROR, $newline);
+            case BUILD_CANCEL:
+                fatal("rescueme [$action]...".CANCELLED.PHP_EOL, BUILD_CANCEL, $newline);
             default:
-                info("rescueme [$action]...".DONE.PHP_EOL, $status, $newline);
+                info("rescueme [$action]...DONE".PHP_EOL, $status, $newline);
                 break;
         }
     }// done
@@ -629,13 +544,13 @@
      * 
      * @param string $message Message
      * @param integer $status Exit status [optional, default: 0]
-     * @param integer $newline Message newline [optional, default: POST]
+     * @param integer $newline Message newline [optional, default: NEWLINE_POST]
      * 
      * @since 02. October 2012 
      * 
      * @return void
      */
-    function fatal($message, $status = ERROR, $newline=POST)
+    function fatal($message, $status = BUILD_ERROR, $newline=NEWLINE_POST)
     {
         // Log event, cleanup and terminate
         exit(error($message, $status, $newline));
@@ -648,16 +563,16 @@
      * 
      * @param string $message Message
      * @param integer $status Status
-     * @param integer $newline Message newline [optional, default: POST]
+     * @param integer $newline Message newline [optional, default: NEWLINE_POST]
      * 
      * @since 02. October 2012 
      * 
      * @return integer
      * 
      */
-    function info($message, $status = INFO, $newline=POST)
+    function info($message, $status = BUILD_INFO, $newline=NEWLINE_POST)
     {
-        out($message,$newline,$status === SUCCESS ? COLOR_SUCCESS : COLOR_INFO); return $status;
+        out($message,$newline,$status === BUILD_SUCCESS ? COLOR_SUCCESS : COLOR_INFO); return $status;
     }// info
 
 
@@ -666,14 +581,14 @@
      * 
      * @param string $message Message
      * @param integer $status Status
-     * @param integer $newline Message newline [optional, default: POST]
+     * @param integer $newline Message newline [optional, default: NEWLINE_POST]
      * 
      * @since 02. October 2012 
      * 
      * @return integer
      * 
      */
-    function error($message, $status = ERROR, $newline=POST)
+    function error($message, $status = BUILD_ERROR, $newline=NEWLINE_POST)
     {
         out($message, $newline, COLOR_ERROR); return $status;
     }// error
@@ -685,7 +600,7 @@
      * Adapted from https://github.com/composer/getcomposer.org/blob/master/web/installer
      * 
      * @param string $message Message
-     * @param integer $newline Message newline [optional, default: POST]
+     * @param integer $newline Message newline [optional, default: NEWLINE_POST]
      * @param string $color Output color
      * 
      * @since 07. June 2013
@@ -693,7 +608,7 @@
      * @return void
      * 
      */
-    function out($message, $newline=POST, $color = COLOR_NONE)
+    function out($message, $newline=NEWLINE_POST, $color = COLOR_NONE)
     {
         if (DIRECTORY_SEPARATOR == '\\') {
             $hasColorSupport = false !== getenv('ANSICON');
@@ -715,52 +630,22 @@
 
         switch($newline)
         {
-            case PRE:
+            case NEWLINE_PRE:
                 printf($format, PHP_EOL.$message);
                 break;
-            case POST:
+            case NEWLINE_POST:
                 printf($format, $message.PHP_EOL);
                 break;
-            case BOTH:
+            case NEWLINE_BOTH:
                 printf($format, PHP_EOL.$message.PHP_EOL);
                 break;
-            case NONE:
+            case NEWLINE_NONE:
             default:
                 printf($format, $message);
                 break;
         }
     }// out
-    
-    
-    /**
-     * Get debug information.
-     * 
-     * @param string $name Name
-     * @return string
-     */
-    function toDebug($name)
-    {
-        return "'" . $name . "' [" . dechex(\cim\common\crc32($name)) . "]";
-    }// toDebug
-    
-    
-    function is_osx() {
-        $uname = strtolower(php_uname());
-        return (strpos($uname, "darwin") !== false);
-    }
 
-    
-    function is_linux() {
-        $uname = strtolower(php_uname());
-        return (strpos($uname, "linux") !== false);
-    }
-
-    
-    function is_win() {
-        $uname = strtolower(php_uname());
-        return (strpos($uname, "win") !== false) && !is_osx();
-    }
-    
     function is_sudo() { 
         return !is_win() && posix_getuid() === 0;         
     }

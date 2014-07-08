@@ -96,12 +96,13 @@
         /**
          * Grant role to user
          * 
-         * @param string $role Role
+         * @param integer|string $role Role id or name
          * @param integer $user_id User id
          * 
          * @return boolean
          */
         public static function grant($role, $user_id) {
+
             if (is_int($role)) {
                 $role = self::$roles[$role];
             }
@@ -136,13 +137,17 @@
         /**
          * Check if given user has a given role
          * 
-         * @param string $role Role
+         * @param integer|string $role Role id or name
          * @param integer $user_id User id
          * 
          * @return boolean
          */
         public static function has($role, $user_id) {
-            
+
+            if (is_int($role)) {
+                $role = self::$roles[$role];
+            }
+
             $filter = '`user_id` = '.(int)$user_id." AND `role_name` ='$role'";
             
             $res = DB::count(self::TABLE, $filter);

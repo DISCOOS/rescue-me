@@ -38,8 +38,8 @@ if (!defined('LC_MESSAGES')) {
   define('LC_MESSAGES',	5);
 }
 
-require(APP_PATH_INC.'php-gettext/streams.php');
-require(APP_PATH_INC.'php-gettext/gettext.php');
+require(__DIR__.DIRECTORY_SEPARATOR.'streams.php');
+require(__DIR__.DIRECTORY_SEPARATOR.'gettext.php');
 
 
 // Variables
