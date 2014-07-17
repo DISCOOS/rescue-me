@@ -198,6 +198,25 @@ R.prepare = function(element, options) {
     // Register paginators
     $(element).find('.pagination').each(function() { R.paginator(this, options) });
     
+    // Add character-count for SMS
+    $("#sms_text").keyup(function(event){
+        var len = $(this).val().length+parseInt($("#link_len").val(), 10);
+        $("#sms_char").text(len);
+        $("#sms_num").text(Math.ceil(len/160));
+        
+        if (len > 160) {
+            $("#sms_char").css('color', 'red');
+            $("#sms_num").css('color', 'red');
+            $("#sms_warning").show();
+        }
+        else {
+            $("#sms_char").css('color', '');
+            $("#sms_num").css('color', '');
+            $("#sms_warning").hide();
+        }
+    });
+    var len = $("#sms_text").val().length+parseInt($("#link_len").val(), 10);
+    $("#sms_char").text(len);
 }
 
 R.ajax = function(url, element, data, done) {

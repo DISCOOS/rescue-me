@@ -99,7 +99,10 @@
                         </select>
                     </div>
                     <div class="span8">
-                        <label for="sms_text"><?=SMS?></label>
+                        <label for="sms_text"><?=SMS?> (<span id="sms_char">0</span>/160 <?=strtolower(CHARACTER)?> - <span id="sms_num">1</span> SMS)</label>
+                        <label id="sms_warning" style="display:none; font-weight: normal; color: red;"><?=T_("Not all SMS-carriers support SMS that exceed 160 chars. Be aware!")?></label>
+                        <? // This assumes the encrypted ID is always 3 chars, but maybe it could be more? ?>
+                        <input type="hidden" name="link_len" id="link_len" value="<?=strlen(str_replace("#missing_id", "111", LOCATE_URL))?>">
                         <textarea class="field span12" id="sms_text" name="sms_text" required rows="1"><?=$sms_text?></textarea>
                      </div>
                     <div class="span2">
