@@ -43,7 +43,7 @@
                 <div class="row-fluid">
                     <div class="span4">
                         <label for="m_mobile"><?=COUNTRY_CODE?></label>
-                        <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="<?=SELECT_COUNTRY?>" required>
+                        <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="<?=SELECT_COUNTRY?>" required onchange="R.checkCountry(this, '<?=Properties::get(Properties::SYSTEM_COUNTRY_PREFIX); ?>')">
                             <?= insert_options(Locale::getCountryNames(), Locale::getCurrentCountryCode(), false); ?>
                         </select>
                     </div>
@@ -119,6 +119,10 @@
 
                 <?= sprintf(REMEMBER_TO_INCLUDE_LINK,'<span class="label">%LINK%</span>',TITLE)?>
 
+                <div id="roaming" style="display: none" class="alert-error">
+                    <?=T_("It seems the reciever has a phonenumber from a different country?"); ?><br />
+                    <?=T_("Then it's VITAL that you include information in the SMS, that dataroaming MUST be enabled for RescueMe to work!"); ?>
+                </div>
                 <div id="readmore" style="display: none;">
                     <br />
                     <h4><?=T_('Standard message')?></h4>

@@ -512,3 +512,12 @@ R.updateTimes = function() {
        $(this).text(since);
    });
 }
+
+R.checkCountry = function(country, system_country) {
+    if (country.value !== system_country) {
+        $("#roaming").show();
+    }
+    else {
+        $("#roaming").hide();
+    } 
+}
