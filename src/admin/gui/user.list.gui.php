@@ -36,6 +36,7 @@
             <thead>
                 <tr>
                     <th><?=T_("Name")?></th>
+                    <th><?=T_("Role")?></th>
                     <th><?=T_("Mobile")?></th>
                     <th class="hidden-phone"><?=T_("E-mail")?></th>
                     <th>

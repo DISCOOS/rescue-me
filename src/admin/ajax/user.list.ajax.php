@@ -34,6 +34,8 @@
         $options = create_paginator(1, $total, $user_id);        
         
         $users = User::getAll(array($state), $filter, $start, $max);
+        $roles = \RescueMe\Roles::getAll();
+
         
         foreach($users as $id => $user) { $editable = (User::DELETED === $user->state ? '' : 'user') ?>
             
@@ -41,6 +43,7 @@
                 <td class="<?=$editable?> name <?=$all ? $user->state : ''?>"> 
                 <?=$all && User::DELETED === $user->state ? '<strike>' . $user->name . '</strike>' : $user->name ?> 
                 </td>
+                <td class="<?=$editable?> role"><?= is_int($user->role_id)? $roles[$user->role_id] : ''?></td>
                 <td class="<?=$editable?> tel"><?= isset($user->mobile)?$user->mobile : ''?></td>
                 <td class="<?=$editable?> mailto hidden-phone"><?= isset($user->email)?$user->email : ''?></td>
                 <td class="<?=$editable?> editor">
