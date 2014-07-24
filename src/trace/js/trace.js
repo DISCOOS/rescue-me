@@ -1,6 +1,7 @@
 /*
  * Define 'namespaces'
  */
+
 R = install;
 
 
@@ -98,7 +99,7 @@ R.trace.locate = function() {
         
     } else {
         // 'Location not supported on this device'
-        f.innerHTML = msg[1];
+        f.innerHTML = msg[0];
     }    
     
     
