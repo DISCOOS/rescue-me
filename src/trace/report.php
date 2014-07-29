@@ -25,9 +25,9 @@
             $m->addPosition($lat, $lon, $acc, $alt, $timestamp, $_SERVER['HTTP_USER_AGENT']);
             $response  = sprintf(T_('Your location is received (&#177;%1$s m).'),$acc).'<br/>';
             if ($acc > 500) {
-                $response .= T_('Stay still, we are comming.') . '<br>' . T_('Try to make your self visible from both air and ground!');
+                $response .= T_('Stay still, we are coming.') . '<br>' . T_('Try to make your self visible from both air and ground!');
             } else {
-                $response .= T_('Stay still, we are comming.') . '<br>' . T_('Try to make your self visible from both air and ground!');
+                $response .= T_('Stay still, we are coming.') . '<br>' . T_('Try to make your self visible from both air and ground!');
             }
         }
         else {
