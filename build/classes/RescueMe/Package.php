@@ -82,7 +82,7 @@
             $package = "$this->dist".DIRECTORY_SEPARATOR."rescueme-" . $this->version;
 
             // Notify
-            info("  Packaging [$this->src] into [$package]....", INFO, NONE);
+            info("  Packaging [$this->src] into [$package]....", BUILD_INFO, NEWLINE_NONE);
             
             // Create folder if not exists
             if(!file_exists($this->dist)) {
@@ -109,9 +109,9 @@
             // Add build scripts source
             $oPhar->buildFromDirectory("$this->build");
 
-            // Add common resources
-            $oPhar->addFile("$this->src/inc/common.inc.php", "inc/common.inc.php");
-            
+            // Add dependencies
+            $oPhar->addFile("$this->src/inc/locale.inc.php", "inc/locale.inc.php");
+
             // Add 5.4+ compatible class loader
             $oPhar->addFile("$this->src/vendor/composer/ClassLoader.php", "classes/ClassLoader.php");
 

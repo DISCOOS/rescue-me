@@ -43,7 +43,7 @@
                 <div class="row-fluid">
                     <div class="span4">
                         <label for="m_mobile"><?=COUNTRY_CODE?></label>
-                        <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="<?=SELECT_COUNTRY?>" required>
+                        <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="<?=SELECT_COUNTRY?>" required onchange="R.checkCountry(this, '<?=Properties::get(Properties::SYSTEM_COUNTRY_PREFIX); ?>')">
                             <?= insert_options(Locale::getCountryNames(), Locale::getCurrentCountryCode(), false); ?>
                         </select>
                     </div>
@@ -99,7 +99,10 @@
                         </select>
                     </div>
                     <div class="span8">
-                        <label for="sms_text"><?=SMS?></label>
+                        <label for="sms_text"><?=SMS?> (<span id="sms_char">0</span>/160 <?=strtolower(CHARACTER)?> - <span id="sms_num">1</span> SMS)</label>
+                        <label id="sms_warning" style="display:none; font-weight: normal; color: red;"><?=T_("Not all SMS-carriers support SMS that exceed 160 chars. Be aware!")?></label>
+                        <? // This assumes the encrypted ID is always 3 chars, but maybe it could be more? ?>
+                        <input type="hidden" name="link_len" id="link_len" value="<?=strlen(str_replace("#missing_id", "111", LOCATE_URL))?>">
                         <textarea class="field span12" id="sms_text" name="sms_text" required rows="1"><?=$sms_text?></textarea>
                      </div>
                     <div class="span2">
@@ -119,6 +122,10 @@
 
                 <?= sprintf(REMEMBER_TO_INCLUDE_LINK,'<span class="label">%LINK%</span>',TITLE)?>
 
+                <div id="roaming" style="display: none" class="alert-error">
+                    <?=T_("It seems the reciever has a phonenumber from a different country?"); ?><br />
+                    <?=T_("Then it's VITAL that you include information in the SMS, that dataroaming MUST be enabled for RescueMe to work!"); ?>
+                </div>
                 <div id="readmore" style="display: none;">
                     <br />
                     <h4><?=T_('Standard message')?></h4>

@@ -8,7 +8,7 @@ use RescueMe\Properties;
 $num = (int)$_GET['num'];
 $user_id = User::currentId();
 $missing = Missing::get((int)$_GET['id']);
-$format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
+$params = Properties::getAll($user_id);
 
 // Close the session prematurely to avoid usleep() from locking other requests
 session_write_close();
@@ -27,8 +27,8 @@ while(time() <= $endtime){
     usleep(3000);
 }
 foreach ($positions as $key=>$value) {
-    $posText = format_pos($value, $format);
-    $posTextClean = format_pos($value, $format, false);
+    $posText = format_pos($value, $params);
+    $posTextClean = format_pos($value, $params, false);
 
     $arr = array('lat' => $value->lat, 'lon' => $value->lon, 'acc' => $value->acc,
                  'alt' => $value->alt, 'posText' => $posText, 'posTextClean' => $posTextClean,

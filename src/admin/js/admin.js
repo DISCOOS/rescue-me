@@ -198,6 +198,25 @@ R.prepare = function(element, options) {
     // Register paginators
     $(element).find('.pagination').each(function() { R.paginator(this, options) });
     
+    // Add character-count for SMS
+    $("#sms_text").keyup(function(event){
+        var len = $(this).val().length+parseInt($("#link_len").val(), 10);
+        $("#sms_char").text(len);
+        $("#sms_num").text(Math.ceil(len/160));
+        
+        if (len > 160) {
+            $("#sms_char").css('color', 'red');
+            $("#sms_num").css('color', 'red');
+            $("#sms_warning").show();
+        }
+        else {
+            $("#sms_char").css('color', '');
+            $("#sms_num").css('color', '');
+            $("#sms_warning").hide();
+        }
+    });
+    var len = $("#sms_text").val().length+parseInt($("#link_len").val(), 10);
+    $("#sms_char").text(len);
 }
 
 R.ajax = function(url, element, data, done) {
@@ -329,55 +348,53 @@ R.tabs = function(tabs) {
     $('#'+tabs+' a').click(function (e) {
         var tab = $(e.target);
         var href = tab.attr("href");
-        var index = href.indexOf("#");
-        var id = 'all';
-        if (index !== -1) {
-            id = href.substr(index + 1);
-            href = href.substr(0,index);
-        }
-
-        location.hash = id;
-        var target = '#'+id;
-        var data = { name: id };
-        var list = $(target).find('.pagination'); 
-        if(list.length > 0) {
-            target += ' ' + $(target).attr('data-target');
-            list.each(function() {
-                var $this = $(this);
-                $this.bootstrapPaginator('show', 1);
-                $this.data('url', href);
-                $this.data('name', id);
-                $this.data('target', target);
-            });
-        } 
-
-        R.ajax(href, tab, data, function( data ) {
-
-            try {
-                var response = JSON.parse(data);
-            } catch ($e) {
-                response = {html: data, options: {}};
+        if(href !== undefined) {
+            var id = 'all';
+            var index = href.indexOf("#");
+            if (index !== -1) {
+                id = href.substr(index + 1);
+                href = href.substr(0,index);
             }
 
-            if(response === false) {
+            location.hash = id;
+            var target = '#'+id;
+            var data = { name: id };
+            var list = $(target).find('.pagination'); 
+            if(list.length > 0) {
+                target += ' ' + $(target).attr('data-target');
+                list.each(function() {
+                    var $this = $(this);
+                    $this.bootstrapPaginator('show', 1);
+                    $this.data('url', href);
+                    $this.data('name', id);
+                    $this.data('target', target);
+                });
+            } 
 
-                location.reload();
+            R.ajax(href, tab, data, function( data ) {
 
-            } else {
-            
-                // Insert elements in DOM and prepare
-                $(target).html(response.html);
-                R.prepare(target, response.options);
-
-                // Set pagination options?
-                if(list.length > 0) {
-                    list.bootstrapPaginator(response.options);
+                try {
+                    var response = JSON.parse(data);
+                } catch ($e) {
+                    response = {html: data, options: {}};
                 }
-                
-            }
 
-        });
+                if(response === false) {
 
+                    location.reload();
+
+                } else {            
+                    // Insert elements in DOM and prepare
+                    $(target).html(response.html);
+                    R.prepare(target, response.options);
+
+                    // Set pagination options?
+                    if(list.length > 0) {
+                        list.bootstrapPaginator(response.options);
+                    }
+                }                
+            });
+        }
     });
     R.toTab(tabs);
 };
@@ -513,4 +530,13 @@ R.updateTimes = function() {
        var since = R.format_since($(this).attr('datetime'));
        $(this).text(since);
    });
+}
+
+R.checkCountry = function(country, system_country) {
+    if (country.value !== system_country) {
+        $("#roaming").show();
+    }
+    else {
+        $("#roaming").hide();
+    } 
 }

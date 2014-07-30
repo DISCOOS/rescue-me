@@ -8,7 +8,7 @@
     $lat = input_get_float('lat');
     $lon = input_get_float('lon');
     $alt = input_get_float('alt');
-    $timestamp = input_get_int('timestamp');
+    $timestamp = floor(input_get_float('timestamp')/1000);
 
     if ($id === false || $lat === false || $lon === false || $acc === false) { 
 
@@ -21,7 +21,7 @@
         if($m !== false)
         {
             set_system_locale(DOMAIN_TRACE, $m->locale);
-
+            
             $m->addPosition($lat, $lon, $acc, $alt, $timestamp, $_SERVER['HTTP_USER_AGENT']);
             $response  = sprintf(T_('Your location is received (&#177;%1$s m).'),$acc).'<br/>';
             if ($acc > 500) {

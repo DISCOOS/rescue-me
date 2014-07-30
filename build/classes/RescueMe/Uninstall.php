@@ -53,16 +53,16 @@
             begin(UNINSTALL);
             
             // Notify
-            info("  Inspecting [$this->root]....", INFO, NONE);
+            info("  Inspecting [$this->root]....", BUILD_INFO, NEWLINE_NONE);
             
             // Not found?
             if(!file_exists(realpath($this->root))) {
-                return error(sprintf("%s ".NOT_FOUND,$this->root));
+                return error(sprintf("[%s] not found",$this->root));
             }// if
             info("DONE");
             
             // Uninstall application
-            info("  Uninstalling [$this->root]....", INFO, NONE);
+            info("  Uninstalling [$this->root]....", BUILD_INFO, NEWLINE_NONE);
             if(!rrmdir(realpath($this->root))) {
                 return error(FAILED."(".RM_DIR_FAILED.")");
             }// if             

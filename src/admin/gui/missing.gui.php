@@ -36,25 +36,25 @@
         }
 
         $user_id = User::currentId();
-        $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
-        $top = (Properties::get(Properties::TRACE_BAR_LOCATION, $user_id) === Properties::TOP);
-        $collaped = (Properties::get(Properties::TRACE_BAR_STATE, $user_id) === Properties::COLLAPSED);
-        $details = explode(',',Properties::get(Properties::TRACE_DETAILS, $user_id));
+        $params = Properties::getAll($user_id);
+        $top = ($params[Properties::TRACE_BAR_LOCATION] === Properties::TOP);
+        $collapsed = ($params[Properties::TRACE_BAR_STATE] === Properties::COLLAPSED);
+        $details = explode(',', $params[Properties::TRACE_DETAILS]);
         if($missing->last_pos->timestamp>-1) {
             $pan_to = 'data-pan-to="'. (count($positions)-1) . '"';
-            $position = format_pos($missing->last_pos, $format, true, $pan_to);
+            $position = format_pos($missing->last_pos, $params, $pan_to);
             $located = format_since($missing->last_pos->timestamp);
             $located_state = "success";
         } else {
             $pan_to = '';
-            $position = format_pos(null, $format);
+            $position = format_pos(null, $params);
             $located = UNKNOWN;
             $located_state = "warning";
         }
 
     ?>
     
-    <? if($top) { insert_trace_bar($missing, $collaped); } ?>
+    <? if($top) { insert_trace_bar($missing, $collapsed); } ?>
         
     <div class="infos pull-left">
     <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
@@ -82,7 +82,7 @@
 
     <div class="clearfix"></div>
     
-    <? if($top === false) { insert_trace_bar($missing, $collaped); } ?>
+    <? if($top === false) { insert_trace_bar($missing, $collapsed); } ?>
     
     <div class="infos clearfix pull-left">
         

@@ -87,7 +87,8 @@
             begin(IMPORT);
             
             // Notify
-            info("  Importing [$this->root".DIRECTORY_SEPARATOR."rescueme.sql] into [".$this->db."]....", INFO, NONE);
+            info("  Importing [$this->root".DIRECTORY_SEPARATOR."rescueme.sql] into [".$this->db."]....",
+                BUILD_INFO, NEWLINE_NONE);
             
             // Connect to database
             DB::instance()->connect($this->host, $this->username, $this->password, $this->db);

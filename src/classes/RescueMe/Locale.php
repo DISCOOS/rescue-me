@@ -367,7 +367,7 @@
         /**
          * Get locale information from ISO country code.
          * 
-         * @param string $code ISO country code
+         * @param string|boolean $code ISO country code
          * 
          * @return array Country|ies information
          */

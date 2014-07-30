@@ -51,15 +51,15 @@ var posFormat = '<?=Properties::text(Properties::MAP_DEFAULT_FORMAT, $user_id)?>
      <? } 
 
         $i = 0;
-        
-        $format = Properties::get(Properties::MAP_DEFAULT_FORMAT, $user_id);
+        $params = Properties::getAll($user_id);
+
         ksort($positions);
         
-        foreach ($positions as $key=>$value) {           
-            $posText = format_pos($value, $format);
-            $posTextClean = format_pos($value, $format, false);
+        foreach ($positions as $key=>$value) {
+            $posText = str_replace("'", "\\'", format_pos($value, $params));
+            $posTextClean = str_replace("'", "\\'", format_pos($value, $params, false));
             echo "R.map.addPosition($value->lat, $value->lon, $value->acc, $value->alt,".
-                    "'$posText', '$posTextClean','".$value-> timestamp."');";
+                    "'".$posText."', '$posTextClean','".$value-> timestamp."');";
             $i++;
         }
         echo 'ajaxFetchPosition();';

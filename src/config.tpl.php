@@ -69,9 +69,6 @@
     // SMS integration constants
     define('SMS_FROM', 'RescueMe');
 
-    // Google API key
-    define('GOOGLE_API_KEY', '');
-    
     // RescueMe database constants
     define('DB_HOST', 'localhost');
     define('DB_NAME', 'rescueme');
