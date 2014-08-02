@@ -43,6 +43,7 @@
     define('COLOR_ERROR', 'error');
     define('COLOR_SUCCESS', 'success');
 
+
     /**
      * Parses parameters into an array.
      *
@@ -497,7 +498,7 @@
      * @return boolean
      */
     function in_phar() {
-        return Phar::running();
+        return Phar::running() !== '';
     }
     
     

@@ -24,6 +24,7 @@
             $status[] = array(E_USER_ERROR, "php.ini value 'date.timezone' is not set");
         }
         if(extension_loaded('curl') === false) {
+            $message = array();
             $message[] = 'Extension "curl" is not installed correctly';
             if(is_win()) {
                 $message[] = 'Uncomment "extension = php_curl.dll" in php.ini';
@@ -34,7 +35,24 @@
         }
 
         if($action === "install" || $action == "configure") {
+
+            if (extension_loaded('suhosin')) {
+                if (stristr(ini_get('suhosin.executor.include.whitelist'), 'phar') === false) {
+                    $message = array();
+                    $message[] = "RescueMe build scripts requires 'phar://' includes to be enabled.";
+                    $message[] = "Add 'phar' to 'suhosin.executor.include.whitelist' in 'php.ini'.";
+                    $status[] = array(E_USER_ERROR, $message);
+                }
+                if (stristr(ini_get('suhosin.executor.include.blacklist'), 'phar') !== false
+                ) {
+                    $message = array();
+                    $message[] = "RescueMe build script requires 'phar://' includes to be enabled.";
+                    $message[] = "Remove 'phar' from 'suhosin.executor.include.blacklist' in 'php.ini'.";
+                    $status[] = array(E_USER_ERROR, $message);
+                }
+            }
             if(os_command_exists("php") === FALSE) {
+                $message = array();
                 $message[] = "php-cli is not configured correctly";
                 if(is_win()) {
                     $message[] = 'Run php installer again and select "Script Executable"';
@@ -44,6 +62,7 @@
                 $status[] = array(E_USER_ERROR, $message);
             }
             if(extension_loaded("intl") === false) {
+                $message = array();
                 $message[] = "Extension 'intl' should be enabled for better locale handling.";
                 if(is_win()) {
                     $message[] = 'Uncomment "extension = php_intl.dll" in php.ini';
@@ -53,6 +72,7 @@
                 $status[] = array(E_USER_WARNING, $message);
             }
             if(extension_loaded("gettext") === false) {
+                $message = array();
                 $message[] = 'Extension "gettext" should be enabled for better locale support.';
                 if(is_win()) {
                     $message[] = 'Uncomment "extension = php_gettext.dll" in php.ini';

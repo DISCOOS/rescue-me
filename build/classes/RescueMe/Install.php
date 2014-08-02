@@ -183,14 +183,23 @@ class Install {
 
             $installer = 'https://getcomposer.org/installer';
 
+            // Ensure correct working path
+            $oldPath = getcwd();
+            chdir($this->root . DIRECTORY_SEPARATOR);
+
             $cmd = 'php -r "eval(\'?>\'.file_get_contents(\'' . $installer . '\'));"';
             exec($cmd, $output, $retval);
+
+            // Restore old path
+            chdir($oldPath);
+
             if ($retval !== 0) {
                 $output = implode("\n", $output);
                 return error("Failed to download composer: \n$output\n");
             }
 
             $inline = false;
+
         }
         info($inline ? "SKIPPED" : " DONE");
     }// initComposer
@@ -204,7 +213,7 @@ class Install {
 
         if(realpath($vendor)) {
 
-            info("     Updating libraries...", BUILD_INFO, NEWLINE_NONE);
+            info("     composer update...", BUILD_INFO, NEWLINE_NONE);
 
             if ($this->update) {
 
@@ -226,7 +235,7 @@ class Install {
 
         } else {
 
-            info("     Installing libraries...", BUILD_INFO, NEWLINE_NONE);
+            info("     composer install...", BUILD_INFO, NEWLINE_NONE);
 
             $composer = $this->root . DIRECTORY_SEPARATOR . "composer.phar";
 
