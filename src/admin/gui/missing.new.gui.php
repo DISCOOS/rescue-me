@@ -100,7 +100,7 @@
                     </div>
                     <div class="span8">
                         <label for="sms_text"><?=SMS?> (<span id="sms_char">0</span>/160 <?=strtolower(CHARACTER)?> - <span id="sms_num">1</span> SMS)</label>
-                        <label id="sms_warning" style="display:none; font-weight: normal; color: red;"><?=T_("Not all SMS-carriers support SMS that exceed 160 chars. Be aware!")?></label>
+                        <label id="sms_warning" style="display:none; font-weight: normal; color: red;"><?=T_("Not all SMS-carriers support more than 160 chars!")?></label>
                         <? // This assumes the encrypted ID is always 3 chars, but maybe it could be more? ?>
                         <input type="hidden" name="link_len" id="link_len" value="<?=strlen(str_replace("#missing_id", "111", LOCATE_URL))?>">
                         <textarea class="field span12" id="sms_text" name="sms_text" required rows="1"><?=$sms_text?></textarea>
@@ -123,8 +123,8 @@
                 <?= sprintf(REMEMBER_TO_INCLUDE_LINK,'<span class="label">%LINK%</span>',TITLE)?>
 
                 <div id="roaming" style="display: none" class="alert-error">
-                    <?=T_("It seems the reciever has a phonenumber from a different country?"); ?><br />
-                    <?=T_("Then it's VITAL that you include information in the SMS, that dataroaming MUST be enabled for RescueMe to work!"); ?>
+                    <?=T_("Is the receiving phone from another country?"); ?>
+                    <?=T_("It is critically important to include instructions about how to turn on data roaming in the SMS if the phone is not registered on the home network!"); ?>
                 </div>
                 <div id="readmore" style="display: none;">
                     <br />

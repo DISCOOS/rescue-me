@@ -2,33 +2,30 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-14 15:21+0100\n"
-"PO-Revision-Date: 2014-04-14 15:21+0100\n"
+"POT-Creation-Date: 2014-08-03 17:44+0100\n"
+"PO-Revision-Date: 2014-08-03 17:48+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <support@discoos.org>\n"
-"Language: \n"
+"Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: T_;_;__;gettext;gettext_noop\n"
-"X-Poedit-Basepath: /home/kennethg/src/git/rescue-me/src\n"
-"X-Poedit-Language: Norwegian Bokmal\n"
-"X-Poedit-Country: NORWAY\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: trace\n"
 
-#: trace/report.php:25
+#: trace/report.php:26
 #, php-format
 msgid "Your location is received (&#177;%1$s m)."
 msgstr "Din posisjon er mottatt (&#177;%1$s m)."
 
-#: trace/report.php:27
-#: trace/report.php:29
-msgid "Stay still, we are comming."
+#: trace/report.php:28 trace/report.php:30
+msgid "Stay still, we are coming."
 msgstr "Hold deg i ro, vi er på vei."
 
-#: trace/report.php:27
-#: trace/report.php:29
+#: trace/report.php:28 trace/report.php:30
 msgid "Try to make your self visible from both air and ground!"
 msgstr "Forsøk å gjøre deg synlig fra luft og bakke!"
 
@@ -67,30 +64,42 @@ msgid "Turn on permission to access location data!"
 msgstr "Slå på tilgang til stedsinformasjon!"
 
 #: trace/locale/trace.domain.php:18
+msgid "Go to Settings -> General -> Privacy -> Location services -> On."
+msgstr "Gå til Innstillinger -> Personvern -> Stedstjeneste -> På."
+
+#: trace/locale/trace.domain.php:19
+msgid "Also, scroll down and make sure it is set to \"On\" for Safari as well."
+msgstr "Sørg også for Safari er satt til \"På\" lengre ned  på samme side"
+
+#: trace/locale/trace.domain.php:20
+msgid "Then, click \"Update\" below."
+msgstr "Klikk deretter på \"Oppdater\"."
+
+#: trace/locale/trace.domain.php:21
 msgid "Location is unavailable."
 msgstr "Lokasjon er ikke tilgjengelig"
 
-#: trace/locale/trace.domain.php:19
+#: trace/locale/trace.domain.php:22
 msgid "Please approve access to location faster."
 msgstr "Vennligst bekreft tilgang til lokasjonsdata raskere."
 
-#: trace/locale/trace.domain.php:20
+#: trace/locale/trace.domain.php:23
 msgid "Unknown error."
 msgstr "Ukjent feil"
 
-#: trace/locale/trace.domain.php:21
+#: trace/locale/trace.domain.php:24
 msgid "Location: {0}"
 msgstr "Lokasjon: {0}"
 
-#: trace/locale/trace.domain.php:22
+#: trace/locale/trace.domain.php:25
 msgid "Location not sent, check data connection."
 msgstr "Lokasjon ikke sendt, sjekk datakobling."
 
-#: trace/locale/trace.domain.php:23
+#: trace/locale/trace.domain.php:26
 msgid "Send location as"
 msgstr "Send lokasjon som"
 
-#: trace/locale/trace.domain.php:24
+#: trace/locale/trace.domain.php:27
 msgid "Location not found."
 msgstr "Lokasjon ikke funnet"
 
