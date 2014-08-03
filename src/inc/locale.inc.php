@@ -11,8 +11,6 @@
 
     $locale = 'en_US'.ENCODING;
 
-T_locale();
-    
     // Ensure period in floats
     T_setLocale(LC_NUMERIC,$locale);
     
