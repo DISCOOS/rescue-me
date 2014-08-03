@@ -6,10 +6,12 @@
     define('DOMAIN_ADMIN', 'admin');
     define('DOMAIN_TRACE', 'trace');
     define('DOMAIN_COMMON', 'common'); 
-    define('DOMAIN_LOCALES', 'locales'); 
+    define('DOMAIN_LOCALES', 'locales');
     define('ENCODING', 'UTF-8');
 
     $locale = 'en_US'.ENCODING;
+
+T_locale();
     
     // Ensure period in floats
     T_setLocale(LC_NUMERIC,$locale);
