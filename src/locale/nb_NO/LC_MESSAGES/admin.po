@@ -2,36 +2,38 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-15 19:16+0100\n"
-"PO-Revision-Date: 2014-04-15 19:17+0100\n"
+"POT-Creation-Date: 2014-08-03 18:00+0100\n"
+"PO-Revision-Date: 2014-08-03 18:04+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <support@discoos.org>\n"
-"Language: \n"
+"Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: T_;_;__;gettext;gettext_noop\n"
-"X-Poedit-Basepath: /home/kennethg/src/git/rescue-me/src\n"
-"X-Poedit-Language: Norwegian Bokmal\n"
-"X-Poedit-Country: NORWAY\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: admin\n"
+
+#: admin/index.php:55 admin/locale/admin.domain.php:65
+msgid "Dashboard"
+msgstr "Dashboard"
 
 #: admin/router.php:21
 msgid "You have entered wrong username or password"
 msgstr "Du har oppgitt feil brukernavn eller passord"
 
-#: admin/router.php:122
+#: admin/router.php:122 admin/gui/logs.gui.php:18
+#: admin/locale/admin.domain.php:55
 msgid "Logs"
 msgstr "Logger"
 
-#: admin/router.php:128
-#: admin/router.php:135
-#: admin/router.php:146
+#: admin/router.php:128 admin/router.php:135 admin/router.php:146
 msgid "Illegal Operation"
 msgstr "Ulovlig operasjon"
 
-#: admin/router.php:148
+#: admin/router.php:148 admin/locale/admin.domain.php:72
 msgid "Access denied"
 msgstr "Ingen tilgang"
 
@@ -43,7 +45,7 @@ msgstr "Bytt passord"
 msgid "Password must be at least 8 characters long"
 msgstr "Passordet må være minst 8 tegn"
 
-#: admin/router.php:825
+#: admin/router.php:825 admin/locale/admin.domain.php:92
 msgid "Passwords do not match"
 msgstr "Passordene stemmer ikke"
 
@@ -51,162 +53,13 @@ msgstr "Passordene stemmer ikke"
 msgid "Recover Password"
 msgstr "Gjenopprett passord"
 
-#: admin/router.php:868
+#: admin/router.php:868 admin/locale/admin.domain.php:69
 msgid "Close operation"
 msgstr "Avslutt operasjon"
 
 #: admin/router.php:1165
 msgid "Not an ajax request"
 msgstr "Ikke en ajax-forespørsel"
-
-#: admin/index.php:56
-msgid "Dashboard"
-msgstr "Dashboard"
-
-#: admin/gui/user.list.gui.php:21
-msgid "Users"
-msgstr "Brukere"
-
-#: admin/gui/user.list.gui.php:38
-msgid "Name"
-msgstr "Navn"
-
-#: admin/gui/user.list.gui.php:39
-msgid "Mobile"
-msgstr "Mobil"
-
-#: admin/gui/user.list.gui.php:40
-msgid "E-mail"
-msgstr "E-post"
-
-#: admin/gui/operation.close.gui.php:78
-msgid "Note: This will permanently delete name and mobile numbers (privacy conserns)"
-msgstr "Merk: Dette vil slette navn og mobilnummer til savnede permanent (av personvernhensyn)."
-
-#: admin/gui/role.edit.gui.php:32
-msgid "Edit role"
-msgstr "Endre rolle"
-
-#: admin/gui/dash.gui.php:2
-msgid "Get started"
-msgstr "Kom i gang"
-
-#: admin/gui/dash.gui.php:3
-msgid "Use mobile phone to trace persons fast and easy."
-msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
-
-#: admin/gui/table.gui.php:25
-msgid "Settings"
-msgstr "Innstillinger"
-
-#: admin/gui/user.new.gui.php:14
-msgid "Full name"
-msgstr "Fullt navn"
-
-#: admin/gui/user.new.gui.php:66
-msgid "Repeat Password"
-msgstr "Gjenta passord"
-
-#: admin/gui/missing.trace.gui.php:5
-msgid "When trace was registered"
-msgstr "Når sporing ble opprettet"
-
-#: admin/gui/missing.trace.gui.php:10
-msgid "When SMS was sent"
-msgstr "Når SMS ble sendt"
-
-#: admin/gui/missing.trace.gui.php:14
-msgid "When SMS was delivered to mobile"
-msgstr "Når SMS ble levert til telefonen"
-
-#: admin/gui/missing.trace.gui.php:18
-msgid "When location script was downloaded"
-msgstr "Når lokaliseringsskript ble nedlastet"
-
-#: admin/gui/missing.trace.gui.php:22
-msgid "When last location was received"
-msgstr "Når siste lokasjon ble mottatt"
-
-#: admin/gui/missing.new.gui.php:36
-msgid "Place, region or country"
-msgstr "Sted, region eller land"
-
-#: admin/gui/missing.new.gui.php:124
-msgid "Standard message"
-msgstr "Standard melding"
-
-#: admin/gui/missing.new.gui.php:127
-msgid "Location script"
-msgstr "Lokasjonsskript"
-
-#: admin/gui/missing.new.gui.php:128
-msgid "When the user clicks on the link a webpage is downloaded which contain a script that attempts to locate the mobile phone. The user must authorize the script access before location can be determined"
-msgstr "Når brukeren trykker på linken åpnes en nettside med et script som vil forsøke å posisjonerer mobiltelefonen. Brukeren må godkjenne deling av posisjon i nettleseren før posisjonen kan bestemmes."
-
-#: admin/gui/missing.new.gui.php:129
-msgid "Script download time"
-msgstr "Nedlastingstid"
-
-#: admin/gui/missing.new.gui.php:130
-msgid "The location script is compressed (gzip, 1.8KB). Is should not take more than a second to download this even on a low-bandwidth network (2G). If it does, the user must be patient and wait until the script is downloaded."
-msgstr "Skriptet er komprimert (1.8KB). Det burde ta mindre enn ett sekund på dårlig mobilnett (2G) å laste den ned. Det er likevel viktig at brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes."
-
-#: admin/gui/missing.new.gui.php:131
-msgid "Repeated localization"
-msgstr "Gjentatt lokalisering"
-
-#: admin/gui/missing.new.gui.php:132
-msgid "If the location is inaccurate, the script will continue to listen for location updates until desired accuracy or maximum wait time is is reached. A count-down is shown during this time. Last known location is presented to the user, which allow the user to read out the location over the phone or send ith with an SMS (tell the user to click on the link presented to the user when the script timed out)"
-msgstr "Hvis posisjonen er unøyaktig, vil nettsiden vente til posisjon med ønsket nøyaktighet er funnet, eller maksimum ventetid er nådd. En nedtelling vises mens dette foregår. Siste posisjon vises også til brukeren, slik at denne kan leses opp på telefonen, eller sendes på SMS (be brukeren klikke på linken bak posisjonen)."
-
-#: admin/gui/missing.new.gui.php:133
-#, php-format
-msgid "Desired accurary (location.desired.accuracy), maximum wait time (location.max.wait) and maximum location age (location.max.age) can be configured on page %1$s"
-msgstr " Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location.max.wait) og maximum alder på gammel posisjon (location.max.age) kan konfigureres på siden %1$s"
-
-#: admin/gui/missing.new.gui.php:134
-msgid "All traces are listed at"
-msgstr "Alle sporinger er listet på denne siden"
-
-#: admin/gui/password.recover.gui.php:9
-msgid "If user exist a SMS with reset link is sent to registered mobile phone"
-msgstr "Hvis brukeren finnes sendes det en reset link på SMS"
-
-#: admin/gui/password.recover.gui.php:54
-msgid "Reset"
-msgstr "Nullstill"
-
-#: admin/gui/setup.module.gui.php:10
-msgid "Module"
-msgstr "Modul"
-
-#: admin/gui/setup.module.gui.php:12
-msgid "No module found. Run install script."
-msgstr "Ingen modul funnet. Kjør installeringsskript."
-
-#: admin/gui/missing.position.list.gui.php:73
-msgid "Google Maps not loaded"
-msgstr "Google Maps ikke lastet"
-
-#: admin/gui/password.change.gui.php:17
-msgid "Password"
-msgstr "Passord"
-
-#: admin/gui/role.list.gui.php:8
-msgid "Roles"
-msgstr "Roller"
-
-#: admin/ajax/logs.ajax.php:55
-msgid "System"
-msgstr "System"
-
-#: admin/controllers/password.recover.controller.php:11
-msgid "Could not reset password:"
-msgstr "Kunne ikke nullstille passord:"
-
-#: admin/controllers/password.recover.controller.php:12
-msgid "User does not exist"
-msgstr "Bruker eksisterer ikke"
 
 #: admin/controllers/logon.controller.php:5
 msgid "Incorrect email or password."
@@ -215,26 +68,6 @@ msgstr "E-post eller passord er feil"
 #: admin/controllers/logon.controller.php:6
 msgid "Make sure your email and password are both correct."
 msgstr "Sjekk at både din e-post og passord er korrekt "
-
-#: admin/controllers/user.edit.controller.php:10
-msgid "Your changes was not saved!"
-msgstr "Dine endringer ble ikke lagret!"
-
-#: admin/controllers/user.edit.controller.php:11
-msgid "You entered an invalid e-mail address. Please enter a correct e-mail address"
-msgstr "Du har skrevet inn en ulovlig e-postadresse. Vennligst oppgi en lovlig e-postadresse."
-
-#: admin/controllers/user.edit.controller.php:17
-msgid "An error ocurred!"
-msgstr "En feil har oppstått!"
-
-#: admin/controllers/user.edit.controller.php:18
-msgid "An unknown error ocurred while saving your user data. The system reported"
-msgstr "En uventet feil oppsto under lagring av dine brukerdata. Systemet rapporterte"
-
-#: admin/controllers/user.edit.controller.php:19
-msgid "Sorry"
-msgstr "Beklager"
 
 #: admin/controllers/missing.new.controller.php:15
 msgid "Missing modules!"
@@ -265,6 +98,39 @@ msgstr "Kunne ikke utføre operasjon."
 msgid "Please try again"
 msgstr "Vennligst prøv igjen"
 
+#: admin/controllers/password.recover.controller.php:11
+msgid "Could not reset password:"
+msgstr "Kunne ikke nullstille passord:"
+
+#: admin/controllers/password.recover.controller.php:12
+msgid "User does not exist"
+msgstr "Bruker eksisterer ikke"
+
+#: admin/controllers/user.edit.controller.php:10
+msgid "Your changes was not saved!"
+msgstr "Dine endringer ble ikke lagret!"
+
+#: admin/controllers/user.edit.controller.php:11
+msgid ""
+"You entered an invalid e-mail address. Please enter a correct e-mail address"
+msgstr ""
+"Du har skrevet inn en ulovlig e-postadresse. Vennligst oppgi en lovlig e-"
+"postadresse."
+
+#: admin/controllers/user.edit.controller.php:17
+msgid "An error ocurred!"
+msgstr "En feil har oppstått!"
+
+#: admin/controllers/user.edit.controller.php:18
+msgid ""
+"An unknown error ocurred while saving your user data. The system reported"
+msgstr ""
+"En uventet feil oppsto under lagring av dine brukerdata. Systemet rapporterte"
+
+#: admin/controllers/user.edit.controller.php:19
+msgid "Sorry"
+msgstr "Beklager"
+
 #: admin/controllers/user.new.controller.php:8
 msgid "Invalid e-mail. Please enter a correct e-mail address"
 msgstr "Ulovig e-post. Vennligst oppgi en lovlig e-postadresse."
@@ -276,6 +142,205 @@ msgstr "Auda! Kunne ikke opprette brukeren"
 #: admin/controllers/user.new.controller.php:16
 msgid "When attempting to create user, an error ocurred. The system reported: "
 msgstr "Klarte ikke å opprette ny bruker. Systemet rapporterte:"
+
+#: admin/inc/common.inc.php:18
+msgid "Missing modules"
+msgstr "Moduler mangler"
+
+#: admin/inc/common.inc.php:18
+msgid "Configure"
+msgstr "Konfigurer"
+
+#: admin/gui/dash.gui.php:2
+msgid "Get started"
+msgstr "Kom i gang"
+
+#: admin/gui/dash.gui.php:3
+msgid "Use mobile phone to trace persons fast and easy."
+msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
+
+#: admin/gui/missing.trace.gui.php:5
+msgid "When trace was registered"
+msgstr "Når sporing ble opprettet"
+
+#: admin/gui/missing.trace.gui.php:10
+msgid "When SMS was sent"
+msgstr "Når SMS ble sendt"
+
+#: admin/gui/missing.trace.gui.php:14
+msgid "When SMS was delivered to mobile"
+msgstr "Når SMS ble levert til telefonen"
+
+#: admin/gui/missing.trace.gui.php:18
+msgid "When location script was downloaded"
+msgstr "Når lokaliseringsskript ble nedlastet"
+
+#: admin/gui/missing.trace.gui.php:22
+msgid "When last location was received"
+msgstr "Når siste lokasjon ble mottatt"
+
+#: admin/gui/table.gui.php:25 admin/ajax/setup.module.list.ajax.php:21
+#: admin/ajax/setup.property.list.ajax.php:20
+msgid "Settings"
+msgstr "Innstillinger"
+
+#: admin/gui/missing.new.gui.php:36
+msgid "Place, region or country"
+msgstr "Sted, region eller land"
+
+#: admin/gui/missing.new.gui.php:103
+msgid "Not all SMS-carriers support more than 160 chars!"
+msgstr "Ikke alle SMS-leverandører støtter flere en 160 tegn!"
+
+#: admin/gui/missing.new.gui.php:126
+msgid "Is the receiving phone from another country?"
+msgstr "Er telefonen fra et annet land?"
+
+#: admin/gui/missing.new.gui.php:127
+msgid ""
+"It is critically important to include instructions about how to turn on data "
+"roaming in the SMS if the phone is not registered on the home network!"
+msgstr ""
+"Det er kritisk viktig å inkludere instruksjoner for hvordan man slå på "
+"dataroaming i SMSen hvis telefonen ikke er registrert på sitt hjemmenettverk!"
+
+#: admin/gui/missing.new.gui.php:131
+msgid "Standard message"
+msgstr "Standard melding"
+
+#: admin/gui/missing.new.gui.php:134
+msgid "Location script"
+msgstr "Lokasjonsskript"
+
+#: admin/gui/missing.new.gui.php:135
+msgid ""
+"When the user clicks on the link a webpage is downloaded which contain a "
+"script that attempts to locate the mobile phone. The user must authorize the "
+"script access before location can be determined"
+msgstr ""
+"Når brukeren trykker på linken åpnes en nettside med et script som vil "
+"forsøke å posisjonerer mobiltelefonen. Brukeren må godkjenne deling av "
+"posisjon i nettleseren før posisjonen kan bestemmes."
+
+#: admin/gui/missing.new.gui.php:136
+msgid "Script download time"
+msgstr "Nedlastingstid"
+
+#: admin/gui/missing.new.gui.php:137
+msgid ""
+"The location script is compressed (gzip, 1.8KB). Is should not take more "
+"than a second to download this even on a low-bandwidth network (2G). If it "
+"does, the user must be patient and wait until the script is downloaded."
+msgstr ""
+"Skriptet er komprimert (1.8KB). Det burde ta mindre enn ett sekund på dårlig "
+"mobilnett (2G) å laste den ned. Det er likevel viktig at brukeren er "
+"tålmodig, og venter lengre enn dette hvis siden ikke åpnes."
+
+#: admin/gui/missing.new.gui.php:138
+msgid "Repeated localization"
+msgstr "Gjentatt lokalisering"
+
+#: admin/gui/missing.new.gui.php:139
+msgid ""
+"If the location is inaccurate, the script will continue to listen for "
+"location updates until desired accuracy or maximum wait time is is reached. "
+"A count-down is shown during this time. Last known location is presented to "
+"the user, which allow the user to read out the location over the phone or "
+"send ith with an SMS (tell the user to click on the link presented to the "
+"user when the script timed out)"
+msgstr ""
+"Hvis posisjonen er unøyaktig, vil nettsiden vente til posisjon med ønsket "
+"nøyaktighet er funnet, eller maksimum ventetid er nådd. En nedtelling vises "
+"mens dette foregår. Siste posisjon vises også til brukeren, slik at denne "
+"kan leses opp på telefonen, eller sendes på SMS (be brukeren klikke på "
+"linken bak posisjonen)."
+
+#: admin/gui/missing.new.gui.php:140
+#, php-format
+msgid ""
+"Desired accurary (location.desired.accuracy), maximum wait time (location."
+"max.wait) and maximum location age (location.max.age) can be configured on "
+"page %1$s"
+msgstr ""
+" Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location."
+"max.wait) og maximum alder på gammel posisjon (location.max.age) kan "
+"konfigureres på siden %1$s"
+
+#: admin/gui/missing.new.gui.php:141
+msgid "All traces are listed at"
+msgstr "Alle sporinger er listet på denne siden"
+
+#: admin/gui/missing.position.list.gui.php:73
+msgid "Google Maps not loaded"
+msgstr "Google Maps ikke lastet"
+
+#: admin/gui/password.recover.gui.php:9
+msgid "If user exist a SMS with reset link is sent to registered mobile phone"
+msgstr "Hvis brukeren finnes sendes det en reset link på SMS"
+
+#: admin/gui/password.recover.gui.php:26 admin/gui/user.list.gui.php:41
+msgid "E-mail"
+msgstr "E-post"
+
+#: admin/gui/password.recover.gui.php:54
+msgid "Reset"
+msgstr "Nullstill"
+
+#: admin/gui/role.edit.gui.php:32
+msgid "Edit role"
+msgstr "Endre rolle"
+
+#: admin/gui/setup.module.gui.php:10
+msgid "Module"
+msgstr "Modul"
+
+#: admin/gui/setup.module.gui.php:12
+msgid "No module found. Run install script."
+msgstr "Ingen modul funnet. Kjør installeringsskript."
+
+#: admin/gui/role.list.gui.php:8 admin/locale/admin.domain.php:51
+msgid "Roles"
+msgstr "Roller"
+
+#: admin/gui/role.list.gui.php:12 admin/gui/user.list.gui.php:38
+#: admin/locale/admin.domain.php:8
+msgid "Name"
+msgstr "Navn"
+
+#: admin/gui/user.list.gui.php:21 admin/locale/admin.domain.php:52
+msgid "Users"
+msgstr "Brukere"
+
+#: admin/gui/user.list.gui.php:39 admin/locale/admin.domain.php:50
+msgid "Role"
+msgstr "Rolle"
+
+#: admin/gui/user.list.gui.php:40
+msgid "Mobile"
+msgstr "Mobil"
+
+#: admin/gui/password.change.gui.php:17
+msgid "Password"
+msgstr "Passord"
+
+#: admin/gui/password.change.gui.php:25 admin/gui/user.new.gui.php:66
+msgid "Repeat Password"
+msgstr "Gjenta passord"
+
+#: admin/gui/operation.close.gui.php:78
+msgid ""
+"Note: This will permanently delete name and mobile numbers (privacy conserns)"
+msgstr ""
+"Merk: Dette vil slette navn og mobilnummer til savnede permanent (av "
+"personvernhensyn)."
+
+#: admin/gui/user.new.gui.php:14 admin/locale/admin.domain.php:87
+msgid "Full name"
+msgstr "Fullt navn"
+
+#: admin/ajax/logs.ajax.php:55
+msgid "System"
+msgstr "System"
 
 #: admin/locale/admin.domain.php:9
 msgid "Save"
@@ -440,10 +505,6 @@ msgstr "Språk"
 #: admin/locale/admin.domain.php:49
 msgid "Operation name"
 msgstr "Aksjonsnavn"
-
-#: admin/locale/admin.domain.php:50
-msgid "Role"
-msgstr "Rolle"
 
 #: admin/locale/admin.domain.php:53
 msgid "Username not safe"
@@ -667,7 +728,9 @@ msgstr "Sporingslink"
 
 #: admin/locale/admin.domain.php:113
 #, php-format
-msgid "Remember to include %1$s so that %2$s can replace it with the actual trace url."
+msgid ""
+"Remember to include %1$s so that %2$s can replace it with the actual trace "
+"url."
 msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
 
 #: admin/locale/admin.domain.php:114
@@ -712,8 +775,14 @@ msgid "The phone may be out of power or coverage."
 msgstr "Telefonen kan være tom for  strøm eller utenfor dekning."
 
 #: admin/locale/admin.domain.php:126
-msgid "The phone may be out of power, out of coverage, support for localization can be turned off or not possible, or the user chose not to share their location with you."
-msgstr "Telefonen kan være tom for strøm, utenfor dekning, støtte for lokalisering kan være slått av eller ikke mulig, eller brukeren valgte å ikke dele posisjonen med deg."
+msgid ""
+"The phone may be out of power, out of coverage, support for localization can "
+"be turned off or not possible, or the user chose not to share their location "
+"with you."
+msgstr ""
+"Telefonen kan være tom for strøm, utenfor dekning, støtte for lokalisering "
+"kan være slått av eller ikke mulig, eller brukeren valgte å ikke dele "
+"posisjonen med deg."
 
 #: admin/locale/admin.domain.php:128
 msgid "SMS probably not delivered."
@@ -797,14 +866,6 @@ msgstr "Bruker med e-post %1$s"
 #: admin/locale/admin.domain.php:177
 msgid "cannot be approved"
 msgstr "kunne ikke godkjennes"
-
-#: admin/inc/common.inc.php:18
-msgid "Missing modules"
-msgstr "Moduler mangler"
-
-#: admin/inc/common.inc.php:18
-msgid "Configure"
-msgstr "Konfigurer"
 
 #~ msgid "Id"
 #~ msgstr "Id"

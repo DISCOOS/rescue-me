@@ -2,607 +2,582 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-20 18:26+0100\n"
-"PO-Revision-Date: 2014-03-20 18:41+0100\n"
+"POT-Creation-Date: 2014-08-03 17:44+0100\n"
+"PO-Revision-Date: 2014-08-03 18:05+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <support@discoos.org>\n"
-"Language: \n"
+"Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: T_;_;__;gettext;gettext_noop\n"
-"X-Poedit-Basepath: /home/kennethg/src/git/rescue-me/src\n"
-"X-Poedit-Language: Norwegian Bokmal\n"
-"X-Poedit-Country: NORWAY\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-SearchPath-0: classes/RescueMe/inc\n"
+"X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: locale/locales\n"
 
-#: classes/RescueMe/inc/locales.php:14
+#: locale/locales/locales.php:14
 msgid "Afghanistan"
 msgstr "Afghanistan"
 
-#: classes/RescueMe/inc/locales.php:15
+#: locale/locales/locales.php:15
 msgid "Albania"
 msgstr "Albania"
 
-#: classes/RescueMe/inc/locales.php:16
+#: locale/locales/locales.php:16
 msgid "Algeria"
 msgstr "Algeria"
 
-#: classes/RescueMe/inc/locales.php:17
+#: locale/locales/locales.php:17
 msgid "Argentina"
 msgstr "Argentina"
 
-#: classes/RescueMe/inc/locales.php:17
-#: classes/RescueMe/inc/locales.php:27
-#: classes/RescueMe/inc/locales.php:28
-#: classes/RescueMe/inc/locales.php:35
-#: classes/RescueMe/inc/locales.php:36
-#: classes/RescueMe/inc/locales.php:37
-#: classes/RescueMe/inc/locales.php:41
-#: classes/RescueMe/inc/locales.php:42
-#: classes/RescueMe/inc/locales.php:44
-#: classes/RescueMe/inc/locales.php:54
-#: classes/RescueMe/inc/locales.php:55
-#: classes/RescueMe/inc/locales.php:87
-#: classes/RescueMe/inc/locales.php:94
-#: classes/RescueMe/inc/locales.php:98
-#: classes/RescueMe/inc/locales.php:99
-#: classes/RescueMe/inc/locales.php:101
-#: classes/RescueMe/inc/locales.php:106
-#: classes/RescueMe/inc/locales.php:119
-#: classes/RescueMe/inc/locales.php:134
-#: classes/RescueMe/inc/locales.php:135
+#: locale/locales/locales.php:17 locale/locales/locales.php:27
+#: locale/locales/locales.php:28 locale/locales/locales.php:35
+#: locale/locales/locales.php:36 locale/locales/locales.php:37
+#: locale/locales/locales.php:41 locale/locales/locales.php:42
+#: locale/locales/locales.php:44 locale/locales/locales.php:54
+#: locale/locales/locales.php:55 locale/locales/locales.php:87
+#: locale/locales/locales.php:94 locale/locales/locales.php:98
+#: locale/locales/locales.php:99 locale/locales/locales.php:101
+#: locale/locales/locales.php:106 locale/locales/locales.php:118
+#: locale/locales/locales.php:133 locale/locales/locales.php:134
 msgid "Spanish"
 msgstr "Spansk"
 
-#: classes/RescueMe/inc/locales.php:18
+#: locale/locales/locales.php:18
 msgid "Armenia"
 msgstr "Armenia"
 
-#: classes/RescueMe/inc/locales.php:19
+#: locale/locales/locales.php:19
 msgid "Australia"
 msgstr "Australia"
 
-#: classes/RescueMe/inc/locales.php:19
-#: classes/RescueMe/inc/locales.php:26
-#: classes/RescueMe/inc/locales.php:34
-#: classes/RescueMe/inc/locales.php:59
-#: classes/RescueMe/inc/locales.php:63
-#: classes/RescueMe/inc/locales.php:67
-#: classes/RescueMe/inc/locales.php:84
-#: classes/RescueMe/inc/locales.php:93
-#: classes/RescueMe/inc/locales.php:102
-#: classes/RescueMe/inc/locales.php:115
-#: classes/RescueMe/inc/locales.php:118
-#: classes/RescueMe/inc/locales.php:127
-#: classes/RescueMe/inc/locales.php:133
-#: classes/RescueMe/inc/locales.php:134
-#: classes/RescueMe/inc/locales.php:139
+#: locale/locales/locales.php:19 locale/locales/locales.php:26
+#: locale/locales/locales.php:34 locale/locales/locales.php:59
+#: locale/locales/locales.php:63 locale/locales/locales.php:67
+#: locale/locales/locales.php:84 locale/locales/locales.php:93
+#: locale/locales/locales.php:102 locale/locales/locales.php:114
+#: locale/locales/locales.php:117 locale/locales/locales.php:126
+#: locale/locales/locales.php:132 locale/locales/locales.php:133
+#: locale/locales/locales.php:138
 msgid "English"
 msgstr "Engelsk"
 
-#: classes/RescueMe/inc/locales.php:20
+#: locale/locales/locales.php:20
 msgid "Austria"
 msgstr "Australia"
 
-#: classes/RescueMe/inc/locales.php:20
-#: classes/RescueMe/inc/locales.php:51
-#: classes/RescueMe/inc/locales.php:79
-#: classes/RescueMe/inc/locales.php:81
-#: classes/RescueMe/inc/locales.php:122
+#: locale/locales/locales.php:20 locale/locales/locales.php:51
+#: locale/locales/locales.php:79 locale/locales/locales.php:81
+#: locale/locales/locales.php:121
 msgid "German"
 msgstr "Tysk"
 
-#: classes/RescueMe/inc/locales.php:21
+#: locale/locales/locales.php:21
 msgid "Azerbaijan"
 msgstr "Aserbajdsjan"
 
-#: classes/RescueMe/inc/locales.php:22
+#: locale/locales/locales.php:22
 msgid "Bahrain"
 msgstr "Bahrain"
 
-#: classes/RescueMe/inc/locales.php:23
+#: locale/locales/locales.php:23
 msgid "Bangladesh"
 msgstr "Bangladesh"
 
-#: classes/RescueMe/inc/locales.php:24
+#: locale/locales/locales.php:24
 msgid "Belarus"
 msgstr "Hviterussland"
 
-#: classes/RescueMe/inc/locales.php:25
+#: locale/locales/locales.php:25
 msgid "Belgium"
 msgstr "Belgia"
 
-#: classes/RescueMe/inc/locales.php:25
-#: classes/RescueMe/inc/locales.php:34
-#: classes/RescueMe/inc/locales.php:49
-#: classes/RescueMe/inc/locales.php:81
-#: classes/RescueMe/inc/locales.php:105
-#: classes/RescueMe/inc/locales.php:122
+#: locale/locales/locales.php:25 locale/locales/locales.php:34
+#: locale/locales/locales.php:49 locale/locales/locales.php:81
+#: locale/locales/locales.php:105 locale/locales/locales.php:121
 msgid "French"
 msgstr "Fransk"
 
-#: classes/RescueMe/inc/locales.php:26
+#: locale/locales/locales.php:26
 msgid "Belize"
 msgstr "Belize"
 
-#: classes/RescueMe/inc/locales.php:27
+#: locale/locales/locales.php:27
 msgid "Bolivarian Republic of Venezuela"
 msgstr "Venezuela"
 
-#: classes/RescueMe/inc/locales.php:28
+#: locale/locales/locales.php:28
 msgid "Bolivia"
 msgstr "Bolivia"
 
-#: classes/RescueMe/inc/locales.php:29
+#: locale/locales/locales.php:29
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnia-Hercegovina"
 
-#: classes/RescueMe/inc/locales.php:30
+#: locale/locales/locales.php:30
 msgid "Brazil"
 msgstr "Brasil"
 
-#: classes/RescueMe/inc/locales.php:31
+#: locale/locales/locales.php:31
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
-#: classes/RescueMe/inc/locales.php:32
+#: locale/locales/locales.php:32
 msgid "Bulgaria"
 msgstr "Bulgaria"
 
-#: classes/RescueMe/inc/locales.php:33
+#: locale/locales/locales.php:33
 msgid "Cambodia"
 msgstr "Kambodia"
 
-#: classes/RescueMe/inc/locales.php:34
+#: locale/locales/locales.php:34
 msgid "Canada"
 msgstr "Canada"
 
-#: classes/RescueMe/inc/locales.php:35
+#: locale/locales/locales.php:35
 msgid "Chile"
 msgstr "Chile"
 
-#: classes/RescueMe/inc/locales.php:36
+#: locale/locales/locales.php:36
 msgid "Colombia"
 msgstr "Colombia"
 
-#: classes/RescueMe/inc/locales.php:37
+#: locale/locales/locales.php:37
 msgid "Costa Rica"
 msgstr "Costa Rica"
 
-#: classes/RescueMe/inc/locales.php:38
+#: locale/locales/locales.php:38
 msgid "Croatia"
 msgstr "Kroatia"
 
-#: classes/RescueMe/inc/locales.php:39
+#: locale/locales/locales.php:39
 msgid "Czech Republic"
 msgstr "Tsjekkia"
 
-#: classes/RescueMe/inc/locales.php:40
+#: locale/locales/locales.php:40
 msgid "Denmark"
 msgstr "Danmark"
 
-#: classes/RescueMe/inc/locales.php:40
+#: locale/locales/locales.php:40
 msgid "Danish"
 msgstr "Dansk"
 
-#: classes/RescueMe/inc/locales.php:41
+#: locale/locales/locales.php:41
 msgid "Dominican Republic"
 msgstr "Den dominikanske republikk"
 
-#: classes/RescueMe/inc/locales.php:42
+#: locale/locales/locales.php:42
 msgid "Ecuador"
 msgstr "Ecuador"
 
-#: classes/RescueMe/inc/locales.php:43
+#: locale/locales/locales.php:43
 msgid "Egypt"
 msgstr "Egypt"
 
-#: classes/RescueMe/inc/locales.php:44
+#: locale/locales/locales.php:44
 msgid "El Salvador"
 msgstr "El Salvador"
 
-#: classes/RescueMe/inc/locales.php:45
+#: locale/locales/locales.php:45
 msgid "Estonia"
 msgstr "Estland"
 
-#: classes/RescueMe/inc/locales.php:46
+#: locale/locales/locales.php:46
 msgid "Ethiopia"
 msgstr "Etiopia"
 
-#: classes/RescueMe/inc/locales.php:47
+#: locale/locales/locales.php:47
 msgid "Faroe Islands"
-msgstr ""
+msgstr "Færøyene"
 
-#: classes/RescueMe/inc/locales.php:48
+#: locale/locales/locales.php:48
 msgid "Finland"
 msgstr "Finland"
 
-#: classes/RescueMe/inc/locales.php:48
+#: locale/locales/locales.php:48
 msgid "Finnish"
 msgstr "Finsk"
 
-#: classes/RescueMe/inc/locales.php:48
-#: classes/RescueMe/inc/locales.php:121
+#: locale/locales/locales.php:48 locale/locales/locales.php:120
 msgid "Swedish"
 msgstr "Svensk"
 
-#: classes/RescueMe/inc/locales.php:49
+#: locale/locales/locales.php:49
 msgid "France"
 msgstr "Frankrike"
 
-#: classes/RescueMe/inc/locales.php:50
+#: locale/locales/locales.php:50
 msgid "Georgia"
 msgstr "Georgia"
 
-#: classes/RescueMe/inc/locales.php:51
+#: locale/locales/locales.php:51
 msgid "Germany"
 msgstr "Tyskland"
 
-#: classes/RescueMe/inc/locales.php:52
+#: locale/locales/locales.php:52
 msgid "Greece"
 msgstr "Hellas"
 
-#: classes/RescueMe/inc/locales.php:53
+#: locale/locales/locales.php:53
 msgid "Greenland"
 msgstr "Grønland"
 
-#: classes/RescueMe/inc/locales.php:54
+#: locale/locales/locales.php:54
 msgid "Guatemala"
 msgstr "Guatemala"
 
-#: classes/RescueMe/inc/locales.php:55
+#: locale/locales/locales.php:55
 msgid "Honduras"
 msgstr "Honduras"
 
-#: classes/RescueMe/inc/locales.php:56
+#: locale/locales/locales.php:56
 msgid "Hong Kong S.A.R."
 msgstr "Hong Kong S.A.R."
 
-#: classes/RescueMe/inc/locales.php:57
+#: locale/locales/locales.php:57
 msgid "Hungary"
 msgstr "Ungarn"
 
-#: classes/RescueMe/inc/locales.php:58
+#: locale/locales/locales.php:58
 msgid "Iceland"
 msgstr "Island"
 
-#: classes/RescueMe/inc/locales.php:58
+#: locale/locales/locales.php:58
 msgid "Icelandic"
 msgstr "Islandsk"
 
-#: classes/RescueMe/inc/locales.php:59
+#: locale/locales/locales.php:59
 msgid "India"
 msgstr "India"
 
-#: classes/RescueMe/inc/locales.php:60
+#: locale/locales/locales.php:60
 msgid "Indonesia"
 msgstr "Indonesia"
 
-#: classes/RescueMe/inc/locales.php:61
+#: locale/locales/locales.php:61
 msgid "Iran"
 msgstr "Iran"
 
-#: classes/RescueMe/inc/locales.php:62
+#: locale/locales/locales.php:62
 msgid "Iraq"
 msgstr "Irak"
 
-#: classes/RescueMe/inc/locales.php:63
+#: locale/locales/locales.php:63
 msgid "Ireland"
 msgstr "Irland"
 
-#: classes/RescueMe/inc/locales.php:64
+#: locale/locales/locales.php:64
 msgid "Islamic Republic of Pakistan"
 msgstr "Pakistan"
 
-#: classes/RescueMe/inc/locales.php:65
+#: locale/locales/locales.php:65
 msgid "Israel"
 msgstr "Israel"
 
-#: classes/RescueMe/inc/locales.php:66
+#: locale/locales/locales.php:66
 msgid "Italy"
 msgstr "Italia"
 
-#: classes/RescueMe/inc/locales.php:67
+#: locale/locales/locales.php:67
 msgid "Jamaica"
 msgstr "Jamaica"
 
-#: classes/RescueMe/inc/locales.php:68
+#: locale/locales/locales.php:68
 msgid "Japan"
 msgstr "Japan"
 
-#: classes/RescueMe/inc/locales.php:69
+#: locale/locales/locales.php:69
 msgid "Jordan"
 msgstr "Jordan"
 
-#: classes/RescueMe/inc/locales.php:70
+#: locale/locales/locales.php:70
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
 
-#: classes/RescueMe/inc/locales.php:71
+#: locale/locales/locales.php:71
 msgid "Kenya"
 msgstr "Kenya"
 
-#: classes/RescueMe/inc/locales.php:72
+#: locale/locales/locales.php:72
 msgid "Korea"
 msgstr "Korea"
 
-#: classes/RescueMe/inc/locales.php:73
+#: locale/locales/locales.php:73
 msgid "Kuwait"
 msgstr "Kuwait"
 
-#: classes/RescueMe/inc/locales.php:74
+#: locale/locales/locales.php:74
 msgid "Kyrgyzstan"
 msgstr "Kirgisistan"
 
-#: classes/RescueMe/inc/locales.php:75
+#: locale/locales/locales.php:75
 msgid "Lao P.D.R."
 msgstr "Lao P.D.R."
 
-#: classes/RescueMe/inc/locales.php:76
+#: locale/locales/locales.php:76
 msgid "Latvia"
 msgstr "Latvia"
 
-#: classes/RescueMe/inc/locales.php:77
+#: locale/locales/locales.php:77
 msgid "Lebanon"
 msgstr "Libanon"
 
-#: classes/RescueMe/inc/locales.php:78
+#: locale/locales/locales.php:78
 msgid "Libya"
 msgstr "Libya"
 
-#: classes/RescueMe/inc/locales.php:79
+#: locale/locales/locales.php:79
 msgid "Liechtenstein"
 msgstr "Liechtenstein"
 
-#: classes/RescueMe/inc/locales.php:80
+#: locale/locales/locales.php:80
 msgid "Lithuania"
 msgstr "Litauen"
 
-#: classes/RescueMe/inc/locales.php:81
+#: locale/locales/locales.php:81
 msgid "Luxembourg"
 msgstr "Luxembourg"
 
-#: classes/RescueMe/inc/locales.php:82
+#: locale/locales/locales.php:82
 msgid "Macao S.A.R."
 msgstr "Macao S.A.R."
 
-#: classes/RescueMe/inc/locales.php:83
+#: locale/locales/locales.php:83
 msgid "Macedonia (FYROM)"
 msgstr "Makedonia"
 
-#: classes/RescueMe/inc/locales.php:84
+#: locale/locales/locales.php:84
 msgid "Malaysia"
 msgstr "Malaysia"
 
-#: classes/RescueMe/inc/locales.php:85
+#: locale/locales/locales.php:85
 msgid "Maldives"
 msgstr "Maldivene"
 
-#: classes/RescueMe/inc/locales.php:86
+#: locale/locales/locales.php:86
 msgid "Malta"
 msgstr "Malta"
 
-#: classes/RescueMe/inc/locales.php:87
+#: locale/locales/locales.php:87
 msgid "Mexico"
-msgstr ""
+msgstr "Mexico"
 
-#: classes/RescueMe/inc/locales.php:88
+#: locale/locales/locales.php:88
 msgid "Mongolia"
 msgstr "Mongolia"
 
-#: classes/RescueMe/inc/locales.php:89
+#: locale/locales/locales.php:89
 msgid "Montenegro"
 msgstr "Montenegro"
 
-#: classes/RescueMe/inc/locales.php:90
+#: locale/locales/locales.php:90
 msgid "Morocco"
 msgstr "Marokko"
 
-#: classes/RescueMe/inc/locales.php:91
+#: locale/locales/locales.php:91
 msgid "Nepal"
 msgstr "Nepal"
 
-#: classes/RescueMe/inc/locales.php:92
+#: locale/locales/locales.php:92
 msgid "Netherlands"
 msgstr "Nederland"
 
-#: classes/RescueMe/inc/locales.php:93
+#: locale/locales/locales.php:93
 msgid "New Zealand"
 msgstr "New Zealand"
 
-#: classes/RescueMe/inc/locales.php:94
+#: locale/locales/locales.php:94
 msgid "Nicaragua"
 msgstr "Nicaragua"
 
-#: classes/RescueMe/inc/locales.php:95
+#: locale/locales/locales.php:95
 msgid "Nigeria"
 msgstr "Nigeria"
 
-#: classes/RescueMe/inc/locales.php:96
+#: locale/locales/locales.php:96
 msgid "Norway"
 msgstr "Norge"
 
-#: classes/RescueMe/inc/locales.php:96
+#: locale/locales/locales.php:96
 msgid "Norwegian (Bokmål)"
 msgstr "Norsk (bokmål)"
 
-#: classes/RescueMe/inc/locales.php:97
+#: locale/locales/locales.php:97
 msgid "Oman"
 msgstr "Oman"
 
-#: classes/RescueMe/inc/locales.php:98
+#: locale/locales/locales.php:98
 msgid "Panama"
 msgstr "Panama"
 
-#: classes/RescueMe/inc/locales.php:99
+#: locale/locales/locales.php:99
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: classes/RescueMe/inc/locales.php:100
+#: locale/locales/locales.php:100
 msgid "China"
 msgstr "Kina"
 
-#: classes/RescueMe/inc/locales.php:101
+#: locale/locales/locales.php:101
 msgid "Peru"
 msgstr "Peru"
 
-#: classes/RescueMe/inc/locales.php:102
+#: locale/locales/locales.php:102
 msgid "Philippines"
 msgstr "Filipinene"
 
-#: classes/RescueMe/inc/locales.php:103
+#: locale/locales/locales.php:103
 msgid "Poland"
 msgstr "Polen"
 
-#: classes/RescueMe/inc/locales.php:103
+#: locale/locales/locales.php:103
 msgid "Polish"
 msgstr "Polsk"
 
-#: classes/RescueMe/inc/locales.php:104
+#: locale/locales/locales.php:104
 msgid "Portugal"
 msgstr "Portugal"
 
-#: classes/RescueMe/inc/locales.php:105
+#: locale/locales/locales.php:105
 msgid "Principality of Monaco"
 msgstr "Fyrstedømmet Monaco"
 
-#: classes/RescueMe/inc/locales.php:106
+#: locale/locales/locales.php:106
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: classes/RescueMe/inc/locales.php:107
+#: locale/locales/locales.php:107
 msgid "Qatar"
 msgstr "Qatar"
 
-#: classes/RescueMe/inc/locales.php:108
+#: locale/locales/locales.php:108
 msgid "Romania"
 msgstr "Romania"
 
-#: classes/RescueMe/inc/locales.php:109
+#: locale/locales/locales.php:109
 msgid "Russia"
 msgstr "Russland"
 
-#: classes/RescueMe/inc/locales.php:110
+#: locale/locales/locales.php:110
 msgid "Rwanda"
 msgstr "Rwanda"
 
-#: classes/RescueMe/inc/locales.php:111
+#: locale/locales/locales.php:111
 msgid "Saudi Arabia"
 msgstr "Saudi Arabia"
 
-#: classes/RescueMe/inc/locales.php:112
+#: locale/locales/locales.php:112
 msgid "Senegal"
 msgstr "Senegal"
 
-#: classes/RescueMe/inc/locales.php:113
+#: locale/locales/locales.php:113
 msgid "Serbia"
 msgstr "Serbia"
 
-#: classes/RescueMe/inc/locales.php:114
-msgid "Serbia and Montenegro (Former)"
-msgstr ""
-
-#: classes/RescueMe/inc/locales.php:115
+#: locale/locales/locales.php:114
 msgid "Singapore"
 msgstr "Singapore"
 
-#: classes/RescueMe/inc/locales.php:116
+#: locale/locales/locales.php:115
 msgid "Slovakia"
 msgstr "Slovakia"
 
-#: classes/RescueMe/inc/locales.php:117
+#: locale/locales/locales.php:116
 msgid "Slovenia"
 msgstr "Slovenia"
 
-#: classes/RescueMe/inc/locales.php:118
+#: locale/locales/locales.php:117
 msgid "South Africa"
 msgstr "Sør Amerika"
 
-#: classes/RescueMe/inc/locales.php:119
+#: locale/locales/locales.php:118
 msgid "Spain"
 msgstr "Spania"
 
-#: classes/RescueMe/inc/locales.php:120
+#: locale/locales/locales.php:119
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
 
-#: classes/RescueMe/inc/locales.php:121
+#: locale/locales/locales.php:120
 msgid "Sweden"
 msgstr "Sverige"
 
-#: classes/RescueMe/inc/locales.php:122
+#: locale/locales/locales.php:121
 msgid "Switzerland"
 msgstr "Sveits"
 
-#: classes/RescueMe/inc/locales.php:123
+#: locale/locales/locales.php:122
 msgid "Syria"
 msgstr "Syria"
 
-#: classes/RescueMe/inc/locales.php:124
+#: locale/locales/locales.php:123
 msgid "Taiwan"
 msgstr "Taiwan"
 
-#: classes/RescueMe/inc/locales.php:125
+#: locale/locales/locales.php:124
 msgid "Tajikistan"
 msgstr "Tajikistan"
 
-#: classes/RescueMe/inc/locales.php:126
+#: locale/locales/locales.php:125
 msgid "Thailand"
 msgstr "Thailand"
 
-#: classes/RescueMe/inc/locales.php:127
+#: locale/locales/locales.php:126
 msgid "Trinidad and Tobago"
 msgstr "Trinidad and Tobago"
 
-#: classes/RescueMe/inc/locales.php:128
+#: locale/locales/locales.php:127
 msgid "Tunisia"
 msgstr "Tunisia"
 
-#: classes/RescueMe/inc/locales.php:129
+#: locale/locales/locales.php:128
 msgid "Turkey"
 msgstr "Tyrkia"
 
-#: classes/RescueMe/inc/locales.php:130
+#: locale/locales/locales.php:129
 msgid "Turkmenistan"
 msgstr "Turkmenistan"
 
-#: classes/RescueMe/inc/locales.php:131
+#: locale/locales/locales.php:130
 msgid "United Arab Emirates"
 msgstr "De forente arabiske emirater"
 
-#: classes/RescueMe/inc/locales.php:132
+#: locale/locales/locales.php:131
 msgid "Ukraine"
 msgstr "Ukraina"
 
-#: classes/RescueMe/inc/locales.php:133
+#: locale/locales/locales.php:132
 msgid "United Kingdom"
 msgstr "Storbritannia"
 
-#: classes/RescueMe/inc/locales.php:134
+#: locale/locales/locales.php:133
 msgid "United States"
 msgstr "USA"
 
-#: classes/RescueMe/inc/locales.php:135
+#: locale/locales/locales.php:134
 msgid "Uruguay"
 msgstr "Uruguay"
 
-#: classes/RescueMe/inc/locales.php:136
+#: locale/locales/locales.php:135
 msgid "Uzbekistan"
 msgstr "Uzbekistan"
 
-#: classes/RescueMe/inc/locales.php:137
+#: locale/locales/locales.php:136
 msgid "Vietnam"
 msgstr "Vietnam"
 
-#: classes/RescueMe/inc/locales.php:138
+#: locale/locales/locales.php:137
 msgid "Yemen"
 msgstr "Yemen"
 
-#: classes/RescueMe/inc/locales.php:139
+#: locale/locales/locales.php:138
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
+
+#~ msgid "Serbia and Montenegro (Former)"
+#~ msgstr "Serbia og Montenegro (tidligere)"
 
 #~ msgid "Is"
 #~ msgstr "Er"
