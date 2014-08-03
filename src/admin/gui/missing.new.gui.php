@@ -42,7 +42,7 @@
 
                 <div class="row-fluid">
                     <div class="span4">
-                        <label for="m_mobile_country"><?=COUNTRY_CODE?></label>
+                        <label for="m_mobile"><?=COUNTRY_CODE?></label>
                         <select class="input-block-level" id="m_mobile_country" name="m_mobile_country" placeholder="<?=SELECT_COUNTRY?>" required onchange="R.checkCountry(this, '<?=Properties::get(Properties::SYSTEM_COUNTRY_PREFIX); ?>')">
                             <?= insert_options(Locale::getCountryNames(), Locale::getCurrentCountryCode(), false); ?>
                         </select>
