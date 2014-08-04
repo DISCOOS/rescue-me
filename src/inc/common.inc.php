@@ -428,7 +428,7 @@
      * 
      */
     function str_escape($value) {
-        return isset($value) ? ("'".trim($value,"'")."'") : "";
+        return isset($value) ? ("'".trim($value,"'\"")."'") : "";
     }// str_escape
     
     

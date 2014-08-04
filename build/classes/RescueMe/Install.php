@@ -293,7 +293,7 @@ class Install {
             $fullname = in("    Admin Full Name");
             $username = in("    Admin Username (e-mail)");
             $password = in("    Admin Password");
-            $country = in("    Admin Phone Country Code (ISO2)", $this->ini['COUNTRY_PREFIX']);
+            $country = strtoupper(in("Default Country Code (ISO2)", trim($this->ini["COUNTRY_PREFIX"],'\'"')));
             $mobile = in("    Admin Phone Number Without Int'l Dial Code");
 
             $user = User::create($fullname, $username, $password, $country, $mobile, 1);
