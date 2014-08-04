@@ -11,3 +11,4 @@ src/min/cache/
 src/composer.phar
 src/VERSION
 src/footer.php
+src/phpinfo.php

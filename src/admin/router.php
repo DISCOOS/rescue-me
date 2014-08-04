@@ -184,7 +184,7 @@
                         break;
                     case 'sms':
                         $index = 'module.list';
-                        $include = preg_quote("RescueMe\SMS\Provider");
+                        $include = preg_quote('RescueMe\SMS\Provider');
                         break;
                     case 'maps':
                         $index = 'property.list';

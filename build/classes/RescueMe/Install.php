@@ -301,9 +301,6 @@ class Install {
                 return error(ADMIN_NOT_CREATED . " (" . DB::error() . ")");
             }
 
-            // Prepare user modules
-            $user->prepare();
-
             $skipped = false;
 
         }
@@ -352,7 +349,7 @@ class Install {
         if ($users !== false) {
             foreach ($users as $user) {
                 if ($user->prepare()) {
-                    info("    Modules for [$user->name] installed", BUILD_INFO, $inline ? BOTH : POST);
+                    info("    Modules for [$user->name] installed", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST);
                     $inline = false;
                 }
             }

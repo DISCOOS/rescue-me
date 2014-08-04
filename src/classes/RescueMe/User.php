@@ -223,7 +223,7 @@
          * @return boolean|array
          */
         public static function getAll($states = null, $filter = '', $start = 0, $max = false) {
-            
+
             if(isset($states) === FALSE || in_array(User::ALL, $states)) {
                 $states = User::$all;
             }
@@ -231,13 +231,18 @@
             $where = array();
             foreach(isset($states) ? $states : array() as $state) {
                 $where[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
-            } 
+            }
+
             if(empty($where) === false) {
-                $filter = '(' . $filter . ') AND ' . implode($where," OR ");
+
+                $where = '(' . implode($where," OR ") . ')';
+
+                $filter =  empty($filter) ? $where : '(' . $filter . ') AND ' . $where;
+
             }
             
             $limit = ($max === false ? '' : "$start, $max");
-            
+
             $res = DB::select(self::TABLE, "*", $filter, "`state`, `name`", $limit);
             
             if (DB::isEmpty($res)) return false;
@@ -488,6 +493,7 @@
         public function prepare($copy = false) {
             $changed = false;
             $modules = Module::getAll();
+
             if($modules !== false) {
                 foreach($modules as $module) {
                     if(Module::exists($module->type, $this->id) === false) {
