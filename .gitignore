@@ -4,7 +4,6 @@ test
 logs
 .idea/
 .vagrant/
-Vagrantfile
 src/config.php
 src/config.minify.php
 src/vendor
