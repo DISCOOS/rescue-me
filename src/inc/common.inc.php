@@ -77,7 +77,7 @@
                 if(is_win()) {
                     $message[] = 'Uncomment "extension = php_gettext.dll" in php.ini';
                 } else {
-                    $message[] = 'Run "sudo apt-get install php5-gettext"';
+                    $message[] = 'Run "sudo apt-get install php-gettext"';
                 }
                 $status[] = array(E_USER_WARNING, $message);
             }
