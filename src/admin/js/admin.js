@@ -484,7 +484,10 @@ R.format_since = function(timestamp) {
         return false;
     }
     var d = new Date(timestamp.replace(/-/g, "/"));
-    var ts = (+new Date().getTime() - d.getTime());
+    var now = new Date();
+    /*
+    */
+    var ts = (now.getTime() - d.getTime());
     ts = Math.floor(ts/1000);
 
     var since = "~ sec";
@@ -504,6 +507,8 @@ R.format_since = function(timestamp) {
 
 R.format_dtg = function(timestamp) {
     var d = new Date(timestamp.replace(/-/g, "/"));
+    // Adjust from local time to given timezone
+    d.setTime(d.getTime() + (new Date().getTimezoneOffset() - d.getTimezoneOffset())*60*1000);
     var min = d.getMinutes();
     if (min < 10) {
         min = "0"+min;
@@ -514,7 +519,7 @@ R.format_dtg = function(timestamp) {
     }
     var day = d.getDate();
     if (day < 10) {
-        day = 0+day;
+        day = "0"+day;
     }
     var month = (d.getMonth()+1);
     if (month < 10) {

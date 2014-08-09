@@ -40,7 +40,9 @@
         const SYSTEM_COUNTRY_PREFIX = "system.country.prefix";
         
         const SYSTEM_LOCALE = "system.locale";
-        
+
+        const SYSTEM_TIMEZONE = "system.timezone";
+
         const SYSTEM_PAGE_SIZE = "system.page.size";
         
         const LOCATION_MAX_WAIT = "location.max.wait";
@@ -111,7 +113,14 @@
                 'options' => true,
                 'description' => "Use given language (locale)."
             ),
-            
+
+            self::SYSTEM_TIMEZONE => array(
+                'type' => 'select',
+                'default' => '',
+                'options' => true,
+                'description' => "Use given timezone."
+            ),
+
             self::SYSTEM_PAGE_SIZE => array(
                 'type' => 'text',
                 'default' => 25,
@@ -291,6 +300,7 @@
 
                 Properties::$synced = true;
 
+                self::$meta[self::SYSTEM_TIMEZONE]['default'] = TimeZone::getDefault();
                 self::$meta[self::SYSTEM_LOCALE]['default'] = Locale::getDefaultLocale();
                 self::$meta[self::SYSTEM_COUNTRY_PREFIX]['default'] = Locale::getDefaultCountryCode();
                 self::$meta[self::TRACE_DETAILS]['default'] =
@@ -460,6 +470,8 @@
                     return Locale::getCountryName($value);
                 case self::SYSTEM_LOCALE:
                     return Locale::getLanguageName($value);
+                case self::SYSTEM_TIMEZONE:
+                    return TimeZone::getName($value);
                 case self::SMS_REQUIRE:
                 case self::TRACE_DETAILS:
                     $selected = array();
@@ -473,10 +485,7 @@
                 default:
                     return isset(self::$meta[$name]['options'][$value]) ? self::$meta[$name]['options'][$value] : $value;
             }
-            return $value;
         }
-        
-        
         
         
         /**
@@ -514,6 +523,11 @@
                     break;
                 case self::SYSTEM_LOCALE:
                     foreach(Locale::getLanguageNames() as $value => $name) {
+                        $options[] = array('value' => $value, 'text' => $name);
+                    }
+                    break;
+                case self::SYSTEM_TIMEZONE:
+                    foreach(TimeZone::getNames() as $value => $name) {
                         $options[] = array('value' => $value, 'text' => $name);
                     }
                     break;
@@ -619,7 +633,7 @@
         
         
         /**
-         * Assert proerty value
+         * Assert property value
          * 
          * @param string $name
          * @param mixed $value
@@ -645,6 +659,15 @@
                     if(Locale::accept($country, $language) === FALSE) {
                         return 'Language code "'.$value.'" not accepted';
                     }                        
+
+                    break;
+
+                case self::SYSTEM_TIMEZONE:
+
+
+                    if(TimeZone::accept($value) === FALSE) {
+                        return 'Time zone "'.$value.'" not accepted';
+                    }
 
                     break;
 

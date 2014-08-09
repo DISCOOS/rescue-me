@@ -7,6 +7,7 @@
     use RescueMe\Operation;
     use RescueMe\Properties;
     use RescueMe\Roles;
+    use RescueMe\TimeZone;
 
     // Verify logon information
     $user = User::verify();
@@ -74,10 +75,11 @@
         $_GET['view'] = 'start';
     }
     
-    // Use user-specified locale 
+    // Use user-specified locale and timezone
     $id = ($user ? $user->id : 0);
     set_system_locale(DOMAIN_ADMIN, Properties::get(Properties::SYSTEM_LOCALE, $id));
-    
+    TimeZone::set(Properties::get(Properties::SYSTEM_TIMEZONE, $id));
+
     // Dispatch view
     switch($_GET['view']) {
         case 'logon':
@@ -1204,4 +1206,5 @@
             $_ROUTER['view'] = "404";
             $_ROUTER['error'] = print_r($_REQUEST,true);
             break;
+
     }

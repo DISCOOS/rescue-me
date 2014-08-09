@@ -135,6 +135,7 @@ if(typeof google !== "undefined") {
         infowindows[markerNo] = new google.maps.InfoWindow({
                 content: '<u>'+posFormat+':</u><br /> '+
                          posText+'<br /><br />'+
+                         '<u>Tidspunkt:</u> '+timestamp +'<br />'+
                          '<u>H&oslash;yde:</u> '+alt +' moh<br />'+
                          '<u>N&oslash;yaktighet:</u> ± '+acc+' meter'
             });

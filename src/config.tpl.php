@@ -26,8 +26,8 @@
     // RescueMe constants
     define('VERSION', file_get_contents($verfile));
     
-    // RescueMe timesone
-    define('TIMEZONE', 'UTC');
+    // RescueMe timezone
+    define('DEFAULT_TIMEZONE', 'UTC');
     
     // RescueMe locale
     define('COUNTRY_PREFIX', 'US');
@@ -76,7 +76,7 @@
     define('DB_PASSWORD', '');
     
     // Set current timezone
-    if(date_default_timezone_set(TIMEZONE) === FALSE) {
+    if(\RescueMe\TimeZone::set(DEFAULT_TIMEZONE) === FALSE) {
         trigger_error("Failed to set timesone to [" . TIMEZONE . "]");
     }
     

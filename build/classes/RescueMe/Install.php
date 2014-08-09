@@ -142,7 +142,7 @@ class Install {
             'DB_PASSWORD' => $this->ini['DB_PASSWORD'],
             'COUNTRY_PREFIX' => $this->ini['COUNTRY_PREFIX'],
             'DEFAULT_LOCALE' => $this->ini['DEFAULT_LOCALE'],
-            'TIMEZONE' => $this->ini['TIMEZONE']
+            'DEFAULT_TIMEZONE' => $this->ini['DEFAULT_TIMEZONE']
         ));
 
         // Create config.php

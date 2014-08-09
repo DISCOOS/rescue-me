@@ -168,7 +168,7 @@ R.trace.locate = function() {
     }
     
     /*
-     * Report aquirred location to server
+     * Report acquired location to server
      * @param c position coordinates
      * @param u update view flag
      */
@@ -284,7 +284,7 @@ R.trace.change = function (gf, ge, gp, o) {
         
         // We ignore the first event unless it's the only one 
         // received because some devices seem to send a cached
-        // location even when maxaimumAge is set to zero!
+        // location even when maximumAge is set to zero!
         if((q <= o.acc) && a <= o.age) {
             gf(p.coords, p.timestamp, true);
             clearTimeout(tID);

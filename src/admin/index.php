@@ -195,6 +195,8 @@ if(defined('USE_SILEX') && USE_SILEX) {
 
                 require('gui/' . str_replace("/",".",$_ROUTER['view']) . '.gui.php');
 
+                //echo date('Y-m-d H:i:s').' '.date_default_timezone_get();
+
             ?>
                 
             </div>                

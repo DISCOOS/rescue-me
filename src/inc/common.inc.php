@@ -3,6 +3,7 @@
     use Psr\Log\LogLevel;
     use RescueMe\Log\Logs;    
     use RescueMe\Properties;
+    use RescueMe\TimeZone;
 
     /**
      * Perform system sanity checks
@@ -425,21 +426,35 @@
      * Escape string with "'"
      * 
      * @param string $value
-     * 
+     *
+     * @return string
      */
     function str_escape($value) {
         return isset($value) ? ("'".trim($value,"'\"")."'") : "";
     }// str_escape
-    
-    
+
+
+    /**
+     * Check if string ends with given substring.
+     * @param string $search
+     * @param string $subject
+     * @return boolean
+     */
+    function str_ends($search, $subject) {
+        return substr_compare($subject, $search, -strlen($search), strlen($search)) === 0;
+    }
+
+
     /**
      * Get formatted timestamp
-     * 
+     *
      * @param string $timestamp mysql timestamp
+     *
+     * @return string
      */
-    function format_dt($timestamp) {        
+    function format_dt($timestamp) {
         $time = strtotime($timestamp);
-        return date(date('Y', $time) === date('Y') ? 'd.m H:i' : $timestamp, strtotime($timestamp));
+        return date(date('Y', $time) === date('Y') ? 'd.m H:i' : 'Y.d.m H:i', $time);
     }
     
     /**
@@ -447,6 +462,8 @@
      * 
      * @param string $timestamp mysql timestamp
      * @param boolean $seconds Show seconds
+     *
+     * @return string
      */
     function format_dtg($timestamp, $seconds=false) {
         return date(($seconds ? 'd-H:i:s' : 'd-Hi'), strtotime($timestamp));
@@ -456,6 +473,8 @@
      * Get formatted elapsed time
      * 
      * @param string $timestamp mysql timestamp
+     *
+     * @return string
      */
     function format_since($timestamp) {
         if(isset($timestamp)) {
@@ -480,7 +499,7 @@
     
     
     function mysql_dt($time) {
-        return date( 'Y-m-d H:i:s', $time );
+        return date( 'Y-m-d H:i:s', $time);
     }
 
 

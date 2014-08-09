@@ -32,7 +32,7 @@ foreach ($positions as $key=>$value) {
 
     $arr = array('lat' => $value->lat, 'lon' => $value->lon, 'acc' => $value->acc,
                  'alt' => $value->alt, 'posText' => $posText, 'posTextClean' => $posTextClean,
-                 'timestamp' => $value->timestamp);
+                 'timestamp' => $value->timestamp.\RescueMe\TimeZone::getOffset());
 
     echo json_encode($arr);
 }

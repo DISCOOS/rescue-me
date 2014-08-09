@@ -14,6 +14,7 @@
 
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
+    use \RescueMe\TimeZone;
     
 
     /**
@@ -376,8 +377,8 @@
             $mysqli = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD);
             if($mysqli->connect_error)
             {
-                $code = mysqli_connect_errno($this->mysqli);
-                $error = mysqli_connect_error($this->mysqli);
+                $code = mysqli_connect_errno($mysqli);
+                $error = mysqli_connect_error($mysqli);
                 throw new Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
             $result = $mysqli->select_db($name);
@@ -398,8 +399,8 @@
             $mysqli = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD);
             if($mysqli->connect_error)
             {
-                $code = mysqli_connect_errno($this->mysqli);
-                $error = mysqli_connect_error($this->mysqli);
+                $code = mysqli_connect_errno($mysqli);
+                $error = mysqli_connect_error($mysqli);
                 throw new Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
             $res = $mysqli->select_db($name);
@@ -644,24 +645,40 @@
             }
             
             //
-            // Enforce current timesone 
+            // Enforce current timezone
             // 
             // (see http://www.sitepoint.com/synchronize-php-mysql-timezone-configuration)
-            //            
-            $now = new \DateTime();
-            $mins = $now->getOffset() / 60;
-            $sgn = ($mins < 0 ? -1 : 1);
-            $mins = abs($mins);
-            $hrs = floor($mins / 60);
-            $mins -= $hrs * 60;            
-            $offset = sprintf('%+d:%02d', $hrs*$sgn, $mins);
-            
+            //
+            $offset = TimeZone::getOffset();
+
             if($mysqli->query("SET time_zone='$offset';") === FALSE) {
                 return false;
             }
             
             return true;
             
+        }
+
+
+        /**
+         * Reconfigure MySQL connection parameters:
+         * <ul>
+         * <li>timezone</li>
+         * </ul>
+         *
+         * @return boolean
+         *
+         */
+        public static function reconfigure() {
+            //
+            // Enforce current timezone
+            //
+            // (see http://www.sitepoint.com/synchronize-php-mysql-timezone-configuration)
+            //
+            $offset = $offset = TimeZone::getOffset();
+
+            return DB::query("SET time_zone='$offset';");
+
         }
         
         

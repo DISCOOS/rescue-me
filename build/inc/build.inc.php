@@ -343,8 +343,8 @@
      * Prompt user for timezone.
      * 
      * @param array $opts Option array
-     * @param string $arg Argument name
      * @param mixed $default Default timezone value
+     *
      * @return mixed
      */
     function in_timezone($opts, $default=null) {
@@ -355,12 +355,12 @@
         if(!isset($default) || empty($default) || trim($default,"'") == ''){
             $default = $current;
         }
-        $timezone = get($opts, "TIMEZONE", $default);
+        $timezone = get($opts, "DEFAULT_TIMEZONE", $default);
         // Replace given timezone with default?
         if(!isset($timezone) || empty($timezone) || trim($timezone,"'") == '') {            
             $timezone = $default;
         }
-        $timezone = in("Timesone",$timezone, NEWLINE_NONE, true, false);
+        $timezone = in("Timezone",$timezone, NEWLINE_NONE, true, false);
         $old = error_reporting(E_ALL ^ E_NOTICE);
         $current = date_default_timezone_get();
         if(@date_default_timezone_set(trim($timezone,"'")) === FALSE) {
@@ -369,7 +369,7 @@
         }
         error_reporting($old);
         date_default_timezone_set($current);
-        out("Timesone: $timezone", NEWLINE_POST, COLOR_SUCCESS);
+        out("Timezone: $timezone", NEWLINE_POST, COLOR_SUCCESS);
         return $timezone;
     }
 
@@ -408,7 +408,7 @@
         $config = get_define_array($config, array
         (
             'SALT', 'TITLE', 'SMS_FROM', 'COUNTRY_PREFIX', 'DEFAULT_LOCALE', 
-            'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD', 'TIMEZONE'
+            'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD', 'DEFAULT_TIMEZONE'
         ));
         return $config;
     }
