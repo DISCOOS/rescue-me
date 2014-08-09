@@ -156,17 +156,6 @@
 
 
     /**
-     * Check if string ends with given substring.
-     * @param string $search
-     * @param string $subject
-     * @return boolean
-     */
-    function str_ends($search, $subject) {
-        return substr_compare($subject, $search, -strlen($search), strlen($search)) === 0;
-    }
-    
-    
-    /**
      * Replace first occurence in string
      * 
      * @param string $search
@@ -360,7 +349,7 @@
         if(!isset($timezone) || empty($timezone) || trim($timezone,"'") == '') {            
             $timezone = $default;
         }
-        $timezone = in("Timezone",$timezone, NEWLINE_NONE, true, false);
+        $timezone = in("Default timezone",$timezone, NEWLINE_NONE, true, false);
         $old = error_reporting(E_ALL ^ E_NOTICE);
         $current = date_default_timezone_get();
         if(@date_default_timezone_set(trim($timezone,"'")) === FALSE) {

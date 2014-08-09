@@ -28,9 +28,12 @@
         if($status !== true) {
             foreach($status as $error) {
                 list($code, $message) = $error;
-                error(implode(PHP_EOL.'--> ',$message));
+                if(is_array($message)) {
+                    $message = implode(PHP_EOL.'--> ',$message);
+                }
+                error($message);
                 if($code === E_USER_ERROR) {
-                    $halt = $error;
+                    $halt = true;
                 }
             }
         }
@@ -38,7 +41,7 @@
         // Failure?
         if($halt !== false) {
             echo PHP_EOL;
-            exit($halt);
+            exit();
         }
 
         // Get error message?
