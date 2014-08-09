@@ -68,28 +68,56 @@
         return str_replace('\\/', '/',json_encode($options));
 
     }// get_rescueme_install
-    
-    
-    function dec_to_dem($dec)
+
+
+    /**
+     * Converts decimal degrees to degrees, minutes and decimal seconds
+     *
+     * @param $dd
+     * @return array
+     */
+    function dd_to_dms($dd)
+        {
+        // Converts decimal degrees to degrees, minutes and decimal seconds
+        // This is the piece of code which may appear to
+        // be inefficient, but to avoid issues with floating
+        // point math we extract the integer part and the float
+        // part by using a string function.
+
+        $vars = explode(".",$dd);
+        $deg = $vars[0];
+        $tempma = "0.".$vars[1];
+        $tempma = $tempma * 3600;
+        $min = floor($tempma / 60);
+        $sec = $tempma - ($min*60);
+        return array("deg" => $deg, "min" => $min, "sec" => $sec);
+    }
+
+
+    /**
+     * Converts decimal degrees to decimal minutes
+     *
+     * @param $dec
+     * @return array
+     */
+    function dd_to_dm($dec)
     {
-        // Converts decimal longitude / latitude to DM
+        // Converts decimal degrees to DM
         // ( decimal minutes) 
         // This is the piece of code which may appear to 
         // be inefficient, but to avoid issues with floating
         // point math we extract the integer part and the float
         // part by using a string function.
 
-        $vars = explode(".", $dec);
+        $vars = explode(".",$dec);
         $deg = $vars[0];
-        $tempma = "0." . $vars[1];
-
-        $tempma = (float)$tempma * 3600;
+        $tempma = "0.".$vars[1];
+        $tempma = $tempma * 3600;
         $min = floor($tempma / 60);
-        $des = $tempma - ($min * 60);
-        $des = explode('.', $des);
-        $des = isset($des[1]) ? (int)$des[1] : 0;
-
-        return array("deg" => $deg, "min" => $min, "des" => $des);
+        $des = $tempma - ($min*60);
+        $des = explode(".",$des/60);
+        $des = isset($des[1]) ? $des[1] : 0;
+        return array("deg" => $deg, "min" => $min.'.'.$des);
     }
     
 

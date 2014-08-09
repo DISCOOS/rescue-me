@@ -580,23 +580,21 @@
                     $lat = floatval($p->lat);
                     $wrap = $axis && (abs($lat) !== $lat);
                     $n = $wrap ? 'S' : 'N';
-                    $lat = dec_to_dem(abs($lat));
+                    $lat = dd_to_dm(abs($lat));
 
                     $lon = floatval($p->lon);
                     $wrap = $axis && (abs($lon) !== $lon);
                     $e = $wrap ? 'W' : 'E';
-                    $lon = dec_to_dem(abs($lon));
+                    $lon = dd_to_dm(abs($lon));
 
-                    $format = $unit ? "%1$02d° %2$2d.%3$.3s'" : '%1$02d %2$2d.%3$.3s';
+                    $format = $unit ? "%1$02d° %2$02.3f'" : '%1$02d %2$02.3f';
                     $lat = sprintf($format,
                         $lat['deg'],
-                        $lat['min'],
-                        (string)$lat['des']);
+                        $lat['min']);
 
                     $lon = sprintf($format,
                         $lon['deg'],
-                        $lon['min'],
-                        (string)$lon['des']);
+                        $lon['min']);
 
                     $format = $axis ? $n.'%1$s '.$e.'%2$s' : '%1$s %2$s';
                     $position = sprintf($format,
@@ -610,14 +608,14 @@
                     $lat = floatval($p->lat);
                     $wrap = $axis && (abs($lat) !== $lat);
                     $n = $wrap ? 'S' : 'N';
-                    $lat = dec_to_dem(abs($lat));
+                    $lat = dd_to_dms(abs($lat));
 
                     $lon = floatval($p->lon);
                     $wrap = $axis && (abs($lon) !== $lon);
                     $e = $wrap ? 'W' : 'E';
-                    $lon = dec_to_dem(abs($lon));
+                    $lon = dd_to_dms(abs($lon));
 
-                    $format = $unit ? "%1$02d° %2$02d' %3$02.0f''" : '%1$02d %2$02d %3$02.0f';
+                    $format = $unit ? "%1$02d° %2$02d' %3$02.1f''" : '%1$02d %2$02d %3$02.1f';
                     $lat = sprintf($format,
                         $lat['deg'],
                         $lat['min'],
