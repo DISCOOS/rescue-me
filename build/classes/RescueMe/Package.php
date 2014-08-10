@@ -110,6 +110,7 @@
             $oPhar->buildFromDirectory("$this->build");
 
             // Add dependencies
+            $oPhar->addFile("$this->src/inc/common.inc.php", "inc/common.inc.php");
             $oPhar->addFile("$this->src/inc/locale.inc.php", "inc/locale.inc.php");
 
             // Add 5.4+ compatible class loader

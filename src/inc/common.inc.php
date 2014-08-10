@@ -16,24 +16,30 @@
 
         $status = array();
 
+        $ini = get_cfg_var('cfg_file_path');
+
         $action = strtolower($action);
 
-        if(ini_get("short_open_tag") !== "1") {
-            $status[] = array(E_USER_ERROR, "php.ini value 'short_open_tag' must be '1'");
+        if((ini_get("short_open_tag") === "1" || strcasecmp(ini_get("short_open_tag"),"On") === 0) === false) {
+            $status[] = array(E_USER_ERROR, "php.ini value 'phar.readonly' must be set to '1' in $ini");
+
         }
         if(ini_get("date.timezone") === FALSE) {
-            $status[] = array(E_USER_ERROR, "php.ini value 'date.timezone' is not set");
+            $status[] = array(E_USER_ERROR, "php.ini value 'date.timezone' is not set in $ini");
+
         }
         if(extension_loaded('curl') === false) {
             $message = array();
             $message[] = 'Extension "curl" is not installed correctly';
             if(is_win()) {
-                $message[] = 'Uncomment "extension = php_curl.dll" in php.ini';
+                $message[] = 'Uncomment "extension = php_curl.dll" in "' . $ini . '"';
             } else {
                 $message[] = 'Run "sudo apt-get install php5-curl"';
             }
             $status[] = array(E_USER_ERROR, $message);
         }
+
+
 
         if($action === "install" || $action == "configure") {
 
@@ -41,14 +47,14 @@
                 if (stristr(ini_get('suhosin.executor.include.whitelist'), 'phar') === false) {
                     $message = array();
                     $message[] = "RescueMe build scripts requires 'phar://' includes to be enabled.";
-                    $message[] = "Add 'phar' to 'suhosin.executor.include.whitelist' in 'php.ini'.";
+                    $message[] = "Add 'phar' to 'suhosin.executor.include.whitelist' in '$ini'.";
                     $status[] = array(E_USER_ERROR, $message);
                 }
                 if (stristr(ini_get('suhosin.executor.include.blacklist'), 'phar') !== false
                 ) {
                     $message = array();
                     $message[] = "RescueMe build script requires 'phar://' includes to be enabled.";
-                    $message[] = "Remove 'phar' from 'suhosin.executor.include.blacklist' in 'php.ini'.";
+                    $message[] = "Remove 'phar' from 'suhosin.executor.include.blacklist' in '$ini'.";
                     $status[] = array(E_USER_ERROR, $message);
                 }
             }
@@ -66,7 +72,7 @@
                 $message = array();
                 $message[] = "Extension 'intl' should be enabled for better locale handling.";
                 if(is_win()) {
-                    $message[] = 'Uncomment "extension = php_intl.dll" in php.ini';
+                    $message[] = 'Uncomment "extension = php_intl.dll" in "' . $ini . '"';
                 } else {
                     $message[] = 'Run "sudo apt-get install php5-intl"';
                 }
@@ -76,12 +82,19 @@
                 $message = array();
                 $message[] = 'Extension "gettext" should be enabled for better locale support.';
                 if(is_win()) {
-                    $message[] = 'Uncomment "extension = php_gettext.dll" in php.ini';
+                    $message[] = 'Uncomment "extension = php_gettext.dll" in "' . $ini . '"';
                 } else {
                     $message[] = 'Run "sudo apt-get install php-gettext"';
                 }
                 $status[] = array(E_USER_WARNING, $message);
             }
+        } else if ($action === 'package') {
+
+            if((ini_get("phar.readonly") === "1" || strcasecmp(ini_get("phar.readonly"),"On") === 0)) {
+
+                $status[] = array(E_USER_ERROR, "php.ini value 'phar.readonly' must be set to 'Off' in '$ini'");
+            }
+
         }
 
         return empty($status) ? true : $status;
