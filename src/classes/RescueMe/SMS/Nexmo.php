@@ -55,6 +55,7 @@
                 Properties::SMS_REQUIRE,
                 Properties::SMS_REQUIRE_UNICODE
             ));
+            $this->user_id = $user_id;
             $this->config = $this->newConfig($user_id, $account_key, $account_secret);
         }// __construct
 
@@ -114,7 +115,8 @@
                        . '&status-report-req=1';
 
             // Require unicode message?
-            if(in_array(Properties::SMS_REQUIRE_UNICODE, explode('|',Properties::get(Properties::SMS_REQUIRE)))) {
+            if(in_array(Properties::SMS_REQUIRE_UNICODE,
+                explode('|',Properties::get(Properties::SMS_REQUIRE, $this->user_id)))) {
                 $smsURL .= '&type=unicode';
             }
             
