@@ -8,6 +8,7 @@
     use RescueMe\Properties;
     use RescueMe\Roles;
     use RescueMe\TimeZone;
+    use RescueMe\SMS\Provider;
 
     // Verify logon information
     $user = User::verify();
@@ -186,7 +187,7 @@
                         break;
                     case 'sms':
                         $index = 'module.list';
-                        $include = preg_quote('RescueMe\SMS\Provider');
+                        $include = preg_quote(Provider::TYPE);
                         break;
                     case 'maps':
                         $index = 'property.list';

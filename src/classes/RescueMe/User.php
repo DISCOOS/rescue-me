@@ -14,6 +14,7 @@
     
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
+    use RescueMe\SMS\Provider;
 
     /**
      * User class
@@ -673,7 +674,7 @@
             
             if($all || in_array('sms', $devices)) {
             
-                $sms = Module::get('RescueMe\SMS\Provider', User::currentId())->newInstance();
+                $sms = Module::get(Provider::TYPE, User::currentId())->newInstance();
                 if(!$sms)
                 {
                     return User::error("Failed to get SMS provider");

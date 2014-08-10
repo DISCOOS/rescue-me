@@ -12,6 +12,9 @@
     
     namespace RescueMe;
 
+    use RescueMe\SMS\Nexmo;
+    use RescueMe\SMS\Provider;
+
     /**
      * Module class
      */
@@ -31,7 +34,7 @@
         
         public $user_id;
         
-        private static $required = array('RescueMe\SMS\Provider' => 'RescueMe\SMS\UMS');
+        private static $required = array(Provider::TYPE => Nexmo::TYPE);
         
         /**
          * Constructor

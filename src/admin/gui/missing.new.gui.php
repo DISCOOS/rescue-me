@@ -2,6 +2,7 @@
     use RescueMe\User;    
     use RescueMe\Locale;    
     use RescueMe\Properties;
+    use RescueMe\SMS\Provider;
 
     $user = User::current();
     
@@ -24,7 +25,7 @@
         <?= $_ROUTER['error'] ?>
     </div>
 
-<? } elseif(modules_exists('RescueMe\SMS\Provider')) { ?>
+<? } elseif(modules_exists(Provider::TYPE)) { ?>
 
     <div class="form-body">
 

@@ -23,6 +23,8 @@
      */
     class Clickatell extends AbstractProvider implements Callback
     {
+        const TYPE = 'RescueMe\SMS\Clickatell';
+
         private $status = array(
             
             "001" => "Message unknown", 

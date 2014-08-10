@@ -3,7 +3,8 @@
     use RescueMe\Locale;
     use RescueMe\Missing;
     use RescueMe\Operation;
-    
+    use RescueMe\SMS\Provider;
+
     $id = input_get_int('id');
 
     $user = User::current();
@@ -16,7 +17,7 @@
     {
         $operation = Operation::get($missing->op_id);
         
-        if(modules_exists('RescueMe\SMS\Provider')) {
+        if(modules_exists(Provider::TYPE)) {
 
             $fields = array();
 

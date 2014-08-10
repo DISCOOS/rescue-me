@@ -8,7 +8,8 @@
     use RescueMe\Missing;
     use RescueMe\Operation;
     use RescueMe\Properties;
-    
+    use RescueMe\SMS\Provider;
+
     if(isset($_ROUTER['error'])) {
         insert_error($_ROUTER['error']);
     }
@@ -50,7 +51,7 @@
         $list = Missing::getAll($filter, $admin, $start, $max);
 
         // Enable manual SMS delivery status check?
-        $module = Module::get('RescueMe\SMS\Provider', User::currentId());
+        $module = Module::get(Provider::TYPE, User::currentId());
         $sms = $module->newInstance();
         $check = ($sms instanceof RescueMe\SMS\Check);
         $params = Properties::getAll($user_id);

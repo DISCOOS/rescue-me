@@ -23,6 +23,8 @@
      */
     class UMS extends AbstractProvider implements Check
     {
+        const TYPE = 'RescueMe\SMS\UMS';
+
         const WDSL_URL = "https://secure.ums.no/soap/sms/1.6/?wsdl";
 
         /**

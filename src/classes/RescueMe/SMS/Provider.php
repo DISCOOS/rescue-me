@@ -23,6 +23,9 @@
          * Fatal error constant
          */
         const FATAL = -1;
+
+
+        const TYPE = 'RescueMe\SMS\Provider';
         
         /**
          * Get configuration

@@ -22,6 +22,8 @@
      */
     class Sveve extends AbstractProvider implements Callback
     {
+        const TYPE = 'RescueMe\SMS\Sveve';
+
         /**
          * Constructor
          *

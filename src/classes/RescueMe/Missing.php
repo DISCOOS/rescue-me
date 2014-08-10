@@ -12,9 +12,10 @@
 
     namespace RescueMe;
 
-    use Psr\Log\LogLevel;
+    use \Psr\Log\LogLevel;
     use RescueMe\Log\Logs;
     use RescueMe\SMS\Check;
+    use RescueMe\SMS\Provider;
 
     /**
      * Missing class
@@ -573,7 +574,7 @@
                     $user_id = $this->user_id;
                 }
                 
-                $module = Module::get('RescueMe\SMS\Provider', $user_id);
+                $module = Module::get(Provider::TYPE, $user_id);
 
                 $query = "UPDATE `missing` 
                             SET `sms_sent` = NOW(), `sms_delivery` = NULL, 
@@ -706,7 +707,7 @@
                 $user_id = $this->user_id;
             }
             
-            $sms = Module::get('RescueMe\SMS\Provider', $user_id)->newInstance();
+            $sms = Module::get(Provider::TYPE, $user_id)->newInstance();
             
             if($sms === FALSE)
             {
@@ -751,7 +752,7 @@
                 
                 Logs::write(
                     Logs::TRACE, 
-                    LogLevel::INFO, 
+                    LogLevel::INFO,
                     "SMS sent to $recipient ($to)",
                     $context
                 );

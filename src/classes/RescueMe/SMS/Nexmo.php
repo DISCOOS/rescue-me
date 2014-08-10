@@ -21,7 +21,9 @@
      * @package 
      */
     class Nexmo extends AbstractProvider implements Callback
-    {        
+    {
+        const TYPE = 'RescueMe\SMS\Nexmo';
+
         private $errorcodes = array(0=>'Delivered',
                                     1=>'Unknown',
                                     2=>'Absent Subscriber - Temporary',

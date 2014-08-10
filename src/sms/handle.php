@@ -16,7 +16,8 @@
     use Psr\Log\LogLevel;
     use RescueMe\Log\Logs;
     use RescueMe\Log\Logger;
-    
+    use RescueMe\SMS\Provider;
+
     // Catch errors
     set_error_handler(function($errno , $errstr, $errfile, $errline) {
         $e = new ErrorException($errstr, $errno, $errno, $errfile, $errline);
@@ -37,13 +38,13 @@
         } 
         else {
 
-            $module = Module::get('RescueMe\SMS\Provider', $_GET['user']);
+            $module = Module::get(Provider::TYPE, $_GET['user']);
 
             $sms = $module->newInstance();
 
             if($sms === FALSE){
 
-                error(sprintf(FAILED_TO_LOAD_MODULE_S,'RescueMe\SMS\Provider'));
+                error(sprintf(FAILED_TO_LOAD_MODULE_S,Provider::TYPE));
 
             } else {
 
