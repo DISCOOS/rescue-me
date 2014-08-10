@@ -24,7 +24,7 @@
     {
         const TYPE = 'RescueMe\SMS\Nexmo';
 
-        private $errorcodes = array(0=>'Delivered',
+        private $errorCodes = array(0=>'Delivered',
                                     1=>'Unknown',
                                     2=>'Absent Subscriber - Temporary',
                                     3=>'Absent Subscriber - Permanent',
@@ -51,7 +51,9 @@
         public function __construct($user_id=0, $account_key='', $account_secret='')
         {
             parent::__construct(array(
-                Properties::SMS_SENDER_ID
+                Properties::SMS_SENDER_ID,
+                Properties::SMS_REQUIRE,
+                Properties::SMS_REQUIRE_UNICODE
             ));
             $this->config = $this->newConfig($user_id, $account_key, $account_secret);
         }// __construct
@@ -109,7 +111,12 @@
                        . '&from='.$from
                        . '&to='.$to
                        . '&text='.$message
-                       . '&status-report-req=1';            
+                       . '&status-report-req=1';
+
+            // Require unicode message?
+            if(in_array(Properties::SMS_REQUIRE_UNICODE, explode('|',Properties::get(Properties::SMS_REQUIRE)))) {
+                $smsURL .= '&type=unicode';
+            }
             
             // Start request
             $response = $this->invoke($smsURL);
@@ -172,7 +179,7 @@
                 $this->delivered($params['messageId'], $params['msisdn'], 
                         $params['status'], new \DateTime(), 
                         (isset($params['err-code']) ? 
-                        $this->errorcodes[(int)$params['err-code']].' ('.$params['err-code'].')' 
+                        $this->errorCodes[(int)$params['err-code']].' ('.$params['err-code'].')'
                         : ''));
             }
         }

@@ -65,9 +65,10 @@
                 if($context) {
                     echo include 'setup.property.list.ajax.php';
                 }
-
-                    
-    }}}} 
+            }
+        }
+    }
+}
 ?>    
         
     </tbody>

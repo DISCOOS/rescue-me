@@ -273,7 +273,9 @@
                 
                 $id = input_get_int('id',$user->id);
             
-                echo json_encode(Properties::options($_GET['name'], $id));
+                $options = Properties::options($_GET['name'], $id);
+
+                echo json_encode($options);
                 
             } 
             else {

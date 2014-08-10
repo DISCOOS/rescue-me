@@ -11,6 +11,8 @@
      */
     
     namespace RescueMe;
+
+    use RescueMe\SMS;
     
     /**
      * Properties class
@@ -511,7 +513,7 @@
          * @param string $name Property
          * @param integer $user_id
          * 
-         * @return mixed
+         * @return array|false
          */
         public static final function options($name, $user_id=0) {
             $options = array();
@@ -531,6 +533,17 @@
                         $options[] = array('value' => $value, 'text' => $name);
                     }
                     break;
+                case self::SMS_REQUIRE:
+
+                    $uses = Module::get(SMS\Provider::TYPE, $user_id)->newInstance()->uses();
+
+                    foreach(self::$meta[$name]['options'] as $code => $text) {
+                        if($uses === false || in_array($code, $uses)) {
+                            $options[] = array('value' => $code, 'text' => $text);
+                        }
+                    }
+                    break;
+
                 default:
                     if(isset(self::$meta[$name]['options'])) {
                         foreach(self::$meta[$name]['options'] as $code => $text) {
@@ -681,14 +694,15 @@
                     }                        
 
                     break;
-                    
+
+                // Check if empty value is allowed
                 case self::SMS_REQUIRE:
                 case self::TRACE_DETAILS:
-                    
-                    if(empty($value) === FALSE) {
+
+                    if(empty($value)) {
                         return true;
                     }
-                    
+
                 case self::SMS_OPTIMIZE:
                 case self::MAP_FORMAT_AXIS:
                 case self::MAP_FORMAT_UNIT:
