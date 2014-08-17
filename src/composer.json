@@ -17,7 +17,9 @@
         "silex/silex": "1.*",
         "twig/twig": ">=1.8,<2.0-dev",
         "twig/extensions": "*",
-        "umpirsky/twig-gettext-extractor": "1.1.*"
+        "umpirsky/twig-gettext-extractor": "1.1.*",
+        "erusev/parsedown": "1.0.1",
+        "erusev/parsedown-extra": "0.2.0"
     },
             
     "scripts": {
