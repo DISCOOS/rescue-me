@@ -22,7 +22,68 @@
     {
         private static $current;
         private static $countries;
-        
+
+        /**
+         * Application domains
+         * @var array
+         */
+        private static $domains = array('common', 'locales', 'admin', 'trace', 'sms');
+
+
+        /**
+         * Get locales accepted by browser from request
+         */
+        public static function getAcceptedBrowserLocales() {
+
+            $supported = false;
+
+            if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+
+                $supported = explode(',',str_replace('-', '_', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+
+            }
+            return $supported;
+        }
+
+
+        /**
+         * Get browser locale from request
+         */
+        public static function getBrowserLocale() {
+
+            $language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
+            return self::ensureLocale($language);
+
+        }
+
+
+        private static function ensureLocale($language, $available = true) {
+
+            // Has country code?
+            $code = preg_split("#[_-]#", $language);
+            if(count($code) === 2) {
+                $locale = implode('_', $code);
+                return $available === false || self::isAvailable($locale) ? $locale : self::getDefaultLocale();
+            }
+
+            $language = strtolower($language);
+
+            // Search for first match
+            foreach(self::getLocales($available) as $locale) {
+
+                $code = preg_split("#[_-]#", strtolower($locale));
+                if(in_array($language, $code)) {
+                    return $locale;
+                }
+
+            }
+
+            return self::getDefaultLocale();
+
+        }
+
+
         /**
          * Get default locale (immutable)
          * 
@@ -117,10 +178,9 @@
         /**
          * Get country name
          * 
-         * @param string $country ISO2 Country code
-         * @param string $language ISO2 Language code
-         *  
-         * @return string Country $code ISO2 country code
+         * @param string $locale Locale id
+         *
+         * @return string Language name
          * 
          */
         public static function getLanguageName($locale) {
@@ -144,50 +204,103 @@
             return false;
             
         }
-        
-        
+
+
+        /**
+         * Check if domain(s) are available for given locale
+         *
+         * @param string $locale Locale id
+         * @param boolean|string|array $domains Check locale only if false, all domains if true, given domain(s) otherwise.
+         *
+         * @return boolean
+         */
+        public static function isAvailable($locale, $domains = false) {
+
+            if($locale === 'en_US' || $domains === false && is_dir(APP_PATH_LOCALE.$locale)) {
+                return true;
+            }
+
+            $available = is_dir(APP_PATH_LOCALE.$locale);
+
+            if($available) {
+
+                $available = true;
+
+                if($domains === true) {
+                    $domains = self::$domains;
+                }
+                elseif(is_string($domains)) {
+                    $domains = array($domains);
+                }
+                foreach($domains as $domain) {
+
+                    $filename = implode(DIRECTORY_SEPARATOR,
+                        array(APP_PATH_LOCALE.$locale,'LC_MESSAGES', $domain.'.po'));
+
+                    if(file_exists($filename) === false) {
+
+                        $available = false;
+                        break;
+                    }
+
+                }
+
+            }
+            return $available;
+
+        }
+
+
         /**
          * Get locales
-         *  
-         * @param boolean $supported Supported only
+         *
+         * @param boolean|string $available Available only
          * 
          * @return array Country languages (locale => name)
          */
-        public static function getLocales($supported = true) {
+        public static function getLocales($available = true) {
             $locales = array('en_US');
             $countries = Locale::getCountryInfo();                
             if($countries !== FALSE) {
                 foreach($countries as $country) {
-                    foreach($country['language'] as $name => $locale) {
-                        if($locale !== 'en_US' && ($supported === FALSE || is_dir(APP_PATH_LOCALE.$locale))) {
+                    foreach($country['language'] as $locale) {
+                        if($available === FALSE || self::isAvailable($locale)) {
                             $locales[] = $locale;
                         }
                     }
                 } 
             }
+            if($locales !== FALSE) {
+                asort($locales);
+            }
             return $locales;
         }
-        
-        
+
+
         /**
          * Get country dial code
          *  
-         * @param string $code ISO country code
-         * 
-         * @return array Country languages (locale => name)
+         * @param boolean|string $code ISO country code
+         * @param boolean|string $available Supported only
+         *
+         * @return array|boolean Country languages (locale => name)
          */
-        public static function getLanguageNames($code = false, $supported = true) {
+        public static function getLanguageNames($code = false, $available = true) {
             $languages = false;
             $countries = Locale::getCountryInfo($code);                
             if($countries !== FALSE) {
+                $languages = array();
                 $countries = is_array($countries) ? $countries : array($countries);
                 foreach($countries as $country) {
                     foreach($country['language'] as $name => $locale) {
-                        if($supported === FALSE || is_dir(APP_PATH_LOCALE.$locale) || $locale === 'en_US') {
+                        if($available === FALSE || self::isAvailable($locale)) {
                             $languages[$locale] = $name;
                         }
                     }
                 } 
+            }
+            if($languages !== FALSE) {
+                asort($languages);
             }
             return $languages;
         }
@@ -266,7 +379,7 @@
                     
                     $locale = $language.'_'.$country;
                     
-                    foreach($country['language'] as $name => $locale) {
+                    foreach($country['language'] as $locale) {
                         if(is_dir(APP_PATH_LOCALE.$locale) || $locale === 'en_US') {
                             $accept = true;
                             break;
@@ -330,8 +443,8 @@
                 if($phone) {
             
             
-                    $dail_code = $country['dial_code'];
-                    $name .=  " (" . (strlen($dail_code)<4 ? "+$dail_code" : $dail_code). ")";
+                    $dial_code = $country['dial_code'];
+                    $name .=  " (" . (strlen($dial_code)<4 ? "+$dial_code" : $dial_code). ")";
                 }
             }
             return $name;
@@ -353,8 +466,8 @@
             {
                 $name = ucwords(strtolower($country['country']));
                 if($phone) {
-                    $dail_code = $country['dial_code'];
-                    $name .=  " (" . (strlen($dail_code)<4 ? "+$dail_code" : $dail_code). ")";
+                    $dial_code = $country['dial_code'];
+                    $name .=  " (" . (strlen($dial_code)<4 ? "+$dial_code" : $dial_code). ")";
                 }
                 $codes[$code] = $name;
             }
@@ -378,7 +491,8 @@
                 
                 list($domain) = set_system_locale(DOMAIN_LOCALES, $locale);
                 
-                self::$countries = require implode(DIRECTORY_SEPARATOR, array(APP_PATH_LOCALE, 'locales', 'locales.php'));
+                self::$countries =
+                    require implode(DIRECTORY_SEPARATOR,array(APP_PATH_LOCALE, 'domain', 'locales.domain.php'));
                 
                 set_system_locale($domain, $locale);
                 
