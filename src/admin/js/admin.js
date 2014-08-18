@@ -309,12 +309,13 @@ R.loader = function(target) {
             $(document.body).prepend(R.loader.container);
         }
         target = 'loader container';
-    } 
+    } else if($(target).is('[data-progress]')) {
+        target = $($(target).attr('data-progress'));
+    }
 
     // Move to target
     element.detach();
-    $(target).append(element)                
-    
+    $(target).append(element);
     
     // Register global listeners listeners (p
     var loader = {};
@@ -483,7 +484,7 @@ R.format_since = function(timestamp) {
     if (timestamp === undefined) {
         return false;
     }
-    var d = new Date(timestamp.replace(/-/g, "/"));
+    var d = new Date(timestamp);
     var now = new Date();
     /*
     */
@@ -506,7 +507,7 @@ R.format_since = function(timestamp) {
 }
 
 R.format_dtg = function(timestamp) {
-    var d = new Date(timestamp.replace(/-/g, "/"));
+    var d = new Date(timestamp);
     // Adjust from local time to given timezone
     d.setTime(d.getTime() + (new Date().getTimezoneOffset() - d.getTimezoneOffset())*60*1000);
     var min = d.getMinutes();

@@ -141,7 +141,7 @@
             $mins = abs($mins);
             $hrs = floor($mins / 60);
             $mins -= $hrs * 60;
-            return sprintf('%+d:%02d', $hrs*$sgn, $mins);
+            return sprintf('%1$s%2$02d:%3$02d', $sgn < 0 ? '-' : '+', $hrs, $mins);
 
         }
 

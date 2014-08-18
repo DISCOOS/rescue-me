@@ -16,12 +16,12 @@
         
         $trace['alerted']['state'] = 'pass';
         $trace['alerted']['time'] = format_since($missing->reported);
-        $trace['alerted']['timestamp'] = $missing->reported.\RescueMe\TimeZone::getOffset();
+        $trace['alerted']['timestamp'] = format_tz($missing->reported);
         $trace['alerted']['tooltip'] = TRACE_STARTED;
         if($missing->sms_sent !== null) {
             $trace['sent']['state'] = 'pass';
             $trace['sent']['time'] = format_since($missing->sms_sent);
-            $trace['sent']['timestamp'] = $missing->sms_sent.\RescueMe\TimeZone::getOffset();
+            $trace['sent']['timestamp'] = format_tz($missing->sms_sent);
             $trace['sent']['tooltip'] = SMS_SENT;
         } else {
             $trace['sent']['state'] = 'fail';
@@ -32,7 +32,7 @@
         if($missing->sms_delivery !== null) {
             $trace['delivered']['state'] = 'pass';
             $trace['delivered']['time'] = format_since($missing->sms_delivery);
-            $trace['delivered']['timestamp'] = $missing->sms_delivery.\RescueMe\TimeZone::getOffset();
+            $trace['delivered']['timestamp'] = format_tz($missing->sms_delivery);
             $trace['delivered']['tooltip'] = SMS_RECEIVED;
         } else {
             
@@ -67,7 +67,7 @@
         if($missing->answered !== null) {
             $trace['response']['state'] = 'pass';
             $trace['response']['time'] = format_since($missing->answered);
-            $trace['response']['timestamp'] = $missing->answered.\RescueMe\TimeZone::getOffset();
+            $trace['response']['timestamp'] = format_tz($missing->answered);
             $trace['response']['tooltip'] = TRACE_SCRIPT_DOWNLOADED;
         } else {
             $trace['response']['state'] = '';
@@ -79,7 +79,7 @@
         if($missing->last_pos->timestamp>-1) {
             $trace['located']['state'] = 'pass';
             $trace['located']['time'] = format_since($missing->last_pos->timestamp);
-            $trace['located']['timestamp'] = $missing->last_pos->timestamp.\RescueMe\TimeZone::getOffset();
+            $trace['located']['timestamp'] = format_tz($missing->last_pos->timestamp);
             $trace['located']['tooltip'] = MOBILE_LOCATED;
         } else {
 

@@ -62,7 +62,7 @@ var posFormat = '<?=Properties::text(Properties::MAP_DEFAULT_FORMAT, $user_id)?>
             $posText = str_replace("'", "\\'", format_pos($value, $params));
             $posTextClean = str_replace("'", "\\'", format_pos($value, $params, false));
             echo "R.map.addPosition($value->lat, $value->lon, $value->acc, $value->alt,".
-                    "'".$posText."', '$posTextClean','".$value-> timestamp.\RescueMe\TimeZone::getOffset()."');";
+                    "'".$posText."', '$posTextClean','".format_tz($value->timestamp)."');";
             $i++;
         }
         echo 'ajaxFetchPosition();';

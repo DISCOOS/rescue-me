@@ -509,6 +509,21 @@
         }
         return $since;
     }
+
+
+    /**
+     * Format unix timestamp with locale timezone
+     *
+     * @param $timestamp Timestamp
+     *
+     * @return string
+     */
+    function format_tz($timestamp) {
+
+        $date = date( 'Y-m-d\TH:i:s', strtotime($timestamp));
+
+        return sprintf('%1$s%2$s', $date, \RescueMe\TimeZone::getOffset());
+    }
     
     
     function mysql_dt($time) {
