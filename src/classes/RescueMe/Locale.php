@@ -492,7 +492,7 @@
                 list($domain) = set_system_locale(DOMAIN_LOCALES, $locale);
                 
                 self::$countries =
-                    require implode(DIRECTORY_SEPARATOR,array(APP_PATH_LOCALE, 'domain', 'locales.domain.php'));
+                    require APP_PATH_LOCALE . implode(DIRECTORY_SEPARATOR,array('locales', 'locales.php'));
                 
                 set_system_locale($domain, $locale);
                 
