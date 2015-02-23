@@ -42,7 +42,7 @@ else
             'id' => "$property",
             'type' => 'text', 
             'value' => $default, 
-            'label' => T_($config->label($property)),
+            'label' => $config->label($property),
             'attributes' => trim(implode(" ", $attributes))
         );
     }
@@ -50,7 +50,7 @@ else
     $fields[2]['attributes'] .= ' autofocus';
     
     // Prepare label and action url
-    $label = T_($module->type).': ';
+    $label = $module->type.': ';
     $action = ADMIN_URI."setup/module/$id";
     if(isset($_GET['type'])) {
         $action .= '?type='.$_GET['type'];

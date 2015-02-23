@@ -36,7 +36,7 @@
 
 <? if($lines == false) { ?>
 
-        <tr><td colspan="6"><?=NONE_FOUND?></td></tr>
+        <tr><td colspan="6"><?=T_('None found')?></td></tr>
 
 <? } else { 
     

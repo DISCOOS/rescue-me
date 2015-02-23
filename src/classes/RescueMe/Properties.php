@@ -568,52 +568,6 @@
         }
         
         
-        
-        /**
-         * Get properties as row definitions.
-         * 
-         * @param integer $user_id
-         * @return array
-         * 
-         * @see insert_row
-         */
-        public static final function rows($user_id=0) {
-            
-            $rows = array(); 
-            
-            $properties = self::getAll($user_id);
-
-            if($properties !== false) {
-
-                $url = ADMIN_URI.self::PUT_URI."/$user_id";
-
-                foreach($properties as $name => $value) {
-
-                    $cells = array();
-
-                    $cells[] = array('value' => $name);
-
-                    $type = self::type($name);
-
-                    $source = self::source($name);
-                    $source = ($source ? 'data-source="'.ADMIN_URI.$source.'"' : "");
-
-                    $text = self::text($name,$user_id);
-                    $attributes = 'data-type="'.$type.'" '.$source.' href="#" class="editable editable-click"';
-                    $value  = '<a id="name" data-pk="'.$name.'" data-value="'.$value.'"'.'" data-url="'.$url.'"'.$attributes .'>'.$text.'</a>';
-                    $cells[] = array('value' => $value);
-                    
-                    $text = self::description($name);
-                    $cells[] = array('value' => '<div class="muted">'.$text.'</div>');
-
-                    $rows[$name] = $cells;
-                }
-            }
-            return $rows;
-            
-        }
-        
-
         /**
          * Ensure value is not empty
          * 

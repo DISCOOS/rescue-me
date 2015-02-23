@@ -26,19 +26,19 @@
         </div>
         <div class="row-fluid <?=($collapsed ? 'hidden' : '')?>">
             <div class="span">
-                <?=ALERTED?>
+                <?=T_('Alerted')?>
             </div>
             <div class="span">
-                <?=SENT?>
+                <?=T_('Sent')?>
             </div>
             <div class="span">
-                <?=DELIVERED?>
+                <?=T_('Delivered')?>
             </div>
             <div class="span">
-                <?=RESPONSE?>
+                <?=T_('Response')?>
             </div>
             <div class="span">
-                <?=LOCATED?>
+                <?=T_('Located')?>
             </div>
         </div>
         <div class="row-fluid">

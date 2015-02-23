@@ -13,13 +13,13 @@
     
 ?>
 
-<h3><?=TRACES?></h3>
+<h3><?=T_('Traces')?></h3>
 
 <ul id="tabs" class="nav nav-tabs">
-  <li><a href="#open" data-toggle="tab"><?=OPEN?></a></li>
-  <li><a href="#test" data-toggle="tab"><?=TESTS?></a></li>
-  <li><a href="#exercise" data-toggle="tab"><?=EXERCISES?></a></li>
-  <li><a href="#closed" data-toggle="tab"><?=CLOSED?></a></li>
+  <li><a href="#open" data-toggle="tab"><?=T_('Open')?></a></li>
+  <li><a href="#test" data-toggle="tab"><?=T_('Tests')?></a></li>
+  <li><a href="#exercise" data-toggle="tab"><?=T_('Exercises')?></a></li>
+  <li><a href="#closed" data-toggle="tab"><?=T_('Closed')?></a></li>
 </ul>
 
 <div class="tab-content" style="width: auto; overflow: visible">
@@ -27,24 +27,28 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="20%"><?=NAME?></th>
-                    <th width="13%" class="hidden-phone"><?=SENT?></th>
-                    <th width="13%" class="hidden-phone"><?=DELIVERED?></th>
-                    <th width="13%" class="hidden-phone"><?=ANSWERED?></th>
-                    <th width="13%" class="hidden-phone"><?=REPORTED?></th>
-                    <th width="13%"><?=LOCATION?></th>
+                    <th width="20%" class="name"><?=T_('Name')?></th>
+                    <th width="40%"><?=T_('Status')?></th>
+                    <!--
+                    <th class="hidden-phone"><?=T_('Status')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Sent')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Delivered')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Answered')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Reported')?></th>
+                    <th width="13%"><?=T_('Location')?></th>
+                    -->
                     <? if($admin) { ?>
-                    <th width="5%" class="hidden-phone"><?=USER?></th>
+                    <th width="20%" class="hidden-phone"><?=T_('User')?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
                     <? } ?>
                     
                          <input type="text" 
-                               class="input-medium search-query pull-right" 
+                               class="input-small search-query pull-right"
                                data-target="open .searchable"
                                data-source="open .pagination"
-                               placeholder="<?=SEARCH?>">
+                               placeholder="<?=T_('Search')?>">
                     </th>            
                 </tr>
             </thead>        
@@ -57,14 +61,14 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="20%"><?=NAME?></th>
-                    <th width="13%" class="hidden-phone"><?=SENT?></th>
-                    <th width="13%" class="hidden-phone"><?=DELIVERED?></th>
-                    <th width="13%" class="hidden-phone"><?=ANSWERED?></th>
-                    <th width="13%" class="hidden-phone"><?=REPORTED?></th>
-                    <th width="13%"><?=LOCATION?></th>
+                    <th width="20%"><?=T_('Name')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Sent')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Delivered')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Answered')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Reported')?></th>
+                    <th width="13%"><?=T_('Location')?></th>
                     <? if($admin) { ?>
-                    <th width="5%" class="hidden-phone"><?=USER?></th>
+                    <th width="5%" class="hidden-phone"><?=T_('User')?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -74,7 +78,7 @@
                                class="input-medium search-query pull-right" 
                                data-target="open .searchable"
                                data-source="open .pagination"
-                               placeholder="<?=SEARCH?>">
+                               placeholder="<?=T_('Search')?>">
                     </th>              
                 </tr>
             </thead>        
@@ -87,14 +91,14 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="20%"><?=NAME?></th>
-                    <th width="13%" class="hidden-phone"><?=SENT?></th>
-                    <th width="13%" class="hidden-phone"><?=DELIVERED?></th>
-                    <th width="13%" class="hidden-phone"><?=ANSWERED?></th>
-                    <th width="13%" class="hidden-phone"><?=REPORTED?></th>
-                    <th width="13%"><?=LOCATION?></th>
+                    <th width="20%"><?=T_('Name')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Sent')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Delivered')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Answered')?></th>
+                    <th width="13%" class="hidden-phone"><?=T_('Reported')?></th>
+                    <th width="13%"><?=T_('Location')?></th>
                     <? if($admin) { ?>
-                    <th width="5%" class="hidden-phone"><?=USER?></th>
+                    <th width="5%" class="hidden-phone"><?=T_('User')?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -104,7 +108,7 @@
                                class="input-medium search-query pull-right" 
                                data-target="open .searchable"
                                data-source="open .pagination"
-                               placeholder="<?=SEARCH?>">
+                               placeholder="<?=T_('Search')?>">
                     </th>              
                 </tr>
             </thead>        
@@ -117,11 +121,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="10%"><?=TYPE?></th>
-                    <th width="20%"><?=NAME?></th>
-                    <th width="20%"><?=CLOSED?></th>
+                    <th width="10%"><?=T_('Type')?></th>
+                    <th width="20%"><?=T_('Name')?></th>
+                    <th width="20%"><?=T_('Closed')?></th>
                     <? if($admin) { ?>
-                    <th width="20%" class="hidden-phone"><?= USER ?></th>
+                    <th width="20%" class="hidden-phone"><?= T_('User') ?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -130,7 +134,7 @@
                                class="input-medium search-query pull-right" 
                                data-target="closed .searchable"
                                data-source="closed .pagination"
-                               placeholder="<?=SEARCH?>">
+                               placeholder="<?=T_('Search')?>">
                     </th>            
                 </tr>
             </thead>        
@@ -144,9 +148,9 @@
 <?php
 
     // Insert actions
-    insert_action(NEW_TRACE, ADMIN_URI."missing/new", "icon-plus-sign");
+    insert_action(T_('New trace'), ADMIN_URI."missing/new", "icon-plus-sign");
 
-    insert_dialog_selector("library", LIBRARY, LOADING);?>
+    insert_dialog_selector('library', T_('Library'), T_('Loading'), array('progress' => '.modal-label'));?>
     
 <script>
     R.tabs('tabs');

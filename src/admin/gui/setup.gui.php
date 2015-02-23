@@ -11,18 +11,20 @@
 
     $id = input_get_int('id', User::currentId());
 
-    $user = $id > 0 ? User::get($id)->name : SYSTEM;
+    $user = $id > 0 ? User::get($id)->name : T_('System');
     
     
 ?>
-<h3><?=SETUP?></h3>
+<h3><?=T_('Setup')?><div class="visible-phone pull-right">
+    <small><?=$user?></small>
+</div></h3>
 
 <ul id="tabs" class="nav nav-tabs">
-  <li><a href="#general" data-toggle="tab"><?=GENERAL?></a></li>
-  <li><a href="#design" data-toggle="tab"><?=DESIGN?></a></li>
-  <li><a href="#sms" data-toggle="tab"><?=SMS?></a></li>
-  <li><a href="#maps" data-toggle="tab"><?=MAPS?></a></li>
-  <li class="pull-right"><?=$user?></li>
+  <li><a href="#general" data-toggle="tab"><?=T_('General')?></a></li>
+  <li><a href="#design" data-toggle="tab"><?=T_('Design')?></a></li>
+  <li><a href="#sms" data-toggle="tab"><?=T_('SMS')?></a></li>
+  <li><a href="#maps" data-toggle="tab"><?=T_('Maps')?></a></li>
+  <li class="pull-right hidden-phone"><?=$user?></li>
 </ul>
 
 <div class="tab-content" style="width: auto; overflow: visible">

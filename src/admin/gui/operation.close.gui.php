@@ -12,7 +12,7 @@
         $missing = current($missings);
         $missing->getPositions();
         
-        if(modules_exists("RescueMe\SMS\Provider")) {
+        if(modules_exists('RescueMe\SMS\Provider')) {
 
             $fields = array();
 
@@ -20,7 +20,7 @@
                 'id' => 'op_name',
                 'type' => 'text', 
                 'value' => $operation->op_name,
-                'label' => OPERATION_NAME,
+                'label' => T_('Operation name'),
                 'attributes' => 'required autofocus'
             );
             
@@ -28,8 +28,8 @@
                 'id' => 'op_ref',
                 'type' => 'text', 
                 'value' => $operation->op_ref, 
-                'label' => REFERENCE,
-                'placeholder' => REFERENCE_EXAMPLES,
+                'label' => T_('Reference'),
+                'placeholder' => T_('Operation number, etc.'),
                 'attributes' => ''
             );
                         
@@ -37,8 +37,8 @@
                 'id' => 'op_comments',
                 'type' => 'text', 
                 'value' => $operation->op_comments, 
-                'label' => COMMENTS,
-                'placeholder' => SHORT_DESCRIPTION,
+                'label' => T_('Comments'),
+                'placeholder' => T_('Short description'),
                 'attributes' => ''
             );            
             
@@ -52,12 +52,12 @@
                 'type' => 'select', 
                 'value' => insert_options(
                     array(
-                        MAN => MAN, 
-                        WOMAN => WOMAN
+                        'Man' => T_('Man'),
+                        'Woman' => T_('Woman')
                     ), 
                     null, 
                     false), 
-                'label' => GENDER,
+                'label' => T_('Gender'),
                 'class' => 'span3',
                 'attributes' => 'required'
             );
@@ -65,20 +65,20 @@
                 'id' => 'm_age',
                 'type' => 'num', 
                 'value' => '', 
-                'label' => AGE,
+                'label' => T_('Age'),
                 'class' => 'span3',
                 'attributes' => 'required pattern="[0-9]*"'
             );    
             $fields[] = $group;                                    
             
             if(!empty($operation->op_closed)) {
-                $actions['message'] = NOTE_THIS_WILL_REOPEN_OPERATION;
+                $actions['message'] = T_('Note: This will reopen this operation');
             }
             else {
-                $actions['message'] = T_("Note: This will permanently delete name and mobile numbers (privacy conserns)");
+                $actions['message'] = T_("Note: This will permanently delete name and mobile numbers (privacy concerns)");
             }
             
-            insert_form("user", CLOSE_OPERATION, $fields, ADMIN_URI."operation/close/$operation->id", $actions);
+            insert_form("user", T_('Close operation'), $fields, ADMIN_URI."operation/close/$operation->id", $actions);
             
             if (is_numeric($missing->last_pos->lat)) {
             ?>
@@ -98,5 +98,5 @@
             }
         }
     } else { ?> 
-<h3 class="pagetitle"><?= CLOSE_OPERATION ?></h3>
-<?  insert_alert(NONE_FOUND); } ?>
+<h3 class="pagetitle"><?= T_('Close operation') ?></h3>
+<?  insert_alert(T_('None found')); } ?>

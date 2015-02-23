@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-03 23:25+0100\n"
-"PO-Revision-Date: 2014-08-03 23:25+0100\n"
+"POT-Creation-Date: 2015-02-23 21:57+0100\n"
+"PO-Revision-Date: 2015-02-23 21:57+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
 "Language: nb_NO\n"
@@ -14,565 +14,565 @@ msgstr ""
 "X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 1.5.4\n"
-"X-Poedit-SearchPath-0: locale/locales\n"
+"X-Poedit-SearchPath-0: locale/domain\n"
 
-#: locale/locales/locales.php:14
+#: locale/domain/locales.domain.php:21
 msgid "Afghanistan"
 msgstr "Afghanistan"
 
-#: locale/locales/locales.php:15
+#: locale/domain/locales.domain.php:22
 msgid "Albania"
 msgstr "Albania"
 
-#: locale/locales/locales.php:16
+#: locale/domain/locales.domain.php:23
 msgid "Algeria"
 msgstr "Algeria"
 
-#: locale/locales/locales.php:17
+#: locale/domain/locales.domain.php:24
 msgid "Argentina"
 msgstr "Argentina"
 
-#: locale/locales/locales.php:17 locale/locales/locales.php:27
-#: locale/locales/locales.php:28 locale/locales/locales.php:35
-#: locale/locales/locales.php:36 locale/locales/locales.php:37
-#: locale/locales/locales.php:41 locale/locales/locales.php:42
-#: locale/locales/locales.php:44 locale/locales/locales.php:54
-#: locale/locales/locales.php:55 locale/locales/locales.php:87
-#: locale/locales/locales.php:94 locale/locales/locales.php:98
-#: locale/locales/locales.php:99 locale/locales/locales.php:101
-#: locale/locales/locales.php:106 locale/locales/locales.php:118
-#: locale/locales/locales.php:133 locale/locales/locales.php:134
+#: locale/domain/locales.domain.php:24 locale/domain/locales.domain.php:34
+#: locale/domain/locales.domain.php:35 locale/domain/locales.domain.php:42
+#: locale/domain/locales.domain.php:43 locale/domain/locales.domain.php:44
+#: locale/domain/locales.domain.php:48 locale/domain/locales.domain.php:49
+#: locale/domain/locales.domain.php:51 locale/domain/locales.domain.php:61
+#: locale/domain/locales.domain.php:62 locale/domain/locales.domain.php:94
+#: locale/domain/locales.domain.php:101 locale/domain/locales.domain.php:105
+#: locale/domain/locales.domain.php:106 locale/domain/locales.domain.php:108
+#: locale/domain/locales.domain.php:113 locale/domain/locales.domain.php:125
+#: locale/domain/locales.domain.php:140 locale/domain/locales.domain.php:141
 msgid "Spanish"
 msgstr "Spansk"
 
-#: locale/locales/locales.php:18
+#: locale/domain/locales.domain.php:25
 msgid "Armenia"
 msgstr "Armenia"
 
-#: locale/locales/locales.php:19
+#: locale/domain/locales.domain.php:26
 msgid "Australia"
 msgstr "Australia"
 
-#: locale/locales/locales.php:19 locale/locales/locales.php:26
-#: locale/locales/locales.php:34 locale/locales/locales.php:59
-#: locale/locales/locales.php:63 locale/locales/locales.php:67
-#: locale/locales/locales.php:84 locale/locales/locales.php:93
-#: locale/locales/locales.php:102 locale/locales/locales.php:114
-#: locale/locales/locales.php:117 locale/locales/locales.php:126
-#: locale/locales/locales.php:132 locale/locales/locales.php:133
-#: locale/locales/locales.php:138
+#: locale/domain/locales.domain.php:26 locale/domain/locales.domain.php:33
+#: locale/domain/locales.domain.php:41 locale/domain/locales.domain.php:66
+#: locale/domain/locales.domain.php:70 locale/domain/locales.domain.php:74
+#: locale/domain/locales.domain.php:91 locale/domain/locales.domain.php:100
+#: locale/domain/locales.domain.php:109 locale/domain/locales.domain.php:121
+#: locale/domain/locales.domain.php:124 locale/domain/locales.domain.php:133
+#: locale/domain/locales.domain.php:139 locale/domain/locales.domain.php:140
+#: locale/domain/locales.domain.php:145
 msgid "English"
 msgstr "Engelsk"
 
-#: locale/locales/locales.php:20
+#: locale/domain/locales.domain.php:27
 msgid "Austria"
 msgstr "Australia"
 
-#: locale/locales/locales.php:20 locale/locales/locales.php:51
-#: locale/locales/locales.php:79 locale/locales/locales.php:81
-#: locale/locales/locales.php:121
+#: locale/domain/locales.domain.php:27 locale/domain/locales.domain.php:58
+#: locale/domain/locales.domain.php:86 locale/domain/locales.domain.php:88
+#: locale/domain/locales.domain.php:128
 msgid "German"
 msgstr "Tysk"
 
-#: locale/locales/locales.php:21
+#: locale/domain/locales.domain.php:28
 msgid "Azerbaijan"
 msgstr "Aserbajdsjan"
 
-#: locale/locales/locales.php:22
+#: locale/domain/locales.domain.php:29
 msgid "Bahrain"
 msgstr "Bahrain"
 
-#: locale/locales/locales.php:23
+#: locale/domain/locales.domain.php:30
 msgid "Bangladesh"
 msgstr "Bangladesh"
 
-#: locale/locales/locales.php:24
+#: locale/domain/locales.domain.php:31
 msgid "Belarus"
 msgstr "Hviterussland"
 
-#: locale/locales/locales.php:25
+#: locale/domain/locales.domain.php:32
 msgid "Belgium"
 msgstr "Belgia"
 
-#: locale/locales/locales.php:25 locale/locales/locales.php:34
-#: locale/locales/locales.php:49 locale/locales/locales.php:81
-#: locale/locales/locales.php:105 locale/locales/locales.php:121
+#: locale/domain/locales.domain.php:32 locale/domain/locales.domain.php:41
+#: locale/domain/locales.domain.php:56 locale/domain/locales.domain.php:88
+#: locale/domain/locales.domain.php:112 locale/domain/locales.domain.php:128
 msgid "French"
 msgstr "Fransk"
 
-#: locale/locales/locales.php:26
+#: locale/domain/locales.domain.php:33
 msgid "Belize"
 msgstr "Belize"
 
-#: locale/locales/locales.php:27
+#: locale/domain/locales.domain.php:34
 msgid "Bolivarian Republic of Venezuela"
 msgstr "Venezuela"
 
-#: locale/locales/locales.php:28
+#: locale/domain/locales.domain.php:35
 msgid "Bolivia"
 msgstr "Bolivia"
 
-#: locale/locales/locales.php:29
+#: locale/domain/locales.domain.php:36
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnia-Hercegovina"
 
-#: locale/locales/locales.php:30
+#: locale/domain/locales.domain.php:37
 msgid "Brazil"
 msgstr "Brasil"
 
-#: locale/locales/locales.php:31
+#: locale/domain/locales.domain.php:38
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
-#: locale/locales/locales.php:32
+#: locale/domain/locales.domain.php:39
 msgid "Bulgaria"
 msgstr "Bulgaria"
 
-#: locale/locales/locales.php:33
+#: locale/domain/locales.domain.php:40
 msgid "Cambodia"
 msgstr "Kambodia"
 
-#: locale/locales/locales.php:34
+#: locale/domain/locales.domain.php:41
 msgid "Canada"
 msgstr "Canada"
 
-#: locale/locales/locales.php:35
+#: locale/domain/locales.domain.php:42
 msgid "Chile"
 msgstr "Chile"
 
-#: locale/locales/locales.php:36
+#: locale/domain/locales.domain.php:43
 msgid "Colombia"
 msgstr "Colombia"
 
-#: locale/locales/locales.php:37
+#: locale/domain/locales.domain.php:44
 msgid "Costa Rica"
 msgstr "Costa Rica"
 
-#: locale/locales/locales.php:38
+#: locale/domain/locales.domain.php:45
 msgid "Croatia"
 msgstr "Kroatia"
 
-#: locale/locales/locales.php:39
+#: locale/domain/locales.domain.php:46
 msgid "Czech Republic"
 msgstr "Tsjekkia"
 
-#: locale/locales/locales.php:40
+#: locale/domain/locales.domain.php:47
 msgid "Denmark"
 msgstr "Danmark"
 
-#: locale/locales/locales.php:40
+#: locale/domain/locales.domain.php:47
 msgid "Danish"
 msgstr "Dansk"
 
-#: locale/locales/locales.php:41
+#: locale/domain/locales.domain.php:48
 msgid "Dominican Republic"
 msgstr "Den dominikanske republikk"
 
-#: locale/locales/locales.php:42
+#: locale/domain/locales.domain.php:49
 msgid "Ecuador"
 msgstr "Ecuador"
 
-#: locale/locales/locales.php:43
+#: locale/domain/locales.domain.php:50
 msgid "Egypt"
 msgstr "Egypt"
 
-#: locale/locales/locales.php:44
+#: locale/domain/locales.domain.php:51
 msgid "El Salvador"
 msgstr "El Salvador"
 
-#: locale/locales/locales.php:45
+#: locale/domain/locales.domain.php:52
 msgid "Estonia"
 msgstr "Estland"
 
-#: locale/locales/locales.php:46
+#: locale/domain/locales.domain.php:53
 msgid "Ethiopia"
 msgstr "Etiopia"
 
-#: locale/locales/locales.php:47
+#: locale/domain/locales.domain.php:54
 msgid "Faroe Islands"
 msgstr "Færøyene"
 
-#: locale/locales/locales.php:48
+#: locale/domain/locales.domain.php:55
 msgid "Finland"
 msgstr "Finland"
 
-#: locale/locales/locales.php:48
+#: locale/domain/locales.domain.php:55
 msgid "Finnish"
 msgstr "Finsk"
 
-#: locale/locales/locales.php:48 locale/locales/locales.php:120
+#: locale/domain/locales.domain.php:55 locale/domain/locales.domain.php:127
 msgid "Swedish"
 msgstr "Svensk"
 
-#: locale/locales/locales.php:49
+#: locale/domain/locales.domain.php:56
 msgid "France"
 msgstr "Frankrike"
 
-#: locale/locales/locales.php:50
+#: locale/domain/locales.domain.php:57
 msgid "Georgia"
 msgstr "Georgia"
 
-#: locale/locales/locales.php:51
+#: locale/domain/locales.domain.php:58
 msgid "Germany"
 msgstr "Tyskland"
 
-#: locale/locales/locales.php:52
+#: locale/domain/locales.domain.php:59
 msgid "Greece"
 msgstr "Hellas"
 
-#: locale/locales/locales.php:53
+#: locale/domain/locales.domain.php:60
 msgid "Greenland"
 msgstr "Grønland"
 
-#: locale/locales/locales.php:54
+#: locale/domain/locales.domain.php:61
 msgid "Guatemala"
 msgstr "Guatemala"
 
-#: locale/locales/locales.php:55
+#: locale/domain/locales.domain.php:62
 msgid "Honduras"
 msgstr "Honduras"
 
-#: locale/locales/locales.php:56
+#: locale/domain/locales.domain.php:63
 msgid "Hong Kong S.A.R."
 msgstr "Hong Kong S.A.R."
 
-#: locale/locales/locales.php:57
+#: locale/domain/locales.domain.php:64
 msgid "Hungary"
 msgstr "Ungarn"
 
-#: locale/locales/locales.php:58
+#: locale/domain/locales.domain.php:65
 msgid "Iceland"
 msgstr "Island"
 
-#: locale/locales/locales.php:58
+#: locale/domain/locales.domain.php:65
 msgid "Icelandic"
 msgstr "Islandsk"
 
-#: locale/locales/locales.php:59
+#: locale/domain/locales.domain.php:66
 msgid "India"
 msgstr "India"
 
-#: locale/locales/locales.php:60
+#: locale/domain/locales.domain.php:67
 msgid "Indonesia"
 msgstr "Indonesia"
 
-#: locale/locales/locales.php:61
+#: locale/domain/locales.domain.php:68
 msgid "Iran"
 msgstr "Iran"
 
-#: locale/locales/locales.php:62
+#: locale/domain/locales.domain.php:69
 msgid "Iraq"
 msgstr "Irak"
 
-#: locale/locales/locales.php:63
+#: locale/domain/locales.domain.php:70
 msgid "Ireland"
 msgstr "Irland"
 
-#: locale/locales/locales.php:64
+#: locale/domain/locales.domain.php:71
 msgid "Islamic Republic of Pakistan"
 msgstr "Pakistan"
 
-#: locale/locales/locales.php:65
+#: locale/domain/locales.domain.php:72
 msgid "Israel"
 msgstr "Israel"
 
-#: locale/locales/locales.php:66
+#: locale/domain/locales.domain.php:73
 msgid "Italy"
 msgstr "Italia"
 
-#: locale/locales/locales.php:67
+#: locale/domain/locales.domain.php:74
 msgid "Jamaica"
 msgstr "Jamaica"
 
-#: locale/locales/locales.php:68
+#: locale/domain/locales.domain.php:75
 msgid "Japan"
 msgstr "Japan"
 
-#: locale/locales/locales.php:69
+#: locale/domain/locales.domain.php:76
 msgid "Jordan"
 msgstr "Jordan"
 
-#: locale/locales/locales.php:70
+#: locale/domain/locales.domain.php:77
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
 
-#: locale/locales/locales.php:71
+#: locale/domain/locales.domain.php:78
 msgid "Kenya"
 msgstr "Kenya"
 
-#: locale/locales/locales.php:72
+#: locale/domain/locales.domain.php:79
 msgid "Korea"
 msgstr "Korea"
 
-#: locale/locales/locales.php:73
+#: locale/domain/locales.domain.php:80
 msgid "Kuwait"
 msgstr "Kuwait"
 
-#: locale/locales/locales.php:74
+#: locale/domain/locales.domain.php:81
 msgid "Kyrgyzstan"
 msgstr "Kirgisistan"
 
-#: locale/locales/locales.php:75
+#: locale/domain/locales.domain.php:82
 msgid "Lao P.D.R."
 msgstr "Lao P.D.R."
 
-#: locale/locales/locales.php:76
+#: locale/domain/locales.domain.php:83
 msgid "Latvia"
 msgstr "Latvia"
 
-#: locale/locales/locales.php:77
+#: locale/domain/locales.domain.php:84
 msgid "Lebanon"
 msgstr "Libanon"
 
-#: locale/locales/locales.php:78
+#: locale/domain/locales.domain.php:85
 msgid "Libya"
 msgstr "Libya"
 
-#: locale/locales/locales.php:79
+#: locale/domain/locales.domain.php:86
 msgid "Liechtenstein"
 msgstr "Liechtenstein"
 
-#: locale/locales/locales.php:80
+#: locale/domain/locales.domain.php:87
 msgid "Lithuania"
 msgstr "Litauen"
 
-#: locale/locales/locales.php:81
+#: locale/domain/locales.domain.php:88
 msgid "Luxembourg"
 msgstr "Luxembourg"
 
-#: locale/locales/locales.php:82
+#: locale/domain/locales.domain.php:89
 msgid "Macao S.A.R."
 msgstr "Macao S.A.R."
 
-#: locale/locales/locales.php:83
+#: locale/domain/locales.domain.php:90
 msgid "Macedonia (FYROM)"
 msgstr "Makedonia"
 
-#: locale/locales/locales.php:84
+#: locale/domain/locales.domain.php:91
 msgid "Malaysia"
 msgstr "Malaysia"
 
-#: locale/locales/locales.php:85
+#: locale/domain/locales.domain.php:92
 msgid "Maldives"
 msgstr "Maldivene"
 
-#: locale/locales/locales.php:86
+#: locale/domain/locales.domain.php:93
 msgid "Malta"
 msgstr "Malta"
 
-#: locale/locales/locales.php:87
+#: locale/domain/locales.domain.php:94
 msgid "Mexico"
 msgstr "Mexico"
 
-#: locale/locales/locales.php:88
+#: locale/domain/locales.domain.php:95
 msgid "Mongolia"
 msgstr "Mongolia"
 
-#: locale/locales/locales.php:89
+#: locale/domain/locales.domain.php:96
 msgid "Montenegro"
 msgstr "Montenegro"
 
-#: locale/locales/locales.php:90
+#: locale/domain/locales.domain.php:97
 msgid "Morocco"
 msgstr "Marokko"
 
-#: locale/locales/locales.php:91
+#: locale/domain/locales.domain.php:98
 msgid "Nepal"
 msgstr "Nepal"
 
-#: locale/locales/locales.php:92
+#: locale/domain/locales.domain.php:99
 msgid "Netherlands"
 msgstr "Nederland"
 
-#: locale/locales/locales.php:93
+#: locale/domain/locales.domain.php:100
 msgid "New Zealand"
 msgstr "New Zealand"
 
-#: locale/locales/locales.php:94
+#: locale/domain/locales.domain.php:101
 msgid "Nicaragua"
 msgstr "Nicaragua"
 
-#: locale/locales/locales.php:95
+#: locale/domain/locales.domain.php:102
 msgid "Nigeria"
 msgstr "Nigeria"
 
-#: locale/locales/locales.php:96
+#: locale/domain/locales.domain.php:103
 msgid "Norway"
 msgstr "Norge"
 
-#: locale/locales/locales.php:96
+#: locale/domain/locales.domain.php:103
 msgid "Norwegian (Bokmål)"
 msgstr "Norsk (bokmål)"
 
-#: locale/locales/locales.php:97
+#: locale/domain/locales.domain.php:104
 msgid "Oman"
 msgstr "Oman"
 
-#: locale/locales/locales.php:98
+#: locale/domain/locales.domain.php:105
 msgid "Panama"
 msgstr "Panama"
 
-#: locale/locales/locales.php:99
+#: locale/domain/locales.domain.php:106
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: locale/locales/locales.php:100
+#: locale/domain/locales.domain.php:107
 msgid "China"
 msgstr "Kina"
 
-#: locale/locales/locales.php:101
+#: locale/domain/locales.domain.php:108
 msgid "Peru"
 msgstr "Peru"
 
-#: locale/locales/locales.php:102
+#: locale/domain/locales.domain.php:109
 msgid "Philippines"
 msgstr "Filipinene"
 
-#: locale/locales/locales.php:103
+#: locale/domain/locales.domain.php:110
 msgid "Poland"
 msgstr "Polen"
 
-#: locale/locales/locales.php:103
+#: locale/domain/locales.domain.php:110
 msgid "Polish"
 msgstr "Polsk"
 
-#: locale/locales/locales.php:104
+#: locale/domain/locales.domain.php:111
 msgid "Portugal"
 msgstr "Portugal"
 
-#: locale/locales/locales.php:105
+#: locale/domain/locales.domain.php:112
 msgid "Principality of Monaco"
 msgstr "Fyrstedømmet Monaco"
 
-#: locale/locales/locales.php:106
+#: locale/domain/locales.domain.php:113
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: locale/locales/locales.php:107
+#: locale/domain/locales.domain.php:114
 msgid "Qatar"
 msgstr "Qatar"
 
-#: locale/locales/locales.php:108
+#: locale/domain/locales.domain.php:115
 msgid "Romania"
 msgstr "Romania"
 
-#: locale/locales/locales.php:109
+#: locale/domain/locales.domain.php:116
 msgid "Russia"
 msgstr "Russland"
 
-#: locale/locales/locales.php:110
+#: locale/domain/locales.domain.php:117
 msgid "Rwanda"
 msgstr "Rwanda"
 
-#: locale/locales/locales.php:111
+#: locale/domain/locales.domain.php:118
 msgid "Saudi Arabia"
 msgstr "Saudi Arabia"
 
-#: locale/locales/locales.php:112
+#: locale/domain/locales.domain.php:119
 msgid "Senegal"
 msgstr "Senegal"
 
-#: locale/locales/locales.php:113
+#: locale/domain/locales.domain.php:120
 msgid "Serbia"
 msgstr "Serbia"
 
-#: locale/locales/locales.php:114
+#: locale/domain/locales.domain.php:121
 msgid "Singapore"
 msgstr "Singapore"
 
-#: locale/locales/locales.php:115
+#: locale/domain/locales.domain.php:122
 msgid "Slovakia"
 msgstr "Slovakia"
 
-#: locale/locales/locales.php:116
+#: locale/domain/locales.domain.php:123
 msgid "Slovenia"
 msgstr "Slovenia"
 
-#: locale/locales/locales.php:117
+#: locale/domain/locales.domain.php:124
 msgid "South Africa"
 msgstr "Sør Amerika"
 
-#: locale/locales/locales.php:118
+#: locale/domain/locales.domain.php:125
 msgid "Spain"
 msgstr "Spania"
 
-#: locale/locales/locales.php:119
+#: locale/domain/locales.domain.php:126
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
 
-#: locale/locales/locales.php:120
+#: locale/domain/locales.domain.php:127
 msgid "Sweden"
 msgstr "Sverige"
 
-#: locale/locales/locales.php:121
+#: locale/domain/locales.domain.php:128
 msgid "Switzerland"
 msgstr "Sveits"
 
-#: locale/locales/locales.php:122
+#: locale/domain/locales.domain.php:129
 msgid "Syria"
 msgstr "Syria"
 
-#: locale/locales/locales.php:123
+#: locale/domain/locales.domain.php:130
 msgid "Taiwan"
 msgstr "Taiwan"
 
-#: locale/locales/locales.php:124
+#: locale/domain/locales.domain.php:131
 msgid "Tajikistan"
 msgstr "Tajikistan"
 
-#: locale/locales/locales.php:125
+#: locale/domain/locales.domain.php:132
 msgid "Thailand"
 msgstr "Thailand"
 
-#: locale/locales/locales.php:126
+#: locale/domain/locales.domain.php:133
 msgid "Trinidad and Tobago"
 msgstr "Trinidad and Tobago"
 
-#: locale/locales/locales.php:127
+#: locale/domain/locales.domain.php:134
 msgid "Tunisia"
 msgstr "Tunisia"
 
-#: locale/locales/locales.php:128
+#: locale/domain/locales.domain.php:135
 msgid "Turkey"
 msgstr "Tyrkia"
 
-#: locale/locales/locales.php:129
+#: locale/domain/locales.domain.php:136
 msgid "Turkmenistan"
 msgstr "Turkmenistan"
 
-#: locale/locales/locales.php:130
+#: locale/domain/locales.domain.php:137
 msgid "United Arab Emirates"
 msgstr "De forente arabiske emirater"
 
-#: locale/locales/locales.php:131
+#: locale/domain/locales.domain.php:138
 msgid "Ukraine"
 msgstr "Ukraina"
 
-#: locale/locales/locales.php:132
+#: locale/domain/locales.domain.php:139
 msgid "United Kingdom"
 msgstr "Storbritannia"
 
-#: locale/locales/locales.php:133
+#: locale/domain/locales.domain.php:140
 msgid "United States"
 msgstr "USA"
 
-#: locale/locales/locales.php:134
+#: locale/domain/locales.domain.php:141
 msgid "Uruguay"
 msgstr "Uruguay"
 
-#: locale/locales/locales.php:135
+#: locale/domain/locales.domain.php:142
 msgid "Uzbekistan"
 msgstr "Uzbekistan"
 
-#: locale/locales/locales.php:136
+#: locale/domain/locales.domain.php:143
 msgid "Vietnam"
 msgstr "Vietnam"
 
-#: locale/locales/locales.php:137
+#: locale/domain/locales.domain.php:144
 msgid "Yemen"
 msgstr "Yemen"
 
-#: locale/locales/locales.php:138
+#: locale/domain/locales.domain.php:145
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 

@@ -18,7 +18,7 @@
         set_system_locale(DOMAIN_TRACE, $missing->locale);
         
         if(($delay = isset($message)) === false) {
-            $message = CALCULATING;
+            $message = T_('Calculating');
         }
 
         $type = Properties::get(Properties::LOCATION_APPCACHE, $missing->user_id);
@@ -47,7 +47,7 @@
         $country = $missing->alert_mobile_country;
         if(($code = Locale::getDialCode($country)) === FALSE)
         {
-            Logs::write(Logs::SMS, LogLevel::ERROR, FAILED_TO_GET_COUNTRY_CODE, $_GET);
+            Logs::write(Logs::SMS, LogLevel::ERROR, T_('Failed to get country code'), $_GET);
         }               
 
         $options['trace']['to'] = $code . $missing->alert_mobile;
@@ -66,45 +66,14 @@
     <?php if (isset($extra)) { ?><script id="extra"><?=$extra?></script><?php } ?>
     </head><body onLoad="R.trace.locate();"><div align="center"><div style="max-width: 400px; min-height: 100px;">
     <div id="f" style="margin-bottom: 10px"><?=$message?></div><span id="i"></span><br /><span id="s"></span></div><hr />
-    <div id="l" style="margin-bottom: 10px"></div><a href="<?=APP_URI?>a/<?=$id?>" onclick="return confirm('<?=ARE_YOU_SURE?>');"><?=CANCEL?></a></div></body> 
+    <div id="l" style="margin-bottom: 10px"></div><a href="<?=APP_URI?>a/<?=$id?>" onclick="return confirm('<?=T_('Are you sure?')?>');"><?=T_('Cancel')?></a></div></body>
     <? } else {
 
-    insert_alert(sprintf(TRACE_S_NOT_FOUND,$id)); 
+    insert_alert(sprintf(T_('Trace %1$s not found'),$id));
 
     } ?>
     </html>
     <? 
         
-    function get_messages() {
-
-        /* 
-         * Get messages in domain 'trace'
-         * 
-         * NOTE: We do not use i18next.js here because of the overhead it introduces!
-         */
-
-        $msg = array();
-        $msg[0] = GEOLOCATION_NOT_SUPPORTED;
-        $msg[1] = FOUND_LOCATION_WITH_D_ACCURACY;
-        $msg[2] = LOCATION_IS_OLD_CHECK_IF_GPS_IS_ON;
-        $msg[3] = WAITING_FOR_HIGHER_ACCURACY;
-        $msg[4] = TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA;
-        $msg[5] = LOCATION_IS_UNAVAILABLE;
-        $msg[6] = PLEASE_APPROVE_ACCESS_TO_LOCATION_FASTER;
-        $msg[7] = UNKNOWN_ERROR;
-        $msg[8] = LOCATION_S;
-        $msg[9] = CALCULATING;
-        $msg[10] = LOCATION_NOT_SENT_CHECK_DATA_CONNECTION;
-        $msg[11] = SEND_LOCATION_AS;
-        $msg[12] = LOCATION_NOT_FOUND;
-        $msg[13] = UPDATE;
-        if (strstr($_SERVER['HTTP_USER_AGENT'],'iPhone')) {
-            $msg[14] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA;
-            $msg[15] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA2;
-            $msg[16] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA3;
-        }
-        return $msg;
-    }
-    
 ?>
 

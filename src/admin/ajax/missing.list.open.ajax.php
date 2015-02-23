@@ -37,7 +37,7 @@
         $options = array();
  ?>
 
-        <tr><td colspan="<?=$admin ? 8 : 7?>"><?=NONE_FOUND?></td></tr>
+        <tr><td colspan="<?=$admin ? 8 : 7?>"><?=T_('None found')?></td></tr>
 
  <? } else {
 
@@ -77,16 +77,55 @@
             $answered = format_since($this_missing->answered);
             $delivered = format_since($this_missing->sms_delivery);
             if (empty($delivered))
-                $delivered = UNKNOWN;
+                $delivered = T_('Unknown');
 
 ?>
             <tr id="<?= $this_missing->id ?>">
                 <td class="missing name"><?= $this_missing->name ?></td>
+                <td id="status-<?=$id?>" class="status">
+
+                    <div class="row-fluid accordion vertical" id="accordion2">
+                        <div class="accordion-group active">
+                            <div class="accordion-heading sent">
+                                <i class="icon icon-bullhorn center"></i>
+                            </div>
+                            <div class="accordion-inner pull-left">
+                                Sent
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading delivered">
+                                <i class="icon icon-envelope center"></i>
+                            </div>
+                            <div class="accordion-inner">
+                                Delivered
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading answered">
+                                <i class="icon icon-eye-open center"></i>
+                            </div>
+                            <div class="accordion-inner">
+                                Answered
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading located">
+                                <i class="icon icon-flag center"></i>
+                            </div>
+                            <div class="accordion-inner">
+                                <?=format_pos(new \RescueMe\Position())?>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
                 <td id="sent-<?=$id?>" class="missing sent hidden-phone"><?= $sent ?></td>
                 <td id="delivered-<?=$id?>" class="missing delivered hidden-phone"><?= $delivered ?></td>
                 <td id="responded-<?=$id?>" class="missing answered hidden-phone"><?= $answered ?></td>
                 <td class="missing received hidden-phone"><?= $received ?></td>
                 <td class="missing position"><?= $position ?></td>
+                -->
                 <? if($admin) { ?>
                 <td class="missing name hidden-phone"><?= $this_missing->user_name ?></td>
                 <td class="missing editor">
@@ -95,7 +134,7 @@
                 <? } ?>
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."missing/edit/$this_missing->id"?>">
-                            <b class="icon icon-edit"></b><?= EDIT ?>
+                            <b class="icon icon-edit"></b><?= T_('Edit') ?>
                         </a>
                         <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
                             <span class="caret"></span>
@@ -104,20 +143,20 @@
                             <li>
                                 <a role="menuitem" data-toggle="modal"
                                    href="<?=ADMIN_URI."operation/close/{$this_missing->op_id}"?>" >
-                                    <b class="icon icon-off"></b><?= CLOSE_OPERATION ?>
+                                    <b class="icon icon-off"></b><?= T_('Close operation') ?>
                                 </a>
                             </li>
                             <li>
                                 <a role="menuitem" data-toggle="modal" data-target="#confirm"
-                                   data-content="<?=sprintf(DO_YOU_WANT_TO_RESENT_SMS_TO_S,"<u>{$this_missing->name}</u>")?>"
+                                   data-content="<?=sprintf(T_('Do you want to resend SMS to %1$s?'),"<u>{$this_missing->name}</u>")?>"
                                    data-onclick="R.ajax('<?=ADMIN_URI."missing/resend/{$this_missing->id}"?>','#sent-<?=$this_missing->id?>');" >
-                                    <b class="icon icon-envelope"></b><?= RESEND_SMS ?>
+                                    <b class="icon icon-envelope"></b><?= T_('Resend SMS') ?>
                                 </a>
                             </li>                                
                             <li class="divider"></li>
                             <li>
                                 <a role="menuitem" onclick="R.ajax('<?=ADMIN_URI."missing/check/$this_missing->id"?>','#delivered-<?=$this_missing->id?>');">
-                                    <b class="icon icon-refresh"></b><?=CHECK_SMS_DELIVERY_STATUS?>
+                                    <b class="icon icon-refresh"></b><?=T_('Check SMS delivery status')?>
                                 </a>
                            </li>   
                         </ul>

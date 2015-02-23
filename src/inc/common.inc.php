@@ -353,7 +353,7 @@
             if($message) {
                 $message .= ". ";
             }
-            Logs::write($log, $level, $message. sprintf(MISSING_VALUES_S, implode(", ", $missing)));
+            Logs::write($log, $level, $message. sprintf(T_('Missing values: %1$s'), implode(", ", $missing)));
         }
         return $valid;
     }
@@ -492,20 +492,20 @@
     function format_since($timestamp) {
         if(isset($timestamp)) {
             $ts = (int)(time() - strtotime($timestamp));
-            $since = "~".UNIT_SECOND;
+            $since = "~".T_('sec');
             if($ts > 0) {
                 if($ts < 60) {
-                    $since = "$ts ".UNIT_SECOND;
+                    $since = "$ts ".T_('sec');
                 }
                 else if($ts < 2*60*60) {
-                    $since = (int)($ts/60)." ".UNIT_MINUTE;
+                    $since = (int)($ts/60)." ".T_('min');
                 }
                 else {
                     $since = format_dt($timestamp);
                 }
             }        
         } else {
-            $since = UNKNOWN;
+            $since = T_('Unknown');
         }
         return $since;
     }
@@ -544,7 +544,7 @@
 
         if(isset($p) === false) {
             $success = false;
-            $position = UNKNOWN;
+            $position = 'Unknown';
         } else {
             $success = true;
             $type = isset_get($params, Properties::MAP_DEFAULT_FORMAT, Properties::MAP_DEFAULT_FORMAT_UTM);
@@ -910,4 +910,20 @@
 
         return $out;
     }
-    
+
+    /**
+     * Convert path elements to valid path string
+     * @param $root string Root path
+     * @param $elements string Path elements
+     * @return string Path
+     */
+    function get_path($root, $elements) {
+
+        if(is_array($elements) === false) {
+            $elements = array($elements);
+        }
+
+        array_unshift($elements, $root);
+
+        return implode(DIRECTORY_SEPARATOR, $elements);
+    }

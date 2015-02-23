@@ -24,18 +24,19 @@
             } else {                
                 switch($user) {
                     case User::DELETED:
-                        $state = IS_DELETED;
+                        $state = T_('Is deleted');
                         break;
                     case User::DISABLED:
-                        $state = IS_DISABLED;
+                        $state = T_('Is disabled');
                         break;
                     case User::PENDING:
-                        $state = AWAITS_APPROVAL;
+                        $state = T_('Awaits approval');
                         break;
                     default:
+                        $state = T_('Unknown');
                         break;
                 }
-                $_ROUTER['error'] = USER.' '.$state;
+                $_ROUTER['error'] = sprintf(T_('User %1$s'), $state);
             }
         }            
         
@@ -84,11 +85,11 @@
     // Dispatch view
     switch($_GET['view']) {
         case 'logon':
-            $_ROUTER['name'] = LOGIN;
+            $_ROUTER['name'] = T_('Login');
             $_ROUTER['view'] = $_GET['view'];
             break;
         case 'logout':
-            $_ROUTER['name'] = LOGOUT;
+            $_ROUTER['name'] = T_('Logout');
             $_ROUTER['view'] = $_GET['view'];
             
             $user->logout();
@@ -98,20 +99,20 @@
         
         case 'start':
         case 'dash':
-            $_ROUTER['name'] = DASHBOARD;
+            $_ROUTER['name'] = T_('Dashboard');
             $_ROUTER['view'] = 'dash';
             break;
         case 'about':
-            $_ROUTER['name'] = ABOUT;
+            $_ROUTER['name'] = sprintf(T_('About %1$s'), TITLE);
             $_ROUTER['view'] = $_GET['view'];
             break;
         case 'logs':
             
             if($user->allow('read', 'logs') === FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
             
@@ -128,16 +129,16 @@
             
         case 'positions':
             if (is_ajax_request() === FALSE) {
-                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = "Not an ajax request.";
+                $_ROUTER['error'] = T_("Not an ajax request.");
                 break;
             }
 
             if (($id = input_get_int('id')) === FALSE) {
-                $_ROUTER['name'] = _("Illegal Operation");
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = "Id not found.";
+                $_ROUTER['error'] = T_("Id not defined.");
                 break;
             }
 
@@ -146,16 +147,16 @@
 
             if ($missing !== FALSE) {
                 if (($user->allow('write', 'operations', $missing->op_id) || $admin) === FALSE) {
-                    $_ROUTER['name'] = _("Illegal Operation");
+                    $_ROUTER['name'] = T_('Illegal operation');
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['error'] = _("Access denied");
+                    $_ROUTER['error'] = T_('Access denied');
                     break;
                 }
                 
                 echo ajax_response("positions");
                 
             } else {
-                $_ROUTER['error'] = _("Missing $id not found");
+                $_ROUTER['error'] = sprintf(T_("Missing %1s$ not found"),$id);
             }
 
             break;
@@ -166,9 +167,9 @@
             
             if(($user->allow('read', 'setup', $id) || $user->allow('read', 'setup.all')) === FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
             
@@ -200,7 +201,7 @@
                 exit;
             }
             
-            $_ROUTER['name'] = SETUP;
+            $_ROUTER['name'] = T_('Setup');
             $_ROUTER['view'] = $_GET['view'];
             break;
 
@@ -210,12 +211,12 @@
             
             $module = Module::get($id);
 
-            $_ROUTER['name'] = SETUP;
+            $_ROUTER['name'] = T_('Setup');
             $_ROUTER['view'] = $_GET['view'];
 
             if($module === false)
             {
-                $_ROUTER['error'] = MODULE.' '.$id.' ' .ucfirst(NOT_FOUND);
+                $_ROUTER['error'] = sprintf(T_('Module %1$s not found'), $id);
                 break;
             }
                 
@@ -226,9 +227,9 @@
 
                 if(($user->allow('read', 'setup', $user_id) || $user->allow('read', 'setup.all')) === FALSE)
                 {
-                    $_ROUTER['name'] = ILLEGAL_OPERATION;
+                    $_ROUTER['name'] = T_('Illegal operation');
                     $_ROUTER['view'] = "403";
-                    $_ROUTER['error'] = ACCESS_DENIED;
+                    $_ROUTER['error'] = T_('Access denied');
                     break;
                 }
 
@@ -236,9 +237,9 @@
 
                 if(($user->allow('write', 'setup', $user_id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
-                    $_ROUTER['name'] = ILLEGAL_OPERATION;
+                    $_ROUTER['name'] = T_('Illegal operation');
                     $_ROUTER['view'] = "403";
-                    $_ROUTER['error'] = ACCESS_DENIED;
+                    $_ROUTER['error'] = T_('Access denied');
                     break;
                 }
 
@@ -260,7 +261,7 @@
                 }
                 else
                 {
-                    $_ROUTER['error'] = OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                    $_ROUTER['error'] = sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id ");
                 }
             }
 
@@ -281,7 +282,7 @@
             else {
                 
                 header('HTTP 400 Bad Request', true, 400);
-                echo ILLEGAL_OPERATION;
+                echo T_('Illegal operation');
             }
 
             exit;            
@@ -290,9 +291,9 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
@@ -301,9 +302,9 @@
                 
                 if(($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
-                    $_ROUTER['name'] = ILLEGAL_OPERATION;
-                    $_ROUTER['view'] = "403";
-                    $_ROUTER['error'] = ACCESS_DENIED;
+                    $_ROUTER['name'] = T_('Illegal operation');
+                    $_ROUTER['view'] = "404";
+                    $_ROUTER['error'] = T_('Access denied');
                     break;
                 }
                 
@@ -324,14 +325,14 @@
                 
                 if(!Properties::set($name, $value, $id)) {
                     header('HTTP 400 Bad Request', true, 400);
-                    echo SETTING.''." $name=$value ".strtolower(NOT_SAVED);
+                    echo sprintf(T_('Setting %1$s not saved'), "$name=$value");
                     exit;
                 }
                 
             } 
             else {
                 header('HTTP 400 Bad Request', true, 400);
-                echo ILLEGAL_OPERATION;
+                echo T_('Illegal operation');
             }
             
             exit;
@@ -340,21 +341,21 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
             if(($user->allow('read', 'user', $id) || $user->allow('read', 'user.all'))=== FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }            
             
-            $_ROUTER['name'] = USER;
+            $_ROUTER['name'] = T_('User');
             $_ROUTER['view'] = $_GET['view'];
             
             break;
@@ -363,9 +364,9 @@
             
             if($user->allow('read', 'user.all') === FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }            
             
@@ -376,7 +377,7 @@
                 exit;
             }            
             
-            $_ROUTER['name'] = USERS;
+            $_ROUTER['name'] = T_('Users');
             $_ROUTER['view'] = $_GET['view'];
             
             break;
@@ -387,7 +388,7 @@
             $role = 2; // Default role is operator
             $state = User::PENDING;
             $redirect = APP_URI;
-            $_ROUTER['name'] = REQUEST_NEW_USER;
+            $_ROUTER['name'] = T_('Request new user');
             
             $admin = ($user instanceof RescueMe\User) && $user->allow('write', 'user.all');
             
@@ -399,7 +400,7 @@
                     $role = $_POST['role'];
                 }
                 $redirect = ADMIN_URI.'user/list';
-                $_ROUTER['name'] = NEW_USER;
+                $_ROUTER['name'] = T_('New user');
             }
             
             $_ROUTER['view'] = $_GET['view'];
@@ -409,23 +410,23 @@
                 
                 $username = User::safe($_POST['email']);
                 if(empty($username)) {
-                    $_ROUTER['error'] = EMAIL_MUST_CONTAIN_AT_LEAST_ONE_ALPHANUMERIC_CHARACTER;
+                    $_ROUTER['error'] = T_('Email must contain at least one alphanumeric character');
                     break;
                 }
                 
                 $next = $_POST['email'];
                 if(User::unique($next) === false) {
-                    $_ROUTER['error'] = sprintf(USER_WITH_EMAIL_S_ALREADY_EXISTS, $next);
+                    $_ROUTER['error'] = sprintf(T_('User with e-mail %1$s already exist'), $next);
                     break;
                 } 
                 
                 if (strlen($_POST['password']) < 8) {
-                    $_ROUTER['error'] = sprintf(PASSWORD_MUST_BE_AT_LEAST_D_CHARACTERS_LONG, 8);
+                    $_ROUTER['error'] = sprintf(T_('Password must be at least %1$d characters long'), 8);
                     break;
                 }
                 
                 if ($_POST['password'] !== $_POST['repeat-pwd']) {
-                    $_ROUTER['error'] = PASSWORDS_DO_NOT_MATCH;
+                    $_ROUTER['error'] = T_('Passwords do not match');
                     break;
                 }
                 
@@ -444,17 +445,17 @@
                     $user->prepare(input_get_string('use_system_sms_provider', false));
                     
                     if($admin === false) {
-                        $_ROUTER['name'] = REQUEST_SENT;
+                        $_ROUTER['name'] = T_('Request sent');
                         $_ROUTER['view'] = 'continue';
                         $_ROUTER['continue'] = $redirect;
-                        $_ROUTER['message'] = YOU_WILL_RECEIVE_AN_SMS_WHEN_THE_REQUEST_IS_PROCESSED;
+                        $_ROUTER['message'] = T_('You will receive an SMS when the request is processed');
                         break;
                     } else {                   
                         header("Location: ".$redirect);
                         exit();
                     }
                 }
-                $_ROUTER['error'] = OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                $_ROUTER['error'] = sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
 
             }
             
@@ -464,9 +465,9 @@
             
             if(($id = input_get_int('id', User::currentId())) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
@@ -474,15 +475,15 @@
             
             if(($access || $user->allow('write', 'user', $id))=== FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
             
             $approve = isset($_GET['approve']);
- 
-            $_ROUTER['name'] = ($approve ? APPROVE : EDIT).' '.  ucfirst(USER);
+
+            $_ROUTER['name'] = $approve ? T_('Approve') : T_('Edit').' '.  ucfirst(T_('User'));
             $_ROUTER['view'] = 'user/edit';
             
             // Process form?
@@ -493,20 +494,21 @@
                 
                 $edit = User::get($id);
                 if($edit === false) {
-                    $_ROUTER['error'] = USER.' '.$id.' ' .ucfirst(NOT_FOUND);
+                    $_ROUTER['error'] = sprintf(T_('User %1$s not found'), $id);
                     break;
                 }
                 
                 $username = User::safe($_POST['email']);
                 if(empty($username)) {
-                    $_ROUTER['error'] = USERNAME_NOT_SAFE.'. '.EMAIL_MUST_CONTAIN_AT_LEAST_ONE_ALPHANUMERIC_CHARACTER;
+                    $_ROUTER['error'] = T_('Username not safe').'. ' .
+                        T_('Email must contain at least one alphanumeric character');
                     break;
                 } 
                 
                 $next = $_POST['email'];
                 if(strtolower(User::safe($next)) !== strtolower(User::safe($edit->email))) {
                     if(User::unique($next) === false) {
-                        $_ROUTER['error'] = sprintf(USER_WITH_EMAIL_S_ALREADY_EXISTS, $next);
+                        $_ROUTER['error'] = sprintf(T_('User with e-mail %1$s already exist'), $next);
                         break;
                     } 
                 }
@@ -524,7 +526,7 @@
                     if($approve) {
                         
                         if($edit->isState(User::PENDING) === false) {
-                            $_ROUTER['error'] = sprintf(USER_S_CANNOT_BE_APPROVED, $id);
+                            $_ROUTER['error'] = sprintf(T_('User %1$s cannot be approved'), $id);
                             break;
                         }
                         
@@ -541,8 +543,8 @@
                     header("Location: ".ADMIN_URI.$url);
                     exit();
                 }
-                $_ROUTER['error'] = DB::errno() ? DB::error() : 
-                    OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                $_ROUTER['error'] = DB::errno() ? DB::error() :
+                    sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
             }                
             
             break;
@@ -550,9 +552,9 @@
            
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
@@ -560,36 +562,36 @@
             
             if(($access || $user->allow('write', 'user', $id))=== FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
             
             $edit = User::get($id);
             if($edit === false) {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['error'] = sprintf(T_('User %1$s not found'), $id);
                 break;
             }
             
             if($edit->isState(User::PENDING) === false) {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = sprintf(USER_S_CANNOT_BE_APPROVED, $id);
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['error'] = sprintf(T_('User %1$s cannot be approved'), $id);
                 break;
             }
             
             if($edit->approve() === false) {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = DB::errno() ? DB::error() : 
-                    OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['error'] = DB::errno() ? DB::error() :
+                    sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
                 break;
             }         
             
-            $_ROUTER['name'] = USER_APPROVED;
+            $_ROUTER['name'] = T_('User approved');
             $_ROUTER['view'] = 'continue';
             $_ROUTER['continue'] = ADMIN_URI . ($access ? 'user/list#pending' : '');            
-            $_ROUTER['message'] = sprintf(MESSAGE_SENT_TO," <b>{$edit->name}</b>.");
+            $_ROUTER['message'] = sprintf(T_('Message sent to %1$s')," <b>{$edit->name}</b>.");
                 
             break;
 
@@ -597,44 +599,44 @@
            
            if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
             if($user->allow('write', 'user.all') === FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
             
             $edit = User::get($id);
             if($edit === false) {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['error'] = sprintf(T_('User %1$s not found'), $id);
                 break;
             }
             
             if($edit->isState(User::PENDING) === false) {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = sprintf(USER_S_CANNOT_BE_APPROVED, $id);
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['error'] = sprintf(T_('User %1$s cannot be approved'), $id);
                 break;
             }
             
             if($edit->reject() === false) {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
-                $_ROUTER['error'] = DB::errno() ? DB::error() : 
-                    OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['error'] = DB::errno() ? DB::error() :
+                    sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
                 break;
             }
             
-            $_ROUTER['name'] = REJECT_USER;
+            $_ROUTER['name'] = T_('Reject user');
             $_ROUTER['view'] = 'continue';
             $_ROUTER['continue'] = ADMIN_URI . 'user/list#pending';            
-            $_ROUTER['message'] = sprintf(MESSAGE_SENT_TO," <b>{$edit->name}</b>.");
+            $_ROUTER['message'] = sprintf(T_('Message sent to %1$s')," <b>{$edit->name}</b>.");
             
             break;
             
@@ -642,30 +644,30 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
             if($user->allow('write', 'user.all') === FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
 
-            $_ROUTER['name'] = USERS;
+            $_ROUTER['name'] = T_('Users');
             $_ROUTER['view'] = 'user/list';
             
             $edit = User::get($id);
             
             if($edit === false) {
-                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(T_('User %1$s not found'), $id);
             }
             else if($edit->delete() === false) {
-                $_ROUTER['error'] = sprintf(USER_S_NOT_DELETED, $id) . ". ". 
+                $_ROUTER['error'] = sprintf(T_('User %1$s not deleted'), $id) . ". ".
                     (DB::errno() ? DB::error() : '');
             }
             else {
@@ -679,30 +681,30 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
             if($user->allow('write', 'user.all') === FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
             
-            $_ROUTER['name'] = USERS;
+            $_ROUTER['name'] = T_('Users');
             $_ROUTER['view'] = 'user/list';
             
             $edit = User::get($id);
             
             if(!$edit) {
-                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(T_('User %1$s not found'), $id);
             }
             else if($edit->disable() === false) {
-                $_ROUTER['error'] = sprintf(USER_S_NOT_DISABLED, $id) . ". ". (DB::errno() ? DB::error() : '');
+                $_ROUTER['error'] = sprintf(T_('User %1$s not disabled'), $id) . ". ". (DB::errno() ? DB::error() : '');
             }
             else {
                 header("Location: ".ADMIN_URI.'user/list');
@@ -715,29 +717,29 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
             if($user->allow('write', 'user.all') === FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
             
-            $_ROUTER['name'] = USERS;
+            $_ROUTER['name'] = T_('Users');
             $_ROUTER['view'] = 'user/list';
             
             $edit = User::get($id);
             if(!$edit) {
-                $_ROUTER['error'] = sprintf(USER_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(T_('User %1$s not found'), $id);
             }
             else if($edit->enable() === false) {
-                $_ROUTER['error'] = sprintf(USER_S_NOT_ENABLED, $id) . ". ". (DB::errno() ? DB::error() : '');
+                $_ROUTER['error'] = sprintf(T_('User %1$s not enabled'), $id) . ". ". (DB::errno() ? DB::error() : '');
             }
             else {
                 header("Location: ".ADMIN_URI.'user/list');
@@ -749,13 +751,13 @@
         case 'role/list':
             
             if ($user->allow('read', 'roles') === FALSE) {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
             
-            $_ROUTER['name'] = ROLES;
+            $_ROUTER['name'] = T_('Roles');
             $_ROUTER['view'] = $_GET['view'];
             break;
         
@@ -763,21 +765,21 @@
             
             if(($id = input_get_int('id', User::currentId())) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
             
             if ($user->allow('write', 'roles') === FALSE) {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
             
-            $_ROUTER['name'] = EDIT_ROLE;
+            $_ROUTER['name'] = T_('Edit role');
             $_ROUTER['view'] = $_GET['view'];
 
             // Process form?
@@ -786,8 +788,8 @@
                     header("Location: ".ADMIN_URI.'role/list');
                     exit();
                 }
-                $_ROUTER['error'] = DB::errno() ? DB::error() : 
-                    OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                $_ROUTER['error'] = DB::errno() ? DB::error() :
+                    sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
 
             }   
             break;
@@ -796,9 +798,9 @@
             
             if(($id = input_get_int('id', User::currentId())) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
@@ -806,9 +808,9 @@
             
             if(($allow || $user->allow('write', 'user', $id)) === FALSE)
             {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "403";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             }
 
@@ -835,8 +837,8 @@
                     header("Location: ".ADMIN_URI.($allow ? 'user/list' : ''));
                     exit();
                 }
-                $_ROUTER['error'] = DB::errno() ? DB::error() : 
-                    OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                $_ROUTER['error'] = DB::errno() ? DB::error() :
+                    sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
 
             }   
             
@@ -854,8 +856,8 @@
                     header("Location: ".ADMIN_URI.($_SESSION['logon'] ? 'admin' : 'logon'));
                     exit();
                 }
-                $_ROUTER['error'] = DB::errno() ? DB::error() : 
-                    OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                $_ROUTER['error'] = DB::errno() ? DB::error() :
+                    sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
             }   
             
             break;
@@ -864,9 +866,9 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
@@ -877,9 +879,9 @@
                         
             if (($user->allow('write', 'operations', $id)  || $admin)=== FALSE) {
                 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;                
             } 
             
@@ -899,8 +901,8 @@
                     exit();
                 }
                 
-                $_ROUTER['error'] = DB::errno() ? DB::error() : 
-                    OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                $_ROUTER['error'] = DB::errno() ? DB::error() :
+                    sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
             }
             break;
             
@@ -908,21 +910,21 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
-            $_ROUTER['name'] = REOPEN_OPERATION;
+            $_ROUTER['name'] = T_('Reopen operation');
             $_ROUTER['view'] = 'missing/list';
             
             $admin = $user->allow('write', 'operations.all');
             
             if (($user->allow('write', 'operations', $id)  || $admin)=== FALSE) {
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;
             } 
             
@@ -940,14 +942,14 @@
             
             if (($user->allow('write', 'operations') || $user->allow('write', 'operations.all')) === FALSE) {
                 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;                
             } 
             
             
-            $_ROUTER['name'] = START_NEW_TRACE;
+            $_ROUTER['name'] = T_('Start new trace');
             $_ROUTER['view'] = $_GET['view'];
             
             // Process form?
@@ -979,8 +981,8 @@
                     header("Location: ".ADMIN_URI.'missing/'.$missing->id);
                     exit();
                 }
-                $_ROUTER['error'] = DB::errno() ? DB::error() : 
-                    OPERATION.' '.$_GET['view']."/$id ".strtolower(NOT_EXECUTED_TRY_AGAIN);
+                $_ROUTER['error'] = DB::errno() ? DB::error() :
+                    sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
             }
             
             break;
@@ -989,9 +991,9 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
@@ -1003,17 +1005,17 @@
                 
                 if(($user->allow('read', 'operations', $missing->op_id) || $admin) === FALSE) {
                 
-                    $_ROUTER['name'] = ILLEGAL_OPERATION;
+                    $_ROUTER['name'] = T_('Illegal operation');
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['error'] = ACCESS_DENIED;
+                    $_ROUTER['error'] = T_('Access denied');
                     break;                
                 } 
 
             } else {
-                $_ROUTER['error'] = sprintf(TRACE_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(T_('Trace %1$s not found'), $id);
             }
 
-            $_ROUTER['name'] = TRACE;
+            $_ROUTER['name'] = T_('Trace');
             $_ROUTER['view'] = $_GET['view'];
             break;
             
@@ -1021,9 +1023,9 @@
             
             if (($user->allow('read', 'operations') || $user->allow('read', 'operations.all')) === FALSE) {
                 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ACCESS_DENIED;
+                $_ROUTER['error'] = T_('Access denied');
                 break;                
             } 
             
@@ -1042,7 +1044,7 @@
             }
             
             
-            $_ROUTER['name'] = TRACES;
+            $_ROUTER['name'] = T_('Traces');
             $_ROUTER['view'] = $_GET['view'];
             break;
         
@@ -1050,9 +1052,9 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = ID_NOT_FOUND;
+                $_ROUTER['error'] = T_('Id not defined');
                 break;
             } 
             
@@ -1060,16 +1062,16 @@
             
             $missing = Missing::get($id);
             
-            $_ROUTER['name'] = EDIT_TRACE;
+            $_ROUTER['name'] = T_('Edit trace');
             $_ROUTER['view'] = $_GET['view'];
 
             if($missing !== FALSE){
                 
                 if (($user->allow('write', 'operations', $missing->op_id)  || $admin)=== FALSE) {
 
-                    $_ROUTER['name'] = ILLEGAL_OPERATION;
+                    $_ROUTER['name'] = T_('Illegal operation');
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['error'] = ACCESS_DENIED;
+                    $_ROUTER['error'] = T_('Access denied');
                     break;                
                 }                
                 
@@ -1080,7 +1082,7 @@
 
                     if($closed) {
                         if(Operation::reopen($missing->op_id) === FALSE) {
-                            $_ROUTER['error'] = FAILED_TO_REOPEN_OPERATION . " [{$missing->op_id}].";
+                            $_ROUTER['error'] = sprintf(T_('Failed to reopen operation %1$s'), "[{$missing->op_id}]");
                         }                        
                     }
 
@@ -1096,7 +1098,8 @@
                             if(isset($_POST['resend'])) {
 
                                 if($missing->sendSMS() === FALSE) {
-                                    $_ROUTER['error'] = OPERATION . " missing/resend/$id ". strtolower(NOT_EXECUTED_TRY_AGAIN);
+                                    $_ROUTER['error'] =
+                                        sprintf(T_('Operation [%1$s] not executed, try again'), " missing/resend/$id ");
                                 }
                             } 
 
@@ -1110,13 +1113,13 @@
 
                 // Reopen operation
                 if($closed && !isset($_GET['reopen'])) {
-                    $_ROUTER['name'] = ILLEGAL_OPERATION;
+                    $_ROUTER['name'] = T_('Illegal operation');
                     $_ROUTER['view'] = "404";
-                    $_ROUTER['error'] = OPERATION." [$missing->op_id] " . strtolower(IS_CLOSED);
+                    $_ROUTER['error'] = sprintf(T_('Operation [%1$s] is closed'), $missing->op_id);
                 }
 
             } else {
-                $_ROUTER['error'] = sprintf(TRACE_S_NOT_FOUND, $id);
+                $_ROUTER['error'] = sprintf(T_('Trace %1$s not found'), $id);
             }
             
             break;
@@ -1125,7 +1128,7 @@
             
             if(($id = input_get_int('id')) === FALSE) {
 
-                echo ID_NOT_FOUND;
+                echo T_('Id not defined');
 
             } else {
 
@@ -1137,15 +1140,15 @@
 
                     if (($user->allow('write', 'operations', $missing->op_id) || $admin)=== FALSE) {
 
-                        echo ACCESS_DENIED;
+                        echo T_('Access denied');
 
                     } else if(Operation::isClosed($missing->op_id)) {
 
-                        echo sprintf(TRACE_S_IS_CLOSED, $missing->id);
+                        echo sprintf(T_('Trace %1$s is closed'), $missing->id);
 
                     } elseif($missing->sendSMS() === FALSE) {
 
-                        echo SMS_NOT_SENT;
+                        echo T_('SMS not sent');
 
                     } else {
 
@@ -1154,7 +1157,7 @@
                     }
                 } else {
 
-                    echo sprintf(TRACE_S_NOT_FOUND, $id);
+                    echo sprintf(T_('Trace %1$s not found'), $id);
 
                }
             }
@@ -1165,7 +1168,7 @@
             
             if(is_ajax_request() === FALSE) {
 
-                $_ROUTER['name'] = ILLEGAL_OPERATION;
+                $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
                 $_ROUTER['error'] = T_('Not an ajax request');
                 break;
@@ -1173,7 +1176,7 @@
                 
             if(($id = input_get_int('id')) === FALSE) {
 
-                echo sprintf(TRACE_S_NOT_FOUND, $id);
+                echo sprintf(T_('Trace %1$s not found'), $id);
 
             } else {
 
@@ -1185,7 +1188,7 @@
                 
                     if (($admin || $user->allow('read', 'operations', $missing->op_id))=== FALSE) {
 
-                        echo ACCESS_DENIED;
+                        echo T_('Access denied');
 
                     } else {
                         
@@ -1193,7 +1196,7 @@
                         
                     }
                 } else {
-                    echo UNKNOWN;
+                    echo T_('Unknown');
                 }
                 
             }
@@ -1205,7 +1208,7 @@
             die(ajax_response('message','list'));
             
         default:
-            $_ROUTER['name'] = ILLEGAL_OPERATION;
+            $_ROUTER['name'] = T_('Illegal operation');
             $_ROUTER['view'] = "404";
             $_ROUTER['error'] = print_r($_REQUEST,true);
             break;

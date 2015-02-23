@@ -1,0 +1,1816 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: RescueMe 1.0.0\n"
+"POT-Creation-Date: 2015-02-23 22:05+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
+"Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src/\n"
+"X-Poedit-KeywordsList: T_;T_locale\n"
+"X-Poedit-SearchPath-0: admin\n"
+
+#: admin/index.php:56 admin/router.php:102
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: admin/index.php:124 admin/router.php:88 admin/gui/logon.gui.php:2
+#: admin/gui/logon.gui.php:10
+msgid "Login"
+msgstr "Logg inn"
+
+#: admin/router.php:23
+msgid "You have entered wrong username or password"
+msgstr "Du har oppgitt feil brukernavn eller passord"
+
+#: admin/router.php:27
+msgid "Is deleted"
+msgstr "Er slettet"
+
+#: admin/router.php:30
+msgid "Is disabled"
+msgstr "Er deaktivert"
+
+#: admin/router.php:33
+msgid "Awaits approval"
+msgstr "Avventer godkjenning"
+
+#: admin/router.php:36 admin/router.php:1199 admin/inc/gui.inc.php:52
+#: admin/inc/gui.inc.php:70 admin/inc/gui.inc.php:98 admin/inc/gui.inc.php:123
+#: admin/gui/missing.gui.php:45 admin/gui/missing.gui.php:87
+#: admin/ajax/missing.list.open.ajax.php:80
+msgid "Unknown"
+msgstr "Ukjent"
+
+#: admin/router.php:39
+#, php-format
+msgid "User %1$s"
+msgstr "Bruker %1$s"
+
+#: admin/router.php:92 admin/gui/system.menu.gui.php:51
+msgid "Logout"
+msgstr "Logg ut"
+
+#: admin/router.php:106
+#, php-format
+msgid "About %1$s"
+msgstr "Om %1$s"
+
+#: admin/router.php:113 admin/router.php:132 admin/router.php:139
+#: admin/router.php:150 admin/router.php:170 admin/router.php:230
+#: admin/router.php:240 admin/router.php:285 admin/router.php:294
+#: admin/router.php:305 admin/router.php:335 admin/router.php:344
+#: admin/router.php:352 admin/router.php:367 admin/router.php:468
+#: admin/router.php:478 admin/router.php:555 admin/router.php:565
+#: admin/router.php:573 admin/router.php:579 admin/router.php:585
+#: admin/router.php:602 admin/router.php:610 admin/router.php:618
+#: admin/router.php:624 admin/router.php:630 admin/router.php:647
+#: admin/router.php:655 admin/router.php:684 admin/router.php:692
+#: admin/router.php:720 admin/router.php:728 admin/router.php:754
+#: admin/router.php:768 admin/router.php:776 admin/router.php:801
+#: admin/router.php:811 admin/router.php:869 admin/router.php:882
+#: admin/router.php:913 admin/router.php:925 admin/router.php:945
+#: admin/router.php:994 admin/router.php:1008 admin/router.php:1026
+#: admin/router.php:1055 admin/router.php:1072 admin/router.php:1116
+#: admin/router.php:1171 admin/router.php:1211
+msgid "Illegal operation"
+msgstr "Ulovlig handling"
+
+#: admin/router.php:115 admin/router.php:152 admin/router.php:172
+#: admin/router.php:232 admin/router.php:242 admin/router.php:307
+#: admin/router.php:354 admin/router.php:369 admin/router.php:480
+#: admin/router.php:567 admin/router.php:612 admin/router.php:657
+#: admin/router.php:694 admin/router.php:730 admin/router.php:756
+#: admin/router.php:778 admin/router.php:813 admin/router.php:884
+#: admin/router.php:927 admin/router.php:947 admin/router.php:1010
+#: admin/router.php:1028 admin/router.php:1074 admin/router.php:1143
+#: admin/router.php:1191
+msgid "Access denied"
+msgstr "Ingen tilgang"
+
+#: admin/router.php:126 admin/gui/system.menu.gui.php:43
+#: admin/gui/logs.gui.php:18
+msgid "Logs"
+msgstr "Logger"
+
+#: admin/router.php:134
+msgid "Not an ajax request."
+msgstr "Ikke en ajax-forespørsel"
+
+#: admin/router.php:141
+msgid "Id not defined."
+msgstr "Id ikke definert"
+
+#: admin/router.php:159
+#, php-format
+msgid "Missing %1s$ not found"
+msgstr "Sporing %1$s ikke funnet"
+
+#: admin/router.php:204 admin/router.php:214 admin/gui/system.menu.gui.php:32
+#: admin/gui/missing.new.gui.php:153 admin/gui/setup.gui.php:18
+#: admin/ajax/user.list.ajax.php:87
+msgid "Setup"
+msgstr "Oppsett"
+
+#: admin/router.php:219
+#, php-format
+msgid "Module %1$s not found"
+msgstr "Modul %1$s ikke funnet"
+
+#: admin/router.php:264 admin/router.php:458 admin/router.php:547
+#: admin/router.php:587 admin/router.php:632 admin/router.php:792
+#: admin/router.php:841 admin/router.php:860 admin/router.php:905
+#: admin/router.php:985 admin/router.php:1102
+#, php-format
+msgid "Operation [%1$s] not executed, try again"
+msgstr "Operasjon [%1$s] ikke utført, prøv igjen"
+
+#: admin/router.php:296 admin/router.php:346 admin/router.php:470
+#: admin/router.php:557 admin/router.php:604 admin/router.php:649
+#: admin/router.php:686 admin/router.php:722 admin/router.php:770
+#: admin/router.php:803 admin/router.php:871 admin/router.php:915
+#: admin/router.php:996 admin/router.php:1057 admin/router.php:1131
+msgid "Id not defined"
+msgstr "Id ikke definert"
+
+#: admin/router.php:328
+#, php-format
+msgid "Setting %1$s not saved"
+msgstr "Innstilling %1$s ikke lagret"
+
+#: admin/router.php:358 admin/router.php:486 admin/gui/missing.list.gui.php:41
+#: admin/gui/missing.list.gui.php:71 admin/gui/missing.list.gui.php:101
+#: admin/gui/missing.list.gui.php:128 admin/gui/logs.gui.php:39
+msgid "User"
+msgstr "Bruker"
+
+#: admin/router.php:380 admin/router.php:661 admin/router.php:698
+#: admin/router.php:734 admin/gui/system.menu.gui.php:39
+#: admin/gui/user.list.gui.php:21
+msgid "Users"
+msgstr "Brukere"
+
+#: admin/router.php:391
+msgid "Request new user"
+msgstr "Forespørsel om ny bruker"
+
+#: admin/router.php:403 admin/gui/system.menu.gui.php:36
+#: admin/ajax/user.list.ajax.php:120
+msgid "New user"
+msgstr "Ny bruker"
+
+#: admin/router.php:413 admin/router.php:504
+msgid "Email must contain at least one alphanumeric character"
+msgstr "E-post må inneholde minst ett alphanumerisk tegn"
+
+#: admin/router.php:419 admin/router.php:511
+#, php-format
+msgid "User with e-mail %1$s already exist"
+msgstr "Bruker med e-post %1$s finnes allerede"
+
+#: admin/router.php:424
+#, php-format
+msgid "Password must be at least %1$d characters long"
+msgstr "Passordet må være minst %1$d tegn"
+
+#: admin/router.php:429 admin/router.php:832
+msgid "Passwords do not match"
+msgstr "Passordene stemmer ikke"
+
+#: admin/router.php:448
+msgid "Request sent"
+msgstr "Forespørsel sendt"
+
+#: admin/router.php:451
+msgid "You will receive an SMS when the request is processed"
+msgstr "Du vil motta en SMS når din forespørsel er behandlet"
+
+#: admin/router.php:486 admin/gui/user.edit.gui.php:86
+#: admin/ajax/user.list.ajax.php:71
+msgid "Approve"
+msgstr "Godkjenn"
+
+#: admin/router.php:486 admin/gui/role.list.gui.php:27
+#: admin/ajax/setup.module.list.ajax.php:42 admin/ajax/user.list.ajax.php:54
+#: admin/ajax/missing.list.open.ajax.php:137
+msgid "Edit"
+msgstr "Endre"
+
+#: admin/router.php:497 admin/router.php:574 admin/router.php:619
+#: admin/router.php:667 admin/router.php:704 admin/router.php:739
+#, php-format
+msgid "User %1$s not found"
+msgstr "Bruker %1$s ikke funnet"
+
+#: admin/router.php:503
+msgid "Username not safe"
+msgstr "Brukernavn er ikke sikkert"
+
+#: admin/router.php:529 admin/router.php:580 admin/router.php:625
+#, php-format
+msgid "User %1$s cannot be approved"
+msgstr "Bruker %1$s kunne ikke godkjennes"
+
+#: admin/router.php:591
+msgid "User approved"
+msgstr "Bruker godkjent"
+
+#: admin/router.php:594 admin/router.php:639
+#, php-format
+msgid "Message sent to %1$s"
+msgstr "Melding sendt til %1$s"
+
+#: admin/router.php:636
+msgid "Reject user"
+msgstr "Avvis bruker"
+
+#: admin/router.php:670
+#, php-format
+msgid "User %1$s not deleted"
+msgstr "Bruker %1$s ble ikke slettet"
+
+#: admin/router.php:707
+#, php-format
+msgid "User %1$s not disabled"
+msgstr "Bruker %1$s ble ikke deaktivert"
+
+#: admin/router.php:742
+#, php-format
+msgid "User %1$s not enabled"
+msgstr "Bruker %1$s ble ikke aktivert"
+
+#: admin/router.php:760 admin/gui/system.menu.gui.php:41
+#: admin/gui/role.list.gui.php:8
+msgid "Roles"
+msgstr "Roller"
+
+#: admin/router.php:782 admin/gui/role.edit.gui.php:32
+msgid "Edit role"
+msgstr "Endre rolle"
+
+#: admin/router.php:817
+msgid "Change Password"
+msgstr "Bytt passord"
+
+#: admin/router.php:827
+msgid "Password must be at least 8 characters long"
+msgstr "Passordet må være minst 8 tegn"
+
+#: admin/router.php:849
+msgid "Recover Password"
+msgstr "Gjenopprett passord"
+
+#: admin/router.php:875 admin/gui/operation.close.gui.php:81
+#: admin/gui/operation.close.gui.php:101
+#: admin/ajax/missing.list.open.ajax.php:146
+msgid "Close operation"
+msgstr "Avslutt operasjon"
+
+#: admin/router.php:919
+msgid "Reopen operation"
+msgstr "Gjenåpne operasjon"
+
+#: admin/router.php:952 admin/gui/dash.gui.php:4
+#: admin/gui/missing.new.gui.php:21
+msgid "Start new trace"
+msgstr "Start ny sporing"
+
+#: admin/router.php:1015 admin/router.php:1122 admin/router.php:1160
+#: admin/router.php:1179
+#, php-format
+msgid "Trace %1$s not found"
+msgstr "Sporing %1$s ikke funnet"
+
+#: admin/router.php:1018 admin/classes/RescueMe/Operation.php:53
+#: admin/gui/trace.menu.gui.php:15
+msgid "Trace"
+msgstr "Sporing"
+
+#: admin/router.php:1047 admin/gui/missing.list.gui.php:16
+#: admin/gui/trace.menu.gui.php:21 admin/gui/trace.menu.gui.php:30
+msgid "Traces"
+msgstr "Sporinger"
+
+#: admin/router.php:1065 admin/gui/missing.edit.gui.php:108
+#: admin/gui/missing.edit.gui.php:114
+msgid "Edit trace"
+msgstr "Endre sporing"
+
+#: admin/router.php:1085
+#, php-format
+msgid "Failed to reopen operation %1$s"
+msgstr "Klarte ikke  å gjenåpne operasjon %1$s"
+
+#: admin/router.php:1118
+#, php-format
+msgid "Operation [%1$s] is closed"
+msgstr "Operasjon [%1$s] er lukket"
+
+#: admin/router.php:1147
+#, php-format
+msgid "Trace %1$s is closed"
+msgstr "Sporing %1$s er lukket"
+
+#: admin/router.php:1151 admin/inc/gui.inc.php:54
+msgid "SMS not sent"
+msgstr "SMS ble ikke sendt"
+
+#: admin/router.php:1173
+msgid "Not an ajax request"
+msgstr "Ikke en ajax-foresprsel"
+
+#: admin/controllers/logon.controller.php:5
+msgid "Incorrect email or password."
+msgstr "E-post eller passord er feil"
+
+#: admin/controllers/logon.controller.php:6
+msgid "Make sure your email and password are both correct."
+msgstr "Sjekk at e-post og passord er korrekt"
+
+#: admin/controllers/missing.new.controller.php:16
+msgid "Missing modules!"
+msgstr "Moduler mangler!"
+
+#: admin/controllers/missing.new.controller.php:17
+msgid "Missing module!"
+msgstr "Modul mangler!"
+
+#: admin/controllers/missing.new.controller.php:19
+msgid "The system is missing following modules!"
+msgstr "Systemet mangler følgende moduler!"
+
+#: admin/controllers/missing.new.controller.php:20
+msgid "The system is missing following module!"
+msgstr "Systemet mangler følgende modul!"
+
+#: admin/controllers/missing.new.controller.php:36
+#: admin/controllers/missing.new.controller.php:48
+msgid "Could not initiate trace"
+msgstr "Kunne ikke starte sporing"
+
+#: admin/controllers/missing.new.controller.php:37
+msgid "System error: could not initiate operation"
+msgstr "Systemfeil: Kunne ikke utføre operasjonen"
+
+#: admin/controllers/missing.new.controller.php:49
+msgid "Please try again"
+msgstr "Vennligst prøv igjen"
+
+#: admin/controllers/password.recover.controller.php:11
+msgid "Could not reset password:"
+msgstr "Kunne ikke nullstille passord:"
+
+#: admin/controllers/password.recover.controller.php:12
+msgid "User does not exist"
+msgstr "Bruker eksisterer ikke"
+
+#: admin/controllers/user.edit.controller.php:10
+msgid "Your changes was not saved!"
+msgstr "Dine endringer ble ikke lagret!"
+
+#: admin/controllers/user.edit.controller.php:11
+msgid ""
+"You entered an invalid e-mail address. Please enter a correct e-mail address"
+msgstr ""
+"Du har skrevet inn en ulovlig e-postadresse. Vennligst oppgi en lovlig e-"
+"postadresse."
+
+#: admin/controllers/user.edit.controller.php:17
+msgid "An error ocurred!"
+msgstr "En feil har oppstått!"
+
+#: admin/controllers/user.edit.controller.php:18
+msgid ""
+"An unknown error ocurred while saving your user data. The system reported"
+msgstr ""
+"En uventet feil oppsto under lagring av dine brukerdata. Systemet "
+"rapporterte:"
+
+#: admin/controllers/user.edit.controller.php:19
+msgid "Sorry"
+msgstr "Beklager"
+
+#: admin/controllers/user.new.controller.php:8
+msgid "Invalid e-mail. Please enter a correct e-mail address"
+msgstr "Ulovig e-post. Vennligst oppgi en lovlig e-postadresse."
+
+#: admin/controllers/user.new.controller.php:15
+msgid "Oops! Could not create user"
+msgstr "Auda! Kunne ikke opprette brukeren"
+
+#: admin/controllers/user.new.controller.php:16
+msgid "When attempting to create user, an error ocurred. The system reported: "
+msgstr "Klarte ikke  opprette ny bruker. Systemet rapporterte:"
+
+#: admin/inc/gui.inc.php:44
+msgid "Trace started"
+msgstr "Sporing startet"
+
+#: admin/inc/gui.inc.php:49
+msgid "SMS sent"
+msgstr "SMS sendt"
+
+#: admin/inc/gui.inc.php:54
+msgid "Check log"
+msgstr "Sjekk loggen"
+
+#: admin/inc/gui.inc.php:60
+msgid "SMS received"
+msgstr "SMS mottatt"
+
+#: admin/inc/gui.inc.php:76
+msgid "SMS is delivered, but delivery report from SMS provider not received"
+msgstr ""
+"SMS er levert, men ingen leveranserapport er mottatt fra SMS leverandør"
+
+#: admin/inc/gui.inc.php:80
+#, php-format
+msgid "SMS not delivered after %1$d hours"
+msgstr "SMS fremdeles ikke levert etter [%1$d] timer"
+
+#: admin/inc/gui.inc.php:80 admin/inc/gui.inc.php:84
+msgid "The phone may be out of power or coverage."
+msgstr "Telefonen kan være tom for strøm etter utenfor dekning"
+
+#: admin/inc/gui.inc.php:84
+msgid "SMS probably not delivered"
+msgstr "SMS sannsynligvis ikke levert"
+
+#: admin/inc/gui.inc.php:95
+msgid "Trace script downloaded"
+msgstr "Sporingsskript lasted ned"
+
+#: admin/inc/gui.inc.php:100 admin/inc/gui.inc.php:120
+msgid "Trace script not downloaded"
+msgstr "Sporingsskript ikke lastet ned"
+
+#: admin/inc/gui.inc.php:101 admin/inc/gui.inc.php:118
+#: admin/inc/gui.inc.php:121
+msgid ""
+"The phone may be out of power, out of coverage, support for localization can "
+"be turned off or not possible, or the user chose not to share their location "
+"with you."
+msgstr ""
+"Telefonen kan være tom for strøm, utenfor dekning, deling av posisjon kan "
+"være slått av,  bruker kan ha avvist deling av posisjon eller telefonen "
+"støtter ikke deling av posisjon"
+
+#: admin/inc/gui.inc.php:107
+msgid "Mobile located"
+msgstr "Telefon lokalisert"
+
+#: admin/inc/gui.inc.php:117
+msgid "Trace script is downloaded, but not location is received"
+msgstr "Sporingsskriptet er lastet ned, men ingen posisjon er mottatt"
+
+#: admin/inc/common.inc.php:18
+msgid "Missing modules"
+msgstr "Moduler mangler"
+
+#: admin/inc/common.inc.php:18
+msgid "Configure"
+msgstr "Konfigurer"
+
+#: admin/classes/RescueMe/Operation.php:53
+msgid "Test"
+msgstr "Test"
+
+#: admin/classes/RescueMe/Operation.php:53
+msgid "Exercise"
+msgstr "velse"
+
+#: admin/classes/RescueMe/Template.php:78 admin/gui/missing.new.gui.php:106
+#: admin/gui/logs.gui.php:38
+msgid "Message"
+msgstr "Melding"
+
+#: admin/classes/RescueMe/Missing.php:460
+#, php-format
+msgid "Failed to send second SMS to missing %1$s"
+msgstr "Kunne ikke sende engangspassord til bruker %1$s."
+
+#: admin/classes/RescueMe/Missing.php:471
+#, php-format
+msgid "Failed to update SMS status for missing %1$s"
+msgstr "Klarte ikke å opprette instanse av modul  [%1$s]"
+
+#: admin/classes/RescueMe/Missing.php:490
+#, php-format
+msgid "Failed to send SMS with position from missing [%1$s]"
+msgstr "Klarte ikke å sende SMS med posisjon fra [%1$s]"
+
+#: admin/classes/RescueMe/Missing.php:655
+msgid "Failed to update status to ANSWERED for missing "
+msgstr "Klarte ikke å oppdatere status til <b>Besvart</b> for"
+
+#: admin/classes/RescueMe/Missing.php:672
+msgid "Missing person"
+msgstr "Savnet person"
+
+#: admin/classes/RescueMe/User.php:169
+msgid "Active"
+msgstr "Aktiv"
+
+#: admin/classes/RescueMe/User.php:170
+msgid "Pending"
+msgstr "Ventende"
+
+#: admin/classes/RescueMe/User.php:171
+msgid "Disabled"
+msgstr "Deaktivert"
+
+#: admin/classes/RescueMe/User.php:172
+msgid "Deleted"
+msgstr "Slettet"
+
+#: admin/classes/RescueMe/User.php:173
+msgid "All"
+msgstr "Alle"
+
+#: admin/classes/RescueMe/User.php:359
+msgid "User not found"
+msgstr "Bruker %1$s ikke funnet"
+
+#: admin/classes/RescueMe/User.php:359
+msgid "Recovery password not sent"
+msgstr "Engangspassord ikke sendt"
+
+#: admin/classes/RescueMe/User.php:368
+#, php-format
+msgid "Your single-use %1$s password"
+msgstr "%1$s, ditt engangspassord"
+
+#: admin/classes/RescueMe/User.php:373
+#, php-format
+msgid "Recovery password sent to user %1$s"
+msgstr "Engangspassord sendt til bruker %1$s"
+
+#: admin/classes/RescueMe/User.php:376
+#, php-format
+msgid "Failed to send recovery password to user %1$s"
+msgstr "Klarte ikke å sende engangspassord til bruker %1$s"
+
+#: admin/classes/RescueMe/User.php:418
+#, php-format
+msgid "User %1$s is created."
+msgstr "Bruker %1$s er opprettet"
+
+#: admin/classes/RescueMe/User.php:421
+msgid "Failed to create user"
+msgstr "Klarte ikke å opprette bruker"
+
+#: admin/classes/RescueMe/User.php:636
+#, php-format
+msgid "Your %1$s account is approved"
+msgstr "Din %1$s kontoforespørsel er godkjent"
+
+#: admin/classes/RescueMe/User.php:637
+#, php-format
+msgid "Log in to %1$s"
+msgstr "Logg inn på %1$s her"
+
+#: admin/classes/RescueMe/User.php:652
+#, php-format
+msgid "Your %1$s account request is rejected"
+msgstr "Din %1$s kontoforespørsel er avvist"
+
+#: admin/classes/RescueMe/User.php:682
+msgid "Failed to get SMS provider"
+msgstr "Klarte ikke å hente SMS leverandør"
+
+#: admin/gui/dash.gui.php:2
+msgid "Get started"
+msgstr "Kom i gang"
+
+#: admin/gui/dash.gui.php:3
+msgid "Use mobile phone to trace persons fast and easy."
+msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
+
+#: admin/gui/dash.gui.php:5
+msgid "See active traces"
+msgstr "Se aktive sporinger"
+
+#: admin/gui/missing.trace.gui.php:5
+msgid "When trace was registered"
+msgstr "Når sporing ble opprettet"
+
+#: admin/gui/missing.trace.gui.php:10
+msgid "When SMS was sent"
+msgstr "Når SMS ble sendt"
+
+#: admin/gui/missing.trace.gui.php:14
+msgid "When SMS was delivered to mobile"
+msgstr "Når SMS ble levert til telefonen"
+
+#: admin/gui/missing.trace.gui.php:18
+msgid "When location script was downloaded"
+msgstr "Når lokaliseringsskript ble nedlastet"
+
+#: admin/gui/missing.trace.gui.php:22
+msgid "When last location was received"
+msgstr "Når siste lokasjon ble mottatt"
+
+#: admin/gui/missing.trace.gui.php:29
+msgid "Alerted"
+msgstr "Varslet"
+
+#: admin/gui/missing.trace.gui.php:32 admin/gui/missing.list.gui.php:34
+#: admin/gui/missing.list.gui.php:65 admin/gui/missing.list.gui.php:95
+msgid "Sent"
+msgstr "Sendt"
+
+#: admin/gui/missing.trace.gui.php:35 admin/gui/missing.list.gui.php:35
+#: admin/gui/missing.list.gui.php:66 admin/gui/missing.list.gui.php:96
+msgid "Delivered"
+msgstr "Levert"
+
+#: admin/gui/missing.trace.gui.php:38
+msgid "Response"
+msgstr "Respons"
+
+#: admin/gui/missing.trace.gui.php:41
+msgid "Located"
+msgstr "Lokalisert"
+
+#: admin/gui/system.menu.gui.php:25 admin/gui/setup.gui.php:14
+#: admin/ajax/logs.ajax.php:55
+msgid "System"
+msgstr "System"
+
+#: admin/gui/system.menu.gui.php:29
+msgid "Account"
+msgstr "Konto"
+
+#: admin/gui/system.menu.gui.php:30 admin/ajax/user.list.ajax.php:84
+msgid "Change password"
+msgstr "Endre passord"
+
+#: admin/gui/system.menu.gui.php:46
+msgid "System setup"
+msgstr "Systemoppsett"
+
+#: admin/gui/system.menu.gui.php:50
+msgid "Do you want to logout?"
+msgstr "Vil du logge ut?"
+
+#: admin/gui/table.gui.php:25 admin/ajax/setup.module.list.ajax.php:21
+#: admin/ajax/setup.property.list.ajax.php:20
+msgid "Settings"
+msgstr "Innstillinger"
+
+#: admin/gui/missing.edit.gui.php:28 admin/gui/missing.new.gui.php:36
+#: admin/gui/missing.list.gui.php:30 admin/gui/missing.list.gui.php:64
+#: admin/gui/missing.list.gui.php:94 admin/gui/missing.list.gui.php:125
+#: admin/gui/role.list.gui.php:12 admin/gui/user.list.gui.php:38
+msgid "Name"
+msgstr "Navn"
+
+#: admin/gui/missing.edit.gui.php:43 admin/gui/missing.new.gui.php:48
+#: admin/gui/missing.new.gui.php:86 admin/gui/user.new.gui.php:28
+msgid "Country code"
+msgstr "Landskode"
+
+#: admin/gui/missing.edit.gui.php:51 admin/gui/missing.new.gui.php:44
+#: admin/gui/user.edit.gui.php:38 admin/gui/user.new.gui.php:38
+msgid "Mobile phone"
+msgstr "Mobilnummer"
+
+#: admin/gui/missing.edit.gui.php:59
+msgid "Send SMS"
+msgstr "Send SMS"
+
+#: admin/gui/missing.edit.gui.php:75 admin/gui/missing.new.gui.php:110
+#: admin/ajax/message.list.ajax.php:26
+msgid "Language"
+msgstr "Språk"
+
+#: admin/gui/missing.edit.gui.php:84 admin/gui/missing.new.gui.php:116
+#: admin/gui/missing.new.gui.php:117 admin/gui/setup.gui.php:25
+msgid "SMS"
+msgstr "SMS"
+
+#: admin/gui/missing.edit.gui.php:94 admin/gui/missing.new.gui.php:128
+#: admin/ajax/message.list.ajax.php:55
+msgid "Select"
+msgstr "Velg"
+
+#: admin/gui/missing.edit.gui.php:95 admin/gui/missing.edit.gui.php:110
+#: admin/gui/missing.new.gui.php:126 admin/gui/missing.new.gui.php:178
+#: admin/gui/missing.list.gui.php:153
+msgid "Library"
+msgstr "Bibliotek"
+
+#: admin/gui/missing.edit.gui.php:101
+#, php-format
+msgid ""
+"Remember to include %1$s so that %2$s can replace it with the actual trace "
+"url."
+msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
+
+#: admin/gui/missing.edit.gui.php:105 admin/gui/operation.close.gui.php:75
+msgid "Note: This will reopen this operation"
+msgstr "Merk: Dette vil gjenåpne operasjonen"
+
+#: admin/gui/missing.edit.gui.php:110 admin/gui/missing.new.gui.php:178
+#: admin/gui/missing.list.gui.php:153
+msgid "Loading"
+msgstr "Laster"
+
+#: admin/gui/missing.edit.gui.php:115 admin/gui/missing.gui.php:13
+#: admin/gui/operation.close.gui.php:102
+#: admin/ajax/missing.list.closed.ajax.php:32 admin/ajax/logs.ajax.php:39
+#: admin/ajax/user.list.ajax.php:26 admin/ajax/missing.list.open.ajax.php:40
+msgid "None found"
+msgstr "Ingen funnet"
+
+#: admin/gui/form.gui.php:48
+msgid "Save"
+msgstr "Lagre"
+
+#: admin/gui/form.gui.php:53
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: admin/gui/missing.new.gui.php:39
+msgid "Place, region or country"
+msgstr "Sted, region eller land"
+
+#: admin/gui/missing.new.gui.php:50 admin/gui/missing.new.gui.php:88
+msgid "Select country"
+msgstr "Velg land"
+
+#: admin/gui/missing.new.gui.php:56 admin/gui/missing.new.gui.php:93
+msgid "Phone number"
+msgstr "Mobilnummer"
+
+#: admin/gui/missing.new.gui.php:58 admin/gui/missing.new.gui.php:95
+msgid "Numbers only, no spaces"
+msgstr "Kun nummer, ingen mellomrom"
+
+#: admin/gui/missing.new.gui.php:63
+msgid "Is the receiving phone from another country?"
+msgstr "Er telefone registrert i et annet land?"
+
+#: admin/gui/missing.new.gui.php:64
+msgid ""
+"It is critically important to include instructions about how to turn on data "
+"roaming in the SMS if the phone is not registered on the home network!"
+msgstr ""
+"Det er kritisk viktig å inkludere instruksjoner for hvordan dataroaming slås "
+"på i SMSen hvis telefonen ikke er registrert på sitt hjemmenettverk!"
+
+#: admin/gui/missing.new.gui.php:75 admin/gui/missing.gui.php:85
+#: admin/gui/operation.close.gui.php:31
+msgid "Reference"
+msgstr "Aksjonsreferanse"
+
+#: admin/gui/missing.new.gui.php:77 admin/gui/operation.close.gui.php:32
+msgid "Operation number, etc."
+msgstr "SAR- eller AMIS-nr"
+
+#: admin/gui/missing.new.gui.php:82
+msgid "Report to"
+msgstr "Rapporter til"
+
+#: admin/gui/missing.new.gui.php:111 admin/ajax/message.list.ajax.php:30
+msgid "Select language"
+msgstr "Velg språk"
+
+#: admin/gui/missing.new.gui.php:117
+msgid "Character"
+msgstr "Tegn"
+
+#: admin/gui/missing.new.gui.php:122
+msgid "Not all SMS-carriers support more than 160 chars!"
+msgstr "Ikke alle SMS-leverandører støtter flere en 160 tegn!"
+
+#: admin/gui/missing.new.gui.php:138
+msgid "More"
+msgstr "Mer"
+
+#: admin/gui/missing.new.gui.php:140
+#, php-format
+msgid ""
+"Remember to include %1$s so that %2$s can replace it with the actual trace "
+"url"
+msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke"
+
+#: admin/gui/missing.new.gui.php:144
+msgid "Standard message"
+msgstr "Standard melding"
+
+#: admin/gui/missing.new.gui.php:147
+msgid "Location script"
+msgstr "Lokasjonsskript"
+
+#: admin/gui/missing.new.gui.php:148
+msgid ""
+"When the user clicks on the link a webpage is downloaded which contain a "
+"script that attempts to locate the mobile phone. The user must authorize the "
+"script access before location can be determined"
+msgstr ""
+"Når brukeren trykker på linken åpnes en nettside med et skript som vil "
+"forsøke  lokalisere mobiltelefonen. Brukeren må godkjenne deling av posisjon "
+"i nettleseren før posisjonen kan bestemmes."
+
+#: admin/gui/missing.new.gui.php:149
+msgid "Script download time"
+msgstr "Nedlastingstid"
+
+#: admin/gui/missing.new.gui.php:150
+msgid ""
+"The location script is compressed (gzip, 1.8KB). Is should not take more "
+"than a second to download this even on a low-bandwidth network (2G). If it "
+"does, the user must be patient and wait until the script is downloaded."
+msgstr ""
+"Skriptet er komprimert (1.8KB). Det tar mindre enn ett sekund på mobilnett "
+"med laveste båndbredde (2G) å  laste den ned. Det er likevel viktig at "
+"brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes."
+
+#: admin/gui/missing.new.gui.php:151
+msgid "Repeated localization"
+msgstr "Gjentatt lokalisering"
+
+#: admin/gui/missing.new.gui.php:152
+msgid ""
+"If the location is inaccurate, the script will continue to listen for "
+"location updates until desired accuracy or maximum wait time is is reached. "
+"A count-down is shown during this time. Last known location is presented to "
+"the user, which allow the user to read out the location over the phone or "
+"send ith with an SMS (tell the user to click on the link presented to the "
+"user when the script timed out)"
+msgstr ""
+"Hvis posisjonen er unøyaktig, vil nettsiden vente til posisjon med ønsket "
+"nøyaktighet er funnet, eller maksimum ventetid er nådd. En nedtelling vises "
+"mens dette foregår. Siste posisjon vises også til brukeren, slik at brukeren "
+"kan leses opp på telefonen, eller sendes på SMS (be brukeren klikke på "
+"linken bak posisjonen)."
+
+#: admin/gui/missing.new.gui.php:153
+#, php-format
+msgid ""
+"Desired accurary (location.desired.accuracy), maximum wait time (location."
+"max.wait) and maximum location age (location.max.age) can be configured on "
+"page %1$s"
+msgstr ""
+" Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location."
+"max.wait) og maksimum alder på gammel posisjon (location.max.age) kan "
+"konfigureres på siden %1$s"
+
+#: admin/gui/missing.new.gui.php:154
+msgid "All traces are listed at"
+msgstr "Alle sporinger er listet på denne siden"
+
+#: admin/gui/missing.new.gui.php:165
+msgid "Create"
+msgstr "Opprett"
+
+#: admin/gui/setup.gui.php:23
+msgid "General"
+msgstr "Generelt"
+
+#: admin/gui/setup.gui.php:24
+msgid "Design"
+msgstr "Design"
+
+#: admin/gui/setup.gui.php:26
+msgid "Maps"
+msgstr "Kart"
+
+#: admin/gui/missing.list.gui.php:19
+msgid "Open"
+msgstr "Åpne"
+
+#: admin/gui/missing.list.gui.php:20
+msgid "Tests"
+msgstr "Tester"
+
+#: admin/gui/missing.list.gui.php:21
+msgid "Exercises"
+msgstr "Øvelser"
+
+#: admin/gui/missing.list.gui.php:22 admin/gui/missing.list.gui.php:126
+#: admin/gui/missing.gui.php:21
+msgid "Closed"
+msgstr "Lukket"
+
+#: admin/gui/missing.list.gui.php:31 admin/gui/missing.list.gui.php:33
+msgid "Status"
+msgstr "Status"
+
+#: admin/gui/missing.list.gui.php:36 admin/gui/missing.list.gui.php:67
+#: admin/gui/missing.list.gui.php:97
+msgid "Answered"
+msgstr "Besvart"
+
+#: admin/gui/missing.list.gui.php:37 admin/gui/missing.list.gui.php:68
+#: admin/gui/missing.list.gui.php:98
+msgid "Reported"
+msgstr "Rapportert"
+
+#: admin/gui/missing.list.gui.php:38 admin/gui/missing.list.gui.php:69
+#: admin/gui/missing.list.gui.php:99
+msgid "Location"
+msgstr "Lokasjon"
+
+#: admin/gui/missing.list.gui.php:51 admin/gui/missing.list.gui.php:81
+#: admin/gui/missing.list.gui.php:111 admin/gui/missing.list.gui.php:137
+#: admin/gui/logs.gui.php:45 admin/ajax/message.list.ajax.php:40
+msgid "Search"
+msgstr "Søk"
+
+#: admin/gui/missing.list.gui.php:124
+msgid "Type"
+msgstr "Type"
+
+#: admin/gui/missing.list.gui.php:151 admin/gui/trace.menu.gui.php:18
+#: admin/gui/trace.menu.gui.php:26
+msgid "New trace"
+msgstr "Start ny sporing"
+
+#: admin/gui/logon.gui.php:8 admin/gui/user.edit.gui.php:46
+#: admin/gui/user.new.gui.php:48
+msgid "Email"
+msgstr "E-post"
+
+#: admin/gui/logon.gui.php:9 admin/gui/password.change.gui.php:17
+#: admin/gui/user.new.gui.php:58
+msgid "Password"
+msgstr "Passord"
+
+#: admin/gui/logon.gui.php:9
+msgid "Caps-lock is on!"
+msgstr "Caps-lock er på!"
+
+#: admin/gui/logon.gui.php:11
+msgid "Forgot your password?"
+msgstr "Glemt passordet?"
+
+#: admin/gui/logon.gui.php:14
+msgid "Don't have an account?"
+msgstr "Har du ikke en konto?"
+
+#: admin/gui/logon.gui.php:14
+msgid "Sign up here"
+msgstr "Registrer deg her"
+
+#: admin/gui/missing.gui.php:57
+msgid "Last location"
+msgstr "Siste lokasjon"
+
+#: admin/gui/missing.gui.php:61
+msgid "Location received"
+msgstr "Lokasjon mottatt"
+
+#: admin/gui/missing.gui.php:70
+#, php-format
+msgid "Locations &le; %1$s"
+msgstr "Lokasjoner &le; %1$s"
+
+#: admin/gui/missing.gui.php:73
+#, php-format
+msgid "Locations &gt; %1$s"
+msgstr "Lokasjoner  &gt; %1$s"
+
+#: admin/gui/missing.gui.php:92
+msgid "Location link"
+msgstr "Sporingslink"
+
+#: admin/gui/missing.position.list.gui.php:76
+msgid "Google Maps not loaded"
+msgstr "Google Maps ikke lastet"
+
+#: admin/gui/password.recover.gui.php:9
+msgid "If user exist a SMS with reset link is sent to registered mobile phone"
+msgstr "Hvis brukeren finnes i databasen sendes det en reset link på SMS"
+
+#: admin/gui/password.recover.gui.php:26 admin/gui/user.list.gui.php:41
+msgid "E-mail"
+msgstr "E-post"
+
+#: admin/gui/password.recover.gui.php:54
+msgid "Reset"
+msgstr "Nullstill"
+
+#: admin/gui/logs.gui.php:32 admin/gui/logs.gui.php:35
+msgid "Date"
+msgstr "Dato"
+
+#: admin/gui/logs.gui.php:33
+msgid "Log"
+msgstr "Logg"
+
+#: admin/gui/logs.gui.php:37
+msgid "Level"
+msgstr "Nivå"
+
+#: admin/gui/setup.module.gui.php:10
+msgid "Module"
+msgstr "Modul"
+
+#: admin/gui/setup.module.gui.php:12
+msgid "No module found. Run install script."
+msgstr "Ingen modul funnet. Kjør installeringsskript."
+
+#: admin/gui/user.list.gui.php:39 admin/gui/user.edit.gui.php:64
+#: admin/gui/user.new.gui.php:85
+msgid "Role"
+msgstr "Rolle"
+
+#: admin/gui/user.list.gui.php:40
+msgid "Mobile"
+msgstr "Mobil"
+
+#: admin/gui/user.edit.gui.php:18 admin/gui/user.new.gui.php:14
+msgid "Full name"
+msgstr "Fullt navn"
+
+#: admin/gui/user.edit.gui.php:30
+msgid "Mobile country"
+msgstr "Mobil land"
+
+#: admin/gui/user.edit.gui.php:75 admin/gui/user.new.gui.php:97
+msgid "Use system SMS provider"
+msgstr "Bruk systemets SMS leverandør"
+
+#: admin/gui/user.edit.gui.php:87
+msgid "Approve user..."
+msgstr "Godkjenn bruker..."
+
+#: admin/gui/user.edit.gui.php:89
+msgid "Edit user"
+msgstr "Endre bruker"
+
+#: admin/gui/password.change.gui.php:18 admin/gui/password.change.gui.php:26
+#: admin/gui/user.new.gui.php:59 admin/gui/user.new.gui.php:67
+#, php-format
+msgid "Minimum %1$s characters"
+msgstr "Minimum %1$s tegn"
+
+#: admin/gui/password.change.gui.php:25 admin/gui/user.new.gui.php:66
+msgid "Repeat Password"
+msgstr "Gjenta passord"
+
+#: admin/gui/operation.close.gui.php:23
+msgid "Operation name"
+msgstr "Aksjonsnavn"
+
+#: admin/gui/operation.close.gui.php:40
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: admin/gui/operation.close.gui.php:41
+msgid "Short description"
+msgstr "Kort beskrivelse"
+
+#: admin/gui/operation.close.gui.php:55
+msgid "Man"
+msgstr "Mann"
+
+#: admin/gui/operation.close.gui.php:56
+msgid "Woman"
+msgstr "Kvinne"
+
+#: admin/gui/operation.close.gui.php:60
+msgid "Gender"
+msgstr "Kjønn"
+
+#: admin/gui/operation.close.gui.php:68
+msgid "Age"
+msgstr "Alder"
+
+#: admin/gui/operation.close.gui.php:78
+msgid ""
+"Note: This will permanently delete name and mobile numbers (privacy concerns)"
+msgstr ""
+"Merk: Dette vil slette navn og mobilnummer til savnede permanent (av "
+"personvernhensyn)"
+
+#: admin/gui/continue.gui.php:18
+msgid "Continue"
+msgstr "Fortsett"
+
+#: admin/ajax/missing.list.closed.ajax.php:61
+msgid "Reopen"
+msgstr "Gjenåpne"
+
+#: admin/ajax/setup.module.list.ajax.php:63
+msgid "Module is not installed correctly."
+msgstr "Modulen er ikke installert riktig. Kjør installeringsskript."
+
+#: admin/ajax/setup.module.list.ajax.php:64
+#, php-format
+msgid "Failed to create instance of module [%1$s]"
+msgstr "Kunne ikke opprette instanse av modul  [%1$s]"
+
+#: admin/ajax/setup.module.list.ajax.php:67
+msgid "Module is not configured correctly."
+msgstr "Modulen er ikke konfigurert riktig"
+
+#: admin/ajax/setup.module.list.ajax.php:70
+msgid "Module is configured and ready for use."
+msgstr "Modulen er konfigurert og klar til bruk"
+
+#: admin/ajax/message.list.ajax.php:37
+msgid "Messages"
+msgstr "Meldinger"
+
+#: admin/ajax/user.list.ajax.php:65
+#, php-format
+msgid "Do you want to enable %1$s?"
+msgstr "Vil du aktivere %1$s?"
+
+#: admin/ajax/user.list.ajax.php:67
+msgid "Enable"
+msgstr "Aktiver"
+
+#: admin/ajax/user.list.ajax.php:72
+msgid "Deny"
+msgstr "Avvis"
+
+#: admin/ajax/user.list.ajax.php:77
+#, php-format
+msgid "Do you want to disable %1$s?"
+msgstr "Vil du deaktivere %1$s?"
+
+#: admin/ajax/user.list.ajax.php:79
+msgid "Disable"
+msgstr "Deaktiver"
+
+#: admin/ajax/user.list.ajax.php:85
+msgid "Reset password"
+msgstr "Nullstill passord"
+
+#: admin/ajax/user.list.ajax.php:92 admin/ajax/user.list.ajax.php:115
+#, php-format
+msgid "Do you want to delete %1$s?"
+msgstr "Vil du slette %1$s?"
+
+#: admin/ajax/user.list.ajax.php:94
+msgid "Delete"
+msgstr "Slett"
+
+#: admin/ajax/user.list.ajax.php:114
+msgid "Confirm"
+msgstr "Bekreft"
+
+#: admin/ajax/missing.list.open.ajax.php:151
+#, php-format
+msgid "Do you want to resend SMS to %1$s?"
+msgstr "Vil du sende SMS til  %1$s på nytt?"
+
+#: admin/ajax/missing.list.open.ajax.php:153
+msgid "Resend SMS"
+msgstr "Send SMS på nytt"
+
+#: admin/ajax/missing.list.open.ajax.php:159
+msgid "Check SMS delivery status"
+msgstr "Sjekk leveringsstatus"
+
+#~ msgid "Id not found."
+#~ msgstr "Id ikke funnet"
+
+#, fuzzy
+#~ msgid "Uknown"
+#~ msgstr "Ukjent"
+
+#~ msgid "Afghanistan"
+#~ msgstr "Afghanistan"
+
+#~ msgid "Albania"
+#~ msgstr "Albania"
+
+#~ msgid "Algeria"
+#~ msgstr "Algeria"
+
+#~ msgid "Argentina"
+#~ msgstr "Argentina"
+
+#~ msgid "Spanish"
+#~ msgstr "Spansk"
+
+#~ msgid "Armenia"
+#~ msgstr "Armenia"
+
+#~ msgid "Australia"
+#~ msgstr "Australia"
+
+#~ msgid "English"
+#~ msgstr "Engelsk"
+
+#~ msgid "Austria"
+#~ msgstr "Australia"
+
+#~ msgid "German"
+#~ msgstr "Tysk"
+
+#~ msgid "Azerbaijan"
+#~ msgstr "Aserbajdsjan"
+
+#~ msgid "Bahrain"
+#~ msgstr "Bahrain"
+
+#~ msgid "Bangladesh"
+#~ msgstr "Bangladesh"
+
+#~ msgid "Belarus"
+#~ msgstr "Hviterussland"
+
+#~ msgid "Belgium"
+#~ msgstr "Belgia"
+
+#~ msgid "French"
+#~ msgstr "Fransk"
+
+#~ msgid "Belize"
+#~ msgstr "Belize"
+
+#~ msgid "Bolivarian Republic of Venezuela"
+#~ msgstr "Venezuela"
+
+#~ msgid "Bolivia"
+#~ msgstr "Bolivia"
+
+#~ msgid "Bosnia and Herzegovina"
+#~ msgstr "Bosnia-Hercegovina"
+
+#~ msgid "Brazil"
+#~ msgstr "Brasil"
+
+#~ msgid "Brunei Darussalam"
+#~ msgstr "Brunei Darussalam"
+
+#~ msgid "Bulgaria"
+#~ msgstr "Bulgaria"
+
+#~ msgid "Cambodia"
+#~ msgstr "Kambodia"
+
+#~ msgid "Canada"
+#~ msgstr "Canada"
+
+#~ msgid "Chile"
+#~ msgstr "Chile"
+
+#~ msgid "Colombia"
+#~ msgstr "Colombia"
+
+#~ msgid "Costa Rica"
+#~ msgstr "Costa Rica"
+
+#~ msgid "Croatia"
+#~ msgstr "Kroatia"
+
+#~ msgid "Czech Republic"
+#~ msgstr "Tsjekkia"
+
+#~ msgid "Denmark"
+#~ msgstr "Danmark"
+
+#~ msgid "Danish"
+#~ msgstr "Dansk"
+
+#~ msgid "Dominican Republic"
+#~ msgstr "Den dominikanske republikk"
+
+#~ msgid "Ecuador"
+#~ msgstr "Ecuador"
+
+#~ msgid "Egypt"
+#~ msgstr "Egypt"
+
+#~ msgid "El Salvador"
+#~ msgstr "El Salvador"
+
+#~ msgid "Estonia"
+#~ msgstr "Estland"
+
+#~ msgid "Ethiopia"
+#~ msgstr "Etiopia"
+
+#~ msgid "Faroe Islands"
+#~ msgstr "Fryene"
+
+#~ msgid "Finland"
+#~ msgstr "Finland"
+
+#~ msgid "Finnish"
+#~ msgstr "Finsk"
+
+#~ msgid "Swedish"
+#~ msgstr "Svensk"
+
+#~ msgid "Georgia"
+#~ msgstr "Georgia"
+
+#~ msgid "Germany"
+#~ msgstr "Tyskland"
+
+#~ msgid "Greece"
+#~ msgstr "Hellas"
+
+#~ msgid "Greenland"
+#~ msgstr "Grnland"
+
+#~ msgid "Guatemala"
+#~ msgstr "Guatemala"
+
+#~ msgid "Honduras"
+#~ msgstr "Honduras"
+
+#~ msgid "Hong Kong S.A.R."
+#~ msgstr "Hong Kong S.A.R."
+
+#~ msgid "Hungary"
+#~ msgstr "Ungarn"
+
+#~ msgid "Iceland"
+#~ msgstr "Island"
+
+#~ msgid "Icelandic"
+#~ msgstr "Islandsk"
+
+#~ msgid "India"
+#~ msgstr "India"
+
+#~ msgid "Indonesia"
+#~ msgstr "Indonesia"
+
+#~ msgid "Iran"
+#~ msgstr "Iran"
+
+#~ msgid "Iraq"
+#~ msgstr "Irak"
+
+#~ msgid "Ireland"
+#~ msgstr "Irland"
+
+#~ msgid "Islamic Republic of Pakistan"
+#~ msgstr "Pakistan"
+
+#~ msgid "Israel"
+#~ msgstr "Israel"
+
+#~ msgid "Italy"
+#~ msgstr "Italia"
+
+#~ msgid "Jamaica"
+#~ msgstr "Jamaica"
+
+#~ msgid "Japan"
+#~ msgstr "Japan"
+
+#~ msgid "Jordan"
+#~ msgstr "Jordan"
+
+#~ msgid "Kazakhstan"
+#~ msgstr "Kazakhstan"
+
+#~ msgid "Kenya"
+#~ msgstr "Kenya"
+
+#~ msgid "Korea"
+#~ msgstr "Korea"
+
+#~ msgid "Kuwait"
+#~ msgstr "Kuwait"
+
+#~ msgid "Kyrgyzstan"
+#~ msgstr "Kirgisistan"
+
+#~ msgid "Lao P.D.R."
+#~ msgstr "Lao P.D.R."
+
+#~ msgid "Latvia"
+#~ msgstr "Latvia"
+
+#~ msgid "Lebanon"
+#~ msgstr "Libanon"
+
+#~ msgid "Libya"
+#~ msgstr "Libya"
+
+#~ msgid "Liechtenstein"
+#~ msgstr "Liechtenstein"
+
+#~ msgid "Lithuania"
+#~ msgstr "Litauen"
+
+#~ msgid "Luxembourg"
+#~ msgstr "Luxembourg"
+
+#~ msgid "Macao S.A.R."
+#~ msgstr "Macao S.A.R."
+
+#~ msgid "Macedonia (FYROM)"
+#~ msgstr "Makedonia"
+
+#~ msgid "Malaysia"
+#~ msgstr "Malaysia"
+
+#~ msgid "Maldives"
+#~ msgstr "Maldivene"
+
+#~ msgid "Malta"
+#~ msgstr "Malta"
+
+#~ msgid "Mexico"
+#~ msgstr "Mexico"
+
+#~ msgid "Mongolia"
+#~ msgstr "Mongolia"
+
+#~ msgid "Montenegro"
+#~ msgstr "Montenegro"
+
+#~ msgid "Morocco"
+#~ msgstr "Marokko"
+
+#~ msgid "Nepal"
+#~ msgstr "Nepal"
+
+#~ msgid "Netherlands"
+#~ msgstr "Nederland"
+
+#~ msgid "New Zealand"
+#~ msgstr "New Zealand"
+
+#~ msgid "Nicaragua"
+#~ msgstr "Nicaragua"
+
+#~ msgid "Nigeria"
+#~ msgstr "Nigeria"
+
+#~ msgid "Norway"
+#~ msgstr "Norge"
+
+#~ msgid "Norwegian (Bokml)"
+#~ msgstr "Norsk (bokml)"
+
+#~ msgid "Oman"
+#~ msgstr "Oman"
+
+#~ msgid "Panama"
+#~ msgstr "Panama"
+
+#~ msgid "Paraguay"
+#~ msgstr "Paraguay"
+
+#~ msgid "China"
+#~ msgstr "Kina"
+
+#~ msgid "Peru"
+#~ msgstr "Peru"
+
+#~ msgid "Philippines"
+#~ msgstr "Filipinene"
+
+#~ msgid "Poland"
+#~ msgstr "Polen"
+
+#~ msgid "Polish"
+#~ msgstr "Polsk"
+
+#~ msgid "Portugal"
+#~ msgstr "Portugal"
+
+#~ msgid "Principality of Monaco"
+#~ msgstr "Fyrstedmmet Monaco"
+
+#~ msgid "Puerto Rico"
+#~ msgstr "Puerto Rico"
+
+#~ msgid "Qatar"
+#~ msgstr "Qatar"
+
+#~ msgid "Russia"
+#~ msgstr "Russland"
+
+#~ msgid "Rwanda"
+#~ msgstr "Rwanda"
+
+#~ msgid "Saudi Arabia"
+#~ msgstr "Saudi Arabia"
+
+#~ msgid "Senegal"
+#~ msgstr "Senegal"
+
+#~ msgid "Serbia"
+#~ msgstr "Serbia"
+
+#~ msgid "Singapore"
+#~ msgstr "Singapore"
+
+#~ msgid "Slovakia"
+#~ msgstr "Slovakia"
+
+#~ msgid "Slovenia"
+#~ msgstr "Slovenia"
+
+#~ msgid "South Africa"
+#~ msgstr "Sr Amerika"
+
+#~ msgid "Spain"
+#~ msgstr "Spania"
+
+#~ msgid "Sri Lanka"
+#~ msgstr "Sri Lanka"
+
+#~ msgid "Sweden"
+#~ msgstr "Sverige"
+
+#~ msgid "Switzerland"
+#~ msgstr "Sveits"
+
+#~ msgid "Syria"
+#~ msgstr "Syria"
+
+#~ msgid "Taiwan"
+#~ msgstr "Taiwan"
+
+#~ msgid "Tajikistan"
+#~ msgstr "Tajikistan"
+
+#~ msgid "Thailand"
+#~ msgstr "Thailand"
+
+#~ msgid "Trinidad and Tobago"
+#~ msgstr "Trinidad and Tobago"
+
+#~ msgid "Tunisia"
+#~ msgstr "Tunisia"
+
+#~ msgid "Turkey"
+#~ msgstr "Tyrkia"
+
+#~ msgid "Turkmenistan"
+#~ msgstr "Turkmenistan"
+
+#~ msgid "United Arab Emirates"
+#~ msgstr "De forente arabiske emirater"
+
+#~ msgid "Ukraine"
+#~ msgstr "Ukraina"
+
+#~ msgid "United Kingdom"
+#~ msgstr "Storbritannia"
+
+#~ msgid "United States"
+#~ msgstr "USA"
+
+#~ msgid "Uruguay"
+#~ msgstr "Uruguay"
+
+#~ msgid "Uzbekistan"
+#~ msgstr "Uzbekistan"
+
+#~ msgid "Vietnam"
+#~ msgstr "Vietnam"
+
+#~ msgid "Yemen"
+#~ msgstr "Yemen"
+
+#~ msgid "Zimbabwe"
+#~ msgstr "Zimbabwe"
+
+#~ msgid "Serbia and Montenegro (Former)"
+#~ msgstr "Serbia og Montenegro (tidligere)"
+
+#~ msgid "Is"
+#~ msgstr "Er"
+
+#~ msgid "Not"
+#~ msgstr "Ikke"
+
+#~ msgid "None"
+#~ msgstr "Ingen"
+
+#~ msgid "No"
+#~ msgstr "Nei"
+
+#~ msgid "Yes"
+#~ msgstr "Ja"
+
+#~ msgid "Found"
+#~ msgstr "Fant"
+
+#~ msgid "Update"
+#~ msgstr "Oppdater"
+
+#~ msgid "Illegal"
+#~ msgstr "Ulovlig"
+
+#~ msgid "Access"
+#~ msgstr "Tilgang"
+
+#~ msgid "Database"
+#~ msgstr "Database"
+
+#~ msgid "Locations"
+#~ msgstr "Lokasjoner"
+
+#~ msgid "Arguments"
+#~ msgstr "Argumenter"
+
+#~ msgid "Operation"
+#~ msgstr "Aksjon"
+
+#~ msgid "API ID"
+#~ msgstr "API ID"
+
+#~ msgid "Callback"
+#~ msgstr "Tilbakemelding"
+
+#~ msgid "User ID"
+#~ msgstr "User ID"
+
+#~ msgid "Company ID"
+#~ msgstr "Company ID"
+
+#~ msgid "min"
+#~ msgstr "min"
+
+#~ msgid "sec"
+#~ msgstr "sek"
+
+#~ msgid "Calculating..."
+#~ msgstr "Kalkulerer..."
+
+#~ msgid "Are you sure?"
+#~ msgstr "Er du sikker?"
+
+#~ msgid "Missing values: %1$s"
+#~ msgstr "Verdier mangler: %1$s"
+
+#~ msgid "Failed to load [%1$s]."
+#~ msgstr "Klarte ikke  laste [%1$s]."
+
+#~ msgid "Failed to get country code."
+#~ msgstr "Klarte ikke  finne landkode."
+
+#~ msgid "Please fill out this field."
+#~ msgstr "Vennligst fyll ut feltet."
+
+#~ msgid "Please match the required format."
+#~ msgstr "Vennligst skriv riktig format."
+
+#~ msgid "SMS request [%1$s] not supported."
+#~ msgstr "SMS foresprsel  [%1$s] ikke stttet."
+
+#~ msgid "[%1$s] does not support [%2$s]."
+#~ msgstr "[%1$s] sttter ikke [%2$s]."
+
+#~ msgid "Your user has NOT been approved."
+#~ msgstr "Din bruker har ikke blitt godkjent"
+
+#~ msgid "password"
+#~ msgstr "passord"
+
+#~ msgid "Aborted"
+#~ msgstr "Avbrutt"
+
+#~ msgid "Geolocation not supported."
+#~ msgstr "Lokalisering ikke stttet"
+
+#~ msgid "Found location with &#177;{0} m accuracy."
+#~ msgstr "Fant lokasjon med  &#177;{0} m nyaktighet."
+
+#~ msgid "Location is old, check if GPS is on!"
+#~ msgstr "Lokasjon er gammel, sjekk at GPS er psltt!"
+
+#~ msgid "Waiting for higher accuracy..."
+#~ msgstr "Venter p bedre nyaktighet..."
+
+#~ msgid "Turn on permission to access location data!"
+#~ msgstr "Sl p tilgang til stedsinformasjon!"
+
+#~ msgid "Location is unavailable."
+#~ msgstr "Lokasjon er ikke tilgjengelig"
+
+#~ msgid "Plese approve access to location faster."
+#~ msgstr "Vennligst bekreft tilgang til lokasjonsdata raskere."
+
+#~ msgid "Unknown error."
+#~ msgstr "Ukjent feil"
+
+#~ msgid "Location: <b>{0}</b>"
+#~ msgstr "Lokasjon: <b>{0}</b>"
+
+#~ msgid "Location not sent, check data connection."
+#~ msgstr "Lokasjon ikke sendt, sjekk datakobling."
+
+#~ msgid "Send location as"
+#~ msgstr "Send lokasjon som"
+
+#~ msgid "Location not found."
+#~ msgstr "Lokasjon ikke funnet"
+
+#~ msgid "Closed by traced "
+#~ msgstr "Lukket av sporet person."
+
+#~ msgid "is aborted"
+#~ msgstr "er avbrudt"
+
+#~ msgid ""
+#~ "Stay still, we are comming. <br>Try to make your self visible from both "
+#~ "air and ground!"
+#~ msgstr ""
+#~ "Hold deg i ro, vi er p vei. Forsk  gjre deg synlig fra luft og bakke!"
+
+#~ msgid "Unknown trace"
+#~ msgstr "Ukjent sporing"
+
+#~ msgid "New"
+#~ msgstr "Ny"
+
+#~ msgid "Add"
+#~ msgstr "Legg til"
+
+#~ msgid "Remove"
+#~ msgstr "Slett"
+
+#~ msgid "Start"
+#~ msgstr "Start"
+
+#~ msgid "Person"
+#~ msgstr "Person"
+
+#~ msgid "Persons"
+#~ msgstr "Personer"
+
+#~ msgid "Missing"
+#~ msgstr "Mangler"
+
+#~ msgid "Enabled"
+#~ msgstr "Aktivert"
+
+#~ msgid "Executed"
+#~ msgstr "Gjennomfrt"
+
+#~ msgid "Saved"
+#~ msgstr "Lagret"
+
+#~ msgid "Description"
+#~ msgstr "Beskrivelse"
+
+#~ msgid "Overview"
+#~ msgstr "Oversikt"
+
+#~ msgid "Id"
+#~ msgstr "Id"
+
+#~ msgid "Failed to"
+#~ msgstr "Kunne ikke"
+
+#~ msgid "Close"
+#~ msgstr "Lukk"
+
+#~ msgid "Setting"
+#~ msgstr "Innstillinger"
+
+#~ msgid "Try again"
+#~ msgstr "Vennligst prv igjen"
+
+#~ msgid "Must contain"
+#~ msgstr "M inneholde"
+
+#~ msgid "At least one alphanumeric character"
+#~ msgstr "Minst ett siffer"
+
+#~ msgid "Alphanumeric"
+#~ msgstr "Siffer"
+
+#~ msgid "Already exists"
+#~ msgstr "Eksisterer allerede"
+
+#~ msgid "Country"
+#~ msgstr "Land"
+
+#~ msgid "No spaces"
+#~ msgstr "ingen mellomrom"
+
+#~ msgid "Send to"
+#~ msgstr "Send til"
+
+#, fuzzy
+#~ msgid "Eenable"
+#~ msgstr "Aktivert"
+
+#~ msgid ""
+#~ "Husk  sette inn %LINK% slik at RescueMe kan sette inn med riktig lenke."
+#~ msgstr "Husk  sette inn %1$s slik at %1$s kan sette inn riktig lenke."
+
+#~ msgid "Locate page"
+#~ msgstr "Sporingsside"
+
+#, fuzzy
+#~ msgid "Dnabled"
+#~ msgstr "Deaktivert"
+
+#~ msgid " not rejected"
+#~ msgstr "ikke avvist"

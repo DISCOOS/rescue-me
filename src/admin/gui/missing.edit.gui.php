@@ -25,7 +25,7 @@
                 'id' => 'm_name',
                 'type' => 'text', 
                 'value' => $missing->name,
-                'label' => NAME,
+                'label' => T_('Name'),
                 'attributes' => 'required'
             );
 
@@ -40,7 +40,7 @@
                 'id' => 'm_mobile_country',
                 'type' => 'select', 
                 'value' => insert_options(Locale::getCountryNames(), $country, false), 
-                'label' => COUNTRY_CODE,
+                'label' => T_('Country code'),
                 'class' => 'span3',
                 'attributes' => 'required'
             );    
@@ -48,7 +48,7 @@
                 'id' => 'm_mobile',
                 'type' => 'tel', 
                 'value' => $missing->mobile, 
-                'label' => MOBILE_PHONE,
+                'label' => T_('Mobile phone'),
                 'class' => 'span3',
                 'attributes' => 'required pattern="[0-9]*"'
             );
@@ -56,7 +56,7 @@
                 'id' => 'resend',
                 'type' => 'checkbox', 
                 'value' => '0', 
-                'label' => SEND_SMS,
+                'label' => T_('Send SMS'),
                 'class' => 'span3'
             );
             $fields[] = $group;
@@ -71,8 +71,8 @@
             $group['value'][] = array(
                 'id' => 'm_locale',
                 'type' => 'select', 
-                'value' => insert_options(Locale::getLanguageNames(), $locale, false), 
-                'label' => LANGUAGE,
+                'value' => insert_options(Locale::getLanguageNames(false, DOMAIN_SMS), $locale, false),
+                'label' => T_('Language'),
                 'class' => 'span2',
                 'attributes' => 'required'
             );            
@@ -81,7 +81,7 @@
                 'id' => 'sms_text',
                 'type' => 'text', 
                 'value' => $missing->sms_text,
-                'label' => SMS,
+                'label' => T_('SMS'),
                 'class' => 'span8',
                 'attributes' => 'required'
             );            
@@ -91,24 +91,25 @@
             $group['value'][] = array(
                 'type' => 'html', 
                 'value' => '<a class="btn span12" data-toggle="modal" data-target="#library" href="'.ADMIN_URI.$select.'">' .
-                           '<b class="icon icon-book"></b>'.SELECT.'...</a>',
-                'label' => LIBRARY,
+                           '<b class="icon icon-book"></b>'.T_('Select').'...</a>',
+                'label' => T_('Library'),
                 'class' => 'span2'
             );            
             $fields[] = $group;
            
             $actions = array();
-            $actions['warning'] = sprintf(REMEMBER_TO_INCLUDE_LINK,'<span class="label">%LINK%</span>',TITLE);
+            $actions['warning'] = sprintf(T_('Remember to include %1$s so that %2$s can replace it with the actual trace url.'),
+                '<span class="label">%LINK%</span>', TITLE);
             $actions['warning'] = '<span style="">' . $actions['warning'] . '</span>';
             if(empty($operation->op_closed) === false) {
-                $actions['message'] = NOTE_THIS_WILL_REOPEN_OPERATION;
+                $actions['message'] = T_('Note: This will reopen this operation');
             }
             
-            insert_form("user", EDIT_TRACE, $fields, ADMIN_URI."missing/edit/$missing->id", $actions);
+            insert_form("user", T_('Edit trace'), $fields, ADMIN_URI."missing/edit/$missing->id", $actions);
             
-            insert_dialog_selector("library", LIBRARY, LOADING);
+            insert_dialog_selector("library", T_('Library'), T_('Loading'), array('progress' => '.modal-label'));
             
         }
     } else { ?> 
-<h3 class="pagetitle"><?= EDIT_TRACE ?></h3>
-<?  insert_alert(NONE_FOUND); } ?>
+<h3 class="pagetitle"><?= T_('Edit trace') ?></h3>
+<?  insert_alert(T_('None found')); } ?>

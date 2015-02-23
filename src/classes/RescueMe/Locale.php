@@ -220,33 +220,27 @@
                 return true;
             }
 
-            $available = is_dir(APP_PATH_LOCALE.$locale);
+            if($domains === true) {
+                $domains = self::$domains;
+            }
+            elseif(is_string($domains)) {
+                $domains = array($domains);
+            }
+            foreach($domains as $domain) {
 
-            if($available) {
+                $root = dirname(constant('APP_PATH_DOMAIN_'.strtoupper($domain)));
 
-                $available = true;
+                $filename = implode(DIRECTORY_SEPARATOR,
+                    array($root, $locale, 'LC_MESSAGES', $domain.'.po'));
 
-                if($domains === true) {
-                    $domains = self::$domains;
-                }
-                elseif(is_string($domains)) {
-                    $domains = array($domains);
-                }
-                foreach($domains as $domain) {
+                if(file_exists($filename) === true) {
 
-                    $filename = implode(DIRECTORY_SEPARATOR,
-                        array(APP_PATH_LOCALE.$locale,'LC_MESSAGES', $domain.'.po'));
-
-                    if(file_exists($filename) === false) {
-
-                        $available = false;
-                        break;
-                    }
-
+                    return true;
                 }
 
             }
-            return $available;
+
+            return false;
 
         }
 
@@ -259,12 +253,12 @@
          * @return array Country languages (locale => name)
          */
         public static function getLocales($available = true) {
-            $locales = array('en_US');
-            $countries = Locale::getCountryInfo();                
+            $locales = FALSE;
+            $countries = Locale::getCountryInfo();
             if($countries !== FALSE) {
                 foreach($countries as $country) {
                     foreach($country['language'] as $locale) {
-                        if($available === FALSE || self::isAvailable($locale)) {
+                        if($available === FALSE || self::isAvailable($locale, $available)) {
                             $locales[] = $locale;
                         }
                     }
@@ -293,7 +287,7 @@
                 $countries = is_array($countries) ? $countries : array($countries);
                 foreach($countries as $country) {
                     foreach($country['language'] as $name => $locale) {
-                        if($available === FALSE || self::isAvailable($locale)) {
+                        if($available === FALSE || self::isAvailable($locale, $available)) {
                             $languages[$locale] = $name;
                         }
                     }
@@ -377,7 +371,7 @@
                 
                 if($language !== FALSE) {
                     
-                    $locale = $language.'_'.$country;
+//                    $locale = $language.'_'.$country;
                     
                     foreach($country['language'] as $locale) {
                         if(is_dir(APP_PATH_LOCALE.$locale) || $locale === 'en_US') {

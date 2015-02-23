@@ -15,7 +15,8 @@
             'index.css' => array
             (
                 '//css/bootstrap.min.css', 
-                '//css/bootstrap.fix.css', 
+                '//css/bootstrap.fix.css',
+                '//css/rescueme.css',
                 '//admin/css/admin.css'
             ),
             'index.js' => array
@@ -29,7 +30,8 @@
             (
                 '//css/bootstrap.min.css', 
                 '//css/bootstrap.fix.css', 
-                '//css/bootstrap-editable.css', 
+                '//css/bootstrap-editable.css',
+                '//css/rescueme.css',
                 '//admin/css/admin.css',
                 '//admin/css/admin.responsive.css',
                 '//admin/css/map.css'
@@ -44,7 +46,8 @@
                 '//js/bootstrap-editable.min.js', 
                 '//js/bootstrap-paginator.min.js', 
                 '//js/i18next.min.js', 
-                '//js/rescueme.js', 
+                '//js/rescueme.js',
+                '//js/rescueme-accordion.js',
                 '//js/capslock.js',
                 '//js/validate.js',
                 '//admin/js/admin.js'
@@ -55,7 +58,7 @@
             )
             
         );        
-    }// get_rescueme_minify_config
+    }
 
     
     /** 

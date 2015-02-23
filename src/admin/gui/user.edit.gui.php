@@ -15,7 +15,7 @@
         'id' => 'name',
         'type' => 'text', 
         'value' => $edit->name,
-        'label' => FULL_NAME,
+        'label' => T_('Full name'),
         'attributes' => 'required autofocus'
     );
     
@@ -27,7 +27,7 @@
         'id' => 'country',
         'type' => 'select', 
         'value' => insert_options(Locale::getCountryNames(), $edit->mobile_country, false),
-        'label' => MOBILE_COUNTRY,
+        'label' => T_('Mobile country'),
         'class' => 'span2',
         'attributes' => 'required'
     );    
@@ -35,7 +35,7 @@
         'id' => 'mobile',
         'type' => 'tel', 
         'value' => $edit->mobile,
-        'label' => MOBILE_PHONE,
+        'label' => T_('Mobile phone'),
         'class' => 'span2',
         'attributes' => 'required pattern="[0-9]*"'
     );
@@ -43,7 +43,7 @@
         'id' => 'email',
         'type' => 'email', 
         'value' => $edit->email,
-        'label' => EMAIL,
+        'label' => T_('Email'),
         'class' => 'span3',
         'attributes' => 'required'
     );    
@@ -61,7 +61,7 @@
             'id' => 'role',
             'type' => 'select',
             'value' => insert_options(\RescueMe\Roles::getAll(), $edit->role_id, false),
-            'label' => ROLE,
+            'label' => T_('Role'),
             'attributes' => 'required',
             'class' => 'span4'
         );
@@ -72,7 +72,7 @@
             'id' => 'use_system_sms_provider',
             'type' => 'checkbox',
             'value' => '1',
-            'label' => USE_SYSTEM_SMS_PROVIDER,
+            'label' => T_('Use system SMS provider'),
             'class' => 'span3'
         );
     }
@@ -83,10 +83,8 @@
     }
 
     if($approve) {
-        $_ROUTER['submit'] = APPROVE;
-        insert_form("user", APPROVE_USER, $fields,  ADMIN_URI."user/approve/$id", $_ROUTER);
+        $_ROUTER['submit'] = T_('Approve');
+        insert_form("user", T_('Approve user...'), $fields,  ADMIN_URI."user/approve/$id", $_ROUTER);
     } else {
-        insert_form("user",EDIT_USER, $fields, ADMIN_URI."user/edit/$id", $_ROUTER);
+        insert_form("user", T_('Edit user'), $fields, ADMIN_URI."user/edit/$id", $_ROUTER);
     }
-
-?>

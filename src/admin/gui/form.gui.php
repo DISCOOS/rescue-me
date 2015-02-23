@@ -15,9 +15,9 @@
 <form id="<?=$id?>-form" name="<?=$id?>-form" method="post" class="form well" <?if(isset($action)){?>action="<?=$action?>"<?}?>>
 <? if(isset($title) && $title) {?>
     <div class="form-header">
-        <h3 id="<?= $id ?>-label"><?= T_($title) ?></h3>
+        <h3 id="<?= $id ?>-label"><?= $title ?></h3>
     </div>
-<? } ?>    
+<? } ?>
     <div id="<?= $id ?>-body" class="form-body">
     <?  
         if(isset($actions['error'])) {
@@ -43,14 +43,14 @@
     </div>
     <div class="form-footer">
         <? if(isset($actions['submit'])) { ?>
-        <button type="submit" class="btn btn-primary"><?= T_($actions['submit']) ?></button>
+        <button type="submit" class="btn btn-primary"><?= $actions['submit'] ?></button>
         <? } else { ?>
-        <button type="submit" class="btn btn-primary"><?= T_(SAVE) ?></button>
+        <button type="submit" class="btn btn-primary"><?= T_('Save') ?></button>
         <? } ?>
         <? if(isset($actions['cancel'])) { ?>
-        <button type="reset" class="btn" onclick="history.go(-1);"><?= T_($actions['cancel']) ?></button>
+        <button type="reset" class="btn" onclick="history.go(-1);"><?= $actions['cancel'] ?></button>
         <? } else { ?>
-        <button type="reset" class="btn" onclick="history.go(-1);"><?= T_(CANCEL) ?></button>
+        <button type="reset" class="btn" onclick="history.go(-1);"><?= T_('Cancel') ?></button>
         <? } ?>
     </div>
 </form>

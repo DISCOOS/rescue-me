@@ -15,4 +15,4 @@
     
 </p>
 
-<a class="btn btn-primary" href="<?=$_ROUTER['continue']?>"><?=_CONTINUE?></a>
+<a class="btn btn-primary" href="<?=$_ROUTER['continue']?>"><?=T_('Continue')?></a>

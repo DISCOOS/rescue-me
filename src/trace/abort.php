@@ -8,7 +8,7 @@ $id = input_get_hash('id');
 
 if ($id === false) { 
     
-    $message = ILLEGAL_ARGUMENTS;
+    $message = T_('Illegal arguments');
     
 } else {
     
@@ -18,15 +18,15 @@ if ($id === false) {
     {
         set_system_locale(DOMAIN_TRACE, $m->locale);
         
-        $op_name = sprintf(CLOSED_BY_S1_AT_S2, $m->id, date('Y-m-d'));
+        $op_name = sprintf(T_('Closed by %1$s at %2$s'), $m->id, date('Y-m-d'));
         
         if(Operation::close($m->op_id, array('op_name' => $op_name))) {
             
-            $message = sprintf(TRACE_S_IS_ABORTED, $m->name);
+            $message = sprintf(T_('Trace %1$s aborted'), $m->name);
             
         } else {
             
-            $message = sprintf(FAILED_TO_ABORT_TRACE_S, $id);
+            $message = sprintf(T_('Failed to abort trace %1$s'), $id);
             
             include 'locate.php';
             
@@ -35,7 +35,7 @@ if ($id === false) {
         }
     }
     else {
-        $message = sprintf(TRACE_S_NOT_FOUND, $id);
+        $message = sprintf(T_('Trace %1$s not found'), $id);
     }
 }
 ?>

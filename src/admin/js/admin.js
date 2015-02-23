@@ -14,6 +14,7 @@ $(document).ready(function() {
     
     // Make x-editable inline
     $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.showbuttons = 'bottom';
     
     // Prepare DOM
     R.prepare(document.documentElement, R.options);
@@ -219,6 +220,15 @@ R.prepare = function(element, options) {
         var len = $('#sms_text').val().length+parseInt($('#link_len').val(), 10);
         $('#sms_char').text(len);
     });
+
+    // Register accordions
+    $(element).find('div.accordion.vertical').each(function() {
+        R.accordion(this)
+    });
+
+
+    // Enable collapse enabled elements
+    $(element).find('.collapse').collapse()
 
 }
 

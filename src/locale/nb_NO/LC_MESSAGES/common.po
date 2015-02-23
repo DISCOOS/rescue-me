@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-03 23:25+0100\n"
-"PO-Revision-Date: 2014-08-03 23:25+0100\n"
+"POT-Creation-Date: 2015-02-23 21:57+0100\n"
+"PO-Revision-Date: 2015-02-23 21:57+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
 "Language: nb_NO\n"
@@ -14,340 +14,292 @@ msgstr ""
 "X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 1.5.4\n"
-"X-Poedit-SearchPath-0: locale/domain\n"
+"X-Poedit-SearchPath-0: gui\n"
+"X-Poedit-SearchPath-1: classes\n"
 
-#: locale/domain/common.domain.php:8
-msgid "Is"
-msgstr "Er"
+#: gui/table.gui.php:25
+msgid "Settings"
+msgstr "Innstillinger"
 
-#: locale/domain/common.domain.php:9
-msgid "Not"
-msgstr "Ikke"
-
-#: locale/domain/common.domain.php:10
-msgid "All"
-msgstr "Alle"
-
-#: locale/domain/common.domain.php:11
-msgid "None"
-msgstr "Ingen"
-
-#: locale/domain/common.domain.php:13
-msgid "No"
-msgstr "Nei"
-
-#: locale/domain/common.domain.php:14
-msgid "Yes"
-msgstr "Ja"
-
-#: locale/domain/common.domain.php:16
-msgid "Found"
-msgstr "Funnet"
-
-#: locale/domain/common.domain.php:17
-msgid "Active"
-msgstr "Aktiv"
-
-#: locale/domain/common.domain.php:18
-msgid "Pending"
-msgstr "Ventende"
-
-#: locale/domain/common.domain.php:19
-msgid "Disabled"
-msgstr "Deaktivert"
-
-#: locale/domain/common.domain.php:20
-msgid "Deleted"
-msgstr "Slettet"
-
-#: locale/domain/common.domain.php:21
-msgid "Loading"
-msgstr "Laster"
-
-#: locale/domain/common.domain.php:23
-msgid "Login"
-msgstr "Logg inn"
-
-#: locale/domain/common.domain.php:24
-msgid "Logout"
-msgstr "Logg ut"
-
-#: locale/domain/common.domain.php:25
-msgid "Update"
-msgstr "Oppdater"
-
-#: locale/domain/common.domain.php:26
-msgid "Cancel"
-msgstr "Avbryt"
-
-#: locale/domain/common.domain.php:27
+#: gui/selector.dialog.gui.php:25
 msgid "Select"
 msgstr "Velg"
 
-#: locale/domain/common.domain.php:28
+#: gui/selector.dialog.gui.php:27 gui/form.gui.php:53
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: gui/form.gui.php:48
+msgid "Save"
+msgstr "Lagre"
+
+#: gui/nav.gui.php:2
+msgid "Start"
+msgstr "Start"
+
+#: gui/nav.gui.php:3
+msgid "Logout"
+msgstr "Logg ut"
+
+#: gui/nav.gui.php:5
 msgid "Confirm"
 msgstr "Bekreft"
 
-#: locale/domain/common.domain.php:30
-msgid "Illegal"
-msgstr "Ulovlig"
-
-#: locale/domain/common.domain.php:31
-msgid "Closed"
-msgstr "Lukket"
-
-#: locale/domain/common.domain.php:32
-msgid "Access"
-msgstr "Tilgang"
-
-#: locale/domain/common.domain.php:34
-msgid "Id"
-msgstr "Id"
-
-#: locale/domain/common.domain.php:35
-msgid "SMS"
-msgstr "SMS"
-
-#: locale/domain/common.domain.php:36
-msgid "Module"
-msgstr "Modul"
-
-#: locale/domain/common.domain.php:37
-msgid "Design"
-msgstr "Design"
-
-#: locale/domain/common.domain.php:38
-msgid "System"
-msgstr "System"
-
-#: locale/domain/common.domain.php:39
-msgid "Account"
-msgstr "Konto"
-
-#: locale/domain/common.domain.php:40
-msgid "Message"
-msgstr "Melding"
-
-#: locale/domain/common.domain.php:41
-msgid "Messages"
-msgstr "Meldinger"
-
-#: locale/domain/common.domain.php:42
-msgid "Database"
-msgstr "Database"
-
-#: locale/domain/common.domain.php:44
-msgid "Test"
-msgstr "Test"
-
-#: locale/domain/common.domain.php:45
-msgid "Trace"
-msgstr "Sporing"
-
-#: locale/domain/common.domain.php:46
-msgid "Traces"
-msgstr "Sporinger"
-
-#: locale/domain/common.domain.php:47
-msgid "Exercise"
-msgstr "Øvelse"
-
-#: locale/domain/common.domain.php:48
-msgid "Locations"
-msgstr "Lokasjoner"
-
-#: locale/domain/common.domain.php:49
-msgid "Arguments"
-msgstr "Argumenter"
-
-#: locale/domain/common.domain.php:50
-msgid "Operation"
-msgstr "Aksjon"
-
-#: locale/domain/common.domain.php:52
-msgid "User"
-msgstr "Bruker"
-
-#: locale/domain/common.domain.php:53
-msgid "API ID"
-msgstr "API ID"
-
-#: locale/domain/common.domain.php:54
-msgid "Password"
-msgstr "Passord"
-
-#: locale/domain/common.domain.php:55
-msgid "Callback"
-msgstr "Tilbakemelding"
-
-#: locale/domain/common.domain.php:57
-msgid "Key"
-msgstr "Key"
-
-#: locale/domain/common.domain.php:58
-msgid "Secret"
-msgstr "Secret"
-
-#: locale/domain/common.domain.php:60
-msgid "User ID"
-msgstr "User ID"
-
-#: locale/domain/common.domain.php:61
-msgid "Company ID"
-msgstr "Company ID"
-
-#: locale/domain/common.domain.php:62
-msgid "Department ID"
-msgstr "Department ID"
-
-#: locale/domain/common.domain.php:64
-msgid "min"
-msgstr "min"
-
-#: locale/domain/common.domain.php:65
-msgid "sec"
-msgstr "sek"
-
-#: locale/domain/common.domain.php:67
-msgid "Calculating..."
-msgstr "Kalkulerer..."
-
-#: locale/domain/common.domain.php:68
-msgid "Are you sure?"
-msgstr "Er du sikker?"
-
-#: locale/domain/common.domain.php:70
-msgid "Forgot your password?"
-msgstr "Glemt passordet?"
-
-#: locale/domain/common.domain.php:71
-msgid "Don't have an account?"
-msgstr "Har du ikke en konto?"
-
-#: locale/domain/common.domain.php:72
-msgid "Sign up here"
-msgstr "Registrer deg her"
-
-#: locale/domain/common.domain.php:74
-msgid "Change password"
-msgstr "Endre passord"
-
-#: locale/domain/common.domain.php:75
-msgid "Reset password"
-msgstr "Nullstill passord"
-
-#: locale/domain/common.domain.php:76
+#: gui/nav.gui.php:5
 msgid "Do you want to logout?"
 msgstr "Vil du logge ut?"
 
-#: locale/domain/common.domain.php:78
-msgid "Caps-lock is on!"
-msgstr "Caps-lock er på!"
+#: gui/nav.gui.php:8
+msgid "Don't have an account?"
+msgstr "Har du ikke en konto?"
 
-#: locale/domain/common.domain.php:79
+#: gui/nav.gui.php:8
+msgid "Sign up here"
+msgstr "Registrer deg her"
+
+#: gui/nav.gui.php:10
+msgid "Login"
+msgstr "Logg inn"
+
+#: gui/confirm.dialog.gui.php:23
+msgid "Yes"
+msgstr "Ja"
+
+#: gui/confirm.dialog.gui.php:24
+msgid "No"
+msgstr "Nei"
+
+#: classes/RescueMe/Module.php:180
 #, php-format
-msgid "Missing values: %1$s"
-msgstr "Verdier mangler: %1$s"
+msgid "Failed to create instance of module [%1$s]"
+msgstr "Kunne ikke opprette instanse av modul  [%1$s]"
 
-#: locale/domain/common.domain.php:80
-msgid "No parameters found"
-msgstr "Ingen parameter funnet"
+#: classes/RescueMe/Log/Logs.php:109
+msgid "All"
+msgstr "Alle"
 
-#: locale/domain/common.domain.php:82
-msgid "User not found."
-msgstr "Bruker ikke funnet"
+#: classes/RescueMe/Log/Logs.php:110
+msgid "Traces"
+msgstr "Sporinger"
 
-#: locale/domain/common.domain.php:83
-#, php-format
-msgid "User %1$s is created."
-msgstr "Bruker %1$s er opprettet."
+#: classes/RescueMe/Log/Logs.php:111
+msgid "Locations"
+msgstr "Lokasjoner"
 
-#: locale/domain/common.domain.php:84
-msgid "Failed to create user."
-msgstr "Kunne ikke opprette bruker."
+#: classes/RescueMe/Log/Logs.php:112
+msgid "SMS"
+msgstr "SMS"
 
-#: locale/domain/common.domain.php:85
-#, php-format
-msgid "Recovery password sent to user %1$s."
-msgstr "Engangspassord sendt til bruker %1$s."
+#: classes/RescueMe/Log/Logs.php:113
+msgid "Access"
+msgstr "Tilgang"
 
-#: locale/domain/common.domain.php:86
-msgid "Recovery password not sent."
-msgstr "Engangspassord ikke sendt."
+#: classes/RescueMe/Log/Logs.php:114
+msgid "Database"
+msgstr "Database"
 
-#: locale/domain/common.domain.php:87
-#, php-format
-msgid "Failed to send recovery password to user %1$s."
-msgstr "Kunne sende engangspassord til bruker %1$s."
+#: classes/RescueMe/Log/Logs.php:115
+#: classes/RescueMe/Document/Compiler.php:143
+msgid "System"
+msgstr "System"
 
-#: locale/domain/common.domain.php:88
-#, php-format
-msgid "Your single-use %1$s password."
-msgstr "Ditt %1$s  engangspassord."
+#~ msgid "Trace"
+#~ msgstr "Sporing"
 
-#: locale/domain/common.domain.php:90
-#, php-format
-msgid "Your %1$s account is approved."
-msgstr "Din %1$s kontoforespørsel er godkjent."
+#~ msgid "Test"
+#~ msgstr "Test"
 
-#: locale/domain/common.domain.php:91
-#, php-format
-msgid "Log in to %1$s."
-msgstr "Logg inn her %1$s."
+#~ msgid "Exercise"
+#~ msgstr "Øvelse"
 
-#: locale/domain/common.domain.php:92
-#, php-format
-msgid "Your %1$s account request is rejected."
-msgstr "Din %1$s kontoforespørsel er avvist."
+#~ msgid "Message"
+#~ msgstr "Melding"
 
-#: locale/domain/common.domain.php:94
-#, php-format
-msgid "Minimum %1$s characters"
-msgstr "Minimum %1$s tegn"
+#~ msgid "Failed to update status to ANSWERED for missing "
+#~ msgstr "Klarte ikke å sette status til Besvart"
 
-#: locale/domain/common.domain.php:96
-#, php-format
-msgid "Failed to load [%1$s]."
-msgstr "Klarte ikke å laste [%1$s]."
+#~ msgid "Active"
+#~ msgstr "Aktiv"
 
-#: locale/domain/common.domain.php:97
-msgid "Failed to get country code."
-msgstr "Klarte ikke å finne landkode."
+#~ msgid "Pending"
+#~ msgstr "Ventende"
 
-#: locale/domain/common.domain.php:98
-msgid "Please fill out this field."
-msgstr "Vennligst fyll ut feltet."
+#~ msgid "Disabled"
+#~ msgstr "Deaktivert"
 
-#: locale/domain/common.domain.php:99
-msgid "Please enter a valid email address."
-msgstr "Vennligst oppgi en lovlig e-postadresse."
+#~ msgid "Deleted"
+#~ msgstr "Slettet"
 
-#: locale/domain/common.domain.php:100
-msgid "Please enter at least {0} characters."
-msgstr "Passordet må være minst {0} tegn."
+#~ msgid "User not found"
+#~ msgstr "Fant ingen bruker"
 
-#: locale/domain/common.domain.php:101
-msgid "Please match the required format."
-msgstr "Vennligst skriv riktig format."
+#~ msgid "Recovery password not sent"
+#~ msgstr "Engangspassord ikke sendt"
 
-#: locale/domain/common.domain.php:102
-msgid "Please enter the same value again."
-msgstr "Vennligst skriv inn samme verdi på nytt"
+#~ msgid "Your single-use %1$s password"
+#~ msgstr "Ditt engangspassord %1$s"
 
-#: locale/domain/common.domain.php:103
-#, php-format
-msgid "SMS request [%1$s] not supported."
-msgstr "SMS forespørsel  [%1$s] ikke støttet."
+#~ msgid "Recovery password sent to user %1$s"
+#~ msgstr "Engangspassord sendt til bruker %1$s"
 
-#: locale/domain/common.domain.php:104
-#, php-format
-msgid "[%1$s] does not support [%2$s]."
-msgstr "[%1$s] støtter ikke [%2$s]."
+#~ msgid "Failed to send recovery password to user %1$s"
+#~ msgstr "Kunne sende engangspassord til bruker %1$s"
 
-#: locale/domain/common.domain.php:105
-#, php-format
-msgid "Failed to create instance of module [%1$s]."
-msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
+#~ msgid "User %1$s is created."
+#~ msgstr "Bruker %1$s er opprettet"
+
+#~ msgid "Failed to create user"
+#~ msgstr "Kunne ikke opprette bruker"
+
+#~ msgid "Your %1$s account is approved"
+#~ msgstr "Din %1$s kontoforespørsel er godkjent"
+
+#~ msgid "Log in to %1$s"
+#~ msgstr "Logg inn her %1$s"
+
+#~ msgid "Your %1$s account request is rejected"
+#~ msgstr "Din %1$s kontoforespørsel er avvist"
+
+#~ msgid "Failed to get SMS provider"
+#~ msgstr "Klarte ikke å finne SMS leverandør"
+
+#~ msgid "User"
+#~ msgstr "Bruker"
+
+#~ msgid "Password"
+#~ msgstr "Passord"
+
+#~ msgid "Callback"
+#~ msgstr "Tilbakemelding"
+
+#~ msgid "Company ID"
+#~ msgstr "Company ID"
+
+#~ msgid "Department ID"
+#~ msgstr "Department ID"
+
+#~ msgid "Key"
+#~ msgstr "Key"
+
+#~ msgid "Secret"
+#~ msgstr "Secret"
+
+#~ msgid "Invalid key or secret"
+#~ msgstr "Ugyldig key eller secret"
+
+#~ msgid "API ID"
+#~ msgstr "API ID"
+
+#~ msgid "Is"
+#~ msgstr "Er"
+
+#~ msgid "Not"
+#~ msgstr "Ikke"
+
+#~ msgid "None"
+#~ msgstr "Ingen"
+
+#~ msgid "Found"
+#~ msgstr "Funnet"
+
+#~ msgid "Loading"
+#~ msgstr "Laster"
+
+#~ msgid "Update"
+#~ msgstr "Oppdater"
+
+#~ msgid "Illegal"
+#~ msgstr "Ulovlig"
+
+#~ msgid "Closed"
+#~ msgstr "Lukket"
+
+#~ msgid "Id"
+#~ msgstr "Id"
+
+#~ msgid "Module"
+#~ msgstr "Modul"
+
+#~ msgid "Design"
+#~ msgstr "Design"
+
+#~ msgid "Account"
+#~ msgstr "Konto"
+
+#~ msgid "Messages"
+#~ msgstr "Meldinger"
+
+#~ msgid "Arguments"
+#~ msgstr "Argumenter"
+
+#~ msgid "Operation"
+#~ msgstr "Aksjon"
+
+#~ msgid "User ID"
+#~ msgstr "User ID"
+
+#~ msgid "min"
+#~ msgstr "min"
+
+#~ msgid "sec"
+#~ msgstr "sek"
+
+#~ msgid "Calculating..."
+#~ msgstr "Kalkulerer..."
+
+#~ msgid "Are you sure?"
+#~ msgstr "Er du sikker?"
+
+#~ msgid "Forgot your password?"
+#~ msgstr "Glemt passordet?"
+
+#~ msgid "Change password"
+#~ msgstr "Endre passord"
+
+#~ msgid "Reset password"
+#~ msgstr "Nullstill passord"
+
+#~ msgid "Caps-lock is on!"
+#~ msgstr "Caps-lock er på!"
+
+#~ msgid "Missing values: %1$s"
+#~ msgstr "Verdier mangler: %1$s"
+
+#~ msgid "No parameters found"
+#~ msgstr "Ingen parameter funnet"
+
+#~ msgid "Minimum %1$s characters"
+#~ msgstr "Minimum %1$s tegn"
+
+#~ msgid "Failed to load [%1$s]."
+#~ msgstr "Klarte ikke å laste [%1$s]."
+
+#~ msgid "Please fill out this field."
+#~ msgstr "Vennligst fyll ut feltet."
+
+#~ msgid "Please enter a valid email address."
+#~ msgstr "Vennligst oppgi en lovlig e-postadresse."
+
+#~ msgid "Please enter at least {0} characters."
+#~ msgstr "Passordet må være minst {0} tegn."
+
+#~ msgid "Please match the required format."
+#~ msgstr "Vennligst skriv riktig format."
+
+#~ msgid "Please enter the same value again."
+#~ msgstr "Vennligst skriv inn samme verdi på nytt"
+
+#~ msgid "SMS request [%1$s] not supported."
+#~ msgstr "SMS forespørsel  [%1$s] ikke støttet."
+
+#~ msgid "[%1$s] does not support [%2$s]."
+#~ msgstr "[%1$s] støtter ikke [%2$s]."
+
+#~ msgid "France"
+#~ msgstr "Frankrike"
+
+#~ msgid "Locating persons using their smart phones"
+#~ msgstr "Lokaliserer personer via deres mobiltelefon"
 
 #~ msgid "Your user has NOT been approved."
 #~ msgstr "Din bruker har ikke blitt godkjent"
@@ -466,9 +418,6 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 
 #~ msgid "Use mobile phone to trace persons fast and easy."
 #~ msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
-
-#~ msgid "Settings"
-#~ msgstr "Innstillinger"
 
 #~ msgid "Full name"
 #~ msgstr "Fullt navn"
@@ -633,9 +582,6 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 #~ msgid "Configure"
 #~ msgstr "Konfigurer"
 
-#~ msgid "Save"
-#~ msgstr "Lagre"
-
 #~ msgid "Create"
 #~ msgstr "Opprett"
 
@@ -659,9 +605,6 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 
 #~ msgid "Delete"
 #~ msgstr "Slett"
-
-#~ msgid "Start"
-#~ msgstr "Start"
 
 #~ msgid "Alert"
 #~ msgstr "Varsle"

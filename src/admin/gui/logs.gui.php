@@ -29,20 +29,20 @@
             <thead>
                 <tr>
         <? if($name === Logs::ALL) { ?>                    
-                    <th width="12%"><?=DATE?></th>
-                    <th width="8%"><?=LOG?></th>
+                    <th width="12%"><?=T_('Date')?></th>
+                    <th width="8%"><?=T_('Log')?></th>
         <? } else { ?>                    
-                    <th width="12%" colspan="2"><?=DATE?></th>
+                    <th width="12%" colspan="2"><?=T_('Date')?></th>
         <? } ?>                                        
-                    <th width="8%" class="hidden-phone"><?=LEVEL?></th>
-                    <th><?=MESSAGE?></th>
-                    <th width="10%"><?=USER?></th>
+                    <th width="8%" class="hidden-phone"><?=T_('Level')?></th>
+                    <th><?=T_('Message')?></th>
+                    <th width="10%"><?=T_('User')?></th>
                     <th width="10%">
                         <input type="text" 
                                class="input-medium search-query pull-right" 
                                data-target="<?=$name?> .searchable"
                                data-source="<?=$name?> .pagination"
-                               placeholder="<?=SEARCH?>">
+                               placeholder="<?=T_('Search')?>">
                     </th>            
                 </tr>
             </thead>        

@@ -10,7 +10,7 @@
 
     if($missing === false)
     {
-        insert_alert(NONE_FOUND);
+        insert_alert(T_('None found'));
     }
     else
     {        
@@ -18,21 +18,15 @@
         $positions = $missing->getPositions();
         $name = $missing->name;
         if(Operation::isClosed($missing->op_id)) {
-            $name .= " (".CLOSED.")";
+            $name .= ' ('.T_('Closed').')';
         }
 
 ?>
 <div>
     <h3 class="pagetitle"><?= $name ?></h3>
 <?
-        if(isset($_ROUTER['error'])) { ?>
-    
-        <div class="alert alert-error">
-            <strong>En feil oppsto!</strong><br />
-            <?= $_ROUTER['error'] ?>
-        </div>
-    
-    <?
+        if(isset($_ROUTER['error'])) {
+            insert_error($_ROUTER['error']);
         }
 
         $user_id = User::currentId();
@@ -48,7 +42,7 @@
         } else {
             $pan_to = '';
             $position = format_pos(null, $params);
-            $located = UNKNOWN;
+            $located = T_('Unknown');
             $located_state = "warning";
         }
 
@@ -60,11 +54,11 @@
     <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
         <div class="info pull-left no-wrap">
             <label class="label label-info label-position" <?=$pan_to?>>
-                <?=LAST_LOCATION?></label> <?= $position ?>
+                <?=T_('Last location')?></label> <?= $position ?>
         </div>
     <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_TIME, $details)) { ?>
         <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=LOCATION_RECEIVED?></label> 
+            <label class="label label-info"><?=T_('Location received')?></label>
             <span class="label label-<?=$located_state?>"><?= $located ?></span>
         </div>
     <? } ?>
@@ -73,10 +67,10 @@
     <? require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
     <div id="map" class="map"></div>
     <div id="sidebar">
-        <h4 id="under1kmtitle" class="hide"><?=sprintf(LOCATIONS_LESS_EQUAL,'1 km')?></h4>
+        <h4 id="under1kmtitle" class="hide"><?=sprintf(T_('Locations &le; %1$s'),'1 km')?></h4>
         <ul class="unstyled" id="under1km"></ul>
         </ul>
-        <h4 id="over1kmtitle" class="hide"><?=sprintf(LOCATIONS_GREATER_THAN,'1 km')?></h4>
+        <h4 id="over1kmtitle" class="hide"><?=sprintf(T_('Locations &gt; %1$s'),'1 km')?></h4>
         <ul class="unstyled" id="over1km"></ul>
     </div>
 
@@ -88,14 +82,14 @@
         
     <? if (in_array(Properties::TRACE_DETAILS_REFERENCE, $details)) { ?>
         <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=REFERENCE?></label> 
+            <label class="label label-info"><?=T_('Reference')?></label>
             <span class="label label-<?=empty($missing->op_ref) ? 'warning' : 'success' ?>">
-                <?= empty($missing->op_ref) ? UNKNOWN : $missing->op_ref ?>
+                <?= empty($missing->op_ref) ? T_('Unknown') : $missing->op_ref ?>
             </span>
         </div>
     <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_URL, $details)) { ?>
         <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=LOCATION_LINK?></label> 
+            <label class="label label-info"><?=T_('Location link')?></label>
             <span class="label label-success">
                 <?= str_replace("#missing_id", encrypt_id($missing->id), LOCATE_URL); ?>
             </span>

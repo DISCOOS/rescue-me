@@ -12,7 +12,7 @@
 
     if ($id === false || $lat === false || $lon === false || $acc === false) { 
 
-         $response = ILLEGAL_ARGUMENTS;
+         $response = T_('Illegal arguments');
 
     } else {
 
@@ -31,7 +31,7 @@
             }
         }
         else {
-            $response = sprintf(TRACE_S_NOT_FOUND, $id);
+            $response = sprintf(T_('Trace %1$s not found'), $id);
         }
     }
     echo $response;

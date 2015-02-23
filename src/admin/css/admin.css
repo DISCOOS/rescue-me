@@ -6,43 +6,6 @@
 /*==========================================
 / Design
 /=========================================*/
-body {
-    padding-top: .1em;
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-bottom: 4em;
-    background-color: #f5f5f5;
-}
-/* Custom container */
-.container-narrow {
-    min-width: 10em;
-    max-width: 70em;
-    /*margin-top: 1em;*/
-    margin-left: auto;
-    margin-right: auto;
-}
-.container-narrow > hr {
-    margin: 30px 0;
-}
-
-h3.pagetitle {
-    margin-bottom: 5px;
-    display:block;
-    width:100%;
-    padding:0;
-    font-size:21px;
-    line-height:40px;
-    color:#333333;
-    /*border:0;
-    border-bottom:1px solid #e5e5e5;
-    */
-}
-
-hr {
-    border:0 !important;
-    border-bottom:1px solid #e5e5e5 !important;
-}
-
 .clickable {
     cursor: pointer;
 }
@@ -169,14 +132,11 @@ hr {
 / [User List] page
 /=========================================*/
 .user {
-    .clickable;
     background-color: #f1f1f1;
 }
 
-.user div.name, td.name {
+.name {
     font-weight: bold;
-    white-space: nowrap;
-    color: @color-rm;
 }
 
 /*==========================================
@@ -475,6 +435,8 @@ form.well button[type="submit"].column {
 /=========================================*/
 .contact {
     float: left;
+    margin-top: 1em;
+    min-width: 20em;
 }
 .contact img {
     float: left;
@@ -543,6 +505,10 @@ form.well button[type="submit"].column {
 }
 .form-footer .btn-block + .btn-block {
     margin-left: 0;
+}
+
+td.description {
+    border-top: ;
 }
 
 

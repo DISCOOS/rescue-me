@@ -22,6 +22,9 @@ AddType application/x-httpd-php .appcache
     RewriteRule ^css/(.*\.css)$ min/?g=$1 [NE]
     RewriteRule ^css/(.*\.less)$ min/?g=$1 [L,NE]
     
+    # Rewrite help URIs to minify
+    #RewriteRule ^help(|/)$ help [L,NE]
+
     # Rewrite sms callbacks
     RewriteRule ^sms/callback/([0-9]+)(.*)$ sms/handle.php?request=callback&user=$1&$2 [QSA,L]
 

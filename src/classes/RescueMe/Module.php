@@ -60,8 +60,8 @@
             foreach(Module::$required as $type => $impl) {
                 if(self::exists($type) === FALSE) {
                     $module = new $impl;
-                    $id = self::add($type, $impl, $module->config()->params());
-                    $modules[$id] = self::get($id);
+                    $module = self::add($type, $impl, $module->config()->params());
+                    $modules[$module->id] = self::get($module->id);
                 }                
             }
             return empty($modules) ? false : $modules;
@@ -166,7 +166,7 @@
             }
             catch(\Exception $e)
             {
-                return $e->message();
+                return $e->getMessage();
             }
             
             $module = prepare_values(Module::$fields, array($type, $impl, json_encode($config)));
@@ -177,15 +177,21 @@
             
             $instance = $module->newInstance();
             
-            $valid = $instance === FALSE ? sprintf(FAILED_TO_CREATE_INSTANCE_OF_MODULE_S,$impl) : TRUE;
+            $valid = $instance === FALSE ? sprintf(T_('Failed to create instance of module [%1$s]'),$impl) : TRUE;
             
-            if($valid === TRUE && ($instance instanceof SMS\Provider) && $instance->validate() === FALSE) {
+            if($valid === TRUE && method_exists($instance,'validate') && $instance->validate() === FALSE) {
                 $valid = $instance->error();
             }
             
             return $valid;
             
         }// verify
+
+
+
+        public static function isValid($instance) {
+
+        }
         
         
         

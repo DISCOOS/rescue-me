@@ -5,7 +5,12 @@
     "homepage": "http://www.discoos.org/rescueme",
     
     "autoload": {
-        "psr-0": {"": "classes/"},
+        "psr-0": {"": [
+            "classes/",
+            "sms/classes/",
+            "trace/classes/",
+            "admin/classes/"
+        ]},
         "classmap": [
             "classes/Inspector.php", 
             "classes/gPoint.class.php"

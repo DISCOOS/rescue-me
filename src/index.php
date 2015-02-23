@@ -1,8 +1,16 @@
 <?php
-    require('config.php');
-    
-    set_system_locale(DOMAIN_ADMIN);
-    
+
+require('config.php');
+
+use RescueMe\Locale;
+use RescueMe\Document\Compiler;
+
+$locale = Locale::getBrowserLocale();
+
+set_system_locale(DOMAIN_COMMON, $locale);
+
+$compiler = new Compiler(APP_PATH_HELP);
+
 ?>
 
 <!DOCTYPE html>
@@ -20,38 +28,19 @@
 
     <body>
         <div class="container-narrow">
-            <div class="masthead">
+            <div class="row-fluid masthead">
+                <div class="pull-left">
+                    <p class="lead muted"><b><?=TITLE?></b></p>
+                </div>
                 <ul class="nav nav-pills pull-right">
-                <? 
-                    
-                    if(isset_get($_SESSION, 'logon', false)) {
-                        
-                 ?>
-                    <li id="start"><a href="<?= ADMIN_URI ?>start"><?= START ?></a></li>
-                    <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm"><?= LOGOUT ?></a></li>
-                <? 
-                        insert_dialog_confirm("confirm", CONFIRM, DO_YOU_WANT_TO_LOGOUT, ADMIN_URI."logout");
-                    
-                    } else {
-                        
-                 ?>  
-                    
-                    <li id="logout"><a href="<?= ADMIN_URI."user/new" ?>"><?=DONT_HAVE_AN_ACCOUNT?> <?=SIGN_UP_HERE?></a></li>
-                    <li id="logout"><a href="<?= ADMIN_URI ?>"><?= LOGIN ?></a></li>
-                    
-                <?php 
-                    
-                    }
-                        
-                 ?>                               
+                <?require('gui/nav.gui.php')?>
                 </ul>
             </div>
-            <?
-                require('gui/about.gui.php');
-                if(is_file(realpath('footer.php'))) {
-                    require('footer.php');
-                }
-            ?>
+            <div class="row-fluid"><?require('gui/home.gui.php')?></div>
+            <div class="form-signin text-center visible-phone">
+                <a href="<?= ADMIN_URI."user/new" ?>"><?=T_('Don\'t have an account?')?> <?=T_('Sign up here')?></a>
+            </div>
+            <?require('gui/footer.gui.php')?>
         </div>
     </body>
 </html>

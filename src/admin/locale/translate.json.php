@@ -7,7 +7,7 @@
 	 *
 	 * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
 	 */
-    
+
     require(implode(DIRECTORY_SEPARATOR, array(dirname(__DIR__),'config.php')));
     
     use RescueMe\User;
@@ -38,7 +38,7 @@
      */
     function get_json_domain($domain) {
         
-        $file = implode(DIRECTORY_SEPARATOR, array(__DIR__, $domain.'.domain.json'));
+        $file = get_path(__DIR__, array('domain', $domain.'.domain.json'));
         
         $json = file_get_contents($file);
         
@@ -54,7 +54,7 @@
         if(is_array($data)) {
             $data = prepare_json_array($data);
         } elseif(is_string($data) && defined($data)) {
-            $data = constant($data);
+            $data = T_(constant($data));
         }
         return $data;
     }

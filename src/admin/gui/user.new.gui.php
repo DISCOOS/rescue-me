@@ -11,7 +11,7 @@
         'id' => 'name',
         'type' => 'text',
         'value' => $value, 
-        'label' => T_('Full name'),        
+        'label' => T_('Full name'),
         'attributes' => 'required autofocus'
     );
     
@@ -25,7 +25,7 @@
         'id' => 'country',
         'type' => 'select', 
         'value' => insert_options(Locale::getCountryNames(), $value, false), 
-        'label' => COUNTRY_CODE,
+        'label' => T_('Country code'),
         'class' => 'span2',
         'attributes' => 'required'
     );    
@@ -35,7 +35,7 @@
         'id' => 'mobile',
         'type' => 'tel',
         'value' => $value, 
-        'label' => MOBILE_PHONE,
+        'label' => T_('Mobile phone'),
         'class' => 'span2',
         'attributes' => 'required pattern="[0-9]*"'
     );
@@ -45,7 +45,7 @@
         'id' => 'email',
         'type' => 'email',
         'value' => $value, 
-        'label' => EMAIL,
+        'label' => T_('Email'),
         'class' => 'span3',
         'attributes' => 'required email'
     );    
@@ -55,8 +55,8 @@
     $group['value'][] = array(
         'id' => 'password',
         'type' => 'password', 
-        'label' => PASSWORD,
-        'placeholder' => sprintf(MINIMUM_D_CHARACTERS,8),
+        'label' => T_('Password'),
+        'placeholder' => sprintf(T_('Minimum %1$s characters'),PASSWORD_LENGTH),
         'class' => 'span3',
         'attributes' => 'required minlength="8"'
     );
@@ -64,7 +64,7 @@
         'id' => 'repeat-pwd',
         'type' => 'password', 
         'label' => T_('Repeat Password'),
-        'placeholder' => sprintf(MINIMUM_D_CHARACTERS,8),
+        'placeholder' => sprintf(T_('Minimum %1$s characters'),PASSWORD_LENGTH),
         'class' => 'span3 offset1',
         'attributes' => 'required equalTo="#password"'
     );
@@ -82,7 +82,7 @@
             'id' => 'role',
             'type' => 'select',
             'value' => insert_options(\RescueMe\Roles::getAll(), $value, false),
-            'label' => ROLE,
+            'label' => T_('Role'),
             'attributes' => 'required',
             'class' => 'span4'
         );
@@ -94,7 +94,7 @@
             'id' => 'use_system_sms_provider',
             'type' => 'checkbox',
             'value' => $value ? 'checked' : '1',
-            'label' => USE_SYSTEM_SMS_PROVIDER,
+            'label' => T_('Use system SMS provider'),
             'class' => 'span3'
         );
     }

@@ -29,7 +29,7 @@
         $options = array();
 ?>
 
-        <tr><td colspan="<?=$admin ? 4 : 3?>"><?=NONE_FOUND?></td></tr>
+        <tr><td colspan="<?=$admin ? 4 : 3?>"><?=T_('None found')?></td></tr>
 
 <? } else {
         
@@ -58,7 +58,7 @@
                 <? } ?>
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/{$this_missing->op_id}"?>">
-                            <b class="icon icon-edit"></b><?= REOPEN ?>
+                            <b class="icon icon-edit"></b><?= T_('Reopen') ?>
                         </a>
                     </div>
                 </td>

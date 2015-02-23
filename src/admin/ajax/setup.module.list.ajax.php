@@ -5,7 +5,7 @@
     use RescueMe\Module;
     
     $id = input_get_int('id', User::currentId());
-    
+
     $modules = Module::getAll($id);
     
     if($modules !== false) {
@@ -19,8 +19,7 @@
     <thead>
         <tr>
             <th width="25%"><?=T_("Settings")?></th>
-            <th width="25%"></th>
-            <th width="50%">
+            <th>
                 <input type="search" class="input-medium search-query pull-right" placeholder="Search">
             </th>            
         </tr>
@@ -31,14 +30,16 @@
             
             if(preg_match($pattern, $module->type)) {
                 $classes = \Inspector::subclassesOf($module->type);
+                $type = explode('\\',$module->type);
+                $impl = explode('\\',$module->impl);
 ?>
         <tr id="<?= $id ?>">
-            <td class="module type"> <?=T_($module->type)?> </td>
-            <td class="module impl"> <?=T_($module->impl)?> </td>
+            <td class="module type"> <?=end($type)?> </td>
+            <td class="module impl"> <?=end($impl)?> </td>
             <td class="editor">
                 <div class="btn-group pull-right">
                     <a class="btn btn-small" href="<?=ADMIN_URI."setup/module/$id"?>">
-                        <b class="icon icon-edit"></b><?= EDIT ?>
+                        <b class="icon icon-edit"></b><?= T_('Edit') ?>
                     </a>
                     <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
@@ -53,6 +54,23 @@
 ?>        
                     </ul>
                 </div>
+            </td>
+        </tr>
+        <tr id="<?= $id ?>-d">
+            <td colspan="3" class="description muted">
+<?
+            if($instance = $module->newInstance() === FALSE) {
+                echo insert_icon('remove', 'red', true, false).T_('Module is not installed correctly.');
+                insert_error(sprintf(T_('Failed to create instance of module [%1$s]'),$impl));
+            } else {
+                if(method_exists($instance,'validate') && $instance->validate() === FALSE) {
+                    echo insert_icon('remove', 'red', true, false).T_('Module is not configured correctly.');
+                    insert_error($instance->error());
+                } else {
+                    echo insert_icon('ok', 'green', true, false).T_('Module is configured and ready for use.');
+                }
+            }
+?>
             </td>
         </tr>
 <?

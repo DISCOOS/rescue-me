@@ -23,7 +23,7 @@
         
     if($users == false) {?>
 
-        <tr><td colspan="4"><?=NONE_FOUND?></td></tr>
+        <tr><td colspan="4"><?=T_('None found')?></td></tr>
 
 <?
         $options = create_paginator(1, 1, $user_id);        
@@ -51,7 +51,7 @@
                         
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."user/edit/$id"?>">
-                            <b class="icon icon-edit"></b><?= EDIT ?>
+                            <b class="icon icon-edit"></b><?= T_('Edit') ?>
                         </a>
                         <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
                             <span class="caret"></span>
@@ -62,36 +62,36 @@
                             ?>
                             <li>
                                 <a role="menuitem" data-toggle="modal" data-target="#confirm"
-                                   data-content="<?=sprintf(DO_YOU_WANT_TO_ENABLE_S,"<u>{$user->name}</u>")?>"
+                                   data-content="<?=sprintf(T_('Do you want to enable %1$s?'),"<u>{$user->name}</u>")?>"
                                    data-href="<?=ADMIN_URI."user/enable/$id?>"?>">
-                                    <?= ENABLE ?>
+                                    <?= T_('Enable') ?>
                                 </a>
                             </li>
                             <? } elseif(User::PENDING === $user->state) {
-                                    insert_item(APPROVE, ADMIN_URI."user/edit/$id?approve");                                    
-                                    insert_item(DENY, ADMIN_URI."user/reject/$id");
+                                    insert_item(T_('Approve'), ADMIN_URI."user/edit/$id?approve");
+                                    insert_item(T_('Deny'), ADMIN_URI."user/reject/$id");
                                } else {
                             ?>
                             <li>
                                 <a role="menuitem" data-toggle="modal" data-target="#confirm"
-                                   data-content="<?=sprintf(DO_YOU_WANT_TO_DISABLE_S,"<u>{$user->name}</u>")?>"
+                                   data-content="<?=sprintf(T_('Do you want to disable %1$s?'),"<u>{$user->name}</u>")?>"
                                    data-href="<?=ADMIN_URI."user/disable/$id?>"?>">
-                                    <?= DISABLE ?>
+                                    <?= T_('Disable') ?>
                                 </a>
                             </li>
                             <? } ?>
                             <li class="divider"></li>
-                            <?insert_item(CHANGE_PASSWORD, ADMIN_URI."password/change/$id")?>
-                            <?insert_item(RESET_PASSWORD, ADMIN_URI."password/recover/$id")?>
+                            <?insert_item(T_('Change password'), ADMIN_URI."password/change/$id")?>
+                            <?insert_item(T_('Reset password'), ADMIN_URI."password/recover/$id")?>
                             <li class="divider"></li>
-                            <?if($allow) {insert_item(SETUP, ADMIN_URI."setup/$id", "icon icon-wrench"); ?>
+                            <?if($allow) {insert_item(T_('Setup'), ADMIN_URI."setup/$id", "icon icon-wrench"); ?>
                             <li class="divider"></li>
                             <? } ?>
                             <li>
                                 <a role="menuitem" data-toggle="modal" data-target="#confirm"
-                                   data-content="<?=sprintf(DO_YOU_WANT_TO_DELETE_S,"<u>{$user->name}</u>")?>"
+                                   data-content="<?=sprintf(T_('Do you want to delete %1$s?'),"<u>{$user->name}</u>")?>"
                                    data-href="<?=ADMIN_URI."user/delete/$id?>"?>">
-                                    <b class="icon icon-trash"></b><?= DELETE ?>
+                                    <b class="icon icon-trash"></b><?= T_('Delete') ?>
                                 </a>
                             </li>
                         </ul>
@@ -111,13 +111,13 @@
             // Insert delete confirmation
             insert_dialog_confirm(
                 "confirm-delete-$id", 
-                "Bekreft", 
-                "Vil du slette <u>$user->name</u>?", 
+                T_('Confirm'),
+                sprintf(T_('Do you want to delete %1$s?'),"<u>{$user->name}</u>"),
                 ADMIN_URI."user/delete/$id"
             );
         }
 
-        insert_action(NEW_USER, ADMIN_URI."user/new", "icon-plus-sign");
+        insert_action(T_('New user'), ADMIN_URI."user/new", "icon-plus-sign");
     }
     
     return create_ajax_response(ob_get_clean(), $options);

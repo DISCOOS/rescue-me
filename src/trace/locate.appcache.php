@@ -5,12 +5,13 @@ require_once('../config.php');
 use RescueMe\Missing;
 use RescueMe\Properties;
 
-set_system_locale();
-
 $id = $_GET['id'];
 $missing = Missing::get($id);
 
 if($missing !== false) {
+
+    set_system_locale(DOMAIN_TRACE, $missing->locale);
+
     $version = VERSION;
     $user_id = $missing->user_id;
     $type = Properties::get(Properties::LOCATION_APPCACHE, $user_id);

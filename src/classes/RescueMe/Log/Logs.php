@@ -106,13 +106,13 @@
          */
         public static function getTitles() {
             return array(
-                Logs::ALL => ALL,
-                Logs::TRACE => TRACES,
-                Logs::LOCATION => LOCATIONS,
-                Logs::SMS => SMS,
-                Logs::ACCESS => ACCESS,
-                Logs::DB =>  DATABASE,
-                Logs::SYSTEM => SYSTEM,
+                Logs::ALL => T_('All'),
+                Logs::TRACE => T_('Traces'),
+                Logs::LOCATION => T_('Locations'),
+                Logs::SMS => T_('SMS'),
+                Logs::ACCESS => T_('Access'),
+                Logs::DB =>  T_('Database'),
+                Logs::SYSTEM => T_('System'),
             );            
         }        
         
