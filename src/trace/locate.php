@@ -67,7 +67,25 @@
     </head><body onLoad="R.trace.locate();"><div align="center"><div style="max-width: 400px; min-height: 100px;">
     <div id="f" style="margin-bottom: 10px"><?=$message?></div><span id="i"></span><br /><span id="s"></span></div><hr />
     <div id="l" style="margin-bottom: 10px"></div><a href="<?=APP_URI?>a/<?=$id?>" onclick="return confirm('<?=T_('Are you sure?')?>');"><?=T_('Cancel')?></a></div></body>
-    <? } else {
+    <?
+
+    $tic = round(microtime(true) * 1000);
+
+    $lookup = new \RescueMe\Device\WURFL();
+
+    $configuration = $lookup->device(getallheaders());
+
+    var_dump($configuration);
+
+
+    var_dump(getallheaders());
+
+    $toc = round(microtime(true) * 1000);
+
+    print_r(($toc - $tic));
+
+
+    } else {
 
     insert_alert(sprintf(T_('Trace %1$s not found'),$id));
 

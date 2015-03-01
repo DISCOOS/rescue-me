@@ -40,6 +40,7 @@
     define('APP_PATH_LOCALE', APP_PATH.'locale'.DIRECTORY_SEPARATOR);
     define('APP_PATH_NEWS', APP_PATH.'news'.DIRECTORY_SEPARATOR);
     define('APP_PATH_HELP', APP_PATH.'help'.DIRECTORY_SEPARATOR);
+    define('APP_PATH_DATA', APP_PATH.'data'.DIRECTORY_SEPARATOR);
 
     // Import class loaders
     require('vendor/autoload.php');

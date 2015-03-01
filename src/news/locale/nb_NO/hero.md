@@ -4,7 +4,7 @@ layout: default
 
 ---
 
-## Lokalisere personer med smarttelefon
+## Finn personer med smarttelefon
 
 Moderne smarttelefoner kan rapportere posisjonen med høy nøyaktighet ved hjelp av åpne standarder som
 [HTML5 Geolocation](http://www.w3schools.com/html/html5_geolocation.asp) og

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3be0c97a346098d5b14a8e00dcfcaf30",
+    "hash": "1a7597ac162e395da6bf2824d38b0050",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -1124,25 +1124,31 @@
         },
         {
             "name": "twig/extensions",
-            "version": "v1.0.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fabpot/Twig-extensions.git",
-                "reference": "f91a82ec225e5bb108e01a0f93c9be04f84dcfa0"
+                "url": "https://github.com/twigphp/Twig-extensions.git",
+                "reference": "8cf4b9fe04077bd54fc73f4fde83347040c3b8cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig-extensions/zipball/f91a82ec225e5bb108e01a0f93c9be04f84dcfa0",
-                "reference": "f91a82ec225e5bb108e01a0f93c9be04f84dcfa0",
+                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/8cf4b9fe04077bd54fc73f4fde83347040c3b8cd",
+                "reference": "8cf4b9fe04077bd54fc73f4fde83347040c3b8cd",
                 "shasum": ""
             },
             "require": {
-                "twig/twig": "~1.0"
+                "twig/twig": "~1.12"
+            },
+            "require-dev": {
+                "symfony/translation": "~2.3"
+            },
+            "suggest": {
+                "symfony/translation": "Allow the time_diff output to be translated"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -1157,19 +1163,16 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Common additional features for Twig that do not directly belong in core",
-            "homepage": "https://github.com/fabpot/Twig-extensions",
+            "homepage": "http://twig.sensiolabs.org/doc/extensions/index.html",
             "keywords": [
-                "debug",
                 "i18n",
                 "text"
             ],
-            "time": "2013-10-18 19:37:15"
+            "time": "2014-10-30 14:30:03"
         },
         {
             "name": "twig/twig",
@@ -1230,27 +1233,27 @@
         },
         {
             "name": "umpirsky/twig-gettext-extractor",
-            "version": "1.1.3",
+            "version": "1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/umpirsky/Twig-Gettext-Extractor.git",
-                "reference": "73ff53c19e10eee6c81a54dfe25a19eee830cefb"
+                "reference": "a2cdf8693e874ce83603c84e1cc46efb3d516c3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/umpirsky/Twig-Gettext-Extractor/zipball/73ff53c19e10eee6c81a54dfe25a19eee830cefb",
-                "reference": "73ff53c19e10eee6c81a54dfe25a19eee830cefb",
+                "url": "https://api.github.com/repos/umpirsky/Twig-Gettext-Extractor/zipball/a2cdf8693e874ce83603c84e1cc46efb3d516c3f",
+                "reference": "a2cdf8693e874ce83603c84e1cc46efb3d516c3f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "symfony/filesystem": ">=2.0,<3.0",
-                "symfony/form": ">=2.0,<3.0",
-                "symfony/routing": ">=2.0,<3.0",
-                "symfony/translation": ">=2.0,<3.0",
-                "symfony/twig-bridge": ">=2.0,<3.0",
-                "twig/extensions": "1.0.*",
-                "twig/twig": ">=1.2.0,<2.0-dev"
+                "symfony/filesystem": "~2.0",
+                "symfony/form": "~2.0",
+                "symfony/routing": "~2.0",
+                "symfony/translation": "~2.0",
+                "symfony/twig-bridge": "~2.0",
+                "twig/extensions": "~1.0",
+                "twig/twig": "~1.2"
             },
             "require-dev": {
                 "symfony/config": "2.1.*"
@@ -1271,12 +1274,56 @@
             "authors": [
                 {
                     "name": "Саша Стаменковић",
-                    "email": "umpirsky@gmail.com",
-                    "homepage": "http://umpirsky.com"
+                    "email": "umpirsky@gmail.com"
                 }
             ],
             "description": "The Twig Gettext Extractor is Poedit friendly tool which extracts translations from twig templates.",
-            "time": "2013-02-14 16:41:48"
+            "time": "2015-02-25 14:41:10"
+        },
+        {
+            "name": "wurfl/wurfl-api",
+            "version": "1.5.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sam-media/wurfl-api.git",
+                "reference": "220ede818fa9f49b6ac7e77c42418558a31f5289"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sam-media/wurfl-api/zipball/220ede818fa9f49b6ac7e77c42418558a31f5289",
+                "reference": "220ede818fa9f49b6ac7e77c42418558a31f5289",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "WURFL_": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GNU AFFERO GENERAL PUBLIC LICENSE"
+            ],
+            "authors": [
+                {
+                    "name": "ScientiaMobile, Inc",
+                    "email": "sales@scientiamobile.com",
+                    "homepage": "http://wurfl.sourceforge.net/"
+                }
+            ],
+            "description": "WURFL, the Wireless Universal Resource FiLe, is a Device Description Repository (DDR), i.e. a software component that maps HTTP Request headers to the profile of the HTTP client (Desktop, Mobile Device, Tablet, etc.) that issued the request",
+            "time": "2014-11-24 01:17:55"
         }
     ],
     "packages-dev": [],

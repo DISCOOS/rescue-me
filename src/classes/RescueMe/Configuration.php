@@ -31,7 +31,7 @@
          * @param array $required
          * 
          */
-        public function __construct($params,$labels,$required)
+        public function __construct($params,$labels = array(),$required = array())
         {
             $this->params = $params;
             $this->labels = $labels;

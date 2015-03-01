@@ -347,8 +347,9 @@ class Install {
 
         $users = User::getAll();
         if ($users !== false) {
+            /** @var User $user */
             foreach ($users as $user) {
-                if ($user->prepare()) {
+                if (Module::prepare($user->id)) {
                     info("    Modules for [$user->name] installed", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST);
                     $inline = false;
                 }

@@ -485,42 +485,6 @@
         
 
         /**
-         * Prepare user modules if not already exist
-         *
-         * @param boolean $copy Copy system modules if true, empty otherwise.
-         * 
-         * @return boolean TRUE if changes was made, FALSE otherwise.
-         */
-        public function prepare($copy = false) {
-            $changed = false;
-            $modules = Module::getAll();
-
-            if($modules !== false) {
-                foreach($modules as $module) {
-                    if(Module::exists($module->type, $this->id) === false) {
-
-                        $params = $copy ? $module->config : $module->newConfig()->params();
-                        Module::add($module->type, $module->impl, $params, $this->id);
-                        $changed = true;
-
-                    } elseif($copy) {
-
-                        $type = $module->type;
-                        $impl = $module->impl;
-                        $params = $module->config;
-                        $module = Module::get($module->type, $this->id);
-                        Module::set($module->id, $type, $impl, $params);
-                        $changed = true;
-
-                    }
-
-                }           
-            }
-            return $changed;
-        }
-        
-
-        /**
          * Reset user password.
          * 
          * Returns random password

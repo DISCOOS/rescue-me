@@ -7,6 +7,7 @@ logs
 src/config.php
 src/config.minify.php
 src/vendor
+src/data
 src/min/cache/
 src/composer.phar
 src/VERSION

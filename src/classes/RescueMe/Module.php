@@ -12,8 +12,10 @@
     
     namespace RescueMe;
 
+    use RescueMe\Device\WURFL;
     use RescueMe\SMS\Nexmo;
     use RescueMe\SMS\Provider;
+    use RescueMe\Device\Lookup;
 
     /**
      * Module class
@@ -34,7 +36,10 @@
         
         public $user_id;
         
-        private static $required = array(Provider::TYPE => Nexmo::TYPE);
+        private static $required = array(
+            Lookup::TYPE => WURFL::TYPE,
+            Provider::TYPE => Nexmo::TYPE,
+        );
         
         /**
          * Constructor
@@ -59,12 +64,53 @@
             $modules = array();
             foreach(Module::$required as $type => $impl) {
                 if(self::exists($type) === FALSE) {
+                    /** @var Module $module */
                     $module = new $impl;
                     $module = self::add($type, $impl, $module->config()->params());
                     $modules[$module->id] = self::get($module->id);
                 }                
             }
             return empty($modules) ? false : $modules;
+        }
+
+
+        /**
+         * Prepare user modules if not already exist
+         *
+         * @param integer $id User id
+         * @param boolean $copy Copy system modules if true, create new otherwise.
+         *
+         * @return boolean TRUE if changes was made, FALSE otherwise.
+         */
+        public static function prepare($id, $copy = false) {
+            $changed = false;
+            $modules = Module::getAll();
+
+            if($modules !== false) {
+                /** @var Module $module */
+                foreach($modules as $module) {
+                    if(Module::exists($module->type, $id) === false) {
+
+                        $changed = true;
+
+                        $params = $copy ? $module->config : $module->newConfig()->params();
+                        Module::add($module->type, $module->impl, $params, $id);
+
+                    } elseif($copy) {
+
+                        $changed = true;
+
+                        $type = $module->type;
+                        $impl = $module->impl;
+                        $params = $module->config;
+                        $module = Module::get($module->type, $id);
+                        Module::set($module->id, $type, $impl, $params);
+
+                    }
+
+                }
+            }
+            return $changed;
         }
         
         
