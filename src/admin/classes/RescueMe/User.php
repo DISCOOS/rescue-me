@@ -639,8 +639,9 @@
             $all = empty($devices);
             
             if($all || in_array('sms', $devices)) {
-            
-                $sms = Module::get(Provider::TYPE, User::currentId())->newInstance();
+
+                /** @var Provider $sms */
+                $sms = Manager::get(Provider::TYPE, User::currentId())->newInstance();
                 if(!$sms)
                 {
                     return User::error(T_('Failed to get SMS provider'));

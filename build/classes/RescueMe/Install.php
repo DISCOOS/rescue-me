@@ -12,11 +12,6 @@
 
 namespace RescueMe;
 
-use RescueMe\DB;
-use RescueMe\User;
-use RescueMe\Roles;
-use RescueMe\Module;
-
 /**
  * Install class
  *
@@ -92,9 +87,6 @@ class Install {
             $this->initLibs();
 
         }
-
-        // Bootstrap libraries
-        require $this->root . DIRECTORY_SEPARATOR . "vendor/autoload.php";
 
         $this->initConfig();
 
@@ -332,7 +324,7 @@ class Install {
 
         info("  Initializing database...." . ($skipped ? 'SKIPPED' : 'DONE'));
 
-    }// initDB
+    }
 
 
     private function initModules(){
@@ -340,16 +332,21 @@ class Install {
         $inline = true;
         info("  Initializing modules....", BUILD_INFO, NEWLINE_NONE);
 
-        if (Module::install() !== false) {
-            info("    System modules installed", BUILD_INFO, NEWLINE_BOTH);
+        $callback = function($progress) use ($inline) {
+            info("    $progress", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST );
             $inline = false;
+        };
+
+        if (Manager::install($callback) !== false) {
+            info("    System modules installed", BUILD_INFO);
         }
 
+        // Prepare user modules
         $users = User::getAll();
         if ($users !== false) {
             /** @var User $user */
             foreach ($users as $user) {
-                if (Module::prepare($user->id)) {
+                if (Manager::prepare($user->id)) {
                     info("    Modules for [$user->name] installed", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST);
                     $inline = false;
                 }

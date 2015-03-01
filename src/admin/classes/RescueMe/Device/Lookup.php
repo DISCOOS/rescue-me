@@ -13,21 +13,19 @@
     namespace RescueMe\Device;
 
     use RescueMe\Configuration;
+    use RescueMe\Module;
 
     /**
      * Lookup class
      * 
      * @package 
      */
-    interface Lookup
+    interface Lookup extends Module
     {
         /**
-         * Fatal error constant
+         * Device lookup module type
          */
-        const FATAL = -1;
-
-
-        const TYPE = 'RescueMe\Device\Lookup';
+        const TYPE = 'RescueMe\Device\WURFL';
 
         /**
          * Get device configuration from given request

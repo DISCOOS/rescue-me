@@ -12,42 +12,20 @@
     
     namespace RescueMe\SMS;
 
+    use RescueMe\Module;
+
     /**
      * Provider class
      * 
      * @package 
      */
-    interface Provider
+    interface Provider extends Module
     {
         /**
-         * Fatal error constant
+         * SMS provider module type
          */
-        const FATAL = -1;
-
-
         const TYPE = 'RescueMe\SMS\Provider';
-        
-        /**
-         * Get configuration
-         * 
-         * @return \RescueMe\Configuration Configuration object.
-         */
-        public function config();
-        
-        
-        /**
-         * Validate configuration
-         * 
-         * Returns TRUE if configuration is valid, FALSE otherwise. 
-         * 
-         * Check Provider::errno() and Provider::error() for more information about if validate does not succeed.
-         * 
-         * @param \RescueMe\Configuration $config Account [optional, null - verify current]
-         * 
-         * @return boolean|string
-         */
-        public function validate($config = null);
-        
+
         
         /**
          * Send SMS message to given number.
@@ -81,22 +59,5 @@
          * @return boolean|string. Accepted code, FALSE otherwise
          */
         public function accept($number);
-        
-        
-        /**
-         * Returns the error code for the most recent function call.
-         * 
-         * @return integer An error code value for the last call, if it failed. zero means no error occurred.
-         */
-        public function errno();
-        
-        
-        /**
-         * Returns a string description of the last error.
-         * 
-         * @return string A string that describes the error. An empty string if no error occurred.
-         */
-        public function error();
-        
         
     }// Provider

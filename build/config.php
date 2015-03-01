@@ -1,7 +1,9 @@
 <?php
 
     // Define constants
-    define('HELP',"help");
+use RescueMe\Context;
+
+define('HELP',"help");
     define('NAME',"name");
     define('ACTION',"action");
     define('VERSION',"version");
@@ -50,5 +52,3 @@
     foreach($required as $lib) {
         require($inc.$lib.'.inc.php');
     }
-
-?>

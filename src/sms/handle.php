@@ -12,7 +12,7 @@
     
     require('config.php');
 
-    use RescueMe\Module;
+    use RescueMe\Manager;
     use Psr\Log\LogLevel;
     use RescueMe\Log\Logs;
     use RescueMe\Log\Logger;
@@ -38,7 +38,7 @@
         } 
         else {
 
-            $module = Module::get(Provider::TYPE, $_GET['user']);
+            $module = Manager::get(Provider::TYPE, $_GET['user']);
 
             $sms = $module->newInstance();
 

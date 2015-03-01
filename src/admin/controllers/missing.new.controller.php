@@ -1,11 +1,11 @@
 <?php
-use RescueMe\User;
-use RescueMe\Locale; 
+
+use RescueMe\Locale;
 use RescueMe\Missing;
 use RescueMe\SMS\Provider;
 
 $missing_modules = array();
-if(!RescueMe\Module::exists(Provider::TYPE))
+if(!RescueMe\Manager::exists(Provider::TYPE))
 	$missing_modules[] = Provider::TYPE;
 
 #if(class_exists('\RescueMe\Missing'))

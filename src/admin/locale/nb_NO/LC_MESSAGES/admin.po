@@ -482,7 +482,7 @@ msgstr "Test"
 
 #: admin/classes/RescueMe/Operation.php:53
 msgid "Exercise"
-msgstr "velse"
+msgstr "Øvelse"
 
 #: admin/classes/RescueMe/Template.php:78 admin/gui/missing.new.gui.php:106
 #: admin/gui/logs.gui.php:38

@@ -50,13 +50,16 @@
          */
         public function __construct($user_id=0, $account_key='', $account_secret='')
         {
-            parent::__construct(array(
+            parent::__construct(
+                $this->newConfig(
+                    $user_id, $account_key, $account_secret
+                ),
+                array(
                 Properties::SMS_SENDER_ID,
                 Properties::SMS_REQUIRE,
                 Properties::SMS_REQUIRE_UNICODE
             ));
             $this->user_id = $user_id;
-            $this->config = $this->newConfig($user_id, $account_key, $account_secret);
         }// __construct
 
         private function newConfig($user_id=0, $account_key='', $account_secret='')
@@ -79,7 +82,7 @@
             );
         }// newConfig
         
-        protected function validateAccount($account)
+        protected function validateParameters($account)
         {
             // Create SMS provider url
             $url = utf8_decode

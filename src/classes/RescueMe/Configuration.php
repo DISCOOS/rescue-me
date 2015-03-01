@@ -31,7 +31,7 @@
          * @param array $required
          * 
          */
-        public function __construct($params,$labels = array(),$required = array())
+        public function __construct($params, $labels = array(), $required = array())
         {
             $this->params = $params;
             $this->labels = $labels;
@@ -40,26 +40,27 @@
         
         
         /**
-         * Get property
-         * @param string $property
+         * Get parameter
+         * @param string $parameter Parameter name
+         * @param mixed|null $defaultValue Default value (optional, default - null);
          * @return mixed|null.
          */
-        public function get($property) {
-            return isset($this->params[$property]) ? $this->params[$property] : null;
+        public function get($parameter, $defaultValue = null) {
+            return isset($this->params[$parameter]) ? $this->params[$parameter] : $defaultValue;
         }
         
         
         /**
-         * Set property
-         * @param string $property
+         * Set parameter
+         * @param string $parameter
          * @param mixed $value
          * @return boolean TRUE if set, FALSE otherwise.
          */
-        public function set($property, $value) {
-            if(isset($this->params[$property])) {
-                $this->params[$property] = $value;          
+        public function set($parameter, $value) {
+            if(isset($this->params[$parameter])) {
+                $this->params[$parameter] = $value;
             }
-            return isset($this->params[$property]);
+            return isset($this->params[$parameter]);
         }
         
         
@@ -82,22 +83,22 @@
         
         
         /**
-         * Get property label
-         * @param string $property
+         * Get parameter label
+         * @param string $parameter
          * @return string
          */
-        public function label($property) {
-            return isset($this->labels[$property]) ? $this->labels[$property] : null;
+        public function label($parameter) {
+            return isset($this->labels[$parameter]) ? $this->labels[$parameter] : null;
         }
         
         
         /**
-         * Check if property is required
-         * @param string $property
+         * Check if parameter is required
+         * @param string $parameter
          * @return mixed
          */
-        public function required($property) {
-            return in_array($property, $this->required);
+        public function required($parameter) {
+            return in_array($parameter, $this->required);
         }
         
         

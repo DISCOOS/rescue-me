@@ -331,7 +331,7 @@
          * 
          * @param integer $user_id
          * 
-         * @return boolean|\RescueMe\Module
+         * @return boolean|array
          */
         public static function getAll($user_id=0)
         {
@@ -535,7 +535,7 @@
                     break;
                 case self::SMS_REQUIRE:
 
-                    $uses = Module::get(SMS\Provider::TYPE, $user_id)->newInstance()->uses();
+                    $uses = Manager::get(SMS\Provider::TYPE, $user_id)->newInstance()->uses();
 
                     foreach(self::$meta[$name]['options'] as $code => $text) {
                         if($uses === false || in_array($code, $uses)) {

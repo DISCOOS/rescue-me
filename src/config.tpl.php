@@ -1,6 +1,8 @@
 <?php
 
-    $verfile = dirname(__FILE__).DIRECTORY_SEPARATOR."VERSION";
+use RescueMe\Context;
+
+$verfile = dirname(__FILE__).DIRECTORY_SEPARATOR."VERSION";
     
     if(!file_exists($verfile)) {
         
@@ -41,6 +43,8 @@
     define('APP_PATH_NEWS', APP_PATH.'news'.DIRECTORY_SEPARATOR);
     define('APP_PATH_HELP', APP_PATH.'help'.DIRECTORY_SEPARATOR);
     define('APP_PATH_DATA', APP_PATH.'data'.DIRECTORY_SEPARATOR);
+    define('APP_PATH_GUI', APP_PATH.'gui'.DIRECTORY_SEPARATOR);
+    define('APP_PATH_VENDOR', APP_PATH.'vendor'.DIRECTORY_SEPARATOR);
 
     // Import class loaders
     require('vendor/autoload.php');
@@ -80,12 +84,18 @@
     
     // Set current timezone
     if(\RescueMe\TimeZone::set(DEFAULT_TIMEZONE) === FALSE) {
-        trigger_error("Failed to set timesone to [" . TIMEZONE . "]");
+        trigger_error("Failed to set timesone to [" . DEFAULT_TIMEZONE . "]");
     }
     
     // Control debugging
     use_soap_error_handler(DEBUG);
     error_reporting(DEBUG ? ~0 : 0);
     ini_set('display_errors', DEBUG ? 1 : 0);
-    
-?>
+
+    // Load application context - used by classes
+    Context::load(array (
+        Context::APP_PATH => APP_PATH,
+        Context::DATA_PATH => APP_PATH_DATA,
+        Context::LOCALE_PATH => APP_PATH_LOCALE,
+        Context::VENDOR_PATH => APP_PATH_VENDOR
+    ));

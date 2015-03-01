@@ -1,10 +1,11 @@
 <?php
     
     ob_start();
-    
-    use RescueMe\User;
+
+use RescueMe\SMS\Check;
+use RescueMe\User;
     use RescueMe\Locale;
-    use RescueMe\Module;
+    use RescueMe\Manager;
     use RescueMe\Missing;
     use RescueMe\Operation;
     use RescueMe\Properties;
@@ -51,37 +52,42 @@
         $list = Missing::getAll($filter, $admin, $start, $max);
 
         // Enable manual SMS delivery status check?
-        $module = Module::get(Provider::TYPE, User::currentId());
-        $sms = $module->newInstance();
+        $factory = Manager::get(Provider::TYPE, User::currentId());
+        /** @var Provider $sms */
+        $sms = $factory->newInstance();
         $check = ($sms instanceof RescueMe\SMS\Check);
         $params = Properties::getAll($user_id);
-        foreach($list as $id => $this_missing) {
-            $resend[$this_missing->id] = $this_missing;
-            $this_missing->getPositions();
-            if($this_missing->last_pos->timestamp>-1) {
-                $position = format_pos($this_missing->last_pos, $params);
-                $received = format_since($this_missing->last_pos->timestamp);
+        /** @var Missing $missing */
+        foreach($list as $id => $missing) {
+            $resend[$missing->id] = $missing;
+            $missing->getPositions();
+            if($missing->last_pos->timestamp>-1) {
+                $position = format_pos($missing->last_pos, $params);
+                $received = format_since($missing->last_pos->timestamp);
             } else {
                 $received = "";
                 $position = format_pos(null, $params);
             }
-            $sent = format_since($this_missing->sms_sent);
-            if($check && !isset($this_missing->sms_delivery) && $this_missing->sms_provider === $module->impl) {
-                $code = Locale::getDialCode($this_missing->mobile_country);
+            $sent = format_since($missing->sms_sent);
+            if($check && !isset($missing->sms_delivery) && $missing->sms_provider === $factory->impl) {
+                $code = Locale::getDialCode($missing->mobile_country);
                 $code = $sms->accept($code);
-                $ref = $this_missing->sms_provider_ref;
-                if(!empty($ref) && $sms->request($ref,$code.$this_missing->mobile)) {
-                    $this_missing = Missing::get($this_missing->id);
+                $ref = $missing->sms_provider_ref;
+                // Check request status?
+                if(!empty($ref)
+                    && $sms instanceof Check
+                    && $sms->request($ref,$code.$missing->mobile)) {
+                    $missing = Missing::get($missing->id);
                 }
             }
-            $answered = format_since($this_missing->answered);
-            $delivered = format_since($this_missing->sms_delivery);
+            $answered = format_since($missing->answered);
+            $delivered = format_since($missing->sms_delivery);
             if (empty($delivered))
                 $delivered = T_('Unknown');
 
 ?>
-            <tr id="<?= $this_missing->id ?>">
-                <td class="missing name"><?= $this_missing->name ?></td>
+            <tr id="<?= $missing->id ?>">
+                <td class="missing name"><?= $missing->name ?></td>
                 <td id="status-<?=$id?>" class="status">
 
                     <div class="row-fluid accordion vertical" id="accordion2">
@@ -127,13 +133,13 @@
                 <td class="missing position"><?= $position ?></td>
                 -->
                 <? if($admin) { ?>
-                <td class="missing name hidden-phone"><?= $this_missing->user_name ?></td>
+                <td class="missing name hidden-phone"><?= $missing->user_name ?></td>
                 <td class="missing editor">
                 <? } else { ?>
                 <td class="missing editor" colspan="2">
                 <? } ?>
                     <div class="btn-group pull-right">
-                        <a class="btn btn-small" href="<?=ADMIN_URI."missing/edit/$this_missing->id"?>">
+                        <a class="btn btn-small" href="<?=ADMIN_URI."missing/edit/$missing->id"?>">
                             <b class="icon icon-edit"></b><?= T_('Edit') ?>
                         </a>
                         <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
@@ -142,20 +148,20 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a role="menuitem" data-toggle="modal"
-                                   href="<?=ADMIN_URI."operation/close/{$this_missing->op_id}"?>" >
+                                   href="<?=ADMIN_URI."operation/close/{$missing->op_id}"?>" >
                                     <b class="icon icon-off"></b><?= T_('Close operation') ?>
                                 </a>
                             </li>
                             <li>
                                 <a role="menuitem" data-toggle="modal" data-target="#confirm"
-                                   data-content="<?=sprintf(T_('Do you want to resend SMS to %1$s?'),"<u>{$this_missing->name}</u>")?>"
-                                   data-onclick="R.ajax('<?=ADMIN_URI."missing/resend/{$this_missing->id}"?>','#sent-<?=$this_missing->id?>');" >
+                                   data-content="<?=sprintf(T_('Do you want to resend SMS to %1$s?'),"<u>{$missing->name}</u>")?>"
+                                   data-onclick="R.ajax('<?=ADMIN_URI."missing/resend/{$missing->id}"?>','#sent-<?=$missing->id?>');" >
                                     <b class="icon icon-envelope"></b><?= T_('Resend SMS') ?>
                                 </a>
                             </li>                                
                             <li class="divider"></li>
                             <li>
-                                <a role="menuitem" onclick="R.ajax('<?=ADMIN_URI."missing/check/$this_missing->id"?>','#delivered-<?=$this_missing->id?>');">
+                                <a role="menuitem" onclick="R.ajax('<?=ADMIN_URI."missing/check/$missing->id"?>','#delivered-<?=$missing->id?>');">
                                     <b class="icon icon-refresh"></b><?=T_('Check SMS delivery status')?>
                                 </a>
                            </li>   

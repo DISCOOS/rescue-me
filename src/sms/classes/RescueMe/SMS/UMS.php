@@ -39,11 +39,14 @@
          */
         public function __construct($user_id=0, $company='', $department='', $password='')
         {
-            parent::__construct(array(
+            parent::__construct(
+                $this->newConfig(
+                    $company, $department, $password
+                ),
+                array(
                 Properties::SMS_SENDER_ID
             ));
-            $this->config = $this->newConfig($company, $department, $password);
-            
+
         }// __construct
         
         
@@ -70,7 +73,7 @@
         }// newConfig
         
         
-        protected function validateAccount($account)
+        protected function validateParameters($account)
         {
             try {
                 

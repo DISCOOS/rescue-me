@@ -12,14 +12,13 @@
     
     namespace RescueMe\SMS;
     
+    use RescueMe\AbstractModule;
+    use RescueMe\Configuration;
     use \RescueMe\DB;
     use \RescueMe\Locale;
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
-    use \RescueMe\Log\Logger;
     use \RescueMe\Properties;
-    use \RescueMe\AbstractUses;
-    
     
 
     /**
@@ -27,130 +26,20 @@
      * 
      * @package 
      */
-    abstract class AbstractProvider extends AbstractUses implements Provider, Status
-    {
-        /**
-         * Provider configuration
-         * 
-         * @var \RescueMe\Configuration
-         */
-        protected $config;
-        
-        
-        /**
-         * Description of last error
-         * @var array
-         */
-        protected $error;
-        
-        
+    abstract class AbstractProvider extends AbstractModule implements Provider, Status {
+
         /**
          * Constructor
          *
-         * @param mixed $uses Uses
+         * @param $config Configuration Configuration
+         * @param mixed $uses Uses (optional, default - Properties::SMS_SENDER_ID)
          *
          * @since 29. September 2013
          *
          */
-        public function __construct($uses=Properties::SMS_SENDER_ID)
+        public function __construct($config, $uses = Properties::SMS_SENDER_ID)
         {
-            parent::__construct($uses);
-        }        
-        
-        
-        /**
-         * Get provider configuration
-         * @return \RescueMe\Configuration
-         */
-        public function config()
-        {
-            return clone($this->config);
-        }
-        
-        
-        /**
-         * Set last error from exception.
-         *
-         * @param \Exception $e Exception
-         * @param boolean $value Return value
-         *
-         * @return boolean
-         */
-        protected function exception(\Exception $e, $value = false) {
-            $this->error['code'] = $e->getCode();
-            $this->error['message'] = Logger::toString($e);
-            
-            Logs::write(
-                Logs::SYSTEM, 
-                LogLevel::ERROR, 
-                $e->getMessage(), 
-                $this->error
-            );
-            
-            return $value;
-        }
-        
-        
-        /**
-         * Set fatal error
-         * @param string $message
-         *
-         * @return boolean
-         */
-        protected function fatal($message) {
-            $this->error['code'] = Provider::FATAL;
-            $this->error['message'] = $message;
-            Logs::write(
-                Logs::SYSTEM, 
-                LogLevel::CRITICAL, 
-                $message, 
-                $this->error
-            );            
-            
-            return false;
-        }
-        
-        
-        /**
-         * Set critical error
-         *
-         * @param string $message
-         * @param array $context
-         *
-         * @return boolean
-         */
-        protected function critical($message, $context = array()) {
-            Logs::write(
-                Logs::SYSTEM, 
-                LogLevel::CRITICAL, 
-                $message,
-                $context
-            );            
-            
-            return false;
-        }
-        
-        
-        
-        /**
-         * Returns the error code for the most recent function call.
-         * 
-         * @return integer An error code value for the last call, if it failed. zero means no error occurred.
-         */
-        public function errno()
-        {
-            return isset($this->error) ? $this->error['code'] : 0;
-        }
-        
-
-        /**
-         * Returns a string description of the last error.
-         * 
-         * @return string A string that describes the error. An empty string if no error occurred.
-         */
-        public function error()
-        {
-            return isset($this->error) ? $this->error['message'] : '';
+            parent::__construct($config, $uses);
         }        
         
         
@@ -177,8 +66,10 @@
             if(($code = $this->accept($code)) === FALSE) {
                 return $this->fatal("SMS provider does not accept country dial code [$code]");
             }
+
+            $account = $this->validateRequired($this->getConfig());
             
-            if(($account = $this->validateConfig($this->config())) === FALSE) {
+            if($account === FALSE) {
                 return $this->fatal("SMS provider configuration is invalid");
             }
             
@@ -203,63 +94,6 @@
             return $id;
             
         }// send
-        
-        
-        /**
-         * Validate account
-         * @param \RescueMe\Configuration $config Account [optional, null - use current
-         * @return boolean TRUE if success, FALSE otherwise.
-         */
-        public function validate($config = null) {
-            
-            if(isset($config) === FALSE){
-                $config = $this->config();
-            }
-            
-            $valid = ($account = $this->validateConfig($config)) !== FALSE;
-            
-            if($valid) {
-                $valid = $this->validateAccount($account);
-            }
-            
-            return $valid;
-            
-        }
-        
-        
-        /**
-         * Validate configuration
-         * 
-         * @param array $config Provider configuration
-         * 
-         * @return boolean Parameters if success, FALSE otherwise.
-         */
-        protected function validateConfig($config) {
-            
-            if(isset($config) === FALSE){
-                $config = $this->config();
-            }
-            
-            foreach($config->params() as $property => $default) {
-                if($config->required($property) && empty($default)) {
-                    return false;
-                }
-            }
-            
-            return $config->params();
-            
-        }
-        
-        
-        /**
-         * Validate account with provider
-         * 
-         * @param array $config Provider configuration
-         * 
-         * @return boolean TRUE if success, FALSE otherwise.
-         */
-        protected abstract function validateAccount($config);    
-
         
         /**
          * Actual send implementation

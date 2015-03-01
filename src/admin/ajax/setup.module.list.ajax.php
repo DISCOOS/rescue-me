@@ -2,13 +2,14 @@
     ob_start();
     
     use RescueMe\User;
-    use RescueMe\Module;
+    use RescueMe\Manager;
+    use RescueMe\Factory;
     
     $id = input_get_int('id', User::currentId());
 
-    $modules = Module::getAll($id);
+    $factories = Manager::getAll($id);
     
-    if($modules !== false) {
+    if($factories !== false) {
 
         if(!isset($include)) $include = ".*";
 
@@ -26,12 +27,13 @@
     </thead>        
     <tbody class="searchable">        
 <?
-        foreach($modules as $id => $module) {
+        /** @var Factory $factory */
+        foreach($factories as $id => $factory) {
             
-            if(preg_match($pattern, $module->type)) {
-                $classes = \Inspector::subclassesOf($module->type);
-                $type = explode('\\',$module->type);
-                $impl = explode('\\',$module->impl);
+            if(preg_match($pattern, $factory->type)) {
+                $classes = \Inspector::subclassesOf($factory->type);
+                $type = explode('\\',$factory->type);
+                $impl = explode('\\',$factory->impl);
 ?>
         <tr id="<?= $id ?>">
             <td class="module type"> <?=end($type)?> </td>
@@ -47,7 +49,7 @@
                     <ul class="dropdown-menu">
 <?
                     foreach(array_keys($classes) as $class) {
-                        if($module->impl !== $class) {
+                        if($factory->impl !== $class) {
                             insert_item($class, ADMIN_URI."setup/module/$id?type=$class");
                         }
                     }
@@ -59,7 +61,7 @@
         <tr id="<?= $id ?>-d">
             <td colspan="3" class="description muted">
 <?
-            if($instance = $module->newInstance() === FALSE) {
+            if($instance = $factory->newInstance() === FALSE) {
                 echo insert_icon('remove', 'red', true, false).T_('Module is not installed correctly.');
                 insert_error(sprintf(T_('Failed to create instance of module [%1$s]'),$impl));
             } else {
@@ -74,7 +76,7 @@
             </td>
         </tr>
 <?
-            $instance = $module->newInstance();
+            $instance = $factory->newInstance();
             if($instance instanceof RescueMe\Uses) {
 
                 $inline = true;

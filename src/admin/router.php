@@ -2,7 +2,7 @@
 
     use RescueMe\DB;
     use RescueMe\User;
-    use RescueMe\Module;
+    use RescueMe\Manager;
     use RescueMe\Missing;
     use RescueMe\Operation;
     use RescueMe\Properties;
@@ -209,18 +209,18 @@
             
             $id = input_get_int('id');
             
-            $module = Module::get($id);
+            $factory = Manager::get($id);
 
             $_ROUTER['name'] = T_('Setup');
             $_ROUTER['view'] = $_GET['view'];
 
-            if($module === false)
+            if($factory === false)
             {
                 $_ROUTER['error'] = sprintf(T_('Module %1$s not found'), $id);
                 break;
             }
                 
-            $user_id = $module->user_id;
+            $user_id = $factory->user_id;
 
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -250,12 +250,12 @@
                         str_replace(APP_URL, '', $config[\RescueMe\SMS\Callback::PROPERTY]);
                 }
 
-                $valid = RescueMe\Module::verify($_POST['type'], $_POST['class'], $config);
+                $valid = RescueMe\Manager::verify($_POST['type'], $_POST['class'], $config);
 
                 if($valid !== TRUE) {
                     $_ROUTER['error'] = $valid;
                 }
-                elseif(RescueMe\Module::set($id, $_POST['type'], $_POST['class'], $config, $user_id)) {
+                elseif(RescueMe\Manager::set($id, $_POST['type'], $_POST['class'], $config, $user_id)) {
                     header("Location: ".ADMIN_URI.'setup/'.$user_id);
                     exit();
                 }

@@ -55,13 +55,15 @@
         public function __construct($user_id=0, $api_id='', $user='', $passwd='')
         {
             parent::__construct(
+                $this->newConfig(
+                    $user_id, $api_id, $user, $passwd
+                ),
                 array(
                     Properties::SMS_SENDER_ID,
                     Properties::SMS_OPTIMIZE, 
                     Properties::SMS_REQUIRE
                 )
             );
-            $this->config = $this->newConfig($user_id, $api_id, $user, $passwd);
         }// __construct
 
         
@@ -89,7 +91,7 @@
         }// newConfig
         
         
-        protected function validateAccount($account)
+        protected function validateParameters($account)
         {
             $user = $account['user'];
             $api_id = $account['api_id'];

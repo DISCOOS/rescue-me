@@ -85,12 +85,12 @@
             {
                 case STATUS:
 
-                    // Get default paths
-                    $root = get_safe_dir($opts, INSTALL_DIR, "src");
-                    
-                    // Create Status
+                    // Configure dependencies and get install path
+                    $root = configure($opts, INSTALL_DIR, 'src');
+
                     require('classes/RescueMe/Status.php');
 
+                    // Create status command
                     $status = new RescueMe\Status($root);
 
                     // Status unsuccessful?
@@ -105,8 +105,8 @@
                     // Skip?
                     if(in_phar()) print_help();
                     
-                    // Get default path install path
-                    $root = get_safe_dir($opts, IMPORT_DIR, "src");
+                    // Configure dependencies and get install path
+                    $root = configure($opts, INSTALL_DIR, 'src');
                     
                     // Get configuration parameters
                     $config = file_exists(realpath($root)."/config.php") ? get_config_params($root) : array();
@@ -114,14 +114,15 @@
                     // Get database parameters
                     $opts = get_db_params($opts, $config);
 
-                    // Create Import
                     require('classes/RescueMe/Import.php');
-                    // Include dependent resources
-                    require("$root/classes/RescueMe/DB.php");
-                    require("$root/classes/RescueMe/User.php");
-                    require("$root/classes/RescueMe/Log/Logs.php");
-                    require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
 
+//                    // Include dependent resources
+//                    require("$root/classes/RescueMe/DB.php");
+//                    require("$root/classes/RescueMe/User.php");
+//                    require("$root/classes/RescueMe/Log/Logs.php");
+//                    require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
+
+                    // Create import command
                     $import = new RescueMe\Import(
                         $opts[PARAM_HOST],
                         $opts[PARAM_USERNAME],
@@ -140,33 +141,37 @@
 
                     // Skip?
                     if(in_phar()) print_help();
-                    
-                    // Get default path paths
-                    $src = get_safe_dir($opts, SRC_DIR, "src");
-                    $root = get_safe_dir($opts, EXPORT_DIR, "src");
+
+                    // Configure dependencies and get source path
+                    $src = configure($opts, SRC_DIR, 'src');
+
+                    // Get export path
+                    $export = get_safe_dir($opts, EXPORT_DIR, "src");
                     
                     // Get configuration parameters
-                    $config = file_exists(realpath($root)."/config.php") ? get_config_params($root) : array();
+                    $config = file_exists(realpath($src)."/config.php") ? get_config_params($src) : array();
 
                     // Get database parameters
                     $opts = get_db_params($opts, $config);
 
-                    // Create Export
                     require('classes/RescueMe/Export.php');
-                    require("$root/classes/RescueMe/DB.php");
-                    require("$root/classes/RescueMe/User.php");
-                    require("$root/classes/RescueMe/Log/Logs.php");
-                    require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
 
-                    $import = new RescueMe\Export(
+//                    // Include dependent resources
+//                    require("$root/classes/RescueMe/DB.php");
+//                    require("$root/classes/RescueMe/User.php");
+//                    require("$root/classes/RescueMe/Log/Logs.php");
+//                    require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
+
+                    // Create import command
+                    $export = new RescueMe\Export(
                         $opts[PARAM_HOST],
                         $opts[PARAM_USERNAME],
                         $opts[PARAM_PASSWORD],
                         $opts[PARAM_DB],
-                        $root);
+                        $export);
 
                     // Export unsuccessful?
-                    if($import->execute() !== true) {
+                    if($export->execute() !== true) {
                        done($action, BUILD_ERROR);
                     }// if                        
 
@@ -194,8 +199,9 @@
                         execute(array(EXPORT => array(SRC_DIR => $src, EXPORT_DIR => $src)));
                     }
 
-                    // Create package script
                     require('classes/RescueMe/Package.php');
+
+                    // Create package command
                     $package = new RescueMe\Package($opts['v'], $build, $src, $dist);
 
                     // Package unsuccessful?
@@ -216,7 +222,7 @@
 
                     require('classes/RescueMe/Extract.php');
 
-                    // Create extract
+                    // Create extract command
                     $extract = new RescueMe\Extract($src, $root);
 
                     // Execute extraction
@@ -231,9 +237,10 @@
                     
                     // Skip?
                     if(in_phar() && $action === CONFIGURE || in_phar() == false && $action === INSTALL) print_help();
-                    
-                    // Get paths
-                    $root = get_safe_dir($opts, INSTALL_DIR, in_phar() ? getcwd() : "src");
+
+                    // Configure dependencies and get source path
+                    $root = configure($opts, INSTALL_DIR, in_phar() ? getcwd() : "src");
+
                     
                     // Get default ini values
                     $ini = is_file("rescueme.ini") ? parse_ini_file("rescueme.ini") : array();
@@ -295,16 +302,18 @@
                         }
                         
                     }
-                    
-                    require('classes/RescueMe/Install.php');
 
+                    // TODO: Move all constants from config.php to Context
                     define('APP_PATH', $root.DIRECTORY_SEPARATOR);
                     define('APP_PATH_LOCALE', APP_PATH.'locale'.DIRECTORY_SEPARATOR);
-                    require("$root/inc/locale.inc.php");
+
+                    require(implode(DIRECTORY_SEPARATOR, array($root,'inc', 'locale.inc.php')));
 
                     set_system_locale(DOMAIN_ADMIN, $locale);
 
-                    // Create install
+                    require('classes/RescueMe/Install.php');
+
+                    // Create install command
                     $install = new RescueMe\Install($root, $ini, $silent, $update);
 
                     // Execute installation
@@ -357,6 +366,39 @@
         }// foreach
 
     }// execute
+
+
+    /**
+     * Configure dependencies
+     *
+     * @param array $opts Options
+     * @param string $name Root path option name
+     * @param string $default Default root path
+     *
+     * @return string Source directory
+     */
+    function configure($opts, $name, $default) {
+
+        // Get default paths
+        $root = get_safe_dir($opts, $name, $default);
+        $data = $root.DIRECTORY_SEPARATOR.'data';
+        $vendor = $root.DIRECTORY_SEPARATOR.'vendor';
+        $locale = $root.DIRECTORY_SEPARATOR.'locale';
+
+        // Import class loaders
+        require($vendor.DIRECTORY_SEPARATOR.'autoload.php');
+
+
+        // Load application context
+        \RescueMe\Context::load(array (
+            \RescueMe\Context::APP_PATH => $root,
+            \RescueMe\Context::DATA_PATH => $data,
+            \RescueMe\Context::LOCALE_PATH => $locale,
+            \RescueMe\Context::VENDOR_PATH => $vendor
+        ));
+
+        return $root;
+    }
     
     
     /**
@@ -505,6 +547,5 @@
         exit($status);
         
     }// print_help
-    
+
 ?>
-    

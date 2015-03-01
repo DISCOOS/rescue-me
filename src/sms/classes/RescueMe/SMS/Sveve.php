@@ -36,10 +36,13 @@
          */
         public function __construct($user_id=0, $user='', $passwd='')
         {
-            parent::__construct(array(
+            parent::__construct(
+                $this->newConfig(
+                    $user_id, $user, $passwd
+                ),
+                array(
                 Properties::SMS_SENDER_ID
             ));
-            $this->config = $this->newConfig($user_id, $user, $passwd);
         }// __construct
 
         
@@ -63,7 +66,7 @@
         }// newConfig
         
         
-        protected function validateAccount($account)
+        protected function validateParameters($account)
         {
             // Create SMS provider url
             $smsURL = utf8_decode

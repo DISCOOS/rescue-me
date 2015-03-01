@@ -576,7 +576,7 @@
                     $user_id = $this->user_id;
                 }
                 
-                $module = Module::get('RescueMe\SMS\Provider', $user_id);
+                $module = Manager::get('RescueMe\SMS\Provider', $user_id);
 
                 $query = "UPDATE `missing` 
                             SET `sms_sent` = NOW(), `sms_delivery` = NULL, 
@@ -618,7 +618,9 @@
                 if(empty($missing->sms_delivery) === true 
                 && empty($missing->sms_provider_ref) === false) {
                     
-                    $module = Module::get("RescueMe\\SMS\\Provider", $missing->user_id);
+                    $module = Manager::get('RescueMe\SMS\Provider', $missing->user_id);
+
+                    /** @var Provider $sms */
                     $sms = $module->newInstance();
                     
                     if($missing->sms_provider === $module->impl && ($sms instanceof Check)) {
@@ -714,8 +716,9 @@
             if(isset($user_id) === false) {
                 $user_id = $this->user_id;
             }
-            
-            $sms = Module::get(SMS::PROVIDER, $user_id)->newInstance();
+
+            /** @var Provider $sms */
+            $sms = Manager::get(Provider::TYPE, $user_id)->newInstance();
             
             if($sms === FALSE)
             {

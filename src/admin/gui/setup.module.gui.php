@@ -1,9 +1,9 @@
 <?
-use RescueMe\Module;
+use RescueMe\Manager;
 
 $id = input_get_int('id');
 
-$module = Module::get($id);
+$module = Manager::get($id);
 
 if($module === false)
 {
@@ -30,7 +30,7 @@ else
         'value' => isset($_GET['type']) ? $_GET['type'] : $module->impl
     );
     
-    $config = $impl->config();
+    $config = $impl->getConfig();
     
     foreach($config->params() as $property => $default) {
         
