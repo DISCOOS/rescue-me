@@ -651,7 +651,7 @@ msgstr ""
 #~ msgid "Send SMS"
 #~ msgstr "Send SMS"
 
-#~ msgid "Trace started"
+#~ msgid "Start started"
 #~ msgstr "Sporing startet"
 
 #~ msgid "SMS sent"
@@ -692,13 +692,13 @@ msgstr ""
 #~ msgid "Mobile located"
 #~ msgstr "Telefon er lokalisert"
 
-#~ msgid "Trace script downloaded."
+#~ msgid "Start script downloaded."
 #~ msgstr "Sporingsskript er lastet ned"
 
-#~ msgid "Trace script not downloaded."
+#~ msgid "Start script not downloaded."
 #~ msgstr "Sporingsskript er ikke lastet ned."
 
-#~ msgid "Trace script is downloaded, but not location is received."
+#~ msgid "Start script is downloaded, but not location is received."
 #~ msgstr "Sporingsside er lastet ned, men ingen posisjon er mottatt."
 
 #~ msgid "About"
@@ -746,7 +746,7 @@ msgstr ""
 #~ msgid "Your user has NOT been approved."
 #~ msgstr "Din bruker har ikke blitt godkjent"
 
-#~ msgid "Trace"
+#~ msgid "Start"
 #~ msgstr "Sporing"
 
 #~ msgid "Test"
@@ -779,7 +779,7 @@ msgstr ""
 #~ msgid "Cancel"
 #~ msgstr "Avbryt"
 
-#~ msgid "Trace not found"
+#~ msgid "Start not found"
 #~ msgstr "Sporing ikke funnet"
 
 #~ msgid "Geolocation not supported."

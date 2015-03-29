@@ -43,7 +43,7 @@
 //        define('DATABASE', 'Database');
         
 //        define('TEST', 'Test');
-//        define('TRACE', 'Trace');
+//        define('TRACE', 'Start');
 //        define('TRACES', 'Traces');
 //        define('EXERCISE', 'Exercise');
 //        define('LOCATIONS', 'Locations');

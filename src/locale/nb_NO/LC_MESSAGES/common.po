@@ -103,7 +103,7 @@ msgstr "Database"
 msgid "System"
 msgstr "System"
 
-#~ msgid "Trace"
+#~ msgid "Start"
 #~ msgstr "Sporing"
 
 #~ msgid "Test"
