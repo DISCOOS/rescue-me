@@ -648,7 +648,7 @@ msgstr "Zimbabwe"
 #~ msgid "Test"
 #~ msgstr "Test"
 
-#~ msgid "Start"
+#~ msgid "Trace"
 #~ msgstr "Sporing"
 
 #~ msgid "Traces"

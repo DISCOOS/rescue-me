@@ -27,7 +27,7 @@ msgstr "Lukket av %1$s den %2$s"
 
 #: trace/abort.php:25
 #, php-format
-msgid "Start %1$s aborted"
+msgid "Trace %1$s aborted"
 msgstr "Sporing %1$s er avbrutt"
 
 #: trace/abort.php:29
@@ -37,7 +37,7 @@ msgstr "Klarte ikke å avbryte sporing %1$s"
 
 #: trace/abort.php:38 trace/report.php:34 trace/locate.php:72
 #, php-format
-msgid "Start %1$s not found"
+msgid "Trace %1$s not found"
 msgstr "Sporing %1$s ikke funnet"
 
 #: trace/report.php:26
@@ -738,7 +738,7 @@ msgstr "Klikk deretter på <b>Oppdater</b>"
 #~ msgid "Your user has NOT been approved."
 #~ msgstr "Din bruker har ikke blitt godkjent"
 
-#~ msgid "Start"
+#~ msgid "Trace"
 #~ msgstr "Sporing"
 
 #~ msgid "Test"

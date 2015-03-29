@@ -283,12 +283,12 @@ msgstr "Start ny sporing"
 #: admin/router.php:1015 admin/router.php:1122 admin/router.php:1160
 #: admin/router.php:1179
 #, php-format
-msgid "Start %1$s not found"
+msgid "Trace %1$s not found"
 msgstr "Sporing %1$s ikke funnet"
 
 #: admin/router.php:1018 admin/classes/RescueMe/Operation.php:53
 #: admin/gui/trace.menu.gui.php:15
-msgid "Start"
+msgid "Trace"
 msgstr "Sporing"
 
 #: admin/router.php:1047 admin/gui/missing.list.gui.php:16
@@ -313,7 +313,7 @@ msgstr "Operasjon [%1$s] er lukket"
 
 #: admin/router.php:1147
 #, php-format
-msgid "Start %1$s is closed"
+msgid "Trace %1$s is closed"
 msgstr "Sporing %1$s er lukket"
 
 #: admin/router.php:1151 admin/inc/gui.inc.php:54
@@ -408,7 +408,7 @@ msgid "When attempting to create user, an error ocurred. The system reported: "
 msgstr "Klarte ikke  opprette ny bruker. Systemet rapporterte:"
 
 #: admin/inc/gui.inc.php:44
-msgid "Start started"
+msgid "Trace started"
 msgstr "Sporing startet"
 
 #: admin/inc/gui.inc.php:49
@@ -442,11 +442,11 @@ msgid "SMS probably not delivered"
 msgstr "SMS sannsynligvis ikke levert"
 
 #: admin/inc/gui.inc.php:95
-msgid "Start script downloaded"
+msgid "Trace script downloaded"
 msgstr "Sporingsskript lasted ned"
 
 #: admin/inc/gui.inc.php:100 admin/inc/gui.inc.php:120
-msgid "Start script not downloaded"
+msgid "Trace script not downloaded"
 msgstr "Sporingsskript ikke lastet ned"
 
 #: admin/inc/gui.inc.php:101 admin/inc/gui.inc.php:118
@@ -465,7 +465,7 @@ msgid "Mobile located"
 msgstr "Telefon lokalisert"
 
 #: admin/inc/gui.inc.php:117
-msgid "Start script is downloaded, but not location is received"
+msgid "Trace script is downloaded, but not location is received"
 msgstr "Sporingsskriptet er lastet ned, men ingen posisjon er mottatt"
 
 #: admin/inc/common.inc.php:18
