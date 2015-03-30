@@ -25,6 +25,11 @@
     final class DB
     {
         /**
+         * Timestamp format
+         */
+        const TIMESTAMP_FORMAT = 'Y-m-d H:i:s';
+
+        /**
          * DB instance
          * 
          * @var DB

@@ -25,12 +25,18 @@
         /**
          * Device lookup module type
          */
-        const TYPE = 'RescueMe\Device\WURFL';
+        const TYPE = 'RescueMe\Device\Lookup';
+
+        /**
+         * Create request
+         * @return array
+         */
+        public function createRequest();
 
         /**
          * Get device configuration from given request
          *
-         * @param $request Mixed Device request
+         * @param $request array Device request
          * 
          * @return Configuration
          */

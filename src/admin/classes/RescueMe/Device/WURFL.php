@@ -162,7 +162,6 @@
 
         }
 
-
         /**
          * Get device configuration from given request
          *

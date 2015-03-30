@@ -38,5 +38,38 @@
 
         }
 
+        /**
+         * Create minimal request
+         * @param $request
+         * @return array
+         */
+        public function createRequest($request = null)
+        {
+            if(is_null($request)) {
+                $request = $_SERVER;
+            }
+
+            if(function_exists('getallheaders')) {
+                $request = array_merge(\getallheaders(), $request);
+            }
+
+            $keys = array (
+                // User agents
+                'UA',
+                'HTTP_USER_AGENT',
+                'HTTP_DEVICE_STOCK_UA',
+                'HTTP_X_OPERAMINI_PHONE_UA',
+                // User agent profiles
+                'HTTP_X_WAP_PROFILE',
+                'HTTP_PROFILE',
+                'Opt',
+                // Allows for detection of xml requests
+                'Accept'
+            );
+
+            return array_intersect_key($request, array_fill_keys($keys, null));
+
+        }
+
 
     }

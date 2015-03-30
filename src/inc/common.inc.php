@@ -1,9 +1,9 @@
 <?php
     
     use Psr\Log\LogLevel;
-    use RescueMe\Log\Logs;    
+    use RescueMe\DB;
+    use RescueMe\Log\Logs;
     use RescueMe\Properties;
-    use RescueMe\TimeZone;
 
     /**
      * Perform system sanity checks
@@ -514,20 +514,28 @@
     /**
      * Format unix timestamp with locale timezone
      *
-     * @param $timestamp Timestamp
+     * @param $timestamp integer|string Timestamp
      *
      * @return string
      */
     function format_tz($timestamp) {
 
+        if(is_string($timestamp))
+            $timestamp = strtotime($timestamp);
+
         $date = date( 'Y-m-d\TH:i:s', strtotime($timestamp));
 
         return sprintf('%1$s%2$s', $date, \RescueMe\TimeZone::getOffset());
     }
-    
-    
-    function mysql_dt($time) {
-        return date( 'Y-m-d H:i:s', $time);
+
+
+    /**
+     * Format timestamp in mysql format
+     * @param $timestamp
+     * @return bool|string
+     */
+    function mysql_dt($timestamp) {
+        return date(DB::TIMESTAMP_FORMAT, $timestamp);
     }
 
 

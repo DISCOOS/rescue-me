@@ -35,11 +35,13 @@
             2=>'Operator', 
             3=>'Personnel'
         );
-        
-        
+
+
         /**
          * Insert standard permissions for given role or user
-         * 
+         *
+         * @param $role_id
+         * @param $user_id
          * @return integer Number of inserted permissions
          */
         public static function prepare($role_id, $user_id) {
@@ -181,16 +183,16 @@
                 Roles::error("Failed revoke role $role from user $user_id", func_get_args());
             }            
             
-            return Roles::log("Role $role_id revoked from user $user_id", $res);
+            return Roles::log("Role $role revoked from user $user_id", $res);
             
         }
-        
+
         /**
          * Get permissions for a role
-         * 
-         * @param string $role Role
+         *
+         * @param $role_id
+         * @internal param string $role Role
          * @return boolean|array
-         * 
          */
         public static function getPermissionsForRole($role_id) {
             $filter = '`role_id` = '.(int)$role_id."";
@@ -203,13 +205,13 @@
             }
             return $perms;
         }
-        
+
         /**
          * Get permissions for a role
-         * 
-         * @param string $role Role
+         *
+         * @param $user_id
+         * @internal param string $role Role
          * @return boolean|array
-         * 
          */
         public static function getPermissionsForUser($user_id) {
             $filter = '`user_id` = '.(int)$user_id."";

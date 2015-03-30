@@ -21,6 +21,27 @@ CREATE TABLE IF NOT EXISTS `logs` (
 -- --------------------------------------------------------
 
 -- 
+-- Structure for table `messages`
+-- 
+
+CREATE TABLE IF NOT EXISTS `messages` (
+  `message_id` int(11) NOT NULL AUTO_INCREMENT,
+  `message_type` enum('sms') NOT NULL,
+  `message_from` tinytext NOT NULL,
+  `message_to` tinytext NOT NULL,
+  `message_subject` tinytext NOT NULL,
+  `message_data` text NOT NULL,
+  `message_state` tinytext NOT NULL,
+  `message_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `message_provider` tinytext NOT NULL,
+  `message_reference` varchar(50) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
 -- Structure for table `missing`
 -- 
 
@@ -37,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `missing` (
   `sms_provider_ref` varchar(255) DEFAULT NULL,
   `sms_error` varchar(255) DEFAULT NULL,
   `missing_answered` timestamp NULL DEFAULT NULL,
+  `missing_accept_id` int(11) NOT NULL,
   `missing_reported` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sms2_sent` enum('false','true') NOT NULL DEFAULT 'false',
   `sms_mb_sent` enum('false','true') NOT NULL DEFAULT 'false',
@@ -133,6 +155,23 @@ CREATE TABLE IF NOT EXISTS `properties` (
 -- --------------------------------------------------------
 
 -- 
+-- Structure for table `requests`
+-- 
+
+CREATE TABLE IF NOT EXISTS `requests` (
+  `request_id` int(11) NOT NULL AUTO_INCREMENT,
+  `request_type` varchar(10) CHARACTER SET utf8 NOT NULL,
+  `request_uri` tinytext CHARACTER SET utf8 NOT NULL,
+  `request_query` tinytext CHARACTER SET utf8 NOT NULL,
+  `request_data` text CHARACTER SET utf8 NOT NULL,
+  `request_headers` text CHARACTER SET utf8 NOT NULL,
+  `request_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`request_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
 -- Structure for table `roles`
 -- 
 
@@ -157,6 +196,7 @@ CREATE TABLE IF NOT EXISTS `templates` (
   `template_name` varchar(50) NOT NULL,
   `template_locale` varchar(10) NOT NULL,
   `template_content` text NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`template_id`),
   KEY `template_name` (`template_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

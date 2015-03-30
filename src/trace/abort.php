@@ -1,6 +1,8 @@
 <? 
 require('config.php');
 
+use Psr\Log\LogLevel;
+use RescueMe\Log\Logs;
 use \RescueMe\Missing;
 use \RescueMe\Operation;
 
@@ -11,9 +13,11 @@ if ($id === false) {
     $message = T_('Illegal arguments');
     
 } else {
-    
-    $m = Missing::get(decrypt_id($id));
-    
+
+    $id = decrypt_id($id);
+
+    $m = Missing::get($id);
+
     if($m !== false)
     {
         set_system_locale(DOMAIN_TRACE, $m->locale);

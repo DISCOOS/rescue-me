@@ -283,7 +283,7 @@
             }
             
             $ip = get_client_ip();
-            $context = empty($context) ? '' : utf8_encode(json_encode($context));            
+            $context = empty($context) ? '' : json_encode($context);
             $values = array($name, $level, $message, $context, $user_id, $ip);
             
             $values = prepare_values(self::$fields, $values);

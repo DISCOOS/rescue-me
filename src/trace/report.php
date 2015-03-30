@@ -1,7 +1,8 @@
 <? 
     require('config.php');
-    
-    use RescueMe\Missing;
+
+use RescueMe\Domain\Requests;
+use RescueMe\Missing;
 
     $id = input_get_hash('id');
     $acc = input_get_int('acc');
@@ -16,13 +17,17 @@
 
     } else {
 
+        // Log request
+        $lookup = new \RescueMe\Device\WURFL();
+        $requestId = Requests::insert($lookup->createRequest());
+
         $m = Missing::get(decrypt_id($id));
         
         if($m !== false)
         {
             set_system_locale(DOMAIN_TRACE, $m->locale);
             
-            $m->addPosition($lat, $lon, $acc, $alt, $timestamp, $_SERVER['HTTP_USER_AGENT']);
+            $m->addPosition($lat, $lon, $acc, $alt, $timestamp, $requestId);
             $response  = sprintf(T_('Your location is received (&#177;%1$s m).'),$acc).'<br/>';
             if ($acc > 500) {
                 $response .= T_('Stay still, we are coming.') . '<br>' . T_('Try to make your self visible from both air and ground!');

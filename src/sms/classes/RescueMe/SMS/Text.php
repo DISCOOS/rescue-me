@@ -17,8 +17,12 @@
      * 
      * @package 
      */
-    class Message
+    class Text
     {
+        /**
+         * Message templates
+         */
+        const SMS = "sms";
         private static $messages = false;
 
         private static $msgids = array(

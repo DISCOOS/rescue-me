@@ -1222,7 +1222,7 @@
                     "homepage": "http://wurfl.sourceforge.net/"
                 }
             ],
-            "description": "WURFL, the Wireless Universal Resource FiLe, is a Device Description Repository (DDR), i.e. a software component that maps HTTP Request headers to the profile of the HTTP client (Desktop, Mobile Device, Tablet, etc.) that issued the request",
+            "description": "WURFL, the Wireless Universal Resource FiLe, is a Device Description Repository (DDR), i.e. a software component that maps HTTP Requests headers to the profile of the HTTP client (Desktop, Mobile Device, Tablet, etc.) that issued the request",
             "time": "2014-11-24 01:17:55"
         }
     ],

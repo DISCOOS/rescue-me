@@ -13,6 +13,7 @@
     namespace RescueMe;
 
     use \Psr\Log\LogLevel;
+    use RescueMe\Domain\Requests;
     use RescueMe\Log\Logs;
     use RescueMe\SMS\Check;
     use RescueMe\SMS\Provider;
@@ -53,12 +54,30 @@
             "sms_text"
         );
 
+        private static $accept = array
+        (
+            "missing_accept_id",
+            "missing_answered"
+        );
+
+        private static $position = array(
+            'missing_id',
+            'lat',
+            'lon',
+            'acc',
+            'alt',
+            'timestamp_device',
+            'request_id'
+        );
+
+
         public $id = -1;
         public $op_id;
         public $op_ref;
         public $user_id;
         public $user_name;
 
+        public $accept_id;
         public $answered;
         public $reported;
 
@@ -217,6 +236,17 @@
         }
 
 
+        /**
+         * Add missing to database
+         *
+         * @param $m_name
+         * @param $m_mobile_country
+         * @param $m_mobile
+         * @param $m_locale
+         * @param $sms_text
+         * @param $op_id
+         * @return bool|Missing
+         */
         public static function add($m_name, $m_mobile_country, $m_mobile,  $m_locale, $sms_text, $op_id){
 
             if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($m_locale) || empty($op_id) || empty($sms_text)) {
@@ -301,7 +331,16 @@
         }// get
 
 
-
+        /**
+         * Update missing in database
+         *
+         * @param $m_name
+         * @param $m_mobile_country
+         * @param $m_mobile
+         * @param $m_locale
+         * @param $sms_text
+         * @return bool
+         */
         public function update($m_name, $m_mobile_country, $m_mobile, $m_locale, $sms_text){
 
             if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($m_locale) || empty($sms_text)) {
@@ -340,7 +379,8 @@
             return $res;
 
         }// update
-        
+
+
         // TODO: Merge with getPositions()!
         public function getAjaxPositions($num) {
             if($this->id === -1)
@@ -414,7 +454,16 @@
             return $row;
         }
 
-        public function addPosition($lat, $lon, $acc, $alt, $timestamp, $useragent = ''){
+        /**
+         * @param $lat string
+         * @param $lon string
+         * @param $acc string
+         * @param $alt string
+         * @param $timestamp string
+         * @param int $requestId
+         * @return bool|int Position id
+         */
+        public function addPosition($lat, $lon, $acc, $alt, $timestamp, $requestId){
 
             // Sanity check
             if($this->id === -1) return false;
@@ -435,7 +484,8 @@
             $best_acc = $best_acc['acc'];
 
             // Send SMS 2?
-            if((int) $acc > 500 && sizeof($this->positions) > 1){
+            if((int) $acc > Properties::get(Properties::LOCATION_DESIRED_ACC, $this->id)
+                && sizeof($this->positions) > 1){
                 
                 // Update this object
                 $this->get($this->id);
@@ -505,15 +555,15 @@
             }
 
             // Insert new position
-            $values = prepare_values(array('missing_id', 'lat', 'lon', 'acc', 'alt', 'timestamp_device', 'user_agent'), 
+            $values = prepare_values(self::$position,
                 array(
                     (int) $this->id,
                     (float)$lat,
                     (float)$lon,
                     (int) $acc,
                     (int) $alt,
-                    date('Y-m-d H:i:s', $timestamp),
-                    $useragent
+                    format_tz($timestamp),
+                    $requestId
                 )
             );
 
@@ -537,8 +587,6 @@
                     $message
                 );
                 
-                unset($values['user_agent']);
-                
                 Logs::write(
                     Logs::LOCATION, 
                     LogLevel::INFO, 
@@ -551,7 +599,9 @@
                 
                 Missing::error('Failed to insert position for missing ' . $this->id, $values);
                 
-            }            
+            }
+
+            return $posID;
 
         }// addPosition
 
@@ -627,6 +677,7 @@
                         
                         $code = Locale::getDialCode($missing->mobile_country);
                         $code = $sms->accept($code);
+                        /** @var Check $sms */
                         if($sms->request($missing->sms_provider_ref,$code.$missing->mobile)) {
                             $missing = Missing::get($id);
                         }
@@ -640,25 +691,34 @@
 
 
         /**
-         * Log missing location request response answered
-         * 
+         * Set location request accepted state
+         *
+         * @param $requestId integer HTTP request id
          * @return boolean
          */
-        public function answered() {
+        public function accepted($requestId) {
 
-            $query = "UPDATE `missing` 
-                        SET `missing_answered` = NOW() 
-                      WHERE `missing_id` = '" . $this->id . "';";
+            $values = prepare_values(self::$accept, array($requestId, 'NOW()'));
 
-            $res = DB::query($query);
+            $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
 
-            if($res === FALSE) {
-                $context = array('sql' => $query);
-                Missing::error(T_('Failed to update status to ANSWERED for missing ') . $this->id, $context);
-            } else {
-                Logs::write(Logs::TRACE, LogLevel::INFO, "Missing {$this->id} has loaded tracking page");
+            if($res) {
+                Logs::write(
+                    Logs::TRACE,
+                    LogLevel::INFO,
+                    "Missing {$this->id} accepted location request",
+                    $values
+                );
             }
+            else {
+                Missing::error(T_('Failed to update status to ACCEPTED for missing ') . $this->id);
+            }
+
             return $res;
+        }
+
+        public function getAcceptRequest() {
+            return Requests::get($this->accept_id);
         }
 
         /**
@@ -685,18 +745,6 @@
             }
 
             return $res;
-        }
-
-
-        private function getDialCode($country) {
-
-            $code = Locale::getDialCode($country);
-
-            if($code === FALSE) {
-                $context = array('code' => $country);
-                Missing::error('Failed to get country dial code', $context);
-            }            
-            return $code;
         }
 
 

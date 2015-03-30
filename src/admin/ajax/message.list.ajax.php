@@ -2,8 +2,8 @@
     
     use RescueMe\Locale;
     use RescueMe\SMS\T;
-    use RescueMe\Template;
-    use RescueMe\SMS\Message;
+    use RescueMe\Domain\Templates;
+    use RescueMe\SMS\Text;
 
     ob_start();
 
@@ -15,8 +15,8 @@
     $onselect = "$('#$select').val($('#message-locale').val()); $('#$input').val('%1\$s');";
     $load_url = ADMIN_URI."message/list?id=$id&select=m_locale&input=sms_text&locale=";
 
-    $messages[] = Message::get(T::ALERT_SMS, $locale);
-    $templates = Template::getAll(Template::MESSAGE);
+    $messages[] = Text::get(T::ALERT_SMS, $locale);
+    $templates = Templates::getAll(Text::SMS);
     if($templates !== false) {
         $messages = array_merge($messages, $templates);
     }

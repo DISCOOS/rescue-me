@@ -15,11 +15,13 @@
     use RescueMe\AbstractModule;
     use RescueMe\Configuration;
     use \RescueMe\DB;
+    use RescueMe\Domain\Messages;
     use \RescueMe\Locale;
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
     use \RescueMe\Properties;
-    
+    use RescueMe\User;
+
 
     /**
      * AbstractProvider class
@@ -49,11 +51,11 @@
          * @param string $from Sender
          * @param string $country International dial code
          * @param string $to Recipient phone number without dial code
-         * @param string $message Message text
+         * @param string $text Message text
          * 
          * @return mixed|array Message id if success, FALSE otherwise.
          */
-        public function send($from, $country, $to, $message)
+        public function send($from, $country, $to, $text)
         {
             // Prepare
             unset($this->error);
@@ -73,22 +75,36 @@
                 return $this->fatal("SMS provider configuration is invalid");
             }
             
-            $id = $this->_send($from, $code.$to, $message, $account);
+            $id = $this->_send($from, $code.$to, $text, $account);
             
             if(is_string($id)) {
                 $id = trim($id);
             }
-                
-            $context = prepare_values(
-                array('from','to', 'message'), 
-                array($from, $code.$to, $message)
-            );
-            
+
             if($id === FALSE) {
                 $context['error'] = $this->error();
                 Logs::write(Logs::SMS, LogLevel::ERROR, "Failed to send message to $code$to", $context);
             } else {
-                Logs::write(Logs::SMS, LogLevel::INFO, "SMS sent to $code$to. Reference is $id.", $context);
+
+                // Insert into messages
+                $messageId = Messages::insert(array (
+                    'message_type' => Text::SMS,
+                    'message_from' => $from,
+                    'message_to' => $code.$to,
+                    'message_subject' => '',
+                    'message_data' => $text,
+                    'message_state' => Provider::SENT,
+                    'message_timestamp' => mysql_dt(time()),
+                    'message_provider' => get_class($this),
+                    'message_reference' => $id,
+                    'user_id' => User::currentId()));
+
+                // Save message id in context
+                $context = array(
+                    'message_id' => $messageId
+                );
+
+                Logs::write(Logs::SMS, LogLevel::INFO, "SMS sent. Reference is $id.", $context);
             }
             
             return $id;
@@ -109,7 +125,7 @@
         /**
          * Update SMS delivery status.
          * 
-         * @param string $reference
+         * @param string $reference Message reference
          * @param string $to International phone number
          * @param string $status Delivery status
          * @param \DateTime $datetime Time of delivery

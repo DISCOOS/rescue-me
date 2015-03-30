@@ -26,18 +26,32 @@
          */
         const TYPE = 'RescueMe\SMS\Provider';
 
-        
+        /**
+         * Sent state
+         */
+        const SENT = 'SENT';
+
+        /**
+         * Delivered state
+         */
+        const DELIVERED = 'DELIVERED';
+
+        /**
+         * Error state
+         */
+        const ERROR = 'ERROR';
+
         /**
          * Send SMS message to given number.
          * 
          * @param string $from Sender
          * @param string $code International dial code
          * @param string $to Recipient phone number without dial code
-         * @param string $message Message text
+         * @param string $text Message text
          * 
          * @return mixed|array Message id if success, FALSE otherwise.
          */
-        public function send($from, $code, $to, $message);
+        public function send($from, $code, $to, $text);
 
         
         /**

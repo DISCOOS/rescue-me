@@ -1,7 +1,7 @@
 <?php
     
 /**
- * File containing: Template class
+ * File containing: Templates class
  *
  * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation}
  *
@@ -10,10 +10,12 @@
  * @author Sven-Ove Bjerkan <post@sven-ove.no>
  */
 
-namespace RescueMe;
+namespace RescueMe\Domain;
+
+use RescueMe\DB;
 
 /**
- * Template class
+ * Templates class
  *
  * @package RescueMe
  *
@@ -23,22 +25,13 @@ namespace RescueMe;
  * @property string $locale Template locale
  * @property string $content Template content
  */
-class Template {
+class Templates {
 
     const TABLE = 'templates';
 
     const COUNT = 'SELECT COUNT(*) FROM `templates` ';
 
     const SELECT = 'SELECT * FROM `templates`';
-
-    private static $fields = array
-    (
-        "template_id",
-        "template_type",
-        "template_name",
-        "template_locale",
-        "template_content"
-    );
 
     private static $update = array
     (
@@ -53,30 +46,36 @@ class Template {
      */
     const ALL = "all";
 
-
-    /**
-     * Message templates
-     */
-    const MESSAGE = "message";
-
-
     /**
      * Array of template types
      */
-    public static $all = array(
-        self::MESSAGE
-    );
+    public static $all = array();
 
 
     /**
-     * Get log titles
+     * Register template type
+     * @param $type string Template type
+     * @param $title string Template title
+     */
+    public static final function register($type, $title) {
+        self::$all[$type] = $title;
+    }
+
+
+    /**
+     * Get template types
+     * @return array
+     */
+    public static function getTypes() {
+        return array_keys(self::$all);
+    }
+
+    /**
+     * Get template titles
      * @return array
      */
     public static function getTitles() {
-        return array(
-            Template::ALL => ALL,
-            Template::MESSAGE => T_('Message')
-        );
+        return self::$all;
     }
 
     /**
@@ -85,8 +84,7 @@ class Template {
      * @return string
      */
     public static function getTitle($type) {
-        $titles = Template::getTitles();
-        return isset($titles[$type]) ? $titles[$type] : false;
+        return isset(self::$all[$type]) ? self::$all[$type] : false;
     }
 
 
@@ -104,7 +102,7 @@ class Template {
 
     private static function select($filter='', $types=array(), $start = 0, $max = false){
 
-        $query  = Template::SELECT;
+        $query  = Templates::SELECT;
 
         $where = $filter ? array($filter) : array();
 
@@ -136,11 +134,11 @@ class Template {
      */
     public static function countAll($types, $filter = '') {
 
-        if(isset($types) === FALSE || in_array(Template::ALL, $types)) {
-            $types = Template::$all;
+        if(isset($types) === FALSE || in_array(Templates::ALL, $types)) {
+            $types = Templates::getTypes();
         }
 
-        $query  = Template::COUNT . ' ' . Template::JOIN;
+        $query  = Templates::COUNT; // . ' ' . Template::JOIN;
 
         $where = $filter ? array($filter) : array();
 
@@ -175,13 +173,13 @@ class Template {
      */
     public static function getAll($types = null, $filter = '', $start = 0, $max = false) {
 
-        if(is_null($types) || is_array($types) && in_array(Template::ALL, $types)) {
-            $types = Template::$all;
+        if(is_null($types) || is_array($types) && in_array(Templates::ALL, $types)) {
+            $types = Templates::getTypes();
         } else {
             $types = array($types);
         }
 
-        $select = Template::select($filter, $types, $start, $max);
+        $select = Templates::select($filter, $types, $start, $max);
 
         $res = DB::query($select);
 
@@ -206,7 +204,7 @@ class Template {
      */
     public static function count($type, $filter = '') {
 
-        return Template::countAll(array($type), $filter);
+        return Templates::countAll(array($type), $filter);
 
     }// get
 
@@ -219,7 +217,7 @@ class Template {
      * @return array|boolean
      */
     public static function get($id) {
-        return Template::getAll(self::$all, "`template_id` = $id");
+        return Templates::getAll(Templates::getTypes(), "`template_id` = $id");
     }// get
 
 
@@ -244,4 +242,4 @@ class Template {
 
 
 
-}// Template
+}// Templates
