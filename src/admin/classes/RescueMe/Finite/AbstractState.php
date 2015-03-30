@@ -40,7 +40,7 @@ abstract class AbstractState implements State {
      * State accepted flag
      * @var boolean
      */
-    protected $accepted;
+    private $accepted;
 
     /**
      * Constructor
@@ -91,6 +91,25 @@ abstract class AbstractState implements State {
     {
         return $this->accepted;
     }
+
+    /**
+     * Check if state accepts condition
+     * @param mixed $condition
+     * @return boolean
+     */
+    final function accept($condition) {
+        return ($this->accepted = $this->onAccept($condition));
+    }
+
+    /**
+     * State condition check implementation
+     *
+     * @param $condition
+     * @return boolean
+     */
+    abstract protected function onAccept($condition);
+
+
 
 
 }

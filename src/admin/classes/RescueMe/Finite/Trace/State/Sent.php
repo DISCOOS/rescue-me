@@ -36,8 +36,8 @@ class Sent extends AbstractState {
      * @param Missing $condition
      * @return mixed
      */
-    function accept($condition) {
+    protected function onAccept($condition) {
         $this->data = $condition->sms_sent;
-        return $this->accepted = is_null($this->data) === false;
+        return is_null($this->data) === false;
     }
 }

@@ -20,9 +20,9 @@ use RescueMe\Missing;
  * Trace state alerted
  * @package RescueMe\Finite\Trace\State
  */
-class Alerted extends AbstractState {
+class Created extends AbstractState {
 
-    const NAME = 'Alerted';
+    const NAME = 'Created';
 
     /**
      * Constructor
@@ -36,8 +36,8 @@ class Alerted extends AbstractState {
      * @param Missing $condition
      * @return mixed
      */
-    function accept($condition) {
-        $this->data = $condition->sms_sent;
-        return $this->accepted = is_null($this->data) === false;
+    protected function onAccept($condition) {
+        $this->data = $condition->reported;
+        return is_null($this->data) === false;
     }
 }

@@ -49,7 +49,7 @@ class Delivered extends AbstractState {
      * @param Missing $condition
      * @return boolean
      */
-    function accept($condition) {
+    protected function onAccept($condition) {
 
         // Check SMS status?
         if(is_null($this->sms) === false) {
@@ -63,6 +63,6 @@ class Delivered extends AbstractState {
         }
 
         $this->data = $condition->sms_delivery;
-        return $this->accepted = is_null($this->data) === false;
+        return is_null($this->data) === false;
     }
 }

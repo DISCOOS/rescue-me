@@ -36,10 +36,9 @@ class Located extends AbstractState {
      * @param Missing $condition
      * @return mixed
      */
-    function accept($condition) {
+    protected function onAccept($condition) {
         $this->data = $condition->last_pos;
-        return $this->accepted =
-            (is_null($this->data) === false && $this->data->pos_id !== -1);
+        return (is_null($this->data) === false && $this->data->pos_id !== -1);
     }
 
 }

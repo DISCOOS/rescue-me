@@ -14,10 +14,9 @@
     use RescueMe\Finite\Machine;
     use RescueMe\Finite\Trace\State\Delivered;
     use RescueMe\Finite\Trace\State\Located;
-    use RescueMe\Finite\Trace\State\Answered;
+    use RescueMe\Finite\Trace\State\Accepted;
     use RescueMe\Finite\Trace\State\Sent;
-    use RescueMe\Finite\Trace\State\Alerted;
-    use RescueMe\SMS\Check;
+    use RescueMe\Finite\Trace\State\Created;
     use RescueMe\SMS\Provider;
 
 
@@ -37,16 +36,16 @@
 
             $machine = new Machine();
 
-            return $machine->addState(new Alerted())
+            return $machine->addState(new Created())
                 ->addState(new Sent())
                 ->addState(new Delivered($sms))
-                ->addState(new Answered())
+                ->addState(new Accepted())
                 ->addState(new Located())
-                ->addTransition(Alerted::NAME, Sent::NAME)
+                ->addTransition(Created::NAME, Sent::NAME)
                 ->addTransition(Sent::NAME, Delivered::NAME)
-                ->addTransition(Delivered::NAME, Answered::NAME)
-                ->addTransition(Sent::NAME, Answered::NAME)
-                ->addTransition(Answered::NAME, Located::NAME)
+                ->addTransition(Delivered::NAME, Accepted::NAME)
+                ->addTransition(Sent::NAME, Accepted::NAME)
+                ->addTransition(Accepted::NAME, Located::NAME)
                 ->init();
         }
 

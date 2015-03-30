@@ -20,7 +20,7 @@ use RescueMe\Missing;
  * Trace state accepted
  * @package RescueMe\Finite\Trace
  */
-class Answered extends AbstractState {
+class Accepted extends AbstractState {
 
     const NAME = 'Answered';
 
@@ -36,9 +36,9 @@ class Answered extends AbstractState {
      * @param Missing $condition
      * @return boolean
      */
-    function accept($condition) {
+    protected function onAccept($condition) {
         $this->data = $condition->answered;
-        return $this->accepted = is_null($this->data) === false;
+        return is_null($this->data) === false;
     }
 
 }
