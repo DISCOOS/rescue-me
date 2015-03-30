@@ -73,6 +73,9 @@ $verfile = dirname(__FILE__).DIRECTORY_SEPARATOR."VERSION";
     // RescueMe salt value
     define('SALT', '');
 
+    // Security constants
+    define('PASSWORD_LENGTH', 4);
+
     // SMS integration constants
     define('SMS_FROM', 'RescueMe');
 

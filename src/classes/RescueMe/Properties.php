@@ -178,7 +178,7 @@
                     self::EXPANDED => 'Expanded',
                     self::COLLAPSED => 'Collapsed',
                  ),
-                'description' => "Trace trace bar layout state."
+                'description' => "Trace bar layout state."
             ),
             
             self::TRACE_BAR_LOCATION => array(
@@ -188,7 +188,7 @@
                     self::TOP => 'Top',
                     self::BOTTOM => 'Bottom',
                  ),
-                'description' => "Trace trace bar location."
+                'description' => "Trace bar location."
             ),
             
             self::TRACE_DETAILS => array(

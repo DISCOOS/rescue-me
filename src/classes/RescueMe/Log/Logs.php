@@ -162,13 +162,13 @@
             
             return $query;
         }
-        
-        
+
+
         /**
          * Get number of lines in given logs
-         * 
-         * @param string $name Log name
-         * 
+         *
+         * @param string $logs Log name
+         * @param string $filter Log filter
          * @return integer|boolean
          */
         public static function countAll($logs, $filter = '') {
@@ -197,14 +197,14 @@
             return $row[0];
             
         }// get         
-        
-        
-        
+
         /**
          * Get all logs in database
-         * 
+         *
          * @param array $logs Logs (optional, default: null - all)
-         * 
+         * @param string $filter Log filter
+         * @param int $start
+         * @param bool $max
          * @return array|boolean
          */
         public static function getAll($logs = null, $filter = '', $start = 0, $max = false) {
@@ -232,7 +232,8 @@
          * Get number of lines in given log
          * 
          * @param string $name Log name
-         * 
+         * @param string $filter Log filter
+         *
          * @return integer|boolean
          */
         public static function count($name, $filter = '') {
@@ -246,7 +247,10 @@
          * Get log with given name
          * 
          * @param string $name Log name
-         * 
+         * @param string $filter Log filter
+         * @param int $start
+         * @param bool $max
+         *
          * @return array|boolean
          */
         public static function get($name, $filter = '', $start = 0, $max = false) {
@@ -260,6 +264,7 @@
         /**
          * Write message to log.
          *
+         * @param string $name Log name
          * @param string $level Log level
          * @param string $message Message text
          * @param array $context Log context values

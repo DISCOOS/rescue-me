@@ -27,18 +27,10 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="20%" class="name"><?=T_('Name')?></th>
-                    <th width="40%"><?=T_('Status')?></th>
-                    <!--
-                    <th class="hidden-phone"><?=T_('Status')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Sent')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Delivered')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Answered')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Reported')?></th>
-                    <th width="13%"><?=T_('Location')?></th>
-                    -->
+                    <th class="name"><?=T_('Name')?></th>
+                    <th><?=T_('Status')?></th>
                     <? if($admin) { ?>
-                    <th width="20%" class="hidden-phone"><?=T_('User')?></th>
+                    <th class="hidden-phone"><?=T_('User')?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -61,14 +53,10 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="20%"><?=T_('Name')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Sent')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Delivered')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Answered')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Reported')?></th>
-                    <th width="13%"><?=T_('Location')?></th>
+                    <th><?=T_('Name')?></th>
+                    <th><?=T_('Status')?></th>
                     <? if($admin) { ?>
-                    <th width="5%" class="hidden-phone"><?=T_('User')?></th>
+                    <th class="hidden-phone"><?=T_('User')?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -91,14 +79,10 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="20%"><?=T_('Name')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Sent')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Delivered')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Answered')?></th>
-                    <th width="13%" class="hidden-phone"><?=T_('Reported')?></th>
-                    <th width="13%"><?=T_('Location')?></th>
+                    <th><?=T_('Name')?></th>
+                    <th><?=T_('Status')?></th>
                     <? if($admin) { ?>
-                    <th width="5%" class="hidden-phone"><?=T_('User')?></th>
+                    <th class="hidden-phone"><?=T_('User')?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">
@@ -121,11 +105,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="10%"><?=T_('Type')?></th>
-                    <th width="20%"><?=T_('Name')?></th>
-                    <th width="20%"><?=T_('Closed')?></th>
+                    <th><?=T_('Type')?></th>
+                    <th><?=T_('Name')?></th>
+                    <th><?=T_('Closed')?></th>
                     <? if($admin) { ?>
-                    <th width="20%" class="hidden-phone"><?= T_('User') ?></th>
+                    <th class="hidden-phone"><?= T_('User') ?></th>
                     <th>
                     <? } else { ?>
                     <th colspan="2">

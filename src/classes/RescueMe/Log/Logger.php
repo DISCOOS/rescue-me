@@ -12,6 +12,7 @@
     
     namespace RescueMe\Log;
     
+    use Psr\Log\LogLevel;
     use \RescueMe\User;
     use \Psr\Log\LoggerInterface;
     
@@ -73,7 +74,7 @@
          * @param string $level Maximum logging level (higher are discarded)
          * @param integer|boolean $truncate Truncate to given number of characters, false otherwise.
          *
-         * @throws Exception If level is unknown.
+         * @throws \Exception If level is unknown.
          */
         function __construct($name, $level = LogLevel::INFO, $truncate = false)
         {
@@ -323,7 +324,7 @@
         {
             $user_id = User::currentId();
             
-            Logs::log(
+            Logs::write(
                 $this->name, 
                 $level, 
                 $message, 

@@ -1,19 +1,8 @@
-@color-rm: #da2727;
-@color-logo: #000;
-@color-border: #cacaca;
-@color-background: #e7e7e7;
-
 /*==========================================
 / Design
 /=========================================*/
 .clickable {
     cursor: pointer;
-}
-
-.border-radius ( @radius ) {
-    border-radius:@radius;
-    -moz-border-radius:@radius;
-    -webkit-border-radius:@radius
 }
 
 .icon {
@@ -149,7 +138,7 @@
 
 .missing div.name {
     font-weight: bold;
-    color: @color-rm;
+    color: #da2727;
 }
 
 /*==========================================
@@ -167,7 +156,8 @@ li.position {
 }
 
 .label-position {
-    cursor: pointer;    
+    cursor: pointer;
+    white-space: normal;
 }
 
 .position time {
@@ -398,13 +388,13 @@ li.position {
 / [trace/new] form
 /=========================================*/
 
-.column {
+div.column {
     position: relative; 
     top: 0px;
     width: 48%;
 }
 
-.fill {
+div.fill {
     position: relative; 
     left: 0px; 
     float: left;
@@ -422,7 +412,7 @@ form.well button[type="submit"].column {
     margin: 10px 0px 5px 0px;
 }
 
-.corner-ul {
+button.corner-ul {
     position: absolute; 
     top: 0;
     right: 0; 
@@ -440,12 +430,12 @@ form.well button[type="submit"].column {
 }
 .contact img {
     float: left;
-    background: @color-background;
     padding: 5px;
     margin: 0px 5px 0px 0px;
-    border: 1px solid @color-border;
-    .border-radius(3px);
+    border: 1px solid #cacaca;
+    background: #e7e7e7;
 }
+
 .contact .name {
     font-weight: bold;
     white-space: nowrap;
@@ -508,7 +498,7 @@ form.well button[type="submit"].column {
 }
 
 td.description {
-    border-top: ;
+    border-top: 0px;
 }
 
 
