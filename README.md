@@ -17,13 +17,13 @@ Download RescueMe
 Run this in your terminal to get the latest RescueMe version:
 
 ```bash
-curl -sS http://rescueme.discoos.org/installer | php
+curl -sS http://rescueme.io/installer | php
 ```
 
 or if you don't have curl (windows):
 
 ```bash
-php -r "eval('?>'.file_get_contents('http://rescueme.discoos.org/installer'));"
+php -r "eval('?>'.file_get_contents('http://rescueme.io/installer'));"
 ```    
 This script will check some php.ini settings, warn you if they are set incorrectly, 
 and then download the latest `rescueme.phar` in current directory. 
