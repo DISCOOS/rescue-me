@@ -12,8 +12,8 @@
 	 */
         
     define('PHAR', 'rescueme.phar');
-    define('PHAR_URL', 'http://rescueme.discoos.org/'.PHAR);
-    define('INSTALLER_URL', 'http://rescueme.discoos.org/installer');
+    define('PHAR_URL', 'http://rescueme.io/'.PHAR);
+    define('INSTALLER_URL', 'http://rescueme.io/installer');
     
     define('HELP',"help");
     define('NAME',"name");
