@@ -48,10 +48,15 @@
 
         /**
          * Get browser locale from request
+         * @param string $accepts Accepted locales (optional, is null use $_SERVER['HTTP_ACCEPT_LANGUAGE'])
+         * @return string|boolean
          */
-        public static function getBrowserLocale() {
+        public static function getBrowserLocale($accepts = null) {
 
-            $language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+            if(is_null($accepts))
+                $accepts = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+
+            $language = locale_accept_from_http($accepts);
 
             return self::ensureLocale($language);
 
@@ -185,7 +190,7 @@
          */
         public static function getLanguageName($locale) {
 
-            list($country, ) = preg_split("#[_-]#", $locale);
+            list(, $country) = preg_split("#[_-]#", $locale);
             
             if($country) {
             

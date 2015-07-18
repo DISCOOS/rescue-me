@@ -10,8 +10,9 @@
      * @author Sven-Ove Bjerkan
      */
     
-    namespace RescueMe;
-    
+    namespace RescueMe\Domain;
+    use RescueMe\DB;
+
     /**
      * Permissions class
      * 

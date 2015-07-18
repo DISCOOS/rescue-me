@@ -10,7 +10,8 @@
      * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
      */
 
-    namespace RescueMe;
+    namespace RescueMe\Domain;
+    use RescueMe\DB;
 
     /**
      * Position class
@@ -28,6 +29,8 @@
         public $acc = -1;
         public $alt = -1;
         public $timestamp = -1;
+        public $timestamp_device = -1;
+        public $request_id = -1;
         public $human = 'Aldri posisjonert';
 
 
@@ -38,11 +41,13 @@
         }
         
         function set($data) {
+            $this->pos_id = isset_get($data,'id', -1);
             $this->lat = isset_get($data,'lat');
             $this->lon = isset_get($data,'lon');
             $this->acc = isset_get($data,'acc');
             $this->alt = isset_get($data,'alt');
             $this->timestamp = isset_get($data,'timestamp', time());
+            $this->timestamp_device = isset_get($data,'timestamp_device', time());
         }
 
 

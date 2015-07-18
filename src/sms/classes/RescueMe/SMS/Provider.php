@@ -29,17 +29,17 @@
         /**
          * Sent state
          */
-        const SENT = 'SENT';
+        const SENT = 'sent';
 
         /**
          * Delivered state
          */
-        const DELIVERED = 'DELIVERED';
+        const DELIVERED = 'delivered';
 
         /**
          * Error state
          */
-        const ERROR = 'ERROR';
+        const ERROR = 'error';
 
         /**
          * Send SMS message to given number.
@@ -48,10 +48,11 @@
          * @param string $code International dial code
          * @param string $to Recipient phone number without dial code
          * @param string $text Message text
-         * 
-         * @return mixed|array Message id if success, FALSE otherwise.
+         * @param integer $userId User id
+         *
+         * @return integer|array Message id if success, FALSE otherwise.
          */
-        public function send($from, $code, $to, $text);
+        public function send($from, $code, $to, $text, $userId);
 
         
         /**

@@ -1,8 +1,8 @@
 <?
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     use RescueMe\Locale;
-    use RescueMe\Missing;
-    use RescueMe\Operation;
+    use RescueMe\Domain\Missing;
+    use RescueMe\Domain\Operation;
     use RescueMe\SMS\Provider;
 
     $id = input_get_int('id');
@@ -34,7 +34,7 @@
                 'class' => 'row-fluid'
             );
             
-            $country = empty($missing->mobile_country) ? Locale::getCurrentCountryCode() : $missing->mobile_country;
+            $country = empty($missing->number_country_code) ? Locale::getCurrentCountryCode() : $missing->number_country_code;
             
             $group['value'][] = array(
                 'id' => 'm_mobile_country',
@@ -47,7 +47,7 @@
             $group['value'][] = array(
                 'id' => 'm_mobile',
                 'type' => 'tel', 
-                'value' => $missing->mobile, 
+                'value' => $missing->number,
                 'label' => T_('Mobile phone'),
                 'class' => 'span3',
                 'attributes' => 'required pattern="[0-9]*"'
@@ -73,16 +73,16 @@
                 'type' => 'select', 
                 'value' => insert_options(Locale::getLanguageNames(false, DOMAIN_SMS), $locale, false),
                 'label' => T_('Language'),
-                'class' => 'span2',
+                'class' => 'span3',
                 'attributes' => 'required'
             );            
             
             $group['value'][] = array(
                 'id' => 'sms_text',
                 'type' => 'text', 
-                'value' => $missing->sms_text,
+                'value' => $missing->message_data,
                 'label' => T_('SMS'),
-                'class' => 'span8',
+                'class' => 'span7',
                 'attributes' => 'required'
             );            
             

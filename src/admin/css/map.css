@@ -7,17 +7,44 @@
 */
 
 div.map {
+    margin: 0px 0px 0px 0px;
+    clear: left;
+    float: left;
+    width: 500px;
+    height: 500px;
+    max-width: 500px;
+    max-height: 500px;
+    border: 1px solid lightgray;
     display: table;
     text-align: center;
 }
+
+div.map img {
+    max-width: none;
+}
+
+div.sidebar {
+    margin: 0;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    float: left;
+    width: 300px;
+    height: 500px;
+    border: 1px solid lightgray;
+    border-left: 0px;
+}
+
+
 
 p.map {
     display: table-cell;
     vertical-align: middle;
 }
 
-
 .gm-style-mtc {
     width: 100px !important;
 }
+
+
 

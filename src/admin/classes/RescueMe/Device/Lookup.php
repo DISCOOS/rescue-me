@@ -23,15 +23,66 @@
     interface Lookup extends Module
     {
         /**
+         * Yes flag
+         */
+        const YES = 1;
+
+        /**
+         * Yes flag
+         */
+        const NO = 0;
+
+        /**
+         * Unknown flag
+         */
+        const UNKNOWN = -1;
+
+        /**
          * Device lookup module type
          */
         const TYPE = 'RescueMe\Device\Lookup';
 
         /**
+         * Handset name
+         */
+        const HANDSET_NAME = 'handset_name';
+
+        /**
+         * Handset operating system
+         */
+        const HANDSET_OS = 'handset_os';
+
+        /**
+         * Handset browser
+         */
+        const HANDSET_BROWSER = 'handset_browser';
+
+        /**
+         * Handset model name
+         */
+        const MODEL_NAME = 'model_name';
+
+        /**
+         * Is generic device flag
+         */
+        const IS_GENERIC = 'is_generic';
+
+        /**
+         * Is smartphone flag
+         */
+        const IS_SMARTPHONE = 'is_smartphone';
+
+        /**
+         * Is W3C geolocation api supported flag
+         */
+        const SUPPORTS_GEOLOC = 'supports_geoloc';
+
+
+        /**
          * Create request
          * @return array
          */
-        public function createRequest();
+        public static function createRequest();
 
         /**
          * Get device configuration from given request
@@ -56,6 +107,5 @@
          * @return string A string that describes the error. An empty string if no error occurred.
          */
         public function error();
-
 
     }// Lookup

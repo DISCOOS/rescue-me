@@ -1,5 +1,5 @@
 <?php
-use RescueMe\User;
+use RescueMe\Domain\User;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$TWIG['user'] = $_POST;

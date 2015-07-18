@@ -13,7 +13,9 @@ namespace RescueMe\Finite\Trace\State;
 
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
-use RescueMe\Missing;
+use RescueMe\Domain\Missing;
+use RescueMe\Domain\Position;
+use RescueMe\Properties;
 
 
 /**
@@ -25,20 +27,57 @@ class Located extends AbstractState {
     const NAME = 'Located';
 
     /**
-     * Constructor
+     * Parameter name
      */
-    function __construct() {
-        parent::__construct(self::NAME, State::T_FINAL);
+    const LOCATION_DESIRED_ACC = Properties::LOCATION_DESIRED_ACC;
+
+    /**
+     * Parameters
+     * @var array
+     */
+    private $params;
+
+    /**
+     * Constructor
+     * @param array $params Parameters
+     */
+    function __construct($params) {
+        parent::__construct(self::NAME, State::T_TRANSIT);
+        $this->params = $params;
     }
 
     /**
-     * Check if state accepts condition
+     * Check if trace state is Located
      * @param Missing $condition
      * @return mixed
      */
     protected function onAccept($condition) {
-        $this->data = $condition->last_pos;
-        return (is_null($this->data) === false && $this->data->pos_id !== -1);
+        $this->data = $condition;
+        return $this->getMostAccurate() !== false;
     }
 
+    /**
+     * Check if position is of desired accuracy or better
+     */
+    public function isAccurate() {
+
+        return $this->isAccepted() &&
+            $this->getMostAccurate()->acc <= $this->getDesiredAccuracy();
+    }
+
+    /**
+     * Get desired accuracy
+     * @return integer
+     */
+    public function getDesiredAccuracy() {
+        return (int)$this->params[self::LOCATION_DESIRED_ACC];
+    }
+
+    /**
+     * Get most accurate position
+     * @return \RescueMe\Domain\Position
+     */
+    public function getMostAccurate() {
+        return $this->data->getMostAccurate();
+    }
 }

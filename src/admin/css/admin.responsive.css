@@ -136,5 +136,10 @@
         height: 6em;
     }
 
+    .row-fluid div[class*="v-space"] {
+        margin-top: 30px;
+    }
+
+
 }
 

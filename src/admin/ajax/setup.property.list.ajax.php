@@ -2,7 +2,7 @@
     $inline = (isset($inline) && $inline ? true : false);
 
 use RescueMe\Properties;
-use RescueMe\User;
+use RescueMe\Domain\User;
 
     $include = (isset($context) ? $context : ".*");
     

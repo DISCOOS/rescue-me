@@ -1,5 +1,5 @@
 <?
-    use \RescueMe\User;
+    use RescueMe\Domain\User;
     use \RescueMe\Locale;
 
     $user = User::current();
@@ -81,7 +81,7 @@
         $group['value'][] = array(
             'id' => 'role',
             'type' => 'select',
-            'value' => insert_options(\RescueMe\Roles::getAll(), $value, false),
+            'value' => insert_options(\RescueMe\Domain\Roles::getAll(), $value, false),
             'label' => T_('Role'),
             'attributes' => 'required',
             'class' => 'span4'

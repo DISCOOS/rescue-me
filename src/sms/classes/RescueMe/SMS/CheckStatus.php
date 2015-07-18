@@ -13,21 +13,21 @@
     namespace RescueMe\SMS;
 
     /**
-     * Callback class
+     * Check interface
      * 
      * @package 
      */
-    interface Check extends Status
+    interface CheckStatus
     {
         /**
-         * Request SMS status from provider
+         * Check SMS status request to provider
          * 
-         * @param string $provider_ref Provider message reference id
-         * @param string $number Recipient phone number
+         * @param string $reference Provider SMS reference
+         * @param string $number SMS recipient phone number
          * 
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public function request($provider_ref,$number);
+        public function check($reference, $number);
         
         
-    }// Check
+    }

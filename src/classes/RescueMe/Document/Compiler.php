@@ -12,7 +12,7 @@
 namespace RescueMe\Document;
 
 use RescueMe\Locale;
-use RescueMe\User;
+use RescueMe\Domain\User;
 
 /**
  * Class Compiler

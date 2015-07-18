@@ -16,9 +16,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 class="model-label"><?= $title ?></h3>
     </div>
-    <div class="modal-body">
-        <?= $message ?>
-    </div>
+    <div class="modal-body"><?=$message?></div>
     <div class="modal-footer">
         <a class="btn btn-primary" <?=isset($action)?'href="'.$action.'"' : ''?>><?=T_('Yes')?></a>
         <button class="btn" data-dismiss="modal" aria-hidden="true"><?=T_('No')?></button>

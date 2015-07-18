@@ -13,7 +13,8 @@ namespace RescueMe\Finite\Trace\State;
 
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
-use RescueMe\Missing;
+use RescueMe\Domain\Missing;
+use RescueMe\SMS\Provider;
 
 
 /**
@@ -25,14 +26,22 @@ class Created extends AbstractState {
     const NAME = 'Created';
 
     /**
-     * Constructor
+     * SMS provider
+     * @var Provider
      */
-    function __construct() {
+    private $sms;
+
+    /**
+     * Constructor
+     * @param Provider $sms
+     */
+    function __construct($sms) {
         parent::__construct(self::NAME, State::T_INITIAL);
+        $this->sms = $sms;
     }
 
     /**
-     * Check if trace exists
+     * Check if trace state is Created (reported date exists)
      * @param Missing $condition
      * @return mixed
      */
@@ -40,4 +49,32 @@ class Created extends AbstractState {
         $this->data = $condition->reported;
         return is_null($this->data) === false;
     }
+
+    /**
+     * Get SMS provider
+     *
+     * @return \RescueMe\SMS\Provider
+     */
+    public function getProvider()
+    {
+        return $this->sms;
+    }
+
+
+    /**
+     * Check if SMS provider is installed
+    * @return bool
+     */
+    public function isProviderNotInstalled() {
+        return $this->sms === FALSE;
+    }
+
+    /**
+     * Check if SMS provider is configured correctly
+    * @return bool
+     */
+    public function isProviderConfigInvalid() {
+        return $this->sms->validate() === FALSE;
+    }
+
 }

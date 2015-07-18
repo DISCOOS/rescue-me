@@ -14,8 +14,8 @@ namespace RescueMe\Finite\Trace\State;
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
 use RescueMe\Locale;
-use RescueMe\Missing;
-use RescueMe\SMS\Check;
+use RescueMe\Domain\Missing;
+use RescueMe\SMS\CheckStatus;
 use RescueMe\SMS\Provider;
 
 
@@ -39,13 +39,13 @@ class Delivered extends AbstractState {
     function __construct($sms) {
         parent::__construct(self::NAME, State::T_TRANSIT);
 
-        if($sms instanceof Check) {
+        if($sms instanceof CheckStatus) {
             $this->sms = $sms;
         }
     }
 
     /**
-     * Check trace request is delivered
+     * Check trace state is Delivered
      * @param Missing $condition
      * @return boolean
      */
@@ -53,16 +53,26 @@ class Delivered extends AbstractState {
 
         // Check SMS status?
         if(is_null($this->sms) === false) {
-            $code = Locale::getDialCode($condition->mobile_country);
+            $code = Locale::getDialCode($condition->number_country_code);
             $code = $this->sms->accept($code);
-            $ref = $condition->sms_provider_ref;
+            $ref = $condition->message_reference;
             // Check request status?
-            if(!empty($ref) && $this->sms->request($ref,$code.$condition->mobile)) {
+            if(!empty($ref) && $this->sms->check($ref,$code.$condition->number)) {
                 $condition = Missing::get($condition->id);
             }
         }
 
-        $this->data = $condition->sms_delivery;
+        $this->data = $condition->message_delivered;
         return is_null($this->data) === false;
     }
+
+    /**
+     * Get number of seconds since SMS was sent
+     * @return integer
+     */
+    public function getTimeSince() {
+        return (int)(time() - strtotime($this->data));
+    }
+
+
 }

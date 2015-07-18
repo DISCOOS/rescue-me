@@ -1,6 +1,6 @@
 <?php
     
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     
     if(isset($_ROUTER['error'])) {
         insert_error($_ROUTER['error']);
@@ -9,7 +9,7 @@
     
     $name = isset($_GET['name']) ? $_GET['name'] : User::ALL;
     
-    $titles = RescueMe\User::getTitles();
+    $titles = \RescueMe\Domain\User::getTitles();
     
     $states = array();
     $num_pending = User::count(array(User::PENDING));

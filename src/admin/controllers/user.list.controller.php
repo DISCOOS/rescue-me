@@ -1,4 +1,4 @@
 <?php
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     $TWIG['users'] = User::getAll(); 
 ?>

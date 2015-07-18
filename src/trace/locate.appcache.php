@@ -2,7 +2,7 @@
 
 require_once('../config.php');
 
-use RescueMe\Missing;
+use RescueMe\Domain\Missing;
 use RescueMe\Properties;
 
 $id = $_GET['id'];

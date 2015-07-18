@@ -9,9 +9,10 @@
      * @author Sven-Ove Bjerkan <post@sven-ove.no>
      */
 
-    namespace RescueMe;
+    namespace RescueMe\Domain;
 
     use Psr\Log\LogLevel;
+    use RescueMe\DB;
     use RescueMe\Log\Logs;
 
     /**
@@ -48,7 +49,9 @@
 
         public $id = -1;
         public $user_id = -1;
-        
+        public $op_closed;
+        public $op_opened;
+
         public static function titles() {
             return array('trace' => T_('Trace'), 'test' => T_('Test'), 'exercise' => T_('Exercise'));
         }
@@ -57,7 +60,7 @@
          * Get Operation instance
          * 
          * @param integer $id Operation id
-         * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
+         * @return boolean|Operation Operation if success, FALSE otherwise.
          */
         public static function get($id){
             $query = "SELECT * FROM `".self::TABLE."` WHERE `op_id`=" . (int) $id;
@@ -222,9 +225,9 @@
          * @param string $alert_mobile Mobilephone to alert of recieced positions, etc
          * @param string $op_ref Reference of the operation, like SAR-number or something
          * @param string $op_comments Any comments to the operation
-         * @return boolean
+         * @return boolean|Operation
          */
-        public function add(
+        public static function add(
             $op_type, $op_name, $user_id, $alert_mobile_country, 
             $alert_mobile, $op_ref = '', $op_comments = ''){
 
@@ -256,28 +259,29 @@
             );
             
             $values = array_exclude(prepare_values(self::$fields, $values),'op_closed');
-            $this->id = DB::insert(self::TABLE, $values);
+            $id = DB::insert(self::TABLE, $values);
             
-            if($this->id === FALSE) {
-                $this->error("Failed to create operation", $values);
+            if($id === FALSE) {
+                return self::error("Failed to create operation", $values);
             } else {
 
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::INFO, 
-                    "Operation {$this->id} created"
+                    "Operation {$id} created"
                 );                
-            }        
+            }
 
-            return self::get($this->id);
+            return self::get($id);
 
         }// add
 
         /**
          * Get all operations
-         * 
+         *
          * @param string $status NULL, 'open' or 'closed'
-         * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
+         * @param boolean $admin User is administrator
+         * @return mixed. Instance of \RescueMe\Domain\Operation if success, FALSE otherwise.
          */
         public static function getAll($status='open', $admin = false) {
             $user = User::current();

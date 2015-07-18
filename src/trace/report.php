@@ -1,8 +1,9 @@
 <? 
     require('config.php');
 
-use RescueMe\Domain\Requests;
-use RescueMe\Missing;
+    use RescueMe\Device\WURFL;
+    use RescueMe\Domain\Requests;
+    use RescueMe\Domain\Missing;
 
     $id = input_get_hash('id');
     $acc = input_get_int('acc');
@@ -18,15 +19,14 @@ use RescueMe\Missing;
     } else {
 
         // Log request
-        $lookup = new \RescueMe\Device\WURFL();
-        $requestId = Requests::insert($lookup->createRequest());
+        $requestId = Requests::insert(WURFL::createRequest());
 
         $m = Missing::get(decrypt_id($id));
         
         if($m !== false)
         {
             set_system_locale(DOMAIN_TRACE, $m->locale);
-            
+
             $m->addPosition($lat, $lon, $acc, $alt, $timestamp, $requestId);
             $response  = sprintf(T_('Your location is received (&#177;%1$s m).'),$acc).'<br/>';
             if ($acc > 500) {

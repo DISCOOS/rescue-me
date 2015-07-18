@@ -260,6 +260,34 @@ R.ajax = function(url, element, data, done) {
 
 };
 
+R.post = function(url, data, element, done) {
+
+    data = data || {};
+    done = done || function( data ) {
+        $(element).html(data);
+    };
+
+    var loader = R.loader(element);
+    var timeout = setTimeout(function() {
+        loader.hide();
+    }, 30000);
+
+
+    $.post({
+        url: url,
+        data: data,
+        beforeSend: loader.show,
+        complete: loader.hide
+    }).done(function( data ) {
+
+        clearTimeout(timeout);
+
+        done(data);
+
+    });
+
+};
+
 R.modal = {};
 R.modal.load = function(url, target, data) {
 

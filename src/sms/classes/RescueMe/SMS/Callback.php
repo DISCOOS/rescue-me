@@ -17,9 +17,10 @@
      * 
      * @package 
      */
-    interface Callback extends Status
+    interface Callback extends SetStatus
     {
         const URL = "sms/callback/";
+
         const PROPERTY = "callback";
 
         /**
@@ -27,7 +28,7 @@
          * 
          * @param mixed $params
          * 
-         * @return void
+         * @return boolean
          */
         public function handle($params);
         

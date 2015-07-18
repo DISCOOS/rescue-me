@@ -1,5 +1,5 @@
 <?    
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     
     $id = input_get_int('id', User::currentId());
     $user = User::get($id);

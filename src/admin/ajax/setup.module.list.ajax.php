@@ -1,7 +1,7 @@
 <?    
     ob_start();
     
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     use RescueMe\Manager;
     use RescueMe\Factory;
     
@@ -31,7 +31,11 @@
         foreach($factories as $id => $factory) {
             
             if(preg_match($pattern, $factory->type)) {
-                $classes = \Inspector::subclassesOf($factory->type);
+                $classes = \Inspector::subclassesOf($factory->type, array(
+                    APP_PATH . 'classes',
+                    ADMIN_PATH . 'classes',
+                    APP_PATH . implode(DIRECTORY_SEPARATOR, array('sms', 'classes'))
+                ));
                 $type = explode('\\',$factory->type);
                 $impl = explode('\\',$factory->impl);
 ?>
@@ -50,7 +54,8 @@
 <?
                     foreach(array_keys($classes) as $class) {
                         if($factory->impl !== $class) {
-                            insert_item($class, ADMIN_URI."setup/module/$id?type=$class");
+                            $class = explode('\\',$class);
+                            insert_item(end($class), ADMIN_URI."setup/module/$id?type=$class");
                         }
                     }
 ?>        
@@ -62,14 +67,14 @@
             <td colspan="3" class="description muted">
 <?
             if($instance = $factory->newInstance() === FALSE) {
-                echo insert_icon('remove', 'red', true, false).T_('Module is not installed correctly.');
+                echo insert_icon('remove', 'circle red', true, false).T_('Module is not installed correctly.');
                 insert_error(sprintf(T_('Failed to create instance of module [%1$s]'),$impl));
             } else {
                 if(method_exists($instance,'validate') && $instance->validate() === FALSE) {
-                    echo insert_icon('remove', 'red', true, false).T_('Module is not configured correctly.');
+                    echo insert_icon('remove', 'circle red', true, false).T_('Module is not configured correctly.');
                     insert_error($instance->error());
                 } else {
-                    echo insert_icon('ok', 'green', true, false).T_('Module is configured and ready for use.');
+                    echo insert_icon('ok', 'circle green', true, false).T_('Module is configured and ready for use.');
                 }
             }
 ?>

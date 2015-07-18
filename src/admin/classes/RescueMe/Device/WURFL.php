@@ -15,8 +15,6 @@
 
     use RescueMe\Configuration;
     use RescueMe\Context;
-    use RescueMe\Module;
-    use RescueMe\ModuleException;
     use WURFL_Storage_Factory;
 
     /**
@@ -26,12 +24,14 @@
      */
     class WURFL extends AbstractLookup {
 
+        const TYPE = 'RescueMe\Device\WURFL';
+
         /**
          * WURFL manager instance
          *
          * @var \WURFL_WURFLManager
          */
-        private static $manager = FALSE;
+        private static $manager = false;
 
         /**
          * Constructor
@@ -75,6 +75,16 @@
             return $this->configure(true);
         }
 
+
+        /**
+         * Check if WURFL is ready
+         * @return boolean
+         */
+        public function isReady() {
+            return (WURFL::$manager instanceof \WURFL_WURFLManager);
+        }
+
+
         /**
          * Configure WURFL
          *
@@ -84,9 +94,7 @@
          */
         private function configure($init) {
 
-            $success = (WURFL::$manager !== false);
-
-            if($success === false) {
+            if($this->isReady() === false) {
 
                 $dataDir = Context::getDataPath();
 
@@ -106,13 +114,20 @@
                 $wurflConfig = new \WURFL_Configuration_InMemoryConfig();
 
                 $wurflFile = implode(DIRECTORY_SEPARATOR, array(
-                    Context::getVendorPath(),
+                    $dataDir,
                     'wurfl',
-                    'wurfl-api',
-                    'examples',
-                    'resources',
                     'wurfl.zip'
                 ));
+                if(file_exists($wurflFile) === false) {
+                    $wurflFile = implode(DIRECTORY_SEPARATOR, array(
+                        Context::getVendorPath(),
+                        'wurfl',
+                        'wurfl-api',
+                        'examples',
+                        'resources',
+                        'wurfl.zip'
+                    ));
+                }
 
                 // Set location of the WURFL File
                 $wurflConfig->wurflFile($wurflFile);
@@ -123,21 +138,27 @@
                 // Automatically reload the WURFL data if it changes
                 $wurflConfig->allowReload($this->config->get('allowReload', true));
 
-                // Set
+                // Setup WURFL Persistence
+                $wurflConfig->persistence('file', array('dir' => $persistenceDir));
+
+                // Set capabilities filter
                 $wurflConfig->capabilityFilter(array(
+                    'is_smartphone',
                     'is_wireless_device',
                     'brand_name',
                     'model_name',
+                    'marketing_name',
                     'device_os',
                     'device_os_version',
                     'mobile_browser',
                     'mobile_browser_version',
                     'ajax_xhr_type',
-                    'ajax_preferred_geoloc_api'
+                    'ajax_preferred_geoloc_api',
+                    'advertised_device_os',
+                    'advertised_device_os_version',
+                    'advertised_browser',
+                    'advertised_browser_version'
                 ));
-
-                // Setup WURFL Persistence
-                $wurflConfig->persistence('file', array('dir' => $persistenceDir));
 
                 // Check if WURFL is loaded into storage?
                 $persistence = WURFL_Storage_Factory::create($wurflConfig->persistence);
@@ -156,9 +177,10 @@
                 // Create a WURFL Manager
                 WURFL::$manager = $factory->create();
 
+
             }
 
-            return $success;
+            return $this->isReady();
 
         }
 
@@ -167,14 +189,12 @@
          *
          * @param $request Mixed Device request
          *
-         * @throws ModuleException
-         *
-         * @return Configuration
+         * @return boolean|Configuration Returns Configuration if found, false otherwise
          */
         public function device($request)
         {
-            if(WURFL::$manager === FALSE) {
-                throw new ModuleException('WURFL is not initialized', Module::FATAL);
+            if($this->isReady() === false) {
+                return false;
             }
 
             $device = WURFL::$manager->getDeviceForHttpRequest($request);
@@ -184,17 +204,88 @@
             foreach(array('is_android',
                         'is_ios',
                         'is_windows_phone',
-                        'complete_device_name') as $capability) {
+                        'is_smartphone',
+                        'advertised_device_os',
+                        'advertised_device_os_version',
+                        'advertised_browser',
+                        'advertised_browser_version') as $capability) {
 
 
                 try {
                     $capabilities[$capability] = $device->getVirtualCapability($capability);
                 } catch (\InvalidArgumentException $e) {
-                    $capabilities[$capability] = 'Unknown';
+                    $capabilities[$capability] = '';
                 }
+            }
+
+            // Build minimum set of parameters
+            $capabilities[Lookup::HANDSET_NAME] = self::combine($capabilities,
+                'brand_name',
+                array('marketing_name', 'model_name')
+            );
+            if($capabilities[Lookup::HANDSET_NAME] === false) {
+                $capabilities[Lookup::HANDSET_NAME] = self::combine($capabilities,
+                    'device_os', 'device_os_version'
+                );
+            }
+            $capabilities[Lookup::HANDSET_OS] = self::combine($capabilities,
+                array('advertised_device_os', 'device_os'),
+                array('advertised_device_os_version', 'device_os_version')
+            );
+            $capabilities[Lookup::HANDSET_BROWSER] = self::combine($capabilities,
+                array('advertised_browser', 'mobile_browser'),
+                array('advertised_browser_version', 'mobile_browser_version')
+            );
+
+            // Handle specific device
+            if($device->isSpecific()) {
+                $capabilities[Lookup::IS_GENERIC] = false;
+                $capabilities[Lookup::SUPPORTS_GEOLOC] =
+                    $capabilities['ajax_preferred_geoloc_api'] !== 'none';
+            } else {
+                $capabilities[Lookup::IS_GENERIC] = true;
+                $capabilities[Lookup::SUPPORTS_GEOLOC] = Lookup::UNKNOWN;
             }
 
             return new Configuration($capabilities);
         }
+
+
+        /**
+         * Combine capabilities into string
+         * @param array $capabilities
+         * @param array $set1
+         * @param array $set2
+         * @return string
+         */
+        private static function combine($capabilities, $set1, $set2) {
+            $value1 = self::select($capabilities, $set1);
+            $value2 = self::select($capabilities, $set2);
+            return $value1 . ' ' .$value2;
+
+        }
+
+        /**
+         * Select first value found in capabilities
+         * @param array $capabilities
+         * @param array|string $keys
+         * @return string|boolean
+         */
+        private static function select($capabilities, $keys) {
+
+            if(is_array($keys) === false) {
+                $keys = array($keys);
+            }
+
+            foreach($keys as $key) {
+                $value = isset_get($capabilities, $key);
+                if(empty($value) === false) {
+                    return $value;
+                }
+            }
+            return false;
+
+        }
+
 
     }

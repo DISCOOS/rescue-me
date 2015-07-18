@@ -168,7 +168,6 @@ ul.crumbs li a:hover:after {
 .icon.fill  {
     width: 14px;
     height: 14px;
-    border: 2px solid;
 }
 
 .icon.fill.circle  {
@@ -179,11 +178,39 @@ ul.crumbs li a:hover:after {
 }
 
 .red {
-    border-color: #da2727;
-    background-color: #da2727;
+    border: 2px solid;
+    border-color: #b94a48;
+    background-color: #b94a48;
 }
 
 .green {
+    border: 2px solid;
     border-color: #468847;
     background-color: #468847;
+}
+
+.blue {
+    border: 2px solid;
+    border-color: #3a87ad;
+    background-color: #3a87ad;
+}
+
+.yellow {
+    border: 2px solid;
+    border-color: #f89406;
+    background-color: #f89406;
+}
+
+.transparent {
+    border: 2px solid;
+    border-color: transparent;
+    background-color: transparent;
+}
+.page-header {
+    line-height: 30px;
+    margin: 10px 0px;
+}
+
+.page-header .label {
+    line-height: 40px;
 }

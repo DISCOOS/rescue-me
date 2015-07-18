@@ -1,15 +1,15 @@
 <?php
 
 use RescueMe\Locale;
-use RescueMe\Missing;
+use RescueMe\Domain\Missing;
 use RescueMe\SMS\Provider;
 
 $missing_modules = array();
 if(!RescueMe\Manager::exists(Provider::TYPE))
 	$missing_modules[] = Provider::TYPE;
 
-#if(class_exists('\RescueMe\Missing'))
-#	$missing[] = '\RescueMe\Missing';
+#if(class_exists('\RescueMe\Domain\Missing'))
+#	$missing[] = '\RescueMe\Domain\Missing';
 
 if(sizeof($missing_modules) > 0) {
 	$TWIG['error'] = array('header' => sizeof($missing_modules) > 1 
@@ -24,7 +24,7 @@ if(sizeof($missing_modules) > 0) {
         $TWIG['data']	= $_POST;
         require_once(APP_PATH_INC.'common.inc.php');
         
-		$operation = new RescueMe\Operation;
+		$operation = new \RescueMe\Domain\Operation;
 		$operation = $operation->add(
 			'trace', 
 			$_POST['m_name'], 
@@ -40,8 +40,12 @@ if(sizeof($missing_modules) > 0) {
 				$_POST['m_name'], 
 				$_POST['m_mobile_country'], 
 				$_POST['m_mobile'], $operation->id);
-			
+
 			if($missing) {
+
+                // Send first SMS
+                $missing->sendSMS($_POST['sms_text']);
+
 				header("Location: ".ADMIN_URI.'missing/'.$operation->id);
 				exit();
 			}

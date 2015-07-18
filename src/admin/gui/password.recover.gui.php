@@ -1,7 +1,7 @@
 
 <?    
     
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     
     if(isset($_ROUTER['error'])) { 
         $message = insert_error($_ROUTER['error'], false);

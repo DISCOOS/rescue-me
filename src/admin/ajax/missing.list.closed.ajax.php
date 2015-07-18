@@ -2,8 +2,8 @@
     
     ob_start();
     
-    use RescueMe\User;
-    use RescueMe\Missing;
+    use RescueMe\Domain\User;
+    use RescueMe\Domain\Missing;
     use RescueMe\Properties;
     
     if(isset($_ROUTER['error'])) {
@@ -38,7 +38,7 @@
     $options = create_paginator(1, $total, $user_id);
     
     // Get operation types
-    $types = RescueMe\Operation::titles();
+    $types = \RescueMe\Domain\Operation::titles();
     
     // Get missing
     $list = Missing::getAll($filter, $admin, $start, $max);

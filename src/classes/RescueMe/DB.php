@@ -14,8 +14,7 @@
 
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
-    use \RescueMe\TimeZone;
-    
+
 
     /**
      * Database class
@@ -342,7 +341,7 @@
          * @param string $table
          * @param array $values
          * @param string $filter
-         * @return boolean TRUE on success, FALSE otherswise.
+         * @return boolean TRUE on success, FALSE otherwise.
          */
         public static function update($table, $values, $filter) 
         {
@@ -360,7 +359,8 @@
             
             if($res === FALSE)
             {
-                Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to update ' . count($values) . " values in $table", DB::error());
+                Logs::write(Logs::DB, LogLevel::ERROR,
+                    'Failed to update ' . count($values) . " values in $table", DB::error());
             } else {
                 Logs::write(Logs::DB, LogLevel::INFO, 'Updated ' . count($values) . " values in $table");
             }
@@ -368,13 +368,14 @@
             return true;
             
         }// update
-        
-        
+
+
         /**
          * Check if database exists.
-         * 
+         *
          * @param string $name Database name
-         * 
+         *
+         * @throws \Exception
          * @return boolean TRUE if success, FALSE otherwise.
          */
         public static function exists($name)
@@ -384,7 +385,7 @@
             {
                 $code = mysqli_connect_errno($mysqli);
                 $error = mysqli_connect_error($mysqli);
-                throw new Exception("Failed to connect to MySQL: " . $error, $code);
+                throw new \Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
             $result = $mysqli->select_db($name);
             unset($mysqli);

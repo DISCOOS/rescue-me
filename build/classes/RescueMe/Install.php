@@ -11,6 +11,12 @@
  */
 
 namespace RescueMe;
+use RescueMe\Domain\Roles;
+use RescueMe\Domain\Roles;
+use RescueMe\Domain\Roles;
+use RescueMe\Domain\Roles;
+use RescueMe\Domain\Roles;
+use RescueMe\Domain\User;
 
 /**
  * Install class
@@ -332,7 +338,7 @@ class Install {
         $inline = true;
         info("  Initializing modules....", BUILD_INFO, NEWLINE_NONE);
 
-        $callback = function($progress) use ($inline) {
+        $callback = function($progress) use (&$inline) {
             info("    $progress", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST );
             $inline = false;
         };

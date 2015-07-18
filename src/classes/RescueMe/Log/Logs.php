@@ -13,7 +13,7 @@
     namespace RescueMe\Log;
     
     use \RescueMe\DB;
-    use \RescueMe\User;
+    use RescueMe\Domain\User;
 
     /**
      * Logs class

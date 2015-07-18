@@ -1,6 +1,6 @@
 <?  
-    use RescueMe\Roles;
-    use RescueMe\Permissions;
+    use RescueMe\Domain\Roles;
+    use RescueMe\Domain\Permissions;
     
     $id = input_get_int('id');
     

@@ -2,7 +2,7 @@
 
 require('config.php');
 
-use RescueMe\User;
+use RescueMe\Domain\User;
 use RescueMe\SMS\T;
 
 if(defined('USE_SILEX') && USE_SILEX) {
@@ -134,7 +134,6 @@ if(defined('USE_SILEX') && USE_SILEX) {
 
                 // Insert confirm dialog
                 insert_dialog_confirm("confirm");
-
 
                 $view = str_replace('/','.',$_ROUTER['view']);
                 require(ADMIN_PATH . implode(DIRECTORY_SEPARATOR, array('gui',$view.'.gui.php')));

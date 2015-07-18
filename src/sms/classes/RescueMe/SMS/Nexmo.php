@@ -20,7 +20,7 @@
      * 
      * @package 
      */
-    class Nexmo extends AbstractProvider implements Callback
+    class Nexmo extends AbstractProvider implements CheckStatus, Callback
     {
         const TYPE = 'RescueMe\SMS\Nexmo';
 
@@ -178,8 +178,10 @@
         }
         
         public function handle($params) {
+
+            $handled = assert_isset_all($params,array('messageId','msisdn','status'));
             
-            if(assert_isset_all($params,array('messageId','msisdn','status'))) {
+            if($handled) {
             
                 $this->delivered($params['messageId'], $params['msisdn'], 
                         $params['status'], new \DateTime(), 
@@ -187,6 +189,21 @@
                         $this->errorCodes[(int)$params['err-code']].' ('.$params['err-code'].')'
                         : ''));
             }
+
+            return $handled;
         }
-        
+
+        /**
+         * Check SMS status request to provider
+         *
+         * @param string $reference Provider message reference id
+         * @param string $number Recipient phone number
+         *
+         * @return boolean TRUE if success, FALSE otherwise.
+         */
+        public function check($reference, $number)
+        {
+            // TODO: Implement check() method.
+        }
+
     }// Nexmo

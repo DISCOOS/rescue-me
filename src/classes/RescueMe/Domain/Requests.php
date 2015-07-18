@@ -56,7 +56,7 @@
                 $query .= ' WHERE (' .implode(') AND (', $where) . ')';
             }
 
-            $query .= ' ORDER BY `timestamp` DESC';
+            $query .= ' ORDER BY `request_timestamp` DESC';
 
             if($max !== false) {
                 $query .=  " LIMIT $start, $max";
@@ -113,7 +113,7 @@
 
             $requests = array();
             while ($row = $res->fetch_assoc()) {
-                $row['request_headers'] = json_decode($row['request_headers']);
+                $row['request_headers'] = json_decode($row['request_headers'], true);
                 $requests[$row['request_id']] = $row;
             }
             return $requests;
@@ -129,7 +129,8 @@
          * @return array|boolean
          */
         public static function get($id) {
-            return Requests::getAll("`request_id` = $id");
+            $rows = Requests::getAll("`request_id` = $id");
+            return $rows !== false ? end($rows) : false;
         }// get
 
 

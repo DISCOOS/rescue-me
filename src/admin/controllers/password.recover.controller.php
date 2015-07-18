@@ -1,5 +1,5 @@
 <?php
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     use RescueMe\Locale;
 
 // Process form?

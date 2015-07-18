@@ -1,6 +1,6 @@
 <?
-    use RescueMe\User;
-    use RescueMe\Operation;
+    use RescueMe\Domain\User;
+    use RescueMe\Domain\Operation;
     
     $id = input_get_int('id');
     $operation = Operation::get($id);

@@ -27,19 +27,18 @@
 
         const SELECT = 'SELECT * FROM `messages`';
 
-        private static $update = array
+        private static $required = array
         (
             'message_type',
             'message_from',
             'message_to',
-            'message_subject',
             'message_data',
             'message_state',
-            'message_timestamp',
             'message_provider',
             'message_reference',
             'user_id'
         );
+
 
 
         /**
@@ -128,12 +127,14 @@
         /**
          * Get given message
          *
-         * @param integer $id Messages id
+         * @param integer|string $id Message id or reference
          *
          * @return array|boolean
          */
         public static function get($id) {
-            return Messages::getAll("`message_id` = $id");
+            $field = is_string($id) ? 'reference' : 'id';
+            $rows = Messages::getAll("`message_$field` = $id");
+            return $rows !== false ? end($rows) : false;
         }// get
 
 
@@ -143,7 +144,7 @@
          * @return array Message array
          */
         public static function create($values) {
-            return prepare_values(self::$update, $values);
+            return prepare_values(self::$required, $values);
         }
 
 
@@ -157,10 +158,8 @@
         public static function insert($values) {
 
             // Sanity check
-            if(assert_isset_all($values, self::$update) === false)
+            if(assert_isset_all($values, self::$required) === false)
                 return false;
-
-            $values = self::create($values);
 
             return DB::insert(self::TABLE, $values);
 
@@ -177,11 +176,31 @@
          */
         public static function update($id, $values) {
 
-            $values = self::create($values);
+            return DB::update(self::TABLE, $values, "`message_id` = $id");
+
+        }// update
+
+
+        /**
+         * Set usage for given message
+         *
+         * @param integer $id Messages id
+         * @param string $table Foreign table
+         * @param string $key Foreign key
+         *
+         * @return boolean
+         */
+        public static function setUsage($id, $table, $key) {
+
+            $values = array(
+                'foreign_table' => $table,
+                'foreign_key' => $key
+            );
 
             return DB::update(self::TABLE, $values, "`message_id` = $id");
 
         }// update
+
 
 
     }// Messages

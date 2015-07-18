@@ -10,10 +10,15 @@
      * @author Sven-Ove Bjerkan <post@sven-ove.no>
      */
 
-    namespace RescueMe;
+    namespace RescueMe\Domain;
     
     use \Psr\Log\LogLevel;
+    use RescueMe\DB;
+    use RescueMe\Domain\Operation;
+    use RescueMe\Domain\Roles;
     use \RescueMe\Log\Logs;
+    use RescueMe\Manager;
+    use RescueMe\Properties;
     use RescueMe\SMS\Provider;
 
     /**
@@ -640,14 +645,18 @@
             
             if($all || in_array('sms', $devices)) {
 
+                $userId = User::currentId();
+
                 /** @var Provider $sms */
-                $sms = Manager::get(Provider::TYPE, User::currentId())->newInstance();
+                $sms = Manager::get(Provider::TYPE, $userId)->newInstance();
                 if(!$sms)
                 {
                     return User::error(T_('Failed to get SMS provider'));
                 }
 
-                $res = $sms->send(SMS_FROM, $this->mobile_country, $this->mobile, $message);
+                $from = Properties::get(Properties::SMS_SENDER_ID, $userId);
+
+                $res = $sms->send($from, $this->mobile_country, $this->mobile, $message, $this->id);
                 if($res === FALSE) {
                     User::error($sms->error());
                 } else {

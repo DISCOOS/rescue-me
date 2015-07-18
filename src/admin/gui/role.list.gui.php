@@ -1,6 +1,6 @@
 <?php
 
-    use RescueMe\Roles;
+    use RescueMe\Domain\Roles;
 
     $roles = Roles::getAll();        
 ?>

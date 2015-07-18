@@ -21,7 +21,7 @@
      * 
      * @package 
      */
-    class UMS extends AbstractProvider implements Check
+    class UMS extends AbstractProvider implements CheckStatus
     {
         const TYPE = 'RescueMe\SMS\UMS';
 
@@ -136,13 +136,13 @@
         }        
         
                 
-        public function request($provider_ref, $number)
+        public function check($reference, $number)
         {
             try {
                 
                 $client = new \SoapClient(UMS::WDSL_URL);
                 
-                $result = $client->doGetStatus($this->config->params(), $provider_ref);
+                $result = $client->doGetStatus($this->config->params(), $reference);
                 
                 $checked = false;
 
@@ -156,13 +156,13 @@
                             $datetime = \DateTime::createFromFormat(\DateTime::W3C, $status->deliveredToRecipient, $timezone);
                             $datetime->setTimestamp($datetime->getTimestamp()-$datetime->getOffset());
 
-                            $this->delivered($provider_ref, $status->sentTo, 'true', $datetime);
+                            $this->delivered($reference, $status->sentTo, 'true', $datetime);
 
                             break;
 
                         default:
 
-                            $this->delivered($provider_ref, $status->sentTo, 'false', null, $status->errorMessage);
+                            $this->delivered($reference, $status->sentTo, 'false', null, $status->errorMessage);
 
                             break;
                     }

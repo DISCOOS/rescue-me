@@ -1,7 +1,7 @@
 <?php
     
-    use RescueMe\User;
-    use RescueMe\Operation;
+    use RescueMe\Domain\User;
+    use RescueMe\Domain\Operation;
     
     if(isset($_ROUTER['error'])) {
         insert_error($_ROUTER['error']);

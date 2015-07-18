@@ -2,7 +2,7 @@
     
     ob_start();
     
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     use RescueMe\Log\Logs;
     use RescueMe\Properties;
     

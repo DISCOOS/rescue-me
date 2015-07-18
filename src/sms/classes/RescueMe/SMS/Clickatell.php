@@ -13,7 +13,7 @@
     namespace RescueMe\SMS;
 
     use RescueMe\Configuration;
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     use RescueMe\Properties;
     
     /**
@@ -199,9 +199,9 @@
                 
         
         public function handle($params) {
-            
+
             // Required callback params: apiMsgId, to and status (optional: cliMsgId, timestamp, from and charge)
-            if(assert_isset_all($params,array('apiMsgId','to','status'))) {
+            if($handled = assert_isset_all($params,array('apiMsgId','to','status'))) {
             
                 // Get timestamp
                 $when = isset($params['timestamp']) ? \DateTime::createFromFormat('U', $params['timestamp']) : new \DateTime();
@@ -213,6 +213,9 @@
                 $this->delivered($params['apiMsgId'], $params['to'], $params['status'], $when, $description);
                 
             }
+
+            return $handled;
+
         }
         
         private function errors($message, $code = Provider::FATAL) {

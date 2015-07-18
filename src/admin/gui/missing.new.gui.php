@@ -1,5 +1,5 @@
 <?
-    use RescueMe\User;    
+    use RescueMe\Domain\User;
     use RescueMe\Locale;    
     use RescueMe\Properties;
     use RescueMe\SMS\T;
@@ -44,7 +44,7 @@
                 <legend><?=T_('Mobile phone')?></legend>
 
                 <div class="row-fluid">
-                    <div class="span4">
+                    <div class="span5">
                         <label for="m_mobile"><?=T_('Country code')?></label>
                         <select class="input-block-level" id="m_mobile_country" name="m_mobile_country"
                                 placeholder="<?=T_('Select country')?>" required
@@ -52,7 +52,7 @@
                             <?= insert_options(Locale::getCountryNames(), Locale::getCurrentCountryCode(), false); ?>
                         </select>
                     </div>
-                    <div class="span8">
+                    <div class="span7">
                         <label for="m_mobile"><?=T_('Phone number')?></label>
                         <input class="input-block-level" type="tel" id="m_mobile" name="m_mobile"
                                placeholder="<?=T_('Numbers only, no spaces')?>" required pattern="[0-9]*">
@@ -82,14 +82,14 @@
                 <legend><?=T_('Report to')?></legend>
 
                 <div class="row-fluid">
-                    <div class="span4">
+                    <div class="span5">
                         <label for="mb_mobile_country"><?=T_('Country code')?></label>
                         <select class="input-block-level" id="mb_mobile_country" name="mb_mobile_country"
                                 placeholder="<?=T_('Select country')?>" required>
                             <?= insert_options(Locale::getCountryNames(), $user->mobile_country, false); ?>
                         </select>
                     </div>
-                    <div class="span8">
+                    <div class="span7">
                         <label for="m_mobile"><?=T_('Phone number')?></label>
                         <input class="input-block-level" type="tel" id="m_mobile" name="mb_mobile" value="<?=$user->mobile?>"
                                placeholder="<?=T_('Numbers only, no spaces')?>" required pattern="[0-9]*">
@@ -106,13 +106,13 @@
                 <legend><?=T_('Message')?></legend>
 
                 <div class="row-fluid">
-                    <div class="span2">
+                    <div class="span3">
                         <label for="m_locale"><?=T_('Language')?></label>
                         <select class="field input-block-level span12" id="m_locale" name="m_locale" placeholder="<?=T_('Select language')?>" required>
                             <?=insert_options(Locale::getLanguageNames(false, DOMAIN_SMS), Locale::getCurrentLocale(), false); ?>
                         </select>
                     </div>
-                    <div class="span8">
+                    <div class="span7">
                         <label for="sms_text"><?=T_('SMS')?> (<span id="sms_char">0</span>/160
                             <?=strtolower(T_('Character'))?> - <span id="sms_num">1</span><?=T_('SMS')?>)</label>
                         <? // This assumes the encrypted ID is always 3 chars, but maybe it could be more? ?>
@@ -164,7 +164,7 @@
          <div class="row-fluid">
             <button type="submit" class="btn btn-success span2 column"><b class="icon icon-envelope icon-white"></b><?=T_('Create')?></button>
             <select id="m_type" name="m_type" class="span2" >
-                <? insert_options(RescueMe\Operation::titles(), 'trace'); ?>
+                <? insert_options(\RescueMe\Domain\Operation::titles(), 'trace'); ?>
             </select>            
         </div>
     </div>

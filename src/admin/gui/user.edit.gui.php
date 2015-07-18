@@ -1,5 +1,5 @@
 <?  
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     use \RescueMe\Locale;
     
     $approve = isset($_GET['approve']);
@@ -60,7 +60,7 @@
         $group['value'][] = array(
             'id' => 'role',
             'type' => 'select',
-            'value' => insert_options(\RescueMe\Roles::getAll(), $edit->role_id, false),
+            'value' => insert_options(\RescueMe\Domain\Roles::getAll(), $edit->role_id, false),
             'label' => T_('Role'),
             'attributes' => 'required',
             'class' => 'span4'

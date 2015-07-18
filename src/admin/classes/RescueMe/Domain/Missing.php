@@ -8,41 +8,67 @@
      * @since 13. June 2013
      * 
      * @author Sven-Ove Bjerkan <post@sven-ove.no>
+     * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
      */
 
-    namespace RescueMe;
+    namespace RescueMe\Domain;
 
     use \Psr\Log\LogLevel;
-    use RescueMe\Domain\Requests;
+    use RescueMe\DB;
+    use RescueMe\Locale;
     use RescueMe\Log\Logs;
-    use RescueMe\SMS\Check;
+    use RescueMe\Manager;
+    use RescueMe\Properties;
+    use RescueMe\SMS\CheckStatus;
     use RescueMe\SMS\Provider;
     use RescueMe\SMS\T;
 
     /**
      * Missing class
      * 
-     * @package RescueMe
+     * @package RescueMe\Domain
      */
     class Missing
     {
         const TABLE = "missing";
         
-        const SELECT = 'SELECT `missing`.*, `missing`.`op_id`, `users`.`user_id`, `op_type`, `op_ref`, `op_closed`, `alert_mobile_country`, `alert_mobile`, `users`.`name` FROM `missing`';
+        const SELECT = 'SELECT %1$s FROM `missing`';
         
-        const JOIN = 'LEFT JOIN `operations` ON `operations`.`op_id` = `missing`.`op_id` LEFT JOIN `users` ON `operations`.`user_id` = `users`.`user_id`';
+        const JOIN_OPERATION = 'LEFT JOIN `operations` ON `operations`.`op_id` = `missing`.`op_id`';
+
+        const JOIN_HANDSET = 'LEFT JOIN `handsets` ON `handsets`.`handset_id` = `missing`.`handset_id`';
+
+        const JOIN_SMS = 'LEFT JOIN `messages` ON `messages`.`message_id` = `missing`.`sms_id`';
+
+        const JOIN_ACCEPT = 'LEFT JOIN `requests` ON `requests`.`request_id` = `missing`.`missing_accept_id`';
+
+        const JOIN_USER = 'LEFT JOIN `users` ON `operations`.`user_id` = `users`.`user_id`';
 
         const COUNT = 'SELECT COUNT(*), `users`.`name` AS `user_name` FROM `missing`';
+
+        private static $all = array(
+            '`missing`.*',
+            '`handsets`.*',
+            '`messages`.*',
+            '`requests`.*',
+            '`missing`.`op_id`',
+            '`users`.`user_id`',
+            '`op_type`',
+            '`op_ref`',
+            '`op_closed`',
+            '`alert_mobile_country`',
+            '`alert_mobile`',
+            '`users`.`name` AS `user_name`'
+        );
         
-        private static $fields = array
+        private static $insert = array
         (
             "missing_name", 
             "missing_mobile_country", 
             "missing_mobile", 
             "missing_locale", 
             "missing_reported",
-            "op_id",
-            "sms_text"
+            "op_id"
         );
         
         private static $update = array
@@ -50,8 +76,25 @@
             "missing_name", 
             "missing_mobile_country", 
             "missing_mobile",
-            "missing_locale", 
+            "missing_locale",
+            "sms_id",
             "sms_text"
+        );
+
+        private static $sms = array
+        (
+            "sms_id"
+        );
+
+        private static $sms2 = array
+        (
+            "sms_id",
+            "sms2_sent"
+        );
+
+        private static $sms_mb = array
+        (
+            "sms_mb_sent"
         );
 
         private static $accept = array
@@ -71,35 +114,75 @@
         );
 
 
+        /**
+         * Missing id
+         * @var integer
+         */
         public $id = -1;
+
+        /**
+         * Operation id (joined with missing)
+         * @var integer
+         */
         public $op_id;
+
+        /**
+         * Operation reference (joined with missing)
+         * @var integer
+         */
         public $op_ref;
+
+        /**
+         * Handset id (joined with missing)
+         * @var integer
+         */
+        public $handset_id;
+
+        /**
+         * User id (joined with missing)
+         * @var integer
+         */
         public $user_id;
+
+        /**
+         * User id (joined with missing)
+         * @var integer
+         */
         public $user_name;
 
+        /**
+         * Accept id (foreign key to request_id)
+         * @var integer
+         */
         public $accept_id;
+
+        /**
+         * Accept id (foreign key to request_id)
+         * @var integer
+         */
         public $answered;
         public $reported;
 
         public $name;
         public $type;
         public $locale = DEFAULT_LOCALE;
-        public $mobile;
-        public $mobile_country;
+
+        public $number;
+        public $number_country_code;
         
         public $alert_mobile;
         public $alert_mobile_country;
 
         public $last_pos;
-        public $last_acc;
+        public $most_acc;
 
-        public $sms_sent;
+        public $message_sent;
         public $sms2_sent;
         public $sms_mb_sent;
-        public $sms_delivery;
-        public $sms_provider;
-        public $sms_provider_ref;
-        public $sms_text;
+        public $message_delivered;
+        public $message_provider;
+        public $message_reference;
+        public $message_data;
 
         public $positions = array();
         
@@ -113,10 +196,21 @@
             return DB::filter($fields, $values, $operand);
             
         }
-        
+
+        private static function joinAll($sql) {
+            return implode(' ', array(
+                $sql,
+                Missing::JOIN_OPERATION,
+                Missing::JOIN_HANDSET,
+                Missing::JOIN_SMS,
+                Missing::JOIN_ACCEPT,
+                Missing::JOIN_USER
+            ));
+        }
+
         private static function select($filter='', $admin = false, $start = 0, $max = false){
             
-            $query  = Missing::SELECT . ' ' . Missing::JOIN;
+            $query = self::joinAll(sprintf(Missing::SELECT,implode(',', self::$all)));
             
             $where = $filter ? array($filter) : array();
             
@@ -139,9 +233,9 @@
         
 
         public static function countAll($filter='', $admin = false) {
-            
-            $query  = Missing::COUNT . ' ' . Missing::JOIN;
-            
+
+            $query = self::joinAll(Missing::COUNT);
+
             $where = $filter ? array($filter) : array();
             
             if($admin === false) {                
@@ -170,13 +264,13 @@
             if (DB::isEmpty($res)) 
                 return false;
             
-            $missings = array();
+            $rows = array();
             while ($row = $res->fetch_assoc()) {                
                 $id = $row['missing_id'];
                 $missing = new Missing();
-                $missings[$id] = $missing->set($id, $row);
+                $rows[$id] = $missing->set($id, $row);
             }
-            return $missings;
+            return $rows;
         }        
         
         public static function count($id, $admin = false) {
@@ -190,7 +284,7 @@
          * @param integer $id Missing id
          * @param boolean $admin Administrator flag
          *
-         * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
+         * @return Missing|boolean. Instance of \RescueMe\Domain\Missing is success, FALSE otherwise.
          */
         public static function get($id, $admin = true){
 
@@ -214,19 +308,15 @@
          * @param integer $id Missing id.
          * @param array $values Missing values
          *
-         * @return \RescueMe\Missing
+         * @return Missing
          */
         private function set($id, $values) {
 
             $this->id = (int)$id;
 
             foreach($values as $key => $val){
-                if($key === 'name') {
-                    $this->user_name = $val;
-                } else {
-                    $property = str_replace('missing_', '', $key);                
-                    $this->$property = $val;
-                }
+                $property = str_replace('missing_', '', $key);
+                $this->$property = $val;
             }
             
             // Hack: Find out why data type is string
@@ -243,13 +333,13 @@
          * @param $m_mobile_country
          * @param $m_mobile
          * @param $m_locale
-         * @param $sms_text
          * @param $op_id
          * @return bool|Missing
          */
-        public static function add($m_name, $m_mobile_country, $m_mobile,  $m_locale, $sms_text, $op_id){
+        public static function add($m_name, $m_mobile_country, $m_mobile,  $m_locale, $op_id){
 
-            if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($m_locale) || empty($op_id) || empty($sms_text)) {
+            if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile)
+                || empty($m_locale) || empty($op_id) || empty($sms_text)) {
                 
                 $line = __LINE__;
                 Logs::write(
@@ -270,20 +360,18 @@
             
             if($operation === false) {
                 
-                return Missing::error("Missing not added. Operation $op_id does not exist.");
+                return Missing::error("Operation $op_id does not exist, missing not added");
             }
-            
 
             $values = array(
                 (string) $m_name, 
                 (string) $m_mobile_country, 
                 (int)$m_mobile, 
                 (string)$m_locale, 
-                "NOW()", 
-                (int) $op_id, 
-                $sms_text
+                "NOW()",
+                (int) $op_id
             );
-            $values = prepare_values(self::$fields, $values);
+            $values = prepare_values(self::$insert, $values);
 
             $id = DB::insert(self::TABLE, $values);
 
@@ -297,7 +385,7 @@
             
             $missing = new Missing();
             $missing->set($id, $values);
-            
+
             Logs::write(
                 Logs::TRACE, 
                 LogLevel::INFO, 
@@ -305,7 +393,7 @@
                 $values
             );
             
-            return $missing->sendSMS() ? $missing : false;
+            return $missing;
 
         }// add
 
@@ -314,7 +402,7 @@
          *
          * @param boolean $admin Administrator flag
          *
-         * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
+         * @return Missing|boolean. Instance of \RescueMe\Domain\Missing is success, FALSE otherwise.
          */
         public function load($admin = true){
 
@@ -401,7 +489,7 @@
         } // getAjaxPositions
 
 
-        public function getPositions(){
+        public function getPositions() {
             if($this->id === -1) {
                 return false;
             }
@@ -417,16 +505,14 @@
 
             $this->positions = array();
             while($row = $res->fetch_assoc()){
-                $this->positions[] = new Position($row['pos_id']);
+                $this->positions[$row['pos_id']] = new Position($row['pos_id']);
             }
 
-            if(!is_array($this->positions) || count($this->positions) == 0) {
+            if(!is_array($this->positions) || count($this->positions) === 0) {
                 $this->last_pos = new Position();
-                $this->last_acc = -1;
             }
             else {
-                $this->last_pos = $this->positions[(sizeof($this->positions)-1)];
-                $this->last_acc = $this->last_pos->acc;
+                $this->last_pos = end($this->positions);
             }
 
             return $this->positions;
@@ -434,24 +520,30 @@
 
         /**
          * Get the most accurate position that's newer than a given minutes.
-         * @param integer $maxAge How many minutes old.
-         * @return boolean|array
+         * @param integer $maxAge How many minutes old (optional, use zero for any age)
+         * @return boolean|Position
          */
-        public function getMostAccurate($maxAge = 15) {
+        public function getMostAccurate($maxAge = 0) {
             if($this->id === -1)
                 return false;
 
-            $query = "SELECT `pos_id`, `acc`, `lat`, `lon`, `timestamp` FROM `positions`" .
-                    " WHERE `missing_id` = " . (int) $this->id .
-                    " AND `timestamp` > NOW() - INTERVAL ".(int)$maxAge." MINUTE" .
-                    " ORDER BY `acc` LIMIT 1";
-            
+            $query = "SELECT `pos_id` FROM `positions`" .
+                    " WHERE `missing_id` = " . (int) $this->id;
+            if($maxAge) {
+                $query .= " AND `timestamp` > NOW() - INTERVAL ".(int)$maxAge." MINUTE";
+            }
+            $query .= " ORDER BY `acc` LIMIT 1";
+
+            $this->most_acc = false;
+
             $res = DB::query($query);
 
-            if(!$res) return false;
-            $row = $res->fetch_assoc();
-            if ($row === NULL) return false;
-            return $row;
+            if($res !== false) {
+                $row = $res->fetch_assoc();
+                $this->most_acc = new Position($row['pos_id']);
+            }
+
+            return $this->most_acc;
         }
 
         /**
@@ -468,92 +560,6 @@
             // Sanity check
             if($this->id === -1) return false;
 
-            $this->last_pos = new Position();
-            $this->last_pos->set(
-                array(
-                    'lat' => $lat,
-                    'lon' => $lon,
-                    'acc' => $acc,
-                    'alt' => $alt,
-                    'timestamp' => $timestamp
-                )
-            );
-            $this->last_acc = $acc;
-            
-            $best_acc = $this->getMostAccurate();
-            $best_acc = $best_acc['acc'];
-
-            // Send SMS 2?
-            if((int) $acc > Properties::get(Properties::LOCATION_DESIRED_ACC, $this->id)
-                && sizeof($this->positions) > 1){
-                
-                // Update this object
-                $this->get($this->id);
-
-                // Is SMS2 already sent
-                if($this->sms2_sent == 'false'){
-                    
-                    if($this->_sendSMS(
-                        $this->mobile_country, 
-                        $this->mobile, 
-                        T::_(T::ALERT_SMS_COARSE_LOCATION, $this->locale),
-                        true) === FALSE) {
-                        
-                        $context = array(
-                            'country' => $this->mobile_country, 
-                            'mobile' => $this->mobile
-                        );
-                        
-                        Logs::write(
-                            Logs::TRACE, 
-                            LogLevel::ERROR, 
-                            sprintf(T_('Failed to send second SMS to missing %1$s'), $this->id),
-                            $context
-                        );
-                        
-                    } else {
-                        
-                        $query = "UPDATE `missing` SET `sms2_sent` = 'true' WHERE `missing_id` = '" . $this->id . "';";
-                        
-                        if(DB::query($query) === FALSE){
-                            $context = array('sql' => $query);
-                            Missing::error(
-                                sprintf(T_('Failed to update SMS status for missing %1$s'), $this->id), $context);
-                        }
-                        
-                    }
-                }
-            }
-
-            // Alert person of concern if an accurate position is logged
-            // Always send first position and if the accuracy improves by 20%
-            else if(($this->sms_mb_sent == 'false') || $acc < $best_acc * 0.8) {
-
-                if($this->_sendSMS(
-                    $this->alert_mobile_country, 
-                    $this->alert_mobile,
-                        T::_(T::ALERT_SMS_LOCATION_UPDATE, $this->locale), false) === FALSE) {
-                    
-                    Logs::write(
-                        Logs::TRACE, 
-                        LogLevel::ERROR, 
-                        sprintf(T_('Failed to send SMS with position from missing [%1$s]'), $this->id),
-                        array($this->alert_mobile_country, $this->alert_mobile)
-                    );
-                    
-                    
-                } else {
-
-                    $query = "UPDATE `missing` SET `sms_mb_sent` = 'true' WHERE `missing_id` = '" . $this->id . "';";
-
-                    if(DB::query($query) === FALSE) {
-                        $context = array('sql' => $query);
-                        Missing::error('Failed to update SMS status for missing ' . $this->id, $context);
-                    }
-                }
-
-            }
-
             // Insert new position
             $values = prepare_values(self::$position,
                 array(
@@ -568,37 +574,112 @@
             );
 
             $posID = DB::insert('positions', $values);
-            
-            if($posID !== FALSE) {               
-                
+
+            if($posID !== FALSE) {
+
+                // Add to positions now
                 $p = new Position($posID);
-                $this->positions[] = $p;
-                
+
                 $user_id = User::currentId();
                 if(isset($user_id) === false) {
                     $user_id = $this->user_id;
                 }
                 $params = Properties::getAll($user_id);
                 $message = 'Missing ' . $this->id . ' reported position ' . format_pos($p, $params);
-                
-                Logs::write(
-                    Logs::TRACE, 
-                    LogLevel::INFO, 
-                    $message
-                );
-                
-                Logs::write(
-                    Logs::LOCATION, 
-                    LogLevel::INFO, 
-                    $message,
-                    $values
-                );
-                
-                
+
+                Logs::write(Logs::TRACE, LogLevel::INFO, $message );
+                Logs::write(Logs::LOCATION, LogLevel::INFO, $message, $values);
+
+                $desiredAcc = Properties::get(Properties::LOCATION_DESIRED_ACC, $this->id);
+                $maxAge = Properties::get(Properties::LOCATION_MAX_AGE, $this->id);
+                $most_acc_pos = $this->getMostAccurate($maxAge);
+                $most_acc = $most_acc_pos ? $most_acc_pos->acc : INF;
+
+                if(empty($this->positions)) {
+                    $this->getPositions();
+                }
+
+                // Send SMS 2?
+                if((int) $acc > $desiredAcc && sizeof($this->positions) > 0) {
+
+                    // Update this object just in case
+                    $this->load();
+
+                    // Is SMS2 sent?
+                    if($this->sms2_sent === 'false'){
+
+                        // Send SMS2 to missing
+                        $messageId = $this->_sendSMS(
+                            $this->number_country_code,
+                            $this->number,
+                            T::_(T::ALERT_SMS_COARSE_LOCATION, $this->locale),
+                            true);
+
+                        // Failed to send second sms?
+                        if($messageId === FALSE) {
+
+                            $context = array(
+                                'country' => $this->number_country_code,
+                                'mobile' => $this->number
+                            );
+
+                            Logs::write(
+                                Logs::TRACE,
+                                LogLevel::ERROR,
+                                sprintf(T_('Failed to send second SMS to missing %1$s'), $this->id),
+                                $context
+                            );
+
+                        } else {
+
+                            $values = prepare_values(self::$sms2, array($messageId, "true"));
+
+                            $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
+
+                            if($res === FALSE){
+                                Missing::error(
+                                    sprintf(T_('Failed to update SMS status for missing %1$s'), $this->id), $values);
+                            }
+
+                        }
+                    }
+                }
+
+                // Alert person of concern if an accurate position is logged
+                // Always send first position and if the accuracy improves by 20%
+                if($this->sms_mb_sent === 'false' || $acc < $most_acc * 0.8) {
+
+                    if($this->_sendSMS(
+                            $this->alert_mobile_country,
+                            $this->alert_mobile,
+                            T::_(T::ALERT_SMS_LOCATION_UPDATE, $this->locale), false) === FALSE) {
+
+                        Logs::write(
+                            Logs::TRACE,
+                            LogLevel::ERROR,
+                            sprintf(T_('Failed to send SMS with position from missing [%1$s]'), $this->id),
+                            array($this->alert_mobile_country, $this->alert_mobile)
+                        );
+
+
+                    } else {
+
+                        $values = prepare_values(self::$sms_mb, array("true"));
+
+                        $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
+
+                        if($res === FALSE) {
+                            Missing::error('Failed to update SMS alert status for missing ' . $this->id);
+                        }
+                    }
+
+                }
+
+
             } else {
-                
+
                 Missing::error('Failed to insert position for missing ' . $this->id, $values);
-                
+
             }
 
             return $posID;
@@ -606,11 +687,19 @@
         }// addPosition
 
 
-        public function sendSMS(){
+        /**
+         * Send next SMS to missing
+         * @param string $text Message text
+         * @return bool|int Returns message id if success, FALSE otherwise
+         */
+        public function sendSMS($text=null){
 
-            $res = $this->_sendSMS($this->mobile_country, $this->mobile, $this->sms_text, true);
+            if(is_null($text))
+                $text = $this->message_data;
+
+            $messageId = $this->_sendSMS($this->number_country_code, $this->number, $text, true);
             
-            if($res === FALSE) {
+            if($messageId === FALSE) {
                 
                $this->_sendSMS(
                    $this->alert_mobile_country, 
@@ -621,31 +710,22 @@
                
             } else {
 
-                $user_id = User::currentId();
-                if(isset($user_id) === false) {
-                    $user_id = $this->user_id;
-                }
-                
-                $module = Manager::get('RescueMe\SMS\Provider', $user_id);
+                $values = prepare_values(self::$sms, array($messageId));
 
-                $query = "UPDATE `missing` 
-                            SET `sms_sent` = NOW(), `sms_delivery` = NULL, 
-                                `sms_provider` = '".DB::escape($module->impl)."',
-                                `sms_provider_ref` = '".$res."'
-                            WHERE `missing_id` = '" . $this->id . "';";
+                $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
 
-                if(DB::query($query) === FALSE) {
-                    
+                if($res === FALSE) {
+
                     Missing::error('Failed to update SMS status for missing ' . $this->id);
-                    
+
                 }
 
-                // Load data from database
-                $res = $this->load();
+                // Reload
+                $this->load();
 
             }
 
-            return $res;
+            return $messageId;
 
         }// sendSMS
         
@@ -665,20 +745,20 @@
             // Is check required?
             if($missing !== false) { 
                 
-                if(empty($missing->sms_delivery) === true 
-                && empty($missing->sms_provider_ref) === false) {
+                if(empty($missing->message_delivered) === true
+                && empty($missing->message_reference) === false) {
                     
                     $module = Manager::get('RescueMe\SMS\Provider', $missing->user_id);
 
                     /** @var Provider $sms */
                     $sms = $module->newInstance();
                     
-                    if($missing->sms_provider === $module->impl && ($sms instanceof Check)) {
+                    if($missing->message_provider === $module->impl && ($sms instanceof CheckStatus)) {
                         
-                        $code = Locale::getDialCode($missing->mobile_country);
+                        $code = Locale::getDialCode($missing->number_country_code);
                         $code = $sms->accept($code);
-                        /** @var Check $sms */
-                        if($sms->request($missing->sms_provider_ref,$code.$missing->mobile)) {
+                        /** @var CheckStatus $sms */
+                        if($sms->check($missing->message_reference, $code.$missing->number)) {
                             $missing = Missing::get($id);
                         }
                     }
@@ -698,6 +778,7 @@
          */
         public function accepted($requestId) {
 
+            // TODO: Join missing with requests on accept_id and rename request_timestamp to Missing::$answered
             $values = prepare_values(self::$accept, array($requestId, 'NOW()'));
 
             $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
@@ -756,17 +837,17 @@
          * @param string $message Message string
          * @param boolean $missing True if recipient is missing
          * 
-         * @return mixed|array Message id if success, errors otherwise (array).
+         * @return integer|boolean Message id if success, boolean otherwise.
          */
         private function _sendSMS($country, $to, $message, $missing) {
             
-            $user_id = User::currentId();
-            if(isset($user_id) === false) {
-                $user_id = $this->user_id;
+            $userId = User::currentId();
+            if(isset($userId) === false) {
+                $userId = $this->user_id;
             }
 
             /** @var Provider $sms */
-            $sms = Manager::get(Provider::TYPE, $user_id)->newInstance();
+            $sms = Manager::get(Provider::TYPE, $userId)->newInstance();
             
             if($sms === FALSE)
             {
@@ -783,39 +864,34 @@
                 $to = substr($to, 3);
             }
 
-            $params = Properties::getAll($user_id);
-            $p = format_pos($this->last_pos, $params, false);
+            $params = Properties::getAll($userId);
+
+            // Use most accurate position if found, last otherwise
+            $p = format_pos($this->most_acc ? $this->most_acc : $this->last_pos, $params, false);
             
             $id = $missing ? encrypt_id($this->id) : $this->id;
             
             $message = str_replace
             (
                 array('%LINK%', '#missing_id', '#to', '#m_name', '#acc', '#pos'), 
-                array(LOCATE_URL,  $id, $to, $this->name, $this->last_acc, $p),
+                array(LOCATE_URL,  $id, $to, $this->name, $this->last_pos->acc, $p),
                 $message
             );
 
-            $from = Properties::get(Properties::SMS_SENDER_ID, $user_id);
+            $from = Properties::get(Properties::SMS_SENDER_ID, $userId);
 
-            $res = $sms->send($from, $country, $to, $message);
+            $messageId = $sms->send($from, $country, $to, $message, $userId);
             
-            if($res) {
-                
-                $context = array(
-                    'from' => $from,
-                    'country' => $country,
-                    'to' => $to,
-                );
+            if($messageId) {
                 
                 $recipient = $missing ? "missing $this->id" : " to operator of $this->id";
                 
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::INFO,
-                    "SMS sent to $recipient ($to)",
-                    $context
+                    "SMS sent to $recipient (message id $messageId)"
                 );
-                
+
             } else {
                 
                 $context = array(
@@ -830,9 +906,10 @@
                 );
                 
             }
-            return $res;
+            return $messageId;
 
         }// _sendSMS
+
 
         public function getError() {
             return DB::error();

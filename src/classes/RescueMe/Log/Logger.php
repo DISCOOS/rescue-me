@@ -13,7 +13,7 @@
     namespace RescueMe\Log;
     
     use Psr\Log\LogLevel;
-    use \RescueMe\User;
+    use RescueMe\Domain\User;
     use \Psr\Log\LoggerInterface;
     
 

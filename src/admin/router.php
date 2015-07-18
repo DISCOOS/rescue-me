@@ -1,12 +1,12 @@
 <?php
 
     use RescueMe\DB;
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     use RescueMe\Manager;
-    use RescueMe\Missing;
-    use RescueMe\Operation;
+    use RescueMe\Domain\Missing;
+    use RescueMe\Domain\Operation;
     use RescueMe\Properties;
-    use RescueMe\Roles;
+    use RescueMe\Domain\Roles;
     use RescueMe\TimeZone;
     use RescueMe\SMS\Provider;
 
@@ -390,7 +390,7 @@
             $redirect = APP_URI;
             $_ROUTER['name'] = T_('Request new user');
             
-            $admin = ($user instanceof RescueMe\User) && $user->allow('write', 'user.all');
+            $admin = ($user instanceof \RescueMe\Domain\User) && $user->allow('write', 'user.all');
             
             // Admins are allowed to create users
             if($admin)
@@ -894,7 +894,7 @@
                     }
                 }
                 
-                $status = RescueMe\Operation::close($id, $_POST);
+                $status = \RescueMe\Domain\Operation::close($id, $_POST);
                 
                 if ($status) {
                     header("Location: ".ADMIN_URI.'missing/list');
@@ -955,16 +955,15 @@
             // Process form?
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
-                $operation = new RescueMe\Operation;
-                
-                $operation = $operation->add(
+                $operation = Operation::add(
                     $_POST['m_type'],
                     $_POST['m_name'], 
                     $user->id, 
                     $_POST['mb_mobile_country'], 
                     $_POST['mb_mobile'],
                     $_POST['op_ref']);
-                
+
+                // Ensure link macro exists in message
                 if (strpos($_POST['sms_text'], '%LINK%')===false) {
                     $_POST['sms_text'] .= ' %LINK%';
                 }
@@ -973,11 +972,14 @@
                     $_POST['m_name'], 
                     $_POST['m_mobile_country'], 
                     $_POST['m_mobile'], 
-                    $_POST['m_locale'], 
-                    $_POST['sms_text'],
+                    $_POST['m_locale'],
                     $operation->id);
                 
                 if($missing) {
+
+                    // Send first SMS
+                    $missing->sendSMS($_POST['sms_text']);
+
                     header("Location: ".ADMIN_URI.'missing/'.$missing->id);
                     exit();
                 }
@@ -1152,7 +1154,7 @@
 
                     } else {
 
-                        echo format_since($missing->sms_sent);
+                        echo format_since($missing->message_sent);
 
                     }
                 } else {
@@ -1192,7 +1194,7 @@
 
                     } else {
                         
-                        echo format_since($missing->sms_delivery);
+                        echo format_since($missing->message_delivered);
                         
                     }
                 } else {

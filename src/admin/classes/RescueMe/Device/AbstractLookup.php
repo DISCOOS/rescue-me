@@ -43,7 +43,7 @@
          * @param $request
          * @return array
          */
-        public function createRequest($request = null)
+        public static function createRequest($request = null)
         {
             if(is_null($request)) {
                 $request = $_SERVER;
@@ -64,12 +64,13 @@
                 'HTTP_PROFILE',
                 'Opt',
                 // Allows for detection of xml requests
-                'Accept'
+                'Accept',
+                // Miscellaneous
+                'HTTP_ACCEPT_LANGUAGE'
             );
 
             return array_intersect_key($request, array_fill_keys($keys, null));
 
         }
-
 
     }

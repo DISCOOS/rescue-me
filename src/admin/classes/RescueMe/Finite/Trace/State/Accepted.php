@@ -13,7 +13,7 @@ namespace RescueMe\Finite\Trace\State;
 
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
-use RescueMe\Missing;
+use RescueMe\Domain\Missing;
 
 
 /**
@@ -22,7 +22,7 @@ use RescueMe\Missing;
  */
 class Accepted extends AbstractState {
 
-    const NAME = 'Answered';
+    const NAME = 'Accepted';
 
     /**
      * Constructor
@@ -32,7 +32,7 @@ class Accepted extends AbstractState {
     }
 
     /**
-     * Check if request is accepted
+     * Check if trace state is Accepted
      * @param Missing $condition
      * @return boolean
      */
@@ -40,5 +40,15 @@ class Accepted extends AbstractState {
         $this->data = $condition->answered;
         return is_null($this->data) === false;
     }
+
+    /**
+     * Get number of seconds since trace was accepted
+     * @return integer
+     */
+    public function getTimeSince() {
+        return (int)(time() - strtotime($this->data));
+    }
+
+
 
 }

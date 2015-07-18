@@ -13,7 +13,7 @@ namespace RescueMe\Finite\Trace\State;
 
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
-use RescueMe\Missing;
+use RescueMe\Domain\Missing;
 
 
 /**
@@ -32,12 +32,21 @@ class Sent extends AbstractState {
     }
 
     /**
-     * Check if trace exists
+     * Check if trace state is Sent
      * @param Missing $condition
      * @return mixed
      */
     protected function onAccept($condition) {
-        $this->data = $condition->sms_sent;
+        $this->data = $condition->message_sent;
         return is_null($this->data) === false;
     }
+
+    /**
+     * Get number of seconds since SMS was sent
+     * @return integer
+     */
+    public function getTimeSince() {
+        return (int)(time() - strtotime($this->data));
+    }
+
 }

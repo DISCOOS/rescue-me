@@ -50,7 +50,7 @@ class T {
                 case T::ALERT_SMS_COARSE_LOCATION:
                     return T_locale('If you have GPS on your phone, we recommend that you enable this. In most cases you will find this under Settings -> General, or Settings -> Location.', $locale, DOMAIN_SMS);
                 case T::ALERT_SMS_LOCATION_UPDATE:
-                    return T_locale('Received location of #m_name: #pos (+/-#acc m)! %1$s', $locale, DOMAIN_SMS);
+                    return T_locale('Received location of #m_name: #pos (+/-#acc m)!', $locale, DOMAIN_SMS);
                 default:
                     break;
             }

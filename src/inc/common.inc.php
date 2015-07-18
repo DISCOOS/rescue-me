@@ -371,8 +371,15 @@
             next($values);
         }
         return $prepared;
-    }    
-    
+    }
+
+    /**
+     * Get value from array
+     * @param $array
+     * @param $key
+     * @param null $default
+     * @return mixed
+     */
     function isset_get($array, $key, $default=null) {
         return isset($array[$key]) ? $array[$key] : $default;
     }
@@ -399,7 +406,7 @@
     function array_exclude($array, $key) {
         $values = array();
         foreach($array as $name => $value) {
-            if(!($key === $name 
+            if(!($key === $name
                 || is_string($key) && strstr($name, $key) !== false
                 || is_array($key) && in_array($name, $key))) {
                 $values[$name] = $value;
@@ -467,7 +474,7 @@
      */
     function format_dt($timestamp) {
         $time = strtotime($timestamp);
-        return date(date('Y', $time) === date('Y') ? 'd.m H:i' : 'Y.d.m H:i', $time);
+        return date(date('Y', $time) === date('Y') ? 'd.m H:i' : 'Y.d.m', $time);
     }
     
     /**
@@ -510,6 +517,32 @@
         return $since;
     }
 
+    /**
+     * Get seconds formatted as text
+     *
+     * @param integer $seconds Seconds
+     *
+     * @return string
+     */
+    function format_time($seconds) {
+        $unit = '~'.T_('sec');
+        if($seconds > 0) {
+            if($seconds < 60) {
+                $unit = $seconds.' '.T_('sec');
+            }
+            else if($seconds < 2*60*60) {
+                $unit = (int)($seconds/60).' '.T_('min');
+            }
+            else if($seconds < 24*60*60) {
+                $hours = (int)($seconds/(60*60));
+                $unit = $hours.' '.T_('hours');
+            }
+            else if($seconds >= 24*60*60) {
+                $hours = (int)($seconds/(24*60*60));
+                $unit = $hours.' '.T_('days');
+            }        }
+        return $unit;
+    }
 
     /**
      * Format unix timestamp with locale timezone
@@ -542,7 +575,7 @@
     /**
      * Get formatted position
      *
-     * @param null|RescueMe\Position $p Position instance
+     * @param null|\RescueMe\Domain\Position $p Position instance
      * @param string|array $params Format parameters.
      * @param string|boolean $label Set true or label attributes to return label, false otherwise.
      *

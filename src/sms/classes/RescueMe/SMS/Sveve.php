@@ -163,12 +163,14 @@
         }
         
         public function handle($params) {
-            
-            if(assert_isset_all($params,array('id','number','status'))) {
+
+            if($handled = assert_isset_all($params,array('id','number','status'))) {
             
                 $this->delivered($params['id'], $params['number'], $params['status'], new \DateTime(),
                         (isset($params['errorDesc']) ? $params['errorDesc'] : ''));
             }
+
+            return $handled;
         }
         
 	

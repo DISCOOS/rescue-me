@@ -78,6 +78,14 @@ use RescueMe\Properties;
         return insert_message($html,$output);        
     }
 
+    function insert_label($text, $type, $attributes = '', $output = true) {
+        $html = '<span class="label label-' . $type . ' label-position" ' . $attributes. '>'. $text. '</span>';
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+
     function insert_icon($type, $fill=false, $white=false, $output=true)
     {
         $classes = 'icon icon-'.$type;
@@ -94,6 +102,27 @@ use RescueMe\Properties;
         return $html;
     }
 
+    function insert_bullets($items) {
+        if(!is_array($items)) {
+            $items = func_get_args();
+        }
+        $html = insert_elements('li', $items);
+        return '<nl>'.$html.'</nl>';
+
+    }
+
+    function insert_elements($name, $items) {
+        $html = '';
+        if(!is_array($items)) {
+            $items = array($items);
+        }
+        foreach($items as $item) {
+            $html .= '<'.$name.'>'.$item.'</'.$name.'>';
+        }
+
+        return $html;
+
+    }
 
     function insert_control($id, $type, $value, $label, $attributes='', $class='', $placeholder=null, $output=true)
     {
@@ -190,9 +219,23 @@ use RescueMe\Properties;
             echo $html;
         }
         return $html;
-    }        
-    
-    
+    }
+
+    function insert_dialog_input($id, $title = null, $content = null, $action = null, $output=true)
+    {
+        ob_start();
+
+        // Localize title and message
+        $title = is_null($title) ? T_('Input') : $title;
+
+        require(APP_PATH . "gui/input.dialog.gui.php");
+        $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+
     function insert_dialog_selector($id, $title, $content, $params=array(), $output=true)
     {
         $action = isset_get($params,'action',null);

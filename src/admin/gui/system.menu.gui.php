@@ -10,7 +10,7 @@
  * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
  */
 
-use RescueMe\User;
+use RescueMe\Domain\User;
 
     $num_pending = User::count(array(User::PENDING));
     if ($num_pending === 0) {

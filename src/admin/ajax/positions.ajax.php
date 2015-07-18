@@ -1,8 +1,8 @@
 <?php
 ob_start();
 
-use RescueMe\User;
-use RescueMe\Missing;
+use RescueMe\Domain\User;
+use RescueMe\Domain\Missing;
 use RescueMe\Properties;
 
 $num = (int)$_GET['num'];

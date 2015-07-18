@@ -25,6 +25,12 @@
         private $states = array();
 
         /**
+         * Trajectory of accepted states
+         * @var array
+         */
+        private $trajectory = array();
+
+        /**
          * Next possible states from current
          * @var array
          */
@@ -154,8 +160,18 @@
          * @return Machine
          */
         public function addState(State $state) {
-            $this->states[] = $state;
+            $this->states[$state->getName()] = $state;
             return $this;
+        }
+
+        /**
+         * Get state with given name
+         * @param $name string
+         * @return State
+         */
+        public function getState($name)
+        {
+            return $this->states[$name];
         }
 
         /**
@@ -189,11 +205,40 @@
         }
 
         /**
+         * Get next possible states from current states
+         * @return array
+         */
+        public function getNext()
+        {
+            return $this->next;
+        }
+
+        /**
+         * Get previous state on trajectory
+         * @return State
+         */
+        public function getPrevious()
+        {
+            return end($this->trajectory);
+        }
+
+        /**
+         * Get trajectory of accepted states
+         * @return array
+         */
+        public function getTrajectory()
+        {
+            return $this->trajectory;
+        }
+
+        /**
          * Apply condition to state machine
          * @param mixed $condition
          * @return boolean|State
          */
         public function apply($condition) {
+
+            $this->trajectory = array();
 
             $state = $this->getCurrent();
 
@@ -220,10 +265,12 @@
             /** @var $state State */
             foreach($next as $state) {
                 if($state->accept($condition)) {
-                    $this->next = $this->getNext($state);
+                    $this->trajectory[] = $state;
+                    $this->next = $this->findNext($state);
                     if(empty($this->next) === false) {
                         if($next = $this->accept($condition, $this->next)) {
                             $state = $next;
+                            $this->trajectory[] = $state;
                         }
                     }
                     return $state;
@@ -238,7 +285,7 @@
          * @param State $state
          * @return array
          */
-        private function getNext($state) {
+        private function findNext($state) {
 
             if($state->getType() === State::T_FINAL) {
                 return array();

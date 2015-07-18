@@ -6,8 +6,8 @@
 use RescueMe\Domain\Requests;
 use RescueMe\Log\Logs;
     use RescueMe\Locale;
-    use RescueMe\Missing;
-    use RescueMe\Operation;
+    use RescueMe\Domain\Missing;
+    use RescueMe\Domain\Operation;
     use RescueMe\Properties;
 
     $id = input_get_hash('id');
@@ -18,13 +18,11 @@ use RescueMe\Log\Logs;
 
     } else {
 
-        $id = decrypt_id($id);
-
         // Log request
         $lookup = new \RescueMe\Device\WURFL();
         $requestId = Requests::insert($lookup->createRequest());
 
-        $missing = Missing::get($id);
+        $missing = Missing::get(decrypt_id($id));
 
         if($missing !== false) {
 

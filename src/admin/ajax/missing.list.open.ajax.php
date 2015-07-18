@@ -4,10 +4,10 @@ ob_start();
 
 use RescueMe\Finite\Trace\Factory;
 use RescueMe\Finite\Trace\State\Located;
-use RescueMe\User;
+use RescueMe\Domain\User;
 use RescueMe\Manager;
-use RescueMe\Missing;
-use RescueMe\Operation;
+use RescueMe\Domain\Missing;
+use RescueMe\Domain\Operation;
 use RescueMe\Properties;
 use RescueMe\SMS\Provider;
 
@@ -58,9 +58,9 @@ if($list === false || $list <= $start) {
 
     // Create trace state machine
     $factory = new Factory();
-    $machine = $factory->build($sms);
+    $machine = $factory->build($sms, $params);
 
-    /** @var Missing $missing */
+    /** @var \RescueMe\Domain\Missing $missing */
     foreach($list as $id => $missing) {
 
         // Prepare

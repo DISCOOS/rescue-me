@@ -10,11 +10,12 @@
      * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
      */
     
-    namespace RescueMe;
+    namespace RescueMe\Domain;
     
     use \Psr\Log\LogLevel;
-    use \RescueMe\Log\Logs;
-    
+    use RescueMe\DB;
+    use RescueMe\Log\Logs;
+
     /**
      * Roles class
      * 
@@ -90,7 +91,7 @@
          */
         public static function getAll() {
              
-            return self::$roles ;
+            return self::$roles;
             
         }// getAll     
 
@@ -117,7 +118,7 @@
             
             if(self::has($role, $user_id) === FALSE)
             {
-                $res = DB::delete(self::TABLE, 'user_id = '.(int)$user_id);
+                DB::delete(self::TABLE, 'user_id = '.(int)$user_id);
                 
                 $role_id = array_search($role, self::$roles);
                 
@@ -133,7 +134,7 @@
                 Roles::log("Granted user $user_id role $role", $res);
             }
             
-            return true;
+            return $res;
         }        
         
         /**
@@ -161,7 +162,7 @@
         /**
          * Revoke role from user
          * 
-         * @param string role Role
+         * @param string $role Role
          * @param integer $user_id User ID
          * 
          * @return boolean

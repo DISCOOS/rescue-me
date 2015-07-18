@@ -10,7 +10,7 @@
 
     require(implode(DIRECTORY_SEPARATOR, array(dirname(__DIR__),'config.php')));
     
-    use RescueMe\User;
+    use RescueMe\Domain\User;
     use RescueMe\Properties;
     
     $id = User::currentId();
