@@ -65,7 +65,7 @@
 
         $constant = 'APP_PATH_DOMAIN_'.strtoupper($domain);
 
-        if(defined($constant) && ($previous[0] !== $domain || $previous[1] !== $locale)) {
+        if(defined($constant)) {
 
             $encoding = 'UTF-8';
             $path = dirname(constant($constant));
