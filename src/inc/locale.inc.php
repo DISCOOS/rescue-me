@@ -50,11 +50,10 @@
      * @param string $domain Message domain
      * @param string $locale Locale string (without encoding)
      * 
-     * @return array Previous domain and locale
+     * @return array|boolean Previous domain and locale or false if locale not changed
      */
     function set_system_locale($domain = DOMAIN_COMMON, $locale = DEFAULT_LOCALE) {
-        
-        $encoding = 'UTF-8';
+
         if(isset($_SESSION)) {
             $previous = array(
                 isset_get($_SESSION, 'domain', DOMAIN_COMMON),
@@ -64,17 +63,29 @@
             $previous = array(DOMAIN_COMMON,DEFAULT_LOCALE);
         }
 
-        // Use drop-in fallback replacement in case gettext extension is not available
-        T_setLocale(LC_TIME, "$locale.$encoding");
-        T_setLocale(LC_MESSAGES, "$locale.$encoding");
+        $constant = 'APP_PATH_DOMAIN_'.strtoupper($domain);
 
-        // Set given domain
-        set_domain($domain, $encoding, dirname(constant('APP_PATH_DOMAIN_'.strtoupper($domain))));
+        if(defined($constant) && ($previous[0] !== $domain || $previous[1] !== $locale)) {
 
-        $_SESSION['domain'] = $domain;
-        $_SESSION['locale'] = $locale;
-        
-        return $previous;        
+            $encoding = 'UTF-8';
+            $path = dirname(constant($constant));
+
+
+            // Use drop-in fallback replacement in case gettext extension is not available
+            T_setLocale(LC_TIME, "$locale.$encoding");
+            T_setLocale(LC_MESSAGES, "$locale.$encoding");
+
+            // Set given domain
+            set_domain($domain, $encoding, $path);
+
+            $_SESSION['domain'] = $domain;
+            $_SESSION['locale'] = $locale;
+
+        } else {
+            $previous = false;
+        }
+
+        return $previous;
     }
 
     /**

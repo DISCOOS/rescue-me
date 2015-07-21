@@ -9,11 +9,8 @@ if(!file_exists($verfile)) {
     die();
 }
 
-// TODO: Add to install/configure
-define('MAINTENANCE', false);
-define('MAINTENANCE_MESSAGE', 'Site is down for maintenance. Please try again later.');
+define('MAINTAIN', false);
 
-// TODO: Add to install/configure
 define('DEBUG', false);
 
 // Allow usage on command line
@@ -41,6 +38,7 @@ define('APP_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
 define('APP_PATH_INC', APP_PATH.'inc'.DIRECTORY_SEPARATOR);
 define('APP_PATH_CLASS', APP_PATH.'classes'.DIRECTORY_SEPARATOR);
 define('APP_PATH_LOCALE', APP_PATH.'locale'.DIRECTORY_SEPARATOR);
+define('APP_PATH_ABOUT', APP_PATH.'about'.DIRECTORY_SEPARATOR);
 define('APP_PATH_NEWS', APP_PATH.'news'.DIRECTORY_SEPARATOR);
 define('APP_PATH_HELP', APP_PATH.'help'.DIRECTORY_SEPARATOR);
 define('APP_PATH_DATA', APP_PATH.'data'.DIRECTORY_SEPARATOR);

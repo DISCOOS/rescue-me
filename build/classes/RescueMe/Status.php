@@ -38,15 +38,16 @@
             $this->root = $root;
             
         }// __construct
-        
-        
+
+
         /**
          * Execute status script
-         * 
+         *
+         * @param array $keys Configuration keys
+         *
          * @return array|boolean array if success, FALSE otherwise.
-         * 
          */
-        public function execute()
+        public function execute($keys)
         {
             begin(STATUS);
             
@@ -60,7 +61,7 @@
             info("DONE");
             
             // Get current configuration
-            $config = get_config_params($this->root);            
+            $config = get_config_params($this->root, $keys);
             
             // Print all parameters
             foreach($config as $key => $value) {

@@ -28,7 +28,7 @@ class Install {
 
     /**
      * Installation ini values
-     * @var string
+     * @var array
      */
     private $ini;
 
@@ -134,7 +134,9 @@ class Install {
             'DB_PASSWORD' => $this->ini['DB_PASSWORD'],
             'COUNTRY_PREFIX' => $this->ini['COUNTRY_PREFIX'],
             'DEFAULT_LOCALE' => $this->ini['DEFAULT_LOCALE'],
-            'DEFAULT_TIMEZONE' => $this->ini['DEFAULT_TIMEZONE']
+            'DEFAULT_TIMEZONE' => $this->ini['DEFAULT_TIMEZONE'],
+            'DEBUG' => $this->ini['DEBUG'],
+            'MAINTAIN' => $this->ini['MAINTAIN']
         ));
 
         // Create config.php

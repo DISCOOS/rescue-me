@@ -30,7 +30,7 @@ $compiler = new Compiler(APP_PATH_HELP);
             <a class="lead no-wrap" href="<?=APP_URI?>"><b><?= TITLE ?></b></a>
         </div>
     </div>
-    <?insert_alert(MAINTENANCE_MESSAGE)?>
+    <?insert_alert($compiler->parse('maintenance'));?>
     <?require('gui/footer.gui.php')?>
 </div>
 </body>

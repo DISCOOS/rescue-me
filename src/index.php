@@ -3,13 +3,10 @@
 require('config.php');
 
 use RescueMe\Locale;
-use RescueMe\Document\Compiler;
 
 $locale = Locale::getBrowserLocale();
 
 set_system_locale(DOMAIN_COMMON, $locale);
-
-$compiler = new Compiler(APP_PATH_HELP);
 
 ?>
 
@@ -20,10 +17,10 @@ $compiler = new Compiler(APP_PATH_HELP);
         <title><?= TITLE ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="apple-mobile-web-app-title" content="<?=TITLE?>" >
-        <link rel="shortcut icon" href="img/favicon.ico" >
+        <link rel="shortcut icon" href="<?=APP_URI?>img/favicon.ico" >
         <link rel="apple-touch-icon" href="<?=APP_URI?>img/rescueme-non-trans.png" >
-        <link href="css/index.css" rel="stylesheet">
-        <script src="js/index.js"></script>
+        <link href="<?=APP_URI?>css/index.css" rel="stylesheet">
+        <script src="<?=APP_URI?>js/index.js"></script>
     </head>
 
     <body>

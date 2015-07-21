@@ -280,41 +280,52 @@
             return true;
         }
     }// rrmdir
-    
-    
-    /**
-     * Prompt user for input value
-     * 
-     * @param string $message Message
-     * @param string $default Default value
-     * @param integer $newline Message newline [optional, default: NEWLINE_NONE]
-     * @param boolean $required Required value.
-     * @param boolean $echo Echo entered value.
-     * 
-     * @return string Answer 
-     */
-    function in($message, $default=NULL, $newline=NEWLINE_NONE, $required=true, $echo=true) {
+
+
+/**
+ * Prompt user for input value
+ *
+ * @param string $message Message
+ * @param string $default Default value
+ * @param int $newline Message newline [optional, default: NEWLINE_NONE]
+ * @param boolean $required Required value.
+ * @param boolean $echo Echo entered value.
+ * @param array $allowed Allowed answers
+ * @param boolean $mapped Allowed answers are mapped to values
+ * @return string Answer
+ */
+    function in($message, $default=NULL, $newline=NEWLINE_NONE, $required=true, $echo=true, $allowed=null, $mapped=false) {
         $isset = isset($default) && (!empty($default) || $default == 0 && $default !== '');
         out(($isset ? "$message [$default]" : $message).": ", $newline, COLOR_INFO);
         $answer = fgets(STDIN);
         $answer = ($answer !== PHP_EOL ? str_replace("\n", "", $answer) : "$default");
-        if($required && !trim($answer,"'") && trim($answer,"'") !== '0')
+
+        if($required && !trim($answer,"'") && trim($answer,"'") !== '0' ||
+            is_array($allowed) && !in_array(trim(strtoupper($answer)), $mapped ? array_keys($allowed) : $allowed, true))
         {
-            return in($message, $default, $newline, $required, $echo);
+            return in($message, $default, $newline, $required, $echo, $allowed, $mapped);
         }
+        $answer = trim($answer);
+
         if($echo) {
             out("$message: $answer", NEWLINE_POST, COLOR_SUCCESS);
         }
-        return trim($answer);
+
+        if(is_array($allowed) && $mapped) {
+            $answer = $allowed[strtoupper($answer)];
+        }
+
+        return $answer;
     }// in
-    
-    
+
+
     /**
      * Get option argument value
-     * 
+     *
      * @param array $opts Option array
      * @param string $arg Argument name
      * @param mixed $default Default value
+     * @param bool $escape
      * @return mixed
      */
     function get($opts, $arg, $default = NULL, $escape = true)
@@ -384,7 +395,7 @@
      * 
      * @return array
      */
-    function get_config_params($root) {
+    function get_config_params($root, $keys) {
         if(file_exists(realpath($root).DIRECTORY_SEPARATOR.'config.php')) {
             // Get from current
             $file = $root.DIRECTORY_SEPARATOR.'config.php';
@@ -394,11 +405,7 @@
         }        
         // Get current configuration
         $config = file_get_contents($file);
-        $config = get_define_array($config, array
-        (
-            'SALT', 'TITLE', 'SMS_FROM', 'COUNTRY_PREFIX', 'DEFAULT_LOCALE', 
-            'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD', 'DEFAULT_TIMEZONE'
-        ));
+        $config = get_define_array($config, $keys);
         return $config;
     }
     

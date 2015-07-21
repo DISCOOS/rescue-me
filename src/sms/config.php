@@ -2,7 +2,7 @@
 
 require('../config.php');
 
-if(MAINTENANCE) {
+if(MAINTAIN) {
     require "../maintenance.php";
     die();
 }

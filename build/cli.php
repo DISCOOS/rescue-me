@@ -73,6 +73,13 @@
      */
     function execute($actions)
     {
+        $keys = array
+        (
+            'SALT', 'TITLE', 'SMS_FROM', 'COUNTRY_PREFIX', 'DEFAULT_LOCALE',
+            'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD', 'DEFAULT_TIMEZONE',
+            'DEBUG', 'MAINTAIN'
+        );
+
         foreach($actions as $action => $opts) 
         {            
             // Print help now?
@@ -94,7 +101,7 @@
                     $status = new RescueMe\Status($root);
 
                     // Status unsuccessful?
-                    if(($config = $status->execute()) === false) {
+                    if(($config = $status->execute($keys)) === false) {
                        done($action, BUILD_ERROR);
                     }// if                        
                     
@@ -109,18 +116,12 @@
                     $root = configure($opts, INSTALL_DIR, 'src');
                     
                     // Get configuration parameters
-                    $config = file_exists(realpath($root)."/config.php") ? get_config_params($root) : array();
+                    $config = file_exists(realpath($root)."/config.php") ? get_config_params($root, $keys) : array();
 
                     // Get database parameters
                     $opts = get_db_params($opts, $config);
 
                     require('classes/RescueMe/Import.php');
-
-//                    // Include dependent resources
-//                    require("$root/classes/RescueMe/DB.php");
-//                    require("$root/classes/RescueMe/User.php");
-//                    require("$root/classes/RescueMe/Log/Logs.php");
-//                    require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
 
                     // Create import command
                     $import = new RescueMe\Import(
@@ -149,18 +150,12 @@
                     $export = get_safe_dir($opts, EXPORT_DIR, "src");
                     
                     // Get configuration parameters
-                    $config = file_exists(realpath($src)."/config.php") ? get_config_params($src) : array();
+                    $config = file_exists(realpath($src)."/config.php") ? get_config_params($src, $keys) : array();
 
                     // Get database parameters
                     $opts = get_db_params($opts, $config);
 
                     require('classes/RescueMe/Export.php');
-
-//                    // Include dependent resources
-//                    require("$root/classes/RescueMe/DB.php");
-//                    require("$root/classes/RescueMe/User.php");
-//                    require("$root/classes/RescueMe/Log/Logs.php");
-//                    require("$root/vendor/psr/log/Psr/Log/LogLevel.php");
 
                     // Create import command
                     $export = new RescueMe\Export(
@@ -254,7 +249,7 @@
                     $ini['COUNTRY_PREFIX'] = isset($codes[1]) ? $codes[1] : 'US';
 
                     // Get default configuration parameters
-                    $config = get_config_params($root);
+                    $config = get_config_params($root, $keys);
                     $ini = array_merge($ini, $config);
                     
                     // Get default minify configuration parameters
@@ -267,7 +262,12 @@
                     
                     // Prompt params from user?
                     if($silent === FALSE) {
-                        
+
+                        $states = array(
+                            'ON' => true, 'TRUE' => true, 'T' => true,
+                            'OFF' => false, 'FALSE' => false, 'F' => false
+                        );
+
                         $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd())));
                         $ini['TITLE']            = str_escape(in("Title", get($ini, "TITLE", "RescueMe")));
                         $ini['SMS_FROM']         = str_escape(in("Sender", get($ini, "SMS_FROM", "RescueMe")));
@@ -280,8 +280,12 @@
                         $ini['DEFAULT_TIMEZONE'] = str_escape(in_timezone($ini));
                         $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
 
+                        // System states
+                        $ini['DEBUG']            = in("System Debug State", get($ini, "DEBUG") ? 'ON' : 'OFF', NEWLINE_NONE, true, true, $states, true);
+                        $ini['MAINTAIN']         = in("System Maintenance State", get($ini, "MAINTAIN") ? 'ON' : 'OFF', NEWLINE_NONE, true, true, $states, true);
+
                         echo PHP_EOL;
-                    } 
+                    }
                     
                     // Install only?
                     if($action === INSTALL) {
