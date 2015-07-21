@@ -332,15 +332,15 @@ class Install {
     private function initModules(){
 
         $inline = true;
-        info("  Initializing modules....", BUILD_INFO, NEWLINE_NONE);
+        info("  Initializing modules....", BUILD_INFO);
 
         $callback = function($progress) use ($inline) {
-            info("    $progress", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST );
-            $inline = false;
+            info("    $progress", BUILD_INFO);
         };
 
         if (Manager::install($callback) !== false) {
             info("    System modules installed", BUILD_INFO);
+            $inline = false;
         }
 
         // Prepare user modules

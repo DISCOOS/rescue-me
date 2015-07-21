@@ -264,8 +264,8 @@
                     if($silent === FALSE) {
 
                         $states = array(
-                            'ON' => true, 'TRUE' => true, 'T' => true,
-                            'OFF' => false, 'FALSE' => false, 'F' => false
+                            'ON' => 1, 'TRUE' => 1, 'T' => 1,
+                            'OFF' => 0, 'FALSE' => 0, 'F' => 0
                         );
 
                         $ini['SALT']             = str_escape(in("Salt", get($ini, "SALT", str_rnd())));
@@ -281,10 +281,26 @@
                         $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
 
                         // System states
-                        $ini['DEBUG']            = in("System Debug State", get($ini, "DEBUG") ? 'ON' : 'OFF', NEWLINE_NONE, true, true, $states, true);
-                        $ini['MAINTAIN']         = in("System Maintenance State", get($ini, "MAINTAIN") ? 'ON' : 'OFF', NEWLINE_NONE, true, true, $states, true);
+                        $ini['DEBUG']            = (bool)in("System Debug State", get($ini, "DEBUG") ? 'ON' : 'OFF', NEWLINE_NONE, true, true, $states, true);
+                        $ini['MAINTAIN']         = (bool)in("System Maintenance State", get($ini, "MAINTAIN") ? 'ON' : 'OFF', NEWLINE_NONE, true, true, $states, true);
 
                         echo PHP_EOL;
+                    } else {
+                        $ini['SALT']             = str_escape(get($ini, "SALT", str_rnd()));
+                        $ini['TITLE']            = str_escape(get($ini, "TITLE", "RescueMe"));
+                        $ini['SMS_FROM']         = str_escape(get($ini, "SMS_FROM", "RescueMe"));
+                        $ini['DB_HOST']          = str_escape(get($ini, "DB_HOST", "localhost"));
+                        $ini['DB_NAME']          = str_escape(get($ini, "DB_NAME", "rescueme"));
+                        $ini['DB_USERNAME']      = str_escape(get($ini, "DB_USERNAME", "root"));
+                        $ini['DB_PASSWORD']      = str_escape(get($ini, "DB_PASSWORD", "''"));
+                        $ini['COUNTRY_PREFIX']   = str_escape(get($ini, "COUNTRY_PREFIX"));
+                        $ini['DEFAULT_LOCALE']   = str_escape(get($ini, "DEFAULT_LOCALE"));
+                        $ini['DEFAULT_TIMEZONE'] = str_escape(get($ini, "DEFAULT_TIMEZONE"));
+
+                        // System states
+                        $ini['DEBUG']            = (bool)get($ini, "DEBUG", false);
+                        $ini['MAINTAIN']         = (bool)get($ini, "MAINTAIN", false);
+
                     }
                     
                     // Install only?

@@ -226,17 +226,21 @@
      * @return string
      */
     function replace_define($subject, $name, $value) {
-        return trim(trim(preg_replace("#define\('$name',.*\)#", "define('$name',$value)", $subject)),"'\"");
+        if(!isset($value) || empty($value) || is_null($value)) {
+            $value = 0;
+        }
+        return trim(trim(preg_replace("#define\\('$name',.*\\)#", "define('$name',$value)", $subject)),"'\"");
     }// replace_define
-    
-    
+
+
     /**
      * Replace constant value in subject.
-     * 
+     *
      * @param string $subject Replace substring in subject
-     * @param mixed $name Constant name
-     * @param string $value Constant value
-     * 
+     * @param $contants
+     * @internal param mixed $name Constant name
+     * @internal param string $value Constant value
+     *
      * @return string
      */
     function replace_define_array($subject, $contants) {
