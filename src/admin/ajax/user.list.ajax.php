@@ -23,7 +23,7 @@
         
     if($users == false) {?>
 
-        <tr><td colspan="4"><?=T_('None found')?></td></tr>
+        <tr><td colspan="5"><?=T_('None found')?></td></tr>
 
 <?
         $options = create_paginator(1, 1, $user_id);        
