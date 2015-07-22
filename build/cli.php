@@ -281,11 +281,15 @@
                         $ini['MINIFY_MAXAGE']    = in("Minify Cache Time", get($ini, "MINIFY_MAXAGE", 1800, false));
 
                         // System states
-                        $ini['DEBUG']            = (bool)in("System Debug State", get($ini, "DEBUG") ? 'ON' : 'OFF', NEWLINE_NONE, true, true, $states, true);
-                        $ini['MAINTAIN']         = (bool)in("System Maintenance State", get($ini, "MAINTAIN") ? 'ON' : 'OFF', NEWLINE_NONE, true, true, $states, true);
+                        $debug = get($ini, "DEBUG") === "'1'" ? 'ON' : 'OFF';
+                        $maintain = get($ini, "MAINTAIN") === "'1'" ? 'ON' : 'OFF';
+                        $ini['DEBUG']            = (bool)in("System Debug State", $debug, NEWLINE_NONE, true, true, $states, true);
+                        $ini['MAINTAIN']         = (bool)in("System Maintenance State", $maintain, NEWLINE_NONE, true, true, $states, true);
 
                         echo PHP_EOL;
+
                     } else {
+
                         $ini['SALT']             = str_escape(get($ini, "SALT", str_rnd()));
                         $ini['TITLE']            = str_escape(get($ini, "TITLE", "RescueMe"));
                         $ini['SMS_FROM']         = str_escape(get($ini, "SMS_FROM", "RescueMe"));
@@ -298,11 +302,11 @@
                         $ini['DEFAULT_TIMEZONE'] = str_escape(get($ini, "DEFAULT_TIMEZONE"));
 
                         // System states
-                        $ini['DEBUG']            = (bool)get($ini, "DEBUG", false);
-                        $ini['MAINTAIN']         = (bool)get($ini, "MAINTAIN", false);
+                        $ini['DEBUG']            = get($ini, "DEBUG", false) === "'1'" ? 1 : 0;
+                        $ini['MAINTAIN']         = get($ini, "MAINTAIN", false) === "'1'" ? 1 : 0;
 
                     }
-                    
+
                     // Install only?
                     if($action === INSTALL) {
 
