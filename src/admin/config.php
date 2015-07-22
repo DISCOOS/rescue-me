@@ -1,9 +1,11 @@
 <?php
 
-require('../config.php');
+$dir = implode(DIRECTORY_SEPARATOR, array(dirname(__DIR__))).DIRECTORY_SEPARATOR;
+
+require($dir.'config.php');
 
 if(MAINTAIN) {
-    require '../maintenance.php';
+    require($dir.'maintenance.php');
     die();
 }
 

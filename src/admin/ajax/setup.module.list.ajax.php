@@ -61,7 +61,7 @@
         <tr id="<?= $id ?>-d">
             <td colspan="3" class="description muted">
 <?
-            if($instance = $factory->newInstance() === FALSE) {
+            if(($instance = $factory->newInstance()) === FALSE) {
                 echo insert_icon('remove', 'red', true, false).T_('Module is not installed correctly.');
                 insert_error(sprintf(T_('Failed to create instance of module [%1$s]'),$impl));
             } else {

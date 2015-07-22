@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2015-02-23 22:05+0100\n"
+"POT-Creation-Date: 2015-07-22 10:47+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
@@ -43,7 +43,6 @@ msgstr "Avventer godkjenning"
 #: admin/router.php:36 admin/router.php:1199 admin/inc/gui.inc.php:52
 #: admin/inc/gui.inc.php:70 admin/inc/gui.inc.php:98 admin/inc/gui.inc.php:123
 #: admin/gui/missing.gui.php:45 admin/gui/missing.gui.php:87
-#: admin/ajax/missing.list.open.ajax.php:80
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -143,9 +142,9 @@ msgstr "Id ikke definert"
 msgid "Setting %1$s not saved"
 msgstr "Innstilling %1$s ikke lagret"
 
-#: admin/router.php:358 admin/router.php:486 admin/gui/missing.list.gui.php:41
-#: admin/gui/missing.list.gui.php:71 admin/gui/missing.list.gui.php:101
-#: admin/gui/missing.list.gui.php:128 admin/gui/logs.gui.php:39
+#: admin/router.php:358 admin/router.php:486 admin/gui/missing.list.gui.php:33
+#: admin/gui/missing.list.gui.php:59 admin/gui/missing.list.gui.php:85
+#: admin/gui/missing.list.gui.php:112 admin/gui/logs.gui.php:39
 msgid "User"
 msgstr "Bruker"
 
@@ -196,8 +195,8 @@ msgid "Approve"
 msgstr "Godkjenn"
 
 #: admin/router.php:486 admin/gui/role.list.gui.php:27
-#: admin/ajax/setup.module.list.ajax.php:42 admin/ajax/user.list.ajax.php:54
-#: admin/ajax/missing.list.open.ajax.php:137
+#: admin/ajax/setup.module.list.ajax.php:44 admin/ajax/user.list.ajax.php:54
+#: admin/ajax/missing.list.open.ajax.php:92
 msgid "Edit"
 msgstr "Endre"
 
@@ -267,7 +266,7 @@ msgstr "Gjenopprett passord"
 
 #: admin/router.php:875 admin/gui/operation.close.gui.php:81
 #: admin/gui/operation.close.gui.php:101
-#: admin/ajax/missing.list.open.ajax.php:146
+#: admin/ajax/missing.list.open.ajax.php:101
 msgid "Close operation"
 msgstr "Avslutt operasjon"
 
@@ -504,11 +503,11 @@ msgstr "Klarte ikke å opprette instanse av modul  [%1$s]"
 msgid "Failed to send SMS with position from missing [%1$s]"
 msgstr "Klarte ikke å sende SMS med posisjon fra [%1$s]"
 
-#: admin/classes/RescueMe/Missing.php:655
+#: admin/classes/RescueMe/Missing.php:657
 msgid "Failed to update status to ANSWERED for missing "
 msgstr "Klarte ikke å oppdatere status til <b>Besvart</b> for"
 
-#: admin/classes/RescueMe/Missing.php:672
+#: admin/classes/RescueMe/Missing.php:674
 msgid "Missing person"
 msgstr "Savnet person"
 
@@ -564,24 +563,32 @@ msgstr "Bruker %1$s er opprettet"
 msgid "Failed to create user"
 msgstr "Klarte ikke å opprette bruker"
 
-#: admin/classes/RescueMe/User.php:636
+#: admin/classes/RescueMe/User.php:600
 #, php-format
 msgid "Your %1$s account is approved"
 msgstr "Din %1$s kontoforespørsel er godkjent"
 
-#: admin/classes/RescueMe/User.php:637
+#: admin/classes/RescueMe/User.php:601
 #, php-format
 msgid "Log in to %1$s"
 msgstr "Logg inn på %1$s her"
 
-#: admin/classes/RescueMe/User.php:652
+#: admin/classes/RescueMe/User.php:616
 #, php-format
 msgid "Your %1$s account request is rejected"
 msgstr "Din %1$s kontoforespørsel er avvist"
 
-#: admin/classes/RescueMe/User.php:682
+#: admin/classes/RescueMe/User.php:647
 msgid "Failed to get SMS provider"
 msgstr "Klarte ikke å hente SMS leverandør"
+
+#: admin/classes/RescueMe/Device/WURFL.php:57
+msgid "Match Mode"
+msgstr "Sammenligning"
+
+#: admin/classes/RescueMe/Device/WURFL.php:58
+msgid "Allow reload"
+msgstr "Tillat lasting på nytt"
 
 #: admin/gui/dash.gui.php:2
 msgid "Get started"
@@ -619,13 +626,11 @@ msgstr "Når siste lokasjon ble mottatt"
 msgid "Alerted"
 msgstr "Varslet"
 
-#: admin/gui/missing.trace.gui.php:32 admin/gui/missing.list.gui.php:34
-#: admin/gui/missing.list.gui.php:65 admin/gui/missing.list.gui.php:95
+#: admin/gui/missing.trace.gui.php:32
 msgid "Sent"
 msgstr "Sendt"
 
-#: admin/gui/missing.trace.gui.php:35 admin/gui/missing.list.gui.php:35
-#: admin/gui/missing.list.gui.php:66 admin/gui/missing.list.gui.php:96
+#: admin/gui/missing.trace.gui.php:35
 msgid "Delivered"
 msgstr "Levert"
 
@@ -658,14 +663,14 @@ msgstr "Systemoppsett"
 msgid "Do you want to logout?"
 msgstr "Vil du logge ut?"
 
-#: admin/gui/table.gui.php:25 admin/ajax/setup.module.list.ajax.php:21
+#: admin/gui/table.gui.php:25 admin/ajax/setup.module.list.ajax.php:22
 #: admin/ajax/setup.property.list.ajax.php:20
 msgid "Settings"
 msgstr "Innstillinger"
 
 #: admin/gui/missing.edit.gui.php:28 admin/gui/missing.new.gui.php:36
-#: admin/gui/missing.list.gui.php:30 admin/gui/missing.list.gui.php:64
-#: admin/gui/missing.list.gui.php:94 admin/gui/missing.list.gui.php:125
+#: admin/gui/missing.list.gui.php:30 admin/gui/missing.list.gui.php:56
+#: admin/gui/missing.list.gui.php:82 admin/gui/missing.list.gui.php:109
 #: admin/gui/role.list.gui.php:12 admin/gui/user.list.gui.php:38
 msgid "Name"
 msgstr "Navn"
@@ -685,7 +690,7 @@ msgid "Send SMS"
 msgstr "Send SMS"
 
 #: admin/gui/missing.edit.gui.php:75 admin/gui/missing.new.gui.php:110
-#: admin/ajax/message.list.ajax.php:26
+#: admin/ajax/message.list.ajax.php:27
 msgid "Language"
 msgstr "Språk"
 
@@ -695,13 +700,13 @@ msgid "SMS"
 msgstr "SMS"
 
 #: admin/gui/missing.edit.gui.php:94 admin/gui/missing.new.gui.php:128
-#: admin/ajax/message.list.ajax.php:55
+#: admin/ajax/message.list.ajax.php:56
 msgid "Select"
 msgstr "Velg"
 
 #: admin/gui/missing.edit.gui.php:95 admin/gui/missing.edit.gui.php:110
 #: admin/gui/missing.new.gui.php:126 admin/gui/missing.new.gui.php:178
-#: admin/gui/missing.list.gui.php:153
+#: admin/gui/missing.list.gui.php:137
 msgid "Library"
 msgstr "Bibliotek"
 
@@ -717,14 +722,14 @@ msgid "Note: This will reopen this operation"
 msgstr "Merk: Dette vil gjenåpne operasjonen"
 
 #: admin/gui/missing.edit.gui.php:110 admin/gui/missing.new.gui.php:178
-#: admin/gui/missing.list.gui.php:153
+#: admin/gui/missing.list.gui.php:137
 msgid "Loading"
 msgstr "Laster"
 
 #: admin/gui/missing.edit.gui.php:115 admin/gui/missing.gui.php:13
 #: admin/gui/operation.close.gui.php:102
 #: admin/ajax/missing.list.closed.ajax.php:32 admin/ajax/logs.ajax.php:39
-#: admin/ajax/user.list.ajax.php:26 admin/ajax/missing.list.open.ajax.php:40
+#: admin/ajax/user.list.ajax.php:26 admin/ajax/missing.list.open.ajax.php:41
 msgid "None found"
 msgstr "Ingen funnet"
 
@@ -777,7 +782,7 @@ msgstr "SAR- eller AMIS-nr"
 msgid "Report to"
 msgstr "Rapporter til"
 
-#: admin/gui/missing.new.gui.php:111 admin/ajax/message.list.ajax.php:30
+#: admin/gui/missing.new.gui.php:111 admin/ajax/message.list.ajax.php:31
 msgid "Select language"
 msgstr "Velg språk"
 
@@ -894,41 +899,27 @@ msgstr "Tester"
 msgid "Exercises"
 msgstr "Øvelser"
 
-#: admin/gui/missing.list.gui.php:22 admin/gui/missing.list.gui.php:126
+#: admin/gui/missing.list.gui.php:22 admin/gui/missing.list.gui.php:110
 #: admin/gui/missing.gui.php:21
 msgid "Closed"
 msgstr "Lukket"
 
-#: admin/gui/missing.list.gui.php:31 admin/gui/missing.list.gui.php:33
+#: admin/gui/missing.list.gui.php:31 admin/gui/missing.list.gui.php:57
+#: admin/gui/missing.list.gui.php:83
 msgid "Status"
 msgstr "Status"
 
-#: admin/gui/missing.list.gui.php:36 admin/gui/missing.list.gui.php:67
-#: admin/gui/missing.list.gui.php:97
-msgid "Answered"
-msgstr "Besvart"
-
-#: admin/gui/missing.list.gui.php:37 admin/gui/missing.list.gui.php:68
-#: admin/gui/missing.list.gui.php:98
-msgid "Reported"
-msgstr "Rapportert"
-
-#: admin/gui/missing.list.gui.php:38 admin/gui/missing.list.gui.php:69
-#: admin/gui/missing.list.gui.php:99
-msgid "Location"
-msgstr "Lokasjon"
-
-#: admin/gui/missing.list.gui.php:51 admin/gui/missing.list.gui.php:81
-#: admin/gui/missing.list.gui.php:111 admin/gui/missing.list.gui.php:137
-#: admin/gui/logs.gui.php:45 admin/ajax/message.list.ajax.php:40
+#: admin/gui/missing.list.gui.php:43 admin/gui/missing.list.gui.php:69
+#: admin/gui/missing.list.gui.php:95 admin/gui/missing.list.gui.php:121
+#: admin/gui/logs.gui.php:45 admin/ajax/message.list.ajax.php:41
 msgid "Search"
 msgstr "Søk"
 
-#: admin/gui/missing.list.gui.php:124
+#: admin/gui/missing.list.gui.php:108
 msgid "Type"
 msgstr "Type"
 
-#: admin/gui/missing.list.gui.php:151 admin/gui/trace.menu.gui.php:18
+#: admin/gui/missing.list.gui.php:135 admin/gui/trace.menu.gui.php:18
 #: admin/gui/trace.menu.gui.php:26
 msgid "New trace"
 msgstr "Start ny sporing"
@@ -1099,24 +1090,24 @@ msgstr "Fortsett"
 msgid "Reopen"
 msgstr "Gjenåpne"
 
-#: admin/ajax/setup.module.list.ajax.php:63
+#: admin/ajax/setup.module.list.ajax.php:65
 msgid "Module is not installed correctly."
 msgstr "Modulen er ikke installert riktig. Kjør installeringsskript."
 
-#: admin/ajax/setup.module.list.ajax.php:64
+#: admin/ajax/setup.module.list.ajax.php:66
 #, php-format
 msgid "Failed to create instance of module [%1$s]"
 msgstr "Kunne ikke opprette instanse av modul  [%1$s]"
 
-#: admin/ajax/setup.module.list.ajax.php:67
+#: admin/ajax/setup.module.list.ajax.php:69
 msgid "Module is not configured correctly."
 msgstr "Modulen er ikke konfigurert riktig"
 
-#: admin/ajax/setup.module.list.ajax.php:70
+#: admin/ajax/setup.module.list.ajax.php:72
 msgid "Module is configured and ready for use."
 msgstr "Modulen er konfigurert og klar til bruk"
 
-#: admin/ajax/message.list.ajax.php:37
+#: admin/ajax/message.list.ajax.php:38
 msgid "Messages"
 msgstr "Meldinger"
 
@@ -1159,18 +1150,51 @@ msgstr "Slett"
 msgid "Confirm"
 msgstr "Bekreft"
 
-#: admin/ajax/missing.list.open.ajax.php:151
+#: admin/ajax/missing.list.open.ajax.php:106
 #, php-format
 msgid "Do you want to resend SMS to %1$s?"
 msgstr "Vil du sende SMS til  %1$s på nytt?"
 
-#: admin/ajax/missing.list.open.ajax.php:153
+#: admin/ajax/missing.list.open.ajax.php:108
 msgid "Resend SMS"
 msgstr "Send SMS på nytt"
 
-#: admin/ajax/missing.list.open.ajax.php:159
+#: admin/ajax/missing.list.open.ajax.php:114
 msgid "Check SMS delivery status"
 msgstr "Sjekk leveringsstatus"
+
+#: admin/locale/domain/admin.domain.php:17
+msgid "Capslock is on"
+msgstr "Caps-lock er på"
+
+#: admin/locale/domain/admin.domain.php:18
+msgid "Please fill out this field"
+msgstr "Vennligst fyll ut feltet"
+
+#: admin/locale/domain/admin.domain.php:19
+msgid "Please match the required format"
+msgstr "Vennligst skriv riktig format"
+
+#: admin/locale/domain/admin.domain.php:20
+msgid "Please enter at least {0} characters"
+msgstr "Vennligst angi minst {0} tegn"
+
+#: admin/locale/domain/admin.domain.php:21
+msgid "Please enter a valid email address"
+msgstr "Vennligst oppgi en lovlig e-postadresse"
+
+#: admin/locale/domain/admin.domain.php:22
+msgid "Please enter the same value again"
+msgstr "Skriv inn samme verdi igjen"
+
+#~ msgid "Answered"
+#~ msgstr "Besvart"
+
+#~ msgid "Reported"
+#~ msgstr "Rapportert"
+
+#~ msgid "Location"
+#~ msgstr "Lokasjon"
 
 #~ msgid "Id not found."
 #~ msgstr "Id ikke funnet"
@@ -1652,12 +1676,6 @@ msgstr "Sjekk leveringsstatus"
 
 #~ msgid "Failed to get country code."
 #~ msgstr "Klarte ikke  finne landkode."
-
-#~ msgid "Please fill out this field."
-#~ msgstr "Vennligst fyll ut feltet."
-
-#~ msgid "Please match the required format."
-#~ msgstr "Vennligst skriv riktig format."
 
 #~ msgid "SMS request [%1$s] not supported."
 #~ msgstr "SMS foresprsel  [%1$s] ikke stttet."
