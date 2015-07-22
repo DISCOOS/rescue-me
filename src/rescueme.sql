@@ -6,10 +6,12 @@
 
 CREATE TABLE IF NOT EXISTS `alerts` (
   `alert_id` int(11) NOT NULL AUTO_INCREMENT,
-  `alert_type` enum('information', 'warning', 'error') NOT NULL,
+  `alert_type` enum('info', 'warning', 'error') NOT NULL DEFAULT 'info',
   `alert_subject` tinytext,
-  `alert_data` text NOT NULL,
-  `alert_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `alert_message` text NOT NULL,
+  `alert_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `alert_until` timestamp,
+  `alert_closeable` BOOLEAN NOT NULL DEFAULT '1',
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`alert_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -20,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `alerts` (
 -- Structure for table `alerts`
 --
 
-CREATE TABLE IF NOT EXISTS `alerts_checked` (
+CREATE TABLE IF NOT EXISTS `alerts_closed` (
   `alert_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`alert_id`, `user_id`)

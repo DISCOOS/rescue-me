@@ -53,7 +53,10 @@ use RescueMe\Properties;
     function insert_alert($alert, $class="alert-info", $output=true) 
     {
         $html = '<div class="alert '.$class.'">'.$alert.'</div>';
-        return insert_message($html,$output);        
+        if($output) {
+            echo $html;
+        }
+        return $html;
     }
 
     function insert_errors($message, $errors, $output=true) 
@@ -68,14 +71,12 @@ use RescueMe\Properties;
     
     function insert_error($error, $output=true) 
     {
-        $html = '<div class="alert alert-error">'.$error.'</div>';
-        return insert_message($html,$output);        
+        return insert_alert($error, 'alert-error', $output);
     }
 
     function insert_warning($warning, $output=true) 
     {
-        $html = '<div class="alert alert-warning">'.$warning.'</div>';
-        return insert_message($html,$output);        
+        return insert_alert($warning, 'alert-warning', $output);
     }
 
     function insert_icon($type, $fill=false, $white=false, $output=true)

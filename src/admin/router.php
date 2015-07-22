@@ -1,7 +1,8 @@
 <?php
 
     use RescueMe\DB;
-    use RescueMe\User;
+use RescueMe\Domain\Alert;
+use RescueMe\User;
     use RescueMe\Manager;
     use RescueMe\Missing;
     use RescueMe\Operation;
@@ -1202,10 +1203,32 @@
             }
 
             exit;
-            
+
         case 'message/list':
-            
+
             die(ajax_response('message','list'));
+
+        case 'alert/close':
+
+            if(is_ajax_request() === FALSE) {
+
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Not an ajax request');
+                break;
+            }
+
+            if(($id = input_get_int('id')) === FALSE) {
+
+                echo sprintf(T_('Alert %1$s not found'), $id);
+
+            } else {
+
+                Alert::close($id, $user->id);
+
+            }
+
+            exit;
             
         default:
             $_ROUTER['name'] = T_('Illegal operation');
