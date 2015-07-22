@@ -29,7 +29,7 @@
         $options = array();
 ?>
 
-        <tr><td colspan="<?=$admin ? 4 : 3?>"><?=T_('None found')?></td></tr>
+        <tr><td colspan="<?=$admin ? 5 : 4?>"><?=T_('None found')?></td></tr>
 
 <? } else {
         
