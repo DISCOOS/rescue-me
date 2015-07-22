@@ -1,18 +1,19 @@
-<?    
-    $inline = (isset($inline) && $inline ? true : false);
+<?
+
+$inline = (isset($inline) && $inline ? true : false);
 
 use RescueMe\Properties;
 use RescueMe\User;
 
-    $include = (isset($context) ? $context : ".*");
-    
-    $id = input_get_int('id', User::currentId());
+$include = (isset($context) ? $context : ".*");
 
-    $pattern = '#'.$include.'#';
-    
-    ob_start();
-    
-    if($inline === false) { ?>
+$id = input_get_int('id', User::currentId());
+
+$pattern = '#'.$include.'#';
+
+ob_start();
+
+if($inline === false) { ?>
 
 <table class="table table-striped">
     <thead>

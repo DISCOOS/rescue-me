@@ -199,17 +199,17 @@
     
     function is_ajax_request() {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
-    }        
-    
-    
+    }
+
+
     /**
      * Converts ajax request into response.
-     * 
+     *
      * Returns json string with structure {html: 'string', options: 'array'}
-     * 
+     *
      * @param string $resource Resource name
      * @param string $index Resource index
-     * @param array $context Resouce context
+     * @param array|string $context Resource context
      * @return string
      */
     function ajax_response($resource, $index = '', $context = '') {

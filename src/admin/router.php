@@ -1,15 +1,16 @@
 <?php
 
     use RescueMe\DB;
-use RescueMe\Domain\Alert;
-use RescueMe\User;
+    use RescueMe\Domain\Alert;
+    use RescueMe\User;
     use RescueMe\Manager;
     use RescueMe\Missing;
     use RescueMe\Operation;
     use RescueMe\Properties;
     use RescueMe\Roles;
     use RescueMe\TimeZone;
-    use RescueMe\SMS\Provider;
+    use RescueMe\SMS\Provider as SMS;
+    use RescueMe\Email\Provider as Email;
 
     // Verify logon information
     $user = User::verify();
@@ -189,7 +190,11 @@ use RescueMe\User;
                         break;
                     case 'sms':
                         $index = 'module.list';
-                        $include = preg_quote(Provider::TYPE);
+                        $include = preg_quote(SMS::TYPE);
+                        break;
+                    case 'email':
+                        $index = 'module.list';
+                        $include = preg_quote(Email::TYPE);
                         break;
                     case 'maps':
                         $index = 'property.list';

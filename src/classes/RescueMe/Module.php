@@ -31,6 +31,13 @@
 
 
         /**
+         * Check if module is supported by host system
+         * @return boolean
+         */
+        public function isSupported();
+
+
+        /**
          * Get module configuration
          * @return \RescueMe\Configuration
          */

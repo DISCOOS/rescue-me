@@ -13,6 +13,7 @@
     namespace RescueMe;
 
     use RescueMe\Device\WURFL;
+    use RescueMe\Email\SMTP;
     use RescueMe\SMS\Nexmo;
 
     /**
@@ -37,7 +38,8 @@
          */
         private static $required = array(
             SMS\Provider::TYPE => Nexmo::TYPE,
-            Device\Lookup::TYPE => WURFL::TYPE
+            Device\Lookup::TYPE => WURFL::TYPE,
+            Email\Provider::TYPE => SMTP::TYPE
         );
         
         /**
@@ -65,14 +67,20 @@
 
                     $module = self::get($id)->newInstance();
 
-                    // Potentially long operation...
-                    $module->init();
+                    // Only install supported modules
+                    if($module->isSupported()) {
 
-                    $modules[$id] = $module;
+                        // Potentially long operation...
+                        $module->init();
 
-                    if(is_null($callback) === FALSE) {
-                        call_user_func($callback,"Installing [$type]...DONE");
+                        $modules[$id] = $module;
+
+                        if(is_null($callback) === FALSE) {
+                            call_user_func($callback,"Installing [$type]...DONE");
+                        }
+
                     }
+
 
                 }  else {
 
@@ -83,13 +91,17 @@
                     $factory = self::get($type);
                     $module = $factory->newInstance();
 
-                    // Potentially long operation...
-                    $module->init();
+                    // Only install supported modules
+                    if($module->isSupported()) {
 
-                    $modules[$factory->id] = $module;
+                        // Potentially long operation...
+                        $module->init();
 
-                    if(is_null($callback) === FALSE) {
-                        call_user_func($callback,"Updating [$type]...DONE");
+                        $modules[$factory->id] = $module;
+
+                        if(is_null($callback) === FALSE) {
+                            call_user_func($callback,"Updating [$type]...DONE");
+                        }
                     }
                 }
 
@@ -108,6 +120,8 @@
          */
         public static function prepare($id, $copy = false) {
             $changed = false;
+
+            // Get all system modules (user_id = 0)
             $factories = Manager::getAll();
 
             if($factories !== false) {
