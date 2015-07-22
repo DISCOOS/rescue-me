@@ -69,6 +69,7 @@
     <div id="l" style="margin-bottom: 10px"></div><a href="<?=APP_URI?>a/<?=$id?>" onclick="return confirm('<?=T_('Are you sure?')?>');"><?=T_('Cancel')?></a></div></body>
     <?
 
+    /*
     $tic = round(microtime(true) * 1000);
 
     $lookup = new \RescueMe\Device\WURFL();
@@ -83,7 +84,7 @@
     $toc = round(microtime(true) * 1000);
 
     print_r(($toc - $tic));
-
+    */
 
     } else {
 

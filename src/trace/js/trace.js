@@ -57,7 +57,12 @@ R.trace.locate = function() {
      * Countdown timer id
      */
     var cID = 0;
-    
+
+    /*
+     * Resend timer id
+     */
+    var rID = 0;
+
     /**
      * Seconds until failure in seconds
      */
@@ -105,7 +110,7 @@ R.trace.locate = function() {
     
     /*
      * Show position
-     * @param p position coordinates
+     * @param c position coordinates
      * @param a position age
      */
     function sp(c, a) {
@@ -116,9 +121,6 @@ R.trace.locate = function() {
         // Tell client to check if GPS is off?
         if(a > q.age) m += msg[2] + '<br />';
         
-        // Continue listen for position changes    
-        m += msg[3] + '<br />';
-            
         // Update views
         f.innerHTML = m;        
         l.innerHTML = ps(c);
@@ -136,7 +138,7 @@ R.trace.locate = function() {
         else {
             s.innerHTML = '';
             i.innerHTML = '';
-            f.innerHTML = (lc === null ? msg[12] : pm(lc)) + rt();
+            f.innerHTML += '<br />' + (lc === null ? msg[12] : pm(lc)) + rt();
         }
     }
     
@@ -167,12 +169,13 @@ R.trace.locate = function() {
         }
     }
     
-    /*
+    /**
      * Report acquired location to server
      * @param c position coordinates
-     * @param u update view flag
+     * @param t position timestamp
+     * @param a accurate position flag
      */
-    function rp(c, timestamp, u) {
+    function rp(c, t, a) {
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
             xhr = new XMLHttpRequest();
         }
@@ -186,7 +189,7 @@ R.trace.locate = function() {
         
         l.innerHTML = ps(c);
         
-        var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude + "/" + timestamp;
+        var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude + "/" + t;
         
         if (xhr !== false) {
             
@@ -195,15 +198,21 @@ R.trace.locate = function() {
                 if (xhr.readyState === 4) {
                     
                     if(xhr.status === 200) {
-                        // Update message with response text?
-                        if(u) {
-                            f.innerHTML = xhr.responseText + rt();
+                        // Show current position
+                        sp(c, Date.now() - t);
+                        // Append response text
+                        f.innerHTML += '<b>' + xhr.responseText + '</b>';
+                        if(a) {
+                            f.innerHTML += rt();
                             s.innerHTML = '';
                             i.innerHTML = '';
-                            clearTimeout(cID);                        
-                        } 
+                            clearTimeout(cID);
+                        } else {
+                            // Continue listen for position changes
+                            f.innerHTML += '<br />' + msg[3];
+                        }
                     } else {
-                        f.innerHTML = msg[10];
+                        rs(c, t, a);
                     }
                 }
             }
@@ -213,7 +222,9 @@ R.trace.locate = function() {
             
             // Detect connection timeouts
             xhr.timeout = w;
-            xhr.ontimeout = function() { f.innerHTML = msg[10]; };
+            xhr.ontimeout = function() {
+                rs(c, t, a);
+            };
           
         // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
         } else if (c.accuracy < 300) {
@@ -222,7 +233,26 @@ R.trace.locate = function() {
             window.location = url;            
         }
     }
-    
+
+    /**
+     * Resend position after failure
+     * @param c Position coordinates
+     * @param t Position Timestamp
+     * @param a accurate position flag
+     */
+    function rs(c, t, a) {
+        if(!rID) {
+            // Show current position
+            sp(c, Date.now() - t);
+            // Show connection warning
+            f.innerHTML += msg[10];
+            rID = setTimeout(function() {
+                rID = 0;
+                rp(c, t, a);
+            }, 5000);
+        }
+    }
+
     /**
      * Print position coordinates
      * @param c position coordinates
@@ -259,7 +289,6 @@ R.trace.locate = function() {
  * 
  * @param gf GeoLocation found
  * @param ge GeoLocation error occured
- * @param gp Geolocation progress occured
  * @param o Geolocation Options: {
  *                      wait: maximum time to wait for position, 
  *                      age: only accept positions younger than this, 
@@ -267,7 +296,7 @@ R.trace.locate = function() {
  *                  }
  * @returns void
  */
-R.trace.change = function (gf, ge, gp, o) {
+R.trace.change = function (gf, ge, o) {
 
     o = o || {};
 
@@ -289,12 +318,10 @@ R.trace.change = function (gf, ge, gp, o) {
             gf(p.coords, p.timestamp, true);
             clearTimeout(tID);
             ngl.clearWatch(wID);
-        // If the new position has improved by 10%, report it
-        } else if (q < la * 0.9) {
+        // If the position has improved, report it
+        } else if (q < la) {
             gf(p.coords, p.timestamp, false);
-            la = q;            
-        } else {
-            gp(lc, a);
+            la = q;
         }
     };
 
@@ -309,11 +336,13 @@ R.trace.change = function (gf, ge, gp, o) {
 
     /*
      * Handle found position
+     * @param c Position coordinates
      */
-    var fp = function (p) {
-        gf(p.coords, true);
+    var fp = function (c) {
+        gf(c, true);
     };
     
+    /*
     /*
      * Stop trying to get location fix.
      */
