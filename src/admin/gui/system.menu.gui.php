@@ -33,7 +33,8 @@ use RescueMe\User;
         <? } ?>
         <li class="divider"></li>
         <? if ($user->allow('write', 'user.all')) {
-            insert_item(T_('New user'), ADMIN_URI."user/new", "icon-plus-sign"); ?>
+            insert_item(T_('New user'), ADMIN_URI."user/new", "icon-plus-sign");
+            insert_item(T_('Email users'), ADMIN_URI."user/email", "icon-envelope"); ?>
             <li class="divider"></li>
         <? } if ($user->allow('read', 'user.all')) { ?>
             <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?=T_('Users')?> <span class="badge badge-important"><?= $num_pending ?></span></a></li>

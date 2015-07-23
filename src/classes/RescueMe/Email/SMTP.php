@@ -11,8 +11,8 @@
 
 
 namespace RescueMe\Email;
+
 use RescueMe\Configuration;
-use RescueMe\User;
 
 /**
  * SMTP Mailer provider
@@ -154,8 +154,6 @@ class SMTP extends AbstractProvider {
 
         $failed = array();
         
-        $user = User::get($this->userId);
-
         // Create the Transport
         $transport = $this->newTransport();
 
@@ -163,13 +161,15 @@ class SMTP extends AbstractProvider {
         $mailer = \Swift_Mailer::newInstance($transport);
 
         // Create a message
-        $message = \Swift_Message::newInstance($this->config->get('subject'));
-        $message->setFrom(array($user->email => $user->name))
-                ->setBody($this->config->get('body'));
+        $message = \Swift_Message::newInstance(isset_get($this->data, 'subject'));
 
-        $to = $this->prepareAddresses($this->config->get('to'));
+        $from = $this->prepareAddress(isset_get($this->data,'from'));
+        $message->setFrom($from)
+                ->setBody(isset_get($this->data,'body'));
 
-        if($this->config->get('bulk') === true) {
+        $to = $this->prepareAddresses(isset_get($this->data,'to'));
+
+        if(isset_get($this->data,'bulk',false) === true) {
             foreach($to as $address) {
                 $message->setTo($address);
                 $mailer->send($message, $failed);

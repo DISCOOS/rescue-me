@@ -753,7 +753,51 @@
             }            
             
             break;
-            
+
+        case 'user/email':
+
+            if($user->allow('write', 'user.all') === FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('Email users');
+            $_ROUTER['view'] = 'user/email';
+
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                $users = User::getAll($_POST['state']);
+
+                /** @var Email $email */
+                $email = Manager::get(Email::TYPE)->newInstance();
+                $email->setSubject($_POST['subject'])
+                    ->setBody($_POST['body'])
+                    ->setFrom(User::current())
+                    ->setTo($users);
+
+                $failed = $email->send();
+
+                if($failed !== true) {
+                    $failed = implode('<br/>', $failed);
+                    $_ROUTER['error'] = sprintf(T_('Email not sent to following users: <p>%1$s</p>'), $users);
+                } else {
+                    unset($_POST['subject']);
+                    unset($_POST['body']);
+                    $names = array();
+                    foreach($users as $user) {
+                        $names[] = sprintf('%1$s (%2$s)', $user->name, $user->email);
+                    }
+                    $names = implode('<br/>', $names);
+                    $_ROUTER['message'] = sprintf(T_('Email sent to %1$s users: <p>%2$s</p>'), count($users), $names);
+                }
+
+            }
+            break;
+
         case 'role/list':
             
             if ($user->allow('read', 'roles') === FALSE) {

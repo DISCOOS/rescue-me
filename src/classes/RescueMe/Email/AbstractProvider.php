@@ -23,6 +23,12 @@ use RescueMe\User;
 abstract class AbstractProvider extends AbstractModule implements Provider {
 
     /**
+     * Message data
+     * @var array
+     */
+    protected $data = array();
+
+    /**
      * Constructor
      *
      * @param $config Configuration Configuration
@@ -41,7 +47,7 @@ abstract class AbstractProvider extends AbstractModule implements Provider {
      * @return AbstractProvider
      */
     public function setFrom($from) {
-        $this->config->set('from', $from);
+        $this->data['from'] = $from;
         return $this;
     }
 
@@ -51,7 +57,7 @@ abstract class AbstractProvider extends AbstractModule implements Provider {
      * @return Provider
      */
     public function setTo($to) {
-        $this->config->set('to', $to);
+        $this->data['to'] = $to;
         return $this;
     }
 
@@ -61,7 +67,7 @@ abstract class AbstractProvider extends AbstractModule implements Provider {
      * @return Provider
      */
     public function setBulk($bulk) {
-        $this->config->set('bulk', $bulk);
+        $this->data['bulk'] = $bulk;
         return $this;
     }
 
@@ -71,7 +77,7 @@ abstract class AbstractProvider extends AbstractModule implements Provider {
      * @return Provider
      */
     public function setSubject($subject) {
-        $this->config->set('subject', $subject);
+        $this->data['subject'] = $subject;
         return $this;
     }
 
@@ -81,7 +87,7 @@ abstract class AbstractProvider extends AbstractModule implements Provider {
      * @return Provider
      */
     public function setBody($body) {
-        $this->config->set('body', $body);
+        $this->data['body'] = $body;
         return $this;
     }
 
@@ -93,19 +99,30 @@ abstract class AbstractProvider extends AbstractModule implements Provider {
      */
     protected function prepareAddresses($data) {
         $addresses = array();
-        if($data instanceof User) {
-            $addresses[] = array($data->email => $data->name);
-        }
-        elseif(is_string($data)) {
-            $addresses[] = $data;
-        }
-        elseif(is_array($data)) {
+        if(is_array($data)) {
             foreach($data as $address) {
-                $addresses += $this->prepareAddresses($address);
+                $address = $this->prepareAddresses($address);
+                $addresses = array_merge($addresses, is_array($address) ? $address : array($address));
             }
+        } else {
+            $address = $this->prepareAddress($data);
+            $addresses = array_merge($addresses, is_array($address) ? $address : array($address));
         }
         return $addresses;
     }
+
+    /**
+     * Prepare addresses
+     * @param string|User|array $data
+     * @return array
+     */
+    protected function prepareAddress($data) {
+        if($data instanceof User) {
+            $data = array($data->email => $data->name);
+        }
+        return $data;
+    }
+
 
 
 
