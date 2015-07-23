@@ -52,6 +52,33 @@ class Alert {
     const EXCLUDE = '%1$s.user_id NOT IN (SELECT %2$s.user_id FROM %2$s WHERE %1$s.alert_id = %2$s.alert_id)';
 
     /**
+     * All alerts
+     */
+    const ALL = "all";
+
+
+    /**
+     * Active alerts
+     */
+    const ACTIVE = 'active';
+
+
+    /**
+     * Expired alerts
+     */
+    const EXPIRED = 'expired';
+
+
+    /**
+     * Array of user states
+     */
+    public static $all = array(
+        self::ACTIVE,
+        self::EXPIRED
+    );
+
+
+    /**
      * Relation fields
      * @var array
      */
@@ -91,11 +118,26 @@ class Alert {
         $this->values[$name] = $value;
     }
 
+    /**
+     * Prepare timestamp for insert or update
+     * @param $date
+     * @param bool $nullable
+     * @return string
+     */
+    function prepareTimestamp($date, $nullable = false) {
+        if ($nullable && (is_null($date) || empty($date))) {
+            $date = 'NULL';
+        }
+
+        return $date;
+    }
 
     /**
      * Insert alert
      */
-    public function insert() {
+    public function insert($values = array()) {
+        $this->values = array_merge($this->values, $values);
+        $this->values['alert_until'] = $this->prepareTimestamp($this->values['alert_until'], true);
         $values = array_exclude($this->values, 'alert_id');
         return DB::insert(self::TABLE, $values);
     }
@@ -103,9 +145,14 @@ class Alert {
     /**
      * Update alert
      */
-    public function update() {
+    public function update($values = array()) {
+
+        $this->values = array_merge($this->values, $values);
+
+        $this->values['alert_until'] = $this->prepareTimestamp($this->values['alert_until'], true);
+
         $values = array_exclude($this->values, 'alert_id');
-        $filter = sprintf(self::FILTER, self::TABLE, $this->values['alert_id']);
+        $filter = sprintf('%1$s.alert_id = %2$s', self::TABLE, $this->values['alert_id']);
         return DB::update(self::TABLE, $values, $filter);
     }
 
@@ -113,21 +160,174 @@ class Alert {
      * Delete alert
      */
     public function delete() {
-        $filter = sprintf(self::FILTER, self::TABLE, $this->values['alert_id']);
-        return DB::delete(self::TABLE, $filter);
+        $filter = sprintf('%1$s.alert_id = %2$s', self::TABLE, $this->values['alert_id']);
+        $res = DB::delete(self::TABLE, $filter);
+        if($res) {
+            $filter = sprintf('%1$s.alert_id = %2$s', self::CLOSED, $this->values['alert_id']);
+            DB::delete(self::CLOSED, $filter);
+        }
+        return $res;
+    }
+
+
+    /**
+     * Get alert filter
+     * @param $values
+     * @param $operand
+     * @return string
+     */
+    public static function filter($values, $operand) {
+
+        $fields = array(
+            '`alerts`.`alert_subject`'
+        );
+
+        return DB::filter($fields, $values, $operand);
     }
 
     /**
-     * Get all alert for given user
+     * Count number of alerts
+     * @param array $states Alert state (optional, default: null, values: {'active', 'expired'})
+     * @param string $filter
+     * @return boolean|array
+     */
+    public static function count($states=null, $filter = '') {
+
+        $where = self::only($states);
+
+        if(empty($where) === false) {
+            if (empty($filter) === false) {
+                $filter = '(' . $filter . ') AND ';
+            }
+            $filter .= implode($where," OR ");
+        }
+
+        return DB::count(self::TABLE, $filter);
+
+    }// count
+
+
+    /**
+     * Create filter given states
+     * @param $states
+     * @return array
+     */
+    private static function only($states) {
+
+        if(isset($states) === FALSE || in_array(Alert::ALL, $states)) {
+            $states = Alert::$all;
+        }
+
+        $where = array();
+        if(in_array(Alert::ALL, $states) === false) {
+            foreach(isset($states) ? $states : array() as $state) {
+                switch($state) {
+                    case 'active':
+                        $where[] = sprintf('(%1$s.alert_until IS NULL OR %1$s.alert_until >= CURDATE())', self::TABLE);
+                        break;
+                    case 'expired':
+                        $where[] = sprintf('(%1$s.alert_until < CURDATE())', self::TABLE);
+                        break;
+                }
+            }
+        }
+
+        return $where;
+
+    }
+
+
+    /**
+     * Get alert with given id
+     *
+     * @param integer $id Alert id
+     *
+     * @return boolean|Alert
+     */
+    public static function get($id) {
+
+        $res = DB::select(self::TABLE,'*', "`alert_id` = ".(int)$id);
+
+        if (DB::isEmpty($res)) return false;
+
+        return new Alert($res->fetch_assoc());
+
+    }
+
+
+    /**
+     * Get all alert
+     * @param array $states Alert state (optional, default: null, values: {'active', 'expired'})
+     * @param string $filter
+     * @param int $start
+     * @param bool $max
+     * @return boolean|array
+     */
+    public static function getAll($states = null, $filter = '', $start = 0, $max = false) {
+
+        $alerts = false;
+
+        $where = self::only($states);
+
+        if(empty($where) === false) {
+            $where = '(' . implode($where," OR ") . ')';
+            $filter =  empty($filter) ? $where : '(' . $filter . ') AND ' . $where;
+        }
+
+        $limit = ($max === false ? '' : "$start, $max");
+
+        $res = DB::select(self::TABLE, "*", $filter, "`alert_subject`", $limit);
+
+        if(DB::isEmpty($res) === false) {
+            $alerts = array();
+            while ($row = $res->fetch_assoc()) {
+                $alerts[$row['alert_id']] = new Alert($row);
+            }
+        }
+
+        return $alerts;
+
+    }
+
+
+    /**
+     * Get active alerts for given user
      * @param integer $userId
      * @return array
      */
-    public static function getAll($userId) {
+    public static function getActive($userId) {
 
         $alerts = false;
 
         $exclude = sprintf(self::EXCLUDE, self::TABLE, self::CLOSED);
         $until = sprintf('(%1$s.alert_until IS NULL OR %1$s.alert_until <= CURDATE())', self::TABLE);
+        $filter = sprintf(self::FILTER . ' AND %3$s AND %4$s', self::TABLE, $userId, $until, $exclude);
+
+        $res = DB::select(self::TABLE, '*', $filter);
+
+        if(DB::isEmpty($res) === false) {
+            $alerts = array();
+            while ($row = $res->fetch_assoc()) {
+                $alerts[$row['alert_id']] = new Alert($row);
+            }
+        }
+
+        return $alerts;
+
+    }
+
+
+    /**
+     * Get expired alerts for given user
+     * @param integer $userId
+     * @return array
+     */
+    public static function getExpired($userId) {
+
+        $alerts = false;
+
+        $exclude = sprintf(self::EXCLUDE, self::TABLE, self::CLOSED);
+        $until = sprintf('(%1$s.alert_until IS NULL OR %1$s.alert_until > CURDATE())', self::TABLE);
         $filter = sprintf(self::FILTER . ' AND %3$s AND %4$s', self::TABLE, $userId, $until, $exclude);
 
         $res = DB::select(self::TABLE, '*', $filter);
@@ -142,6 +342,7 @@ class Alert {
         return $alerts;
 
     }
+
 
     /**
      * Close given alert for given user

@@ -301,15 +301,15 @@ class Install {
 
         // Prepare role permissions
         if (($count = Roles::prepare(1, 0)) > 0) {
-            info("    Add $count administrator permissions...OK");
+            info("    Added $count administrator permissions...OK");
             $skipped = false;
         }
         if (($count = Roles::prepare(2, 0)) > 0) {
-            info("    Add $count operator permissions...OK");
+            info("    Added $count operator permissions...OK");
             $skipped = false;
         }
         if (($count = Roles::prepare(3, 0)) > 0) {
-            info("    Add $count personnel permissions...OK");
+            info("    Added $count personnel permissions...OK");
             $skipped = false;
         }
 

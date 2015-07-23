@@ -90,7 +90,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
         $id = $user->id;
     }
 
-    $alerts = $user ? Alert::getAll($user->id) : array();
+    $alerts = $user ? Alert::getActive($user->id) : array();
 
 }?>
 
