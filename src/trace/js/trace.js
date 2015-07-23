@@ -93,7 +93,7 @@ R.trace.locate = function() {
      * =================================================== */
     if(ngl) {
         
-        setTimeout(function() {R.trace.change(rp, se, sp, q);}, q.delay ? 3000 : 0);
+        setTimeout(function() {R.trace.change(rp, se, q);}, q.delay ? 3000 : 0);
         
         // Register progress indicator
         var im = d.createElement("img");
