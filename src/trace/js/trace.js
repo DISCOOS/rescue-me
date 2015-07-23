@@ -258,7 +258,7 @@ R.trace.locate = function() {
      * @param c position coordinates
      */
     function ps(c) {
-        var l = c.longitude.toFixed(4) + 'E ' + c.latitude.toFixed(4) + 'N';
+        var l = lp(c);
         return msg[8].replace('{0}',l);
     }
     
@@ -267,11 +267,20 @@ R.trace.locate = function() {
      * Print SMS link
      */
     function pm(c) {
-        var l = c.longitude.toFixed(4) + 'E ' + c.latitude.toFixed(4) + 'N';
+        var l = lp(c);
         var u = q.id + '|' + q.phone + '|' + l + '|' + q.name;
         var ua = navigator.userAgent.toLowerCase();
         var d = (ua.indexOf("iphone") > -1 || ua.indexOf("ipad") > -1) ? ';' : '?';
         return msg[11]+' <a href="sms:'+q.to+d+'body='+u+'">SMS</a>';
+    }
+
+    /**
+     * Get formatted location
+     * @param c
+     * @returns {string}
+     */
+    function lp(c) {
+        return (c ? c.longitude.toFixed(4) + 'E ' + c.latitude.toFixed(4) + 'N' : '?');
     }
     
     /**
