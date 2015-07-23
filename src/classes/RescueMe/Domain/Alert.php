@@ -300,7 +300,7 @@ class Alert {
         $alerts = false;
 
         $exclude = sprintf(self::EXCLUDE, self::TABLE, self::CLOSED);
-        $until = sprintf('(%1$s.alert_until IS NULL OR %1$s.alert_until <= CURDATE())', self::TABLE);
+        $until = sprintf('(%1$s.alert_until IS NULL OR %1$s.alert_until >= CURDATE())', self::TABLE);
         $filter = sprintf(self::FILTER . ' AND %3$s AND %4$s', self::TABLE, $userId, $until, $exclude);
 
         $res = DB::select(self::TABLE, '*', $filter);
@@ -327,7 +327,7 @@ class Alert {
         $alerts = false;
 
         $exclude = sprintf(self::EXCLUDE, self::TABLE, self::CLOSED);
-        $until = sprintf('(%1$s.alert_until IS NULL OR %1$s.alert_until > CURDATE())', self::TABLE);
+        $until = sprintf('(%1$s.alert_until IS NULL OR %1$s.alert_until < CURDATE())', self::TABLE);
         $filter = sprintf(self::FILTER . ' AND %3$s AND %4$s', self::TABLE, $userId, $until, $exclude);
 
         $res = DB::select(self::TABLE, '*', $filter);
