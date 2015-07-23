@@ -773,7 +773,7 @@
                 $users = User::getAll($_POST['state']);
 
                 /** @var Email $email */
-                $email = Manager::get(Email::TYPE)->newInstance();
+                $email = Manager::get(Email::TYPE, $user->id)->newInstance();
                 $email->setSubject($_POST['subject'])
                     ->setBody($_POST['body'])
                     ->setFrom(User::current())
