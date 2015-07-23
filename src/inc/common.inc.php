@@ -195,21 +195,28 @@
 
         return array("deg" => $deg, "min" => $min, "sec" => $sec, "des" => $des);
     }
-    
-    
+
+    function is_get_request() {
+        return !empty($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'get';
+    }
+
+    function is_post_request() {
+        return !empty($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'post';
+    }
+
     function is_ajax_request() {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
-    }        
-    
-    
+    }
+
+
     /**
      * Converts ajax request into response.
-     * 
+     *
      * Returns json string with structure {html: 'string', options: 'array'}
-     * 
+     *
      * @param string $resource Resource name
      * @param string $index Resource index
-     * @param array $context Resouce context
+     * @param array|string $context Resource context
      * @return string
      */
     function ajax_response($resource, $index = '', $context = '') {
@@ -417,7 +424,7 @@
     
     
     function is_function($value) {
-        return preg_match("#^([A-Za-z0-9_]+)\(.*\)$#", $value) !== 0;
+        return preg_match("#^([A-Za-z0-9_]+)\\(.*\\)$#", $value) !== 0;
     }
     
     /** 

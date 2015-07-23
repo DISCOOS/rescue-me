@@ -23,6 +23,7 @@
   <li><a href="#general" data-toggle="tab"><?=T_('General')?></a></li>
   <li><a href="#design" data-toggle="tab"><?=T_('Design')?></a></li>
   <li><a href="#sms" data-toggle="tab"><?=T_('SMS')?></a></li>
+  <li><a href="#email" data-toggle="tab"><?=T_('Email')?></a></li>
   <li><a href="#maps" data-toggle="tab"><?=T_('Maps')?></a></li>
   <li class="pull-right hidden-phone"><?=$user?></li>
 </ul>
@@ -31,6 +32,7 @@
     <div id="general" class="tab-pane <?=($name === 'general' ? 'active' : '')?>"></div>
     <div id="design" class="tab-pane" <?=($name === 'design' ? 'active' : '')?>></div>
     <div id="sms" class="tab-pane" <?=($name === 'sms' ? 'active' : '')?>></div>
+    <div id="email" class="tab-pane" <?=($name === 'email' ? 'active' : '')?>></div>
     <div id="maps" class="tab-pane" <?=($name === 'maps' ? 'active' : '')?>></div>
 </div>
 

@@ -1,6 +1,36 @@
 -- --------------------------------------------------------
 
 -- 
+-- Structure for table `alerts`
+-- 
+
+CREATE TABLE IF NOT EXISTS `alerts` (
+  `alert_id` int(11) NOT NULL AUTO_INCREMENT,
+  `alert_type` enum('info','warning','error') NOT NULL DEFAULT 'info',
+  `alert_subject` tinytext,
+  `alert_message` text NOT NULL,
+  `alert_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `alert_until` timestamp NULL DEFAULT NULL,
+  `alert_closeable` tinyint(1) NOT NULL DEFAULT '1',
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`alert_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure for table `alerts_closed`
+-- 
+
+CREATE TABLE IF NOT EXISTS `alerts_closed` (
+  `alert_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`alert_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
 -- Structure for table `logs`
 -- 
 

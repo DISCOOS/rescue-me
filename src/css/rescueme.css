@@ -27,6 +27,7 @@ hr {
 
 .masthead {
     top: 0;
+    width: 100vw;
     max-width: 60em;
     position: fixed;
     z-index: 1000;
@@ -38,6 +39,7 @@ hr {
 }
 
 .container-narrow {
+    width: 100vw;
     max-width: 60em;
     min-height:100%;
     margin-left: auto;

@@ -1,19 +1,18 @@
 <?    
-    ob_start();
-    
-    use RescueMe\Domain\User;
-    use RescueMe\Manager;
-    use RescueMe\Factory;
-    
-    $id = input_get_int('id', User::currentId());
+ob_start();
 
-    $factories = Manager::getAll($id);
-    
-    if($factories !== false) {
+use RescueMe\User;
+use RescueMe\Manager;
+use RescueMe\Factory;
 
-        if(!isset($include)) $include = ".*";
+$id = input_get_int('id', User::currentId());
 
-        $pattern = '#'.$include.'#';
+$factories = Manager::getAll($id);
+
+if($factories !== false) {
+
+    $include = (isset($context) ? $context : ".*");
+    $pattern = '#'.$include.'#';
 ?>
 
 <table class="table table-striped">

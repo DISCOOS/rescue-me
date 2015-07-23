@@ -33,14 +33,17 @@ use RescueMe\Domain\User;
         <? } ?>
         <li class="divider"></li>
         <? if ($user->allow('write', 'user.all')) {
-            insert_item(T_('New user'), ADMIN_URI."user/new", "icon-plus-sign"); ?>
+            insert_item(T_('New user'), ADMIN_URI."user/new", "icon-plus-sign");
+            insert_item(T_('Email users'), ADMIN_URI."user/email", "icon-envelope"); ?>
             <li class="divider"></li>
         <? } if ($user->allow('read', 'user.all')) { ?>
             <li id="users"><a role="menuitem" href="<?= ADMIN_URI ?>user/list"><b class="icon icon-th-list"></b><?=T_('Users')?> <span class="badge badge-important"><?= $num_pending ?></span></a></li>
         <? } if ($user->allow('read', 'roles')) { ?>
             <li id="roles"><a role="menuitem" href="<?= ADMIN_URI ?>role/list"><b class="icon icon-th-list"></b><?=T_('Roles')?></a></li>
         <? } if ($user->allow('read', 'logs')) { ?>
-            <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?=T_('Logs')?></a></li>
+            <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-th-list"></b><?=T_('Logs')?></a></li>
+        <? } if ($user->allow('read', 'alert.all')) { ?>
+            <li id="alerts"><a href="<?= ADMIN_URI ?>alert/list"><b class="icon icon-th-list"></b><?=T_('Alerts')?></a></li>
             <li class="divider"></li>
         <? } if ($user->allow('write', 'setup.all')) { ?>
             <li id="system_settings"><a href="<?= ADMIN_URI ?>setup/0"><b class="icon icon-wrench"></b><?= T_('System setup') ?></a></li>

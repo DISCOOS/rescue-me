@@ -11,10 +11,7 @@
  */
 
 namespace RescueMe;
-use RescueMe\Domain\Roles;
-use RescueMe\Domain\Roles;
-use RescueMe\Domain\Roles;
-use RescueMe\Domain\Roles;
+
 use RescueMe\Domain\Roles;
 use RescueMe\Domain\User;
 
@@ -34,7 +31,7 @@ class Install {
 
     /**
      * Installation ini values
-     * @var string
+     * @var array
      */
     private $ini;
 
@@ -140,7 +137,9 @@ class Install {
             'DB_PASSWORD' => $this->ini['DB_PASSWORD'],
             'COUNTRY_PREFIX' => $this->ini['COUNTRY_PREFIX'],
             'DEFAULT_LOCALE' => $this->ini['DEFAULT_LOCALE'],
-            'DEFAULT_TIMEZONE' => $this->ini['DEFAULT_TIMEZONE']
+            'DEFAULT_TIMEZONE' => $this->ini['DEFAULT_TIMEZONE'],
+            'DEBUG' => $this->ini['DEBUG'],
+            'MAINTAIN' => $this->ini['MAINTAIN']
         ));
 
         // Create config.php
@@ -305,15 +304,15 @@ class Install {
 
         // Prepare role permissions
         if (($count = Roles::prepare(1, 0)) > 0) {
-            info("    Add $count administrator permissions...OK");
+            info("    Added $count administrator permissions...OK");
             $skipped = false;
         }
         if (($count = Roles::prepare(2, 0)) > 0) {
-            info("    Add $count operator permissions...OK");
+            info("    Added $count operator permissions...OK");
             $skipped = false;
         }
         if (($count = Roles::prepare(3, 0)) > 0) {
-            info("    Add $count personnel permissions...OK");
+            info("    Added $count personnel permissions...OK");
             $skipped = false;
         }
 
@@ -336,15 +335,15 @@ class Install {
     private function initModules(){
 
         $inline = true;
-        info("  Initializing modules....", BUILD_INFO, NEWLINE_NONE);
+        info("  Initializing modules....", BUILD_INFO);
 
-        $callback = function($progress) use (&$inline) {
-            info("    $progress", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST );
-            $inline = false;
+        $callback = function($progress) use ($inline) {
+            info("    $progress", BUILD_INFO);
         };
 
         if (Manager::install($callback) !== false) {
             info("    System modules installed", BUILD_INFO);
+            $inline = false;
         }
 
         // Prepare user modules

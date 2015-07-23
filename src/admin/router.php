@@ -1,14 +1,16 @@
 <?php
 
     use RescueMe\DB;
-    use RescueMe\Domain\User;
     use RescueMe\Manager;
+    use RescueMe\Domain\Alert;
+    use RescueMe\Domain\User;
     use RescueMe\Domain\Missing;
     use RescueMe\Domain\Operation;
-    use RescueMe\Properties;
     use RescueMe\Domain\Roles;
+    use RescueMe\Properties;
     use RescueMe\TimeZone;
-    use RescueMe\SMS\Provider;
+    use RescueMe\SMS\Provider as SMS;
+    use RescueMe\Email\Provider as Email;
 
     // Verify logon information
     $user = User::verify();
@@ -188,7 +190,11 @@
                         break;
                     case 'sms':
                         $index = 'module.list';
-                        $include = preg_quote(Provider::TYPE);
+                        $include = preg_quote(SMS::TYPE);
+                        break;
+                    case 'email':
+                        $index = 'module.list';
+                        $include = preg_quote(Email::TYPE);
                         break;
                     case 'maps':
                         $index = 'property.list';
@@ -298,7 +304,7 @@
             } 
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 if(($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
@@ -390,13 +396,13 @@
             $redirect = APP_URI;
             $_ROUTER['name'] = T_('Request new user');
             
-            $admin = ($user instanceof \RescueMe\Domain\User) && $user->allow('write', 'user.all');
+            $admin = ($user instanceof User) && $user->allow('write', 'user.all');
             
             // Admins are allowed to create users
             if($admin)
             {
                 $state = User::ACTIVE;
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (is_post_request()) {
                     $role = $_POST['role'];
                 }
                 $redirect = ADMIN_URI.'user/list';
@@ -406,7 +412,7 @@
             $_ROUTER['view'] = $_GET['view'];
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 $username = User::safe($_POST['email']);
                 if(empty($username)) {
@@ -487,7 +493,7 @@
             $_ROUTER['view'] = 'user/edit';
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 // Get requested user
                 $id = input_get_int('id', User::currentId());
@@ -747,7 +753,66 @@
             }            
             
             break;
-            
+
+        case 'user/email':
+
+            if($user->allow('write', 'user.all') === FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('Email users');
+            $_ROUTER['view'] = 'user/email';
+
+            // Process form?
+            if (is_post_request()) {
+
+                $users = User::getAll($_POST['state']);
+
+                if(empty($users)) {
+                    $titles = User::getTitles();
+                    $state = isset($titles[$_POST['state']]) ? $titles[$_POST['state']] : T_('Unknown');
+                    $_ROUTER['message'] = sprintf(T_('No <em>%1$s</em> users found.'), strtolower($state));
+
+                } else {
+                    /** @var Email $email */
+                    $email = Manager::get(Email::TYPE, $user->id)->newInstance();
+                    $email->setSubject($_POST['subject'])
+                        ->setBody($_POST['body'])
+                        ->setFrom(User::current())
+                        ->setTo($users);
+
+                    try {
+                        $failed = $email->send();
+                        $message = '<b>%1$s</b> <textarea rows="%2$s" class="span12" style="resize: none;">%3$s</textarea>';
+                        if($failed !== true) {
+                            $names = implode("\n", $failed);
+                            $cols = min(20, count($failed));
+                            $_ROUTER['error'] = sprintf($message, T_('Email not sent to following users'), $cols, $names);
+                        } else {
+                            unset($_POST['subject']);
+                            unset($_POST['body']);
+                            $names = array();
+                            foreach($users as $user) {
+                                $names[] = sprintf('%1$s <%2$s>;', $user->name, $user->email);
+                            }
+                            $cols = min(20, count($names));
+                            $names = implode("\n", $names);
+                            $_ROUTER['message'] = sprintf($message,
+                                sprintf(T_('Email sent to %1$s users'), count($users)), $cols, $names);
+                        }
+                    } catch (Exception $e) {
+                        $_ROUTER['error'] = $e->getMessage();
+                    }
+
+
+                }
+            }
+            break;
+
         case 'role/list':
             
             if ($user->allow('read', 'roles') === FALSE) {
@@ -783,7 +848,7 @@
             $_ROUTER['view'] = $_GET['view'];
 
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {               
+            if (is_post_request()) {
                 if(Roles::update($_POST['role_id'], $_POST['role'])) {
                     header("Location: ".ADMIN_URI.'role/list');
                     exit();
@@ -821,7 +886,7 @@
             $edit = User::get($id);
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 if (strlen($_POST['password']) < 8) {
                     $_ROUTER['error'] = T_("Password must be at least 8 characters long");
@@ -850,7 +915,7 @@
             $_ROUTER['view'] = $_GET['view'];
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 if(User::recover($_POST['email'])) {
                     header("Location: ".ADMIN_URI.($_SESSION['logon'] ? 'admin' : 'logon'));
@@ -885,7 +950,7 @@
                 break;                
             } 
             
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 $missings = Operation::get($id)->getAllMissing($admin);
                 if($missings !== FALSE) {
@@ -894,7 +959,7 @@
                     }
                 }
                 
-                $status = \RescueMe\Domain\Operation::close($id, $_POST);
+                $status = Operation::close($id, $_POST);
                 
                 if ($status) {
                     header("Location: ".ADMIN_URI.'missing/list');
@@ -953,7 +1018,7 @@
             $_ROUTER['view'] = $_GET['view'];
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 $operation = Operation::add(
                     $_POST['m_type'],
@@ -1080,7 +1145,7 @@
                 $closed = Operation::isClosed($missing->op_id);
 
                 // Process form?
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (is_post_request()) {
 
                     if($closed) {
                         if(Operation::reopen($missing->op_id) === FALSE) {
@@ -1204,11 +1269,175 @@
             }
 
             exit;
-            
+
         case 'message/list':
-            
+
             die(ajax_response('message','list'));
-            
+
+        case 'alert/list':
+
+            if($user->allow('read', 'alert.all') === FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            if(isset($_GET['name'])) {
+
+                echo ajax_response("alert.list");
+
+                exit;
+            }
+
+            $_ROUTER['name'] = T_('Alerts');
+            $_ROUTER['view'] = $_GET['view'];
+            break;
+
+        case 'alert/close':
+
+            if(is_ajax_request() === FALSE) {
+
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Not an ajax request');
+                break;
+            }
+
+            if(($id = input_get_int('id')) === FALSE) {
+
+                echo sprintf(T_('Alert %1$s not found'), $id);
+
+            } else {
+
+                Alert::close($id, $user->id);
+
+            }
+
+            exit;
+
+        case 'alert/delete':
+
+            if(($id = input_get_int('id')) === FALSE) {
+
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Id not defined');
+                break;
+            }
+
+            if($user->allow('write', 'alert.all') === FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('Alerts');
+            $_ROUTER['view'] = 'alert/list';
+
+            $edit = Alert::get($id);
+
+            if($edit === false) {
+                $_ROUTER['error'] = sprintf(T_('Alert %1$s not found'), $id);
+            }
+            else if($edit->delete() === false) {
+                $_ROUTER['error'] = sprintf(T_('Alert %1$s not deleted'), $id) . ". ".
+                    (DB::errno() ? DB::error() : '');
+            }
+            else {
+                header("Location: ".ADMIN_URI.'alert/list');
+                exit();
+            }
+
+            break;
+
+        case 'alert/new':
+
+            $access = $user->allow('write', 'alert.all');
+
+            if(($access || $user->allow('write', 'alert', $id))=== FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('New').' '.  ucfirst(T_('Alert'));
+            $_ROUTER['view'] = 'alert/new';
+
+            // Process form?
+            if (is_post_request()) {
+
+                // Validate checkbox
+                $_POST['alert_closeable'] = isset($_POST['alert_closeable']) ? 1 : 0;
+
+                $_POST['user_id'] = User::currentId();
+
+                $alert = new Alert($_POST);
+                if($alert->insert() === false) {
+                    $_ROUTER['error'] = DB::errno() ? DB::error() :
+                        sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+                } else {
+                    header("Location: ".ADMIN_URI.'alert/list');
+                    exit();
+                }
+            }
+
+            break;
+
+        case 'alert/edit':
+
+            if(($id = input_get_int('id')) === FALSE) {
+
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Id not defined');
+                break;
+            }
+
+            $access = $user->allow('write', 'alert.all');
+
+            if(($access || $user->allow('write', 'alert', $id))=== FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('Edit').' '.  ucfirst(T_('Alert'));
+            $_ROUTER['view'] = 'alert/edit';
+
+            // Process form?
+            if (is_post_request()) {
+
+                // Get requested alert
+                $id = input_get_int('id');
+
+                $edit = Alert::get($id);
+                if($edit === false) {
+                    $_ROUTER['error'] = sprintf(T_('Alert %1$s not found'), $id);
+                    break;
+                }
+
+                // Validate checkbox
+                $_POST['alert_closeable'] = isset($_POST['alert_closeable']) ? 1 : 0;
+
+                if($edit->update($_POST) === false) {
+                    $_ROUTER['error'] = DB::errno() ? DB::error() :
+                        sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+                } else {
+                    header("Location: ".ADMIN_URI.'alert/list');
+                    exit();
+                }
+            }
+
+            break;
+
         default:
             $_ROUTER['name'] = T_('Illegal operation');
             $_ROUTER['view'] = "404";

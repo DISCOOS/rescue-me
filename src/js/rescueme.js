@@ -1,4 +1,4 @@
-// Define Rescue Me! "namespace"
+// Define RescueMe "namespace"
 R = install;
 
 // Allow one "version" per window

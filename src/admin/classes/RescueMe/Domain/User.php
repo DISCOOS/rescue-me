@@ -190,13 +190,12 @@
             return DB::filter($fields, $values, $operand);
             
         }
-        
-        
+
+
         /**
          * Count number of users
-         * 
          * @param array $states User state (optional, default: null, values: {'pending', 'disabled', 'deleted'})
-         * 
+         * @param string $filter
          * @return boolean|array
          */
         public static function count($states=null, $filter = '') {
@@ -219,16 +218,21 @@
             return DB::count(self::TABLE, $filter);
             
         }// count
-        
-        
+
+
         /**
          * Get all users in database
-         * 
-         * @param array $states User state (optional, default: null, values: {'pending', 'disabled', 'deleted'})
-         * 
+         * @param string|array $states User state (optional, default: null, values: {'pending', 'disabled', 'deleted'})
+         * @param string $filter
+         * @param int $start
+         * @param bool $max
          * @return boolean|array
          */
         public static function getAll($states = null, $filter = '', $start = 0, $max = false) {
+
+            if(isset($states) && is_string($states)) {
+                $states = array($states);
+            }
 
             if(isset($states) === FALSE || in_array(User::ALL, $states)) {
                 $states = User::$all;

@@ -30,14 +30,16 @@
         );
         
         private static $permissions = array(
-            'logs'=>array('read'), 
+            'alert'=>array('read', 'write'),
+            'alert.all'=>array('read', 'write'),
+            'logs'=>array('read'),
+            'operations'=>array('read', 'write'),
+            'operations.all'=>array('read', 'write'),
             'user'=>array('read', 'write'),
             'user.all'=>array('read', 'write'),
-            'setup'=>array('read', 'write'),
-            'setup.all'=>array('read', 'write'),
             'roles'=>array('read', 'write'),
-            'operations'=>array('read', 'write'), 
-            'operations.all'=>array('read', 'write')
+            'setup'=>array('read', 'write'),
+            'setup.all'=>array('read', 'write')
         );
         
        /**

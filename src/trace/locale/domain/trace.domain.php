@@ -40,8 +40,6 @@
             return $msg;
         }
 
-
-
     }
 
     return $defined;

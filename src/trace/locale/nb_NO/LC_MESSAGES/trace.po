@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-23 21:58+0100\n"
-"PO-Revision-Date: 2015-02-23 21:58+0100\n"
+"POT-Creation-Date: 2015-07-23 11:30+0100\n"
+"PO-Revision-Date: 2015-07-23 11:30+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
 "Language: nb_NO\n"
@@ -20,22 +20,22 @@ msgstr ""
 msgid "Illegal arguments"
 msgstr "Ulovlige verdier"
 
-#: trace/abort.php:21
+#: trace/abort.php:23
 #, php-format
 msgid "Closed by %1$s at %2$s"
 msgstr "Lukket av %1$s den %2$s"
 
-#: trace/abort.php:25
+#: trace/abort.php:27
 #, php-format
 msgid "Trace %1$s aborted"
 msgstr "Sporing %1$s er avbrutt"
 
-#: trace/abort.php:29
+#: trace/abort.php:31
 #, php-format
 msgid "Failed to abort trace %1$s"
 msgstr "Klarte ikke å avbryte sporing %1$s"
 
-#: trace/abort.php:38 trace/report.php:34 trace/locate.php:72
+#: trace/abort.php:40 trace/report.php:34 trace/locate.php:91
 #, php-format
 msgid "Trace %1$s not found"
 msgstr "Sporing %1$s ikke funnet"

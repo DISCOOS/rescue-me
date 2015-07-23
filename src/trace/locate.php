@@ -3,12 +3,12 @@
     require('config.php');
 
     use Psr\Log\LogLevel;
-use RescueMe\Domain\Requests;
-use RescueMe\Log\Logs;
+    use RescueMe\Log\Logs;
     use RescueMe\Locale;
+    use RescueMe\Properties;
+    use RescueMe\Domain\Requests;
     use RescueMe\Domain\Missing;
     use RescueMe\Domain\Operation;
-    use RescueMe\Properties;
 
     $id = input_get_hash('id');
 

@@ -9,7 +9,7 @@
     
     $name = isset($_GET['name']) ? $_GET['name'] : User::ALL;
     
-    $titles = \RescueMe\Domain\User::getTitles();
+    $titles = User::getTitles();
     
     $states = array();
     $num_pending = User::count(array(User::PENDING));

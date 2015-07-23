@@ -93,7 +93,7 @@ R.trace.locate = function() {
      * =================================================== */
     if(ngl) {
         
-        setTimeout(function() {R.trace.change(rp, se, sp, q);}, q.delay ? 3000 : 0);
+        setTimeout(function() {R.trace.change(rp, se, q);}, q.delay ? 3000 : 0);
         
         // Register progress indicator
         var im = d.createElement("img");
@@ -188,49 +188,52 @@ R.trace.locate = function() {
         }
         
         l.innerHTML = ps(c);
-        
-        var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude + "/" + t;
-        
-        if (xhr !== false) {
-            
-            xhr.onreadystatechange = function() {
-                
-                if (xhr.readyState === 4) {
-                    
-                    if(xhr.status === 200) {
-                        // Show current position
-                        sp(c, Date.now() - t);
-                        // Append response text
-                        f.innerHTML += '<b>' + xhr.responseText + '</b>';
-                        if(a) {
-                            f.innerHTML += rt();
-                            s.innerHTML = '';
-                            i.innerHTML = '';
-                            clearTimeout(cID);
+
+        if(c) {
+
+            var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude + "/" + t;
+
+            if (xhr !== false) {
+
+                xhr.onreadystatechange = function() {
+
+                    if (xhr.readyState === 4) {
+
+                        if(xhr.status === 200) {
+                            // Show current position
+                            sp(c, Date.now() - t);
+                            // Append response text
+                            f.innerHTML += '<b>' + xhr.responseText + '</b>';
+                            if(a) {
+                                f.innerHTML += rt();
+                                s.innerHTML = '';
+                                i.innerHTML = '';
+                                clearTimeout(cID);
+                            } else {
+                                // Continue listen for position changes
+                                f.innerHTML += '<br />' + msg[3];
+                            }
                         } else {
-                            // Continue listen for position changes
-                            f.innerHTML += '<br />' + msg[3];
+                            rs(c, t, a);
                         }
-                    } else {
-                        rs(c, t, a);
                     }
                 }
-            }
 
-            xhr.open("GET", url, true);
-            xhr.send();
-            
-            // Detect connection timeouts
-            xhr.timeout = w;
-            xhr.ontimeout = function() {
-                rs(c, t, a);
-            };
-          
-        // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
-        } else if (c.accuracy < 300) {
-            
-            // No error reporting implemented!!
-            window.location = url;            
+                xhr.open("GET", url, true);
+                xhr.send();
+
+                // Detect connection timeouts
+                xhr.timeout = w;
+                xhr.ontimeout = function() {
+                    rs(c, t, a);
+                };
+
+                // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
+            } else if (c.accuracy < 300) {
+
+                // No error reporting implemented!!
+                window.location = url;
+            }
         }
     }
 
@@ -258,7 +261,7 @@ R.trace.locate = function() {
      * @param c position coordinates
      */
     function ps(c) {
-        var l = c.longitude.toFixed(4) + 'E ' + c.latitude.toFixed(4) + 'N';
+        var l = lp(c);
         return msg[8].replace('{0}',l);
     }
     
@@ -267,11 +270,20 @@ R.trace.locate = function() {
      * Print SMS link
      */
     function pm(c) {
-        var l = c.longitude.toFixed(4) + 'E ' + c.latitude.toFixed(4) + 'N';
+        var l = lp(c);
         var u = q.id + '|' + q.phone + '|' + l + '|' + q.name;
         var ua = navigator.userAgent.toLowerCase();
         var d = (ua.indexOf("iphone") > -1 || ua.indexOf("ipad") > -1) ? ';' : '?';
         return msg[11]+' <a href="sms:'+q.to+d+'body='+u+'">SMS</a>';
+    }
+
+    /**
+     * Get formatted location
+     * @param c
+     * @returns {string}
+     */
+    function lp(c) {
+        return (c ? c.longitude.toFixed(4) + 'E ' + c.latitude.toFixed(4) + 'N' : '?');
     }
     
     /**
@@ -342,7 +354,6 @@ R.trace.change = function (gf, ge, o) {
         gf(c, true);
     };
     
-    /*
     /*
      * Stop trying to get location fix.
      */

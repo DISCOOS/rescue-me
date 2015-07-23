@@ -15,7 +15,7 @@
     use RescueMe\SMS;
     
     /**
-     * Properties class
+     * Properties class0
      * 
      * @package 
      */
@@ -25,13 +25,14 @@
         
         const NO = 'no';
         const YES = 'yes';
-        const ALL = "all";
-        const SHOW = "show";
-        const HIDE = "hide";
-        const TOP = "top";
-        const BOTTOM = "bottom";
-        const EXPANDED = "expanded";
-        const COLLAPSED = "collaped";
+        const NONE = 'none';
+        const ALL = 'all';
+        const SHOW = 'show';
+        const HIDE = 'hide';
+        const TOP = 'top';
+        const BOTTOM = 'bottom';
+        const EXPANDED = 'expanded';
+        const COLLAPSED = 'collapsed';
         
         const GET_URI = 'property/get';
         
@@ -39,35 +40,35 @@
         
         const OPTIONS_URI = 'property/options';
         
-        const SYSTEM_COUNTRY_PREFIX = "system.country.prefix";
+        const SYSTEM_COUNTRY_PREFIX = 'system.country.prefix';
         
-        const SYSTEM_LOCALE = "system.locale";
+        const SYSTEM_LOCALE = 'system.locale';
 
-        const SYSTEM_TIMEZONE = "system.timezone";
+        const SYSTEM_TIMEZONE = 'system.timezone';
 
-        const SYSTEM_PAGE_SIZE = "system.page.size";
+        const SYSTEM_PAGE_SIZE = 'system.page.size';
+
+        const LOCATION_MAX_WAIT = 'location.max.wait';
         
-        const LOCATION_MAX_WAIT = "location.max.wait";
+        const LOCATION_MAX_AGE = 'location.max.age';
         
-        const LOCATION_MAX_AGE = "location.max.age";
+        const LOCATION_DESIRED_ACC = 'location.desired.accuracy';
         
-        const LOCATION_DESIRED_ACC = "location.desired.accuracy";
+        const LOCATION_APPCACHE = 'location.appcache';
+        const LOCATION_APPCACHE_VERSION = 'version';
+        const LOCATION_APPCACHE_SETTINGS = 'settings';
         
-        const LOCATION_APPCACHE = "location.appcache";
-        const LOCATION_APPCACHE_VERSION = "version";
-        const LOCATION_APPCACHE_SETTINGS = "settings";
+        const TRACE_ALERT_NEW = 'trace.alert.new';
         
-        const TRACE_ALERT_NEW = "trace.alert.new";
+        const TRACE_BAR_STATE = 'trace.bar.state';
         
-        const TRACE_BAR_STATE = "trace.bar.state";
+        const TRACE_BAR_LOCATION = 'trace.bar.location';
         
-        const TRACE_BAR_LOCATION = "trace.bar.location";
-        
-        const TRACE_DETAILS = "trace.details";
-        const TRACE_DETAILS_REFERENCE = "trace.reference";
-        const TRACE_DETAILS_LOCATION = "trace.details.location";
-        const TRACE_DETAILS_LOCATION_TIME = "trace.details.location.time";
-        const TRACE_DETAILS_LOCATION_URL = "trace.details.location.url";
+        const TRACE_DETAILS = 'trace.details';
+        const TRACE_DETAILS_REFERENCE = 'trace.reference';
+        const TRACE_DETAILS_LOCATION = 'trace.details.location';
+        const TRACE_DETAILS_LOCATION_TIME = 'trace.details.location.time';
+        const TRACE_DETAILS_LOCATION_URL = 'trace.details.location.url';
         
         const SMS_REQUIRE = 'sms.require';
         const SMS_REQUIRE_MULTIPLE = 'multiple';
@@ -106,28 +107,28 @@
                 'type' => 'select',
                 'default' => '',
                 'options' => true,
-                'description' => "Use phone number prefix for given country as default."
+                'description' => 'Use phone number prefix for given country as default.'
             ),
             
             self::SYSTEM_LOCALE => array(
                 'type' => 'select',
                 'default' => '',
                 'options' => true,
-                'description' => "Use given language (locale)."
+                'description' => 'Use given language (locale).'
             ),
 
             self::SYSTEM_TIMEZONE => array(
                 'type' => 'select',
                 'default' => '',
                 'options' => true,
-                'description' => "Use given timezone."
+                'description' => 'Use given timezone.'
             ),
 
             self::SYSTEM_PAGE_SIZE => array(
                 'type' => 'text',
                 'default' => 25,
                 'options' => false,
-                'description' => "Maximum number of lines per page (pagination)"
+                'description' => 'Maximum number of lines per page (pagination)'
             ),
             
             self::LOCATION_MAX_AGE => array(
@@ -478,7 +479,7 @@
                 case self::TRACE_DETAILS:
                     $selected = array();
                     if(empty($value)) {
-                        return NONE;
+                        return T_(self::NONE);
                     }
                     foreach(explode(',', $value) as $option) {
                         $selected[] = self::$meta[$name]['options'][$option];

@@ -4,6 +4,7 @@ require('config.php');
 
 use RescueMe\Domain\User;
 use RescueMe\SMS\T;
+use RescueMe\Domain\Alert;
 
 if(defined('USE_SILEX') && USE_SILEX) {
     
@@ -88,7 +89,9 @@ if(defined('USE_SILEX') && USE_SILEX) {
     if($user instanceof User) {
         $id = $user->id;
     }
-    
+
+    $alerts = $user ? Alert::getActive($user->id) : array();
+
 }?>
 
 <!DOCTYPE html>
@@ -127,7 +130,18 @@ if(defined('USE_SILEX') && USE_SILEX) {
                     
                 </ul>
             </div>
-            
+
+            <div class="row-fluid">
+            <?
+                if($alerts) {
+                    /** @var Alert $alert */
+                    foreach($alerts as $alert) {
+                        $alert->render();
+                    }
+                }
+            ?>
+            </div>
+
             <div class="row-fluid">
             
             <?
@@ -141,7 +155,6 @@ if(defined('USE_SILEX') && USE_SILEX) {
                 //echo date('Y-m-d H:i:s').' '.date_default_timezone_get();
 
             ?>
-                
             </div>
             <? require(APP_PATH.implode(DIRECTORY_SEPARATOR, array('gui','footer.gui.php'))); ?>
         </div>

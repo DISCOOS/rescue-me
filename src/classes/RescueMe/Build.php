@@ -13,7 +13,7 @@
     namespace RescueMe;
 
     /**
-     * Build class
+     * Build class invoked by composer to configure RescueMe
      * 
      * @package 
      */

@@ -1,6 +1,10 @@
 <?php
 
-    require('../config.php');
-    require('../min/lib/JSMin.php');
+require('../config.php');
 
-?>
+if(MAINTAIN) {
+    require "../maintenance.php";
+    die();
+}
+
+require('../min/lib/JSMin.php');

@@ -40,7 +40,6 @@
 
         /**
          * Insert standard permissions for given role or user
-         *
          * @param $role_id
          * @param $user_id
          * @return integer Number of inserted permissions
@@ -58,6 +57,8 @@
                     if(Permissions::grant($role_id, $user_id, 'write', 'user.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'roles')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'roles')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'alert.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'alert.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'setup.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'setup.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'operations.all')) $count++;
@@ -190,9 +191,7 @@
 
         /**
          * Get permissions for a role
-         *
          * @param $role_id
-         * @internal param string $role Role
          * @return boolean|array
          */
         public static function getPermissionsForRole($role_id) {
@@ -209,9 +208,7 @@
 
         /**
          * Get permissions for a role
-         *
          * @param $user_id
-         * @internal param string $role Role
          * @return boolean|array
          */
         public static function getPermissionsForUser($user_id) {

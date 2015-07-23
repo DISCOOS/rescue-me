@@ -107,7 +107,7 @@
                 <tr>
                     <th><?=T_('Type')?></th>
                     <th><?=T_('Name')?></th>
-                    <th><?=T_('Closed')?></th>
+                    <th><?=T_('Status')?></th>
                     <? if($admin) { ?>
                     <th class="hidden-phone"><?= T_('User') ?></th>
                     <th>
