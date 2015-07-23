@@ -46,6 +46,6 @@
         <button type="submit" class="btn btn-primary"><?= $label ?></button>
         <? $label = isset_get($actions, 'cancel', T_('Cancel')); ?>
         <? $onclick = isset_get($actions, 'cancel_onclick', 'history.go(-1);') ?>
-        <button type="reset" class="btn" onclick="<?=$onclick?>"><?= $actions['cancel'] ?></button>
+        <button type="reset" class="btn" onclick="<?=$onclick?>"><?= $label ?></button>
     </div>
 </form>
