@@ -304,7 +304,7 @@
             } 
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 if(($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) === FALSE)
                 {
@@ -402,7 +402,7 @@
             if($admin)
             {
                 $state = User::ACTIVE;
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (is_post_request()) {
                     $role = $_POST['role'];
                 }
                 $redirect = ADMIN_URI.'user/list';
@@ -412,7 +412,7 @@
             $_ROUTER['view'] = $_GET['view'];
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 $username = User::safe($_POST['email']);
                 if(empty($username)) {
@@ -493,7 +493,7 @@
             $_ROUTER['view'] = 'user/edit';
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 // Get requested user
                 $id = input_get_int('id', User::currentId());
@@ -768,7 +768,7 @@
             $_ROUTER['view'] = 'user/email';
 
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
 
                 $users = User::getAll($_POST['state']);
 
@@ -833,7 +833,7 @@
             $_ROUTER['view'] = $_GET['view'];
 
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {               
+            if (is_post_request()) {
                 if(Roles::update($_POST['role_id'], $_POST['role'])) {
                     header("Location: ".ADMIN_URI.'role/list');
                     exit();
@@ -871,7 +871,7 @@
             $edit = User::get($id);
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 if (strlen($_POST['password']) < 8) {
                     $_ROUTER['error'] = T_("Password must be at least 8 characters long");
@@ -900,7 +900,7 @@
             $_ROUTER['view'] = $_GET['view'];
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 if(User::recover($_POST['email'])) {
                     header("Location: ".ADMIN_URI.($_SESSION['logon'] ? 'admin' : 'logon'));
@@ -935,7 +935,7 @@
                 break;                
             } 
             
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 $missings = Operation::get($id)->getAllMissing($admin);
                 if($missings !== FALSE) {
@@ -1003,7 +1003,7 @@
             $_ROUTER['view'] = $_GET['view'];
             
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
                 
                 $operation = new RescueMe\Operation;
                 
@@ -1128,7 +1128,7 @@
                 $closed = Operation::isClosed($missing->op_id);
 
                 // Process form?
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (is_post_request()) {
 
                     if($closed) {
                         if(Operation::reopen($missing->op_id) === FALSE) {
@@ -1353,7 +1353,7 @@
             $_ROUTER['view'] = 'alert/new';
 
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
 
                 // Validate checkbox
                 $_POST['alert_closeable'] = isset($_POST['alert_closeable']) ? 1 : 0;
@@ -1396,7 +1396,7 @@
             $_ROUTER['view'] = 'alert/edit';
 
             // Process form?
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (is_post_request()) {
 
                 // Get requested alert
                 $id = input_get_int('id');

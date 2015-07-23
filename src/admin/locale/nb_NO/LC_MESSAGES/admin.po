@@ -252,7 +252,7 @@ msgstr "Bruker %1$s ble ikke aktivert"
 #: admin/router.php:767 admin/gui/system.menu.gui.php:37
 #: admin/gui/user.email.gui.php:51
 msgid "Email users"
-msgstr "Send e-post til brukere"
+msgstr "Send e-post"
 
 #: admin/router.php:786
 #, php-format
