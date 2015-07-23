@@ -772,29 +772,44 @@
 
                 $users = User::getAll($_POST['state']);
 
-                /** @var Email $email */
-                $email = Manager::get(Email::TYPE, $user->id)->newInstance();
-                $email->setSubject($_POST['subject'])
-                    ->setBody($_POST['body'])
-                    ->setFrom(User::current())
-                    ->setTo($users);
+                if(empty($users)) {
+                    $titles = User::getTitles();
+                    $state = isset($titles[$_POST['state']]) ? $titles[$_POST['state']] : T_('Unknown');
+                    $_ROUTER['message'] = sprintf(T_('No <em>%1$s</em> users found.'), strtolower($state));
 
-                $failed = $email->send();
-
-                if($failed !== true) {
-                    $failed = implode('<br/>', $failed);
-                    $_ROUTER['error'] = sprintf(T_('Email not sent to following users: <p>%1$s</p>'), $users);
                 } else {
-                    unset($_POST['subject']);
-                    unset($_POST['body']);
-                    $names = array();
-                    foreach($users as $user) {
-                        $names[] = sprintf('%1$s (%2$s)', $user->name, $user->email);
-                    }
-                    $names = implode('<br/>', $names);
-                    $_ROUTER['message'] = sprintf(T_('Email sent to %1$s users: <p>%2$s</p>'), count($users), $names);
-                }
+                    /** @var Email $email */
+                    $email = Manager::get(Email::TYPE, $user->id)->newInstance();
+                    $email->setSubject($_POST['subject'])
+                        ->setBody($_POST['body'])
+                        ->setFrom(User::current())
+                        ->setTo($users);
 
+                    try {
+                        $failed = $email->send();
+                        $message = '<b>%1$s</b> <textarea rows="%2$s" class="span12" style="resize: none;">%3$s</textarea>';
+                        if($failed !== true) {
+                            $names = implode("\n", $failed);
+                            $cols = min(20, count($failed));
+                            $_ROUTER['error'] = sprintf($message, T_('Email not sent to following users'), $cols, $names);
+                        } else {
+                            unset($_POST['subject']);
+                            unset($_POST['body']);
+                            $names = array();
+                            foreach($users as $user) {
+                                $names[] = sprintf('%1$s <%2$s>;', $user->name, $user->email);
+                            }
+                            $cols = min(20, count($names));
+                            $names = implode("\n", $names);
+                            $_ROUTER['message'] = sprintf($message,
+                                sprintf(T_('Email sent to %1$s users'), count($users)), $cols, $names);
+                        }
+                    } catch (Exception $e) {
+                        $_ROUTER['error'] = $e->getMessage();
+                    }
+
+
+                }
             }
             break;
 

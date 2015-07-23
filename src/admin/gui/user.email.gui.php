@@ -45,7 +45,9 @@ $group['value'][] = array(
 
 
 $fields[] = $group;
+$uri = ADMIN_URI.'user/email';
 
 $_ROUTER['submit'] = T_('Send');
-
-insert_form("email", T_('Email users'), $fields, ADMIN_URI."user/email", $_ROUTER);
+$_ROUTER['cancel'] = T_('Reset');
+$_ROUTER['cancel_onclick'] = "location ='".sprintf('%1$s',$uri)."';";
+insert_form("email", T_('Email users'), $fields, $uri, $_ROUTER);

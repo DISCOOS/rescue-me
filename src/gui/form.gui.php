@@ -42,15 +42,10 @@
     ?>
     </div>
     <div class="form-footer">
-        <? if(isset($actions['submit'])) { ?>
-        <button type="submit" class="btn btn-primary"><?= $actions['submit'] ?></button>
-        <? } else { ?>
-        <button type="submit" class="btn btn-primary"><?= T_('Save') ?></button>
-        <? } ?>
-        <? if(isset($actions['cancel'])) { ?>
-        <button type="reset" class="btn" onclick="history.go(-1);"><?= $actions['cancel'] ?></button>
-        <? } else { ?>
-        <button type="reset" class="btn" onclick="history.go(-1);"><?= T_('Cancel') ?></button>
-        <? } ?>
+        <? $label = isset_get($actions, 'submit', T_('Save'));  ?>
+        <button type="submit" class="btn btn-primary"><?= $label ?></button>
+        <? $label = isset_get($actions, 'cancel', T_('Cancel')); ?>
+        <? $onclick = isset_get($actions, 'cancel_onclick', 'history.go(-1);') ?>
+        <button type="reset" class="btn" onclick="<?=$onclick?>"><?= $actions['cancel'] ?></button>
     </div>
 </form>
