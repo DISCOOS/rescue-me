@@ -188,49 +188,52 @@ R.trace.locate = function() {
         }
         
         l.innerHTML = ps(c);
-        
-        var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude + "/" + t;
-        
-        if (xhr !== false) {
-            
-            xhr.onreadystatechange = function() {
-                
-                if (xhr.readyState === 4) {
-                    
-                    if(xhr.status === 200) {
-                        // Show current position
-                        sp(c, Date.now() - t);
-                        // Append response text
-                        f.innerHTML += '<b>' + xhr.responseText + '</b>';
-                        if(a) {
-                            f.innerHTML += rt();
-                            s.innerHTML = '';
-                            i.innerHTML = '';
-                            clearTimeout(cID);
+
+        if(c) {
+
+            var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude + "/" + t;
+
+            if (xhr !== false) {
+
+                xhr.onreadystatechange = function() {
+
+                    if (xhr.readyState === 4) {
+
+                        if(xhr.status === 200) {
+                            // Show current position
+                            sp(c, Date.now() - t);
+                            // Append response text
+                            f.innerHTML += '<b>' + xhr.responseText + '</b>';
+                            if(a) {
+                                f.innerHTML += rt();
+                                s.innerHTML = '';
+                                i.innerHTML = '';
+                                clearTimeout(cID);
+                            } else {
+                                // Continue listen for position changes
+                                f.innerHTML += '<br />' + msg[3];
+                            }
                         } else {
-                            // Continue listen for position changes
-                            f.innerHTML += '<br />' + msg[3];
+                            rs(c, t, a);
                         }
-                    } else {
-                        rs(c, t, a);
                     }
                 }
-            }
 
-            xhr.open("GET", url, true);
-            xhr.send();
-            
-            // Detect connection timeouts
-            xhr.timeout = w;
-            xhr.ontimeout = function() {
-                rs(c, t, a);
-            };
-          
-        // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
-        } else if (c.accuracy < 300) {
-            
-            // No error reporting implemented!!
-            window.location = url;            
+                xhr.open("GET", url, true);
+                xhr.send();
+
+                // Detect connection timeouts
+                xhr.timeout = w;
+                xhr.ontimeout = function() {
+                    rs(c, t, a);
+                };
+
+                // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
+            } else if (c.accuracy < 300) {
+
+                // No error reporting implemented!!
+                window.location = url;
+            }
         }
     }
 
