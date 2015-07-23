@@ -11,16 +11,20 @@
 	 */
 ?>
 
-<? if(stristr($type,"select") !== false) { $class = (empty($class) ? 'input-block-level' : $class) ?> 
+<? if(stristr($type,"select") !== false) { $class = (empty($class) ? 'input-block-level' : $class) ?>
+    <div class="<?= $class ?>" >
+        <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
+        <select id="<?= $id ?>" name="<?= $id ?>" type="select" class="input-block-level" <?= $attributes ?>>
+            <?= $value ?>
+        </select>
+    </div>
 
-<div class="<?= $class ?>">
+<? } elseif(stristr($type,"textarea") !== false) { $class = (empty($class) ? 'input-block-level' : $class) ?>
+
     <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
-    <select id="<?= $id ?>" name="<?= $id ?>" type="select" class="input-block-level" <?= $attributes ?>>
-        <?= $value ?>
-    </select>
-</div>
+    <textarea class="<?= $class ?> id="<?= $id ?>" name="<?= $id ?>" width="100%" <?=$attributes?>><?=$value?></textarea>
 
-<? } elseif(stristr($type,"group") !== false) { $class = (empty($class) ? 'row-fluid' : $class) ?> 
+<? } elseif(stristr($type,"group") !== false) { $class = (empty($class) ? 'row-fluid' : $class) ?>
 
 <div class="<?= $class ?>">
 

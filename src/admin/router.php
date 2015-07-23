@@ -1213,6 +1213,27 @@
 
             die(ajax_response('message','list'));
 
+        case 'alert/list':
+
+            if($user->allow('read', 'alert.all') === FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            if(isset($_GET['name'])) {
+
+                echo ajax_response("alert.list");
+
+                exit;
+            }
+
+            $_ROUTER['name'] = T_('Alerts');
+            $_ROUTER['view'] = $_GET['view'];
+            break;
+
         case 'alert/close':
 
             if(is_ajax_request() === FALSE) {
@@ -1234,7 +1255,128 @@
             }
 
             exit;
-            
+
+        case 'alert/delete':
+
+            if(($id = input_get_int('id')) === FALSE) {
+
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Id not defined');
+                break;
+            }
+
+            if($user->allow('write', 'alert.all') === FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('Alerts');
+            $_ROUTER['view'] = 'alert/list';
+
+            $edit = Alert::get($id);
+
+            if($edit === false) {
+                $_ROUTER['error'] = sprintf(T_('Alert %1$s not found'), $id);
+            }
+            else if($edit->delete() === false) {
+                $_ROUTER['error'] = sprintf(T_('Alert %1$s not deleted'), $id) . ". ".
+                    (DB::errno() ? DB::error() : '');
+            }
+            else {
+                header("Location: ".ADMIN_URI.'alert/list');
+                exit();
+            }
+
+            break;
+
+        case 'alert/new':
+
+            $access = $user->allow('write', 'alert.all');
+
+            if(($access || $user->allow('write', 'alert', $id))=== FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('New').' '.  ucfirst(T_('Alert'));
+            $_ROUTER['view'] = 'alert/new';
+
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                // Validate checkbox
+                $_POST['alert_closeable'] = isset($_POST['alert_closeable']) ? 1 : 0;
+
+                $_POST['user_id'] = User::currentId();
+
+                $alert = new Alert($_POST);
+                if($alert->insert() === false) {
+                    $_ROUTER['error'] = DB::errno() ? DB::error() :
+                        sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+                } else {
+                    header("Location: ".ADMIN_URI.'alert/list');
+                    exit();
+                }
+            }
+
+            break;
+
+        case 'alert/edit':
+
+            if(($id = input_get_int('id')) === FALSE) {
+
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Id not defined');
+                break;
+            }
+
+            $access = $user->allow('write', 'alert.all');
+
+            if(($access || $user->allow('write', 'alert', $id))=== FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('Edit').' '.  ucfirst(T_('Alert'));
+            $_ROUTER['view'] = 'alert/edit';
+
+            // Process form?
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                // Get requested alert
+                $id = input_get_int('id');
+
+                $edit = Alert::get($id);
+                if($edit === false) {
+                    $_ROUTER['error'] = sprintf(T_('Alert %1$s not found'), $id);
+                    break;
+                }
+
+                // Validate checkbox
+                $_POST['alert_closeable'] = isset($_POST['alert_closeable']) ? 1 : 0;
+
+                if($edit->update($_POST) === false) {
+                    $_ROUTER['error'] = DB::errno() ? DB::error() :
+                        sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+                } else {
+                    header("Location: ".ADMIN_URI.'alert/list');
+                    exit();
+                }
+            }
+
+            break;
+
         default:
             $_ROUTER['name'] = T_('Illegal operation');
             $_ROUTER['view'] = "404";

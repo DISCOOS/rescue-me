@@ -344,8 +344,9 @@
             $query = "UPDATE `$table` SET ";
             $updates = array();
             foreach($values as $field =>$value) {
-                if(is_string($value)  && !($value === "NULL" || is_function($value))) 
+                if(is_string($value) && !($value === "NULL" || is_function($value))) {
                     $value = "'" . DB::escape($value) . "'";
+                }
                 $updates[] = "`$field`=$value";
             }
             $query .= implode(",", $updates);
@@ -360,16 +361,17 @@
                 Logs::write(Logs::DB, LogLevel::INFO, 'Updated ' . count($values) . " values in $table");
             }
             
-            return true;
+            return $res;
             
         }// update
-        
-        
+
+
         /**
          * Check if database exists.
-         * 
+         *
          * @param string $name Database name
-         * 
+         *
+         * @throws \Exception
          * @return boolean TRUE if success, FALSE otherwise.
          */
         public static function exists($name)
@@ -379,19 +381,20 @@
             {
                 $code = mysqli_connect_errno($mysqli);
                 $error = mysqli_connect_error($mysqli);
-                throw new Exception("Failed to connect to MySQL: " . $error, $code);
+                throw new \Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
             $result = $mysqli->select_db($name);
             unset($mysqli);
             return $result;
         }// exists
-        
-        
+
+
         /**
          * Create database with given name.
-         * 
+         *
          * @param string $name Database name
-         * 
+         *
+         * @throws \Exception
          * @return boolean TRUE if success, FALSE otherwise.
          */
         public static function create($name)
@@ -401,7 +404,7 @@
             {
                 $code = mysqli_connect_errno($mysqli);
                 $error = mysqli_connect_error($mysqli);
-                throw new Exception("Failed to connect to MySQL: " . $error, $code);
+                throw new \Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
             $res = $mysqli->select_db($name);
             if($res === FALSE)

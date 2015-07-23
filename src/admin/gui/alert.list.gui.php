@@ -1,32 +1,29 @@
 <?php
 
-    use RescueMe\User;
-    
-    if(isset($_ROUTER['error'])) {
-        insert_error($_ROUTER['error']);
-        unset($_ROUTER['error']);
-    }
-    
-    $name = isset($_GET['name']) ? $_GET['name'] : User::ALL;
-    
-    $titles = RescueMe\User::getTitles();
-    
-    $states = array();
-    $num_pending = User::count(array(User::PENDING));
-    if ($num_pending === 0) {
-        $num_pending = '';
-    }
+use RescueMe\Domain\Alert;
+
+if(isset($_ROUTER['error'])) {
+    insert_error($_ROUTER['error']);
+    unset($_ROUTER['error']);
+}
+
+$name = isset($_GET['name']) ? $_GET['name'] : Alert::ALL;
+
+$titles = array(
+    Alert::ACTIVE => T_('Active'),
+    Alert::EXPIRED => T_('Expired'),
+    Alert::ALL => T_('All')
+);
+
+$states = array();
+
 ?>
 
 <h3><?=T_("Users")?></h3>
 
 <ul id="tabs" class="nav nav-tabs">
 <? foreach($titles as $state => $title) { $states[] = $state; ?>
-  <li><a href="#<?=$state?>" data-toggle="tab"><?=$title?>
-  <? if ($state == User::PENDING) { ?>
-          <span class="badge badge-important"><?= $num_pending ?></span>
-  <? } ?>
-      </a   ></li>
+  <li><a href="#<?=$state?>" data-toggle="tab"><?=$title?></a></li>
 <? } ?>  
 </ul>
 <div class="tab-content" style="width: auto; overflow: visible">       
@@ -35,10 +32,8 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><?=T_("Name")?></th>
-                    <th><?=T_("Role")?></th>
-                    <th><?=T_("Mobile")?></th>
-                    <th class="hidden-phone"><?=T_("E-mail")?></th>
+                    <th><?=T_("Subject")?></th>
+                    <th><?=T_("Until")?></th>
                     <th>
                         <input type="text" 
                                class="input-medium search-query pull-right" 
@@ -55,7 +50,9 @@
     </div>    
 <? } ?>  
 </div>
-    
+
+<?insert_action(T_('New alert'), ADMIN_URI."alert/new", "icon-plus-sign");?>
+
 <script>
     R.tabs('tabs');
 </script>

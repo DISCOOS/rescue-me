@@ -41,6 +41,8 @@ use RescueMe\User;
             <li id="roles"><a role="menuitem" href="<?= ADMIN_URI ?>role/list"><b class="icon icon-th-list"></b><?=T_('Roles')?></a></li>
         <? } if ($user->allow('read', 'logs')) { ?>
             <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?=T_('Logs')?></a></li>
+        <? } if ($user->allow('read', 'alert.all')) { ?>
+            <li id="alerts"><a href="<?= ADMIN_URI ?>alert/list"><b class="icon icon-list"></b><?=T_('Alerts')?></a></li>
             <li class="divider"></li>
         <? } if ($user->allow('write', 'setup.all')) { ?>
             <li id="system_settings"><a href="<?= ADMIN_URI ?>setup/0"><b class="icon icon-wrench"></b><?= T_('System setup') ?></a></li>
