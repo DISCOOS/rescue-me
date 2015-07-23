@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-23 21:58+0100\n"
-"PO-Revision-Date: 2015-02-23 21:58+0100\n"
+"POT-Creation-Date: 2015-07-23 16:49+0100\n"
+"PO-Revision-Date: 2015-07-23 16:50+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
 "Language: nb_NO\n"
@@ -54,46 +54,45 @@ msgstr ""
 "Plassering."
 
 #: sms/classes/RescueMe/SMS/T.php:53
-#, php-format
-msgid "Received location of #m_name: #pos (+/-#acc m)! %1$s"
-msgstr "Mottatt posisjon på #m_name: #pos (+/-#acc m)! %1$s"
+msgid "Received location of #m_name: #pos (+/-#acc m)!"
+msgstr "Mottatt posisjon på #m_name: #pos (+/-#acc m)!"
 
-#: sms/classes/RescueMe/SMS/Sveve.php:55
-#: sms/classes/RescueMe/SMS/Clickatell.php:79
+#: sms/classes/RescueMe/SMS/Sveve.php:58
+#: sms/classes/RescueMe/SMS/Clickatell.php:81
 msgid "User"
 msgstr "Bruker"
 
-#: sms/classes/RescueMe/SMS/Sveve.php:56 sms/classes/RescueMe/SMS/UMS.php:62
-#: sms/classes/RescueMe/SMS/Clickatell.php:80
+#: sms/classes/RescueMe/SMS/Sveve.php:59 sms/classes/RescueMe/SMS/UMS.php:65
+#: sms/classes/RescueMe/SMS/Clickatell.php:82
 msgid "Password"
 msgstr "Passord"
 
-#: sms/classes/RescueMe/SMS/Sveve.php:57 sms/classes/RescueMe/SMS/Nexmo.php:73
-#: sms/classes/RescueMe/SMS/Clickatell.php:81
+#: sms/classes/RescueMe/SMS/Sveve.php:60 sms/classes/RescueMe/SMS/Nexmo.php:76
+#: sms/classes/RescueMe/SMS/Clickatell.php:83
 msgid "Callback"
 msgstr "Callback"
 
-#: sms/classes/RescueMe/SMS/UMS.php:60
+#: sms/classes/RescueMe/SMS/UMS.php:63
 msgid "Company ID"
 msgstr "Company ID"
 
-#: sms/classes/RescueMe/SMS/UMS.php:61
+#: sms/classes/RescueMe/SMS/UMS.php:64
 msgid "Department ID"
 msgstr "Department ID"
 
-#: sms/classes/RescueMe/SMS/Nexmo.php:71
+#: sms/classes/RescueMe/SMS/Nexmo.php:74
 msgid "Key"
 msgstr "Key"
 
-#: sms/classes/RescueMe/SMS/Nexmo.php:72
+#: sms/classes/RescueMe/SMS/Nexmo.php:75
 msgid "Secret"
 msgstr "Secret"
 
-#: sms/classes/RescueMe/SMS/Nexmo.php:97
+#: sms/classes/RescueMe/SMS/Nexmo.php:100
 msgid "Invalid key or secret"
 msgstr "Ulovlig Key eller Secret"
 
-#: sms/classes/RescueMe/SMS/Clickatell.php:78
+#: sms/classes/RescueMe/SMS/Clickatell.php:80
 msgid "API ID"
 msgstr "API ID"
 
