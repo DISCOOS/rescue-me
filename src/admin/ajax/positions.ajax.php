@@ -22,9 +22,9 @@ while(time() <= $endtime){
     if (sizeof($positions) > 0) {
         break;
     }
-    // We don't run "live" against the DB - check every 3 sec
+    // We don't run "live" against the DB - check every 1 sec
     // TODO: Config-value?
-    usleep(3000);
+    usleep(1000000);
 }
 foreach ($positions as $key=>$value) {
     $posText = format_pos($value, $params);
