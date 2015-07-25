@@ -52,7 +52,7 @@ function get(id) {
  * Implement location algorithm
  */
 R.trace.locate = function() {
-    
+
     /*
      * Countdown timer id
      */
@@ -67,66 +67,66 @@ R.trace.locate = function() {
      * Seconds until failure in seconds
      */
     var w = (q.wait/1000);
-    
+
     /*
      * Image element
      */
     var i = get("i");
-    
+
     /*
      * Feedback element
      */
     var f = get("f");
-    
+
     /*
      * Countdown element
-     */    
+     */
     var s = get("s");
-    
+
     /*
      * Location element
      */
     var l = get("l");
-    
+
     /* ===================================================
      *  Register geolocation callback
      * =================================================== */
     if(ngl) {
-        
+
         setTimeout(function() {R.trace.change(rp, se, q);}, q.delay ? 3000 : 0);
-        
+
         // Register progress indicator
         var im = d.createElement("img");
         im.src = R.app.url+"img/loading.gif";
         i.appendChild(im);
         s.innerHTML = pt(w);
         cID = setTimeout(cd, 1000);
-        
+
     } else {
         // 'Location not supported on this device'
         f.innerHTML = msg[0];
-    }    
-    
-    
+    }
+
+
     /*
      * Show position
      * @param c position coordinates
      * @param a position age
      */
     function sp(c, a) {
-        
+
         // Notify position found with given accuracy
         var m = msg[1].replace('{0}',Math.ceil(c.accuracy)) + '... <br />';
-        
+
         // Tell client to check if GPS is off?
         if(a > q.age) m += msg[2] + '<br />';
-        
+
         // Update views
-        f.innerHTML = m;        
+        f.innerHTML = m;
         l.innerHTML = ps(c);
-        
+
     }
-    
+
     /*
      * Decrement countdown
      */
@@ -141,7 +141,7 @@ R.trace.locate = function() {
             f.innerHTML += '<br />' + (lc === null ? msg[12] : pm(lc)) + rt();
         }
     }
-    
+
     /**
      * Insert retry url
      */
@@ -168,7 +168,7 @@ R.trace.locate = function() {
                 break;
         }
     }
-    
+
     /**
      * Report acquired location to server
      * @param c position coordinates
@@ -186,7 +186,7 @@ R.trace.locate = function() {
                 xhr = false;
             }
         }
-        
+
         l.innerHTML = ps(c);
 
         if(c) {
@@ -213,6 +213,7 @@ R.trace.locate = function() {
                                 // Continue listen for position changes
                                 f.innerHTML += '<br />' + msg[3];
                             }
+                            clearTimeout(rID);
                         } else {
                             rs(c, t, a);
                         }
@@ -222,13 +223,13 @@ R.trace.locate = function() {
                 xhr.open("GET", url, true);
                 xhr.send();
 
-                // Detect connection timeouts
-                xhr.timeout = w;
+                // Detect connection timeouts (limit to residue)
+                xhr.timeout = w * 1000;
                 xhr.ontimeout = function() {
                     rs(c, t, a);
                 };
 
-                // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
+                // Fallback for those not supporting XMLhttp request. Known: WP 7.8
             } else if (c.accuracy < 300) {
 
                 // No error reporting implemented!!
@@ -264,8 +265,8 @@ R.trace.locate = function() {
         var l = lp(c);
         return msg[8].replace('{0}',l);
     }
-    
-    
+
+
     /**
      * Print SMS link
      */
@@ -285,7 +286,7 @@ R.trace.locate = function() {
     function lp(c) {
         return (c ? c.longitude.toFixed(4) + 'E ' + c.latitude.toFixed(4) + 'N' : '?');
     }
-    
+
     /**
      * Print time in minutes and seconds
      * @param t time in seconds
@@ -293,17 +294,17 @@ R.trace.locate = function() {
     function pt(t) {
         return Math.floor(t / 60) +" m " + (t - Math.floor(t / 60) * 60) + " s";
     }
-    
+
 };
 
 /**
  * Handle geolocation change.
- * 
+ *
  * @param gf GeoLocation found
  * @param ge GeoLocation error occured
  * @param o Geolocation Options: {
- *                      wait: maximum time to wait for position, 
- *                      age: only accept positions younger than this, 
+ *                      wait: maximum time to wait for position,
+ *                      age: only accept positions younger than this,
  *                      acc: continue to wait for position until desired position is aquired
  *                  }
  * @returns void
@@ -316,21 +317,21 @@ R.trace.change = function (gf, ge, o) {
      * Handle location checks
      */
     var hc = function (p) {
-        
+
         // Used on timeout
         lc = p.coords;
-        
+
         var q = lc.accuracy;
         var a = Date.now() - p.timestamp;
-        
-        // We ignore the first event unless it's the only one 
+
+        // We ignore the first event unless it's the only one
         // received because some devices seem to send a cached
         // location even when maximumAge is set to zero!
         if((q <= o.acc) && a <= o.age) {
             gf(p.coords, p.timestamp, true);
             clearTimeout(tID);
             ngl.clearWatch(wID);
-        // If the position has improved, report it
+            // If the position has improved, report it
         } else if (q < la) {
             gf(p.coords, p.timestamp, false);
             la = q;
@@ -353,8 +354,7 @@ R.trace.change = function (gf, ge, o) {
     var fp = function (c) {
         gf(c, true);
     };
-    
-    /*
+
     /*
      * Stop trying to get location fix.
      */
