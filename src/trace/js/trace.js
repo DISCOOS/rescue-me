@@ -213,6 +213,7 @@ R.trace.locate = function() {
                                 // Continue listen for position changes
                                 f.innerHTML += '<br />' + msg[3];
                             }
+                            clearTimeout(rID);
                         } else {
                             rs(c, t, a);
                         }
@@ -222,13 +223,13 @@ R.trace.locate = function() {
                 xhr.open("GET", url, true);
                 xhr.send();
 
-                // Detect connection timeouts
-                xhr.timeout = w;
+                // Detect connection timeouts (limit to residue)
+                xhr.timeout = w * 1000;
                 xhr.ontimeout = function() {
                     rs(c, t, a);
                 };
 
-                // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
+                // Fallback for those not supporting XMLhttp request. Known: WP 7.8
             } else if (c.accuracy < 300) {
 
                 // No error reporting implemented!!
