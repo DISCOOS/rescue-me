@@ -10,7 +10,8 @@
  */
 
 namespace RescueMe\Email;
-use RescueMe\User;
+
+use RescueMe\Domain\User;
 
 
 /**

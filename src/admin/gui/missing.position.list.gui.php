@@ -36,7 +36,7 @@ var posFormat = '<?=Properties::text(Properties::MAP_DEFAULT_FORMAT, $user_id)?>
 
         R.map.load('map', <?=$centerMap->lat;?>, <?=$centerMap->lon;?>, <?=$centerMap->acc;?>, type);
 
-     <? } else { ?>
+        <? } else { ?>
 
             if (navigator.geolocation)
             {

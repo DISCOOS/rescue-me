@@ -67,11 +67,11 @@
     <? require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
     <div id="map" class="map"></div>
     <div id="sidebar">
-        <h4 id="under1kmtitle" class="hide"><?=sprintf(T_('Locations &le; %1$s'),'1 km')?></h4>
-        <ul class="unstyled" id="under1km"></ul>
+        <h4 id="lt1kmtitle" class="hide"><?=sprintf(T_('Locations &le; %1$s'),'1 km')?></h4>
+        <ul class="unstyled" id="lt1km"></ul>
         </ul>
-        <h4 id="over1kmtitle" class="hide"><?=sprintf(T_('Locations &gt; %1$s'),'1 km')?></h4>
-        <ul class="unstyled" id="over1km"></ul>
+        <h4 id="ge1kmtitle" class="hide"><?=sprintf(T_('Locations &gt; %1$s'),'1 km')?></h4>
+        <ul class="unstyled" id="ge1km"></ul>
     </div>
 
     <div class="clearfix"></div>

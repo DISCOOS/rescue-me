@@ -357,6 +357,11 @@ li.position {
     margin-top: 15px;
 }
 
+#map
+{
+    height: 40vh;
+}
+
 /*==========================================
 / [trace/new] form
 /=========================================*/
@@ -480,5 +485,9 @@ td.description {
 
 .accordion-group {
     margin-top: 10px;
+}
+
+.display.none {
+    display: none !important;
 }
 

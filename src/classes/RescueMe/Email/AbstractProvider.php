@@ -14,7 +14,7 @@ namespace RescueMe\Email;
 
 use RescueMe\AbstractModule;
 use RescueMe\Configuration;
-use RescueMe\User;
+use RescueMe\Domain\User;
 
 /**
  * Class AbstractProvider

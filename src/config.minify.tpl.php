@@ -52,9 +52,10 @@
                 '//js/validate.js',
                 '//admin/js/admin.js'
             ),
-            'map.js' => array
+            'google.js' => array
             (
-                '//admin/js/map.js'
+                '//js/map.js',
+                '//js/google.js'
             )
             
         );        
@@ -87,7 +88,7 @@
             $install = get_rescueme_install();
             
             // Get js wrapped inside self-invoking function.
-            $content = "(function(window,document,install,undefined){".$content."}(window,document,$install));";
+            $content = "(function(window,document,install){".$content."}(window,document,$install));";
 
         }
         else if ($type === Minify::TYPE_CSS) {

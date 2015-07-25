@@ -448,8 +448,11 @@
 
                 if($user !== false) {
 
-                    $user->prepare(input_get_string('use_system_sms_provider', false));
-                    
+                    // Configure given user to use system modules?
+                    if(input_post_string('use_system_sms_provider')) {
+                        Manager::prepare($user->id, true, SMS::TYPE);
+                    }
+
                     if($admin === false) {
                         $_ROUTER['name'] = T_('Request sent');
                         $_ROUTER['view'] = 'continue';
@@ -497,7 +500,8 @@
                 
                 // Get requested user
                 $id = input_get_int('id', User::currentId());
-                
+
+                /** @var User $edit */
                 $edit = User::get($id);
                 if($edit === false) {
                     $_ROUTER['error'] = sprintf(T_('User %1$s not found'), $id);
@@ -543,7 +547,7 @@
 
                     // Configure given user to use system modules?
                     if(input_post_string('use_system_sms_provider')) {
-                        $edit->prepare(true);
+                        Manager::prepare($edit->id, true, SMS::TYPE);
                     }
 
                     header("Location: ".ADMIN_URI.$url);
@@ -952,9 +956,10 @@
             
             if (is_post_request()) {
                 
-                $missings = Operation::get($id)->getAllMissing($admin);
-                if($missings !== FALSE) {
-                    foreach($missings as $missing) {
+                $list = Operation::get($id)->getAllMissing($admin);
+                if($list !== FALSE) {
+                    /** @var Missing $missing */
+                    foreach($list as $missing) {
                         $missing->anonymize($_POST['m_sex']. ' ('.$_POST['m_age'].')');
                     }
                 }
@@ -994,8 +999,8 @@
             } 
             
             $operation = Operation::get($id);
-            $missings = $operation->getAllMissing($admin);
-            $missing = reset($missings);
+            $list = $operation->getAllMissing($admin);
+            $missing = reset($list);
             $missing_id = $missing->id;
             
             header("Location: ".ADMIN_URI."missing/edit/{$missing_id}?reopen");

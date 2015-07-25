@@ -95,7 +95,7 @@ class Closed extends AbstractState {
     public function isAccurate() {
 
         return $this->isAccepted() && $this->isLocated() &&
-        $this->data->last_pos->acc <= $this->getDesiredAccuracy();
+        $this->getMostAccurate()->acc <= $this->getDesiredAccuracy();
     }
 
 

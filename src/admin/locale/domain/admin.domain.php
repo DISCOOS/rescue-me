@@ -20,6 +20,11 @@
             $json['validate']['minlength'] = T_('Please enter at least {0} characters');
             $json['validate']['email'] = T_('Please enter a valid email address');
             $json['validate']['equalto'] = T_('Please enter the same value again');
+            $json['validate']['equalto'] = T_('Please enter the same value again');
+            $json['map']['timestamp'] = T_('Time');
+            $json['map']['altitude'] = T_('Altitude');
+            $json['map']['accuracy'] = T_('Accuracy');
+            $json['map']['format']['ddg'] = T_('Decimal degrees');
             return json_encode($json);
         }
 

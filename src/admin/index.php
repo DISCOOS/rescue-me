@@ -105,8 +105,6 @@ if(defined('USE_SILEX') && USE_SILEX) {
         <link rel="shortcut icon" href="<?=APP_URI?>img/favicon.ico" >
         <link rel="apple-touch-icon" href="<?=APP_URI?>img/rescueme-non-trans.png" >
         <link href="<?=APP_URI?>css/admin.css" rel="stylesheet">
-
-        <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
         <script type="text/javascript" src="<?=APP_URI?>js/admin.js"></script>
     </head>
 

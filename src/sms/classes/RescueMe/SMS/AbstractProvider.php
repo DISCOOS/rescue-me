@@ -15,11 +15,10 @@
     use RescueMe\AbstractModule;
     use RescueMe\Configuration;
     use RescueMe\Domain\Messages;
-    use \RescueMe\Locale;
-    use \Psr\Log\LogLevel;
-    use \RescueMe\Log\Logs;
-    use \RescueMe\Properties;
-    use RescueMe\Domain\User;
+    use RescueMe\Locale;
+    use Psr\Log\LogLevel;
+    use RescueMe\Log\Logs;
+    use RescueMe\Properties;
 
 
     /**

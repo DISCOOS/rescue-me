@@ -16,6 +16,7 @@ use RescueMe\Device\WURFL;
 use RescueMe\Domain\Missing;
 use RescueMe\Domain\Operation;
 use RescueMe\Domain\Position;
+use RescueMe\Domain\User;
 use RescueMe\Finite\State;
 use RescueMe\Finite\Trace\Factory;
 use RescueMe\Finite\Trace\State\Accepted;
@@ -28,8 +29,12 @@ use RescueMe\Finite\Trace\State\LocationTimeout;
 use RescueMe\Finite\Trace\State\Sent;
 use RescueMe\Finite\Trace\State\TraceTimeout;
 use RescueMe\Locale;
+use RescueMe\Manager;
+use RescueMe\Map\Google;
+use RescueMe\Properties;
 use RescueMe\SMS\Provider;
 use RescueMe\View\AbstractStateView;
+use RescueMe\Map\Provider as Map;
 use Twig_Environment;
 
 
@@ -95,24 +100,19 @@ class Trace extends AbstractStateView {
                 return $this->getContextDelivered($missing, $state);
             case Accepted::NAME:
                 /** @var Accepted $state */
-                $this->getContextAccepted($missing, $state, $this->params);
-                break;
+                return $this->getContextAccepted($missing, $state, $this->params);
             case LocationTimeout::NAME:
                 /** @var LocationTimeout $state */
-                $this->getContextLocationTimeout($missing, $state);
-                break;
+                return $this->getContextLocationTimeout($missing, $state);
             case Located::NAME:
                 /** @var Located $state */
-                $this->getContextLocated($missing, $state);
-                break;
+                return $this->getContextLocated($missing, $state);
             case TraceTimeout::NAME:
                 /** @var TraceTimeout $state */
-                $this->getContextTraceTimeout($missing, $state);
-                break;
+                return $this->getContextTraceTimeout($missing, $state);
             case Closed::NAME:
                 /** @var Closed $state */
                 return $this->getContextClosed($missing, $state);
-                break;
         }
 
         return $context;
@@ -126,13 +126,15 @@ class Trace extends AbstractStateView {
      * @param $icon string Status icon type
      * @param $color string Status icon color
      * @param $status string Status text
-     * @param $reasons string|array Status reasons (arrays are converted to paragraphs)
-     * @param $details string|array Status details (arrays are converted to bullet list)
+     * @param $reason string Status reason
+     * @param $details string|array Status details (arrays are converted to paragraphs)
+     * @param $checks string|array Status checks (arrays are converted to bullet list)
      * @param $actions string|array Action items
-     * @param $missing \RescueMe\Domain\Missing Missing instance
+     * @param $map boolean Insert map
+     * @param $missing Missing Missing instance
      * @return array
      */
-    function createContext($label, $icon, $color, $status, $reasons, $details, $actions, $missing) {
+    function createContext($label, $icon, $color, $status, $reason, $details, $checks, $actions, $map, $missing) {
 
         $name = $missing->name;
         if(Operation::isClosed($missing->op_id)) {
@@ -147,8 +149,9 @@ class Trace extends AbstractStateView {
                 'color' => $color,
                 'short' => $status,
                 'title' => T_('Status details'),
-                'reasons' => insert_elements('p',is_array($actions) ? $reasons : array($reasons)),
-                'details' => insert_bullets(is_array($details) ? $details : array($details))
+                'reason' => $reason,
+                'details' => insert_elements('p',is_array($details) ? $details : array($details)),
+                'checks' => insert_bullets(is_array($checks) ? $checks : array($checks))
             ),
             'actions' => array(
                 'title' => T_('Proposed actions'),
@@ -158,6 +161,7 @@ class Trace extends AbstractStateView {
                 'title' => T_('Trace details')
             ),
             'handset' => $this->createHandset($missing),
+            'map' => $map ? $this->createMap($missing) : array(),
             'events' => array(
                 'title' => T_('Event log'),
                 'items' => array(
@@ -184,7 +188,7 @@ class Trace extends AbstractStateView {
 
     /**
      * Create handset data
-     * @param \RescueMe\Domain\Missing $missing
+     * @param Missing $missing
      * @return string
      */
     function createHandset($missing) {
@@ -252,6 +256,35 @@ class Trace extends AbstractStateView {
         );
     }
 
+
+    /**
+     * Create map
+     * @param Missing $missing
+     * @return array
+     */
+    function createMap($missing) {
+
+        /** @var Google $map */
+        $map = Manager::get(Map::TYPE, User::currentId())->newInstance();
+        return array(
+            'inject' => $map->inject(),
+            'install' => $map->install(
+                'map',
+                sprintf(ADMIN_URI.'positions/%1$s)', $missing->id),
+                $missing->getPositions(),
+                $this->params
+            ),
+            'positions' => array(
+                'empty' => T_('No locations received'),
+                'title' => array(
+                    'lt1km' => sprintf(T_('Locations &le; %1$s'),'1 km'),
+                    'ge1km' => sprintf(T_('Locations &gt; %1$s'),'1 km')
+                )
+            ),
+        );
+
+    }
+
     /**
      * Get lookup text from value
      * @param int $value
@@ -273,7 +306,7 @@ class Trace extends AbstractStateView {
     /**
      * Create send sms action
      * @param $title string
-     * @param $missing \RescueMe\Domain\Missing
+     * @param $missing Missing
      * @return array
      */
     function createActionSendSMS($title, $missing) {
@@ -289,7 +322,7 @@ class Trace extends AbstractStateView {
 
     /**
      * Create resend action
-     * @param $missing \RescueMe\Domain\Missing
+     * @param $missing Missing
      * @return array
      */
     function createActionResend($missing) {
@@ -300,7 +333,7 @@ class Trace extends AbstractStateView {
 
     /**
      * Create close operation action
-     * @param $missing \RescueMe\Domain\Missing
+     * @param $missing Missing
      * @return array
      */
     function createActionCloseOperation($missing) {
@@ -312,7 +345,7 @@ class Trace extends AbstractStateView {
 
     /**
      * Create reopen operation action
-     * @param $missing \RescueMe\Domain\Missing
+     * @param $missing Missing
      * @return array
      */
     function createActionReopenOperation($missing) {
@@ -325,7 +358,7 @@ class Trace extends AbstractStateView {
     /**
      * Create edit trace action
      * @param $title string
-     * @param $missing \RescueMe\Domain\Missing
+     * @param $missing Missing
      * @return array
      */
     function createActionEditMissing($title, $missing) {
@@ -415,17 +448,20 @@ class Trace extends AbstractStateView {
 
         // Analyze state
         if($state->isProviderNotInstalled()) {
-            $reasons = T_('SMS provider is not installed, please check');
-            $details = T_('SMS provider configuration');
+            $reason = T_('SMS provider is not installed');
+            $details = T_('Please ensure that');
+            $checks = T_('SMS provider configuration');
             $actions = $this->createActionSetupOpen(T_('SMS'), 'sms');
         }
         else if($state->isProviderConfigInvalid()) {
-            $reasons = T_('SMS provider is not configured correctly, please check');
-            $details = T_('SMS provider credentials');
+            $reason = T_('SMS provider is not configured correctly');
+            $details = T_('Please ensure that');
+            $checks = T_('SMS provider credentials');
             $actions = $this->createActionEditProvider($state->getProvider());
         } else {
-            $reasons = T_('SMS provider is configured correctly, please check that');
-            $details = array(
+            $reason = T_('SMS provider is configured correctly');
+            $details = T_('Please ensure that');
+            $checks = array(
                 T_('Phone number is entered correctly'),
                 T_('SMS log contains no errors')
             );
@@ -440,10 +476,13 @@ class Trace extends AbstractStateView {
             'bullhorn',
             'red',
             T_('Trace created, no SMS sent'),
-            $reasons,
+            $reason,
             $details,
+            $checks,
             $actions,
-            $missing);
+            false,
+            $missing
+        );
 
         return $context;
     }
@@ -460,9 +499,16 @@ class Trace extends AbstractStateView {
             'envelope',
             'blue',
             sprintf(T_('SMS sent, not delivered yet (%1$s)'), format_time($state->getTimeSince())),
-            sprintf(T_('Delivery is expected within %1$s'),format_time(DeliveryTimeout::TIMEOUT)),
-            array(),
-            $this->createActionEditMissing(T_('Edit trace details'),$missing),
+            sprintf(T_('Delivery is expected within %1$s'), format_time(DeliveryTimeout::TIMEOUT)),
+            T_('Please note that the handset can be'),
+            array(
+                T_('Out of range'),
+                T_('Out of power'),
+                T_('Turned off'),
+                T_('Registered on network not accepting SMS')
+            ),
+            $this->createActionEditMissing(T_('Edit trace details'), $missing),
+            false,
             $missing
         );
 
@@ -482,8 +528,14 @@ class Trace extends AbstractStateView {
             'blue',
             sprintf(T_('SMS delivered, waiting on response (%1$s)'), format_time($state->getTimeSince())),
             sprintf(T_('Response is expected within %1$s'), format_time(DeliveryTimeout::TIMEOUT)),
-            array(),
+            T_('Please note that'),
+            array(
+                T_('Handset can have no data connection'),
+                T_('SMS could be in an foreign language'),
+                T_('Receiver might not want to be located'),
+            ),
             $this->createActionResend($missing),
+            false,
             $missing
         );
 
@@ -492,7 +544,7 @@ class Trace extends AbstractStateView {
 
     /**
      * Insert State 'DeliveryTimeout'
-     * @param $missing \RescueMe\Domain\Missing
+     * @param $missing Missing
      * @param $state DeliveryTimeout
      * @return array
      */
@@ -502,10 +554,8 @@ class Trace extends AbstractStateView {
             'eye-open',
             'yellow',
             sprintf(T_('Delivery timeout (%1$s)'), format_time($state->getTimeSince())),
-            array(
-                T_('The phone may be out of power or coverage.'),
-                T_('Please ensure that')
-            ),
+            T_('The phone may be out of power or coverage.'),
+            T_('Please verify that'),
             array(
                 T_('Phone number is entered correctly'),
                 T_('Coverage in target area is sufficient')
@@ -515,6 +565,7 @@ class Trace extends AbstractStateView {
                 $this->createActionResend($missing),
                 $this->createActionCloseOperation($missing)
             ),
+            false,
             $missing
         );
 
@@ -535,8 +586,15 @@ class Trace extends AbstractStateView {
             'blue',
             sprintf(T_('Trace is accepted, waiting on location (%1$s)'), format_time($state->getTimeSince())),
             sprintf(T_('Location is expected within %1$s'), format_time($params[LocationTimeout::LOCATION_MAX_WAIT])),
-            array(),
-            array(),
+            T_('Please note that'),
+            array(
+                T_('Handset might not support GeoLocation'),
+                T_('Receiver might might accept location sharing'),
+            ),
+            array(
+                $this->createActionSendSMS(T_('Send instructions'), $missing),
+            ),
+            false,
             $missing
         );
 
@@ -554,7 +612,7 @@ class Trace extends AbstractStateView {
         if($state->isAccurate()) {
             $label = 'success';
             $color = 'green';
-            $reasons = T_('High accuracy location found.');
+            $reason = T_('High accuracy location found.');
             $details = array(
                 T_('This is the final state.'),
                 T_('Please remember to close as soon as possible.')
@@ -563,7 +621,7 @@ class Trace extends AbstractStateView {
         } else {
             $label = 'warning';
             $color = 'yellow';
-            $reasons = T_('Position is inaccurate.');
+            $reason = T_('Position is inaccurate.');
             $details = sprintf(T_('The handset updates the location until accuracy < %1$s m'),
                 $state->getDesiredAccuracy());
             $actions =array(
@@ -584,9 +642,11 @@ class Trace extends AbstractStateView {
             'flag',
             $color,
             $status,
-            $reasons,
+            $reason,
             $details,
+            array(),
             $actions,
+            true,
             $missing
         );
 
@@ -605,22 +665,24 @@ class Trace extends AbstractStateView {
             $icon = 'flag';
             $label = 'success';
             $color = 'green';
-            $reasons = T_('High accuracy location found.');
-            $details = array();
+            $reason = T_('High accuracy location found.');
+            $map = true;
         } else if($state->isLocated()) {
             $icon = 'flag';
             $label = 'warning';
             $color = 'yellow';
-            $reasons = T_('Position is inaccurate.');
-            $details = sprintf(T_('The operation was closed %1$s'),
-                format_tz($state->getOperation()->op_closed));
+            $reason = T_('Position is inaccurate.');
+            $map = true;
         } else {
             $icon = 'off';
             $label = 'info';
             $color = 'blue';
-            $reasons = T_('Operation closed before location was reported.');
-            $details = array();
+            $reason = T_('Operation closed before location was reported.');
+            $map = false;
         }
+
+        $details = sprintf(T_('The operation was closed %1$s'),
+            format_tz($state->getOperation()->op_closed));
 
         /** @var Position $position */
         $position = $state->getMostAccurate();
@@ -636,9 +698,11 @@ class Trace extends AbstractStateView {
             $icon,
             $color,
             $status,
-            $reasons,
+            $reason,
             $details,
+            array(),
             $this->createActionReopenOperation($missing),
+            $map,
             $missing
         );
 
@@ -658,14 +722,16 @@ class Trace extends AbstractStateView {
             'yellow',
             sprintf(T_('Location timeout (%1$s)'), format_time($state->getData())),
             T_('Location not received within reasonable time.'),
+            T_('Please note that'),
             array(
-                T_('The phone may be out of power or coverage'),
+                T_('Handset may be out of power or coverage'),
                 T_('Location services are turned off or not available'),
                 T_('User choose not to share location with you.')
             ),
             array(
                 $this->createActionSendSMS(T_('Send instructions'), $missing)
             ),
+            false,
             $missing
         );
 
@@ -684,9 +750,13 @@ class Trace extends AbstractStateView {
             'exclamation-sign',
             'yellow',
             sprintf(T_('Location timeout (%1$s)'), format_time($state->getData())),
+            T_('The maximum trace time is exceeded.'),
+            T_('Recommended action is to close this trace now.'),
             array(),
-            T_('The maximum trace time is exceeded. Recommended action is to close this trace now.'),
-            array(),
+            array(
+                $this->createActionCloseOperation($missing)
+            ),
+            false,
             $missing
         );
 

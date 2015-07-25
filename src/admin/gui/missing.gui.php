@@ -11,7 +11,6 @@
 
 namespace RescueMe\View\Trace;
 
-use RescueMe\Finite\Trace\Factory;
 use RescueMe\Manager;
 use RescueMe\Properties;
 use RescueMe\SMS\Provider;
@@ -52,7 +51,7 @@ else {
 
     $view->apply($missing);
 
-    echo $view->render();
+    echo $view->render(array('userId' => $userId));
 
     // Insert input dialog
     $form = create_sms_form($twig, 'sms-send-form', $missing->message_data);

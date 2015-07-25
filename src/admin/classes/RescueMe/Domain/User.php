@@ -12,11 +12,9 @@
 
     namespace RescueMe\Domain;
     
-    use \Psr\Log\LogLevel;
+    use Psr\Log\LogLevel;
     use RescueMe\DB;
-    use RescueMe\Domain\Operation;
-    use RescueMe\Domain\Roles;
-    use \RescueMe\Log\Logs;
+    use RescueMe\Log\Logs;
     use RescueMe\Manager;
     use RescueMe\Properties;
     use RescueMe\SMS\Provider;
@@ -285,13 +283,12 @@
         public static function current() {
             return isset($_SESSION['user_id']) ? User::get($_SESSION['user_id']) : false;
         }
-        
-        
+
+
         /**
          * Get user id from SMS provider reference id
-         * 
+         * @param $provider
          * @param integer $reference
-         * 
          * @return integer|boolean Operation id if success, FALSE otherwise.
          */
         public static function getProviderUserId($provider, $reference) {
@@ -314,9 +311,9 @@
          * Get user with given id
          * 
          * @param integer $id User id
-         * @param \RescueMe\User Update user instance
+         * @param User $user User instance to update (optional, if null create new instance)
          * 
-         * @return boolean|\RescueMe\User
+         * @return boolean|User
          */
         public static function get($id, $user = null) {
             

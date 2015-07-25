@@ -521,17 +521,17 @@
             switch($name) {
                 case self::SYSTEM_COUNTRY_PREFIX:
                     foreach(Locale::getCountryNames() as $code => $country) {
-                        $options[] = array('value' =>  $code, 'text' => $country);
+                        $options[$code] = array('value' =>  $code, 'text' => $country);
                     }
                     break;
                 case self::SYSTEM_LOCALE:
                     foreach(Locale::getLanguageNames() as $value => $name) {
-                        $options[] = array('value' => $value, 'text' => $name);
+                        $options[$value] = array('value' => $value, 'text' => $name);
                     }
                     break;
                 case self::SYSTEM_TIMEZONE:
                     foreach(TimeZone::getNames() as $value => $name) {
-                        $options[] = array('value' => $value, 'text' => $name);
+                        $options[$value] = array('value' => $value, 'text' => $name);
                     }
                     break;
                 case self::SMS_REQUIRE:
@@ -540,7 +540,7 @@
 
                     foreach(self::$meta[$name]['options'] as $code => $text) {
                         if($uses === false || in_array($code, $uses)) {
-                            $options[] = array('value' => $code, 'text' => $text);
+                            $options[$code] = array('value' => $code, 'text' => $text);
                         }
                     }
                     break;
@@ -548,7 +548,7 @@
                 default:
                     if(isset(self::$meta[$name]['options'])) {
                         foreach(self::$meta[$name]['options'] as $code => $text) {
-                            $options[] = array('value' => $code, 'text' => $text);
+                            $options[$code] = array('value' => $code, 'text' => $text);
                         }
                     }        
                     

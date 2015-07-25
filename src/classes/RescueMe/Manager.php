@@ -15,6 +15,7 @@
     use RescueMe\Device\WURFL;
     use RescueMe\Email\SMTP;
     use RescueMe\SMS\Nexmo;
+    use RescueMe\Map\Google;
 
     /**
      * Module factory class
@@ -39,7 +40,8 @@
         private static $required = array(
             SMS\Provider::TYPE => Nexmo::TYPE,
             Device\Lookup::TYPE => WURFL::TYPE,
-            Email\Provider::TYPE => SMTP::TYPE
+            Email\Provider::TYPE => SMTP::TYPE,
+            Map\Provider::TYPE => Google::TYPE
         );
         
         /**
@@ -115,14 +117,14 @@
          *
          * @param integer $id User id
          * @param boolean $copy Copy system modules if true, create new otherwise.
-         *
+         * @param boolean $type Module type (optiona, if false prepare all modules)
          * @return boolean TRUE if changes was made, FALSE otherwise.
          */
-        public static function prepare($id, $copy = false) {
+        public static function prepare($id, $copy = false, $type = false) {
             $changed = false;
 
-            // Get all system modules (user_id = 0)
-            $factories = Manager::getAll();
+            // Get (all) system modules
+            $factories = $type ? array(Manager::get($type)) : Manager::getAll();
 
             if($factories !== false) {
                 /** @var Factory $factory */

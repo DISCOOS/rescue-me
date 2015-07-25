@@ -440,6 +440,8 @@ R.tabs = function(tabs) {
                     if(list.length > 0) {
                         list.bootstrapPaginator(response.options);
                     }
+
+                    $(target).scrollTop = 0;
                 }                
             });
         }

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2015-07-23 11:51+0100\n"
+"POT-Creation-Date: 2015-07-26 00:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: admin/index.php:127 admin/router.php:90 admin/gui/logon.gui.php:2
+#: admin/index.php:125 admin/router.php:90 admin/gui/logon.gui.php:2
 #: admin/gui/logon.gui.php:10
 msgid "Login"
 msgstr "Logg inn"
@@ -40,10 +40,11 @@ msgstr "Er deaktivert"
 msgid "Awaits approval"
 msgstr "Avventer godkjenning"
 
-#: admin/router.php:38 admin/router.php:777 admin/router.php:1256
+#: admin/router.php:38 admin/router.php:781 admin/router.php:1271
 #: admin/inc/gui.inc.php:52 admin/inc/gui.inc.php:70 admin/inc/gui.inc.php:98
-#: admin/inc/gui.inc.php:123 admin/gui/missing.gui.php:45
-#: admin/gui/missing.gui.php:87
+#: admin/inc/gui.inc.php:123 admin/classes/RescueMe/View/Admin/Trace.php:229
+#: admin/classes/RescueMe/View/Admin/Trace.php:300
+#: admin/gui/missing.gui-old.php:45 admin/gui/missing.gui-old.php:87
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -65,35 +66,35 @@ msgstr "Om %1$s"
 #: admin/router.php:152 admin/router.php:172 admin/router.php:236
 #: admin/router.php:246 admin/router.php:291 admin/router.php:300
 #: admin/router.php:311 admin/router.php:341 admin/router.php:350
-#: admin/router.php:358 admin/router.php:373 admin/router.php:474
-#: admin/router.php:484 admin/router.php:561 admin/router.php:571
-#: admin/router.php:579 admin/router.php:585 admin/router.php:591
-#: admin/router.php:608 admin/router.php:616 admin/router.php:624
-#: admin/router.php:630 admin/router.php:636 admin/router.php:653
-#: admin/router.php:661 admin/router.php:690 admin/router.php:698
-#: admin/router.php:726 admin/router.php:734 admin/router.php:761
-#: admin/router.php:811 admin/router.php:825 admin/router.php:833
-#: admin/router.php:858 admin/router.php:868 admin/router.php:926
-#: admin/router.php:939 admin/router.php:970 admin/router.php:982
-#: admin/router.php:1002 admin/router.php:1051 admin/router.php:1065
-#: admin/router.php:1083 admin/router.php:1112 admin/router.php:1129
-#: admin/router.php:1173 admin/router.php:1228 admin/router.php:1271
-#: admin/router.php:1292 admin/router.php:1314 admin/router.php:1322
-#: admin/router.php:1353 admin/router.php:1386 admin/router.php:1396
-#: admin/router.php:1432
+#: admin/router.php:358 admin/router.php:373 admin/router.php:477
+#: admin/router.php:487 admin/router.php:565 admin/router.php:575
+#: admin/router.php:583 admin/router.php:589 admin/router.php:595
+#: admin/router.php:612 admin/router.php:620 admin/router.php:628
+#: admin/router.php:634 admin/router.php:640 admin/router.php:657
+#: admin/router.php:665 admin/router.php:694 admin/router.php:702
+#: admin/router.php:730 admin/router.php:738 admin/router.php:765
+#: admin/router.php:823 admin/router.php:837 admin/router.php:845
+#: admin/router.php:870 admin/router.php:880 admin/router.php:938
+#: admin/router.php:951 admin/router.php:983 admin/router.php:995
+#: admin/router.php:1015 admin/router.php:1066 admin/router.php:1080
+#: admin/router.php:1098 admin/router.php:1127 admin/router.php:1144
+#: admin/router.php:1188 admin/router.php:1243 admin/router.php:1286
+#: admin/router.php:1307 admin/router.php:1329 admin/router.php:1337
+#: admin/router.php:1368 admin/router.php:1401 admin/router.php:1411
+#: admin/router.php:1447
 msgid "Illegal operation"
 msgstr "Ulovlig handling"
 
 #: admin/router.php:117 admin/router.php:154 admin/router.php:174
 #: admin/router.php:238 admin/router.php:248 admin/router.php:313
-#: admin/router.php:360 admin/router.php:375 admin/router.php:486
-#: admin/router.php:573 admin/router.php:618 admin/router.php:663
-#: admin/router.php:700 admin/router.php:736 admin/router.php:763
-#: admin/router.php:813 admin/router.php:835 admin/router.php:870
-#: admin/router.php:941 admin/router.php:984 admin/router.php:1004
-#: admin/router.php:1067 admin/router.php:1085 admin/router.php:1131
-#: admin/router.php:1200 admin/router.php:1248 admin/router.php:1273
-#: admin/router.php:1324 admin/router.php:1355 admin/router.php:1398
+#: admin/router.php:360 admin/router.php:375 admin/router.php:489
+#: admin/router.php:577 admin/router.php:622 admin/router.php:667
+#: admin/router.php:704 admin/router.php:740 admin/router.php:767
+#: admin/router.php:825 admin/router.php:847 admin/router.php:882
+#: admin/router.php:953 admin/router.php:997 admin/router.php:1017
+#: admin/router.php:1082 admin/router.php:1100 admin/router.php:1146
+#: admin/router.php:1215 admin/router.php:1263 admin/router.php:1288
+#: admin/router.php:1339 admin/router.php:1370 admin/router.php:1413
 msgid "Access denied"
 msgstr "Ingen tilgang"
 
@@ -126,21 +127,21 @@ msgstr "Oppsett"
 msgid "Module %1$s not found"
 msgstr "Modul %1$s ikke funnet"
 
-#: admin/router.php:270 admin/router.php:464 admin/router.php:553
-#: admin/router.php:593 admin/router.php:638 admin/router.php:849
-#: admin/router.php:898 admin/router.php:917 admin/router.php:962
-#: admin/router.php:1042 admin/router.php:1159 admin/router.php:1373
-#: admin/router.php:1422
+#: admin/router.php:270 admin/router.php:467 admin/router.php:557
+#: admin/router.php:597 admin/router.php:642 admin/router.php:861
+#: admin/router.php:910 admin/router.php:929 admin/router.php:975
+#: admin/router.php:1057 admin/router.php:1174 admin/router.php:1388
+#: admin/router.php:1437
 #, php-format
 msgid "Operation [%1$s] not executed, try again"
 msgstr "Operasjon [%1$s] ikke utført, prøv igjen"
 
-#: admin/router.php:302 admin/router.php:352 admin/router.php:476
-#: admin/router.php:563 admin/router.php:610 admin/router.php:655
-#: admin/router.php:692 admin/router.php:728 admin/router.php:827
-#: admin/router.php:860 admin/router.php:928 admin/router.php:972
-#: admin/router.php:1053 admin/router.php:1114 admin/router.php:1188
-#: admin/router.php:1316 admin/router.php:1388
+#: admin/router.php:302 admin/router.php:352 admin/router.php:479
+#: admin/router.php:567 admin/router.php:614 admin/router.php:659
+#: admin/router.php:696 admin/router.php:732 admin/router.php:839
+#: admin/router.php:872 admin/router.php:940 admin/router.php:985
+#: admin/router.php:1068 admin/router.php:1129 admin/router.php:1203
+#: admin/router.php:1331 admin/router.php:1403
 msgid "Id not defined"
 msgstr "Id ikke definert"
 
@@ -149,14 +150,14 @@ msgstr "Id ikke definert"
 msgid "Setting %1$s not saved"
 msgstr "Innstilling %1$s ikke lagret"
 
-#: admin/router.php:364 admin/router.php:492 admin/gui/missing.list.gui.php:33
+#: admin/router.php:364 admin/router.php:495 admin/gui/missing.list.gui.php:33
 #: admin/gui/missing.list.gui.php:59 admin/gui/missing.list.gui.php:85
 #: admin/gui/missing.list.gui.php:112 admin/gui/logs.gui.php:39
 msgid "User"
 msgstr "Bruker"
 
-#: admin/router.php:386 admin/router.php:667 admin/router.php:704
-#: admin/router.php:740 admin/gui/system.menu.gui.php:40
+#: admin/router.php:386 admin/router.php:671 admin/router.php:708
+#: admin/router.php:744 admin/gui/system.menu.gui.php:40
 #: admin/gui/user.list.gui.php:21 admin/gui/user.email.gui.php:33
 msgid "Users"
 msgstr "Brukere"
@@ -170,11 +171,11 @@ msgstr "Forespørsel om ny bruker"
 msgid "New user"
 msgstr "Ny bruker"
 
-#: admin/router.php:419 admin/router.php:510
+#: admin/router.php:419 admin/router.php:514
 msgid "Email must contain at least one alphanumeric character"
 msgstr "E-post må inneholde minst ett alphanumerisk tegn"
 
-#: admin/router.php:425 admin/router.php:517
+#: admin/router.php:425 admin/router.php:521
 #, php-format
 msgid "User with e-mail %1$s already exist"
 msgstr "Bruker med e-post %1$s finnes allerede"
@@ -184,191 +185,191 @@ msgstr "Bruker med e-post %1$s finnes allerede"
 msgid "Password must be at least %1$d characters long"
 msgstr "Passordet må være minst %1$d tegn"
 
-#: admin/router.php:435 admin/router.php:889
+#: admin/router.php:435 admin/router.php:901
 msgid "Passwords do not match"
 msgstr "Passordene stemmer ikke"
 
-#: admin/router.php:454
+#: admin/router.php:457
 msgid "Request sent"
 msgstr "Forespørsel sendt"
 
-#: admin/router.php:457
+#: admin/router.php:460
 msgid "You will receive an SMS when the request is processed"
 msgstr "Du vil motta en SMS når din forespørsel er behandlet"
 
-#: admin/router.php:492 admin/gui/user.edit.gui.php:86
+#: admin/router.php:495 admin/gui/user.edit.gui.php:86
 #: admin/ajax/user.list.ajax.php:71
 msgid "Approve"
 msgstr "Godkjenn"
 
-#: admin/router.php:492 admin/router.php:1402 admin/gui/role.list.gui.php:27
-#: admin/ajax/setup.module.list.ajax.php:43 admin/ajax/user.list.ajax.php:54
+#: admin/router.php:495 admin/router.php:1417 admin/gui/role.list.gui.php:27
+#: admin/ajax/setup.module.list.ajax.php:47 admin/ajax/user.list.ajax.php:54
 #: admin/ajax/alert.list.ajax.php:49 admin/ajax/missing.list.open.ajax.php:92
 msgid "Edit"
 msgstr "Endre"
 
-#: admin/router.php:503 admin/router.php:580 admin/router.php:625
-#: admin/router.php:673 admin/router.php:710 admin/router.php:745
+#: admin/router.php:507 admin/router.php:584 admin/router.php:629
+#: admin/router.php:677 admin/router.php:714 admin/router.php:749
 #, php-format
 msgid "User %1$s not found"
 msgstr "Bruker %1$s ikke funnet"
 
-#: admin/router.php:509
+#: admin/router.php:513
 msgid "Username not safe"
 msgstr "Brukernavn er ikke sikkert"
 
-#: admin/router.php:535 admin/router.php:586 admin/router.php:631
+#: admin/router.php:539 admin/router.php:590 admin/router.php:635
 #, php-format
 msgid "User %1$s cannot be approved"
 msgstr "Bruker %1$s kunne ikke godkjennes"
 
-#: admin/router.php:597
+#: admin/router.php:601
 msgid "User approved"
 msgstr "Bruker godkjent"
 
-#: admin/router.php:600 admin/router.php:645
+#: admin/router.php:604 admin/router.php:649
 #, php-format
 msgid "Message sent to %1$s"
 msgstr "Melding sendt til %1$s"
 
-#: admin/router.php:642
+#: admin/router.php:646
 msgid "Reject user"
 msgstr "Avvis bruker"
 
-#: admin/router.php:676
+#: admin/router.php:680
 #, php-format
 msgid "User %1$s not deleted"
 msgstr "Bruker %1$s ble ikke slettet"
 
-#: admin/router.php:713
+#: admin/router.php:717
 #, php-format
 msgid "User %1$s not disabled"
 msgstr "Bruker %1$s ble ikke deaktivert"
 
-#: admin/router.php:748
+#: admin/router.php:752
 #, php-format
 msgid "User %1$s not enabled"
 msgstr "Bruker %1$s ble ikke aktivert"
 
-#: admin/router.php:767 admin/gui/system.menu.gui.php:37
-#: admin/gui/user.email.gui.php:51
+#: admin/router.php:771 admin/gui/system.menu.gui.php:37
+#: admin/gui/user.email.gui.php:53
 msgid "Email users"
 msgstr "Send e-post"
 
-#: admin/router.php:778
+#: admin/router.php:782
 #, php-format
 msgid "No <em>%1$s</em> users found."
 msgstr "Ingen <em>%1$s</em> brukere funnet."
 
-#: admin/router.php:792
+#: admin/router.php:798
 msgid "Email not sent to following users"
 msgstr "E-post ble ikke sendt til følgende brukere"
 
-#: admin/router.php:801
+#: admin/router.php:809
 #, php-format
 msgid "Email sent to %1$s users"
 msgstr "E-post sendt til %1$s brukere"
 
-#: admin/router.php:817 admin/gui/system.menu.gui.php:42
+#: admin/router.php:829 admin/gui/system.menu.gui.php:42
 #: admin/gui/role.list.gui.php:8
 msgid "Roles"
 msgstr "Roller"
 
-#: admin/router.php:839 admin/gui/role.edit.gui.php:32
+#: admin/router.php:851 admin/gui/role.edit.gui.php:32
 msgid "Edit role"
 msgstr "Endre rolle"
 
-#: admin/router.php:874
+#: admin/router.php:886
 msgid "Change Password"
 msgstr "Bytt passord"
 
-#: admin/router.php:884
+#: admin/router.php:896
 msgid "Password must be at least 8 characters long"
 msgstr "Passordet må være minst 8 tegn"
 
-#: admin/router.php:906
+#: admin/router.php:918
 msgid "Recover Password"
 msgstr "Gjenopprett passord"
 
-#: admin/router.php:932 admin/gui/operation.close.gui.php:81
-#: admin/gui/operation.close.gui.php:101
+#: admin/router.php:944 admin/classes/RescueMe/View/Admin/Trace.php:342
+#: admin/gui/operation.close.gui.php:81 admin/gui/operation.close.gui.php:101
 #: admin/ajax/missing.list.open.ajax.php:101
 msgid "Close operation"
 msgstr "Avslutt operasjon"
 
-#: admin/router.php:976
+#: admin/router.php:989 admin/classes/RescueMe/View/Admin/Trace.php:354
 msgid "Reopen operation"
 msgstr "Gjenåpne operasjon"
 
-#: admin/router.php:1009 admin/gui/dash.gui.php:4
+#: admin/router.php:1022 admin/gui/dash.gui.php:4
 #: admin/gui/missing.new.gui.php:21
 msgid "Start new trace"
 msgstr "Start ny sporing"
 
-#: admin/router.php:1072 admin/router.php:1179 admin/router.php:1217
-#: admin/router.php:1236
+#: admin/router.php:1087 admin/router.php:1194 admin/router.php:1232
+#: admin/router.php:1251
 #, php-format
 msgid "Trace %1$s not found"
 msgstr "Sporing %1$s ikke funnet"
 
-#: admin/router.php:1075 admin/classes/RescueMe/Operation.php:53
+#: admin/router.php:1090 admin/classes/RescueMe/Domain/Operation.php:56
 #: admin/gui/trace.menu.gui.php:15
 msgid "Trace"
 msgstr "Sporing"
 
-#: admin/router.php:1104 admin/gui/missing.list.gui.php:16
+#: admin/router.php:1119 admin/gui/missing.list.gui.php:16
 #: admin/gui/trace.menu.gui.php:21 admin/gui/trace.menu.gui.php:30
 msgid "Traces"
 msgstr "Sporinger"
 
-#: admin/router.php:1122 admin/gui/missing.edit.gui.php:108
+#: admin/router.php:1137 admin/gui/missing.edit.gui.php:108
 #: admin/gui/missing.edit.gui.php:114
 msgid "Edit trace"
 msgstr "Endre sporing"
 
-#: admin/router.php:1142
+#: admin/router.php:1157
 #, php-format
 msgid "Failed to reopen operation %1$s"
 msgstr "Klarte ikke  å gjenåpne operasjon %1$s"
 
-#: admin/router.php:1175
+#: admin/router.php:1190
 #, php-format
 msgid "Operation [%1$s] is closed"
 msgstr "Operasjon [%1$s] er lukket"
 
-#: admin/router.php:1204
+#: admin/router.php:1219
 #, php-format
 msgid "Trace %1$s is closed"
 msgstr "Sporing %1$s er lukket"
 
-#: admin/router.php:1208 admin/inc/gui.inc.php:54
+#: admin/router.php:1223 admin/inc/gui.inc.php:54
 msgid "SMS not sent"
 msgstr "SMS ble ikke sendt"
 
-#: admin/router.php:1230 admin/router.php:1294
+#: admin/router.php:1245 admin/router.php:1309
 msgid "Not an ajax request"
 msgstr "Ikke en ajax-foresprsel"
 
-#: admin/router.php:1284 admin/router.php:1328 admin/gui/alert.list.gui.php:22
+#: admin/router.php:1299 admin/router.php:1343 admin/gui/alert.list.gui.php:22
 #: admin/gui/system.menu.gui.php:46
 msgid "Alerts"
 msgstr "Varsler"
 
-#: admin/router.php:1300 admin/router.php:1334 admin/router.php:1413
+#: admin/router.php:1315 admin/router.php:1349 admin/router.php:1428
 #, php-format
 msgid "Alert %1$s not found"
 msgstr "Varsel %1$s ikke funnet"
 
-#: admin/router.php:1337
+#: admin/router.php:1352
 #, php-format
 msgid "Alert %1$s not deleted"
 msgstr "Varsel %1$s ble ikke slettet"
 
-#: admin/router.php:1359
+#: admin/router.php:1374
 msgid "New"
 msgstr "Ny"
 
-#: admin/router.php:1359 admin/router.php:1402
+#: admin/router.php:1374 admin/router.php:1417
 msgid "Alert"
 msgstr "Varsel"
 
@@ -397,7 +398,7 @@ msgid "The system is missing following module!"
 msgstr "Systemet mangler følgende modul!"
 
 #: admin/controllers/missing.new.controller.php:36
-#: admin/controllers/missing.new.controller.php:48
+#: admin/controllers/missing.new.controller.php:52
 msgid "Could not initiate trace"
 msgstr "Kunne ikke starte sporing"
 
@@ -405,7 +406,7 @@ msgstr "Kunne ikke starte sporing"
 msgid "System error: could not initiate operation"
 msgstr "Systemfeil: Kunne ikke utføre operasjonen"
 
-#: admin/controllers/missing.new.controller.php:49
+#: admin/controllers/missing.new.controller.php:53
 msgid "Please try again"
 msgstr "Vennligst prøv igjen"
 
@@ -482,6 +483,7 @@ msgid "SMS not delivered after %1$d hours"
 msgstr "SMS fremdeles ikke levert etter [%1$d] timer"
 
 #: admin/inc/gui.inc.php:80 admin/inc/gui.inc.php:84
+#: admin/classes/RescueMe/View/Admin/Trace.php:557
 msgid "The phone may be out of power or coverage."
 msgstr "Telefonen kan være tom for strøm etter utenfor dekning"
 
@@ -524,111 +526,457 @@ msgstr "Moduler mangler"
 msgid "Configure"
 msgstr "Konfigurer"
 
-#: admin/classes/RescueMe/Operation.php:53
+#: admin/classes/RescueMe/View/Admin/Trace.php:141
+#: admin/gui/missing.list.gui.php:22 admin/gui/missing.gui-old.php:21
+msgid "Closed"
+msgstr "Lukket"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:151
+msgid "Status details"
+msgstr "Statusdetaljer"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:157
+msgid "Proposed actions"
+msgstr "Forslåtte tiltak"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:161
+msgid "Trace details"
+msgstr "Sporingsdetaljer"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:166
+msgid "Event log"
+msgstr "Hendelseslogg"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:203
+#: admin/gui/missing.new.gui.php:56 admin/gui/missing.new.gui.php:93
+msgid "Phone number"
+msgstr "Mobilnummer"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:216
+msgid "User Agent"
+msgstr "User Agent"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:218
+msgid "Model name"
+msgstr "Modellnavn"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:220
+msgid "Handset OS"
+msgstr "Operativsystem"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:221
+msgid "Handset browser"
+msgstr "Nettleser"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:222
+msgid "Supports geolocation"
+msgstr "Støtter posisjonering"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:231
+msgid "Accepts language"
+msgstr "Aksepterer språk"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:233
+#: admin/classes/RescueMe/View/Admin/Trace.php:237
+msgid "Unknown handset"
+msgstr "Ukjent håndsett"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:234
+msgid "Device not recognized"
+msgstr "Enhet ikke gjenkjent"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:238
+msgid "Device lookup not ready"
+msgstr "Enhetsgjenkjenning ikke klar"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:241
+msgid "Unknown handset (no response)"
+msgstr "Ukjent håndsett"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:246
+#: admin/gui/missing.new.gui.php:75 admin/gui/missing.gui-old.php:85
+#: admin/gui/operation.close.gui.php:31
+msgid "Reference"
+msgstr "Aksjonsreferanse"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:250
+msgid "Trace URL"
+msgstr "Sporingslenke"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:278
+msgid "No locations received"
+msgstr "Ingen posisjoner  mottatt"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:280
+#: admin/gui/missing.gui-old.php:70
+#, php-format
+msgid "Locations &le; %1$s"
+msgstr "Lokasjoner &le; %1$s"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:281
+#: admin/gui/missing.gui-old.php:73
+#, php-format
+msgid "Locations &gt; %1$s"
+msgstr "Lokasjoner  &gt; %1$s"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:296
+msgid "Yes"
+msgstr "Ja"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:298
+msgid "No"
+msgstr "Nei"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:330
+#: admin/ajax/missing.list.open.ajax.php:106
+#, php-format
+msgid "Do you want to resend SMS to %1$s?"
+msgstr "Vil du sende SMS til  %1$s på nytt?"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:331
+#: admin/ajax/missing.list.open.ajax.php:108
+msgid "Resend SMS"
+msgstr "Send SMS på nytt"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:341
+#, php-format
+msgid "Do you want to close operation %1$s?"
+msgstr "Vil du lukke operasjon %1$s?"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:353
+#, php-format
+msgid "Do you want to reopen operation %1$s?"
+msgstr "Vil du sende gjenåpne operasjon  %1$s?"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:375
+#, php-format
+msgid "Open %1$s setup"
+msgstr "Åpne %1$s oppsett"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:384
+msgid "Edit SMS provider"
+msgstr "Rediger SMS leverandør"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:394
+#, php-format
+msgid "Open %1$s log"
+msgstr "Åpne %1$s loggen"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:451
+msgid "SMS provider is not installed"
+msgstr "SMS leverandøren er ikke installert"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:452
+#: admin/classes/RescueMe/View/Admin/Trace.php:458
+#: admin/classes/RescueMe/View/Admin/Trace.php:463
+msgid "Please ensure that"
+msgstr "Vennligst sørg for at"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:453
+msgid "SMS provider configuration"
+msgstr "Oppsett SMS leverandør"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:454
+#: admin/classes/RescueMe/View/Admin/Trace.php:470
+#: admin/gui/missing.edit.gui.php:84 admin/gui/missing.new.gui.php:116
+#: admin/gui/missing.new.gui.php:117 admin/gui/setup.gui.php:25
+msgid "SMS"
+msgstr "SMS"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:457
+msgid "SMS provider is not configured correctly"
+msgstr "SMS leverandør er ikke konfigurert riktig"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:459
+msgid "SMS provider credentials"
+msgstr "Påloggingsinformasjon SMS leverandør "
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:462
+msgid "SMS provider is configured correctly"
+msgstr "SMS leverandør er konfigurert riktig"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:465
+#: admin/classes/RescueMe/View/Admin/Trace.php:560
+msgid "Phone number is entered correctly"
+msgstr "Mobilnummer er skrevet inn riktig"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:466
+msgid "SMS log contains no errors"
+msgstr "SMS-logg inneholder ingen feil"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:469
+#: admin/classes/RescueMe/View/Admin/Trace.php:564
+#: admin/classes/RescueMe/View/Admin/Trace.php:628
+msgid "Edit phone number"
+msgstr "Rediger mobilnummer"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:478
+msgid "Trace created, no SMS sent"
+msgstr "Sporing opprettet, ingen SMS sendt"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:501
+#, php-format
+msgid "SMS sent, not delivered yet (%1$s)"
+msgstr "SMS levert, ikke levert ennå (%1$s)"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:502
+#, php-format
+msgid "Delivery is expected within %1$s"
+msgstr "Leveranse er forventet innen %1$s "
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:503
+msgid "Please note that the handset can be"
+msgstr "Vennligst merk at telefonen kan være"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:505
+msgid "Out of range"
+msgstr "Utenfor dekning"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:506
+msgid "Out of power"
+msgstr "Tom for strøm"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:507
+msgid "Turned off"
+msgstr "Slått av"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:508
+msgid "Registered on network not accepting SMS"
+msgstr "Registrert på nettverk som ikke aksepterer SMS"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:510
+msgid "Edit trace details"
+msgstr "Endre sporing"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:529
+#, php-format
+msgid "SMS delivered, waiting on response (%1$s)"
+msgstr "SMS levert, venter på svar ( %1$s)"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:530
+#, php-format
+msgid "Response is expected within %1$s"
+msgstr "Svar er forventet innen  %1$s"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:531
+#: admin/classes/RescueMe/View/Admin/Trace.php:589
+#: admin/classes/RescueMe/View/Admin/Trace.php:725
+msgid "Please note that"
+msgstr "Vennligst merk at"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:533
+msgid "Handset can have no data connection"
+msgstr "Telefon kan være utenfor data-dekning"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:534
+msgid "SMS could be in an foreign language"
+msgstr "SMS kan være på et fremmed språk"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:535
+msgid "Receiver might not want to be located"
+msgstr "Mottaker ønsker  ikke å bli sporet"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:556
+#, php-format
+msgid "Delivery timeout (%1$s)"
+msgstr "Leveranse utløpt ( %1$s)"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:558
+msgid "Please verify that"
+msgstr "Vennligst verifiser at"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:561
+msgid "Coverage in target area is sufficient"
+msgstr "Dekning i målområdet er tilstrekkelig"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:587
+#, php-format
+msgid "Trace is accepted, waiting on location (%1$s)"
+msgstr "Sporing er akseptert, venter på posisjon ( %1$s)"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:588
+#, php-format
+msgid "Location is expected within %1$s"
+msgstr "Posisjon er forventet innen %1$s"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:591
+msgid "Handset might not support GeoLocation"
+msgstr "Telefon støtter ikke posisjonering"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:592
+msgid "Receiver might might accept location sharing"
+msgstr "Mottaker godtok ikke deling av posisjon"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:595
+#: admin/classes/RescueMe/View/Admin/Trace.php:732
+msgid "Send instructions"
+msgstr "Send instruksjoner"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:615
+#: admin/classes/RescueMe/View/Admin/Trace.php:668
+msgid "High accuracy location found."
+msgstr "Posisjon med høy nøyaktighet funnet"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:617
+msgid "This is the final state."
+msgstr "Dette er siste tilstand."
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:618
+msgid "Please remember to close as soon as possible."
+msgstr "Vennligst husk å lukke sporingen så raskt som mulig."
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:624
+#: admin/classes/RescueMe/View/Admin/Trace.php:674
+msgid "Position is inaccurate."
+msgstr "Posisjonen er unøyaktig."
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:625
+#, php-format
+msgid "The handset updates the location until accuracy < %1$s m"
+msgstr "Håndsettet oppdaterer posisjonen inntil nøyaktighet <  %1$s m"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:680
+msgid "Operation closed before location was reported."
+msgstr "Operasjon lukket før posisjon ble rapportert."
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:684
+#, php-format
+msgid "The operation was closed %1$s"
+msgstr "Operasjonen ble lukket  %1$s"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:693
+msgid "No location found"
+msgstr "Posisjon ikke funnet"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:723
+#: admin/classes/RescueMe/View/Admin/Trace.php:752
+#, php-format
+msgid "Location timeout (%1$s)"
+msgstr "Posisjonering utløpt ( %1$s)"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:724
+msgid "Location not received within reasonable time."
+msgstr "Posisjon ikke mottatt innen rimelig tid."
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:727
+msgid "Handset may be out of power or coverage"
+msgstr "Telefonen kan være tom for strøm etter utenfor dekning"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:728
+msgid "Location services are turned off or not available"
+msgstr "Posisjonering er avslått eller ikke tilgjengelig"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:729
+msgid "User choose not to share location with you."
+msgstr "Bruker valgte å ikke dele posisjonen med deg."
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:753
+msgid "The maximum trace time is exceeded."
+msgstr "Maksimal sporingstid er utløpt"
+
+#: admin/classes/RescueMe/View/Admin/Trace.php:754
+msgid "Recommended action is to close this trace now."
+msgstr "Anbefalt tiltak er å lukke sporingen nå."
+
+#: admin/classes/RescueMe/Domain/Operation.php:56
 msgid "Test"
 msgstr "Test"
 
-#: admin/classes/RescueMe/Operation.php:53
+#: admin/classes/RescueMe/Domain/Operation.php:56
 msgid "Exercise"
 msgstr "Øvelse"
 
-#: admin/classes/RescueMe/Template.php:78 admin/gui/alert.edit.gui.php:39
-#: admin/gui/alert.new.gui.php:32 admin/gui/missing.new.gui.php:106
-#: admin/gui/logs.gui.php:38 admin/gui/user.email.gui.php:20
-msgid "Message"
-msgstr "Melding"
-
-#: admin/classes/RescueMe/Missing.php:460
+#: admin/classes/RescueMe/Domain/Missing.php:629
 #, php-format
 msgid "Failed to send second SMS to missing %1$s"
 msgstr "Kunne ikke sende engangspassord til bruker %1$s."
 
-#: admin/classes/RescueMe/Missing.php:471
+#: admin/classes/RescueMe/Domain/Missing.php:641
 #, php-format
 msgid "Failed to update SMS status for missing %1$s"
 msgstr "Klarte ikke å opprette instanse av modul  [%1$s]"
 
-#: admin/classes/RescueMe/Missing.php:490
+#: admin/classes/RescueMe/Domain/Missing.php:660
 #, php-format
 msgid "Failed to send SMS with position from missing [%1$s]"
 msgstr "Klarte ikke å sende SMS med posisjon fra [%1$s]"
 
-#: admin/classes/RescueMe/Missing.php:657
-msgid "Failed to update status to ANSWERED for missing "
+#: admin/classes/RescueMe/Domain/Missing.php:795
+msgid "Failed to update status to ACCEPTED for missing "
 msgstr "Klarte ikke å oppdatere status til <b>Besvart</b> for"
 
-#: admin/classes/RescueMe/Missing.php:674
+#: admin/classes/RescueMe/Domain/Missing.php:815
 msgid "Missing person"
 msgstr "Savnet person"
 
-#: admin/classes/RescueMe/User.php:169 admin/gui/alert.list.gui.php:13
+#: admin/classes/RescueMe/Domain/User.php:172 admin/gui/alert.list.gui.php:13
 msgid "Active"
 msgstr "Aktiv"
 
-#: admin/classes/RescueMe/User.php:170
+#: admin/classes/RescueMe/Domain/User.php:173
 msgid "Pending"
 msgstr "Ventende"
 
-#: admin/classes/RescueMe/User.php:171
+#: admin/classes/RescueMe/Domain/User.php:174
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: admin/classes/RescueMe/User.php:172
+#: admin/classes/RescueMe/Domain/User.php:175
 msgid "Deleted"
 msgstr "Slettet"
 
-#: admin/classes/RescueMe/User.php:173 admin/gui/alert.list.gui.php:15
+#: admin/classes/RescueMe/Domain/User.php:176 admin/gui/alert.list.gui.php:15
 msgid "All"
 msgstr "Alle"
 
-#: admin/classes/RescueMe/User.php:363
+#: admin/classes/RescueMe/Domain/User.php:365
 msgid "User not found"
 msgstr "Bruker %1$s ikke funnet"
 
-#: admin/classes/RescueMe/User.php:363
+#: admin/classes/RescueMe/Domain/User.php:365
 msgid "Recovery password not sent"
 msgstr "Engangspassord ikke sendt"
 
-#: admin/classes/RescueMe/User.php:372
+#: admin/classes/RescueMe/Domain/User.php:374
 #, php-format
 msgid "Your single-use %1$s password"
 msgstr "%1$s, ditt engangspassord"
 
-#: admin/classes/RescueMe/User.php:377
+#: admin/classes/RescueMe/Domain/User.php:379
 #, php-format
 msgid "Recovery password sent to user %1$s"
 msgstr "Engangspassord sendt til bruker %1$s"
 
-#: admin/classes/RescueMe/User.php:380
+#: admin/classes/RescueMe/Domain/User.php:382
 #, php-format
 msgid "Failed to send recovery password to user %1$s"
 msgstr "Klarte ikke å sende engangspassord til bruker %1$s"
 
-#: admin/classes/RescueMe/User.php:422
+#: admin/classes/RescueMe/Domain/User.php:424
 #, php-format
 msgid "User %1$s is created."
 msgstr "Bruker %1$s er opprettet"
 
-#: admin/classes/RescueMe/User.php:425
+#: admin/classes/RescueMe/Domain/User.php:427
 msgid "Failed to create user"
 msgstr "Klarte ikke å opprette bruker"
 
-#: admin/classes/RescueMe/User.php:604
+#: admin/classes/RescueMe/Domain/User.php:606
 #, php-format
 msgid "Your %1$s account is approved"
 msgstr "Din %1$s kontoforespørsel er godkjent"
 
-#: admin/classes/RescueMe/User.php:605
+#: admin/classes/RescueMe/Domain/User.php:607
 #, php-format
 msgid "Log in to %1$s"
 msgstr "Logg inn på %1$s her"
 
-#: admin/classes/RescueMe/User.php:620
+#: admin/classes/RescueMe/Domain/User.php:622
 #, php-format
 msgid "Your %1$s account request is rejected"
 msgstr "Din %1$s kontoforespørsel er avvist"
 
-#: admin/classes/RescueMe/User.php:651
+#: admin/classes/RescueMe/Domain/User.php:655
 msgid "Failed to get SMS provider"
 msgstr "Klarte ikke å hente SMS leverandør"
 
@@ -658,6 +1006,12 @@ msgstr "Til og med"
 #: admin/gui/alert.edit.gui.php:30 admin/gui/alert.new.gui.php:24
 msgid "Alert expires"
 msgstr "Varsel utløper"
+
+#: admin/gui/alert.edit.gui.php:39 admin/gui/alert.new.gui.php:32
+#: admin/gui/missing.new.gui.php:106 admin/gui/missing.gui.php:72
+#: admin/gui/logs.gui.php:38 admin/gui/user.email.gui.php:20
+msgid "Message"
+msgstr "Melding"
 
 #: admin/gui/alert.edit.gui.php:40 admin/gui/alert.new.gui.php:33
 msgid "Enter message"
@@ -774,7 +1128,7 @@ msgstr "Landskode"
 msgid "Mobile phone"
 msgstr "Mobilnummer"
 
-#: admin/gui/missing.edit.gui.php:59
+#: admin/gui/missing.edit.gui.php:59 admin/gui/missing.gui.php:58
 msgid "Send SMS"
 msgstr "Send SMS"
 
@@ -782,11 +1136,6 @@ msgstr "Send SMS"
 #: admin/ajax/message.list.ajax.php:27
 msgid "Language"
 msgstr "Språk"
-
-#: admin/gui/missing.edit.gui.php:84 admin/gui/missing.new.gui.php:116
-#: admin/gui/missing.new.gui.php:117 admin/gui/setup.gui.php:25
-msgid "SMS"
-msgstr "SMS"
 
 #: admin/gui/missing.edit.gui.php:94 admin/gui/missing.new.gui.php:128
 #: admin/ajax/message.list.ajax.php:56
@@ -815,8 +1164,8 @@ msgstr "Merk: Dette vil gjenåpne operasjonen"
 msgid "Loading"
 msgstr "Laster"
 
-#: admin/gui/missing.edit.gui.php:115 admin/gui/missing.gui.php:13
-#: admin/gui/operation.close.gui.php:102
+#: admin/gui/missing.edit.gui.php:115 admin/gui/missing.gui.php:30
+#: admin/gui/missing.gui-old.php:13 admin/gui/operation.close.gui.php:102
 #: admin/ajax/missing.list.closed.ajax.php:32 admin/ajax/logs.ajax.php:39
 #: admin/ajax/user.list.ajax.php:26 admin/ajax/alert.list.ajax.php:27
 #: admin/ajax/missing.list.open.ajax.php:41
@@ -839,10 +1188,6 @@ msgstr "Sted, region eller land"
 msgid "Select country"
 msgstr "Velg land"
 
-#: admin/gui/missing.new.gui.php:56 admin/gui/missing.new.gui.php:93
-msgid "Phone number"
-msgstr "Mobilnummer"
-
 #: admin/gui/missing.new.gui.php:58 admin/gui/missing.new.gui.php:95
 msgid "Numbers only, no spaces"
 msgstr "Kun nummer, ingen mellomrom"
@@ -858,11 +1203,6 @@ msgid ""
 msgstr ""
 "Det er kritisk viktig å inkludere instruksjoner for hvordan dataroaming slås "
 "på i SMSen hvis telefonen ikke er registrert på sitt hjemmenettverk!"
-
-#: admin/gui/missing.new.gui.php:75 admin/gui/missing.gui.php:85
-#: admin/gui/operation.close.gui.php:31
-msgid "Reference"
-msgstr "Aksjonsreferanse"
 
 #: admin/gui/missing.new.gui.php:77 admin/gui/operation.close.gui.php:32
 msgid "Operation number, etc."
@@ -994,10 +1334,6 @@ msgstr "Tester"
 msgid "Exercises"
 msgstr "Øvelser"
 
-#: admin/gui/missing.list.gui.php:22 admin/gui/missing.gui.php:21
-msgid "Closed"
-msgstr "Lukket"
-
 #: admin/gui/missing.list.gui.php:31 admin/gui/missing.list.gui.php:57
 #: admin/gui/missing.list.gui.php:83 admin/gui/missing.list.gui.php:110
 msgid "Status"
@@ -1039,28 +1375,6 @@ msgstr "Har du ikke en konto?"
 msgid "Sign up here"
 msgstr "Registrer deg her"
 
-#: admin/gui/missing.gui.php:57
-msgid "Last location"
-msgstr "Siste lokasjon"
-
-#: admin/gui/missing.gui.php:61
-msgid "Location received"
-msgstr "Lokasjon mottatt"
-
-#: admin/gui/missing.gui.php:70
-#, php-format
-msgid "Locations &le; %1$s"
-msgstr "Lokasjoner &le; %1$s"
-
-#: admin/gui/missing.gui.php:73
-#, php-format
-msgid "Locations &gt; %1$s"
-msgstr "Lokasjoner  &gt; %1$s"
-
-#: admin/gui/missing.gui.php:92
-msgid "Location link"
-msgstr "Sporingslink"
-
 #: admin/gui/missing.position.list.gui.php:76
 msgid "Google Maps not loaded"
 msgstr "Google Maps ikke lastet"
@@ -1073,7 +1387,7 @@ msgstr "Hvis brukeren finnes i databasen sendes det en reset link på SMS"
 msgid "E-mail"
 msgstr "E-post"
 
-#: admin/gui/password.recover.gui.php:54
+#: admin/gui/password.recover.gui.php:54 admin/gui/user.email.gui.php:51
 msgid "Reset"
 msgstr "Nullstill"
 
@@ -1130,7 +1444,7 @@ msgstr "Endre bruker"
 msgid "Send as bulk"
 msgstr "Send i bulk"
 
-#: admin/gui/user.email.gui.php:49
+#: admin/gui/user.email.gui.php:50
 msgid "Send"
 msgstr "Send"
 
@@ -1143,6 +1457,18 @@ msgstr "Minimum %1$s tegn"
 #: admin/gui/password.change.gui.php:25 admin/gui/user.new.gui.php:66
 msgid "Repeat Password"
 msgstr "Gjenta passord"
+
+#: admin/gui/missing.gui-old.php:57
+msgid "Last location"
+msgstr "Siste lokasjon"
+
+#: admin/gui/missing.gui-old.php:61
+msgid "Location received"
+msgstr "Lokasjon mottatt"
+
+#: admin/gui/missing.gui-old.php:92
+msgid "Location link"
+msgstr "Sporingslink"
 
 #: admin/gui/operation.close.gui.php:23
 msgid "Operation name"
@@ -1187,20 +1513,20 @@ msgstr "Fortsett"
 msgid "Reopen"
 msgstr "Gjenåpne"
 
-#: admin/ajax/setup.module.list.ajax.php:64
+#: admin/ajax/setup.module.list.ajax.php:69
 msgid "Module is not installed correctly."
 msgstr "Modulen er ikke installert riktig. Kjør installeringsskript."
 
-#: admin/ajax/setup.module.list.ajax.php:65
+#: admin/ajax/setup.module.list.ajax.php:70
 #, php-format
 msgid "Failed to create instance of module [%1$s]"
 msgstr "Kunne ikke opprette instanse av modul  [%1$s]"
 
-#: admin/ajax/setup.module.list.ajax.php:68
+#: admin/ajax/setup.module.list.ajax.php:73
 msgid "Module is not configured correctly."
 msgstr "Modulen er ikke konfigurert riktig"
 
-#: admin/ajax/setup.module.list.ajax.php:71
+#: admin/ajax/setup.module.list.ajax.php:76
 msgid "Module is configured and ready for use."
 msgstr "Modulen er konfigurert og klar til bruk"
 
@@ -1248,15 +1574,6 @@ msgstr "Slett"
 msgid "Confirm"
 msgstr "Bekreft"
 
-#: admin/ajax/missing.list.open.ajax.php:106
-#, php-format
-msgid "Do you want to resend SMS to %1$s?"
-msgstr "Vil du sende SMS til  %1$s på nytt?"
-
-#: admin/ajax/missing.list.open.ajax.php:108
-msgid "Resend SMS"
-msgstr "Send SMS på nytt"
-
 #: admin/ajax/missing.list.open.ajax.php:114
 msgid "Check SMS delivery status"
 msgstr "Sjekk leveringsstatus"
@@ -1282,8 +1599,28 @@ msgid "Please enter a valid email address"
 msgstr "Vennligst oppgi en lovlig e-postadresse"
 
 #: admin/locale/domain/admin.domain.php:22
+#: admin/locale/domain/admin.domain.php:23
 msgid "Please enter the same value again"
 msgstr "Skriv inn samme verdi igjen"
+
+#: admin/locale/domain/admin.domain.php:24
+msgid "Time"
+msgstr "Tidspunkt"
+
+#: admin/locale/domain/admin.domain.php:25
+msgid "Altitude"
+msgstr "Høyde"
+
+#: admin/locale/domain/admin.domain.php:26
+msgid "Accuracy"
+msgstr "Nøyaktighet"
+
+#: admin/locale/domain/admin.domain.php:27
+msgid "Decimal degrees"
+msgstr "Desimalgrader"
+
+#~ msgid "SMS provider is configured correctly, please check that"
+#~ msgstr "SMS leverandøren er konfigurert riktig, vennligst sjekk at"
 
 #~ msgid "Answered"
 #~ msgstr "Besvart"
@@ -1712,12 +2049,6 @@ msgstr "Skriv inn samme verdi igjen"
 #~ msgid "None"
 #~ msgstr "Ingen"
 
-#~ msgid "No"
-#~ msgstr "Nei"
-
-#~ msgid "Yes"
-#~ msgstr "Ja"
-
 #~ msgid "Found"
 #~ msgstr "Fant"
 
@@ -1805,9 +2136,6 @@ msgstr "Skriv inn samme verdi igjen"
 #~ msgid "Turn on permission to access location data!"
 #~ msgstr "Sl p tilgang til stedsinformasjon!"
 
-#~ msgid "Location is unavailable."
-#~ msgstr "Lokasjon er ikke tilgjengelig"
-
 #~ msgid "Plese approve access to location faster."
 #~ msgstr "Vennligst bekreft tilgang til lokasjonsdata raskere."
 
@@ -1816,15 +2144,6 @@ msgstr "Skriv inn samme verdi igjen"
 
 #~ msgid "Location: <b>{0}</b>"
 #~ msgstr "Lokasjon: <b>{0}</b>"
-
-#~ msgid "Location not sent, check data connection."
-#~ msgstr "Lokasjon ikke sendt, sjekk datakobling."
-
-#~ msgid "Send location as"
-#~ msgstr "Send lokasjon som"
-
-#~ msgid "Location not found."
-#~ msgstr "Lokasjon ikke funnet"
 
 #~ msgid "Closed by traced "
 #~ msgstr "Lukket av sporet person."
@@ -1837,9 +2156,6 @@ msgstr "Skriv inn samme verdi igjen"
 #~ "air and ground!"
 #~ msgstr ""
 #~ "Hold deg i ro, vi er p vei. Forsk  gjre deg synlig fra luft og bakke!"
-
-#~ msgid "Unknown trace"
-#~ msgstr "Ukjent sporing"
 
 #~ msgid "Add"
 #~ msgstr "Legg til"

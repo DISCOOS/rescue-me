@@ -9,14 +9,48 @@
 </div>
 
 <div class="row-fluid">
-    <div class="span6 v-space">
-        <h4>{{ status.title }}</h4>
-        <div id="status">
-            {{ status.reasons | raw }}
-            {{ status.details | raw }}
+{% if map|length > 0 %}
+    <div class="span6" >
+        {{ map.inject | raw}}
+        <script type="text/javascript">
+            {{ map.install | raw}}
+        </script>
+        <div id="map"></div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#positions">
+                    Posisjoner
+                </a>
+            </div>
+            <div id="positions" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                    <div id="nopos">{{ map.positions.empty }}</div>
+                    <span id="lt1kmtitle" class="hide"><b>{{ map.positions.title.lt1km | raw }}</b></span><hr/>
+                    <ul class="unstyled" id="lt1km"></ul></ul>
+                    <span id="ge1kmtitle" class="hide"><b>{{ map.positions.title.ge1km | raw }}</b></span><hr/>
+                    <ul class="unstyled" id="ge1km"></ul>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="span6 v-space">
+{% endif %}
+    <div class="span6">
+        <h4>{{ status.title }}</h4>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#status">
+                    {{ status.reason | raw }}
+                </a>
+            </div>
+            <div id="status" class="accordion-body collapse {% if map|length > 0 %}in{% endif %}">
+                <div class="accordion-inner">
+                    {{ status.details | raw }}
+                    {{ status.checks | raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span6">
         <h4>{{ actions.title }}</h4>
         {{ message | raw}}
         <ul id="actions" class="nav nav-tabs nav-stacked">
@@ -25,14 +59,11 @@
             {% endfor %}
         </ul>
     </div>
-</div>
-
-<div class="row-fluid">
-    <h4>{{ details.title | raw }}</h4>
-    <div id="accordion" class="accordion 12">
-        <div class="accordion-group span6">
+    <div class="row-fluid {% if map|length > 0 %}span6{% endif %}">
+        <h4>{{ details.title | raw }}</h4>
+        <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#details">
+                <a class="accordion-toggle" data-toggle="collapse" href="#details">
                     {{ handset.title | raw }}
                 </a>
             </div>
@@ -42,9 +73,9 @@
                 </div>
             </div>
         </div>
-        <div class="accordion-group span6">
+        <div class="accordion-group">
             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#events">
+                <a class="accordion-toggle" data-toggle="collapse" href="#events">
                     {{ events.title | raw }}
                 </a>
             </div>

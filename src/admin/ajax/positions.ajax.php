@@ -22,16 +22,16 @@ while(time() <= $endtime){
     if (sizeof($positions) > 0) {
         break;
     }
-    // We don't run "live" against the DB - check every 3 sec
+    // We don't run "live" against the DB - check every 1 sec
     // TODO: Config-value?
-    usleep(3000);
+    usleep(1000000);
 }
 foreach ($positions as $key=>$value) {
-    $posText = format_pos($value, $params);
-    $posTextClean = format_pos($value, $params, false);
+    $text = format_pos($value, $params);
+    $simple = format_pos($value, $params, false);
 
     $arr = array('lat' => $value->lat, 'lon' => $value->lon, 'acc' => $value->acc,
-                 'alt' => $value->alt, 'posText' => $posText, 'posTextClean' => $posTextClean,
+                 'alt' => $value->alt, 'text' => $text, 'simple' => $simple,
                  'timestamp' => format_tz($value->timestamp));
 
     echo json_encode($arr);
