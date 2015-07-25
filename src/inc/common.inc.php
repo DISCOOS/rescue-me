@@ -527,7 +527,10 @@
      */
     function format_tz($timestamp) {
 
-        $date = date( 'Y-m-d\TH:i:s', strtotime($timestamp));
+        if(is_string($timestamp))
+            $timestamp = strtotime($timestamp);
+
+        $date = date( 'Y-m-d\TH:i:s', $timestamp);
 
         return sprintf('%1$s%2$s', $date, \RescueMe\TimeZone::getOffset());
     }
