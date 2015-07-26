@@ -445,7 +445,7 @@ if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
             require('classes/RescueMe/Install.php');
 
             // Create install command
-            $install = new RescueMe\Install($name, array(), true, true, false);
+            $install = new RescueMe\Install($root, array(), true, true, false);
 
             // Execute installation
             if($install->execute() !== true) {
