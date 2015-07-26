@@ -44,8 +44,15 @@ class Install {
 
 
     /**
-     * Update libraries
-     * @var boolean
+     * Init components
+     * @var boolean|array
+     */
+    private $init;
+
+
+    /**
+     * Update components
+     * @var boolean|array
      */
     private $update;
 
@@ -56,17 +63,19 @@ class Install {
      * @param string $root Installation root
      * @param array $ini Installation ini parameters
      * @param boolean $silent Use defaults if TRUE, prompt otherwise.
-     * @param boolean $update Update libraries if installed.
+     * @param boolean|array $init Initialize components after installation.
+     * @param boolean|array $update Update components if already installed.
      *
      *
      * @since 19. June 2013
      *
      */
-    public function __construct($root, $ini, $silent, $update)
+    public function __construct($root, $ini, $silent, $init, $update)
     {
         $this->root = $root;
         $this->ini = $ini;
         $this->silent = $silent;
+        $this->init = $init;
         $this->update = $update;
 
     }// __construct
@@ -166,13 +175,13 @@ class Install {
         // Include dependent resources
         $root = $this->root . DIRECTORY_SEPARATOR . 'config.php';
 
-    }// initConfig
+    }
 
 
     private function initComposer() {
 
         $inline = true;
-        info("  Installing composer....", BUILD_INFO, NEWLINE_NONE);
+        info("  Installing composer...", BUILD_INFO, NEWLINE_NONE);
 
         $composer = $this->root . DIRECTORY_SEPARATOR . "composer.phar";
 
@@ -199,20 +208,20 @@ class Install {
 
         }
         info($inline ? "SKIPPED" : " DONE");
-    }// initComposer
+    }
 
 
     private function initLibs(){
-
-        info("  Initializing libraries...");
 
         $vendor = $this->root . DIRECTORY_SEPARATOR . "vendor";
 
         if(realpath($vendor)) {
 
-            info("     composer update...", BUILD_INFO, NEWLINE_NONE);
+            info("  Updating libraries...", BUILD_INFO, NEWLINE_NONE);
 
-            if ($this->update) {
+            if ($this->is($this->update,'lib')) {
+
+                info('');
 
                 $composer = $this->root . DIRECTORY_SEPARATOR . "composer.phar";
 
@@ -223,7 +232,7 @@ class Install {
                     return error("Failed to update libraries: \n$output\n");
                 }
 
-                info("DONE");
+                info("  Updating libraries...DONE");
 
             } else {
 
@@ -232,22 +241,28 @@ class Install {
 
         } else {
 
-            info("     composer install...", BUILD_INFO, NEWLINE_NONE);
+            info("  Installing libraries...", BUILD_INFO, NEWLINE_NONE);
 
-            $composer = $this->root . DIRECTORY_SEPARATOR . "composer.phar";
+            if ($this->is($this->init,'lib')) {
 
-            $cmd = "php $composer install --no-scripts --working-dir='$this->root'";
-            exec($cmd, $output, $retval);
-            if ($retval !== 0) {
-                $output = implode("\n", $output);
-                return error("Failed to install libraries: \n$output\n");
+                info('');
+                $composer = $this->root . DIRECTORY_SEPARATOR . "composer.phar";
+
+                $cmd = "php $composer install --no-scripts --working-dir='$this->root'";
+                exec($cmd, $output, $retval);
+                if ($retval !== 0) {
+                    $output = implode("\n", $output);
+                    return error("Failed to install libraries: \n$output\n");
+                }
+
+                info("  Installing libraries...DONE");
+
+            } else {
+
+                info("SKIPPED");
             }
-
-            info("DONE");
         }
-
-        info("  Initializing libraries....DONE");
-    }// initLabs
+    }
 
 
     private function initDB(){
@@ -262,19 +277,19 @@ class Install {
             define('DB_PASSWORD', get($this->ini, 'DB_PASSWORD', null, false));
         }
 
-        info("  Creating database [$name]....", BUILD_INFO, NEWLINE_NONE);
+        info("  Creating database [$name]...", BUILD_INFO, NEWLINE_NONE);
         if (DB::create($name) === FALSE) {
             return error(sprintf(DB_NOT_CREATED, "$name") . " (check database credentials)");
         }
         info("DONE");
 
-        info("  Importing [rescueme.sql]....", BUILD_INFO, NEWLINE_NONE);
+        info("  Importing [rescueme.sql]...", BUILD_INFO, NEWLINE_NONE);
         if (($executed = DB::import($this->root . DIRECTORY_SEPARATOR . "rescueme.sql")) === FALSE) {
             return error(sprintf(DB_NOT_IMPORTED, "rescueme.sql") . " (" . DB::error() . ")");
         }
         info("DONE");
 
-        info("  Initializing database....");
+        info("  Initializing database...");
 
         $skipped = true;
 
@@ -327,7 +342,7 @@ class Install {
             error("    Add user 1 to administrator group...FAILED");
         }
 
-        info("  Initializing database...." . ($skipped ? 'SKIPPED' : 'DONE'));
+        info("  Initializing database..." . ($skipped ? 'SKIPPED' : 'DONE'));
 
     }
 
@@ -335,13 +350,16 @@ class Install {
     private function initModules(){
 
         $inline = true;
-        info("  Initializing modules....", BUILD_INFO);
+        info("  Initializing modules...", BUILD_INFO);
 
         $callback = function($progress) use ($inline) {
             info("    $progress", BUILD_INFO);
         };
 
-        if (Manager::install($callback) !== false) {
+        $init = $this->is($this->init,'module');
+        $update = $this->is($this->update,'module');
+
+        if (Manager::install($init, $update, $callback) !== false) {
             info("    System modules installed", BUILD_INFO);
             $inline = false;
         }
@@ -351,13 +369,13 @@ class Install {
         if ($users !== false) {
             /** @var User $user */
             foreach ($users as $user) {
-                if (Manager::prepare($user->id)) {
+                if (Manager::prepare($user->id, false)) {
                     info("    Modules for [$user->name] installed", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST);
                     $inline = false;
                 }
             }
         }
-        info($inline ? "SKIPPED" : "  Initializing modules....DONE");
+        info($inline ? "SKIPPED" : "  Initializing modules...DONE");
 
     }// initModules
 
@@ -373,7 +391,7 @@ class Install {
                 return error(sprintf(DIR_NOT_CREATED, $cache));
             }
             $cache = realpath($this->root . DIRECTORY_SEPARATOR . "min" . DIRECTORY_SEPARATOR . "cache");
-            if(is_linux()) {
+            if(is_linux() || is_osx()) {
                 if (!is_sudo()) {
                     rmdir($cache);
                     return error(NOT_SUDO);
@@ -394,9 +412,25 @@ class Install {
                 }
             }
         }
-        info($inline ? "SKIPPED" : "  Initializing minify....DONE");
+        info($inline ? "SKIPPED" : "  Initializing minify...DONE");
 
     }// initMinify
+
+
+    private function is($param,$value) {
+        if(is_bool($param)) {
+            return $param;
+        } elseif(is_string($param)) {
+            if(strcasecmp($param,'true') === 0 || strcasecmp($param,'1') === 0) {
+                return true;
+            } elseif(strcasecmp($param,'false') === 0 || strcasecmp($param,'0') === 0) {
+                return false;
+            }
+        } elseif(is_array($param)) {
+            return isset($param[$value]);
+        }
+        return $param === $value;
+    }
 
 
 }// Install

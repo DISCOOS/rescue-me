@@ -58,8 +58,7 @@ abstract class AbstractModule extends AbstractUses implements Module {
      * Supported by default. Override this method as needed.
      * @return boolean
      */
-    public function isSupported()
-    {
+    public function isSupported(){
         return true;
     }
 
@@ -73,8 +72,7 @@ abstract class AbstractModule extends AbstractUses implements Module {
      *
      * @return Configuration
      */
-    public final function getConfig()
-    {
+    public final function getConfig(){
         return clone($this->config);
     }
 
@@ -84,10 +82,10 @@ abstract class AbstractModule extends AbstractUses implements Module {
      *
      * Default implementation does nothing and returns true. Override this method if module needs initialization
      *
+     * @param boolean $update Allow update if already initialized
      * @return boolean
      */
-    public function init()
-    {
+    public function init($update = false){
         return true;
     }
 

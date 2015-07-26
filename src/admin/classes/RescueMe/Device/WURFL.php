@@ -15,6 +15,7 @@
 
     use RescueMe\Configuration;
     use RescueMe\Context;
+    use WURFL_FileUtils;
     use WURFL_Storage_Factory;
 
     /**
@@ -41,7 +42,7 @@
             // Satisfy api contract
             parent::__construct($this->newConfig());
 
-            $this->configure(false);
+            $this->configure(false, false);
         }
 
 
@@ -68,11 +69,11 @@
          *
          * NOTE: This is a long operation (several minutes!)
          *
+         * @param boolean $update Allow update if already initialized
          * @return boolean
          */
-        public function init() {
-
-            return $this->configure(true);
+        public function init($update = false) {
+            return $this->configure(true, $update);
         }
 
 
@@ -88,11 +89,11 @@
         /**
          * Configure WURFL
          *
-         * @param boolean $init If TRUE, initialize persistence and cache storage if needed (long operation, several minutes!)
-         *
+         * @param boolean $init Initialize persistence and cache storage if needed (long operation, several minutes!)
+         * @param boolean $update Allow update if already initialized (long operation, several minutes!)
          * @return boolean
          */
-        private function configure($init) {
+        private function configure($init, $update) {
 
             if($this->isReady() === false) {
 
@@ -118,8 +119,9 @@
                     'wurfl',
                     'wurfl.zip'
                 ));
+
                 if(file_exists($wurflFile) === false) {
-                    $wurflFile = implode(DIRECTORY_SEPARATOR, array(
+                    $srcFile = implode(DIRECTORY_SEPARATOR, array(
                         Context::getVendorPath(),
                         'wurfl',
                         'wurfl-api',
@@ -127,6 +129,13 @@
                         'resources',
                         'wurfl.zip'
                     ));
+                    if(copy($srcFile, $wurflFile) === false) {
+                        info('WURFL not loaded');
+                        return $this->fatal(sprintf('Unable to copy WURFL file %1$s to %2$s',
+                            $srcFile,
+                            $wurflFile
+                        ));
+                    }
                 }
 
                 // Set location of the WURFL File
@@ -135,8 +144,8 @@
                 // Set the match mode for the API ('performance' or 'accuracy')
                 $wurflConfig->matchMode($this->config->get('matchMode', 'performance'));
 
-                // Automatically reload the WURFL data if it changes
-                $wurflConfig->allowReload($this->config->get('allowReload', true));
+                // Automatically reload the WURFL data if it changes?
+                $wurflConfig->allowReload($this->config->get('allowReload', $update));
 
                 // Setup WURFL Persistence
                 $wurflConfig->persistence('file', array('dir' => $persistenceDir));
@@ -174,10 +183,13 @@
                 // Create a WURFL Manager Factory from the WURFL Configuration
                 $factory = new \WURFL_WURFLManagerFactory($wurflConfig, $persistence);
 
+                // Delete any data or locks from previous build (ctrl+c was issued during last repository init)
+                $tmp = WURFL_FileUtils::getTempDir();
+                @unlink(implode(DIRECTORY_SEPARATOR,array($tmp,'wurfl.xml')));
+                @rmdir(implode(DIRECTORY_SEPARATOR,array($tmp,'wurfl_builder.lock')));
+
                 // Create a WURFL Manager
                 WURFL::$manager = $factory->create();
-
-
             }
 
             return $this->isReady();

@@ -65,9 +65,10 @@
          *
          * Check Module::errno() and Module::error() for more information if initialization does not succeed.
          *
+         * @param boolean $update Allow update if already initialized
          * @return boolean
          */
-        public function init();
+        public function init($update = false);
 
 
         /**

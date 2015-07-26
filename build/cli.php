@@ -11,7 +11,9 @@
 	 */
 
     // Only run this when executed on the CLI
-    if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
+use RescueMe\Manager;
+
+if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
 
         // Configure build
         require __DIR__ . DIRECTORY_SEPARATOR . 'config.php';
@@ -236,7 +238,6 @@
                     // Configure dependencies and get source path
                     $root = configure($opts, INSTALL_DIR, in_phar() ? getcwd() : "src");
 
-                    
                     // Get default ini values
                     $ini = is_file("rescueme.ini") ? parse_ini_file("rescueme.ini") : array();
 
@@ -258,6 +259,7 @@
                     
                     // Get flags
                     $silent = isset_get($opts,'silent',false);
+                    $init = isset_get($opts,'init',true);
                     $update = isset_get($opts,'update',false);
                     
                     // Prompt params from user?
@@ -338,7 +340,7 @@
                     require('classes/RescueMe/Install.php');
 
                     // Create install command
-                    $install = new RescueMe\Install($root, $ini, $silent, $update);
+                    $install = new RescueMe\Install($root, $ini, $silent, $init, $update);
 
                     // Execute installation
                     if($install->execute() !== true) {
@@ -367,7 +369,34 @@
                     }// if
 
                     break;
-                    
+
+                case MODULE:
+
+                    // Get module name
+                    $name = $opts[NAME];
+
+                    // Verify module name
+                    $msg  = (isset($name) ? null : "NAME is missing");
+
+                    // Print help now?
+                    if(!empty($msg)) print_help(MODULE, $msg);
+
+                    // Verify module type
+                    $msg = (Manager::isSupported($name) ? null : sprintf('Module %1$s is not supported',$name));
+
+                    // Print help now?
+                    if(!empty($msg)) print_help(MODULE, $msg);
+
+                    // Create instance
+                    $module = Manager::get($name, isset_get($opts,'user'))->newInstance();
+
+                    // Initialize module
+                    if($module->init(isset_get($opts,'update', true))) {
+
+                    }
+
+                    break;
+
                 case HELP:
 
                     // Get action
@@ -514,8 +543,10 @@
                 echo "OPTIONS:" . PHP_EOL;
                 echo "        --silent      No user interaction [use defaults]" . PHP_EOL;
                 echo "        --archive     RescueMe archive file [default: src.zip]" . PHP_EOL;
+                echo "        --init        Initialize components not installed [default: true=all, options: lib|module]" . PHP_EOL;
+                echo "        --update      Update components already installed [default: false=none, options: lib|module]" . PHP_EOL;
                 echo "        --install-dir Install directory [default: ".getcwd()."]" . PHP_EOL;
-                echo "        -h            Display this help" . PHP_EOL;                
+                echo "        -h            Display this help" . PHP_EOL;
                 break;
             case CONFIGURE:
                 
@@ -526,9 +557,19 @@
                 echo 'Usage: rescueme configure [OPTIONS]... ' . PHP_EOL;
                 echo "OPTIONS:" . PHP_EOL;
                 echo "        --silent      No user interaction [use defaults]" . PHP_EOL;
-                echo "        --update      Update libraries if already installed [default: false]" . PHP_EOL;
+                echo "        --init        Initialize components not installed [default: true=all, options: lib|module]" . PHP_EOL;
+                echo "        --update      Update components already installed [default: false=none, options: lib|module]" . PHP_EOL;
                 echo "        --install-dir Install directory [default: src]" . PHP_EOL;
                 echo "        -h            Display this help" . PHP_EOL;                
+                break;
+            case MODULE:
+
+                info("RescueMe Manage Module Script" . (isset($msg) ? " - " . $msg : ""));
+                echo 'Usage: rescueme module NAME [OPTIONS]' . PHP_EOL;
+                echo "OPTIONS:" . PHP_EOL;
+                echo "        --user        Module for user with given id [default: 0 = system user]" . PHP_EOL;
+                echo "        --update      Update if already installed [default: true]" . PHP_EOL;
+                echo "        -h            Display this help" . PHP_EOL;
                 break;
             case UNINSTALL:
                 
@@ -553,12 +594,14 @@
                     echo "        extract       Extract RescueMe" . PHP_EOL;
                     echo "        install       Install RescueMe" . PHP_EOL;
                     echo "        uninstall     Uninstall RescueMe" . PHP_EOL;
+                    echo "        module        Manage RescueMe module" . PHP_EOL;
                 }
                 else {
                     echo "        import        Import RescueMe database (sql->db)" . PHP_EOL;
                     echo "        export        Export RescueMe database (db->sql)" . PHP_EOL;
                     echo "        configure     Configure RescueMe source (dev)" . PHP_EOL;
                     echo "        package       Package RescueMe as executable phar-archive" . PHP_EOL;
+                    echo "        module        Manage RescueMe module" . PHP_EOL;
                 }
                 echo "        help          Display help about an action" . PHP_EOL;
                 

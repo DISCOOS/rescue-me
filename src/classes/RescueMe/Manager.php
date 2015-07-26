@@ -43,15 +43,27 @@
             Email\Provider::TYPE => SMTP::TYPE,
             Map\Provider::TYPE => Google::TYPE
         );
-        
+
+
+        /**
+         * Check if module is supported
+         * @param $name
+         * @return boolean
+         */
+        public static function isSupported($name) {
+            return isset(self::$required[$name]);
+        }
+
         /**
          * Install required modules if not already exist
          *
+         * @param boolean $init Initialize module after installation
+         * @param boolean $update Update module if already installed
          * @param callable $callback Progress callback function
-         * 
+         *
          * @return boolean.
          */
-        public static function install($callback = null) {
+        public static function install($init, $update, $callback = null) {
             $modules = array();
 
             foreach(Manager::$required as $type => $impl) {
@@ -73,8 +85,9 @@
                     if($module->isSupported()) {
 
                         // Potentially long operation...
-                        $module->init();
-
+                        if($init || $update) {
+                            $module->init($update);
+                        }
                         $modules[$id] = $module;
 
                         if(is_null($callback) === FALSE) {
@@ -97,8 +110,9 @@
                     if($module->isSupported()) {
 
                         // Potentially long operation...
-                        $module->init();
-
+                        if($init || $update) {
+                            $module->init($update);
+                        }
                         $modules[$factory->id] = $module;
 
                         if(is_null($callback) === FALSE) {
@@ -117,14 +131,24 @@
          *
          * @param integer $id User id
          * @param boolean $copy Copy system modules if true, create new otherwise.
-         * @param boolean $type Module type (optiona, if false prepare all modules)
+         * @param boolean|string|array $type Module type(s) (optional, if false prepare all modules)
          * @return boolean TRUE if changes was made, FALSE otherwise.
          */
         public static function prepare($id, $copy = false, $type = false) {
             $changed = false;
 
             // Get (all) system modules
-            $factories = $type ? array(Manager::get($type)) : Manager::getAll();
+            if(is_string($type)) {
+                $factories = array(Manager::get($type));
+            }
+            elseif(is_array($type)) {
+                $factories = false;
+                foreach($type as $name) {
+                    $factories[] = Manager::get($name);
+                }
+            } else {
+                $factories = Manager::getAll();
+            }
 
             if($factories !== false) {
                 /** @var Factory $factory */

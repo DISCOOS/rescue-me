@@ -1,6 +1,6 @@
 <?php
 
-    // Define constants
+// Define constants
 use RescueMe\Context;
 
 define('HELP',"help");
@@ -16,6 +16,7 @@ define('HELP',"help");
     define('CONFIGURE',"configure");
     define('UNINSTALL',"uninstall");
     define('ARCHIVE',"archive");
+    define('MODULE',"module");
     define('SRC_DIR',"src-dir");
     define('IMPORT_DIR',"import-dir");
     define('EXPORT_DIR',"export-dir");

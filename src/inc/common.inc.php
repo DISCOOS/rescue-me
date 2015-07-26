@@ -21,7 +21,7 @@
         $action = strtolower($action);
 
         if((ini_get("short_open_tag") === "1" || strcasecmp(ini_get("short_open_tag"),"On") === 0) === false) {
-            $status[] = array(E_USER_ERROR, "php.ini value 'phar.readonly' must be set to '1' in $ini");
+            $status[] = array(E_USER_ERROR, "php.ini value 'short_open_tag' must be set to '1' in $ini");
 
         }
         if(ini_get("date.timezone") === FALSE) {
@@ -90,7 +90,7 @@
             }
         } else if ($action === 'package') {
 
-            if((ini_get("phar.readonly") === "1" || strcasecmp(ini_get("phar.readonly"),"On") === 0)) {
+            if((ini_get("phar.readonly") === "1" || strcasecmp(ini_get("phar.readonly"),"on") === 0)) {
 
                 $status[] = array(E_USER_ERROR, "php.ini value 'phar.readonly' must be set to 'Off' in '$ini'");
             }
@@ -390,7 +390,13 @@
     function isset_get($array, $key, $default=null) {
         return isset($array[$key]) ? $array[$key] : $default;
     }
-    
+
+    /**
+     * Pick elements with key(s)
+     * @param $array
+     * @param mixed|string|array $key
+     * @return array
+     */
     function array_pick($array, $key) {
         $values = array();
         foreach($array as $name => $value) {
