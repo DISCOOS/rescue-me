@@ -99,15 +99,18 @@
 
                 $dataDir = Context::getDataPath();
 
+                $wurflDir = implode(DIRECTORY_SEPARATOR, array(
+                    $dataDir,
+                    'wurfl'
+                ));
+
                 $persistenceDir = implode(DIRECTORY_SEPARATOR, array(
                     $dataDir,
-                    'wurfl',
                     'persistence'
                 ));
 
                 $cacheDir = implode(DIRECTORY_SEPARATOR, array(
                     $dataDir,
-                    'wurfl',
                     'cache'
                 ));
 
@@ -116,11 +119,12 @@
 
                 $wurflFile = implode(DIRECTORY_SEPARATOR, array(
                     $dataDir,
-                    'wurfl',
                     'wurfl.zip'
                 ));
 
+                // Ensure wurfl file exists
                 if(file_exists($wurflFile) === false) {
+
                     $srcFile = implode(DIRECTORY_SEPARATOR, array(
                         Context::getVendorPath(),
                         'wurfl',
@@ -129,8 +133,12 @@
                         'resources',
                         'wurfl.zip'
                     ));
-                    if(copy($srcFile, $wurflFile) === false) {
-                        info('WURFL not loaded');
+
+                    // Ensure directory
+                    mkdir($wurflDir, 0777, true);
+
+                    // Attempt to copy it
+                    if(@copy($srcFile, $wurflFile) === false) {
                         return $this->fatal(sprintf('Unable to copy WURFL file %1$s to %2$s',
                             $srcFile,
                             $wurflFile

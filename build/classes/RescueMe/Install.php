@@ -210,7 +210,7 @@ class Install {
 
             $inline = false;
 
-        } 
+        }
         info($inline ? "SKIPPED" : " DONE");
 
         return true;
