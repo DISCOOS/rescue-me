@@ -271,6 +271,14 @@ R.prepare = function (element, options) {
         }
 
     });
+    
+    // Hide fixed header on input focus
+    $('body').on('focus', 'input', function() {
+        $('.masthead').addClass('hidden-landscape');
+    }).on('blur', 'input', function() {
+        $('.masthead').removeClass('hidden-landscape');
+    });
+
 };
 
 R.remove = function(url, element) {
@@ -371,7 +379,7 @@ R.modal.load = function(url, target, data) {
         try {
             var response = JSON.parse(data);
         } catch ($e) {
-            var response = {html: data, options: {}};
+            response = {html: data, options: {}};
         }
 
         if(response !== false) {
@@ -615,7 +623,7 @@ R.paginator.search = function(paginator, page, filter) {
 
         }
     });    
-}
+};
 
 R.format_since = function(timestamp) {
     if (timestamp === undefined) {
@@ -641,7 +649,7 @@ R.format_since = function(timestamp) {
         }
     }        
     return since;
-}
+};
 
 R.format_dtg = function(timestamp) {
     var d = new Date(timestamp);
@@ -669,14 +677,14 @@ R.format_dtg = function(timestamp) {
     }
 
     return date+" "+hour+":"+min;
-}
+};
 
 R.updateTimes = function() {
     $("time").each(function( ) {
        var since = R.format_since($(this).attr('datetime'));
        $(this).text(since);
    });
-}
+};
 
 R.checkCountry = function(country, system_country) {
     if (country.value !== system_country) {
@@ -685,4 +693,4 @@ R.checkCountry = function(country, system_country) {
     else {
         $("#roaming").hide();
     } 
-}
+};
