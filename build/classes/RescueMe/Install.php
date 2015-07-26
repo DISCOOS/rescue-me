@@ -178,7 +178,7 @@ class Install {
     }
 
 
-    private function initComposer() {
+    public function initComposer() {
 
         $inline = true;
         info("  Installing composer...", BUILD_INFO, NEWLINE_NONE);
@@ -211,7 +211,7 @@ class Install {
     }
 
 
-    private function initLibs(){
+    public function initLibs(){
 
         $vendor = $this->root . DIRECTORY_SEPARATOR . "vendor";
 

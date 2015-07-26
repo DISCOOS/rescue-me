@@ -438,6 +438,22 @@ if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
         $vendor = $root.DIRECTORY_SEPARATOR.'vendor';
         $locale = $root.DIRECTORY_SEPARATOR.'locale';
 
+        // Install composer?
+        if(realpath($vendor.DIRECTORY_SEPARATOR.'autoload.php') === false) {
+
+            // Install
+            require('classes/RescueMe/Install.php');
+
+            // Create install command
+            $install = new RescueMe\Install($name, array(), true, true, false);
+
+            // Execute installation
+            if($install->execute() !== true) {
+                done('Failed to install composer', BUILD_ERROR);
+            }// if
+
+        }
+
         // Import class loaders
         require($vendor.DIRECTORY_SEPARATOR.'autoload.php');
 
