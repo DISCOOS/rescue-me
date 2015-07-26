@@ -178,6 +178,10 @@ class Install {
     }
 
 
+    /**
+     * Initialize (or update) composer
+     * @return bool|int
+     */
     public function initComposer() {
 
         $inline = true;
@@ -206,11 +210,17 @@ class Install {
 
             $inline = false;
 
-        }
+        } 
         info($inline ? "SKIPPED" : " DONE");
+
+        return true;
     }
 
 
+    /**
+     * Initialize (or update) libraries
+     * @return bool|int
+     */
     public function initLibs(){
 
         $vendor = $this->root . DIRECTORY_SEPARATOR . "vendor";
@@ -262,6 +272,8 @@ class Install {
                 info("SKIPPED");
             }
         }
+
+        return true;
     }
 
 

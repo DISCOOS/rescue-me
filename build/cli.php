@@ -447,9 +447,12 @@ if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
             // Create install command
             $install = new RescueMe\Install($root, array(), true, true, false);
 
-            // Execute installation
-            if($install->execute() !== true) {
+            // Install composer and libraries
+            if($install->initComposer() !== true) {
                 done('Failed to install composer', BUILD_ERROR);
+            }
+            if($install->initLibs() !== true) {
+                done('Failed to initialize libs', BUILD_ERROR);
             }// if
 
         }
