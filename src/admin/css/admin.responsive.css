@@ -32,15 +32,6 @@
 
 @media (max-width: 767px) {
 
-    /*#map {*/
-        /*clear: left;*/
-        /*float: left;*/
-        /*width: 255px;*/
-        /*height: auto;*/
-        /*min-width: 255px;*/
-        /*min-height: 255px;*/
-    /*}*/
-
     #sidebar {
         width: 225px;
         height: auto;
@@ -73,16 +64,7 @@
 /  Portrait phones and down
 /  ==========================================*/
 
-@media (max-width: 480px) { 
-
-    /*#map {*/
-        /*clear: left;*/
-        /*float: left;*/
-        /*height: auto;*/
-        /*width: 340px;*/
-        /*min-width: 340px;*/
-        /*min-height: 340px;*/
-    /*}*/
+@media (max-width: 480px) {
 
     #sidebar {
         clear: left;
@@ -139,7 +121,11 @@
     .row-fluid div[class*="v-space"] {
         margin-top: 30px;
     }
+}
 
-
+@media (max-height: 300px) and (orientation: landscape) {
+    .hidden-landscape {
+        display: none !important;
+    }
 }
 
