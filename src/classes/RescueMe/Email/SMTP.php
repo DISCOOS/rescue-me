@@ -170,7 +170,7 @@ class SMTP extends AbstractProvider {
         $to = $this->prepareAddresses(isset_get($this->data,'to'));
 
         if(isset_get($this->data,'bulk',false) === true) {
-            foreach($to as $address) {
+            foreach($to as $address => $name) {
                 $message->setTo($address);
                 $mailer->send($message, $failed);
             }

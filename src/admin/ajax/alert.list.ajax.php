@@ -64,13 +64,6 @@ if($alerts == false) {?>
             </td>
         </tr>
 <?
-            // Insert delete confirmation
-            insert_dialog_confirm(
-                "confirm-delete-$id",
-                T_('Confirm'),
-                sprintf(T_('Do you want to delete %1$s?'),"<u>{$alert->alert_subject}</u>"),
-                ADMIN_URI."alert/delete/$id"
-            );
         }
     }
 }

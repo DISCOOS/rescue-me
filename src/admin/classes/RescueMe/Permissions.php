@@ -31,6 +31,8 @@
         private static $permissions = array(
             'alert'=>array('read', 'write'),
             'alert.all'=>array('read', 'write'),
+            'issue'=>array('read', 'write'),
+            'issue.all'=>array('read', 'write'),
             'logs'=>array('read'),
             'operations'=>array('read', 'write'),
             'operations.all'=>array('read', 'write'),

@@ -98,13 +98,13 @@
             return $this->database($name);
             
         }// connect
-        
-        
+
+
         /**
          * Use database.
-         * 
-         * @param string $name DB name
-         * 
+         *
+         * @param mixed|string $name DB name
+         *
          * @return TRUE if success, FALSE otherwise.
          */
         public function database($name=DB_NAME)
@@ -115,19 +115,19 @@
             }
             return false;
         }// database
-        
-        
+
+
         /**
          * Performs a query on the RescueMe database.
-         * 
+         *
          * @param string $sql SQL query.
-         * 
-         * @return mixed FALSE on failure. For successful SELECT, SHOW, DESCRIBE or EXPLAIN queries 
-         * mysqli_query will return a mysqli_result object. For successfull INSERT queries with 
-         * AUTO_INCREMENT field, the auto generated id is returned. For other successful queries 
+         *
+         * @throws \Exception
+         * @return mixed FALSE on failure. For successful SELECT, SHOW, DESCRIBE or EXPLAIN queries
+         * mysqli_query will return a mysqli_result object. For successfull INSERT queries with
+         * AUTO_INCREMENT field, the auto generated id is returned. For other successful queries
          * the method will return TRUE.
-         * 
-         * @throws \Exception If not connected.
+         *
          */
         public static function query($sql)
         {
@@ -135,7 +135,7 @@
             {
                 $code = mysqli_connect_errno(DB::instance()->mysqli);
                 $error = mysqli_connect_error(DB::instance()->mysqli);
-                throw new Exception("Failed to connect to MySQL: " . $error, $code);
+                throw new \Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
                         
             $result = DB::instance()->mysqli->query($sql);
@@ -422,7 +422,7 @@
          * Build string matching filter from fields and values
          * @param array $fields Fully qualified table names
          * @param array $values Values to match
-         * @param type $operand Operand between each predicate
+         * @param string $operand Operand between each predicate
          * @return string
          */
         public static function filter($fields, $values, $operand) {

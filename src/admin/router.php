@@ -2,7 +2,8 @@
 
     use RescueMe\DB;
     use RescueMe\Domain\Alert;
-    use RescueMe\User;
+use RescueMe\Domain\Issue;
+use RescueMe\User;
     use RescueMe\Manager;
     use RescueMe\Missing;
     use RescueMe\Operation;
@@ -778,37 +779,28 @@
                     $_ROUTER['message'] = sprintf(T_('No <em>%1$s</em> users found.'), strtolower($state));
 
                 } else {
-                    /** @var Email $email */
-                    $email = Manager::get(Email::TYPE, $user->id)->newInstance();
-                    $email->setSubject($_POST['subject'])
-                        ->setBody($_POST['body'])
-                        ->setFrom(User::current())
-                        ->setTo($users);
-
-                    try {
-                        $failed = $email->send();
-                        $message = '<b>%1$s</b> <textarea rows="%2$s" class="span12" style="resize: none;">%3$s</textarea>';
-                        if($failed !== true) {
-                            $names = implode("\n", $failed);
-                            $cols = min(20, count($failed));
-                            $_ROUTER['error'] = sprintf($message, T_('Email not sent to following users'), $cols, $names);
-                        } else {
-                            unset($_POST['subject']);
-                            unset($_POST['body']);
-                            $names = array();
-                            foreach($users as $user) {
-                                $names[] = sprintf('%1$s <%2$s>;', $user->name, $user->email);
-                            }
-                            $cols = min(20, count($names));
-                            $names = implode("\n", $names);
-                            $_ROUTER['message'] = sprintf($message,
-                                sprintf(T_('Email sent to %1$s users'), count($users)), $cols, $names);
+                    $bulk = $_POST['bulk'] = isset($_POST['bulk']) ? true : false;
+                    $result = send_email($user,$users, $_POST['subject'],$_POST['body'], $bulk);
+                    $message = '<b>%1$s</b> <textarea rows="%2$s" class="span12" style="resize: none;">%3$s</textarea>';
+                    if($result === true) {
+                        unset($_POST['subject']);
+                        unset($_POST['body']);
+                        $names = array();
+                        foreach($users as $user) {
+                            $names[] = sprintf('%1$s <%2$s>;', $user->name, $user->email);
                         }
-                    } catch (Exception $e) {
-                        $_ROUTER['error'] = $e->getMessage();
+                        $cols = min(20, count($names));
+                        $names = implode("\n", $names);
+                        $_ROUTER['message'] = sprintf($message,
+                            sprintf(T_('Email sent to %1$s users'), count($users)), $cols, $names);
                     }
-
-
+                    else if(is_array($result)) {
+                        $names = implode("\n", $result);
+                        $cols = min(20, count($result));
+                        $_ROUTER['error'] = sprintf($message, T_('Email not sent to following users'), $cols, $names);
+                    } else {
+                        $_ROUTER['error'] = $result;
+                    }
                 }
             }
             break;
@@ -1431,6 +1423,142 @@
                 } else {
                     header("Location: ".ADMIN_URI.'alert/list');
                     exit();
+                }
+            }
+
+            break;
+
+        case 'issue/list':
+
+            if($user->allow('read', 'issue.all') === FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            if(isset($_GET['name'])) {
+
+                echo ajax_response("issue.list");
+
+                exit;
+            }
+
+            $_ROUTER['name'] = T_('Issues');
+            $_ROUTER['view'] = $_GET['view'];
+            break;
+
+        case 'issue/new':
+
+            $access = $user->allow('write', 'issue.all');
+
+            if(($access || $user->allow('write', 'issue', $id))=== FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('New issue');
+            $_ROUTER['view'] = 'issue/new';
+
+            // Process form?
+            if (is_post_request()) {
+
+                // Validate checkboxes
+                $send = isset($_POST['send_issue']);
+                $bulk = isset($_POST['bulk']);
+
+                $_POST['user_id'] = User::currentId();
+                $_POST = array_exclude($_POST, array('send_issue', 'bulk'));
+
+                $issue = new Issue($_POST);
+                if($issue->insert() === false) {
+                    $_ROUTER['error'] = DB::errno() ? DB::error() :
+                        sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+                } else {
+                    if($send) {
+                        $result = send_issue_email($user, $issue, $bulk);
+                        if($result === true) {
+                            header("Location: ".ADMIN_URI.'issue/list');
+                            exit();
+                        }
+                        if(is_array($result)) {
+                            $names = implode("\n", $result);
+                            $cols = min(20, count($result));
+                            $message = '<b>%1$s</b> <textarea rows="%2$s" class="span12" style="resize: none;">%3$s</textarea>';
+                            $_ROUTER['error'] = sprintf($message, T_('Email not sent to following users'), $cols, $names);
+                        } else {
+                            $_ROUTER['error'] = $result;
+                        }
+                    }
+                }
+            }
+            break;
+
+        case 'issue/edit':
+
+            if(($id = input_get_int('id')) === FALSE) {
+
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Id not defined');
+                break;
+            }
+
+            $access = $user->allow('write', 'issue.all');
+
+            if(($access || $user->allow('write', 'issue', $id))=== FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('Edit issue');
+            $_ROUTER['view'] = 'issue/edit';
+
+            // Process form?
+            if (is_post_request()) {
+
+                // Get requested alert
+                $id = input_get_int('id');
+
+                $edit = Issue::get($id);
+                if($edit === false) {
+                    $_ROUTER['error'] = sprintf(T_('Issue %1$s not found'), $id);
+                    break;
+                }
+
+                // Validate checkboxes
+                $send = isset($_POST['send_issue']);
+                $bulk = isset($_POST['bulk']);
+
+                $_POST = array_exclude($_POST, array('send_issue', 'bulk'));
+
+                if($edit->update($_POST) === false) {
+                    $_ROUTER['error'] = DB::errno() ? DB::error() :
+                        sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+                } else {
+
+                    if($send) {
+                        $result = send_issue_email($user, $edit, $bulk);
+                        if($result === true) {
+                            header("Location: ".ADMIN_URI.'issue/list');
+                            exit();
+                        }
+                        if(is_array($result)) {
+                            $names = implode("\n", $result);
+                            $cols = min(20, count($result));
+                            $message = '<b>%1$s</b> <textarea rows="%2$s" class="span12" style="resize: none;">%3$s</textarea>';
+                            $_ROUTER['error'] = sprintf($message, T_('Email not sent to following users'), $cols, $names);
+                        } else {
+                            $_ROUTER['error'] = $result;
+                        }
+                    }
                 }
             }
 

@@ -59,6 +59,8 @@
                     if(Permissions::grant($role_id, $user_id, 'write', 'roles')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'alert.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'alert.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'issue.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'issue.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'setup.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'setup.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'operations.all')) $count++;

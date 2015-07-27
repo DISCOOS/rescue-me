@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing: Missing class
+ * File containing: Alert class
  *
  * @copyright Copyright 2015 {@link http://www.discoos.org DISCO OS Foundation}
  *
@@ -23,11 +23,11 @@ use RescueMe\DB;
  * @property string $alert_type {'info', 'warning', 'error'}
  * @property string $alert_subject First line (bold)
  * @property string $alert_message Second line (paragraph)
- * @property string $alert_created Creation date (Unix timestamp)
- * @property string $alert_until Show until given date (Unix timestamp)
- * @property string $alert_closeable Allows user to close alert
- * @property string $user_id User which created the alert
- *
+ * @property integer $alert_created Creation date (Unix timestamp)
+ * @property integer $alert_until Show until given date (Unix timestamp)
+ * @property boolean $alert_closeable Allows user to close alert
+ * @property integer $user_id User which created the alert
+ * @property integer issue_id Issue id related to this alert
  */
 class Alert {
 
