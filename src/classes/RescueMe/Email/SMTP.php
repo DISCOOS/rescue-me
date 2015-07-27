@@ -165,7 +165,7 @@ class SMTP extends AbstractProvider {
 
         $from = $this->prepareAddress(isset_get($this->data,'from'));
         $message->setFrom($from)
-                ->setBody(isset_get($this->data,'body'));
+                ->setBody(isset_get($this->data,'body'), 'text/html');
 
         $to = $this->prepareAddresses(isset_get($this->data,'to'));
 
