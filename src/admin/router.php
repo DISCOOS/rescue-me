@@ -1479,20 +1479,21 @@ use RescueMe\User;
                     $_ROUTER['error'] = DB::errno() ? DB::error() :
                         sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
                 } else {
+                    $result = true;
                     if($send) {
                         $result = send_issue_email($user, $issue, $bulk);
-                        if($result === true) {
-                            header("Location: ".ADMIN_URI.'issue/list');
-                            exit();
-                        }
                         if(is_array($result)) {
                             $names = implode("\n", $result);
                             $cols = min(20, count($result));
                             $message = '<b>%1$s</b> <textarea rows="%2$s" class="span12" style="resize: none;">%3$s</textarea>';
                             $_ROUTER['error'] = sprintf($message, T_('Email not sent to following users'), $cols, $names);
-                        } else {
+                        } elseif (is_string($result)) {
                             $_ROUTER['error'] = $result;
                         }
+                    }
+                    if($result === true) {
+                        header("Location: ".ADMIN_URI.'issue/list');
+                        exit();
                     }
                 }
             }

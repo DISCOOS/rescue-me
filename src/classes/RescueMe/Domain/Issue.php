@@ -141,7 +141,7 @@ class Issue {
      */
     public function insert($values = array()) {
         $this->values = array_merge($this->values, $values);
-        $this->values['issue_sent'] = $this->prepareTimestamp($this->values['issue_sent'], true);
+//        $this->values['issue_sent'] = $this->prepareTimestamp($this->values['issue_sent'], true);
         $values = array_exclude($this->values, 'issue_id');
         return DB::insert(self::TABLE, $values);
     }
