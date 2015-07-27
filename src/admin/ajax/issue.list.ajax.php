@@ -58,10 +58,10 @@ if($issues == false) {?>
                         <li>
                             <a role="menuitem" data-toggle="modal" data-target="#confirm"
                                data-content="<?=sprintf(T_('Do you want to change %1$s to %2$s?'),"
-                                    <u>{$issue->issue_summary}</u>", $next
+                                    <u>{$issue->issue_summary}</u>", $states[$next]
                                )?>"
                                data-href="<?=ADMIN_URI."issue/transition/$id?state=".$next?>">
-                                <b class="icon icon-ok"></b><?= T_('Progress') ?>
+                                <b class="icon icon-step-forward"></b><?=sprintf(T_('Change to %1$s'), $states[$next])?>
                             </a>
                         </li>
                         <li>
