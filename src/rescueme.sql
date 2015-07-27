@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `alerts` (
   `alert_until` timestamp NULL DEFAULT NULL,
   `alert_closeable` tinyint(1) NOT NULL DEFAULT '1',
   `user_id` int(11) NOT NULL,
+  `issue_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`alert_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -26,6 +27,27 @@ CREATE TABLE IF NOT EXISTS `alerts_closed` (
   `alert_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`alert_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure for table `issues`
+-- 
+
+CREATE TABLE IF NOT EXISTS `issues` (
+  `issue_id` int(11) NOT NULL AUTO_INCREMENT,
+  `issue_type` enum('planned','incident') NOT NULL,
+  `issue_state` enum('open','closed') NOT NULL DEFAULT 'open',
+  `issue_summary` tinytext NOT NULL,
+  `issue_description` text NOT NULL,
+  `issue_cause` text,
+  `issue_actions` text,
+  `issue_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `issue_sent` timestamp NULL DEFAULT NULL,
+  `issue_send_to` varchar(40) NOT NULL DEFAULT 'active',
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`issue_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
