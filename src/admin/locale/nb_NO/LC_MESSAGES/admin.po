@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2015-07-27 16:31+0100\n"
+"POT-Creation-Date: 2015-07-27 20:18+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
@@ -80,8 +80,8 @@ msgstr "Om %1$s"
 #: admin/router.php:1173 admin/router.php:1228 admin/router.php:1271
 #: admin/router.php:1292 admin/router.php:1314 admin/router.php:1322
 #: admin/router.php:1353 admin/router.php:1386 admin/router.php:1396
-#: admin/router.php:1435 admin/router.php:1456 admin/router.php:1466
-#: admin/router.php:1505
+#: admin/router.php:1435 admin/router.php:1458 admin/router.php:1506
+#: admin/router.php:1516 admin/router.php:1569
 msgid "Illegal operation"
 msgstr "Ulovlig handling"
 
@@ -95,7 +95,7 @@ msgstr "Ulovlig handling"
 #: admin/router.php:1067 admin/router.php:1085 admin/router.php:1131
 #: admin/router.php:1200 admin/router.php:1248 admin/router.php:1273
 #: admin/router.php:1324 admin/router.php:1355 admin/router.php:1398
-#: admin/router.php:1437 admin/router.php:1468
+#: admin/router.php:1437 admin/router.php:1460 admin/router.php:1518
 msgid "Access denied"
 msgstr "Ingen tilgang"
 
@@ -132,7 +132,7 @@ msgstr "Modul %1$s ikke funnet"
 #: admin/router.php:594 admin/router.php:639 admin/router.php:849
 #: admin/router.php:898 admin/router.php:917 admin/router.php:962
 #: admin/router.php:1042 admin/router.php:1159 admin/router.php:1373
-#: admin/router.php:1422 admin/router.php:1492
+#: admin/router.php:1422 admin/router.php:1480 admin/router.php:1545
 #, php-format
 msgid "Operation [%1$s] not executed, try again"
 msgstr "Operasjon [%1$s] ikke utført, prøv igjen"
@@ -142,7 +142,7 @@ msgstr "Operasjon [%1$s] ikke utført, prøv igjen"
 #: admin/router.php:693 admin/router.php:729 admin/router.php:827
 #: admin/router.php:860 admin/router.php:928 admin/router.php:972
 #: admin/router.php:1053 admin/router.php:1114 admin/router.php:1188
-#: admin/router.php:1316 admin/router.php:1388 admin/router.php:1458
+#: admin/router.php:1316 admin/router.php:1388 admin/router.php:1508
 msgid "Id not defined"
 msgstr "Id ikke definert"
 
@@ -159,8 +159,8 @@ msgstr "Bruker"
 
 #: admin/router.php:387 admin/router.php:668 admin/router.php:705
 #: admin/router.php:741 admin/gui/system.menu.gui.php:40
-#: admin/gui/user.list.gui.php:21 admin/gui/issue.edit.gui.php:66
-#: admin/gui/user.email.gui.php:33
+#: admin/gui/user.list.gui.php:21 admin/gui/issue.new.gui.php:70
+#: admin/gui/issue.edit.gui.php:74 admin/gui/user.email.gui.php:33
 msgid "Users"
 msgstr "Brukere"
 
@@ -269,7 +269,7 @@ msgstr "Ingen <em>%1$s</em> brukere funnet."
 msgid "Email sent to %1$s users"
 msgstr "E-post sendt til %1$s brukere"
 
-#: admin/router.php:800
+#: admin/router.php:800 admin/router.php:1489 admin/router.php:1558
 msgid "Email not sent to following users"
 msgstr "E-post ble ikke sendt til følgende brukere"
 
@@ -381,11 +381,16 @@ msgstr "Varsel"
 msgid "Issues"
 msgstr "Hendelser"
 
-#: admin/router.php:1472 admin/gui/issue.edit.gui.php:73
+#: admin/router.php:1464 admin/gui/issue.list.gui.php:55
+#: admin/gui/issue.new.gui.php:77
+msgid "New issue"
+msgstr "Ny hendelse"
+
+#: admin/router.php:1522 admin/gui/issue.edit.gui.php:81
 msgid "Edit issue"
 msgstr "Endre hendelse"
 
-#: admin/router.php:1483
+#: admin/router.php:1533
 #, php-format
 msgid "Issue %1$s not found"
 msgstr "Hendelse %1$s ikke funnet"
@@ -546,7 +551,8 @@ msgstr "Konfigurer"
 msgid "Root cause"
 msgstr "Årsak"
 
-#: admin/inc/common.inc.php:78 admin/gui/issue.edit.gui.php:42
+#: admin/inc/common.inc.php:78 admin/gui/issue.new.gui.php:38
+#: admin/gui/issue.edit.gui.php:42
 msgid "Actions"
 msgstr "Tiltak"
 
@@ -1134,7 +1140,8 @@ msgstr "Rolle"
 msgid "Mobile"
 msgstr "Mobil"
 
-#: admin/gui/issue.list.gui.php:35 admin/gui/issue.edit.gui.php:14
+#: admin/gui/issue.list.gui.php:35 admin/gui/issue.new.gui.php:13
+#: admin/gui/issue.edit.gui.php:14
 msgid "Summary"
 msgstr "Oppsummering"
 
@@ -1142,37 +1149,38 @@ msgstr "Oppsummering"
 msgid "State"
 msgstr "Tilstand"
 
-#: admin/gui/issue.list.gui.php:55
-msgid "New issue"
-msgstr "Ny hendelse"
-
-#: admin/gui/issue.edit.gui.php:16
+#: admin/gui/issue.new.gui.php:15 admin/gui/issue.edit.gui.php:16
 msgid "Enter summary"
 msgstr "Skriv inn oppsummering"
 
-#: admin/gui/issue.edit.gui.php:24
+#: admin/gui/issue.new.gui.php:22 admin/gui/issue.edit.gui.php:24
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: admin/gui/issue.edit.gui.php:25
+#: admin/gui/issue.new.gui.php:23 admin/gui/issue.edit.gui.php:25
 msgid "Enter description"
 msgstr "Skriv inn beskrivelse"
 
-#: admin/gui/issue.edit.gui.php:33
+#: admin/gui/issue.new.gui.php:30 admin/gui/issue.edit.gui.php:33
 msgid "Cause"
 msgstr "Årsak"
 
-#: admin/gui/issue.edit.gui.php:34
+#: admin/gui/issue.new.gui.php:31 admin/gui/issue.edit.gui.php:34
 msgid "Enter root cause"
 msgstr "Skriv inn årsak"
 
-#: admin/gui/issue.edit.gui.php:43
+#: admin/gui/issue.new.gui.php:39 admin/gui/issue.edit.gui.php:43
 msgid "Enter actions"
 msgstr "Skriv inn aksjoner"
 
-#: admin/gui/issue.edit.gui.php:57
+#: admin/gui/issue.new.gui.php:53 admin/gui/issue.edit.gui.php:57
 msgid "Send issue"
 msgstr "Send hendelse"
+
+#: admin/gui/issue.new.gui.php:63 admin/gui/issue.edit.gui.php:67
+#: admin/gui/user.email.gui.php:43
+msgid "Send as bulk"
+msgstr "Send i bulk"
 
 #: admin/gui/user.edit.gui.php:18 admin/gui/user.new.gui.php:14
 msgid "Full name"
@@ -1193,10 +1201,6 @@ msgstr "Godkjenn bruker..."
 #: admin/gui/user.edit.gui.php:89
 msgid "Edit user"
 msgstr "Endre bruker"
-
-#: admin/gui/user.email.gui.php:43
-msgid "Send as bulk"
-msgstr "Send i bulk"
 
 #: admin/gui/user.email.gui.php:50
 msgid "Send"
