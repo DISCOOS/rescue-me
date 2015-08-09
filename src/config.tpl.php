@@ -13,12 +13,11 @@ define('MAINTAIN', false);
 
 define('DEBUG', false);
 
-// Allow usage on command line
-if(php_sapi_name() !== 'cli') session_start();
+// Silex routing instead of router.php - still in early development!
+define('USE_SILEX', true);
 
-// Silex routing instead of router.php
-// Still in early development!
-define('USE_SILEX', false);
+// Allow usage on command line
+if(!USE_SILEX && php_sapi_name() !== 'cli') session_start();
 
 // RescueMe custom constants
 define('TITLE','RescueMe');
@@ -95,9 +94,19 @@ error_reporting(DEBUG ? ~0 : 0);
 ini_set('display_errors', DEBUG ? 1 : 0);
 
 // Load application context - used by classes
-Context::load(array (
-    Context::APP_PATH => APP_PATH,
-    Context::DATA_PATH => APP_PATH_DATA,
-    Context::LOCALE_PATH => APP_PATH_LOCALE,
-    Context::VENDOR_PATH => APP_PATH_VENDOR
+Context::load(array(
+        Context::PATH => APP_PATH,
+        Context::DATA_PATH => APP_PATH_DATA,
+        Context::LOCALE_PATH => APP_PATH_LOCALE,
+        Context::VENDOR_PATH => APP_PATH_VENDOR,
+        Context::URI => APP_URI,
+        Context::TITLE => TITLE,
+        Context::VERSION => VERSION,
+        Context::DB_HOST => DB_HOST,
+        Context::DB_NAME => DB_NAME,
+        Context::DB_USERNAME => DB_USERNAME,
+        Context::DB_PASSWORD => DB_PASSWORD,
+        Context::DB_PASSWORD => DB_PASSWORD,
+        Context::SECURITY_SALT => SALT,
+        Context::SECURITY_PASSWORD_LENGTH => PASSWORD_LENGTH
 ));
