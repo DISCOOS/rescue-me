@@ -12,6 +12,8 @@
 
 namespace RescueMe;
 
+use RescueMe\Admin\Core\LegacyPasswordEncoder;
+
 /**
  * Install class
  *
@@ -290,6 +292,8 @@ class Install {
             $country = strtoupper(in("Default Country Code (ISO2)", trim($this->ini["COUNTRY_PREFIX"],'\'"')));
             $mobile = in("    Admin Phone Number Without Int'l Dial Code");
 
+            $encoder = new LegacyPasswordEncoder();
+            $password = $encoder ->encodePassword($password, SALT);
             $user = User::create($fullname, $username, $password, $country, $mobile, 1);
             if ($user === FALSE) {
                 return error(ADMIN_NOT_CREATED . " (" . DB::error() . ")");
