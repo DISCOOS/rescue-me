@@ -134,25 +134,28 @@
 
                 while($row = $res->fetch_assoc()) {
 
-                    $code = Locale::getDialCode($row['missing_mobile_country']);
-                    $number = $this->accept($code).$row['missing_mobile'];
+                    // Is anonymized?
+                    // TODO: Make secure relation between anonymized traces and delivery reports
+                    if(isset($row['missing_mobile_country'])) {
+                        $code = Locale::getDialCode($row['missing_mobile_country']);
+                        $number = $this->accept($code).$row['missing_mobile'];
 
-                    if(ltrim($number,'0') === ltrim($to,'0')) {
+                        if(ltrim($number,'0') === ltrim($to,'0')) {
 
-                        $delivered = isset($datetime) ? "FROM_UNIXTIME({$datetime->getTimestamp()})" : "NULL";
+                            $delivered = isset($datetime) ? "FROM_UNIXTIME({$datetime->getTimestamp()})" : "NULL";
 
-                        $update = "UPDATE `missing` 
+                            $update = "UPDATE `missing`
                                    SET `sms_delivery` = $delivered, `sms_error` = '".(string)$errorDesc."'
                                    WHERE `missing_id` = {$row['missing_id']}";
 
-                        if(DB::query($update)) {
-                            Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
-                        } else {
-                            $context = array('sql' => $update);
-                            $this->critical("Failed to update SMS delivery status for missing " . $row['missing_id'], $context);
-                        }// if
+                            if(DB::query($update)) {
+                                Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
+                            } else {
+                                $context = array('sql' => $update);
+                                $this->critical("Failed to update SMS delivery status for missing " . $row['missing_id'], $context);
+                            }// if
+                        }
                     }
-
                 }
             }
             
