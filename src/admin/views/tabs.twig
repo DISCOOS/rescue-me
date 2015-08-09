@@ -1,0 +1,12 @@
+<ul id="tabs" class="nav nav-tabs">
+{% for tab,title in tabs %}
+    <li><a href="#{{ tab }}" data-toggle="tab">{{ title }}</a></li>
+{% endfor %}
+</ul>
+<div class="tab-content">
+{% for tab,title in tabs %}
+    <div id="{{ tab }}" data-target=".searchable" class="tab-pane{% if selected == tab %} active{% endif %}">{% block content %}{% endblock %}</div>
+{% endfor %}
+</div>
+{# Initialize tabs on document load #}
+<script>R.tabs('tabs'{% if ajax_url is defined %},'{{ ajax_url }}'{% endif %});</script>

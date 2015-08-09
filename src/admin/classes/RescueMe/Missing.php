@@ -126,7 +126,7 @@
             $where = $filter ? array($filter) : array();
             
             if($admin === false) {                
-                $where[] = '`operations`.`user_id` = ' . User::currentId();
+                $where[] = '`operations`.`user_id` = ' . $admin;
             } 
             
             if(empty($where) === false) {

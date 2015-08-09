@@ -1,4 +1,4 @@
-R.form = {};
+R.form = R.form || {};
 R.form.validate = function(selector) {
     
     selector = typeof selector !== 'undefined' ? selector : "form";

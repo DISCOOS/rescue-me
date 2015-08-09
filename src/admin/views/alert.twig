@@ -1,0 +1,6 @@
+{% if id is not defined %}
+    {% set class = 'info' %}
+{% endif %}
+<div class="alert {% block class %}{{ class }}{% endblock %}">
+    {% block message %}{{ message }}{% endblock %}
+</div>

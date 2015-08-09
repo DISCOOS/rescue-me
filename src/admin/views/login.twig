@@ -1,0 +1,34 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<form class="form-signin" action="{{ path('login_check') }}" method="post">
+	<h2 class="form-signin-heading">{{ T_('Login') }}</h2>
+    {% if error is defined %}
+        {% embed 'alert.twig' with { 'class' : 'error', 'message' : error} %}{% endembed %}
+    {% endif %}
+    <input type="email"
+           id="username"
+           name="_username"
+           class="input-block-level{{ message is defined ? ' alert-error' : '' }}"
+           placeholder="{{- T_('E-mail address') -}}"
+           value="{# last_username #}"
+           required autofocus
+     />
+    <input type="password"
+           id="password"
+           name="_password"
+           class="input-block-level{{ message is defined ? ' alert-error' : '' }}"
+           placeholder="{{- T_('Password') -}}"
+           data-content="Caps-lock is on!"
+           required
+    />
+
+	<button class="btn btn-large btn-primary" type="submit">{{- T_('Login') -}}</button>
+	<a class="pull-right" href="{{ path('password/reset')}}">{{- T_('Forgot your password?') -}}</a>
+
+</form>
+<div class="form-signin text-center">
+    <a href="{{ path('user/request') }}">{{ T_("Don't have an account?") }} {{ T_('Sign up here')}}</a>
+</div>
+
+{% endblock %}

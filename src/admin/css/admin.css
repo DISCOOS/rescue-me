@@ -63,6 +63,59 @@
     right: 0;
 }
 
+.tab-content {
+    width: auto;
+    overflow: visible !important;
+}
+
+/*==========================================
+/ Statistics layout
+/=========================================*/
+
+.stats
+{
+    width: 100%;
+    display: table;
+    margin-top: .5em;
+    margin-bottom: 1em;
+}
+
+.stats .stat
+{
+    width: 25%;
+    text-align: center;
+    display: table-cell;
+    padding: 5px;
+    position: relative;
+    border-right: 1px solid #CCC;
+    border-left: 1px solid #FFF;
+}
+
+.stats .stat:first-child {
+    border-left: none;
+}
+
+.stats .stat:last-child {
+    border-right: none;
+}
+
+.stats .stat h4
+{
+    font-size: 15px;
+    font-weight: bold;
+    color: #777;
+    margin-top: 1em;
+    margin-bottom: 0;
+}
+
+.stats .stat .value
+{
+    font-size: 35px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1em;
+}
+
 /*==========================================
 / [Dashboard] page
 /=========================================*/

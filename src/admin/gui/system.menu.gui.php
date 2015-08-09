@@ -21,7 +21,7 @@ use RescueMe\User;
 
 <li class="dropdown">
     <a id="<?=$id?>-drop1" class="dropdown-toggle no-wrap" data-toggle="dropdown">
-        <span class="visible-desktop"><?= $user->name ?><b class="caret"></b></span>
+        <span class="hidden-phone"><?= $user->name ?><b class="caret"></b></span>
         <span class="visible-phone"><?=T_('System')?><b class="caret"></b></span>
     </a>
     <ul class="dropdown-menu" role="menu" aria-labelledby="<?=$id?>-drop1">

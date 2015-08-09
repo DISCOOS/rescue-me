@@ -39,26 +39,29 @@ R.prepare = function (element, options) {
 
     $(element).find('.jQshake').effect('shake');
 
-    $(element).find('li.user:not(.editor)').click(function () {
-        window.location.href = R.admin.url + 'user/' + $(this).attr('id');
+//    $(element).find('li.user:not(.editor)').click(function () {
+//        window.location.href = R.admin.url + 'user/' + $(this).attr('id');
+//    });
+//
+    $(element).find('td.clickable:not(.editor)').click(function () {
+        var tr = $(this).closest('tr');
+        if(tr && tr.has('data-target')) {
+            window.location.href = R.admin.url + tr.attr('data-target') + '/' + tr.attr('id');
+        }
     });
 
-    $(element).find('td.user:not(.editor)').click(function () {
-        window.location.href = R.admin.url + 'user/' + $(this).closest('tr').attr('id');
-    });
-
-    $(element).find('li.missing').click(function () {
-        window.location.href = R.admin.url + 'missing/' + $(this).attr('id');
-    });
+//    $(element).find('li.missing').click(function () {
+//        window.location.href = R.admin.url + 'missing/' + $(this).attr('id');
+//    });
+//
+//    $(element).find('td.missing:not(.editor)').click(function () {
+//        window.location.href = R.admin.url + 'missing/' + $(this).closest('tr').attr('id');
+//    });
 
     $(element).find('li.position,.label-position').click(function () {
         if (R.map.panTo !== undefined) {
             R.map.panTo($(this).attr('data-pan-to'));
         }
-    });
-
-    $(element).find('td.missing:not(.editor)').click(function () {
-        window.location.href = R.admin.url + 'missing/' + $(this).closest('tr').attr('id');
     });
 
     var flagImg = null;
@@ -85,16 +88,21 @@ R.prepare = function (element, options) {
     });
 
     // Add mailto:scheme urls
-    $(element).find('li.mailto, td.mailto').each(function () {
+    $(element).find("li.mailto, td.mailto").each(function () {
         $(this).html('<a href="mailto:' + $(this).html() + '">' + $(this).html() + '</a>');
     });
 
     // Add tel:scheme urls
-    $(element).find('li.tel, td.tel').each(function () {
+    $(element).find("li.tel, td.tel").each(function () {
         $(this).html('<a href="tel:' + $(this).html() + '">' + $(this).html() + '</a>');
     });
 
-    // Add common RescueMe behaviors to modals
+    // Add post handler to all forms with class 'handle' in given element
+    $(element).find('form.handle').each(function () {
+        R.form.handle(this);
+    });
+
+        // Add common RescueMe behaviors to modals
     $(element).find('[data-toggle="modal"]').click(function (e) {
 
         var target = $(this);
@@ -238,6 +246,29 @@ R.prepare = function (element, options) {
 
 };
 
+R.form.handle = function(element, url) {
+
+    var form = $(element);
+    url = url || form.attr('action');
+
+    // Attach a submit handler to the form
+    form.submit(function( e ) {
+
+        // Stop form from submitting normally
+        e.preventDefault();
+
+        // Send the data using post
+        $.post( url,  form.serialize() )
+            .done(function(data) {
+                console.log(data);
+            })
+            .fail(function(data) {
+                console.log(data);
+            });
+
+    });
+};
+
 R.ajax = function(url, element, data, done) {
 
     data = data || {};
@@ -362,7 +393,7 @@ R.toTab = function(tabs) {
     $('#'+tabs+' a'+tab).click();
 };
 
-R.tabs = function(tabs) {
+R.tabs = function(tabs, url) {
     
     // Listen to named tab selections
     $('#'+tabs+' a').click(function (e) {
@@ -385,13 +416,13 @@ R.tabs = function(tabs) {
                 list.each(function() {
                     var $this = $(this);
                     $this.bootstrapPaginator('show', 1);
-                    $this.data('url', href);
+                    $this.data('url', url);
                     $this.data('name', id);
                     $this.data('target', target);
                 });
             } 
 
-            R.ajax(href, tab, data, function( data ) {
+            R.ajax(url || href, tab, data, function( data ) {
 
                 try {
                     var response = JSON.parse(data);

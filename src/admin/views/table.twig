@@ -1,0 +1,14 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+        {% for column in columns %}
+            <th class="{{ column.class|default('') }}">{{ column.title }}</th>
+        {% endfor %}
+            {# Search table body (client) and data source pagination (server) and show results in table body#}
+            <th><input type="text" data-target="{{ container }} .searchable" data-source="{{ container }} .pagination" placeholder="Search" class="input-medium search-query pull-right"></th>
+        </tr>
+    </thead>
+    <tbody class="searchable">{% block content %}<tr><td class="" style="width: 100%" colspan="{{ columns|length + 1 }}">{{ T_('Please wait...') }}</td></tr>{% endblock %}</tbody>
+</table>
+{# Table pagination which populates table body using current search as filter #}
+<div class="pagination" data-target="{{ container }} .searchable"></div>

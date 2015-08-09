@@ -12,8 +12,8 @@
 
 ?>
 <li class="dropdown visible-phone">
-    <a id="<?=id?>-drop1" class="dropdown-toggle" data-toggle="dropdown"><?= T_('Trace') ?><b class="caret"></b></a>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="<?=id?>-drop1">
+    <a id="<?=$id?>-drop1" class="dropdown-toggle" data-toggle="dropdown"><?= T_('Trace') ?><b class="caret"></b></a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="<?=$id?>-drop1">
         <? if($user->allow('read', 'operations') || $user->allow('read', 'operations.all')) { ?>
             <li id="new-missing"><a role="menuitem" href="<?= ADMIN_URI ?>missing/new"><b class="icon icon-plus-sign"></b><?= T_('New trace') ?></a></li>
         <? } if ($user->allow('write', 'operations') || $user->allow('write', 'operations.all')) { ?>

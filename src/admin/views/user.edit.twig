@@ -1,7 +1,10 @@
 {% extends 'user.new.twig' %}
 
-{% set editmode = true %}
+{% block title %}{{ T_('Edit user') }} ({{title}}){% endblock %}
 
-{% block pagetitle %}
-	{% trans "Edit user" %}
+{% block content %}
+    {% embed 'user.form.twig' %}
+        {% block header %}{{ T_('Edit user') }}{% endblock %}
+        {% block submit_title %}{{ T_('Update') }}{% endblock %}
+    {% endembed %}
 {% endblock %}

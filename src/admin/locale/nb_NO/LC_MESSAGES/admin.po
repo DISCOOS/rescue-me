@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2015-07-27 22:36+0100\n"
+"POT-Creation-Date: 2015-08-07 00:34+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
@@ -15,385 +15,429 @@ msgstr ""
 "X-Poedit-KeywordsList: T_;T_locale\n"
 "X-Poedit-SearchPath-0: admin\n"
 
-#: admin/index.php:57 admin/router.php:105
-msgid "Dashboard"
-msgstr "Dashboard"
-
-#: admin/index.php:127 admin/router.php:91 admin/gui/logon.gui.php:2
+#: admin/index.php:176 admin/router.php:95 admin/gui/logon.gui.php:2
 #: admin/gui/logon.gui.php:10
+#: /tmp/cache/55c3e10d3c24f/eb/98/522911e54fb160a6635138505de0c6ef43fb4e199551934945dd153ea065.php:44
+#: /tmp/cache/55c3e10d3c24f/eb/98/522911e54fb160a6635138505de0c6ef43fb4e199551934945dd153ea065.php:89
+#: /tmp/cache/55c3e10da5a24/22/21/96cc0b681dd4042e9df76011f3abcaa351177733a07d99e3bdb1eb6e9fca.php:44
 msgid "Login"
 msgstr "Logg inn"
 
-#: admin/router.php:26
+#: admin/router.php:29
 msgid "You have entered wrong username or password"
 msgstr "Du har oppgitt feil brukernavn eller passord"
 
-#: admin/router.php:30
+#: admin/router.php:33
 msgid "Is deleted"
 msgstr "Er slettet"
 
-#: admin/router.php:33
+#: admin/router.php:36
 msgid "Is disabled"
 msgstr "Er deaktivert"
 
-#: admin/router.php:36
+#: admin/router.php:39
 msgid "Awaits approval"
 msgstr "Avventer godkjenning"
 
-#: admin/router.php:39 admin/router.php:778 admin/router.php:1256
+#: admin/router.php:42 admin/router.php:684 admin/router.php:1162
 #: admin/inc/gui.inc.php:52 admin/inc/gui.inc.php:70 admin/inc/gui.inc.php:98
 #: admin/inc/gui.inc.php:123 admin/inc/common.inc.php:68
 #: admin/gui/missing.gui.php:45 admin/gui/missing.gui.php:87
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: admin/router.php:42
+#: admin/router.php:45
 #, php-format
 msgid "User %1$s"
 msgstr "Bruker %1$s"
 
-#: admin/router.php:95 admin/gui/system.menu.gui.php:56
+#: admin/router.php:100 admin/gui/system.menu.gui.php:56
 msgid "Logout"
 msgstr "Logg ut"
 
-#: admin/router.php:109
-#, php-format
-msgid "About %1$s"
-msgstr "Om %1$s"
+#: admin/router.php:108
+msgid "Dashboard"
+msgstr "Dashboard"
 
-#: admin/router.php:116 admin/router.php:135 admin/router.php:142
-#: admin/router.php:153 admin/router.php:173 admin/router.php:237
-#: admin/router.php:247 admin/router.php:292 admin/router.php:301
-#: admin/router.php:312 admin/router.php:342 admin/router.php:351
-#: admin/router.php:359 admin/router.php:374 admin/router.php:475
-#: admin/router.php:485 admin/router.php:562 admin/router.php:572
-#: admin/router.php:580 admin/router.php:586 admin/router.php:592
-#: admin/router.php:609 admin/router.php:617 admin/router.php:625
-#: admin/router.php:631 admin/router.php:637 admin/router.php:654
-#: admin/router.php:662 admin/router.php:691 admin/router.php:699
-#: admin/router.php:727 admin/router.php:735 admin/router.php:762
-#: admin/router.php:811 admin/router.php:825 admin/router.php:833
-#: admin/router.php:858 admin/router.php:868 admin/router.php:926
-#: admin/router.php:939 admin/router.php:970 admin/router.php:982
-#: admin/router.php:1002 admin/router.php:1051 admin/router.php:1065
-#: admin/router.php:1083 admin/router.php:1112 admin/router.php:1129
-#: admin/router.php:1173 admin/router.php:1228 admin/router.php:1271
-#: admin/router.php:1292 admin/router.php:1314 admin/router.php:1322
-#: admin/router.php:1353 admin/router.php:1386 admin/router.php:1396
-#: admin/router.php:1435 admin/router.php:1458 admin/router.php:1506
-#: admin/router.php:1516 admin/router.php:1569
-msgid "Illegal operation"
-msgstr "Ulovlig handling"
-
-#: admin/router.php:118 admin/router.php:155 admin/router.php:175
-#: admin/router.php:239 admin/router.php:249 admin/router.php:314
-#: admin/router.php:361 admin/router.php:376 admin/router.php:487
-#: admin/router.php:574 admin/router.php:619 admin/router.php:664
-#: admin/router.php:701 admin/router.php:737 admin/router.php:764
-#: admin/router.php:813 admin/router.php:835 admin/router.php:870
-#: admin/router.php:941 admin/router.php:984 admin/router.php:1004
-#: admin/router.php:1067 admin/router.php:1085 admin/router.php:1131
-#: admin/router.php:1200 admin/router.php:1248 admin/router.php:1273
-#: admin/router.php:1324 admin/router.php:1355 admin/router.php:1398
-#: admin/router.php:1437 admin/router.php:1460 admin/router.php:1518
-msgid "Access denied"
-msgstr "Ingen tilgang"
-
-#: admin/router.php:129 admin/gui/system.menu.gui.php:44
+#: admin/router.php:118 admin/gui/system.menu.gui.php:44
 #: admin/gui/logs.gui.php:18
 msgid "Logs"
 msgstr "Logger"
 
-#: admin/router.php:137
-msgid "Not an ajax request."
-msgstr "Ikke en ajax-forespørsel"
-
-#: admin/router.php:144
-msgid "Id not defined."
-msgstr "Id ikke definert"
-
-#: admin/router.php:162
+#: admin/router.php:135
 #, php-format
 msgid "Missing %1s$ not found"
 msgstr "Sporing %1$s ikke funnet"
 
-#: admin/router.php:211 admin/router.php:221 admin/gui/system.menu.gui.php:32
-#: admin/gui/missing.new.gui.php:153 admin/gui/setup.gui.php:18
-#: admin/ajax/user.list.ajax.php:87
+#: admin/router.php:172 admin/router.php:191 admin/router.php:212
+#: admin/router.php:214 admin/router.php:217
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:257
+#: admin/gui/system.menu.gui.php:32 admin/gui/missing.new.gui.php:153
+#: admin/gui/setup.gui.php:18 admin/ajax/user.list.ajax.php:87
 msgid "Setup"
 msgstr "Oppsett"
 
-#: admin/router.php:226
+#: admin/router.php:217
 #, php-format
-msgid "Module %1$s not found"
-msgstr "Modul %1$s ikke funnet"
+msgid "Module %1$s"
+msgstr "Modul %1$s"
 
-#: admin/router.php:271 admin/router.php:465 admin/router.php:554
-#: admin/router.php:594 admin/router.php:639 admin/router.php:849
-#: admin/router.php:898 admin/router.php:917 admin/router.php:962
-#: admin/router.php:1042 admin/router.php:1159 admin/router.php:1373
-#: admin/router.php:1422 admin/router.php:1480 admin/router.php:1545
-#, php-format
-msgid "Operation [%1$s] not executed, try again"
-msgstr "Operasjon [%1$s] ikke utført, prøv igjen"
-
-#: admin/router.php:303 admin/router.php:353 admin/router.php:477
-#: admin/router.php:564 admin/router.php:611 admin/router.php:656
-#: admin/router.php:693 admin/router.php:729 admin/router.php:827
-#: admin/router.php:860 admin/router.php:928 admin/router.php:972
-#: admin/router.php:1053 admin/router.php:1114 admin/router.php:1188
-#: admin/router.php:1316 admin/router.php:1388 admin/router.php:1508
-msgid "Id not defined"
-msgstr "Id ikke definert"
-
-#: admin/router.php:335
+#: admin/router.php:258
 #, php-format
 msgid "Setting %1$s not saved"
 msgstr "Innstilling %1$s ikke lagret"
 
-#: admin/router.php:365 admin/router.php:493 admin/gui/missing.list.gui.php:33
+#: admin/router.php:270 admin/router.php:399 admin/gui/missing.list.gui.php:33
 #: admin/gui/missing.list.gui.php:59 admin/gui/missing.list.gui.php:85
 #: admin/gui/missing.list.gui.php:112 admin/gui/logs.gui.php:39
+#: /tmp/cache/55c3e10da5a24/6d/61/ebcf39b73c2f8ff38dd576cd877be8844c3ea432c52b7bed9ba1e9d6a1ae.php:39
 msgid "User"
 msgstr "Bruker"
 
-#: admin/router.php:387 admin/router.php:668 admin/router.php:705
-#: admin/router.php:741 admin/gui/system.menu.gui.php:40
+#: admin/router.php:280 admin/router.php:381 admin/router.php:391
+#: admin/router.php:468 admin/router.php:478 admin/router.php:486
+#: admin/router.php:492 admin/router.php:498 admin/router.php:515
+#: admin/router.php:523 admin/router.php:531 admin/router.php:537
+#: admin/router.php:543 admin/router.php:560 admin/router.php:568
+#: admin/router.php:597 admin/router.php:605 admin/router.php:633
+#: admin/router.php:641 admin/router.php:668 admin/router.php:717
+#: admin/router.php:731 admin/router.php:739 admin/router.php:764
+#: admin/router.php:774 admin/router.php:832 admin/router.php:845
+#: admin/router.php:876 admin/router.php:888 admin/router.php:908
+#: admin/router.php:957 admin/router.php:971 admin/router.php:989
+#: admin/router.php:1018 admin/router.php:1035 admin/router.php:1079
+#: admin/router.php:1134 admin/router.php:1177 admin/router.php:1205
+#: admin/router.php:1238 admin/router.php:1248 admin/router.php:1287
+#: admin/router.php:1297 admin/router.php:1319 admin/router.php:1327
+#: admin/router.php:1360 admin/router.php:1380 admin/router.php:1428
+#: admin/router.php:1438 admin/router.php:1494 admin/router.php:1516
+#: admin/router.php:1524
+msgid "Illegal operation"
+msgstr "Ulovlig handling"
+
+#: admin/router.php:282 admin/router.php:393 admin/router.php:480
+#: admin/router.php:525 admin/router.php:570 admin/router.php:607
+#: admin/router.php:643 admin/router.php:670 admin/router.php:719
+#: admin/router.php:741 admin/router.php:776 admin/router.php:847
+#: admin/router.php:890 admin/router.php:910 admin/router.php:973
+#: admin/router.php:991 admin/router.php:1037 admin/router.php:1106
+#: admin/router.php:1154 admin/router.php:1179 admin/router.php:1207
+#: admin/router.php:1250 admin/router.php:1299 admin/router.php:1329
+#: admin/router.php:1362 admin/router.php:1382 admin/router.php:1440
+#: admin/router.php:1526 admin/router.php:1627
+msgid "Access denied"
+msgstr "Ingen tilgang"
+
+#: admin/router.php:293 admin/router.php:574 admin/router.php:611
+#: admin/router.php:647 admin/gui/system.menu.gui.php:40
 #: admin/gui/user.list.gui.php:21 admin/gui/issue.new.gui.php:70
 #: admin/gui/issue.edit.gui.php:74 admin/gui/user.email.gui.php:33
+#: /tmp/cache/55c3e10d3c24f/69/bc/1f302ad38965d263cad567a8f746308f5d3cac9a1c518439ccddc77abfca.php:39
+#: /tmp/cache/55c3e10d3c24f/69/bc/1f302ad38965d263cad567a8f746308f5d3cac9a1c518439ccddc77abfca.php:48
 msgid "Users"
 msgstr "Brukere"
 
-#: admin/router.php:398
+#: admin/router.php:304
+#: /tmp/cache/55c3e10da5a24/89/fa/3f36fed544bba7a5f2dfacece04d7f4474a3690689ddcf38ced6edbe1244.php:39
+#: /tmp/cache/55c3e10da5a24/89/fa/3f36fed544bba7a5f2dfacece04d7f4474a3690689ddcf38ced6edbe1244.php:108
 msgid "Request new user"
 msgstr "Forespørsel om ny bruker"
 
-#: admin/router.php:410 admin/gui/system.menu.gui.php:36
+#: admin/router.php:316 admin/gui/system.menu.gui.php:36
 #: admin/ajax/user.list.ajax.php:120
 msgid "New user"
 msgstr "Ny bruker"
 
-#: admin/router.php:420 admin/router.php:511
+#: admin/router.php:326 admin/router.php:417
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:304
 msgid "Email must contain at least one alphanumeric character"
 msgstr "E-post må inneholde minst ett alphanumerisk tegn"
 
-#: admin/router.php:426 admin/router.php:518
+#: admin/router.php:332 admin/router.php:424
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:307
 #, php-format
 msgid "User with e-mail %1$s already exist"
 msgstr "Bruker med e-post %1$s finnes allerede"
 
-#: admin/router.php:431
+#: admin/router.php:337
 #, php-format
 msgid "Password must be at least %1$d characters long"
 msgstr "Passordet må være minst %1$d tegn"
 
-#: admin/router.php:436 admin/router.php:889
+#: admin/router.php:342 admin/router.php:795
 msgid "Passwords do not match"
 msgstr "Passordene stemmer ikke"
 
-#: admin/router.php:455
+#: admin/router.php:361
 msgid "Request sent"
 msgstr "Forespørsel sendt"
 
-#: admin/router.php:458
+#: admin/router.php:364
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:345
 msgid "You will receive an SMS when the request is processed"
 msgstr "Du vil motta en SMS når din forespørsel er behandlet"
 
-#: admin/router.php:493 admin/gui/user.edit.gui.php:86
-#: admin/ajax/user.list.ajax.php:71
+#: admin/router.php:371 admin/router.php:460 admin/router.php:500
+#: admin/router.php:545 admin/router.php:755 admin/router.php:804
+#: admin/router.php:823 admin/router.php:868 admin/router.php:948
+#: admin/router.php:1065 admin/router.php:1225 admin/router.php:1274
+#: admin/router.php:1402 admin/router.php:1467
+#, php-format
+msgid "Action [%1$s] not executed, try again"
+msgstr "Aksjon [%1$s] ikke utført, prøv igjen"
+
+#: admin/router.php:383 admin/router.php:470 admin/router.php:517
+#: admin/router.php:562 admin/router.php:599 admin/router.php:635
+#: admin/router.php:733 admin/router.php:766 admin/router.php:834
+#: admin/router.php:878 admin/router.php:959 admin/router.php:1020
+#: admin/router.php:1094 admin/router.php:1240 admin/router.php:1321
+#: admin/router.php:1430 admin/router.php:1518
+msgid "Id not defined"
+msgstr "Id ikke definert"
+
+#: admin/router.php:399
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:223
+#: admin/gui/user.edit.gui.php:86 admin/ajax/user.list.ajax.php:71
 msgid "Approve"
 msgstr "Godkjenn"
 
-#: admin/router.php:493 admin/router.php:1402 admin/gui/role.list.gui.php:27
+#: admin/router.php:399 admin/router.php:1254 admin/gui/role.list.gui.php:27
 #: admin/ajax/setup.module.list.ajax.php:43 admin/ajax/issue.list.ajax.php:52
 #: admin/ajax/user.list.ajax.php:54 admin/ajax/alert.list.ajax.php:49
 #: admin/ajax/missing.list.open.ajax.php:92
+#: /tmp/cache/55c3e10d3c24f/39/a9/3b6d2e97bb59dad3c9e00a9d02b89caabe68147ecffd12d742b866a2ae5e.php:93
+#: /tmp/cache/55c3e10da5a24/6d/61/ebcf39b73c2f8ff38dd576cd877be8844c3ea432c52b7bed9ba1e9d6a1ae.php:77
 msgid "Edit"
 msgstr "Endre"
 
-#: admin/router.php:504 admin/router.php:581 admin/router.php:626
-#: admin/router.php:674 admin/router.php:711 admin/router.php:746
+#: admin/router.php:410 admin/router.php:487 admin/router.php:532
+#: admin/router.php:580 admin/router.php:617 admin/router.php:652
 #, php-format
 msgid "User %1$s not found"
 msgstr "Bruker %1$s ikke funnet"
 
-#: admin/router.php:510
+#: admin/router.php:416
 msgid "Username not safe"
 msgstr "Brukernavn er ikke sikkert"
 
-#: admin/router.php:536 admin/router.php:587 admin/router.php:632
+#: admin/router.php:442 admin/router.php:493 admin/router.php:538
 #, php-format
 msgid "User %1$s cannot be approved"
 msgstr "Bruker %1$s kunne ikke godkjennes"
 
-#: admin/router.php:598
+#: admin/router.php:504
 msgid "User approved"
 msgstr "Bruker godkjent"
 
-#: admin/router.php:601 admin/router.php:646
+#: admin/router.php:507 admin/router.php:552
 #, php-format
 msgid "Message sent to %1$s"
 msgstr "Melding sendt til %1$s"
 
-#: admin/router.php:643
+#: admin/router.php:549
 msgid "Reject user"
 msgstr "Avvis bruker"
 
-#: admin/router.php:677
+#: admin/router.php:583
 #, php-format
 msgid "User %1$s not deleted"
 msgstr "Bruker %1$s ble ikke slettet"
 
-#: admin/router.php:714
+#: admin/router.php:620
 #, php-format
 msgid "User %1$s not disabled"
 msgstr "Bruker %1$s ble ikke deaktivert"
 
-#: admin/router.php:749
+#: admin/router.php:655
 #, php-format
 msgid "User %1$s not enabled"
 msgstr "Bruker %1$s ble ikke aktivert"
 
-#: admin/router.php:768 admin/gui/system.menu.gui.php:37
+#: admin/router.php:674 admin/gui/system.menu.gui.php:37
 #: admin/gui/user.email.gui.php:53
 msgid "Email users"
 msgstr "Send e-post"
 
-#: admin/router.php:779 admin/inc/common.inc.php:69
+#: admin/router.php:685 admin/inc/common.inc.php:69
 #, php-format
 msgid "No <em>%1$s</em> users found."
 msgstr "Ingen <em>%1$s</em> brukere funnet."
 
-#: admin/router.php:795
+#: admin/router.php:701
 #, php-format
 msgid "Email sent to %1$s users"
 msgstr "E-post sendt til %1$s brukere"
 
-#: admin/router.php:800 admin/router.php:1489 admin/router.php:1558
+#: admin/router.php:706 admin/router.php:1411 admin/router.php:1480
 msgid "Email not sent to following users"
 msgstr "E-post ble ikke sendt til følgende brukere"
 
-#: admin/router.php:817 admin/gui/system.menu.gui.php:42
+#: admin/router.php:723 admin/gui/system.menu.gui.php:42
 #: admin/gui/role.list.gui.php:8
 msgid "Roles"
 msgstr "Roller"
 
-#: admin/router.php:839 admin/gui/role.edit.gui.php:32
+#: admin/router.php:745 admin/gui/role.edit.gui.php:32
 msgid "Edit role"
 msgstr "Endre rolle"
 
-#: admin/router.php:874
+#: admin/router.php:780
+#: /tmp/cache/55c3e10da5a24/88/bc/cb768114f08cbe70d01739a526e2e6ff1380516d86abba7030c3997f76e8.php:41
 msgid "Change Password"
 msgstr "Bytt passord"
 
-#: admin/router.php:884
+#: admin/router.php:790
 msgid "Password must be at least 8 characters long"
 msgstr "Passordet må være minst 8 tegn"
 
-#: admin/router.php:906
+#: admin/router.php:812
 msgid "Recover Password"
 msgstr "Gjenopprett passord"
 
-#: admin/router.php:932 admin/gui/operation.close.gui.php:81
+#: admin/router.php:838 admin/gui/operation.close.gui.php:81
 #: admin/gui/operation.close.gui.php:101
 #: admin/ajax/missing.list.open.ajax.php:101
 msgid "Close operation"
 msgstr "Avslutt operasjon"
 
-#: admin/router.php:976
+#: admin/router.php:882
 msgid "Reopen operation"
 msgstr "Gjenåpne operasjon"
 
-#: admin/router.php:1009 admin/gui/dash.gui.php:4
+#: admin/router.php:915 admin/gui/dash.gui.php:4
 #: admin/gui/missing.new.gui.php:21
+#: /tmp/cache/55c3e10da5a24/ea/7d/50c80f2aadd400a87e8924b311fd1a17dfe6ebb69c36c8ad77093e09009d.php:65
 msgid "Start new trace"
 msgstr "Start ny sporing"
 
-#: admin/router.php:1072 admin/router.php:1179 admin/router.php:1217
-#: admin/router.php:1236
+#: admin/router.php:978 admin/router.php:1085 admin/router.php:1123
+#: admin/router.php:1142
 #, php-format
 msgid "Trace %1$s not found"
 msgstr "Sporing %1$s ikke funnet"
 
-#: admin/router.php:1075 admin/classes/RescueMe/Operation.php:53
+#: admin/router.php:981 admin/classes/RescueMe/Operation.php:53
 #: admin/gui/trace.menu.gui.php:15
 msgid "Trace"
 msgstr "Sporing"
 
-#: admin/router.php:1104 admin/gui/missing.list.gui.php:16
+#: admin/router.php:1010 admin/gui/missing.list.gui.php:16
 #: admin/gui/trace.menu.gui.php:21 admin/gui/trace.menu.gui.php:30
+#: /tmp/cache/55c3e10da5a24/6d/61/ebcf39b73c2f8ff38dd576cd877be8844c3ea432c52b7bed9ba1e9d6a1ae.php:146
 msgid "Traces"
 msgstr "Sporinger"
 
-#: admin/router.php:1122 admin/gui/missing.edit.gui.php:108
+#: admin/router.php:1028 admin/gui/missing.edit.gui.php:108
 #: admin/gui/missing.edit.gui.php:114
 msgid "Edit trace"
 msgstr "Endre sporing"
 
-#: admin/router.php:1142
+#: admin/router.php:1048
 #, php-format
 msgid "Failed to reopen operation %1$s"
 msgstr "Klarte ikke  å gjenåpne operasjon %1$s"
 
-#: admin/router.php:1175
+#: admin/router.php:1081
 #, php-format
 msgid "Operation [%1$s] is closed"
-msgstr "Operasjon [%1$s] er lukket"
+msgstr "Operasjonen [%1$s] er lukket"
 
-#: admin/router.php:1204
+#: admin/router.php:1110
 #, php-format
 msgid "Trace %1$s is closed"
 msgstr "Sporing %1$s er lukket"
 
-#: admin/router.php:1208 admin/inc/gui.inc.php:54
+#: admin/router.php:1114 admin/inc/gui.inc.php:54
 msgid "SMS not sent"
 msgstr "SMS ble ikke sendt"
 
-#: admin/router.php:1230 admin/router.php:1294
+#: admin/router.php:1136 admin/router.php:1289 admin/router.php:1496
+#: admin/router.php:1573
 msgid "Not an ajax request"
 msgstr "Ikke en ajax-foresprsel"
 
-#: admin/router.php:1284 admin/router.php:1328 admin/gui/alert.list.gui.php:22
-#: admin/gui/system.menu.gui.php:46
+#: admin/router.php:1195 admin/router.php:1333 admin/router.php:1530
+#: admin/gui/alert.list.gui.php:22 admin/gui/system.menu.gui.php:46
 msgid "Alerts"
 msgstr "Varsler"
 
-#: admin/router.php:1300 admin/router.php:1334 admin/router.php:1413
+#: admin/router.php:1211
+msgid "New"
+msgstr "Ny"
+
+#: admin/router.php:1211 admin/router.php:1254
+msgid "Alert"
+msgstr "Varsel"
+
+#: admin/router.php:1265 admin/router.php:1305 admin/router.php:1339
+#: admin/router.php:1502 admin/router.php:1536
 #, php-format
 msgid "Alert %1$s not found"
 msgstr "Varsel %1$s ikke funnet"
 
-#: admin/router.php:1337
+#: admin/router.php:1342 admin/router.php:1539
 #, php-format
 msgid "Alert %1$s not deleted"
 msgstr "Varsel %1$s ble ikke slettet"
 
-#: admin/router.php:1359
-msgid "New"
-msgstr "Ny"
-
-#: admin/router.php:1359 admin/router.php:1402
-msgid "Alert"
-msgstr "Varsel"
-
-#: admin/router.php:1448 admin/gui/system.menu.gui.php:48
+#: admin/router.php:1370 admin/gui/system.menu.gui.php:48
 #: admin/gui/issue.list.gui.php:22
 msgid "Issues"
 msgstr "Hendelser"
 
-#: admin/router.php:1464 admin/gui/issue.list.gui.php:55
+#: admin/router.php:1386 admin/gui/issue.list.gui.php:55
 #: admin/gui/issue.new.gui.php:77
 msgid "New issue"
 msgstr "Ny hendelse"
 
-#: admin/router.php:1522 admin/gui/issue.edit.gui.php:81
+#: admin/router.php:1444 admin/gui/issue.edit.gui.php:81
 msgid "Edit issue"
 msgstr "Endre hendelse"
 
-#: admin/router.php:1533
+#: admin/router.php:1455
 #, php-format
 msgid "Issue %1$s not found"
 msgstr "Hendelse %1$s ikke funnet"
+
+#: admin/router.php:1556
+msgid "Bad request"
+msgstr "Ulovlig request"
+
+#: admin/router.php:1560
+msgid "Forbidden"
+msgstr "Forbudt"
+
+#: admin/router.php:1564
+msgid "Not found"
+msgstr "Ingen funnet"
+
+#: admin/router.php:1568
+msgid "Not implemented"
+msgstr "Ikke implementert"
+
+#: admin/router.php:1580
+msgid "Not a GET request"
+msgstr "Ikke en GET-request"
+
+#: admin/router.php:1587
+msgid "Not a POST request"
+msgstr "Ikke en POST-request"
+
+#: admin/router.php:1679
+#, php-format
+msgid "%1$s not found"
+msgstr "%1$s ikke funnet"
+
+#: admin/router.php:1693
+#: admin/classes/RescueMe/Admin/Core/ResponseFactory.php:56
+#, php-format
+msgid "Action [%1$s] not executed"
+msgstr "Aksjon [%1$s] ikke utført"
+
+#: admin/router.php:1694
+#: admin/classes/RescueMe/Admin/Core/ResponseFactory.php:57
+msgid "Check logs"
+msgstr "Sjekk loggene"
 
 #: admin/controllers/logon.controller.php:5
 msgid "Incorrect email or password."
@@ -593,77 +637,210 @@ msgstr "Klarte ikke å oppdatere status til <b>Besvart</b> for"
 msgid "Missing person"
 msgstr "Savnet person"
 
-#: admin/classes/RescueMe/User.php:169 admin/gui/alert.list.gui.php:13
+#: admin/classes/RescueMe/User.php:173 admin/gui/alert.list.gui.php:13
+#: /tmp/cache/55c3e10da5a24/6d/61/ebcf39b73c2f8ff38dd576cd877be8844c3ea432c52b7bed9ba1e9d6a1ae.php:126
 msgid "Active"
 msgstr "Aktiv"
 
-#: admin/classes/RescueMe/User.php:170
+#: admin/classes/RescueMe/User.php:174
 msgid "Pending"
 msgstr "Ventende"
 
-#: admin/classes/RescueMe/User.php:171
+#: admin/classes/RescueMe/User.php:175
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: admin/classes/RescueMe/User.php:172
+#: admin/classes/RescueMe/User.php:176
 msgid "Deleted"
 msgstr "Slettet"
 
-#: admin/classes/RescueMe/User.php:173 admin/gui/alert.list.gui.php:15
+#: admin/classes/RescueMe/User.php:177 admin/gui/alert.list.gui.php:15
 #: admin/gui/issue.list.gui.php:15
 msgid "All"
 msgstr "Alle"
 
-#: admin/classes/RescueMe/User.php:363
+#: admin/classes/RescueMe/User.php:428
 msgid "User not found"
 msgstr "Bruker %1$s ikke funnet"
 
-#: admin/classes/RescueMe/User.php:363
+#: admin/classes/RescueMe/User.php:428
 msgid "Recovery password not sent"
 msgstr "Engangspassord ikke sendt"
 
-#: admin/classes/RescueMe/User.php:372
+#: admin/classes/RescueMe/User.php:437
 #, php-format
 msgid "Your single-use %1$s password"
 msgstr "%1$s, ditt engangspassord"
 
-#: admin/classes/RescueMe/User.php:377
+#: admin/classes/RescueMe/User.php:442
 #, php-format
 msgid "Recovery password sent to user %1$s"
 msgstr "Engangspassord sendt til bruker %1$s"
 
-#: admin/classes/RescueMe/User.php:380
+#: admin/classes/RescueMe/User.php:445
 #, php-format
 msgid "Failed to send recovery password to user %1$s"
 msgstr "Klarte ikke å sende engangspassord til bruker %1$s"
 
-#: admin/classes/RescueMe/User.php:422
+#: admin/classes/RescueMe/User.php:485
 #, php-format
 msgid "User %1$s is created."
 msgstr "Bruker %1$s er opprettet"
 
-#: admin/classes/RescueMe/User.php:425
+#: admin/classes/RescueMe/User.php:488
 msgid "Failed to create user"
 msgstr "Klarte ikke å opprette bruker"
 
-#: admin/classes/RescueMe/User.php:604
+#: admin/classes/RescueMe/User.php:735
 #, php-format
 msgid "Your %1$s account is approved"
 msgstr "Din %1$s kontoforespørsel er godkjent"
 
-#: admin/classes/RescueMe/User.php:605
+#: admin/classes/RescueMe/User.php:736
 #, php-format
 msgid "Log in to %1$s"
 msgstr "Logg inn på %1$s her"
 
-#: admin/classes/RescueMe/User.php:620
+#: admin/classes/RescueMe/User.php:751
 #, php-format
 msgid "Your %1$s account request is rejected"
 msgstr "Din %1$s kontoforespørsel er avvist"
 
-#: admin/classes/RescueMe/User.php:651
+#: admin/classes/RescueMe/User.php:782
 msgid "Failed to get SMS provider"
 msgstr "Klarte ikke å hente SMS leverandør"
+
+#: admin/classes/RescueMe/Admin/Provider/UserProvider.php:46
+#, php-format
+msgid "User \"%s\" does not exist"
+msgstr "Bruker \"%s\" eksisterer ikke"
+
+#: admin/classes/RescueMe/Admin/Provider/UserProvider.php:68
+#, php-format
+msgid "Instances of \"%s\" are not supported"
+msgstr "Instanser av \"%s\" er ikke støttet"
+
+#: admin/classes/RescueMe/Admin/Provider/PasswordControllerProvider.php:79
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:310
+msgid "Password mismatch"
+msgstr "Passordene er ikke like"
+
+#: admin/classes/RescueMe/Admin/Provider/PasswordControllerProvider.php:79
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:310
+msgid "Enter same password twice"
+msgstr "Skriv inn samme passord to ganger"
+
+#: admin/classes/RescueMe/Admin/Provider/PasswordControllerProvider.php:84
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:315
+#: admin/gui/password.change.gui.php:18 admin/gui/password.change.gui.php:26
+#: admin/gui/user.new.gui.php:59 admin/gui/user.new.gui.php:67
+#: /tmp/cache/55c3e10da5a24/88/bc/cb768114f08cbe70d01739a526e2e6ff1380516d86abba7030c3997f76e8.php:124
+#: /tmp/cache/55c3e10da5a24/88/bc/cb768114f08cbe70d01739a526e2e6ff1380516d86abba7030c3997f76e8.php:134
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:94
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:103
+#, php-format
+msgid "Minimum %1$s characters"
+msgstr "Minimum %1$s tegn"
+
+#: admin/classes/RescueMe/Admin/Provider/PasswordControllerProvider.php:85
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:316
+msgid "Enter new password twice"
+msgstr "Skriv inn nytt passord to ganger"
+
+#: admin/classes/RescueMe/Admin/Provider/PasswordControllerProvider.php:101
+msgid "Invalid email format"
+msgstr "Ulovlig e-post format"
+
+#: admin/classes/RescueMe/Admin/Provider/PasswordControllerProvider.php:109
+msgid "Email not registered"
+msgstr "E-post ikke registrert"
+
+#: admin/classes/RescueMe/Admin/Provider/PasswordControllerProvider.php:140
+msgid "Password not changed"
+msgstr "Passord ikke endret"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:156
+msgid "No users found"
+msgstr "Ingen brukere funnet"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:168
+#: admin/gui/missing.edit.gui.php:28 admin/gui/missing.new.gui.php:36
+#: admin/gui/missing.list.gui.php:30 admin/gui/missing.list.gui.php:56
+#: admin/gui/missing.list.gui.php:82 admin/gui/missing.list.gui.php:109
+#: admin/gui/role.list.gui.php:12 admin/gui/user.list.gui.php:38
+msgid "Name"
+msgstr "Navn"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:169
+#: admin/gui/user.list.gui.php:39 admin/gui/user.edit.gui.php:64
+#: admin/gui/user.new.gui.php:85
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:121
+msgid "Role"
+msgstr "Rolle"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:170
+#: admin/gui/user.list.gui.php:40
+#: /tmp/cache/55c3e10da5a24/6d/61/ebcf39b73c2f8ff38dd576cd877be8844c3ea432c52b7bed9ba1e9d6a1ae.php:57
+msgid "Mobile"
+msgstr "Mobil"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:171
+#: admin/gui/password.recover.gui.php:26 admin/gui/user.list.gui.php:41
+msgid "E-mail"
+msgstr "E-post"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:226
+msgid "Reject"
+msgstr "Avvis"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:233
+#: admin/ajax/user.list.ajax.php:67
+msgid "Enable"
+msgstr "Aktiver"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:235
+#: admin/ajax/user.list.ajax.php:65
+#, php-format
+msgid "Do you want to enable %1$s?"
+msgstr "Vil du aktivere %1$s?"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:241
+#: admin/ajax/user.list.ajax.php:79
+msgid "Disable"
+msgstr "Deaktiver"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:243
+#: admin/ajax/user.list.ajax.php:77
+#, php-format
+msgid "Do you want to disable %1$s?"
+msgstr "Vil du deaktivere %1$s?"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:250
+#: admin/gui/system.menu.gui.php:30 admin/ajax/user.list.ajax.php:84
+msgid "Change password"
+msgstr "Endre passord"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:253
+#: admin/ajax/user.list.ajax.php:85
+msgid "Reset password"
+msgstr "Nullstill passord"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:263
+#: admin/ajax/issue.list.ajax.php:71 admin/ajax/user.list.ajax.php:94
+#: admin/ajax/alert.list.ajax.php:59
+msgid "Delete"
+msgstr "Slett"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:265
+#: admin/ajax/issue.list.ajax.php:69 admin/ajax/user.list.ajax.php:92
+#: admin/ajax/user.list.ajax.php:115 admin/ajax/alert.list.ajax.php:57
+#, php-format
+msgid "Do you want to delete %1$s?"
+msgstr "Vil du slette %1$s?"
+
+#: admin/classes/RescueMe/Admin/Provider/UserControllerProvider.php:352
+msgid "User not created"
+msgstr "Bruker ikke opprettet"
 
 #: admin/classes/RescueMe/Device/WURFL.php:57
 msgid "Match Mode"
@@ -713,14 +890,17 @@ msgid "New alert"
 msgstr "Nytt varsel"
 
 #: admin/gui/dash.gui.php:2
+#: /tmp/cache/55c3e10da5a24/ea/7d/50c80f2aadd400a87e8924b311fd1a17dfe6ebb69c36c8ad77093e09009d.php:55
 msgid "Get started"
 msgstr "Kom i gang"
 
 #: admin/gui/dash.gui.php:3
+#: /tmp/cache/55c3e10da5a24/ea/7d/50c80f2aadd400a87e8924b311fd1a17dfe6ebb69c36c8ad77093e09009d.php:59
 msgid "Use mobile phone to trace persons fast and easy."
 msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
 
 #: admin/gui/dash.gui.php:5
+#: /tmp/cache/55c3e10da5a24/ea/7d/50c80f2aadd400a87e8924b311fd1a17dfe6ebb69c36c8ad77093e09009d.php:71
 msgid "See active traces"
 msgstr "Se aktive sporinger"
 
@@ -761,6 +941,7 @@ msgid "Response"
 msgstr "Respons"
 
 #: admin/gui/missing.trace.gui.php:41
+#: /tmp/cache/55c3e10da5a24/6d/61/ebcf39b73c2f8ff38dd576cd877be8844c3ea432c52b7bed9ba1e9d6a1ae.php:136
 msgid "Located"
 msgstr "Lokalisert"
 
@@ -772,10 +953,6 @@ msgstr "System"
 #: admin/gui/system.menu.gui.php:29
 msgid "Account"
 msgstr "Konto"
-
-#: admin/gui/system.menu.gui.php:30 admin/ajax/user.list.ajax.php:84
-msgid "Change password"
-msgstr "Endre passord"
 
 #: admin/gui/system.menu.gui.php:51
 msgid "System setup"
@@ -790,20 +967,15 @@ msgstr "Vil du logge ut?"
 msgid "Settings"
 msgstr "Innstillinger"
 
-#: admin/gui/missing.edit.gui.php:28 admin/gui/missing.new.gui.php:36
-#: admin/gui/missing.list.gui.php:30 admin/gui/missing.list.gui.php:56
-#: admin/gui/missing.list.gui.php:82 admin/gui/missing.list.gui.php:109
-#: admin/gui/role.list.gui.php:12 admin/gui/user.list.gui.php:38
-msgid "Name"
-msgstr "Navn"
-
 #: admin/gui/missing.edit.gui.php:43 admin/gui/missing.new.gui.php:48
 #: admin/gui/missing.new.gui.php:86 admin/gui/user.new.gui.php:28
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:54
 msgid "Country code"
 msgstr "Landskode"
 
 #: admin/gui/missing.edit.gui.php:51 admin/gui/missing.new.gui.php:44
 #: admin/gui/user.edit.gui.php:38 admin/gui/user.new.gui.php:38
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:64
 msgid "Mobile phone"
 msgstr "Mobilnummer"
 
@@ -894,6 +1066,7 @@ msgid "Operation number, etc."
 msgstr "SAR- eller AMIS-nr"
 
 #: admin/gui/missing.new.gui.php:82
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:102
 msgid "Report to"
 msgstr "Rapporter til"
 
@@ -987,6 +1160,7 @@ msgid "All traces are listed at"
 msgstr "Alle sporinger er listet på denne siden"
 
 #: admin/gui/missing.new.gui.php:165
+#: /tmp/cache/55c3e10d3c24f/f3/f1/0905a93202a8388a25b2932f99763e14b493e46d03291d532ae45e73c62b.php:114
 msgid "Create"
 msgstr "Opprett"
 
@@ -1000,6 +1174,8 @@ msgstr "Design"
 
 #: admin/gui/setup.gui.php:26 admin/gui/logon.gui.php:8
 #: admin/gui/user.edit.gui.php:46 admin/gui/user.new.gui.php:48
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:76
+#: /tmp/cache/55c3e10da5a24/6d/61/ebcf39b73c2f8ff38dd576cd877be8844c3ea432c52b7bed9ba1e9d6a1ae.php:96
 msgid "Email"
 msgstr "E-post"
 
@@ -1008,6 +1184,7 @@ msgid "Maps"
 msgstr "Kart"
 
 #: admin/gui/missing.list.gui.php:19 admin/gui/issue.list.gui.php:13
+#: /tmp/cache/55c3e10d3c24f/4f/7b/985d22f5c2d22d6d45d18753ef00007e8c4ce4f551a23a7400f27d8af3f3.php:47
 msgid "Open"
 msgstr "Åpne"
 
@@ -1021,6 +1198,7 @@ msgstr "Øvelser"
 
 #: admin/gui/missing.list.gui.php:22 admin/gui/missing.gui.php:21
 #: admin/gui/issue.list.gui.php:14
+#: /tmp/cache/55c3e10d3c24f/4f/7b/985d22f5c2d22d6d45d18753ef00007e8c4ce4f551a23a7400f27d8af3f3.php:51
 msgid "Closed"
 msgstr "Lukket"
 
@@ -1046,6 +1224,8 @@ msgstr "Start ny sporing"
 
 #: admin/gui/logon.gui.php:9 admin/gui/password.change.gui.php:17
 #: admin/gui/user.new.gui.php:58
+#: /tmp/cache/55c3e10d3c24f/eb/98/522911e54fb160a6635138505de0c6ef43fb4e199551934945dd153ea065.php:81
+#: /tmp/cache/55c3e10da5a24/88/bc/cb768114f08cbe70d01739a526e2e6ff1380516d86abba7030c3997f76e8.php:120
 msgid "Password"
 msgstr "Passord"
 
@@ -1054,14 +1234,17 @@ msgid "Caps-lock is on!"
 msgstr "Caps-lock er på!"
 
 #: admin/gui/logon.gui.php:11
+#: /tmp/cache/55c3e10d3c24f/eb/98/522911e54fb160a6635138505de0c6ef43fb4e199551934945dd153ea065.php:95
 msgid "Forgot your password?"
 msgstr "Glemt passordet?"
 
 #: admin/gui/logon.gui.php:14
+#: /tmp/cache/55c3e10d3c24f/eb/98/522911e54fb160a6635138505de0c6ef43fb4e199551934945dd153ea065.php:104
 msgid "Don't have an account?"
 msgstr "Har du ikke en konto?"
 
 #: admin/gui/logon.gui.php:14
+#: /tmp/cache/55c3e10d3c24f/eb/98/522911e54fb160a6635138505de0c6ef43fb4e199551934945dd153ea065.php:106
 msgid "Sign up here"
 msgstr "Registrer deg her"
 
@@ -1095,11 +1278,8 @@ msgstr "Google Maps ikke lastet"
 msgid "If user exist a SMS with reset link is sent to registered mobile phone"
 msgstr "Hvis brukeren finnes i databasen sendes det en reset link på SMS"
 
-#: admin/gui/password.recover.gui.php:26 admin/gui/user.list.gui.php:41
-msgid "E-mail"
-msgstr "E-post"
-
 #: admin/gui/password.recover.gui.php:54 admin/gui/user.email.gui.php:51
+#: /tmp/cache/55c3e10d3c24f/5f/cd/b94d2778e3581329c917b1c22bfa6ebc797f8b24ba9fc1549c86ac8e6c1b.php:127
 msgid "Reset"
 msgstr "Nullstill"
 
@@ -1122,15 +1302,6 @@ msgstr "Modul"
 #: admin/gui/setup.module.gui.php:12
 msgid "No module found. Run install script."
 msgstr "Ingen modul funnet. Kjør installeringsskript."
-
-#: admin/gui/user.list.gui.php:39 admin/gui/user.edit.gui.php:64
-#: admin/gui/user.new.gui.php:85
-msgid "Role"
-msgstr "Rolle"
-
-#: admin/gui/user.list.gui.php:40
-msgid "Mobile"
-msgstr "Mobil"
 
 #: admin/gui/issue.list.gui.php:35 admin/gui/issue.new.gui.php:13
 #: admin/gui/issue.edit.gui.php:14
@@ -1175,14 +1346,18 @@ msgid "Send as bulk"
 msgstr "Send i bulk"
 
 #: admin/gui/user.edit.gui.php:18 admin/gui/user.new.gui.php:14
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:42
 msgid "Full name"
 msgstr "Fullt navn"
 
 #: admin/gui/user.edit.gui.php:30
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:74
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:109
 msgid "Mobile country"
 msgstr "Mobil land"
 
 #: admin/gui/user.edit.gui.php:75 admin/gui/user.new.gui.php:97
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:131
 msgid "Use system SMS provider"
 msgstr "Bruk systemets SMS leverandør"
 
@@ -1191,6 +1366,8 @@ msgid "Approve user..."
 msgstr "Godkjenn bruker..."
 
 #: admin/gui/user.edit.gui.php:89
+#: /tmp/cache/55c3e10da5a24/aa/f1/5a730805cd017e719fc66caf41167dd900fefeceb8926dd6f6270ed9267e.php:39
+#: /tmp/cache/55c3e10da5a24/aa/f1/5a730805cd017e719fc66caf41167dd900fefeceb8926dd6f6270ed9267e.php:105
 msgid "Edit user"
 msgstr "Endre bruker"
 
@@ -1198,13 +1375,8 @@ msgstr "Endre bruker"
 msgid "Send"
 msgstr "Send"
 
-#: admin/gui/password.change.gui.php:18 admin/gui/password.change.gui.php:26
-#: admin/gui/user.new.gui.php:59 admin/gui/user.new.gui.php:67
-#, php-format
-msgid "Minimum %1$s characters"
-msgstr "Minimum %1$s tegn"
-
 #: admin/gui/password.change.gui.php:25 admin/gui/user.new.gui.php:66
+#: /tmp/cache/55c3e10da5a24/88/bc/cb768114f08cbe70d01739a526e2e6ff1380516d86abba7030c3997f76e8.php:130
 msgid "Repeat Password"
 msgstr "Gjenta passord"
 
@@ -1244,6 +1416,9 @@ msgstr ""
 "personvernhensyn)"
 
 #: admin/gui/continue.gui.php:18
+#: /tmp/cache/55c3e10d3c24f/8a/89/7a0480ed752de549b2cb783b1e4664b087953350a9d7e8ec21a1fc184337.php:41
+#: /tmp/cache/55c3e10d3c24f/8a/89/7a0480ed752de549b2cb783b1e4664b087953350a9d7e8ec21a1fc184337.php:92
+#: /tmp/cache/55c3e10d3c24f/8a/89/7a0480ed752de549b2cb783b1e4664b087953350a9d7e8ec21a1fc184337.php:98
 msgid "Continue"
 msgstr "Fortsett"
 
@@ -1282,44 +1457,12 @@ msgstr "Vil du endre %1$s til %2$s?"
 msgid "Change to %1$s"
 msgstr "Endre til %1$s"
 
-#: admin/ajax/issue.list.ajax.php:69 admin/ajax/user.list.ajax.php:92
-#: admin/ajax/user.list.ajax.php:115 admin/ajax/alert.list.ajax.php:57
-#, php-format
-msgid "Do you want to delete %1$s?"
-msgstr "Vil du slette %1$s?"
-
-#: admin/ajax/issue.list.ajax.php:71 admin/ajax/user.list.ajax.php:94
-#: admin/ajax/alert.list.ajax.php:59
-msgid "Delete"
-msgstr "Slett"
-
-#: admin/ajax/user.list.ajax.php:65
-#, php-format
-msgid "Do you want to enable %1$s?"
-msgstr "Vil du aktivere %1$s?"
-
-#: admin/ajax/user.list.ajax.php:67
-msgid "Enable"
-msgstr "Aktiver"
-
 #: admin/ajax/user.list.ajax.php:72
 msgid "Deny"
 msgstr "Avvis"
 
-#: admin/ajax/user.list.ajax.php:77
-#, php-format
-msgid "Do you want to disable %1$s?"
-msgstr "Vil du deaktivere %1$s?"
-
-#: admin/ajax/user.list.ajax.php:79
-msgid "Disable"
-msgstr "Deaktiver"
-
-#: admin/ajax/user.list.ajax.php:85
-msgid "Reset password"
-msgstr "Nullstill passord"
-
 #: admin/ajax/user.list.ajax.php:114
+#: /tmp/cache/55c3e10da5a24/5f/16/d503c335f3f04993bbb614a13fd877a0fcbefdf9c277e1d9975463f56ae3.php:71
 msgid "Confirm"
 msgstr "Bekreft"
 
@@ -1360,11 +1503,233 @@ msgstr "Vennligst oppgi en lovlig e-postadresse"
 msgid "Please enter the same value again"
 msgstr "Skriv inn samme verdi igjen"
 
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:137
+msgid "A SMS is sent automatically to the missing when tracing is initiated"
+msgstr "En SMS blir automatisk sent til telefonen når sporingen opprettes"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:54
+msgid "About the missing"
+msgstr "Om sporing"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:198
+#, php-format
+msgid "All traces will be available in %1$s"
+msgstr "Alle sporinger vises her %1$s"
+
+#: /tmp/cache/55c3e10d3c24f/10/79/15ae59faf3b02e925881d73ab1797067ad6140ab64f34802790c051d13fd.php:38
+#: /tmp/cache/55c3e10d3c24f/e9/17/ea5acd8016dc1e7fce422f5a5059430db7b0f1c884ce14940b2a67c945c5.php:32
+msgid "An error occurred"
+msgstr "En feil har oppstått"
+
+#: /tmp/cache/55c3e10d3c24f/f3/f1/0905a93202a8388a25b2932f99763e14b493e46d03291d532ae45e73c62b.php:39
+#: /tmp/cache/55c3e10d3c24f/f3/f1/0905a93202a8388a25b2932f99763e14b493e46d03291d532ae45e73c62b.php:108
+msgid "Create new user"
+msgstr "Opprett ny bruker"
+
+#: /tmp/cache/55c3e10d3c24f/eb/98/522911e54fb160a6635138505de0c6ef43fb4e199551934945dd153ea065.php:65
+msgid "E-mail address"
+msgstr "Send e-post"
+
+#: /tmp/cache/55c3e10d3c24f/5f/cd/b94d2778e3581329c917b1c22bfa6ebc797f8b24ba9fc1549c86ac8e6c1b.php:119
+msgid "Enter your e-mail"
+msgstr "Skriv inn e-post"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:67
+msgid "First name"
+msgstr "Fornavn"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:59
+msgid "First name of missing"
+msgstr "Fornavn"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:185
+msgid ""
+"If the position is inaccurate, the tracing positioning webpage will reload "
+"after 10 seconds"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:165
+msgid "Load time"
+msgstr "Lastetid"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:120
+msgid "Mobile number"
+msgstr "Mobilnummer"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:85
+msgid "Mobile number of missing"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/4f/7b/985d22f5c2d22d6d45d18753ef00007e8c4ce4f551a23a7400f27d8af3f3.php:97
+msgid "No closed operations at the moment"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/4f/7b/985d22f5c2d22d6d45d18753ef00007e8c4ce4f551a23a7400f27d8af3f3.php:71
+msgid "No open operations at the moment"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/39/a9/3b6d2e97bb59dad3c9e00a9d02b89caabe68147ecffd12d742b866a2ae5e.php:24
+msgid "No rows found"
+msgstr "Ingen rader funnet"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:93
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:128
+msgid "Only numbers, no spaces"
+msgstr "Kun nummer, ingen mellomrom"
+
+#: /tmp/cache/55c3e10d3c24f/4f/7b/985d22f5c2d22d6d45d18753ef00007e8c4ce4f551a23a7400f27d8af3f3.php:41
+msgid "Operations"
+msgstr "Aksjoner"
+
+#: /tmp/cache/55c3e10d3c24f/20/e2/e4185993d397888333d7daf513c5bc27b21951864a19852c1c024485755d.php:67
+msgid "Please wait..."
+msgstr "Vennligst vent..."
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:142
+msgid "Read more"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:180
+msgid "Repeated positioning"
+msgstr "Gjentatt lokalisering"
+
+#: /tmp/cache/55c3e10d3c24f/5f/cd/b94d2778e3581329c917b1c22bfa6ebc797f8b24ba9fc1549c86ac8e6c1b.php:39
+#: /tmp/cache/55c3e10d3c24f/5f/cd/b94d2778e3581329c917b1c22bfa6ebc797f8b24ba9fc1549c86ac8e6c1b.php:107
+msgid "Reset Password"
+msgstr "Nullstill passord "
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:148
+msgid "SMS-text"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:207
+msgid "Start trace"
+msgstr "Start ny sporing"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:48
+msgid "Start trace of missing"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:174
+msgid ""
+"Still, it is important that the missing is patient, and let the browser use "
+"whatever time it needs to open the positioning webpage"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:189
+msgid "The user will be shown a countdown, and the page will reload"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:170
+msgid ""
+"The webpage is approximately 1,9Kb, which should take less than a second to "
+"open on a bad cell reception"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:193
+msgid ""
+"This will be repeated 10 times, or until the positioning is sufficient "
+"accurate"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:156
+msgid "Tracing page"
+msgstr ""
+
+#: /tmp/cache/55c3e10d3c24f/5f/cd/b94d2778e3581329c917b1c22bfa6ebc797f8b24ba9fc1549c86ac8e6c1b.php:115
+msgid "Username"
+msgstr "Brukernavn"
+
+#: /tmp/cache/55c3e10d3c24f/8f/af/c71e8c3fe31bf973b741585f810ca2ea976ae94187416cb62dbe8d671d5c.php:160
+msgid ""
+"When the missing opens the SMS link, a webpage is loaded and will prompt the "
+"user for positioning access"
+msgstr ""
+
+#: /tmp/cache/55c3e10da5a24/5f/16/d503c335f3f04993bbb614a13fd877a0fcbefdf9c277e1d9975463f56ae3.php:77
+msgid "Are you sure?"
+msgstr "Er du sikker?"
+
+#: /tmp/cache/55c3e10da5a24/3e/46/6b739ab8eaf9d9c747914ca824847bd806aab210c12454a6b1805710fcc9.php:127
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: /tmp/cache/55c3e10da5a24/88/bc/cb768114f08cbe70d01739a526e2e6ff1380516d86abba7030c3997f76e8.php:144
+msgid "Change"
+msgstr "Endre"
+
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:48
+msgid "Enter full name"
+msgstr "Skriv inn fullt navn"
+
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:70
+msgid "Enter number"
+msgstr "Skriv inn nummer"
+
+#: /tmp/cache/55c3e10da5a24/bf/f9/904ca17089fe506c0adf509186398c495d76265b91ae91f4d6a178d169b2.php:82
+msgid "Enter valid email"
+msgstr "Skriv inn e-post"
+
+#: /tmp/cache/55c3e10da5a24/5f/16/d503c335f3f04993bbb614a13fd877a0fcbefdf9c277e1d9975463f56ae3.php:99
+msgid "No"
+msgstr "Nei"
+
+#: /tmp/cache/55c3e10da5a24/89/fa/3f36fed544bba7a5f2dfacece04d7f4474a3690689ddcf38ced6edbe1244.php:114
+msgid "Request"
+msgstr "Forespørsel"
+
+#: /tmp/cache/55c3e10da5a24/ea/7d/50c80f2aadd400a87e8924b311fd1a17dfe6ebb69c36c8ad77093e09009d.php:41
+msgid "Start"
+msgstr "Start"
+
+#: /tmp/cache/55c3e10da5a24/3e/46/6b739ab8eaf9d9c747914ca824847bd806aab210c12454a6b1805710fcc9.php:111
+msgid "Submit"
+msgstr "Send"
+
+#: /tmp/cache/55c3e10da5a24/6d/61/ebcf39b73c2f8ff38dd576cd877be8844c3ea432c52b7bed9ba1e9d6a1ae.php:116
+msgid "Success"
+msgstr "Suksess"
+
+#: /tmp/cache/55c3e10da5a24/aa/f1/5a730805cd017e719fc66caf41167dd900fefeceb8926dd6f6270ed9267e.php:111
+msgid "Update"
+msgstr "Oppdater"
+
+#: /tmp/cache/55c3e10da5a24/5f/16/d503c335f3f04993bbb614a13fd877a0fcbefdf9c277e1d9975463f56ae3.php:93
+msgid "Yes"
+msgstr "Ja"
+
+#~ msgid "About the user"
+#~ msgstr "Om bruker"
+
+#~ msgid "Create user"
+#~ msgstr "Opprett bruker"
+
+#~ msgid "Repeat password"
+#~ msgstr "Gjenta passord"
+
+#~ msgid "Set password"
+#~ msgstr "Sett passord"
+
+#~ msgid "User password"
+#~ msgstr "Brukerpassord"
+
+#~ msgid "User settings"
+#~ msgstr "Brukerinnstillinger"
+
+#~ msgid "About %1$s"
+#~ msgstr "Om %1$s"
+
+#~ msgid "Not an ajax request."
+#~ msgstr "Ikke en ajax-forespørsel"
+
+#~ msgid "Id not defined."
+#~ msgstr "Id ikke definert"
+
+#~ msgid "Module %1$s not found"
+#~ msgstr "Modul %1$s ikke funnet"
+
 #~ msgid "Save"
 #~ msgstr "Lagre"
-
-#~ msgid "Cancel"
-#~ msgstr "Avbryt"
 
 #~ msgid "Progress"
 #~ msgstr "Fremdrift"
@@ -1799,23 +2164,11 @@ msgstr "Skriv inn samme verdi igjen"
 #~ msgid "None"
 #~ msgstr "Ingen"
 
-#~ msgid "No"
-#~ msgstr "Nei"
-
-#~ msgid "Yes"
-#~ msgstr "Ja"
-
 #~ msgid "Found"
 #~ msgstr "Fant"
 
-#~ msgid "Update"
-#~ msgstr "Oppdater"
-
 #~ msgid "Illegal"
 #~ msgstr "Ulovlig"
-
-#~ msgid "Access"
-#~ msgstr "Tilgang"
 
 #~ msgid "Database"
 #~ msgstr "Database"
@@ -1843,9 +2196,6 @@ msgstr "Skriv inn samme verdi igjen"
 
 #~ msgid "Calculating..."
 #~ msgstr "Kalkulerer..."
-
-#~ msgid "Are you sure?"
-#~ msgstr "Er du sikker?"
 
 #~ msgid "Missing values: %1$s"
 #~ msgstr "Verdier mangler: %1$s"
@@ -1927,9 +2277,6 @@ msgstr "Skriv inn samme verdi igjen"
 
 #~ msgid "Remove"
 #~ msgstr "Slett"
-
-#~ msgid "Start"
-#~ msgstr "Start"
 
 #~ msgid "Person"
 #~ msgstr "Person"

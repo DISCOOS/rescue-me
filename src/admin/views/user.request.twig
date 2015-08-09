@@ -1,0 +1,11 @@
+{% extends 'base.twig' %}
+
+{% block title %}{{ T_('Request new user') }} ({{title}}){% endblock %}
+
+{% block content %}
+    {% embed 'user.form.twig' %}
+        {% set user = {'name': '', 'mobile_country': country, 'mobile': '', 'email': '', 'role_id': 2} %}
+        {% block header %}{{ T_('Request new user') }}{% endblock %}
+        {% block submit_title %}{{ T_('Request') }}{% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -2,7 +2,7 @@
 
     use RescueMe\Roles;
 
-    $roles = Roles::getAll();        
+    $roles = Roles::getOptions();
 ?>
 
     <h3><?=T_("Roles")?></h3>

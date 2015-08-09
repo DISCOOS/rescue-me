@@ -1,11 +1,11 @@
-{% extends 'design_admin.twig' %}
+{% extends 'base.twig' %}
 
 {% block content %}
-<h3>{% trans "Operations" %}</h3>
+<h3>{{ T_('Operations') }}</h3>
 
 <ul id="tabs" class="nav nav-tabs">
-  <li><a href="#active" data-toggle="tab">{% trans "Open" %}</a></li>
-  <li><a href="#closed" data-toggle="tab">{% trans "Closed" %}</a></li>
+  <li><a href="#active" data-toggle="tab">{{ T_('Open') }}</a></li>
+  <li><a href="#closed" data-toggle="tab">{{ T_('Closed') }}</a></li>
 </ul>
 
 <div class="tab-content" style="width: auto; overflow: visible">
@@ -13,7 +13,7 @@
 	<ul class="unstyled">
 		{% for operation in operations_open %}
 		{% else %}
-			<div class="alert alert-info">{% trans "No open operations at the moment" %}</div>
+			<div class="alert alert-info">{{ T_('No open operations at the moment') }}</div>
 		{% endfor %}
 	</ul>
 </div>
@@ -22,7 +22,7 @@
 	<ul class="unstyled">
 		{% for operation in operations_closed %}
 		{% else %}
-			<div class="alert alert-info">{% trans "No closed operations at the moment" %}</div>
+			<div class="alert alert-info">{{ T_('No closed operations at the moment') }}</div>
 		{% endfor %}
 	</ul>
 </div>

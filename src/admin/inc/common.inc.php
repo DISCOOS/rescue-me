@@ -64,7 +64,7 @@ function send_issue_email($from, $issue, $bulk) {
     $users = User::getAll($state);
 
     if(empty($users)) {
-        $titles = User::getTitles();
+        $titles = User::getStates();
         $state = isset($titles[$state]) ? $titles[$state] : T_('Unknown');
         return sprintf(T_('No <em>%1$s</em> users found.'), strtolower($state));
     }

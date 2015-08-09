@@ -1,0 +1,11 @@
+<div class="row-fluid masthead">
+    <a class="lead no-wrap" href="{{uri}}"><b>{{title}}</b></a>
+    <ul class="nav nav-pills pull-right">
+{% if user %}
+    {% block menu_page %}{{ menu.page | raw }}{% endblock %}
+    {% block menu_system %}{{ menu.system | raw }}{% endblock %}
+{% elseif login is not defined or not login %}
+        <li id="login"><a href="{{ path('login') }}">{{ T_('Login') }}</a></li>
+{% endif %}
+    </ul>
+</div>

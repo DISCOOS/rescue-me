@@ -1,0 +1,77 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<h3>{% block header %}{% endblock %}</h3>
+{% embed 'tabs.twig' with { 'tabs' : tabs, 'selected': 'active' } %}
+    {% block content %}
+        {% embed 'table.twig' with { 'container' : tab } %}{% endembed %}
+    {% endblock %}
+{% endembed %}
+
+{#<ul id="tabs" class="nav nav-tabs">#}
+    {#{% for for user in states %}#}
+    {#<li><a href="#<?=$state?>" data-toggle="tab"><?=$title?>#}
+            {#<? if ($state == User::PENDING) { ?>#}
+            {#<span class="badge badge-important"><?= $num_pending ?></span>#}
+            {#<? } ?>#}
+        {#</a   ></li>#}
+    {#{% endfor %}#}
+{#</ul>#}
+{#<div class="tab-content" style="width: auto; overflow: visible">#}
+    {#<? foreach($states as $state) { $active = ($name === $state ? 'active' : ''); ?>#}
+    {#<div id="<?=$state?>" data-target=".searchable" class="tab-pane <?=$active?>">#}
+        {#<table class="table table-striped">#}
+            {#<thead>#}
+            {#<tr>#}
+                {#<th><?=T_("Name")?></th>#}
+                {#<th><?=T_("Role")?></th>#}
+                {#<th><?=T_("Mobile")?></th>#}
+                {#<th class="hidden-phone"><?=T_("E-mail")?></th>#}
+                {#<th>#}
+                    {#<input type="text"#}
+                           {#class="input-medium search-query pull-right"#}
+                           {#data-target="<?=$state?> .searchable"#}
+                           {#data-source="<?=$state?> .pagination"#}
+                           {#placeholder="Search">#}
+                {#</th>#}
+            {#</tr>#}
+            {#</thead>#}
+            {#<tbody class="searchable">#}
+            {#</tbody>#}
+        {#</table>#}
+        {#<div class="pagination" data-target="<?=$name?> .searchable"></div>#}
+    {#</div>#}
+    {#<? } ?>#}
+{#</div>#}
+
+{#<script>#}
+    {#R.tabs('tabs');#}
+{#</script>#}
+
+    {#<h3>{{ T_('Users') }}</h3>#}
+    {#<ul class="unstyled">#}
+	{#{% for user in users %}#}
+        {#<li class="well well-small" id="{{user.id}}">#}
+            {#<div class="user control-group pull-left">#}
+                {#<div class="user name"><span>{{ user.name }}</span>#}
+                {#<div class="clearfix"></div>#}
+                {#<div class="call">{{ user.mobile }}</div>#}
+            {#</div>#}
+            {#</div>#}
+            {#<div class="btn-group pull-right">#}
+                {#<a class="btn" href="{{APP_ADMIN_URI}}user/edit/{{user.id}}">#}
+                    {#<b class="icon icon-edit"></b>{{ T_('Edit') }}#}
+                {#</a>#}
+                {#<a class="btn dropdown-toggle" data-toggle="dropdown">#}
+                    {#<span class="caret"></span>#}
+                {#</a>#}
+                {#<ul class="dropdown-menu">#}
+                {#</ul>#}
+            {#</div>#}
+            {#<div class="clearfix"></div>#}
+        {#</li>	#}
+	{#{% else %}#}
+        {#<div class="alert alert-info">{{ T_('There are no registered users') }}</div>#}
+    {#{% endfor %}#}
+    {#</ul>#}
+{% endblock %}

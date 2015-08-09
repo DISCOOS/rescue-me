@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{{title}}{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="apple-mobile-web-app-title" content="{{title}}" >
+        <link rel="shortcut icon" href="{{uri}}img/favicon.ico" >
+        <link rel="apple-touch-icon" href="{{uri}}img/rescueme-non-trans.png" >
+        <link href="{{uri}}css/admin.css" rel="stylesheet">
+        <script type="text/javascript" src="{{uri}}js/admin.js"></script>
+    </head>
+    <body>
+        <div class="container-narrow">
+            {% include 'header.twig' %}
+            {% include 'alerts.twig' %}
+            <div class="row-fluid">{% block content %}{{ content }}{% endblock %}</div>
+            {% embed 'dialog.twig' with { 'id' : 'confirm' } %}{% endembed %}
+            {% include 'footer.twig' %}
+        </div>
+    </body>
+</html>

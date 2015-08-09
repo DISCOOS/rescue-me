@@ -85,20 +85,30 @@
             return $count;
             
        }
+
+       /**
+        * Get role name
+        * @param $roleId
+        * @return string
+        */
+        public static function getName($roleId) {
+            $res = DB::select(self::TABLE,'role_name','role_id='.$roleId);
+            if(DB::isEmpty($res))
+                return false;
+            return $res->fetch_field_direct(0);
+        }
         
         
        /**
-         * Get all roles
+         * Get all roles as option array
          * 
          * @return array
          */
-        public static function getAll() {
-             
-            return self::$roles ;
-            
-        }// getAll     
+        public static function getOptions() {
+            return self::$roles;
+        }
 
-        
+
         /**
          * Grant role to user
          * 

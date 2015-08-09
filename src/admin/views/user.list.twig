@@ -1,30 +1,5 @@
-{% extends 'design_admin.twig' %}
+{% extends 'list.twig' %}
 
-{% block content %}
-    <h3>{% trans "Users" %}</h3>
-    <ul class="unstyled">
-	{% for user in users %}
-        <li class="well well-small" id="{{user.id}}">
-            <div class="user control-group pull-left">
-                <div class="user name"><span>{{ user.name }}</span>
-                <div class="clearfix"></div>
-                <div class="call">{{ user.mobile }}</div>
-            </div>
-            </div>
-            <div class="btn-group pull-right">
-                <a class="btn" href="{{APP_ADMIN_URI}}user/edit/{{user.id}}">
-                    <b class="icon icon-edit"></b>{% trans "Edit" %}
-                </a>
-                <a class="btn dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                </ul>
-            </div>
-            <div class="clearfix"></div>
-        </li>	
-	{% else %}
-        <div class="alert alert-info">{% trans "There are no registered users" %}</div>
-    {% endfor %}
-    </ul>
-{% endblock %}
+{% block title %}{{ T_('Users') }} ({{title}}){% endblock %}
+
+{% block header %}{{ T_('Users') }}{% endblock %}

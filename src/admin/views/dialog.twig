@@ -1,0 +1,17 @@
+{% if id is not defined %}
+    {% set id = 'confirm' %}
+{% endif %}
+<div id="{{id}}" class="modal fade hide" tabindex="-1" role="dialog" aria-labelledby="{{id}}-label" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="{{id}}-label">{% block title %}{{ T_('Confirm') }}{% endblock %}</h3>
+    </div>
+    <div class="modal-body">{% block message %}{{ T_('Are you sure?') }}{% endblock %}</div>
+    <div class="modal-footer">
+        <a class="btn btn-primary"{% block target %}{% if action is defined %} href="{{action}}"{% endif %}{% endblock %}>
+            {% block submit %}{{ T_('Yes') }}{% endblock %}</a>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">
+            {% block cancel %}{{ T_('No') }}{% endblock %}
+        </button>
+    </div>
+</div>

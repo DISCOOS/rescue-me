@@ -15,6 +15,7 @@
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
     use RescueMe\SMS\Provider;
+    use Symfony\Component\Security\Core\User\UserInterface;
 
     /**
      * User class
@@ -26,7 +27,7 @@
      * @property string $email Email address
      * @property string $mobile Mobile number
      */
-    class User {
+    class User implements UserInterface {
         
         const TABLE = "users";
         
@@ -108,8 +109,15 @@
          * @var string
          */
         public $email;
-        
-        
+
+
+        /**
+         * User passord (encrypted)
+         * @var string
+         */
+        public $password;
+
+
         /**
          * User mobile number
          * @var string
@@ -128,23 +136,19 @@
          * @var integer
          */
         public $role_id = null;
-        
-        
+
+        /**
+         * Role name
+         * @var integer
+         */
+        public $role_name = null;
+
         /**
          * User state
          * @var integer
          */
         public $state = null;
         
-        
-        /**
-         * Prevent initialization of user object outside this class
-         */
-        protected final function __construct()
-        {
-            
-        }
-
         
         /**
          * Check if one or more users exist
@@ -164,7 +168,7 @@
          * Get user state titles
          * @return array
          */
-        public static function getTitles() {
+        public static function getStates() {
             return array(
                 User::ACTIVE => T_('Active'),
                 User::PENDING => T_('Pending'),
@@ -194,13 +198,17 @@
          * @return boolean|array
          */
         public static function count($states=null, $filter = '') {
-            
+
+            if(isset($states) && is_string($states)) {
+                $states = array($states);
+            }
+
             if(isset($states) === FALSE || in_array(User::ALL, $states)) {
                 $states = User::$all;
             }
             
             $where = array();
-            foreach(isset($states) ? $states : array() as $state) {
+            foreach((array)$states as $state) {
                 $where[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
             } 
             if(empty($where) === false) {
@@ -213,6 +221,54 @@
             return DB::count(self::TABLE, $filter);
             
         }// count
+
+
+        /**
+         * Get users as row arrays
+         * @param string|array $states User state (optional, default: null, values: {'pending', 'disabled', 'deleted'})
+         * @param string $filter
+         * @param int $start
+         * @param bool $max
+         * @return boolean|array
+         */
+        public static function getRows($states = null, $filter = '', $start = 0, $max = false) {
+
+            if(isset($states) && is_string($states)) {
+                $states = array($states);
+            }
+
+            if(isset($states) === FALSE || in_array(User::ALL, $states)) {
+                $states = User::$all;
+            }
+            
+            $where = array();
+            foreach(isset($states) ? $states : array() as $state) {
+                $where[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
+            }
+
+            if(empty($where) === false) {
+                $where = '(' . implode($where," OR ") . ')';
+                $filter = empty($filter) ? $where : '(' . $filter . ') AND ' . $where;
+            }
+
+            if($filter) {
+                $filter .= " AND ";
+            }
+            $filter .= "(`users`.`user_id` = `roles`.`user_id`)";
+
+            $limit = ($max === false ? '' : "$start, $max");
+
+            $res = DB::select(array(self::TABLE, Roles::TABLE), "*", $filter, "`state`, `name`", $limit);
+            
+            if (DB::isEmpty($res)) return false;
+
+            $rows = array();
+            while ($row = $res->fetch_assoc()) {
+                $rows[$row['user_id']] = $row;
+            }
+            return $rows;
+            
+        }// getRows
 
 
         /**
@@ -232,7 +288,7 @@
             if(isset($states) === FALSE || in_array(User::ALL, $states)) {
                 $states = User::$all;
             }
-            
+
             $where = array();
             foreach(isset($states) ? $states : array() as $state) {
                 $where[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
@@ -245,23 +301,24 @@
                 $filter =  empty($filter) ? $where : '(' . $filter . ') AND ' . $where;
 
             }
-            
+
             $limit = ($max === false ? '' : "$start, $max");
 
-            $res = DB::select(self::TABLE, "*", $filter, "`state`, `name`", $limit);
-            
+            $res = DB::select(self::TABLE, "user_id", $filter, "`state`, `name`", $limit);
+
             if (DB::isEmpty($res)) return false;
 
             $users = array();
+            $roles = Roles::getOptions();
             while ($row = $res->fetch_assoc()) {
                 $user = self::get($row['user_id']);
                 $users[$row['user_id']] = $user;
             }
             return $users;
-            
-        }// getAll     
-        
-        
+
+        }// getAll
+
+
         /**
          * Get current user id.
          * 
@@ -280,13 +337,14 @@
         public static function current() {
             return isset($_SESSION['user_id']) ? User::get($_SESSION['user_id']) : false;
         }
-        
-        
+
+
         /**
          * Get user id from SMS provider reference id
-         * 
+         *
+         * @param string $provider
          * @param integer $reference
-         * 
+         *
          * @return integer|boolean Operation id if success, FALSE otherwise.
          */
         public static function getProviderUserId($provider, $reference) {
@@ -314,26 +372,33 @@
          * @return boolean|\RescueMe\User
          */
         public static function get($id, $user = null) {
-            
-            $res = DB::select(self::TABLE,'*', "`user_id` = ".(int)$id);
+            return self::newInstance("`user_id` = ".(int)$id, $user);
+        }
+
+        /**
+         * Get user with given query
+         *
+         * @param string $select User select query
+         * @param \RescueMe\User Update user instance
+         *
+         * @return boolean|\RescueMe\User
+         */
+        public static function newInstance($select, $user = null) {
+
+            $res = DB::select(self::TABLE,'*', $select);
             
             if (DB::isEmpty($res)) return false;
             
-            $exclude = array("user_id", 'password');
-
             if($user === null) {
                 $user = new User();
             }
             $row = $res->fetch_assoc();
             foreach($row as $property => $value){
-                
-                if(in_array($property, $exclude) === false) { 
-                    $user->$property = $value;
-                }
+                $user->$property = $value;
             }
             
-            $user->id = (int)$id;
-            $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$id);
+            $user->id = (int)$row['user_id'];
+            $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$user->id);
             if(DB::isEmpty($res) === FALSE) {
                 $row = $res->fetch_array();
                 $user->role_id = (int)$row[0];
@@ -360,7 +425,7 @@
 
             if(DB::isEmpty($res)) 
             {
-                return User::error(T_('User not found').' '.T_('Recovery password not sent'), func_get_args());
+                return User::error(T_('User not found').' '.T_('Reset password not sent'), func_get_args());
             }
             
             $row = $res->fetch_row();
@@ -374,10 +439,10 @@
             $res = $user->send($message, $methods);
             
             if($res !== false) {
-                return User::log(sprintf(T_('Recovery password sent to user %1$s'), $row[0]));
+                return User::log(sprintf(T_('Reset password sent to user %1$s'), $row[0]));
             } 
             
-            return User::error(sprintf(T_('Failed to send recovery password to user %1$s'),$row[0]), func_get_args());
+            return User::error(sprintf(T_('Failed to send reset password to user %1$s'),$row[0]), func_get_args());
             
             
         }// recover
@@ -388,7 +453,7 @@
          * 
          * @param string $name
          * @param string $email
-         * @param string $password
+         * @param string $password Hashed password
          * @param string $country
          * @param string $mobile
          * @param integer $role
@@ -400,8 +465,6 @@
             $user = false;
 
             $username = User::safe(strtolower($email));
-
-            $password = User::hash($password);
 
             if(empty($username) || empty($password) || User::unique($email) === false) {
                 return false;
@@ -426,7 +489,79 @@
             
             
         }// create
-        
+
+
+        /**
+         * Get User as associative array
+         * @return array
+         */
+        public function toArray() {
+            return (array)$this;
+        }
+
+
+        /**
+         * Returns the roles granted to the user.
+         *
+         * <code>
+         * public function getRoles()
+         * {
+         *     return array('ROLE_USER');
+         * }
+         * </code>
+         *
+         * Alternatively, the roles might be stored on a ``roles`` property,
+         * and populated in any number of different ways when the user object
+         * is created.
+         *
+         * @return Role[] The user roles
+         */
+        public function getRoles() {
+            return array('ROLE_'.strtoupper(Roles::getName($this->role_id)));
+        }
+
+        /**
+         * Returns the salt that was originally used to encode the password.
+         *
+         * This can return null if the password was not encoded using a salt.
+         *
+         * @return string|null The salt
+         */
+        public function getSalt() {
+            return SALT;
+        }
+
+        /**
+         * Returns the password used to authenticate the user.
+         *
+         * This should be the encoded password. On authentication, a plain-text
+         * password will be salted, encoded, and then compared to this value.
+         *
+         * @return string The password
+         */
+        public function getPassword() {
+            return $this->password;
+        }
+
+        /**
+         * Returns the username used to authenticate the user.
+         *
+         * @return string The username
+         */
+        public function getUsername() {
+            return $this->email;
+        }
+
+        /**
+         * Removes sensitive data from the user.
+         *
+         * This is important if, at any given point, sensitive information like
+         * the plain-text password is stored on this object.
+         */
+        public function eraseCredentials()
+        {
+            // TODO: Implement eraseCredentials() method.
+        }
 
         /**
          * Check if one or more users exist
@@ -493,11 +628,15 @@
          * 
          * Returns random password
          * 
-         * @param integer $length Length of random password
+         * @param boolean|integer $length Length of random password
          * 
          * @return string|boolean
          */
-        public function reset($length = 8) {
+        public function reset($length = false) {
+
+            if(!$length) {
+                $length = Context::getSecurityPasswordLength();
+            }
             
             $password = self::generate($length);
 
@@ -509,23 +648,15 @@
         /**
          * Set user password.
          * 
-         * @param string $tokens Password
+         * @param string $password Hashed password
          * 
          * @return boolean
          */
-        public function password($tokens) {
-            
-            $password = User::hash($tokens);
+        public function password($password) {
             
             $values = \prepare_values(array("password"), array($password));
             
-            $result = DB::update(self::TABLE, $values, "user_id=$this->id");
-            
-            if($result !== false && isset_get($_SESSION,'user_id') == $this->id) {
-                $_SESSION['password'] = $password;
-            }
-            
-            if($result !== false) {
+            if(false !== DB::update(self::TABLE, $values, "user_id=$this->id")) {
                 return User::log("User {$this->id} password changed");
             } 
             
@@ -664,168 +795,6 @@
         }// send
         
 
-        
-        /**
-         * Attempt to login in user
-         * 
-         * @param string $email
-         * @param string $password
-         * @return boolean
-         */
-        public function logon($email, $password) {
-
-            $username = User::safe(strtolower($email));
-
-            $password = User::hash($password);
-            
-            if(empty($username) || empty($password))
-                return false;
-            
-            $filter = "`email` = '$username' AND `password` = '$password'";
-            
-            $res = DB::select(self::TABLE, "*", $filter);
-            
-            if(DB::isEmpty($res)) {
-                $this->logout();
-                return false;
-            }
-            
-            $info = $res->fetch_assoc();
-            
-            $info['password'] = $password;
-            
-            return $this->_grant($info);
-            
-        }// logon
-        
-        
-        /**
-         * Logout current user
-         */
-        public function logout() {
-            
-            $isset = isset($_SESSION['logon']) && $_SESSION['logon'];
-            
-            // Unset all of the session variables.
-            $_SESSION = array();
-
-            // If it's desired to kill the session, also delete the session cookie.
-            // Note: This will destroy the session, and not just the session data!
-            if (ini_get("session.use_cookies")) {
-                $params = session_get_cookie_params();
-                setcookie(session_name(), '', time() - 42000,
-                    $params["path"], $params["domain"],
-                    $params["secure"], $params["httponly"]
-                );
-            }
-
-            // Finally, destroy the session.
-            session_destroy();                
-            
-            if($isset)
-            {
-                // Notify
-                Logs::write(Logs::ACCESS, LogLevel::INFO, 'User logged out.', array(), $this->id);
-            }
-            
-        }// logout        
-
-        
-        /**
-         * Verify current user login credentials
-         * 
-         * @return boolean|string|User Returns User object if success, illegal state or FALSE if illegal credentials 
-         */
-        public static function verify() {
-            
-            $state = false;
-
-            $user = User::current();
-            
-            if($user !== false && isset($_SESSION['password']))
-            {
-                $state = $user->_verify($_SESSION['user_id'], $_SESSION['password']);
-            }
-            elseif(isset($_POST['username']) && isset($_POST['password'])) {
-                $user = new User();
-                $state = $user->logon($_POST['username'], $_POST['password']);
-            }
-                        
-            return $state === true ? $user : $state;
-        }// verify
-        
-        
-        /**
-         * Verify credentials
-         * 
-         * @param string $user_id
-         * @param string $password
-         * @return boolean|string
-         */
-        private function _verify($user_id, $password) {
-            
-            $user_id = (int)$user_id;
-            
-            $filter = "`user_id` = '$user_id' AND `password` = '$password'";
-            
-            $res = DB::select(self::TABLE,'*', $filter);
-            
-            if(DB::isEmpty($res)) {
-                $this->logout();
-                return false;
-            }
-            
-            $info = $res->fetch_assoc();
-            $info['password'] = $password;
-            
-            return $this->_grant($info);
-            
-        }// _verify
-
-        
-        private function _grant($info) {
-            
-            $granted = true;
-            $this->id = (int)$info['user_id'];
-            
-            $exclude = array("user_id", 'password');
-
-            foreach($info as $property => $value){
-                
-                if(!in_array($property, $exclude)) { 
-                    $this->$property = $value;
-                }
-            }
-            
-            $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$this->id);
-            if(DB::isEmpty($res) === FALSE) {
-                $row = $res->fetch_array();
-                $this->role_id = (int)$row[0];
-            } else {
-                User::error("User {$this->id} have no role.");
-            }                
-            
-            $granted = $this->isState(User::ACTIVE);
-            
-            $isset = isset($_SESSION['logon']) && $_SESSION['logon'];
-            
-            if($granted) {
-                $_SESSION['logon'] = true;
-                $_SESSION['user_id'] = $info['user_id'];
-                $_SESSION['password'] = $info['password'];
-            } else {
-                $this->logout();
-            }
-            
-            if($isset === false) {
-                User::log($granted ? 'User logged in.' : 'Logon not granted. User is ' . $this->state);
-            }
-            
-            return $granted ? true : $this->state;
-            
-        }// _login_ok
-
-        
         /**
          * Check if a user is authorized to access given object
          * 
@@ -847,12 +816,11 @@
                 // Check conditions
                 switch($resource) {
                     case 'user':
-                    case 'setup':               
-                        return ($condition === null ? $this->id : $condition) == $this->id;
+                        return ($condition === null ? $this->id : $condition->id) == $this->id;
                     case 'operations':
                         if($condition !== null) {
                             $sql = "SELECT COUNT(*) FROM `operations` 
-                                WHERE `op_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
+                                WHERE `op_id`=".(int)$condition->op_id." AND `user_id`=".(int)$this->id;
                         }
                         break;
                     default:

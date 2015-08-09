@@ -14,8 +14,7 @@
 
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
-    use \RescueMe\TimeZone;
-    
+
 
     /**
      * Database class
@@ -233,14 +232,14 @@
         /**
          * Get selection from given table
          * 
-         * @param string $table
+         * @param string $tables
          * @param mixed $fields
          * @param string $filter
          * @param string $order
          * @param string $limit
          * @return boolean|\mysqli_result
          */
-        public static function select($table, $fields='*', $filter='', $order='', $limit = '') 
+        public static function select($tables, $fields='*', $filter='', $order='', $limit = '')
         {
             if(is_string($fields) && in_array(strtoupper($fields), array('*','COUNT(*)')) === FALSE) {
                 $fields = "`" . ltrim(rtrim($fields,"`"),"`") . "`";
@@ -248,8 +247,12 @@
             elseif (is_array($fields)) {
                 $fields = "`" . implode("`,`", $fields) . "`";
             }
+
+            if (is_array($tables)) {
+                $tables = implode("`,`", $tables);
+            }
             
-            $query = "SELECT $fields FROM `$table`";
+            $query = "SELECT $fields FROM `$tables`";
             
             if($filter) $query .= " WHERE $filter";
             
@@ -420,8 +423,8 @@
         
         /**
          * Build string matching filter from fields and values
-         * @param array $fields Fully qualified table names
-         * @param array $values Values to match
+         * @param string|array $fields Fully qualified table names
+         * @param mixed|array $values Values to match
          * @param string $operand Operand between each predicate
          * @return string
          */

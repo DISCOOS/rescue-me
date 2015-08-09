@@ -1,0 +1,52 @@
+{% extends 'base.twig' %}
+
+{% block title %}{{ T_('User') }} ({{title}}){% endblock %}
+
+{% block content %}
+    <h3>{{ user.name }}</h3>
+    <div class="well">
+        <div class="row-fluid">
+            <div class="control-group">
+                <div class="span1"><b>{{ T_('Mobile') }}</b></div>
+                <div class="span9"><a href="tel:{{ user.mobile_country|dial_code~user.mobile }}">{{ user.mobile }}</a></div>
+                <div class="span2">
+                {% if editor is defined %}
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-small" href="{{ path('user/edit/id', {'id' : id}) }}">
+                            <b class="icon icon-edit"></b>{{ T_('Edit') }}
+                        </a>
+                        <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </a>
+                        {% embed 'menu.twig' with { 'items' : editor }%}{% endembed %}
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="span1"><b>{{ T_('Email') }}</b></div>
+                <div class="span11"><a href="email:{{ user.email }}">{{ user.email }}</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="form well">
+        <div class="stats row-fluid">
+            <div class="stat">
+                <span class="value">{{ traces.success|default(0) }}%</span>
+                <h4>{{ T_('Success') }}</h4>
+            </div>
+            <div class="stat">
+                <span class="value">{{ traces.active|default(0) }}</span>
+                <h4>{{ T_('Active') }}</h4>
+            </div>
+            <div class="stat">
+                <span class="value">{{ traces.located|default(0) }}</span>
+                <h4>{{ T_('Located') }}</h4>
+            </div>
+            <div class="stat">
+                <span class="value">{{ traces.total|default(0) }}</span>
+                <h4>{{ T_('Traces') }}</h4>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,87 +1,99 @@
 <?php
+/**
+ * File containing: Application context definition class
+ *
+ * @copyright Copyright 2015 {@link http://www.discoos.org DISCO OS Foundation}
+ *
+ * @since 28. February 2015
+ *
+ * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
+ */
+
+namespace RescueMe;
+
+/**
+ * Application Context definition class
+ * @package RescueMe
+ * @method static string getPath() Get application root path
+ * @method static string getDataPath() Get application data path
+ * @method static string getVendorPath() Get path to libraries which application depends
+ * @method static string getLocalePath() Get application locale path
+ * @method static string getUri() Get application root uri
+ * @method static string getTitle() Get application title
+ * @method static string getVersion() Get application version
+ * @method static string getDbHost() Get database host
+ * @method static string getDbName() Get database name
+ * @method static string getDbPassword() Get database password
+ * @method static string getDbUsername() Get database username
+ * @method static string getSecuritySalt() Salt used to encrypt sensitive data
+ * @method static string getSecurityPasswordLength() Required Password length
+ */
+class Context extends AbstractContext {
+
     /**
-     * File containing: Application context
-     *
-     * @copyright Copyright 2015 {@link http://www.discoos.org DISCO OS Foundation}
-     *
-     * @since 28. February 2015
-     *
-     * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
+     * Path to application root
      */
-
-    namespace RescueMe;
+    const PATH = 'path';
 
     /**
-     * Application Context
-     * @package RescueMe
+     * Path to application data
      */
-    class Context {
+    const DATA_PATH = 'data_path';
 
-        /**
-         * Constant
-         */
-        const APP_PATH = 'app_path';
+    /**
+     * Path to libraries managed by composer
+     */
+    const VENDOR_PATH = 'vendor_path';
 
-        /**
-         * Constant
-         */
-        const DATA_PATH = 'data_path';
+    /**
+     * Path to application locale path
+     */
+    const LOCALE_PATH = 'locale_path';
 
-        /**
-         * Constant
-         */
-        const VENDOR_PATH = 'vendor_path';
+    /**
+     * Uri to application
+     */
+    const URI = 'uri';
 
-        /**
-         * Constant
-         */
-        const LOCALE_PATH = 'locale_path';
+    /**
+     * Application title
+     */
+    const TITLE = 'title';
 
-        /**
-         * Internal cache
-         * @var boolean|array
-         */
-        private static $context = FALSE;
+    /**
+     * Application version
+     */
+    const VERSION = 'version';
 
-        /**
-         * Load context
-         * @param mixed $context
-         */
-        public static function load($context) {
-            Context::$context = $context;
-        }
+    /**
+     * Uri to application
+     */
+    const DB_HOST = 'db_host';
+
+    /**
+     * Uri to application
+     */
+    const DB_NAME = 'db_name';
+
+    /**
+     * Uri to application
+     */
+    const DB_USERNAME = 'db_username';
+
+    /**
+     * Uri to application
+     */
+    const DB_PASSWORD = 'db_password';
+
+    /**
+     * Security salt used to encrypt sensitive data
+     */
+    const SECURITY_SALT = 'security_salt';
+
+    /**
+     * Required Password length
+     */
+    const SECURITY_PASSWORD_LENGTH = 'security_password_length';
 
 
-        /**
-         * Get application root path
-         * @return string
-         */
-        public static function getAppPath() {
-            return isset_get(Context::$context, Context::APP_PATH);
-        }
-
-        /**
-         * Get application data path
-         * @return string
-         */
-        public static function getDataPath() {
-            return isset_get(Context::$context, Context::DATA_PATH);
-        }
-
-        /**
-         * Get vendor path
-         * @return string
-         */
-        public static function getVendorPath() {
-            return isset_get(Context::$context, Context::VENDOR_PATH);
-        }
-
-        /**
-         * Get locale path
-         * @return string
-         */
-        public static function getLocalePath() {
-            return isset_get(Context::$context, Context::LOCALE_PATH);
-        }
-
-    }
+}

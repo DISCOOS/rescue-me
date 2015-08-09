@@ -11,6 +11,7 @@
 
 namespace RescueMe\Document;
 
+use RescueMe\Context;
 use RescueMe\Locale;
 use RescueMe\User;
 
@@ -25,11 +26,6 @@ class Compiler {
      * @var string
      */
     private $root;
-
-    /**
-     * @var \Twig_Loader_Filesystem
-     */
-    private $loader;
 
     /**
      * @var \Twig_Environment
@@ -47,20 +43,23 @@ class Compiler {
     private $properties;
 
     /**
-     * Constructor. Initializes compiler resources.
+     * Constructor.
+     * @param string $root Markup documents root
+     * @param boolean|\Twig_Environment|\Twig_Loader_Filesystem $twig Twig resource (optional, default is false)
      */
-    public function __construct($root, $loader = false) {
+    public function __construct($root, $twig = false) {
 
         $this->root = $root;
-
-        if($loader instanceof \Twig_Loader_Filesystem)
-            $this->loader = $loader;
-        else
-            $this->loader = new \Twig_Loader_Filesystem($root.'layout');
-
-        $this->twig = new \Twig_Environment($this->loader);
         $this->parser = new \ParsedownExtra();
 
+        if($twig instanceof \Twig_Environment) {
+            $this->twig = $twig;
+        } elseif($twig instanceof \Twig_Loader_Filesystem) {
+            $this->twig = new \Twig_Environment($twig);
+        } else {
+            $loader = new \Twig_Loader_Filesystem($root);
+            $this->twig = new \Twig_Environment($loader);
+        }
     }
 
     private function isMarkdown($filename) {
@@ -113,17 +112,16 @@ class Compiler {
 
     public function get($name) {
 
-        return isset_get($this->getProperties(), $name,'');
+        $this->getAll();
+        return isset_get($this->properties, $name,'');
 
     }
 
 
     public function set($name,  $value) {
 
-        $this->getProperties();
-
+        $this->getAll();
         $old = isset_get($this->properties, $name,'');
-
         $this->properties[$name] = $value;
 
         return $old;
@@ -138,8 +136,8 @@ class Compiler {
             $user = User::current();
 
             $this->properties = array(
-                'title' => TITLE,
-                'version' => defined('VERSION') ? VERSION : VERSION_NOT_SET,
+                'title' => Context::getTitle(),
+                'version' => defined('VERSION') ? Context::getVersion() : VERSION_NOT_SET,
                 'user' => $user === false ? T_('System') : $user->name
             );
         }
@@ -174,8 +172,8 @@ class Compiler {
 
             $content = $this->parser->text($content);
 
-            $title = isset_get($config,'title',TITLE);
-            $layout = isset_get($config,'layout','default') . '.twig';
+            $title = isset_get($config, 'title', Context::getTitle());
+            $layout = isset_get($config, 'layout', 'default') . '.twig';
 
             try {
 

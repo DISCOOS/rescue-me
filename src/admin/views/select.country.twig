@@ -1,0 +1,5 @@
+<select id="{{id}}" name="{{id}}" type="select" class="input-block-level" {{ attributes|default('required') }}>
+{% for code,name in countries %}
+	<option value="{{code}}" {% if selected == code %}selected="selected"{% endif %}>{{name}}</option>
+{% endfor %}
+</select>

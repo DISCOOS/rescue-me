@@ -81,7 +81,7 @@
         $group['value'][] = array(
             'id' => 'role',
             'type' => 'select',
-            'value' => insert_options(\RescueMe\Roles::getAll(), $value, false),
+            'value' => insert_options(\RescueMe\Roles::getOptions(), $value, false),
             'label' => T_('Role'),
             'attributes' => 'required',
             'class' => 'span4'

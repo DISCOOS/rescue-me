@@ -45,6 +45,18 @@
     }
 
     /**
+     * Get sentences as single string
+     *
+     * @param $elements
+     * @param string $delimiter
+     * @param string $ending
+     * @return string
+     */
+    function sentences($elements, $delimiter = '. ', $ending = '.') {
+        return implode($delimiter, $elements).$ending;
+    }
+
+    /**
      * Set current system domain and locale
      * 
      * @param string $domain Message domain
@@ -54,14 +66,14 @@
      */
     function set_system_locale($domain = DOMAIN_COMMON, $locale = DEFAULT_LOCALE) {
 
-        if(isset($_SESSION)) {
-            $previous = array(
-                isset_get($_SESSION, 'domain', DOMAIN_COMMON),
-                isset_get($_SESSION, 'locale', DEFAULT_LOCALE)
-            );
-        } else {
-            $previous = array(DOMAIN_COMMON,DEFAULT_LOCALE);
-        }
+//        if(isset($_SESSION)) {
+//            $previous = array(
+//                isset_get($_SESSION, 'domain', DOMAIN_COMMON),
+//                isset_get($_SESSION, 'locale', DEFAULT_LOCALE)
+//            );
+//        } else {
+//            $previous = array(DOMAIN_COMMON,DEFAULT_LOCALE);
+//        }
 
         $constant = 'APP_PATH_DOMAIN_'.strtoupper($domain);
 
@@ -78,8 +90,10 @@
             // Set given domain
             set_domain($domain, $encoding, $path);
 
-            $_SESSION['domain'] = $domain;
-            $_SESSION['locale'] = $locale;
+//            $_SESSION['domain'] = $domain;
+//            $_SESSION['locale'] = $locale;
+
+            $previous = false;
 
         } else {
             $previous = false;

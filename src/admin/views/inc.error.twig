@@ -13,7 +13,7 @@ OR
 		{% if message.header is defined %}
 			{{message.header}}
 		{% else %}
-			{% trans "An error occurred" %}
+			{{ T_('An error occurred') }}
 		{% endif %}
 	</strong><br />
 	{% if message.body is defined %}

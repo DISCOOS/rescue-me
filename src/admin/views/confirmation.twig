@@ -1,0 +1,14 @@
+{% extends 'base.twig' %}
+
+{% block title %}{{ title|default(T_('Confirmation')) }} ({{title}}){% endblock %}
+
+{% block content %}
+    <div class="form-header">
+        <h3>{{ title|default(T_('Confirmation')) }}</h3>
+    </div>
+    <div class="form-body">
+        {{ message }}</div>
+    <div class="form-footer">
+        <a class="btn btn-primary" href="{{ path(action) }}">{{ label|default(T_('OK')) }}</a>
+    </div>
+{% endblock %}

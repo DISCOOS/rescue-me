@@ -1,0 +1,7 @@
+{% if alerts is defined %}
+<div class="row-fluid">
+    {% for message, class in alerts %}
+        {% embed 'alert.twig' with {'class' : class, 'message' : message} %}{% endembed %}
+    {% endfor %}
+</div>
+{% endif %}
