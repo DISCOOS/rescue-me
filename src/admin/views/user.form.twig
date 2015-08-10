@@ -1,6 +1,6 @@
 {% extends 'form.twig' %}
 
-{% if object is not defined %}
+{% if not object %}
     {% set object = {'name': '', 'mobile_country': country, 'mobile': '', 'email': '', 'role_id': 2} %}
 {% endif %}
 

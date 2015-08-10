@@ -173,9 +173,14 @@ abstract class AbstractController extends CallableResolver {
             $this->assertAccess($app, $this->object->getMode(), $object, $user);
         }
 
-        // Anonymous user?
+        // Anonymous user or unresolvable object?
         if(is_string($user)) {
             $user = false;
+        }
+
+        // Unresolvable object?
+        if($object instanceof Accessible) {
+            $object = false;
         }
 
         // Add resolved object to default context
@@ -189,8 +194,13 @@ abstract class AbstractController extends CallableResolver {
             $context = call_user_func_array($context, $arguments);
         }
 
+        // Unresolvable object?
+        if($object instanceof Accessible) {
+            $default['object'] = false;
+        }
+
         // Merge context with default context
-        $context = array_merge((array)$context, $default);
+        $context = array_merge($default, (array)$context);
 
         return array($user, $object, $context);
 

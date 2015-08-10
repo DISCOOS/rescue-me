@@ -82,7 +82,7 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      * @param boolean|object|callable Accessible object resolver
      * @return Accessible
      */
-    protected function read($app, $name, $class, $object) {
+    protected function read($app, $name, $class, $object = false) {
         $read = Accessible::read($name, $class, $object);
         AccessServiceProvider::get($app)->register($read);
         return $read;
@@ -107,7 +107,7 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
      * @param boolean|object|callable $object Accessible object resolver
      * @return Accessible
      */
-    protected function write($app, $name, $class, $object) {
+    protected function write($app, $name, $class, $object = false) {
         $write = Accessible::write($name, $class, $object);
         AccessServiceProvider::get($app)->register($write);
         return $write;

@@ -61,7 +61,7 @@ class UserControllerProvider extends AbstractControllerProvider {
         // Resolve user callback
         $object = array('RescueMe\\User','get');
 
-        // Register write access to any user
+        // Register write access for any user
         $write = $this->writeAny($app);
 
         // Handle write request
@@ -73,12 +73,15 @@ class UserControllerProvider extends AbstractControllerProvider {
             });
         $this->post($controllers, 'request', array($this, 'request'), $write);
 
-        // Set write access to resolvable users
-        $write = $this->write($app, 'user', 'RescueMe\\User', $object);
+        // Register write access for authenticated users
+        $write = $this->write($app, 'user', 'RescueMe\\User');
 
         // Handle new user from authenticated user
         $this->page($controllers, 'new', $write, array($this, 'getEditContext'));
         $this->post($controllers, 'new', array($this, 'insert'), $write);
+
+        // Set write access to resolvable users
+        $write = $write->with($object);
 
         // Handle edit user
         $this->page($controllers, 'edit', $write, array($this, 'getEditContext'));
@@ -258,7 +261,7 @@ class UserControllerProvider extends AbstractControllerProvider {
         return array(
             'roles' => Roles::getOptions(),
             'countries' => Locale::getCountryNames(),
-            'other' => $object === $this || $user->id !== $object->id
+            'other' => !$object || $user->id !== $object->id
         );
     }
 
@@ -271,7 +274,7 @@ class UserControllerProvider extends AbstractControllerProvider {
     public function getListContext(Request $request) {
         return array(
             'tabs' => User::getStates(),
-            'columns' => $this->getColumnsContext(true),
+            'columns' => $this->getColumnsContext(),
             'ajax_url' => $request->getUriForPath('/user/list/tab')
         );
     }
@@ -289,15 +292,14 @@ class UserControllerProvider extends AbstractControllerProvider {
 
     /**
      * Get columns context
-     * @param bool $header
      * @return array
      */
-    public function getColumnsContext($header=false) {
+    public function getColumnsContext() {
         return array(
-            array('name' => 'name', 'title' => T_("Name"), 'class' => $header ? '' : ''),
-            array('name' => 'role', 'title' => T_("Role"), 'class' => $header ? '' : ''),
-            array('name' => 'mobile', 'title' => T_("Mobile"), 'class' => $header ? '' : ''),
-            array('name' => 'email', 'title' => T_("E-mail"), 'class' => ($header ? '' : '') . 'hidden-phone')
+            array('name' => 'name', 'title' => T_("Name")),
+            array('name' => 'role', 'title' => T_("Role")),
+            array('name' => 'mobile', 'title' => T_("Mobile"), 'class' => 'hidden-phone'),
+            array('name' => 'email', 'title' => T_("E-mail"), 'class' => 'hidden-phone')
         );
     }
 
