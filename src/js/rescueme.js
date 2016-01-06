@@ -21,6 +21,21 @@ R.toQuery = function(url) {
     return query;
 };
 
+/**
+ * Change URL hash without page jump
+ * @param id Hash id
+ */
+R.hash = function(id) {
+    if(history.pushState){
+        history.pushState(null,null,'#'+id);
+    }else{
+        var el = $(id);
+        el.removeAttr('id');
+        location.hash = id;
+        el.attr('id',id);
+    }
+};
+
 R.cookie = {};
 R.cookie.get = function(name, use) {
     
