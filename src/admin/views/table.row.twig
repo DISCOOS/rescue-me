@@ -1,5 +1,5 @@
 {% if rows is empty %}
-<tr><td class="" style="width: 100%" colspan="{{ columns|length + 1 }}">{{ no_data|default(T_('No rows found')) }}</td>
+<tr><td class="" style="width: 100%" colspan="{{ columns|length + 1 }}">{{ default|default(T_('No rows found')) }}</td>
 {% else %}
     {% for id,row in rows %}
 <tr id="{{ id }}" {% if row.target is defined %}data-target="{{ row.target }}"{% endif %}>
@@ -9,12 +9,6 @@
     <td class="{{ column.class|default('') }} editor">
         {% if row.editor is defined %}
             <div class="btn-group pull-right">
-                <a class="btn btn-small" href="{{ path('user/edit/id', {'id' : id}) }}">
-                    <b class="icon icon-edit"></b>{{ T_('Edit') }}
-                </a>
-                <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                </a>
                 {{ row.editor | raw }}
             </div>
         {% endif %}

@@ -9,4 +9,4 @@
 {% endfor %}
 </div>
 {# Initialize tabs on document load #}
-<script>R.tabs('tabs'{% if ajax_url is defined %},'{{ ajax_url }}'{% endif %});</script>
+<script>R.tabs('tabs'{% if xhr is defined %},'{{ xhr }}'{% endif %});</script>

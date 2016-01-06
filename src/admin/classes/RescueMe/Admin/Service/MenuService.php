@@ -82,9 +82,9 @@ class MenuService extends CallableResolver {
         /** @var MenuInterface $menu */
         if ($menu = $this->menus[$name]) {
 
-            $context = array_merge($app['context'], $context);
+            $context = $menu->getContext($app, $request, $context);
 
-            $context[self::MENU] = $menu->getContext($app, $request, $app['context']);
+            $context = array_merge($app['context'], array(self::MENU => $context));
 
             $menu = $this->template->render($app, $menu->getTemplate(), $context);
         }

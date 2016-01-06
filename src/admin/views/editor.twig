@@ -1,9 +1,11 @@
 <div class="btn-group pull-right">
-    <a class="btn btn-small" href="{{ {{ path(href, {'id' : id }) }} }}">
-        <b class="icon icon-edit"></b>{{ label }}
+    <a id="{{menu.id}}-editor" class="btn btn-small" href="{{ path(menu.href, {'id' : menu.id }) }}">
+        <b class="icon icon-edit"></b>{{ menu.label }}
     </a>
-    <a class="btn btn-small dropdown-toggle no-wrap" data-toggle="dropdown">
+    <a id="{{menu.id}}-menu" class="btn btn-small dropdown-toggle no-wrap" data-toggle="dropdown">
         <span class="caret"></span>
     </a>
-    {%  include 'menu.items.twig' with {'id': id ~ '-editor'} %}
+    <ul class="dropdown-menu" role="menu" aria-labelledby="{{id}}-menu">
+        {%  include 'menu.items.twig' with {'items' : menu.items} %}
+    </ul>
 </div>

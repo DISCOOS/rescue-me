@@ -41,7 +41,7 @@ class UserProvider implements UserProviderInterface {
      * @throws UsernameNotFoundException if the user is not found
      */
     public function loadUserByUsername($username) {
-        $user = User::newInstance(sprintf(self::FILTER,$username));
+        $user = User::select(sprintf(self::FILTER,$username));
         if($user === FALSE) {
             throw new UsernameNotFoundException(sprintf(T_('User "%s" does not exist'), $username));
         }

@@ -279,7 +279,7 @@ class UserControllerProvider extends AbstractControllerProvider {
         return array(
             'tabs' => User::getStates(),
             'columns' => $this->getColumnsContext(),
-            'ajax_url' => $request->getUriForPath('/user/list/tab')
+            'xhr' => $request->getUriForPath('/user/list/tab')
         );
     }
 
@@ -289,7 +289,7 @@ class UserControllerProvider extends AbstractControllerProvider {
      */
     public function getTabContext() {
         return array(
-            'no_data' => T_('No users found')
+            'default' => T_('No users found')
         );
     }
 
@@ -329,11 +329,11 @@ class UserControllerProvider extends AbstractControllerProvider {
             $all = $this->isGranted($app, self::WRITE, $write, $user);
             foreach($users as $id => $row) {
                 $row['id'] = $id;
-                $row['role'] = $roles[$row['role_id']];
-                $row['target'] = 'user';
+//                $row['role'] = $roles[$row['role_id']];
+//                $row['target'] = 'user';
                 // Allowed to write to given user?
                 if($all || $this->isGranted($app, self::WRITE, $write->with($row), $user)) {
-                    $row['editor'] = $this->getEditorMenu($app, $request, $id, $user, $row);
+                    $row['editor'] = $this->getEditorMenu($app, $request, User::newInstance($row));
                 }
                 $users[$id] = $row;
             }
@@ -346,15 +346,12 @@ class UserControllerProvider extends AbstractControllerProvider {
      * Get editor menu for given user
      * @param Application $app Silex application
      * @param Request $request Request instance
-     * @param User $user Authenticated user
-     * @param array|User $object Resolved user
+     * @param User $object Resolved object
      * @return array
      */
-    public function getEditorMenu(Application $app, Request $request, User $user, $object) {
-
-        return MenuServiceProvider::get($app)->render(
-                EditorMenu::NAME, $app, $request, $user, $object
-            );
+    public function getEditorMenu(Application $app, Request $request, User $object) {
+        $context = array('object' => $object);
+        return MenuServiceProvider::get($app)->render($app, $request, EditorMenu::NAME, $context);
     }
 
 }

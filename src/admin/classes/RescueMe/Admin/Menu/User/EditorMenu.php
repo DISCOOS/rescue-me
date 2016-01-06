@@ -11,7 +11,6 @@
 
 namespace RescueMe\Admin\Menu\User;
 
-use RescueMe\Admin\Provider\UserControllerProvider;
 use RescueMe\User;
 use RescueMe\Menu\AbstractMenu;
 
@@ -41,7 +40,9 @@ class EditorMenu extends AbstractMenu {
         $pending = array($this, 'isPending');
         $notUser = array($this, 'isNotSessionUser');
 
-        $this->newMenu(T_('Edit'))->setHref('user/edit/id');
+        $this->newMenu(T_('Edit'))
+            ->setHref('user/edit/id')
+            ->setAdapter($adapter);
 
         $this->newAction(T_('Approve'), 'user/edit/id')
             ->setSelector($pending)
@@ -117,14 +118,19 @@ class EditorMenu extends AbstractMenu {
     /**
      * Build item
      * @param array $item Item definition
-     * @param array|User $object Menu target user
+     * @param array|User $user Authenticated user
+     * @param array|User $object Resolved user
      * @return array
      */
-    public function adapt($item, $object) {
+    public function adapt($item, $user, $object) {
         if(isset($item['confirm'])) {
             $item['confirm'] = sprintf($item['confirm'],(is_object($object) ? $object->name : $object['name']));
         }
-        $item[self::ID] = $object[self::ID];
+        if('user/edit/id' === $item[self::HREF]) {
+            $item[self::ID] = $user->id;
+        } else {
+            $item[self::ID] = $object[self::ID];
+        }
         return $item;
     }
 
