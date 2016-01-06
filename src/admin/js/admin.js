@@ -358,7 +358,7 @@ R.toTab = function(tabs) {
         hash = url.substr(index + 1);
         tab = '[href="#'+hash+'"]';
     }
-    location.hash = hash;
+    R.hash(hash);
     $('#'+tabs+' a'+tab).click();
 };
 
@@ -376,7 +376,7 @@ R.tabs = function(tabs) {
                 href = href.substr(0,index);
             }
 
-            location.hash = id;
+            R.hash(id);
             var target = '#'+id;
             var data = { name: id };
             var list = $(target).find('.pagination'); 
