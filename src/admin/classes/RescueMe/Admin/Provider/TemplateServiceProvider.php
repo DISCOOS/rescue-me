@@ -12,6 +12,7 @@
 namespace RescueMe\Admin\Provider;
 
 
+use RescueMe\Admin\Context;
 use RescueMe\Admin\Service\TemplateService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -36,7 +37,7 @@ class TemplateServiceProvider implements ServiceProviderInterface {
     public function register(Application $app) {
         // Service is shared to minimize footprint
         $app[self::NAME] = $app->share(function () {
-            return new TemplateService();
+            return new TemplateService(get_path(Context::getAppPath(), 'gui', true));
         });
     }
 

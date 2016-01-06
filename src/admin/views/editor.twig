@@ -1,0 +1,9 @@
+<div class="btn-group pull-right">
+    <a class="btn btn-small" href="{{ {{ path(href, {'id' : id }) }} }}">
+        <b class="icon icon-edit"></b>{{ label }}
+    </a>
+    <a class="btn btn-small dropdown-toggle no-wrap" data-toggle="dropdown">
+        <span class="caret"></span>
+    </a>
+    {%  include 'menu.items.twig' with {'id': id ~ '-editor'} %}
+</div>

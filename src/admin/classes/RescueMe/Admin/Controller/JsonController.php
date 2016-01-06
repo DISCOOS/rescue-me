@@ -62,13 +62,10 @@ class JsonController extends AbstractController {
      * @param Application $app Silex application.
      * @param Request $request Request object.
      * @param array $arguments Arguments passed to callable.
-     * @param boolean|User $user Authenticated user.
-     * @param boolean|object $object Resolved object.
-     * @param boolean|array|callable $context Request context.
      * @throws \LogicException If response from callable is not an array
      * @return mixed
      */
-    protected function forward(Application $app, Request $request, array $arguments, $user, $object, $context)
+    protected function forward(Application $app, Request $request, array $arguments)
     {
         $response = call_user_func_array($this->to, $arguments);
         if(is_string($response)) {

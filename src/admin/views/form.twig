@@ -1,11 +1,11 @@
 {% if form is not defined %}
-    {% set form = { 'class' : 'form well', 'action' : route} %}
+    {% set form = { 'class' : 'form well', 'action' : route.name} %}
 {% endif %}
 {% if form.class is not defined %}
     {% set form = form|merge({'class' : 'form well'}) %}
 {% endif %}
 {% if form.action is not defined %}
-    {% set form = form|merge({'action' : route}) %}
+    {% set form = form|merge({'action' : route.name}) %}
 {% endif %}
 
 <form id="form" class="{{ form.class }}" action="{{ path(form.action, {'id' : id}) }}" method="post">

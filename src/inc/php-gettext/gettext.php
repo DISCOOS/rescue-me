@@ -255,7 +255,9 @@ class gettext_reader {
 
     if ($this->enable_cache) {
       // Caching enabled, get translated string from cache
-      if (array_key_exists($string, $this->cache_translations))
+      // if (array_key_exists($string, $this->cache_translations))
+      // ---v Performance increase
+      if (isset($this->cache_translations[$string]))
         return $this->cache_translations[$string];
       else
         return $string;
@@ -388,7 +390,9 @@ class gettext_reader {
 
 
     if ($this->enable_cache) {
-      if (! array_key_exists($key, $this->cache_translations)) {
+      //if (! array_key_exists($key, $this->cache_translations)) {
+      // ---v Performance increase
+      if (! isset($this->cache_translations[$key])) {
         return ($number != 1) ? $plural : $single;
       } else {
         $result = $this->cache_translations[$key];

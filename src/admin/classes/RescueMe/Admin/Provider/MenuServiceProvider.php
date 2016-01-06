@@ -35,10 +35,11 @@ class MenuServiceProvider implements ServiceProviderInterface {
      * It should not get services.
      */
     public function register(Application $app) {
-        // New service is created every time
-        $app[self::NAME] = function ($app) {
+
+        // Create shared menu service
+        $app[self::NAME] = $app->share(function ($app) {
                 return new MenuService($app[TemplateServiceProvider::NAME]);
-            };
+            });
     }
 
     /**
@@ -53,11 +54,11 @@ class MenuServiceProvider implements ServiceProviderInterface {
     }
 
     /**
-     * Create new menu service instance
+     * Create get menu service instance
      * @param Application $app Silex application instance
      * @return \RescueMe\Admin\Service\MenuService
      */
-    public static function newInstance($app) {
+    public static function get($app) {
         return $app[self::NAME];
     }
 

@@ -15,7 +15,7 @@
                 <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                 </a>
-                {% embed 'menu.twig' with { 'items' : row.editor }%}{% endembed %}
+                {{ row.editor | raw }}
             </div>
         {% endif %}
     </td>

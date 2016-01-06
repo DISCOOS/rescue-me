@@ -365,6 +365,7 @@
          * @return boolean
          */
         public static function accept($country, $language = false) {
+
             $accept = ($info = self::getCountryInfo($country)) !== false;
             
             if($accept) {
@@ -482,12 +483,14 @@
         {
             $locale = self::getCurrentLocale();
             if(isset(self::$countries) === false || $locale !== self::$current) {
-                
+
+                // Load locales domain
                 list($domain) = set_system_locale(DOMAIN_LOCALES, $locale);
-                
+
                 self::$countries =
-                    require implode(DIRECTORY_SEPARATOR,array(APP_PATH_DOMAIN_LOCALES, 'locales.domain.php'));
-                
+                    require get_path(APP_PATH_DOMAIN_LOCALES, array('locales.domain.php'));
+
+                // Reload previous domain
                 set_system_locale($domain, $locale);
                 
                 self::$current = $locale;

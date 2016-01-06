@@ -12,9 +12,9 @@
 namespace RescueMe\Admin\Controller;
 
 use RescueMe\Admin\Provider\AbstractControllerProvider;
-use RescueMe\Admin\Provider\TemplateServiceProvider;
+use RescueMe\Admin\Provider\PageServiceProvider;
 use RescueMe\Admin\Security\Accessible;
-use RescueMe\User;
+use RescueMe\Admin\Service\PageService;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -48,26 +48,22 @@ class PageController extends AbstractController {
      * GET request handler
      * @param Application $app Silex application.
      * @param Request $request Request object.
-     * @param boolean|mixed $id Request id.
-     * @param boolean|User $user Authenticated user.
-     * @param boolean|object $object Resolved object.
-     * @param boolean|array|callable $context Request context.
      * @return mixed
      */
-    protected function handle(Application $app, Request $request, $id, $user, $object, $context)
+    protected function handle(Application $app, Request $request)
     {
-        $name = $this->provider->getRouteName($this->pattern);
+        $context = $app['context'];
 
         // Get template from route path without id variable
-        $template = str_replace('/', '.', rtrim($name,'/id')) . '.twig';
+        $template = str_replace('/', '.', rtrim($context['route']['name'],'/id')) . '.twig';
 
         // Check for alerts
         $contents = $request->getContent();
         if(is_array($contents) && $alert = isset_get($contents, 'alert', false)) {
-            $context['alerts'] = (array)$alert;
+            $context[PageService::ALERTS] = (array)$alert;
         }
 
-        return TemplateServiceProvider::get($app)->page($app, $template, $id, $object, $user, $context);
+        return PageServiceProvider::get($app)->page($app, $request, $template, $context);
 
     }
 

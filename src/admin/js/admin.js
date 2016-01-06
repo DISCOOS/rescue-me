@@ -1,9 +1,12 @@
 // Initialize i18n support (async)
-i18n.init({
-    getAsync: false,
-    useLocalStorage: false,
-    resGetPath: R.admin.url+'locale/translate.json.php'
-});
+if (i18n != undefined) {
+    i18n.init({
+        getAsync: true,
+        load: 'current',
+        dynamicLoad: true,
+        resGetPath: R.admin.url+'locale/translate.json.php'
+    });
+}
 
 $(document).ready(function() {
     

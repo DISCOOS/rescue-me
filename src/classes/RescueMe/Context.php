@@ -14,7 +14,7 @@ namespace RescueMe;
 /**
  * Application Context definition class
  * @package RescueMe
- * @method static string getPath() Get application root path
+ * @method static string getAppPath() Get application root path
  * @method static string getDataPath() Get application data path
  * @method static string getVendorPath() Get path to libraries which application depends
  * @method static string getLocalePath() Get application locale path
@@ -33,7 +33,7 @@ class Context extends AbstractContext {
     /**
      * Path to application root
      */
-    const PATH = 'path';
+    const APP_PATH = 'app_path';
 
     /**
      * Path to application data

@@ -11,6 +11,7 @@
 
 namespace RescueMe\Admin\Provider;
 
+use RescueMe\Admin\Menu\User\EditorMenu;
 use RescueMe\Admin\Security\Accessible;
 use RescueMe\DB;
 use RescueMe\Locale;
@@ -64,7 +65,7 @@ class UserControllerProvider extends AbstractControllerProvider {
         // Register write access for any user
         $write = $this->writeAny($app);
 
-        // Handle write request
+        // Handle user access request
         $this->page($controllers, 'request', $write, array($this, 'getEditContext'))
             ->before(function(Request $request) use($app, $page) {
                 if($page->isSecure($app)) {
@@ -100,6 +101,9 @@ class UserControllerProvider extends AbstractControllerProvider {
         $rows = RowServiceProvider::newInstance($app);
         $rows->connect(array($this, 'getUsers'), array($this, 'getColumnsContext'));
         $this->json($controllers, 'list/tab', array($rows, 'paginate'), $read);
+
+        // Register user editor menu
+        MenuServiceProvider::get($app)->register(EditorMenu::NAME, new EditorMenu());
 
         return $controllers;
     }
@@ -220,15 +224,15 @@ class UserControllerProvider extends AbstractControllerProvider {
     }
 
 
-
     /**
      * Get context for routes '/'
      * @param Application $app Silex application
+     * @param Request $request Request instance
      * @param User $user Authenticated user
      * @param User $object Selected user
      * @return array
      */
-    public function getUserContext(Application $app, User $user, $object) {
+    public function getUserContext(Application $app, Request $request, User $user, $object) {
 
         // TODO: Add to statistics package
         $traces = array();
@@ -244,7 +248,7 @@ class UserControllerProvider extends AbstractControllerProvider {
 
         // Allowed to write to user context?
         if($this->isGranted($app, self::WRITE, $object, $user)) {
-            $context['editor'] = $this->getEditorMenu($user, $object);
+            $context['editor'] = $this->getEditorMenu($app, $request, $user, $object);
         }
         return $context;
     }
@@ -296,16 +300,17 @@ class UserControllerProvider extends AbstractControllerProvider {
      */
     public function getColumnsContext() {
         return array(
-            array('name' => 'name', 'title' => T_("Name")),
-            array('name' => 'role', 'title' => T_("Role")),
-            array('name' => 'mobile', 'title' => T_("Mobile"), 'class' => 'hidden-phone'),
-            array('name' => 'email', 'title' => T_("E-mail"), 'class' => 'hidden-phone')
+            array('name' => 'name', 'title' => T_('Name')),
+            array('name' => 'role', 'title' => T_('Role')),
+            array('name' => 'mobile', 'title' => T_('Mobile'), 'class' => 'hidden-phone'),
+            array('name' => 'email', 'title' => T_('E-mail'), 'class' => 'hidden-phone')
         );
     }
 
     /**
      * Get users from given query
      * @param Application $app Silex application
+     * @param Request $request Request instance
      * @param User $user Authenticated user
      * @param string $name Tab name
      * @param string $filter Row filter
@@ -314,7 +319,7 @@ class UserControllerProvider extends AbstractControllerProvider {
      * @internal param string $page Row page
      * @return array
      */
-    public function getUsers(Application $app, User $user, $name, $filter, $start, $max) {
+    public function getUsers(Application $app, Request $request, User $user, $name, $filter, $start, $max) {
         $filter = User::filter($filter, 'OR');
         if($users = User::count($name, $filter)) {
             $users = User::getRows($name, $filter, $start, $max);
@@ -328,7 +333,7 @@ class UserControllerProvider extends AbstractControllerProvider {
                 $row['target'] = 'user';
                 // Allowed to write to given user?
                 if($all || $this->isGranted($app, self::WRITE, $write->with($row), $user)) {
-                    $row['editor'] = $this->getEditorMenu($user, $row);
+                    $row['editor'] = $this->getEditorMenu($app, $request, $id, $user, $row);
                 }
                 $users[$id] = $row;
             }
@@ -339,83 +344,17 @@ class UserControllerProvider extends AbstractControllerProvider {
 
     /**
      * Get editor menu for given user
+     * @param Application $app Silex application
+     * @param Request $request Request instance
      * @param User $user Authenticated user
-     * @param array|User $object Target user
+     * @param array|User $object Resolved user
      * @return array
      */
-    public function getEditorMenu($user, $object) {
-        $items = array();
-        $object = (array)$object;
-        $other = $user->id !== $object['id'];
+    public function getEditorMenu(Application $app, Request $request, User $user, $object) {
 
-        if($other) {
-            switch($object['state']) {
-                case User::PENDING:
-                    $items[] = $this->createAction(
-                        $object['id'], T_('Approve'), 'user/edit/id'
-                    );
-                    $items[] = $this->createAction(
-                        $object['id'], T_('Reject'), 'user/edit/id'
-                    );
-                    break;
-
-                case User::DISABLED:
-                    $items[] = $this->createConfirmAction(
-                        $object['id'],
-                        T_('Enable'),
-                        'user/edit/id',
-                        sprintf(T_('Do you want to enable %1$s?'), $object['name'])
-                    );
-                    break;
-                default:
-                    $items[] = $this->createConfirmAction(
-                        $object['id'],
-                        T_('Disable'),
-                        'user/edit/id',
-                        sprintf(T_('Do you want to disable %1$s?'), $object['name'])
-                    );
-                    break;
-            }
-            $items[] = array('divider' => true);
-        }
-        $items[] = $this->createAction(
-            $object['id'], T_('Change password'), 'user/edit/id'
-        );
-        $items[] = $this->createAction(
-            $object['id'], T_('Reset password'), 'user/edit/id'
-        );
-        $items[] = array('divider' => true);
-        $items[] = $this->createAction(
-            $object['id'], T_('Setup'), 'user/edit/id', 'icon-wrench'
-        );
-        if($other) {
-            $items[] = array('divider' => true);
-            $items[] = $this->createConfirmAction(
-                $object['id'],
-                T_('Delete'),
-                'user/edit/id',
-                sprintf(T_('Do you want to delete %1$s?'), $object['name']),
-                'icon-trash'
+        return MenuServiceProvider::get($app)->render(
+                EditorMenu::NAME, $app, $request, $user, $object
             );
-        }
-
-        return $items;
-    }
-
-    private function createConfirmAction($id, $title, $href, $content, $icon = false) {
-        $item = $this->createAction($id, $title, $href, $icon);
-        $item['confirm'] = $content;
-        return $item;
-
-    }
-
-    private function createAction($id, $title, $href, $icon = false) {
-        return array(
-            'id' => $id,
-            'title' => $title,
-            'href' => $href,
-            'icon' => $icon
-        );
     }
 
 }

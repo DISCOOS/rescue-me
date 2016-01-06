@@ -13,6 +13,7 @@ namespace RescueMe\Admin\Controller;
 
 use LogicException;
 use ReflectionMethod;
+use RescueMe\Admin\Context;
 use RescueMe\Admin\Core\CallableResolver;
 use RescueMe\Admin\Provider\AbstractControllerProvider;
 use RescueMe\Admin\Security\Accessible;
@@ -45,7 +46,7 @@ abstract class AbstractController extends CallableResolver {
      * Accessible object
      * @var Accessible $object
      */
-    protected $object;
+    protected $accessible;
 
     /**
      * @var mixed
@@ -77,20 +78,20 @@ abstract class AbstractController extends CallableResolver {
      * @param string $accept Accept request method
      * @param string $pattern Route pattern to controller.
      * @param boolean|callable $to Callback that returns the response when matched.
-     * @param Accessible $object Accessible object.
+     * @param Accessible $accessible Accessible object.
      * @param boolean|array|callable $context Request context.
      */
-    function __construct($provider, $accept, $pattern, $to, $object, $context = false)
+    function __construct($provider, $accept, $pattern, $to, $accessible, $context = false)
     {
         $this->pattern = $pattern;
         $this->provider = $provider;
         $this->to = $to;
-        $this->object = $object;
+        $this->accessible = $accessible;
         $this->context = $context;
 
         // Perform reflection only once
         $this->methods['to'] = $this->getMethod($to);
-        $this->methods['object'] = $this->getMethod($object->getResolver());
+        $this->methods['object'] = $this->getMethod($accessible->getResolver());
         $this->methods['context'] = $this->getMethod($context);
     }
 
@@ -143,24 +144,36 @@ abstract class AbstractController extends CallableResolver {
     }
 
     /**
-     * Resolve user, object and context and assert access rights
+     * Assert access granted to authenticated user and resolve application context from current request
      *
      * @param Application $app Silex application
      * @param Request $request Request object
      * @param mixed $id Object id
      * @throws \LogicException
-     * @return array array($user, $object, $context)
+     * @return array array($user, $context)
      */
     final public function resolve(Application $app, Request $request, $id)
     {
         // Get current user
         $user =  $this->getUser($app);
 
+        // Get route access mode from accessible object
+        $mode = $this->accessible->getMode();
+
+        // Get route name from pattern
+        $name = $this->provider->getRouteName($this->pattern);
+
         // Initialize default context
-        $default = array('id' => $id, 'path' => $this->pattern, 'access' => $this->object->getMode());
+        $default = array(
+            Context::ID => $id,
+            Context::ROUTE_PATTERN => $this->pattern,
+            Context::ROUTE_ACCESS => $mode,
+            Context::ROUTE_NAME => $name,
+            Context::ACCESSIBLE => $this->accessible
+        );
 
         // Use accessible object as resolved object
-        $object = $this->object;
+        $object = $this->accessible;
 
         // Lazy object creation?
         if ($this->methods['object']) {
@@ -170,10 +183,10 @@ abstract class AbstractController extends CallableResolver {
 
         // Only check access permissions for authenticated users (anonymous users are not allowed)
         if($user) {
-            $this->assertAccess($app, $this->object->getMode(), $object, $user);
+            $this->assertAccess($app, $this->accessible->getMode(), $object, $user);
         }
 
-        // Anonymous user or unresolvable object?
+        // Anonymous user?
         if(is_string($user)) {
             $user = false;
         }
@@ -184,7 +197,7 @@ abstract class AbstractController extends CallableResolver {
         }
 
         // Add resolved object to default context
-        $default['object'] = $object;
+        $default[Context::OBJECT] = $object;
 
         $context = $this->context;
 
@@ -194,15 +207,21 @@ abstract class AbstractController extends CallableResolver {
             $context = call_user_func_array($context, $arguments);
         }
 
-        // Unresolvable object?
-        if($object instanceof Accessible) {
-            $default['object'] = false;
-        }
-
-        // Merge context with default context
+        // Merge default context with resolved context
         $context = array_merge($default, (array)$context);
 
-        return array($user, $object, $context);
+        // Ensure context contains required values
+        $context = array_merge($context, array(
+                Context::ID => $id,
+                Context::USER => $user,
+                Context::OBJECT => $object,
+                Context::ACCESSIBLE => $this->accessible,
+                Context::ROUTE_NAME => $name,
+                Context::ROUTE_ACCESS => $mode,
+                Context::ROUTE_PATTERN => $this->pattern,
+            ));
+
+        return array($user, $context);
 
     }
 
@@ -228,27 +247,24 @@ abstract class AbstractController extends CallableResolver {
 
         $this->assertRequest($request);
 
-        $id = $request->attributes->getInt('id', false);
+        $id = $request->attributes->getInt(Context::ID, false);
 
-        // Resolve authenticated user, accessible object and request context
-        list($user, $object, $context) = $this->resolve($app, $request, $id);
+        // Assert access granted to authenticated user and resolve application context from current request
+        list($user, $context) = $this->resolve($app, $request, $id);
 
-        // Ensure context contains required data (resolved values precedence over values in context)
-        $context = array_merge($context, array(
-                'id' => $id,
-                'user' => $user,
-                'object' => $object,
-                'route' => $this->provider->getRouteName($this->pattern)
-            ));
+        // Update admin context
+        Context::extend($context);
+
+        $app['context'] = Context::toArray(true);
 
         // Forward to callable?
         if($this->methods['to']) {
             $arguments = $this->getArguments($this->methods['to'], $app, $request, $user, $context);
-            return $this->forward($app, $request, $arguments, $user, $object, $context);
+            return $this->forward($app, $request, $arguments);
         }
 
         // Forward to implemented handle
-        return $this->handle($app, $request, $id, $user, $object, $context);
+        return $this->handle($app, $request);
 
     }
 
@@ -257,28 +273,21 @@ abstract class AbstractController extends CallableResolver {
      * @param Application $app Silex application.
      * @param Request $request Request object.
      * @param array $arguments Arguments passed to callable.
-     * @param boolean|User $user Authenticated user.
-     * @param boolean|object $object Resolved object.
-     * @param boolean|array|callable $context Request context.
      * @throws LogicException If called but not implemented.
      * @return mixed
      */
-    protected function forward(Application $app, Request $request, array $arguments, $user, $object, $context) {
+    protected function forward(Application $app, Request $request, array $arguments) {
         throw new LogicException('Not implemented, "$to" is callable.');
     }
 
     /**
-     * Handle request implementation
+     * Handle request implementation.
      * @param Application $app Silex application.
      * @param Request $request Request object.
-     * @param boolean|mixed $id Request id.
-     * @param boolean|User $user Authenticated user.
-     * @param boolean|object $object Resolved object.
-     * @param boolean|array|callable $context Request context.
      * @throws LogicException If called but not implemented.
      * @return mixed
      */
-    protected function handle(Application $app, Request $request, $id, $user, $object, $context) {
+    protected function handle(Application $app, Request $request) {
         throw new LogicException('Not implemented, "$to" is not callable.');
     }
 

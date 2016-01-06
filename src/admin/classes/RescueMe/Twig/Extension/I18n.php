@@ -9,9 +9,10 @@
  * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
  */
 
-namespace RescueMe\Admin\Core;
+namespace RescueMe\Twig\Extension;
 
 
+use Twig_Extension;
 use Twig_SimpleFilter;
 use Twig_SimpleFunction;
 

@@ -126,7 +126,13 @@ class RowService extends CallableResolver {
         // Finished
         return array(
             'html' => $this->service->render($app, 'table.row.twig', $context),
-            'options' => create_paginator(1, $pages, $user->id)
+            'options' => array(
+                'size' => 'normal',
+                'alignment' => 'center',
+                'currentPage'=> $page,
+                'totalPages' => $pages,
+                'filter' => $context['filter']
+            )
         );
 
     }

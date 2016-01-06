@@ -1,1 +1,6 @@
-<ul class="dropdown-menu">{% for item in items %}{% embed 'menu.item.twig' %}{% endembed %}{% endfor %}</ul>
+<a id="{{menu.id}}-menu" class="dropdown-toggle no-wrap" data-toggle="dropdown">
+    <span>{{ menu.label }}<b class="caret"></b></span>
+</a>
+<ul class="dropdown-menu" role="menu" aria-labelledby="{{id}}-menu">
+    {%  include 'menu.items.twig' with {'items' : menu.items} %}
+</ul>

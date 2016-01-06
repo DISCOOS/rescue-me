@@ -11,9 +11,7 @@
 
 namespace RescueMe\Admin\Provider;
 
-use RescueMe\Admin\Security\AccessVoter;
 use RescueMe\Admin\Core\LegacyPasswordEncoder;
-use RescueMe\Admin\Security\Accessible;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\Provider\SecurityServiceProvider;

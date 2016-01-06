@@ -53,6 +53,7 @@ abstract class AbstractContext {
      * Append to context
      * @param array $context
      * @param boolean $keep Keep existing context (optional, default is true)
+     * @return array Context as array
      */
     public final static function extend($context, $keep = true) {
         if($keep) {
@@ -60,6 +61,7 @@ abstract class AbstractContext {
         } else {
             self::$context = array_merge(self::$context, $context);
         }
+        return self::$context;
     }
 
     /**

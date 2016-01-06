@@ -1,32 +1,31 @@
 <?php
 /**
- * File containing: Editor service provider class
+ * File containing: Page service provider class
  *
- * @copyright Copyright 2015 {@link http://www.discoos.org DISCO OS Foundation}
+ * @copyright Copyright 2016 {@link http://www.discoos.org DISCO OS Foundation}
  *
- * @since 6. August 2015
+ * @since 2. January 2016
  *
  * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
  */
 
 namespace RescueMe\Admin\Provider;
 
-use RescueMe\Admin\Service\MenuService;
+
+use RescueMe\Admin\Service\PageService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-
 /**
- * Editor service provider class
- *
- * @package RescueMe\Admin\Controller
+ * Page service provider class
+ * @package RescueMe\Admin\Provider
  */
-class EditorServiceProvider implements ServiceProviderInterface {
+class PageServiceProvider implements ServiceProviderInterface {
 
     /**
-     * Provider name.
+     * Page provider name.
      */
-    const NAME = 'editor_provider';
+    const NAME = 'page_provider';
 
     /**
      * Registers services on the given app.
@@ -35,10 +34,10 @@ class EditorServiceProvider implements ServiceProviderInterface {
      * It should not get services.
      */
     public function register(Application $app) {
-        // Create shared menu service
-        $app[self::NAME] = $app->share(function ($app) {
-                return new MenuService($app[TemplateServiceProvider::NAME], 'editor.twig');
-            });
+        // Service is shared to minimize footprint
+        $app[self::NAME] = $app->share(function () use($app) {
+            return new PageService($app[TemplateServiceProvider::NAME]);
+        });
     }
 
     /**
@@ -53,12 +52,11 @@ class EditorServiceProvider implements ServiceProviderInterface {
     }
 
     /**
-     * Get editor service instance
+     * Get shared template service instance
      * @param Application $app Silex application instance
-     * @return \RescueMe\Admin\Service\MenuService
+     * @return \RescueMe\Admin\Service\PageService
      */
     public static function get($app) {
         return $app[self::NAME];
     }
-
 }

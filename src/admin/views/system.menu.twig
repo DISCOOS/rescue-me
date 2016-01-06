@@ -1,0 +1,9 @@
+<li class="dropdown">
+    <a id="system-menu" class="dropdown-toggle no-wrap" data-toggle="dropdown">
+        <span class="hidden-phone">{{ user.name }}<b class="caret"></b></span>
+        <span class="visible-phone">{{ T_('System') }}<b class="caret"></b></span>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="system-menu">
+        {%  include 'menu.items.twig' with {'items' : menu.items} %}
+    </ul>
+</li>

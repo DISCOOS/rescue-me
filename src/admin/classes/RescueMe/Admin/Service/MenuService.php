@@ -11,8 +11,8 @@
 
 namespace RescueMe\Admin\Service;
 
-use ReflectionMethod;
 use RescueMe\Admin\Core\CallableResolver;
+use RescueMe\Menu\MenuInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,65 +22,74 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MenuService extends CallableResolver {
 
+    const MENU = 'menu';
+    const ITEMS = MenuInterface::ITEMS;
+    const ID = MenuInterface::ID;
+    const LABEL = MenuInterface::LABEL;
+    const HREF = MenuInterface::HREF;
+    const ICON = MenuInterface::ICON;
+
     /**
      * Template service
      * @var TemplateService
      */
-    private $service;
+    private $template;
 
     /**
-     * Item data
+     * Registered menus
      * @var array|callable
      */
-    private $items = array();
-
-    /**
-     * Array of ReflectionMethod of callable
-     * @var ReflectionMethod
-     */
-    protected $methods = array();
-
+    private $menus = array();
 
     /**
      * Constructor
-     * @param TemplateService $service
+     * @param TemplateService $template
      */
-    function __construct($service)
+    function __construct($template)
     {
-        $this->service = $service;
+        $this->template = $template;
     }
 
     /**
-     * Connect service with data source
-     * @param array|callable $items Item data
+     * Register menu
+     * @param string $name Menu name
+     * @param \RescueMe\Menu\MenuInterface $menu Menu instance
+     * @return boolean
      */
-    public function connect($items) {
-        // Store data
-        $this->items= $items;
+    public function register($name, $menu) {
+        $this->menus[$name] = $menu;
+    }
 
-        // Perform reflection only once
-        $this->methods['items'] = $this->getMethod($items);
+    /**
+     * Get registered menu
+     * @param string $name Menu name
+     * @return boolean|MenuInterface
+     */
+    public function get($name) {
+        return isset($this->menus[$name]) ? $this->menus[$name] : false;
     }
 
     /**
      * Render request into menu as html
      * @param Application $app Silex application
      * @param Request $request Request instance
-     * @param boolean|mixed|$user Current user
-     * @return string
+     * @param string $name Menu name
+     * @param array $context Menu context
+     * @return boolean|string
      */
-    public function render(Application $app, Request $request, $user) {
+    public function render(Application $app, Request $request, $name, array $context = array()) {
 
-        $items = $this->items;
+        /** @var MenuInterface $menu */
+        if ($menu = $this->menus[$name]) {
 
-        // Lazy rows creation?
-        if ($method = $this->methods['items']) {
-            $arguments = $this->getArguments($method, $app, $request, $user);
-            $items = call_user_func_array($items, $arguments);
+            $context = array_merge($app['context'], $context);
+
+            $context[self::MENU] = $menu->getContext($app, $request, $app['context']);
+
+            $menu = $this->template->render($app, $menu->getTemplate(), $context);
         }
 
-        // Finished
-        return $this->service->render($app, 'menu.twig', $items);
+        return $menu;
 
     }
 

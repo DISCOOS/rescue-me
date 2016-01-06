@@ -52,10 +52,10 @@
         float: left !important;
     }
     
-    /* Make dropdown toggles easier to hit */
+    /* Make dropdown toggles easier to hit
     .editor .dropdown-toggle {
         width: 1.25em;
-    }
+    }*/
     
     /* Fit formsets on single row */
     .column {
@@ -116,10 +116,10 @@
         width: 5.25em;
     }
 
-    /* Make dropdown toggles easier to hit */
+    /* Make dropdown toggles easier to hit
     .editor .dropdown-toggle {
         width: 1.25em;
-    }
+    }*/
 
     /* Allow names to wrap*/
     .name {

@@ -95,7 +95,7 @@ ini_set('display_errors', DEBUG ? 1 : 0);
 
 // Load application context - used by classes
 Context::load(array(
-        Context::PATH => APP_PATH,
+        Context::APP_PATH => APP_PATH,
         Context::DATA_PATH => APP_PATH_DATA,
         Context::LOCALE_PATH => APP_PATH_LOCALE,
         Context::VENDOR_PATH => APP_PATH_VENDOR,
