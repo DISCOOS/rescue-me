@@ -263,7 +263,9 @@
             if (DB::isEmpty($res)) return false;
 
             $rows = array();
+            $roles = Roles::getOptions();
             while ($row = $res->fetch_assoc()) {
+                $row['role'] = $roles[$row['role_id']];
                 $rows[$row['user_id']] = $row;
             }
             return $rows;
@@ -304,14 +306,13 @@
 
             $limit = ($max === false ? '' : "$start, $max");
 
-            $res = DB::select(self::TABLE, "user_id", $filter, "`state`, `name`", $limit);
+            $res = DB::select(self::TABLE, "*", $filter, "`state`, `name`", $limit);
 
             if (DB::isEmpty($res)) return false;
 
             $users = array();
-            $roles = Roles::getOptions();
             while ($row = $res->fetch_assoc()) {
-                $user = self::get($row['user_id']);
+                $user = self::newInstance($row);
                 $users[$row['user_id']] = $user;
             }
             return $users;
@@ -362,18 +363,6 @@
             return $operation ? $operation->user_id : false;
         }
 
-        
-        /**
-         * Get user with given id
-         * 
-         * @param integer $id User id
-         * @param \RescueMe\User Update user instance
-         * 
-         * @return boolean|\RescueMe\User
-         */
-        public static function get($id, $user = null) {
-            return self::newInstance("`user_id` = ".(int)$id, $user);
-        }
 
         /**
          * Get user with given query
@@ -383,30 +372,63 @@
          *
          * @return boolean|\RescueMe\User
          */
-        public static function newInstance($select, $user = null) {
+        public static function select($select, $user = null) {
 
             $res = DB::select(self::TABLE,'*', $select);
-            
+
             if (DB::isEmpty($res)) return false;
-            
+
+            $row = $res->fetch_assoc();
+
+            return self::newInstance($row, $user);
+
+        }
+
+        /**
+         * Get user with given id
+         * 
+         * @param integer $id User id
+         * @param \RescueMe\User Update user instance
+         * 
+         * @return boolean|\RescueMe\User
+         */
+        public static function get($id, $user = null) {
+            return self::select("`user_id` = ".(int)$id, $user);
+        }
+
+        /**
+         * Create User instance from data
+         *
+         * @param array $data User data
+         * @param \RescueMe\User Update user instance
+         *
+         * @return boolean|\RescueMe\User
+         */
+        public static function newInstance($data, $user = null) {
+
             if($user === null) {
                 $user = new User();
             }
-            $row = $res->fetch_assoc();
-            foreach($row as $property => $value){
+            foreach($data as $property => $value){
                 $user->$property = $value;
             }
-            
-            $user->id = (int)$row['user_id'];
-            $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$user->id);
-            if(DB::isEmpty($res) === FALSE) {
-                $row = $res->fetch_array();
-                $user->role_id = (int)$row[0];
+
+            $user->id = (int)$data['user_id'];
+
+            // Resolve role id?
+            if (!isset($user->role_id)) {
+                $res = DB::select('roles', 'role_id', "`user_id` = ".(int)$user->id);
+                if(DB::isEmpty($res) === FALSE) {
+                    $row = $res->fetch_array();
+                    $user->role_id = (int)$row[0];
+                }
+
             }
-            
+
             return $user;
-            
-        }// get
+
+        }
+
         
         
         /**
