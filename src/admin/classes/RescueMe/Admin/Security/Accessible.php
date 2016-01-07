@@ -70,7 +70,7 @@ class Accessible {
     }
 
     /**
-     * Get accessible prototype with read access mode (no object name nor resolver)
+     * Get accessible prototype with read resolved objects access mode (no object name nor resolver)
      * @return Accessible
      */
     public static function readAny() {
@@ -78,35 +78,34 @@ class Accessible {
     }
 
     /**
-     * Get accessible prototype with write access mode (no object name nor resolver)
+     * Get accessible prototype with write resolved objects access mode (no object name nor resolver)
      * @return Accessible
      */
     public static function writeAny() {
-        return self::any(self::WRITE, false, get_called_class(), false);
+        return self::any(self::WRITE);
     }
 
     /**
-     * Get accessible read
+     * Get accessible read resolved object
      * @param boolean|string $name Accessible object name
-     * @param string $class Accessible object class
+     * @param boolean|string $class Accessible object class
      * @param boolean|object|callable $resolver Accessible object resolver
      * @return Accessible
      */
-    public static function read($name, $class, $resolver = false) {
-        return new Accessible(self::READ, $name, $class, $resolver);
+    public static function read($name, $class = false, $resolver = false) {
+        return new Accessible(self::READ, $name, $class === false ? get_called_class() : $class, $resolver);
     }
 
     /**
-     * Get accessible write
+     * Get accessible write resolved object
      * @param boolean|string $name Accessible object name
-     * @param string $class Accessible object class
+     * @param boolean|string $class Accessible object class
      * @param boolean|object|callable $resolver Accessible object resolver
      * @return Accessible
      */
-    public static function write($name, $class, $resolver = false) {
-        return new Accessible(self::WRITE, $name, $class, $resolver);
+    public static function write($name, $class = false, $resolver = false) {
+        return new Accessible(self::WRITE, $name, $class === false ? get_called_class() : $class, $resolver);
     }
-
 
     /**
      * Get access mode

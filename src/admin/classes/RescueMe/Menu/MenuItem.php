@@ -12,6 +12,8 @@
 
 namespace RescueMe\Menu;
 
+use RescueMe\Admin\Security\Accessible;
+
 /**
  * Class MenuItem
  * @package RescueMe\Admin\Menu
@@ -19,26 +21,31 @@ namespace RescueMe\Menu;
 class MenuItem {
 
     const ID = 'id';
-    const LABEL = 'label';
     const HREF = 'href';
     const ICON = 'icon';
+    const LABEL = 'label';
+    const ROUTE = 'route';
+    const PARAMS = 'params';
     const ATTRIBUTES = 'attributes';
     const CONFIRM = 'confirm';
-    const SELECTOR = 'selector';
-    const ADAPTER = 'adapter';
+    const CONTENT = 'content';
     const DIVIDER = 'divider';
 
 
     private $id;
     private $href;
-    private $label;
     private $icon;
+    private $label;
+    private $route;
+    private $params;
     private $confirm;
+    private $content;
     private $divider;
     private $attributes;
 
     private $selector;
-    private $adapter;
+    private $parser;
+    private $access;
 
     /**
      * @param mixed $label
@@ -51,6 +58,26 @@ class MenuItem {
     }
 
     /**
+     * @param mixed $route
+     * @return MenuItem
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+        return $this;
+    }
+
+    /**
+     * @param string|array $params
+     * @return MenuItem
+     */
+    public function setParams($params)
+    {
+        $this->params = is_string($params) ? array($params) : $params;
+        return $this;
+    }
+
+    /**
      * @param mixed $href
      * @return MenuItem
      */
@@ -59,6 +86,7 @@ class MenuItem {
         $this->href = $href;
         return $this;
     }
+
 
     /**
      * @return MenuItem
@@ -97,6 +125,16 @@ class MenuItem {
         $this->attributes = $attributes;
     }
 
+    /**
+     * @param mixed $content
+     * @return MenuItem
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
+    }
+
 
     /**
      * Add confirmation prompt with given massage
@@ -130,22 +168,40 @@ class MenuItem {
     /**
      * @return boolean|callable
      */
-    public function getAdapter()
+    public function getParser()
     {
-        return isset($this->adapter) ? $this->adapter : false;
+        return isset($this->parser) ? $this->parser : false;
     }
 
     /**
      * Register menu item adapter.
-     * @param callable $adapter Menu item adapter
+     * @param callable $parser Menu item parser
      * @return MenuItem
      */
-    public function setAdapter($adapter)
+    public function setParser($parser)
     {
-        $this->adapter = $adapter;
+        $this->parser = $parser;
         return $this;
     }
 
+    /**
+     * Register access rights
+     * @param Accessible $access Accessible object
+     * @return MenuItem
+     */
+    public function setAccess($access)
+    {
+        $this->access = $access;
+        return $this;
+    }
+
+    /**
+     * @return Accessible
+     */
+    public function getAccess()
+    {
+        return isset($this->access) ? $this->access : false;
+    }
 
     /**
      * @return boolean|array
@@ -154,8 +210,10 @@ class MenuItem {
         $item = array();
         if ($this->set($item, self::DIVIDER) === false) {
             $this->set($item, self::ID);
-            $this->set($item, self::ICON);
             $this->set($item, self::HREF);
+            $this->set($item, self::ICON);
+            $this->set($item, self::ROUTE);
+            $this->set($item, self::PARAMS, array());
             $this->set($item, self::LABEL);
             $this->set($item, self::ATTRIBUTES, array());
             $this->set($item, self::CONFIRM);
@@ -167,7 +225,7 @@ class MenuItem {
         $set = isset($this->$key);
         if ($set) {
             $item[$key] = $this->$key;
-        } elseif (isset($default)) {
+        } else {
             $item[$key] = $default;
         }
         return $set;

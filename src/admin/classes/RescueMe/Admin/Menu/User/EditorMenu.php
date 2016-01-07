@@ -11,8 +11,10 @@
 
 namespace RescueMe\Admin\Menu\User;
 
+use RescueMe\Menu\MenuItem;
 use RescueMe\User;
 use RescueMe\Menu\AbstractMenu;
+use Silex\Application;
 
 /**
  * User editor menu class
@@ -36,50 +38,50 @@ class EditorMenu extends AbstractMenu {
      */
     protected function configure()
     {
-        $adapter = array($this, 'adapt');
+        $parser = array($this, 'parse');
         $pending = array($this, 'isPending');
         $notUser = array($this, 'isNotSessionUser');
 
         $this->newMenu(T_('Edit'))
-            ->setHref('user/edit/id')
-            ->setAdapter($adapter);
+            ->setRoute('user/edit/id')
+            ->setParser($parser);
 
-        $this->newAction(T_('Approve'), 'user/edit/id')
+        $this->newItem(T_('Approve'), 'user/edit/id')
             ->setSelector($pending)
-            ->setAdapter($adapter);
+            ->setParser($parser);
 
-        $this->newAction(T_('Reject'), 'user/edit/id')
+        $this->newItem(T_('Reject'), 'user/edit/id')
             ->setSelector($pending)
-            ->setAdapter($adapter);
+            ->setParser($parser);
 
-        $this->newAction(T_('Enable'), 'user/edit/id')
+        $this->newItem(T_('Enable'), 'user/edit/id')
             ->setConfirm(T_('Do you want to enable %1$s?'))
             ->setSelector(array($this, 'isDisabled'))
-            ->setAdapter($adapter);
+            ->setParser($parser);
 
         $this->newDivider()
             ->setSelector($pending);
 
-        $this->newAction(T_('Change password'), 'user/edit/id')
-            ->setAdapter($adapter);
+        $this->newItem(T_('Change password'), 'user/edit/id')
+            ->setParser($parser);
 
-        $this->newAction(T_('Reset password'), 'user/edit/id')
-            ->setAdapter($adapter);
+        $this->newItem(T_('Reset password'), 'user/edit/id')
+            ->setParser($parser);
 
         $this->newDivider();
 
-        $this->newAction(T_('Setup'), 'user/edit/id')
+        $this->newItem(T_('Setup'), 'user/edit/id')
             ->setIcon('icon-wrench')
-            ->setAdapter($adapter);
+            ->setParser($parser);
 
         $this->newDivider()
             ->setSelector($notUser);
 
-        $this->newAction(T_('Delete'), 'user/edit/id')
+        $this->newItem(T_('Delete'), 'user/edit/id')
             ->setConfirm(T_('Do you want to delete %1$s?'))
             ->setIcon('icon-trash')
             ->setSelector($notUser)
-            ->setAdapter($adapter);
+            ->setParser($parser);
 
         return true;
     }
@@ -116,20 +118,28 @@ class EditorMenu extends AbstractMenu {
     }
 
     /**
-     * Build item
-     * @param array $item Item definition
-     * @param array|User $user Authenticated user
-     * @param array|User $object Resolved user
+     * Parse menu template into item.
+     * @param Application $app Application
+     * @param MenuItem $template Menu template
+     * @param User $user Authenticated user
+     * @param boolean|object|array $object Resolved object
      * @return array
      */
-    public function adapt($item, $user, $object) {
+    protected function parse(Application $app, MenuItem $template, User $user, $object = false) {
+        $item = $template->toArray();
         if(isset($item['confirm'])) {
             $item['confirm'] = sprintf($item['confirm'],(is_object($object) ? $object->name : $object['name']));
         }
-        if('user/edit/id' === $item[self::HREF]) {
-            $item[self::ID] = $user->id;
-        } else {
-            $item[self::ID] = $object[self::ID];
+        $item = $template->toArray();
+        if($item[MenuItem::DIVIDER] === false) {
+            switch($item[MenuItem::ROUTE]) {
+                case 'user/edit/id':
+                    $item[MenuItem::PARAMS] = array(MenuItem::ID => $user->id);
+                    break;
+                default:
+                    $item[MenuItem::PARAMS] = array(MenuItem::ID => $object[self::ID]);
+                    break;
+            }
         }
         return $item;
     }

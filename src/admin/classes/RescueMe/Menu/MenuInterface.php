@@ -22,7 +22,7 @@ interface MenuInterface {
 
     const ID = MenuItem::ID;
     const LABEL = MenuItem::LABEL;
-    const HREF = MenuItem::HREF;
+    const HREF = MenuItem::ROUTE;
     const ICON = MenuItem::ICON;
 
     const ITEMS = 'items';

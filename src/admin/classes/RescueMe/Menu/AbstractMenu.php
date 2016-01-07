@@ -14,6 +14,7 @@ namespace RescueMe\Menu;
 use RescueMe\Admin\Context;
 use RescueMe\Admin\Core\CallableResolver;
 use RescueMe\Admin\Security\Accessible;
+use RescueMe\User;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -78,7 +79,7 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
     abstract protected function configure();
 
     /**
-     * Get menu items
+     * Get menu context
      * @param Application $app Silex application instance
      * @param Request $request Request instance
      * @param array $context Menu context
@@ -86,50 +87,67 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
      */
     public function getContext(Application $app, Request $request, array $context = array())
     {
+        $menu = array();
+
         // Called if not initialized.
         if($this->init)
             $this->init = !$this->configure();
 
+        // Get authenticated user
+        $user = $app['context']['user'];
+
         // Create menu parent context?
         if ($this->menu) {
-            $context = $this->toItem($app, $request, $this->menu, $app['context']);
+            $menu = $this->toItem($app, $request, $user, $this->menu, $context);
         }
-        $context[self::ITEMS] = array();
+        $menu[self::ITEMS] = array();
 
         // Create menu items
         foreach($this->items as $template) {
 
-            if(($item = $this->toItem($app, $request, $template, $app['context'])) !== false) {
-                $context[self::ITEMS][] = $item;
+            if(($item = $this->toItem($app, $request, $user, $template, $context)) !== false) {
+                $menu[self::ITEMS][] = $item;
             };
         }
-        return $context;
+        return $menu;
     }
 
-    private function toItem(Application $app, Request $request, $template, $context) {
+    /**
+     * @param Application $app
+     * @param Request $request
+     * @param User $user Authenticated user
+     * @param MenuItem $template MenuItem template
+     * @param array $context Menu context
+     * @return boolean|mixed
+     */
+    private function toItem(Application $app, Request $request, $user, $template, $context) {
 
-        $args = array();
+        $item = false;
 
-        /* @param MenuItem $template */
-        $item = $template->toArray();
-        $adapter = $template->getAdapter();
-        $selector = $template->getSelector();
+        if($this->isGranted($app, $template)) {
 
-        $context['item'] = $item;
+            $context['template'] = $template;
 
-        // Build item?
-        if($method = $this->getMethod($adapter)) {
-            $args = $this->getArguments($method, $app, $request, $app['context']['user'], $context);
-            /** @var callable $builder */
-            $item = call_user_func_array($adapter, $args);
+            // Prepare item selector?
+            $selector = $template->getSelector();
+            if($method = $this->getMethod($selector)) {
+                $args = $this->getArguments($method, $app, $request, $user, $context);
+                if(call_user_func_array($selector, $args) === false) {
+                    return false;
+                }
+            }
+
+            // Parse menu template into item?
+            $parser = $template->getParser();
+            if($method = $this->getMethod($parser)) {
+                $args = $this->getArguments($method, $app, $request, $user, $context);
+                $item = call_user_func_array($parser, $args);
+            } else {
+                $item = $this->parse($app, $template, $user);
+            }
         }
 
-        // Prepare conditional select?
-        if($method = $this->getMethod($selector)) {
-            $args = $this->getArguments($method, $app, $request, $app['context']['user'], $context);
-        }
-
-        return $selector === false || call_user_func_array($selector, $args) ? $item : false;
+        return $item;
 
     }
 
@@ -148,18 +166,21 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
 
     /**
      * Add menu item
-     * @param string $label Action label
-     * @param string $href Uri to action
+     * @param string $label Item label
+     * @param string $route Item route
+     * @param string|array $params Item route parameters
      * @return MenuItem
      */
-    protected function newAction($label, $href)
+    protected function newItem($label, $route, $params = array())
     {
         $item = new MenuItem();
         $item->setLabel($label);
-        $item->setHref($href);
+        $item->setRoute($route);
+        $item->setParams($params);
         $this->items[] = $item;
         return $item;
     }
+
 
     /**
      * Add menu divider
@@ -172,22 +193,30 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
         return $item;
     }
 
-    public function canRead(Application $app, $user, $object) {
-        if ($object === false) {
-            $object = $app['context'][Context::ACCESSIBLE];
+    /**
+     * Assert if authenticated user is authorized to invoke menu action
+     * @param Application $app
+     * @param MenuItem $item
+     * @return mixed
+     */
+    protected function isGranted(Application $app, MenuItem $item) {
+        if (($object = $item->getAccess()) === false) {
+                $object = $app['context'][Context::ACCESSIBLE];
         }
-        return $app['security']->isGranted(Accessible::READ, $object, $user);
+        return $app['security']->isGranted(Accessible::WRITE, $object, $app['context']['user']);
     }
 
-    public function canWrite(Application $app, $user, $object) {
-        if ($object === false) {
-            $object = $app['context'][Context::ACCESSIBLE];
-        }
-        return $app['security']->isGranted(Accessible::WRITE, $object, $user);
-    }
-
-    public function isGranted(Application $app, $user, $object, $route) {
-        return $app['security']->isGranted('write', $object, $user);
+    /**
+     * Parse menu template into item.
+     * @param Application $app Application
+     * @param MenuItem $template Menu template
+     * @param User $user Authenticated user
+     * @param boolean|object|array $object Resolved object
+     * @return array
+     */
+    protected function parse(Application $app, MenuItem $template, User $user, $object = false) {
+        $item = $template->toArray();
+        return $item;
     }
 
 

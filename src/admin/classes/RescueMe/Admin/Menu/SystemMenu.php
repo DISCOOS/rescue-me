@@ -11,8 +11,11 @@
 
 namespace RescueMe\Admin\Menu;
 
+use RescueMe\Admin\Security\Accessible;
+use RescueMe\Menu\MenuItem;
 use RescueMe\User;
 use RescueMe\Menu\AbstractMenu;
+use Silex\Application;
 
 /**
  * System menu class
@@ -37,101 +40,74 @@ class SystemMenu extends AbstractMenu {
      */
     protected function configure()
     {
-        $adaptUser = array($this, 'adaptUser');
-//        $pending = array($this, 'isPending');
-        $canWrite = array($this, 'canWrite');
+        // Access rights
+        $readUser = Accessible::read('user');
+        $writeUser = Accessible::write('user');
+        $writeUserAll = Accessible::write('user.all');
 
+        $this->newItem(T_('Account'),'user/edit/id')
+            ->setIcon('icon-user')
+            ->setAccess($writeUser);
 
-        $this->newAction(T_('Account'),'user/edit/id')
-            ->setSelector($canWrite)
-            ->setAdapter($adaptUser);
+        $this->newItem(T_('Change password'),'password/change/id')
+            ->setIcon('icon-lock')
+            ->setAccess($writeUser);
 
-//        $notUser = array($this, 'isNotSessionUser');
+//        $this->newAction(T_('Setup'),'setup')
+        $this->newItem(T_('Setup'),'user/edit/id')
+            ->setIcon('icon-wrench')
+            ->setAccess($writeUser);
 
-//        $this->newMenu(T_('System'))->setId('system');
+        $this->newDivider()
+            ->setAccess($writeUser);
 
+//        $this->newAction(T_('Setup'),'user/new')
+        $this->newItem(T_('New user'),'user/edit/id')
+            ->setIcon('icon-plus-sign')
+            ->setAccess($writeUserAll);
 
-//        $this->newAction(T_('Approve'), 'user/edit/id')
-//            ->setSelector($pending)
-//            ->setAdapter($adapter);
-//
-//        $this->newAction(T_('Reject'), 'user/edit/id')
-//            ->setSelector($pending)
-//            ->setAdapter($adapter);
-//
-//        $this->newAction(T_('Enable'), 'user/edit/id')
-//            ->setConfirm(T_('Do you want to enable %1$s?'))
-//            ->setSelector(array($this, 'isDisabled'))
-//            ->setAdapter($adapter);
-//
-//        $this->newDivider()
-//            ->setSelector($pending);
-//
-//        $this->newAction(T_('Change password'), 'user/edit/id')
-//            ->setAdapter($adapter);
-//
-//        $this->newAction(T_('Reset password'), 'user/edit/id')
-//            ->setAdapter($adapter);
-//
-//        $this->newDivider();
-//
-//        $this->newAction(T_('Setup'), 'user/edit/id')
-//            ->setIcon('icon-wrench')
-//            ->setAdapter($adapter);
-//
-//        $this->newDivider()
-//            ->setSelector($notUser);
-//
-//        $this->newAction(T_('Delete'), 'user/edit/id')
-//            ->setConfirm(T_('Do you want to delete %1$s?'))
-//            ->setIcon('icon-trash')
-//            ->setSelector($notUser)
-//            ->setAdapter($adapter);
+//        $this->newAction(T_('Email users'),'user/email')
+        $this->newItem(T_('Email users'),'user/edit/id')
+            ->setIcon('icon-envelope')
+            ->setAccess($writeUserAll);
+
+        $this->newDivider()
+            ->setAccess($writeUserAll);
+
+//        $this->newAction(T_('Users'),'user/list')
+        $this->newItem(T_('Users'),'user/edit/id')
+            ->setId('users')
+            ->setIcon('icon-th-list')
+            ->setAccess($writeUserAll);
+
+//        $this->newAction(T_('Users'),'roles/list')
+        $this->newItem(T_('Roles'),'user/edit/id')
+            ->setIcon('icon-th-list')
+            ->setAccess(Accessible::write('roles'));
 
         return true;
     }
 
-    /**
-     * Check if user is pending approval
-     * @param array|User $object Menu user
-     * @return boolean
-     */
-    public function isPending($object) {
-        return is_object($object) ? $object->isState(User::PENDING) :
-            User::PENDING === $object['state'];
-    }
 
     /**
-     * Check if user is disabled
-     * @param array|User $object Menu user
-     * @return boolean
-     */
-    public function isDisabled($object) {
-        return is_object($object) ? $object->isState(User::DISABLED) :
-            User::DISABLED === $object['state'];
-    }
-
-    /**
-     * Check if object is same as logged in user
-     * @param array|User $user Logged in user
-     * @param array|User $object Menu target user
-     * @return boolean
-     */
-    public function isNotSessionUser(User $user, $object) {
-        return is_object($object) ? $user->id !== $object->id :
-            $user->id !== $object['id'];
-    }
-
-    /**
-     * Build item
-     * @param array $item Item definition
-     * @param array|User $user Authenticated user
+     * Parse menu template into item.
+     * @param Application $app Application
+     * @param MenuItem $template Menu template
+     * @param User $user Authenticated user
+     * @param boolean|object|array $object Resolved object
      * @return array
      */
-    public function adaptUser($item, $user) {
-        $item[self::ID] = $user->id;
+    protected function parse(Application $app, MenuItem $template, User $user, $object = false) {
+        $item = $template->toArray();
+        if(!$item[MenuItem::DIVIDER]) {
+            $item[MenuItem::PARAMS] = array(MenuItem::ID => $user->id);
+            if('users' === $item[MenuItem::ID]) {
+                if ($count = User::count(array(User::PENDING))) {
+                    $item[MenuItem::CONTENT] = ' <span class="badge badge-important">'.$count.'</span>';
+                }
+            }
+        }
         return $item;
     }
-
 
 }
