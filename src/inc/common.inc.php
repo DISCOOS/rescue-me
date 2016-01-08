@@ -460,7 +460,16 @@
         }
         return $values;
     }
-    
+
+    function startsWith($string, $match) {
+        return strpos($string, $match) === 0;
+    }
+
+    function endsWith($string, $match) {
+        // 'endsWith' trick
+        return stripos(strrev($string), strrev($match)) === 0;
+    }
+
     /**
      * Exclude given key(s) from array
      * 
