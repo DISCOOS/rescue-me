@@ -1,5 +1,10 @@
 <div class="btn-group pull-right">
-    <a id="{{menu.id}}-editor" class="btn btn-small" href="{{ path(menu.href, {'id' : menu.id }) }}">
+    {% if menu.route is defined %}
+        {% set action = path(menu.route, menu.params) %}
+    {% else %}
+        {% set action = path(menu.href) %}
+    {% endif %}
+    <a id="{{menu.id}}-editor" class="btn btn-small" href="{{ action }}">
         <b class="icon icon-edit"></b>{{ menu.label }}
     </a>
     <a id="{{menu.id}}-menu" class="btn btn-small dropdown-toggle no-wrap" data-toggle="dropdown">

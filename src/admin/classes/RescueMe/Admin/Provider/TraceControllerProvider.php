@@ -21,13 +21,13 @@ use Silex\ControllerCollection;
  */
 class TraceControllerProvider extends AbstractControllerProvider {
 
-    const REDIRECT = '/admin/missing';
+    const REDIRECT = '/admin/trace';
 
     /**
      * Constructor
      */
     function __construct() {
-        parent::__construct('missing');
+        parent::__construct('trace');
     }
 
 
@@ -48,22 +48,24 @@ class TraceControllerProvider extends AbstractControllerProvider {
 
         $read = $this->read($app, 'user', 'RescueMe\\User', false);
 
-        // Register routes
+        // Handle admin/trace/list
         $this->page($controllers, 'list', $read);
 
-        $this->page($controllers, '/', $read->with(function($id) {
+        $this->page($controllers, '{id}', $read->with(function($id) {
                 return Missing::get($id);
             })
-        );
+        )->assert('id', '\d+');
 
         $write = $this->write($app, 'user', 'RescueMe\\User', false);
 
+        // Handle admin/trace/new
         $this->page($controllers, 'new', $write);
 
-        $this->page($controllers, 'edit', $write->with(function($id) {
+        // Handle admin/trace/edit/{id}
+        $this->page($controllers, 'edit/{id}', $write->with(function($id) {
                 return Missing::get($id);
             })
-        );
+        )->assert('id', '\d+');
 
         return $controllers;
     }

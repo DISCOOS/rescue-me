@@ -133,8 +133,7 @@ class AccessVoter extends AbstractVoter {
     }
 
     private static function isAll($resource) {
-        // 'endsWith' trick
-        return stripos(strrev($resource), 'lla.') === 0;
+        return endsWith($resource, '.all');
     }
 
 }

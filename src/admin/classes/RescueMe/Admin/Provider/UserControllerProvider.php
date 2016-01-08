@@ -65,39 +65,40 @@ class UserControllerProvider extends AbstractControllerProvider {
         // Register write access for any user
         $write = $this->writeAny($app);
 
-        // Handle user access request
+        // Handle admin/user/request
         $this->page($controllers, 'request', $write, array($this, 'getEditContext'))
             ->before(function(Request $request) use($app, $page) {
                 if($page->isSecure($app)) {
                     return $app->redirect($request->getUriForPath('/user/new'));
                 }
+                return null;
             });
         $this->post($controllers, 'request', array($this, 'request'), $write);
 
         // Register write access for authenticated users
         $write = $this->write($app, 'user', 'RescueMe\\User');
 
-        // Handle new user from authenticated user
+        // Handle admin/user/new
         $this->page($controllers, 'new', $write, array($this, 'getEditContext'));
         $this->post($controllers, 'new', array($this, 'insert'), $write);
 
         // Set write access to resolvable users
         $write = $write->with($object);
 
-        // Handle edit user
-        $this->page($controllers, 'edit', $write, array($this, 'getEditContext'));
-        $this->post($controllers, 'edit', array($this, 'update'), $write);
+        // Handle admin/user/edit/{id}
+        $this->page($controllers, 'edit/{id}', $write, array($this, 'getEditContext'))->assert('id', '\d+');
+        $this->post($controllers, 'edit/{id}', array($this, 'update'), $write)->assert('id', '\d+');
 
         // set read access to list of resolvable users
         $read = $this->read($app, 'user', 'RescueMe\\User', false);
 
-        // Handle list users
+        // Handle admin/user/list
         $this->page($controllers, 'list', $read, array($this, 'getListContext'));
 
-        // Handle view user page
-        $this->page($controllers, '/', $read->with($object), array($this, 'getUserContext'));
+        // Handle admin/user
+        $this->page($controllers, '{id}', $read->with($object), array($this, 'getUserContext'));
 
-        // Handle list tab
+        // Handle admin/user/list/tab
         $rows = RowServiceProvider::newInstance($app);
         $rows->connect(array($this, 'getUsers'), array($this, 'getColumnsContext'));
         $this->json($controllers, 'list/tab', array($rows, 'paginate'), $read);
@@ -323,14 +324,11 @@ class UserControllerProvider extends AbstractControllerProvider {
         $filter = User::filter($filter, 'OR');
         if($users = User::count($name, $filter)) {
             $users = User::getRows($name, $filter, $start, $max);
-            $roles = Roles::getOptions();
             // Current user allowed to write to all users?
             $write = Accessible::write('user', 'RescueMe\\User');
             $all = $this->isGranted($app, self::WRITE, $write, $user);
             foreach($users as $id => $row) {
                 $row['id'] = $id;
-//                $row['role'] = $roles[$row['role_id']];
-//                $row['target'] = 'user';
                 // Allowed to write to given user?
                 if($all || $this->isGranted($app, self::WRITE, $write->with($row), $user)) {
                     $row['editor'] = $this->getEditorMenu($app, $request, User::newInstance($row));

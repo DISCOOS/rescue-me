@@ -143,7 +143,7 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
                 $args = $this->getArguments($method, $app, $request, $user, $context);
                 $item = call_user_func_array($parser, $args);
             } else {
-                $item = $this->parse($app, $template, $user);
+                $item = $this->parse($app, $template, $user, isset_get($context, 'object'));
             }
         }
 
@@ -167,16 +167,14 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
     /**
      * Add menu item
      * @param string $label Item label
-     * @param string $route Item route
-     * @param string|array $params Item route parameters
+     * @param boolean|string $icon Item icon
      * @return MenuItem
      */
-    protected function newItem($label, $route, $params = array())
+    protected function newItem($label, $icon = false)
     {
         $item = new MenuItem();
         $item->setLabel($label);
-        $item->setRoute($route);
-        $item->setParams($params);
+        if($icon) $item->setIcon($icon);
         $this->items[] = $item;
         return $item;
     }

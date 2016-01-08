@@ -45,45 +45,47 @@ class SystemMenu extends AbstractMenu {
         $writeUser = Accessible::write('user');
         $writeUserAll = Accessible::write('user.all');
 
-        $this->newItem(T_('Account'),'user/edit/id')
+        $this->newItem(T_('Account'))
+            ->setRoute('user/edit/id')
             ->setIcon('icon-user')
             ->setAccess($writeUser);
 
-        $this->newItem(T_('Change password'),'password/change/id')
+        $this->newItem(T_('Change password'))
+            ->setRoute('password/change/id')
             ->setIcon('icon-lock')
             ->setAccess($writeUser);
 
-//        $this->newAction(T_('Setup'),'setup')
-        $this->newItem(T_('Setup'),'user/edit/id')
-            ->setIcon('icon-wrench')
-            ->setAccess($writeUser);
+//        $this->newItem(T_('Setup'))
+//            ->setUrl('setup')
+//            ->setIcon('icon-wrench')
+//            ->setAccess($writeUser);
 
         $this->newDivider()
             ->setAccess($writeUser);
 
-//        $this->newAction(T_('Setup'),'user/new')
-        $this->newItem(T_('New user'),'user/edit/id')
+        $this->newItem(T_('New user'))
+            ->setRoute('user/new')
             ->setIcon('icon-plus-sign')
             ->setAccess($writeUserAll);
 
-//        $this->newAction(T_('Email users'),'user/email')
-        $this->newItem(T_('Email users'),'user/edit/id')
-            ->setIcon('icon-envelope')
-            ->setAccess($writeUserAll);
+//        $this->newItem(T_('Email users'))
+//            ->setRoute('user/email')
+//            ->setIcon('icon-envelope')
+//            ->setAccess($writeUserAll);
 
         $this->newDivider()
             ->setAccess($writeUserAll);
 
-//        $this->newAction(T_('Users'),'user/list')
-        $this->newItem(T_('Users'),'user/edit/id')
+        $this->newItem(T_('Users'))
             ->setId('users')
+            ->setRoute('user/list')
             ->setIcon('icon-th-list')
             ->setAccess($writeUserAll);
 
-//        $this->newAction(T_('Users'),'roles/list')
-        $this->newItem(T_('Roles'),'user/edit/id')
-            ->setIcon('icon-th-list')
-            ->setAccess(Accessible::write('roles'));
+//        $this->newItem(T_('Roles'))
+//            ->setRoute('role/list')
+//            ->setIcon('icon-th-list')
+//            ->setAccess(Accessible::write('roles'));
 
         return true;
     }
@@ -99,12 +101,13 @@ class SystemMenu extends AbstractMenu {
      */
     protected function parse(Application $app, MenuItem $template, User $user, $object = false) {
         $item = $template->toArray();
-        if(!$item[MenuItem::DIVIDER]) {
-            $item[MenuItem::PARAMS] = array(MenuItem::ID => $user->id);
-            if('users' === $item[MenuItem::ID]) {
+        if(isset_get($item, MenuItem::DIVIDER, false) === false) {
+            if('users' === isset_get($item,MenuItem::ID)) {
                 if ($count = User::count(array(User::PENDING))) {
                     $item[MenuItem::CONTENT] = ' <span class="badge badge-important">'.$count.'</span>';
                 }
+            } else {
+                $item[MenuItem::PARAMS] = array(MenuItem::ID => $user->id);
             }
         }
         return $item;

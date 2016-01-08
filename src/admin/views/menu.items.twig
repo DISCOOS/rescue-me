@@ -1,8 +1,8 @@
 {% for item in items %}
-    {% if item.divider %}
+    {% if item.divider is defined %}
         <li class="divider"></li>
     {% else %}
-        {% if item.route %}
+        {% if item.route is defined %}
             {% set action = path(item.route, item.params) %}
         {% else %}
             {% set action = path(item.href) %}

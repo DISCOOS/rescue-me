@@ -434,14 +434,14 @@
         /**
          * Recover user
          * 
-         * @param string $email 
+         * @param integer|string $key
          * @param array $methods 
          * 
-         * @return boolean
+         * @return boolean|string
          */
-        public static function recover($email, $methods = array()) {
+        public static function recover($key, $methods = array()) {
             
-            $filter = "`email` = '$email'";
+            $filter = "`".(is_int($key) ? 'id' : 'email')."` = '$key'";
             
             $res = DB::select(self::TABLE,"user_id", $filter);
 

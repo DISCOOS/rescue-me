@@ -188,22 +188,15 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
     /**
      * Route path to page controller with given access rights
      * @param ControllerCollection $controllers Controller collection
-     * @param string $path Route path relative to root (or parent controller)
+     * @param string $pattern Matched route pattern relative to root (or parent controller)
      * @param Accessible $object Accessible object
      * @param array|callable $context Page context.
      * @return Controller
      */
-    protected function page($controllers, $path, $object, $context = array())
+    protected function page($controllers, $pattern, $object, $context = array())
     {
-        // Get route pattern
-        $pattern = $this->getPattern($path, $object);
-
         // Get controller instance
         $controller = $controllers->get($pattern, new PageController($this, $pattern, $object, $context));
-
-        if ($object !== false) {
-            $controller->assert('id', '\d+');
-        }
 
         return $controller->bind($this->getRouteName($pattern));
     }
@@ -212,51 +205,35 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
     /**
      * Route path to form post controller
      * @param ControllerCollection $controllers Controller collection
-     * @param string $path Route path relative to root (or parent controller)
+     * @param string $pattern Matched route pattern relative to root (or parent controller)
      * @param callable $to Callback that returns the response when matched
      * @param Accessible $object Accessible object
      * @param array|callable $context POST context.
      * @return Controller
      */
-    protected function post($controllers, $path, $to, $object, $context = array()) {
-
-        // Get route pattern
-        $pattern = $this->getPattern($path, $object);
+    protected function post($controllers, $pattern, $to, $object, $context = array()) {
 
         // Get controller instance
         $controller = $controllers->post($pattern, new PostController($this, $pattern, $to, $object, $context));
 
-        if ($object !== false) {
-            $controller->assert('id', '\d+');
-        }
-
-        return $controller;
+        return $controller->bind($this->getRouteName($pattern));
     }
 
     /**
      * Route path to json controller
      * @param ControllerCollection $controllers Controller collection
-     * @param string $path Route path relative to root (or parent controller)
+     * @param string $pattern Matched route pattern relative to root (or parent controller)
      * @param callable $to Callback that returns the response when matched
      * @param Accessible $object Accessible object
      * @param array|callable $context JSON context.
      * @return Controller
      */
-    protected function json($controllers, $path, $to, $object, $context = array()) {
-
-        // Get route pattern
-        $pattern = $this->getPattern($path, $object);
-
+    protected function json($controllers, $pattern, $to, $object, $context = array()) {
 
         // Get controller instance
         $controller = $controllers->get($pattern, new JsonController($this, $pattern, $to, $object, $context));
 
-        if ($object !== false) {
-            $controller->assert('id', '\d+');
-        }
-
-        return $controller;
-
+        return $controller->bind($this->getRouteName($pattern));
     }
 
     /**
@@ -282,7 +259,7 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
             'message' => $message,
             'action' => $action
         );
-        return TemplateServiceProvider::get($app)->page(
+        return PageServiceProvider::get($app)->page(
             $app, 'confirmation.twig', $id, $user, $object, $context);
     }
 

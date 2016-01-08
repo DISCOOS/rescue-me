@@ -13,10 +13,10 @@ namespace RescueMe\Admin\Provider;
 
 use RescueMe\Admin\Context;
 use RescueMe\Admin\Core\RequestFactory;
-use RescueMe\Admin\Security\Accessible;
 use RescueMe\User;
 use Silex\Application;
 use Silex\ControllerCollection;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -52,17 +52,22 @@ class PasswordControllerProvider extends AbstractControllerProvider {
         // Create shared closures
         $object =  array('RescueMe\\User','get');
 
+        // Password reset is allowed outside security realm
         $write = $this->writeAny($app);
 
         // Handle admin/password/reset
         $this->page($controllers, 'reset', $write);
         $this->post($controllers, 'reset', array($this, 'reset'), $write);
 
+        // Handle admin/password/reset/id
+        $this->post($controllers, 'reset/{id}', array($this, 'reset'), $write)->assert('id', '\d+');
+
+        // Only allow users to change own password
         $write = $this->write($app, 'user', 'RescueMe\\User', $object);
 
         // Handle admin/password/change/{id}
-        $this->page($controllers, 'change', $write);
-        $this->post($controllers, 'change', array($this, 'reset'), $write);
+        $this->page($controllers, 'change/{id}', $write)->assert('id', '\d+');
+        $this->post($controllers, 'change/{id}', array($this, 'change'), $write)->assert('id', '\d+');
 
         return $controllers;
     }
@@ -112,17 +117,12 @@ class PasswordControllerProvider extends AbstractControllerProvider {
      */
     public function reset(Application $app, Request $request) {
 
-        // Sanity checks
-        if(!($email = input_post_email('email', false))) {
-            $response = T_('Invalid email format');
-        }
-        // Attempt to recover password for given email
-        elseif(User::recover($email)) {
-            $response = $app->redirect('/admin/login');
-        }
-        else {
-            // Render page again and show message
-            $response = T_('Email not registered');
+        if(!($id = $request->query->get('id', false))) {
+            $response = $this->resetFromId($app, $id);
+        } else if(!($email = $request->request->get('email', false))) {
+            $response = $this->resetFromEmail($app, $email);
+        } else {
+            $response = T_('Illegal operation');
         }
 
         // Forward message?
@@ -133,6 +133,38 @@ class PasswordControllerProvider extends AbstractControllerProvider {
         }
         return $response;
 
+    }
+
+    /**
+     * @param Application $app
+     * @param integer $id
+     * @return string|RedirectResponse
+     */
+    private function resetFromId(Application $app, $id) {
+
+        // Attempt to recover password for given id
+        if(($result = User::recover($id)) !== true) {
+            return $app->redirect('/admin/login');
+        }
+        return $result;
+    }
+
+    /**
+     * @param Application $app
+     * @param string $email
+     * @return string|RedirectResponse
+     */
+    private function resetFromEmail(Application $app, $email) {
+
+        // Sanity checks
+        if(!($email = filter_var($email, FILTER_VALIDATE_EMAIL))) {
+            return T_('Invalid email format');
+        }
+        // Attempt to recover password for given email
+        elseif(User::recover($email)) {
+            return $app->redirect('/admin/login');
+        }
+        return T_('Email not registered');
     }
 
     /**

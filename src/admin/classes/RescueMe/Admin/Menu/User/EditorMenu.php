@@ -11,6 +11,7 @@
 
 namespace RescueMe\Admin\Menu\User;
 
+use RescueMe\Admin\Security\Accessible;
 use RescueMe\Menu\MenuItem;
 use RescueMe\User;
 use RescueMe\Menu\AbstractMenu;
@@ -38,50 +39,49 @@ class EditorMenu extends AbstractMenu {
      */
     protected function configure()
     {
-        $parser = array($this, 'parse');
-        $pending = array($this, 'isPending');
-        $notUser = array($this, 'isNotSessionUser');
+        $isOther = array($this, 'isOther');
+        $isPending = array($this, 'isPending');
 
         $this->newMenu(T_('Edit'))
-            ->setRoute('user/edit/id')
-            ->setParser($parser);
+            ->setId('edit')
+            ->setRoute('user/edit/id');
 
-        $this->newItem(T_('Approve'), 'user/edit/id')
-            ->setSelector($pending)
-            ->setParser($parser);
+//        $this->newItem(T_('Approve'))
+//            ->setRoute('user/approve/id')
+//            ->setSelector($isPending);
+//
+//        $this->newItem(T_('Reject'))
+//            ->setRoute('user/reject/id')
+//            ->setSelector($isPending);
+//
+//        $this->newItem(T_('Enable'))
+//            ->setRoute('user/enable/id')
+//            ->setConfirm(T_('Do you want to enable %1$s?'))
+//            ->setSelector(array($this, 'isDisabled'));
+//
+//        $this->newDivider()
+//            ->setSelector($isPending);
 
-        $this->newItem(T_('Reject'), 'user/edit/id')
-            ->setSelector($pending)
-            ->setParser($parser);
+        $this->newItem(T_('Reset password'))
+            ->setRoute('password/reset/id');
 
-        $this->newItem(T_('Enable'), 'user/edit/id')
-            ->setConfirm(T_('Do you want to enable %1$s?'))
-            ->setSelector(array($this, 'isDisabled'))
-            ->setParser($parser);
+        $this->newItem(T_('Change password'))
+            ->setRoute('password/change/id');
 
-        $this->newDivider()
-            ->setSelector($pending);
+//        $this->newDivider();
+//
+//        $this->newItem(T_('Setup'))
+//            ->setRoute( 'user/edit/id')
+//            ->setIcon('icon-wrench');
 
-        $this->newItem(T_('Change password'), 'user/edit/id')
-            ->setParser($parser);
-
-        $this->newItem(T_('Reset password'), 'user/edit/id')
-            ->setParser($parser);
-
-        $this->newDivider();
-
-        $this->newItem(T_('Setup'), 'user/edit/id')
-            ->setIcon('icon-wrench')
-            ->setParser($parser);
-
-        $this->newDivider()
-            ->setSelector($notUser);
-
-        $this->newItem(T_('Delete'), 'user/edit/id')
-            ->setConfirm(T_('Do you want to delete %1$s?'))
-            ->setIcon('icon-trash')
-            ->setSelector($notUser)
-            ->setParser($parser);
+//        $this->newDivider()
+//            ->setSelector($isOther);
+//
+//        $this->newItem(T_('Delete'))
+//            ->setRoute('user/delete/id')
+//            ->setConfirm(T_('Do you want to delete %1$s?'))
+//            ->setIcon('icon-trash')
+//            ->setSelector($isOther);
 
         return true;
     }
@@ -127,18 +127,12 @@ class EditorMenu extends AbstractMenu {
      */
     protected function parse(Application $app, MenuItem $template, User $user, $object = false) {
         $item = $template->toArray();
-        if(isset($item['confirm'])) {
-            $item['confirm'] = sprintf($item['confirm'],(is_object($object) ? $object->name : $object['name']));
-        }
-        $item = $template->toArray();
-        if($item[MenuItem::DIVIDER] === false) {
-            switch($item[MenuItem::ROUTE]) {
-                case 'user/edit/id':
-                    $item[MenuItem::PARAMS] = array(MenuItem::ID => $user->id);
-                    break;
-                default:
-                    $item[MenuItem::PARAMS] = array(MenuItem::ID => $object[self::ID]);
-                    break;
+        if(isset_get($item, MenuItem::DIVIDER, false) === false) {
+            if(isset($item['confirm'])) {
+                $item['confirm'] = sprintf($item['confirm'], is_object($object) ? $object->name : $object['name']);
+            }
+            if(endsWith(isset_get($item, MenuItem::ROUTE), '/id')) {
+                $item[MenuItem::PARAMS] = array(MenuItem::ID => is_object($object) ? $object->id : $object['id']);
             }
         }
         return $item;

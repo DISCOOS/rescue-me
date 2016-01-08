@@ -33,7 +33,7 @@ class MenuItem {
 
 
     private $id;
-    private $href;
+    private $url;
     private $icon;
     private $label;
     private $route;
@@ -78,12 +78,12 @@ class MenuItem {
     }
 
     /**
-     * @param mixed $href
+     * @param mixed $url
      * @return MenuItem
      */
-    public function setHref($href)
+    public function setUrl($url)
     {
-        $this->href = $href;
+        $this->url = $url;
         return $this;
     }
 
@@ -225,7 +225,7 @@ class MenuItem {
         $set = isset($this->$key);
         if ($set) {
             $item[$key] = $this->$key;
-        } else {
+        } else if(is_null($default) === false){
             $item[$key] = $default;
         }
         return $set;

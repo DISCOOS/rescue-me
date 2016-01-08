@@ -77,16 +77,17 @@ class AdminControllerProvider extends AbstractControllerProvider {
 
         $readAny = $this->readAny($app);
 
-        // Handle login action (logout is handled automatically by the security provider)
+        // Handle admin/login (logout is handled automatically by the security provider)
         $this->page($controllers, 'login', $readAny, array('login' => true))->before(
             function(Request $request) use($app, $page) {
                 // Already authenticated?
                 if($page->isSecure($app)) {
                     return $app->redirect($request->getUriForPath('/start'));
                 }
+                return null;
             });
 
-        // Handle default actions
+        // Handle admin/start
         $this->page($controllers, 'start', $readAny);
 
         return $controllers;
