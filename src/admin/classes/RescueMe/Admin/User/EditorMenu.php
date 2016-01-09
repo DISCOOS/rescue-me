@@ -9,7 +9,7 @@
  * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
  */
 
-namespace RescueMe\Admin\Menu\User;
+namespace RescueMe\Admin\User;
 
 use RescueMe\Admin\Security\Accessible;
 use RescueMe\Menu\MenuItem;
@@ -44,18 +44,18 @@ class EditorMenu extends AbstractMenu {
 
         $this->newMenu(T_('Edit'))
             ->setId('edit')
-            ->setRoute('user/edit/id');
+            ->setRoute('page:user/edit/id');
 
 //        $this->newItem(T_('Approve'))
-//            ->setRoute('user/approve/id')
+//            ->setRoute('page:user/approve/id')
 //            ->setSelector($isPending);
 //
 //        $this->newItem(T_('Reject'))
-//            ->setRoute('user/reject/id')
+//            ->setRoute('page:user/reject/id')
 //            ->setSelector($isPending);
 //
 //        $this->newItem(T_('Enable'))
-//            ->setRoute('user/enable/id')
+//            ->setRoute('page:user/enable/id')
 //            ->setConfirm(T_('Do you want to enable %1$s?'))
 //            ->setSelector(array($this, 'isDisabled'));
 //
@@ -63,22 +63,22 @@ class EditorMenu extends AbstractMenu {
 //            ->setSelector($isPending);
 
         $this->newItem(T_('Reset password'))
-            ->setRoute('password/reset/id');
+            ->setRoute('put:password/reset/id');
 
         $this->newItem(T_('Change password'))
-            ->setRoute('password/change/id');
+            ->setRoute('page:password/change/id');
 
 //        $this->newDivider();
 //
 //        $this->newItem(T_('Setup'))
-//            ->setRoute( 'user/edit/id')
+//            ->setRoute( 'page:setup/id')
 //            ->setIcon('icon-wrench');
 
 //        $this->newDivider()
 //            ->setSelector($isOther);
 //
 //        $this->newItem(T_('Delete'))
-//            ->setRoute('user/delete/id')
+//            ->setRoute('page:user/delete/id')
 //            ->setConfirm(T_('Do you want to delete %1$s?'))
 //            ->setIcon('icon-trash')
 //            ->setSelector($isOther);

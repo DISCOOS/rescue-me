@@ -11,6 +11,7 @@
 
 namespace RescueMe\Admin\Provider;
 
+use RescueMe\Admin\Trace\TraceMenu;
 use RescueMe\Missing;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -43,15 +44,20 @@ class TraceControllerProvider extends AbstractControllerProvider {
         // Creates a new parent controller based on the default route
         $controllers = $app['controllers_factory'];
 
+        // Register menus
+        MenuServiceProvider::get($app)
+            ->register(TraceMenu::NAME, new TraceMenu());
+        PageServiceProvider::get($app)->setMenu(TraceMenu::NAME);
+
         // Register redirects
         $this->redirect($controllers, 'view', self::REDIRECT);
 
         $read = $this->read($app, 'user', 'RescueMe\\User', false);
 
         // Handle admin/trace/list
-        $this->page($controllers, 'list', $read);
+        $this->page($controllers, 'trace.list', 'list', $read);
 
-        $this->page($controllers, '{id}', $read->with(function($id) {
+        $this->page($controllers, 'trace', '{id}', $read->with(function($id) {
                 return Missing::get($id);
             })
         )->assert('id', '\d+');
@@ -59,10 +65,11 @@ class TraceControllerProvider extends AbstractControllerProvider {
         $write = $this->write($app, 'user', 'RescueMe\\User', false);
 
         // Handle admin/trace/new
-        $this->page($controllers, 'new', $write);
+        $this->page($controllers, 'trace.new', 'new', $write);
 
         // Handle admin/trace/edit/{id}
-        $this->page($controllers, 'edit/{id}', $write->with(function($id) {
+        $this->page($controllers, 'trace.edit', 'edit/{id}',
+            $write->with(function($id) {
                 return Missing::get($id);
             })
         )->assert('id', '\d+');

@@ -14,13 +14,15 @@ use RescueMe\Admin\Context;
 use RescueMe\Admin\Menu\SystemMenu;
 use RescueMe\Admin\Provider\MenuServiceProvider;
 use RescueMe\Locale;
+use RescueMe\Twig\Extension\I18n;
 
 
 $locale = Locale::getBrowserLocale();
 set_system_locale(DOMAIN_ADMIN, $locale);
 
-$app = new Silex\Application();
-$app['debug'] = DEBUG;
+$app = new Silex\Application(
+    array('debug' => DEBUG)
+);
 
 // Enable sessions
 $app->register(new Silex\Provider\SessionServiceProvider());
@@ -34,9 +36,10 @@ $app->register(new Silex\Provider\TwigServiceProvider(),
     array('twig.path' => Context::getAdminPath().'views',
         'twig.options' => array('cache' => Context::getDataPath() . 'twig.cache')
     ));
+
 // Add I18n support (workaround that prevents exception thrown by the security provider)
-$app['twig'] = $app->share($app->extend('twig', function(/** @var Twig_Environment */ $twig, $app) {
-    $twig->addExtension(new Twig_Extensions_Extension_Text($app));
+$app['twig'] = $app->share($app->extend('twig', function(/** @var Twig_Environment */ $twig) {
+    $twig->addExtension(new I18n());
     return $twig;
 }));
 
@@ -52,7 +55,6 @@ $app->register(new \RescueMe\Admin\Provider\MenuServiceProvider());
 
 // Register common menus
 $menus = MenuServiceProvider::get($app);
-//$menus->register(PageMenu::NAME, new PageMenu());
 $menus->register(SystemMenu::NAME, new SystemMenu());
 
 

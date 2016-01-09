@@ -1,13 +1,13 @@
 {% for item in items %}
     {% if item.divider is defined %}
-        <li class="divider"></li>
+        <li class="divider {{ class|default }}"></li>
     {% else %}
         {% if item.route is defined %}
             {% set action = path(item.route, item.params) %}
         {% else %}
-            {% set action = path(item.href) %}
+            {% set action = item.url %}
         {% endif %}
-        <li {% if id is defined %}id="{{ id }}"{% endif %} {{ item.attributes }}><a role="menuitem" data-title="{{ item.label }}" {% if item.confirm is defined %} data-toggle="modal" data-target="#confirm" data-href="{{ action }}" data-content="{{ item.confirm }}">{% else %} href="{{ action }}">{% endif %}{% if item.icon is defined %}<b class="icon {{ item.icon }}"></b>{% endif %}{{ item.label }}{% if item.content is defined %}{{ item.content | raw }}{% endif %}</a></li>
+        <li {% if item.id is defined %}id="{{ item.id }}"{% endif %} {% if class is defined %} class="{{ class }}" {% endif %} {% if item.attributes is defined %} {{ item.attributes }} {% endif %}><a role="menuitem" data-title="{{ item.label }}" {% if item.confirm is defined %} data-toggle="modal" data-target="#confirm" data-href="{{ action }}" data-content="{{ item.confirm }}">{% else %} href="{{ action }}">{% endif %}{% if item.icon is defined %}<b class="icon {{ item.icon }}"></b>{% endif %}{{ item.label }}{% if item.content is defined %}{{ item.content | raw }}{% endif %}</a></li>
 
     {% endif %}
 {% endfor %}

@@ -21,7 +21,7 @@ use RescueMe\Admin\Security\Accessible;
 class MenuItem {
 
     const ID = 'id';
-    const HREF = 'href';
+    const URL = 'url';
     const ICON = 'icon';
     const LABEL = 'label';
     const ROUTE = 'route';
@@ -46,6 +46,13 @@ class MenuItem {
     private $selector;
     private $parser;
     private $access;
+
+    /**
+     * @return boolean
+     */
+    public function isDivider() {
+        return isset($this->divider) && $this->divider;
+    }
 
     /**
      * @param mixed $label
@@ -119,10 +126,12 @@ class MenuItem {
 
     /**
      * @param mixed $attributes
+     * @return MenuItem
      */
     public function setAttributes($attributes)
     {
         $this->attributes = $attributes;
+        return $this;
     }
 
     /**
@@ -210,12 +219,12 @@ class MenuItem {
         $item = array();
         if ($this->set($item, self::DIVIDER) === false) {
             $this->set($item, self::ID);
-            $this->set($item, self::HREF);
+            $this->set($item, self::URL);
             $this->set($item, self::ICON);
             $this->set($item, self::ROUTE);
             $this->set($item, self::PARAMS, array());
             $this->set($item, self::LABEL);
-            $this->set($item, self::ATTRIBUTES, array());
+            $this->set($item, self::ATTRIBUTES);
             $this->set($item, self::CONFIRM);
         }
         return $item;

@@ -60,6 +60,12 @@ abstract class AbstractController extends CallableResolver {
     protected $methods = array();
 
     /**
+     * Route type
+     * @var string
+     */
+    protected $type;
+
+    /**
      * Route path
      * @var string
      */
@@ -76,13 +82,17 @@ abstract class AbstractController extends CallableResolver {
      *
      * @param AbstractControllerProvider $provider RescueMe controller provider instance.
      * @param string $accept Accept request method
+     * @param string $type Route type
      * @param string $pattern Route pattern to controller.
      * @param boolean|callable $to Callback that returns the response when matched.
      * @param Accessible $accessible Accessible object.
      * @param boolean|array|callable $context Request context.
      */
-    function __construct($provider, $accept, $pattern, $to, $accessible, $context = false)
+    function __construct($provider, $accept, $type, $pattern, $to, $accessible, $context = false)
     {
+        $this->accept = $accept;
+        $this->type = $type;
+        $this->pattern = $pattern;
         $this->pattern = $pattern;
         $this->provider = $provider;
         $this->to = $to;
@@ -161,7 +171,7 @@ abstract class AbstractController extends CallableResolver {
         $mode = $this->accessible->getMode();
 
         // Get route name from pattern
-        $name = $this->provider->getRouteName($this->pattern);
+        $name = $this->provider->getRouteName($this->type, $this->pattern);
 
         // Initialize default context
         $default = array(

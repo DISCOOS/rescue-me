@@ -13,10 +13,8 @@ namespace RescueMe\Admin\Controller;
 
 use RescueMe\Admin\Provider\AbstractControllerProvider;
 use RescueMe\Admin\Security\Accessible;
-use RescueMe\User;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use RescueMe\Admin\Security\AccessVoter;
 
 
 /**
@@ -25,6 +23,11 @@ use RescueMe\Admin\Security\AccessVoter;
  * @package RescueMe\Admin\Controller
  */
 class PostController extends AbstractController {
+
+    /**
+     * Route type
+     */
+    const TYPE = 'post';
 
     /**
      * Accepted request method
@@ -41,7 +44,7 @@ class PostController extends AbstractController {
      */
     function __construct($provider, $pattern, $to, $object, $context = false)
     {
-        parent::__construct($provider, self::ACCEPT, $pattern, $to, $object, $context);
+        parent::__construct($provider, self::ACCEPT, self::TYPE, $pattern, $to, $object, $context);
     }
 
 

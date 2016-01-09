@@ -56,17 +56,17 @@ class PasswordControllerProvider extends AbstractControllerProvider {
         $write = $this->writeAny($app);
 
         // Handle admin/password/reset
-        $this->page($controllers, 'reset', $write);
+        $this->page($controllers, 'password.reset', 'reset', $write);
         $this->post($controllers, 'reset', array($this, 'reset'), $write);
 
         // Handle admin/password/reset/id
-        $this->post($controllers, 'reset/{id}', array($this, 'reset'), $write)->assert('id', '\d+');
+        $this->put($controllers, 'reset/{id}', array($this, 'reset'), $write)->assert('id', '\d+');
 
         // Only allow users to change own password
         $write = $this->write($app, 'user', 'RescueMe\\User', $object);
 
         // Handle admin/password/change/{id}
-        $this->page($controllers, 'change/{id}', $write)->assert('id', '\d+');
+        $this->page($controllers, 'password.change', 'change/{id}', $write)->assert('id', '\d+');
         $this->post($controllers, 'change/{id}', array($this, 'change'), $write)->assert('id', '\d+');
 
         return $controllers;

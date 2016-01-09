@@ -54,10 +54,11 @@ class MenuService extends CallableResolver {
      * Register menu
      * @param string $name Menu name
      * @param \RescueMe\Menu\MenuInterface $menu Menu instance
-     * @return boolean
+     * @return MenuService
      */
     public function register($name, $menu) {
         $this->menus[$name] = $menu;
+        return $this;
     }
 
     /**

@@ -1,0 +1,9 @@
+<li class="dropdown visible-phone">
+    <a id="trace-menu" class="dropdown-toggle no-wrap" data-toggle="dropdown">
+        <span>{{ T_('Trace') }}<b class="caret"></b></span>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="trace-menu">
+        {%  include 'menu.items.twig' with {'items' : menu.items} %}
+    </ul>
+</li>
+{%  include 'menu.items.twig' with {'items' : menu.items, 'class': 'hidden-phone'} %}

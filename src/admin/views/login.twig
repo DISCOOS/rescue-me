@@ -30,12 +30,12 @@
                    class="{{ message is defined ? ' alert-error' : '' }}"/>
             {{- T_('Remember me') -}}</label>
         </div>
-        <a class="no-wrap" href="{{ path('password/reset')}}">{{- T_('Forgot your password?') -}}</a>
+        <a class="no-wrap" href="{{ path('page:password/reset')}}">{{- T_('Forgot your password?') -}}</a>
     </div>
 
 </form>
 <div class="form-signin text-center">
-    <a href="{{ path('user/request') }}">{{ T_("Don't have an account?") }} {{ T_('Sign up here')}}</a>
+    <a href="{{ path('page:user/request') }}">{{ T_("Don't have an account?") }} {{ T_('Sign up here')}}</a>
 </div>
 
 {% endblock %}

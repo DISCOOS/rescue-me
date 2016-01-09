@@ -5,7 +5,7 @@
     {% block menu_page %}{{ menu.page | raw }}{% endblock %}
     {% block menu_system %}{{ menu.system | raw }}{% endblock %}
 {% elseif login is not defined or not login %}
-        <li id="login"><a href="{{ path('login') }}">{{ T_('Login') }}</a></li>
+        <li id="login"><a href="{{ path('page:login') }}">{{ T_('Login') }}</a></li>
 {% endif %}
     </ul>
 </div>

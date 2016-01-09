@@ -39,6 +39,11 @@ class PageService {
     private $template;
 
     /**
+     * @var string
+     */
+    private $menu;
+
+    /**
      * Create page service
      * @param TemplateService $template
      */
@@ -47,6 +52,23 @@ class PageService {
         $this->template = $template;
     }
 
+    /**
+     * Set page menu name
+     * @param string $menu
+     */
+    public function setMenu($menu)
+    {
+        $this->menu = $menu;
+    }
+
+    /**
+     * Get page menu name
+     * @return string
+     */
+    public function getMenu()
+    {
+        return $this->menu;
+    }
 
     /**
      * Create template context
@@ -78,13 +100,8 @@ class PageService {
         if($user instanceof User) {
             $menus = MenuServiceProvider::get($app);
             return array(
-                'page' => insert_trace_menu($user, 'trace', false),
+                'page' => isset($this->menu) ? $menus->render($app, $request, $this->menu) : '',
                 'system' => $menus->render($app, $request, SystemMenu::NAME),
-/*
-                 'page' => insert_trace_menu($user, 'trace', false),
-                'system' => insert_system_menu($user, 'system', false)
-
- */
             );
         }
         return false;

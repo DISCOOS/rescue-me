@@ -11,7 +11,7 @@
 
 namespace RescueMe\Admin\Provider;
 
-use RescueMe\Admin\Menu\User\EditorMenu;
+use RescueMe\Admin\User\EditorMenu;
 use RescueMe\Admin\Security\Accessible;
 use RescueMe\DB;
 use RescueMe\Locale;
@@ -66,7 +66,7 @@ class UserControllerProvider extends AbstractControllerProvider {
         $write = $this->writeAny($app);
 
         // Handle admin/user/request
-        $this->page($controllers, 'request', $write, array($this, 'getEditContext'))
+        $this->page($controllers, 'user.request', 'request', $write, array($this, 'getEditContext'))
             ->before(function(Request $request) use($app, $page) {
                 if($page->isSecure($app)) {
                     return $app->redirect($request->getUriForPath('/user/new'));
@@ -79,24 +79,26 @@ class UserControllerProvider extends AbstractControllerProvider {
         $write = $this->write($app, 'user', 'RescueMe\\User');
 
         // Handle admin/user/new
-        $this->page($controllers, 'new', $write, array($this, 'getEditContext'));
+        $this->page($controllers, 'user.new', 'new', $write, array($this, 'getEditContext'));
         $this->post($controllers, 'new', array($this, 'insert'), $write);
 
         // Set write access to resolvable users
         $write = $write->with($object);
 
         // Handle admin/user/edit/{id}
-        $this->page($controllers, 'edit/{id}', $write, array($this, 'getEditContext'))->assert('id', '\d+');
+        $this->page($controllers, 'user.edit', 'edit/{id}', $write, array($this, 'getEditContext'))
+            ->assert('id', '\d+');
         $this->post($controllers, 'edit/{id}', array($this, 'update'), $write)->assert('id', '\d+');
 
         // set read access to list of resolvable users
         $read = $this->read($app, 'user', 'RescueMe\\User', false);
 
         // Handle admin/user/list
-        $this->page($controllers, 'list', $read, array($this, 'getListContext'));
+        $this->page($controllers, 'user.list', 'list', $read, array($this, 'getListContext'));
 
         // Handle admin/user
-        $this->page($controllers, '{id}', $read->with($object), array($this, 'getUserContext'));
+        $this->page($controllers, 'user', '{id}', $read->with($object), array($this, 'getUserContext'))
+            ->assert('id', '\d+');
 
         // Handle admin/user/list/tab
         $rows = RowServiceProvider::newInstance($app);

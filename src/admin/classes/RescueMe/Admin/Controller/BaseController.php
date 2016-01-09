@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing: JSON request controller class
+ * File containing: Base controller class
  *
  * @copyright Copyright 2015 {@link http://www.discoos.org DISCO OS Foundation}
  *
@@ -18,51 +18,30 @@ use Symfony\Component\HttpFoundation\Request;
 
 
 /**
- * JSON request controller class
+ * Base controller class
  *
  * @package RescueMe\Admin\Controller
  */
-class JsonController extends AbstractController {
-
-    /**
-     * Route type
-     */
-    const TYPE = 'json';
-
-    /**
-     * Accepted request methods
-     */
-    const ACCEPT = 'GET|PUT|POST|DELETE|PATCH';
+class BaseController extends AbstractController {
 
     /**
      * Constructor
      * @param AbstractControllerProvider $provider RescueMe controller provider instance.
+     * @param string $accept Accept http method
+     * @param string $type Route type
      * @param string $pattern Route path pattern to controller.
      * @param callable $to Callback that returns the response when matched.
      * @param Accessible $object Accessible object.
      * @param boolean|array|callable $context Request context.
      */
-    function __construct($provider, $pattern, $to, $object, $context = false)
+    function __construct($provider, $accept, $type, $pattern, $to, $object, $context = false)
     {
-        parent::__construct($provider, self::ACCEPT, self::TYPE, $pattern, $to, $object, $context);
+        parent::__construct($provider, $accept, $type, $pattern, $to, $object, $context);
     }
 
 
     /**
-     * @param Request $request
-     * @throws \LogicException If request method is not accepted by controller
-     */
-    protected function assertRequest(Request $request)
-    {
-        parent::assertRequest($request);
-        if(!$request->isXmlHttpRequest()) {
-            throw new \LogicException("Only XHR requests are accepted");
-        }
-    }
-
-
-    /**
-     * JSON request handler
+     * Get request handler
      * @param Application $app Silex application.
      * @param Request $request Request object.
      * @param array $arguments Arguments passed to callable.
@@ -71,14 +50,7 @@ class JsonController extends AbstractController {
      */
     protected function forward(Application $app, Request $request, array $arguments)
     {
-        $response = call_user_func_array($this->to, $arguments);
-        if(is_string($response)) {
-            $response = (array)$response;
-        }
-        if(!is_array($response)) {
-            throw new \LogicException('Response is not an array.');
-        }
-        return $app->json(json_encode((array)$response));
+        return call_user_func_array($this->to, $arguments);
     }
 
 

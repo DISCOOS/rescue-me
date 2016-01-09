@@ -27,20 +27,34 @@ use Symfony\Component\HttpFoundation\Request;
 class PageController extends AbstractController {
 
     /**
+     * Route type
+     */
+    const TYPE = 'page';
+
+    /**
      * Accepted request method
      */
     const ACCEPT = 'GET';
 
     /**
+     * Template name
+     * @var string
+     */
+    private $template;
+
+    /**
      * Constructor
      * @param AbstractControllerProvider $provider RescueMe controller provider instance.
+     * @param string $template Template name
      * @param string $pattern Route path to controller.
      * @param Accessible $object Accessible object.
      * @param boolean|array|callable $context Request context.
      */
-    function __construct($provider, $pattern, $object, $context = false)
+    function __construct($provider, $template, $pattern, $object, $context = false)
     {
-        parent::__construct($provider, self::ACCEPT, $pattern, false, $object, $context);
+        parent::__construct($provider, self::ACCEPT, self::TYPE, $pattern, false, $object, $context);
+
+        $this->template = $template;
     }
 
 
@@ -54,8 +68,8 @@ class PageController extends AbstractController {
     {
         $context = $app['context'];
 
-        // Get template from route path without id variable
-        $template = str_replace('/', '.', rtrim($context['route']['name'],'/id')) . '.twig';
+        // Get template without extension
+        $template = basename($this->template) . '.twig';
 
         // Check for alerts
         $contents = $request->getContent();

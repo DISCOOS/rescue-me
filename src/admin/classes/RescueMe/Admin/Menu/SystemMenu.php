@@ -41,51 +41,55 @@ class SystemMenu extends AbstractMenu {
     protected function configure()
     {
         // Access rights
-        $readUser = Accessible::read('user');
+//        $readUser = Accessible::read('user');
         $writeUser = Accessible::write('user');
-        $writeUserAll = Accessible::write('user.all');
 
         $this->newItem(T_('Account'))
-            ->setRoute('user/edit/id')
+            ->setRoute('page:user/edit/id')
             ->setIcon('icon-user')
             ->setAccess($writeUser);
 
         $this->newItem(T_('Change password'))
-            ->setRoute('password/change/id')
+            ->setRoute('page:password/change/id')
             ->setIcon('icon-lock')
             ->setAccess($writeUser);
 
 //        $this->newItem(T_('Setup'))
-//            ->setUrl('setup')
+//            ->seRoute('page:setup')
 //            ->setIcon('icon-wrench')
 //            ->setAccess($writeUser);
 
-        $this->newDivider()
-            ->setAccess($writeUser);
+        $this->newDivider();
 
         $this->newItem(T_('New user'))
-            ->setRoute('user/new')
+            ->setRoute('page:user/new')
             ->setIcon('icon-plus-sign')
-            ->setAccess($writeUserAll);
+            ->setAccess($writeUser);
 
 //        $this->newItem(T_('Email users'))
-//            ->setRoute('user/email')
+//            ->setRoute('page:user/email')
 //            ->setIcon('icon-envelope')
 //            ->setAccess($writeUserAll);
 
-        $this->newDivider()
-            ->setAccess($writeUserAll);
+        $this->newDivider();
 
         $this->newItem(T_('Users'))
             ->setId('users')
-            ->setRoute('user/list')
+            ->setRoute('page:user/list')
             ->setIcon('icon-th-list')
-            ->setAccess($writeUserAll);
+            ->setAccess($writeUser);
 
 //        $this->newItem(T_('Roles'))
-//            ->setRoute('role/list')
+//            ->setRoute('page:role/list')
 //            ->setIcon('icon-th-list')
 //            ->setAccess(Accessible::write('roles'));
+
+        $this->newDivider();
+
+        $this->newItem(T_('Logout'))
+            ->setRoute('logout')
+            ->setIcon('icon-eject')
+            ->setConfirm(T_('Do you want to logout?'));
 
         return true;
     }
@@ -106,7 +110,7 @@ class SystemMenu extends AbstractMenu {
                 if ($count = User::count(array(User::PENDING))) {
                     $item[MenuItem::CONTENT] = ' <span class="badge badge-important">'.$count.'</span>';
                 }
-            } else {
+            } else if(endsWith(isset_get($item, MenuItem::ROUTE), '/id')) {
                 $item[MenuItem::PARAMS] = array(MenuItem::ID => $user->id);
             }
         }

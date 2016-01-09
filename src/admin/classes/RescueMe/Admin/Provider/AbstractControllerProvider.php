@@ -12,6 +12,7 @@
 namespace RescueMe\Admin\Provider;
 
 
+use RescueMe\Admin\Controller\BaseController;
 use RescueMe\Admin\Controller\JsonController;
 use RescueMe\Admin\Controller\PageController;
 use RescueMe\Admin\Controller\PostController;
@@ -33,17 +34,64 @@ use Symfony\Component\Security\Core\User\UserInterface;
 abstract class AbstractControllerProvider implements ControllerProviderInterface
 {
     /**
-     * Page read access type
+     * Route read access type
      * @var string
      */
     const READ = Accessible::READ;
 
     /**
-     * Page write access type
+     * Route write access type
      * @var string
      */
     const WRITE = Accessible::WRITE;
 
+    /**
+     * GET route method type
+     * @var string
+     */
+    const GET = 'get';
+
+    /**
+     * PUT route method type
+     * @var string
+     */
+    const PUT = 'put';
+
+    /**
+     * PATCH route method type
+     * @var string
+     */
+    const PATCH = 'patch';
+
+    /**
+     * DELETE route method type
+     * @var string
+     */
+    const DELETE = 'delete';
+
+    /**
+     * OPTIONS route method type
+     * @var string
+     */
+    const OPTIONS = 'options';
+
+    /**
+     * POSt route method type
+     * @var string
+     */
+    const POST = PostController::TYPE;
+
+    /**
+     * PAGE route method type
+     * @var string
+     */
+    const PAGE = PageController::TYPE;
+
+    /**
+     * JSON route method type
+     * @var string
+     */
+    const JSON = JsonController::TYPE;
 
     /**
      * Uri to parent controller
@@ -61,16 +109,17 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
     }
 
     /**
-     * Get route name from pattern (variable are converted to path elements)
+     * Get route name from type and pattern (variable are converted to path elements)
+     * @param string $type Route type
      * @param string $pattern
      * @return string
      */
-    public function getRouteName($pattern)
+    public function getRouteName($type, $pattern)
     {
         // Remove variables from pattern
         $path = preg_replace('/(\/*\{.*\})/i', '/id', $pattern);
 
-        return trim($this->parent . '/' . $path, '/');
+        return $type . ":" . trim($this->parent . '/' . $path, '/');
     }
 
 
@@ -184,26 +233,98 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         return $app['security']->isGranted($attribute, $object, $user);
     }
 
-
     /**
-     * Route path to page controller with given access rights
+     * Route 'get' path to new BaseController instance with given access rights
      * @param ControllerCollection $controllers Controller collection
      * @param string $pattern Matched route pattern relative to root (or parent controller)
+     * @param callable $to Callback that returns the response when matched
      * @param Accessible $object Accessible object
-     * @param array|callable $context Page context.
+     * @param array|callable $context POST context.
      * @return Controller
      */
-    protected function page($controllers, $pattern, $object, $context = array())
-    {
-        // Get controller instance
-        $controller = $controllers->get($pattern, new PageController($this, $pattern, $object, $context));
+    protected function get($controllers, $pattern, $to, $object, $context = array()) {
 
-        return $controller->bind($this->getRouteName($pattern));
+        // Get controller instance
+        $controller = $controllers->get($pattern,
+            new BaseController($this, self::GET, self::GET, $pattern, $to, $object, $context));
+
+        return $controller->bind($this->getRouteName(self::GET, $pattern));
     }
 
+    /**
+     * Route 'put' path to new BaseController instance with given access rights
+     * @param ControllerCollection $controllers Controller collection
+     * @param string $pattern Matched route pattern relative to root (or parent controller)
+     * @param callable $to Callback that returns the response when matched
+     * @param Accessible $object Accessible object
+     * @param array|callable $context POST context.
+     * @return Controller
+     */
+    protected function put($controllers, $pattern, $to, $object, $context = array()) {
+
+        // Get controller instance
+        $controller = $controllers->get($pattern,
+            new BaseController($this, self::PUT, self::PUT, $pattern, $to, $object, $context));
+
+        return $controller->bind($this->getRouteName(self::PUT, $pattern));
+    }
 
     /**
-     * Route path to form post controller
+     * Route 'patch' path to new BaseController instance with given access rights
+     * @param ControllerCollection $controllers Controller collection
+     * @param string $pattern Matched route pattern relative to root (or parent controller)
+     * @param callable $to Callback that returns the response when matched
+     * @param Accessible $object Accessible object
+     * @param array|callable $context POST context.
+     * @return Controller
+     */
+    protected function patch($controllers, $pattern, $to, $object, $context = array()) {
+
+        // Get controller instance
+        $controller = $controllers->get($pattern,
+            new BaseController($this, self::PATCH, self::PATCH, $pattern, $to, $object, $context));
+
+        return $controller->bind($this->getRouteName(self::PATCH, $pattern));
+    }
+
+    /**
+     * Route 'delete' path to new BaseController instance with given access rights
+     * @param ControllerCollection $controllers Controller collection
+     * @param string $pattern Matched route pattern relative to root (or parent controller)
+     * @param callable $to Callback that returns the response when matched
+     * @param Accessible $object Accessible object
+     * @param array|callable $context POST context.
+     * @return Controller
+     */
+    protected function delete($controllers, $pattern, $to, $object, $context = array()) {
+
+        // Get controller instance
+        $controller = $controllers->get($pattern,
+            new BaseController($this, self::DELETE, self::DELETE,$pattern, $to, $object, $context));
+
+        return $controller->bind($this->getRouteName(self::DELETE, $pattern));
+    }
+
+    /**
+     * Route 'options' path to new BaseController instance with given access rights
+     * @param ControllerCollection $controllers Controller collection
+     * @param string $pattern Matched route pattern relative to root (or parent controller)
+     * @param callable $to Callback that returns the response when matched
+     * @param Accessible $object Accessible object
+     * @param array|callable $context POST context.
+     * @return Controller
+     */
+    protected function options($controllers, $pattern, $to, $object, $context = array()) {
+
+        // Get controller instance
+        $controller = $controllers->get($pattern,
+            new BaseController($this, self::OPTIONS, self::OPTIONS, $pattern, $to, $object, $context));
+
+        return $controller->bind($this->getRouteName(self::OPTIONS, $pattern));
+    }
+
+    /**
+     * Route 'post' path to new PostController instance with given access rights
      * @param ControllerCollection $controllers Controller collection
      * @param string $pattern Matched route pattern relative to root (or parent controller)
      * @param callable $to Callback that returns the response when matched
@@ -216,11 +337,28 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         // Get controller instance
         $controller = $controllers->post($pattern, new PostController($this, $pattern, $to, $object, $context));
 
-        return $controller->bind($this->getRouteName($pattern));
+        return $controller->bind($this->getRouteName(self::POST, $pattern));
     }
 
     /**
-     * Route path to json controller
+     * Route 'page' path to new PageController instance with given access rights
+     * @param ControllerCollection $controllers Controller collection
+     * @param string $template Template name
+     * @param string $pattern Matched route pattern relative to root (or parent controller)
+     * @param Accessible $object Accessible object
+     * @param array|callable $context Page context.
+     * @return Controller
+     */
+    protected function page($controllers, $template, $pattern, $object, $context = array())
+    {
+        // Get controller instance
+        $controller = $controllers->get($pattern, new PageController($this, $template, $pattern, $object, $context));
+
+        return $controller->bind($this->getRouteName(self::PAGE, $pattern));
+    }
+
+    /**
+     * Route 'json' path to new JsonController instance with given access rights
      * @param ControllerCollection $controllers Controller collection
      * @param string $pattern Matched route pattern relative to root (or parent controller)
      * @param callable $to Callback that returns the response when matched
@@ -233,7 +371,7 @@ abstract class AbstractControllerProvider implements ControllerProviderInterface
         // Get controller instance
         $controller = $controllers->get($pattern, new JsonController($this, $pattern, $to, $object, $context));
 
-        return $controller->bind($this->getRouteName($pattern));
+        return $controller->bind($this->getRouteName(self::JSON, $pattern));
     }
 
     /**

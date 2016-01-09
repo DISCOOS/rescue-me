@@ -88,6 +88,7 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
     public function getContext(Application $app, Request $request, array $context = array())
     {
         $menu = array();
+        $previous = null;
 
         // Called if not initialized.
         if($this->init)
@@ -105,9 +106,14 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
         // Create menu items
         foreach($this->items as $template) {
 
-            if(($item = $this->toItem($app, $request, $user, $template, $context)) !== false) {
-                $menu[self::ITEMS][] = $item;
-            };
+            // Prevent two consecutive dividers being added
+            if(!$template->isDivider() || !$previous || !$previous->isDivider()) {
+
+                if(($item = $this->toItem($app, $request, $user, $template, $context)) !== false) {
+                    $menu[self::ITEMS][] = $item;
+                }
+            }
+            $previous = $template;
         }
         return $menu;
     }
@@ -143,8 +149,18 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
                 $args = $this->getArguments($method, $app, $request, $user, $context);
                 $item = call_user_func_array($parser, $args);
             } else {
-                $item = $this->parse($app, $template, $user, isset_get($context, 'object'));
+                $item = $this->parse($app, $template, $user, isset_get($context, 'object', false));
             }
+
+            // Implode attributes?
+            if(isset($item[MenuItem::ATTRIBUTES])) {
+                $attributes = array();
+                foreach($item[MenuItem::ATTRIBUTES] as $key => $value) {
+                    $attributes[] = $key . '="' . $value . '"';
+                }
+                $item[MenuItem::ATTRIBUTES] = implode(" ", $attributes);
+            }
+
         }
 
         return $item;
@@ -154,12 +170,14 @@ abstract class AbstractMenu extends CallableResolver implements MenuInterface {
     /**
      * Create menu
      * @param string $label Menu label
+     * @param boolean|string $icon Item icon
      * @return MenuItem
      */
-    protected function newMenu($label)
+    protected function newMenu($label, $icon = false)
     {
         $this->menu = new MenuItem();
         $this->menu->setLabel($label);
+        if($icon) $this->menu->setIcon($icon);
         return $this->menu;
     }
 
