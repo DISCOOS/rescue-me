@@ -23,8 +23,15 @@
            required
     />
 
-	<button class="btn btn-large btn-primary" type="submit">{{- T_('Login') -}}</button>
-	<a class="pull-right" href="{{ path('password/reset')}}">{{- T_('Forgot your password?') -}}</a>
+    <button class="btn btn-large btn-primary" type="submit">{{- T_('Login') -}}</button>
+    <div class="pull-right" >
+        <div class="checkbox">
+            <label><input type="checkbox" id="rembember_me"name="_rembember_me"
+                   class="{{ message is defined ? ' alert-error' : '' }}"/>
+            {{- T_('Remember me') -}}</label>
+        </div>
+        <a class="no-wrap" href="{{ path('password/reset')}}">{{- T_('Forgot your password?') -}}</a>
+    </div>
 
 </form>
 <div class="form-signin text-center">

@@ -11,9 +11,11 @@
 
 namespace RescueMe\Admin\Provider;
 
+use RescueMe\Admin\Context;
 use RescueMe\Admin\Core\LegacyPasswordEncoder;
 use Silex\Application;
 use Silex\ControllerCollection;
+use Silex\Provider\RememberMeServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,12 +47,19 @@ class AdminControllerProvider extends AbstractControllerProvider {
                     'logout' => array(
                         'logout_path' => '/logout'
                     ),
+                    'remember_me' => array(
+                        'key' => Context::getSecuritySalt(),
+                        /* Other options */
+                    ),
                     'users' => $app->share(function () {
                         return new UserProvider();
                     })
                 )
             )
         ));
+
+        // Enable conditional 'remember me', login.twig
+        $app->register(new RememberMeServiceProvider());
 
         // Ensure login is allowed as anonymous user
         $app['security.access_rules'] = array(

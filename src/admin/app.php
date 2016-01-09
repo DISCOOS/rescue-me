@@ -25,15 +25,23 @@ $app['debug'] = DEBUG;
 // Enable sessions
 $app->register(new Silex\Provider\SessionServiceProvider());
 
+// Enable security
+$app->register(new Silex\Provider\SecurityServiceProvider());
+$app->register(new Silex\Provider\RememberMeServiceProvider());
+
 // Enable twig as template provider
 $app->register(new Silex\Provider\TwigServiceProvider(),
     array('twig.path' => Context::getAdminPath().'views',
         'twig.options' => array('cache' => Context::getDataPath() . 'twig.cache')
     ));
-$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+// Add I18n support (workaround that prevents exception thrown by the security provider)
+$app['twig'] = $app->share($app->extend('twig', function(/** @var Twig_Environment */ $twig, $app) {
+    $twig->addExtension(new Twig_Extensions_Extension_Text($app));
+    return $twig;
+}));
 
-// Add I18n support
-$app['twig']->addExtension(new \RescueMe\Twig\Extension\I18n());
+// Enable URL generator for named routes.
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 // Register internal service  (note: order below matters)
 $app->register(new \RescueMe\Admin\Provider\AccessServiceProvider());
@@ -41,7 +49,6 @@ $app->register(new \RescueMe\Admin\Provider\TemplateServiceProvider());
 $app->register(new \RescueMe\Admin\Provider\PageServiceProvider());
 $app->register(new \RescueMe\Admin\Provider\RowServiceProvider());
 $app->register(new \RescueMe\Admin\Provider\MenuServiceProvider());
-//$app->register(new \RescueMe\Admin\Provider\EditorServiceProvider());
 
 // Register common menus
 $menus = MenuServiceProvider::get($app);
@@ -72,69 +79,5 @@ $app->error(function (\Exception $e, $code) use ($app) {
         }
         // TODO: Map exception to response
     });
-
-//    // Verify logon information
-//    $user = User::verify();
-//    $_SESSION['logon'] = ($user instanceof User);
-//
-//	$TWIG = array(
-//        'APP_TITLE' => TITLE,
-//        'APP_URI' => APP_URI,
-//        'APP_ADMIN_URI' => ADMIN_URI,
-//        'LOGIN' => $_SESSION['logon'],
-//        'SMS_TEXT_MISSING' => T::_(T::ALERT_SMS),
-//        'SMS_TEXT_GUIDE'  => T::_(T::ALERT_SMS_COARSE_LOCATION)
-//	);
-//
-//	$app = new Silex\Application();
-//	$app['debug'] = true;
-//	$app->register(new Silex\Provider\TwigServiceProvider(),
-//		array('twig.path' =>ADMIN_PATH.'views',
-//			  #'twig.options' => array('cache' => APP_PATH. 'tmp/twig.cache')
-//			  ));
-//    $app['twig']->addExtension(new Twig_Extensions_Extension_I18n());
-//
-//   	// Force logon?
-//	if($_SESSION['logon'] == false) {
-//		$app->match('/', function () use ($app) {
-//			global $TWIG;
-//			require_once(ADMIN_PATH.'controllers/logon.controller.php');
-//			return $app['twig']->render('login.twig', $TWIG);
-//		});
-//	}
-//
-//	// Main actions
-//	$app->match('/{module}', function ($module) use ($app, $user) {
-//		global $TWIG;
-//		if($_SESSION['logon']==true) {
-//            if($module == 'logon') {
-//                $module = 'start';
-//            } elseif($module == 'logout') {
-//                $user->logout();
-//                return $app->redirect(APP_URI);
-//            }
-//        }
-//
-//		$controller = ADMIN_PATH."controllers/$module.controller.php";
-//		if(file_exists($controller))
-//			require_once($controller);
-//
-//		$TWIG['VIEW'] = T_('Dashboard');
-//	    return $app['twig']->render("$module.twig", $TWIG);
-//
-//	})->value('module', 'start')->assert('module', "logon|start|logout");
-//
-//	// Manager actions
-//	$app->match('/{module}/{action}/{id}', function ($module, $action, $id) use ($app, $user) {
-//		global $TWIG;
-//		$view = rtrim("$module.$action",".");
-//		$controller = ADMIN_PATH."controllers/$view.controller.php";
-//		if(file_exists($controller))
-//			require_once($controller);
-//
-//        $TWIG['VIEW'] = trim("$action $module");
-//	    return $app['twig']->render("$view.twig", $TWIG);
-//
-//	})->value('id', false);
 
 return $app;
