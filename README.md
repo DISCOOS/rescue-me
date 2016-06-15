@@ -28,12 +28,12 @@ php -r "eval('?>'.file_get_contents('http://rescueme.io/installer'));"
 This script will check some php.ini settings, warn you if they are set incorrectly, 
 and then download the latest `rescueme.phar` in current directory. 
 
-Install RescueMe
-----------------
+Install with command-line installer
+-----------------------------------
 
 Run this in your terminal to install RescueMe:
 
-(assumes Apache is already installed and configured)
+(assumes Apache, MySQL and PHP is installed and configured correctly)
 
 ```bash
 php rescueme.phar install --install-dir=/path/to/rescueme
@@ -41,8 +41,9 @@ php rescueme.phar install --install-dir=/path/to/rescueme
 
 Follow the instructions.
 
-Build from source
------------------
+Install from source
+-------------------
+Developers should [use Vagrant Box for RescueMe](https://github.com/DISCOOS/rescue-me/wiki/Use%20vagrant%20box%20for%20RescueMe) as runtime environment. It will save developers time and remove the need for installing the full stack of runtime dependencies on the developer machine, with all that entails. If you still you want to install everything yourself, you should read [Create Vagrant Box for RescueMe](https://github.com/DISCOOS/rescue-me/wiki/Create-vagrant-box-for-RescueMe) which lists all runtime dependencies.
 
 1. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a>** and extract it to `/path/to/rescume/`, **or**
     ```bash
