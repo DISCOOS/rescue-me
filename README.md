@@ -56,10 +56,10 @@ Developers should [use Vagrant Box for RescueMe](https://github.com/DISCOOS/resc
     vagrant up
     vagrant ssh
     ```
-2. **Goto root of RescueMe repo**
+3. **Goto src of RescueMe repo**
 
     ```bash
-    cd /rescueme
+    cd /rescueme/src
     ```
     
 4. **Download latest Composer version into /path/to/rescueme/src/**
@@ -74,7 +74,7 @@ Developers should [use Vagrant Box for RescueMe](https://github.com/DISCOOS/resc
     php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
     ```    
 
-3. **Install dependencies and configure RescueMe**
+5. **Install dependencies and configure RescueMe**
 
     ```php
     php composer.phar install
