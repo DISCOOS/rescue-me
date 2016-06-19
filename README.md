@@ -47,22 +47,28 @@ Developers should [use Vagrant Box for RescueMe](https://github.com/DISCOOS/resc
 
 1. **<a href="https://github.com/DISCOOS/rescue-me/archive/master.zip">Download latest source</a>** and extract it to `/path/to/rescume/`, **or**
     ```bash
-    git clone https://github.com/DISCOOS/rescue-me.git /path/to/rescume/
+    git clone https://github.com/DISCOOS/rescue-me.git
     ```
 
-2. **Goto /path/to/rescume/src/**
+2. **Log into RescueMe runtime environment**
 
     ```bash
-    cd /path/to/rescume/src
+    vagrant up
+    vagrant ssh
+    ```
+2. **Goto root of RescueMe repo**
+
+    ```bash
+    cd /rescueme
     ```
     
-2. **Download latest Composer version into /path/to/rescume/src/**
+4. **Download latest Composer version into /path/to/rescueme/src/**
 
     ```bash
     curl -sS https://getcomposer.org/installer | php
     ```
     
-    or if you don't have curl (windows):
+    or if you don't have curl (you should really use the runtime then, which have curl installed by default):
     
     ```bash
     php -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
