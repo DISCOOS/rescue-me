@@ -909,7 +909,7 @@
          */
         public static function unique($email) {
             $email = User::safe($email);
-            return $email && DB::count(self::TABLE, '`email` = "'.  strtolower($email) . '"') === 0;
+            return $email && DB::count(self::TABLE, 'NOT `state`="deleted" AND `email` = "'.  strtolower($email) . '"') === 0;
         }// safe
         
 
