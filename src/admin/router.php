@@ -449,7 +449,10 @@ use RescueMe\User;
 
                 if($user !== false) {
 
-                    $user->prepare(input_get_string('use_system_sms_provider', false));
+                    // Configure given user to use system modules?
+                    if(input_post_string('use_system_sms_provider')) {
+                        Manager::prepare($user->id, true, SMS::TYPE);
+                    }
                     
                     if($admin === false) {
                         $_ROUTER['name'] = T_('Request sent');
@@ -544,7 +547,7 @@ use RescueMe\User;
 
                     // Configure given user to use system modules?
                     if(input_post_string('use_system_sms_provider')) {
-                        $edit->prepare(true);
+                        Manager::prepare($edit->id, true, SMS::TYPE);
                     }
 
                     header("Location: ".ADMIN_URI.$url);
