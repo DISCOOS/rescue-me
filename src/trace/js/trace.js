@@ -221,13 +221,14 @@ R.trace.locate = function() {
                 }
 
                 xhr.open("GET", url, true);
-                xhr.send();
 
                 // Detect connection timeouts (limit to residue)
                 xhr.timeout = w * 1000;
                 xhr.ontimeout = function() {
                     rs(c, t, a);
                 };
+
+                xhr.send();
 
                 // Fallback for those not supporting XMLhttp request. Known: WP 7.8
             } else if (c.accuracy < 300) {
