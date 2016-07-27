@@ -402,13 +402,20 @@
                 return false;
 
             $query = "SELECT `pos_id`, `acc`, `lat`, `lon`, `timestamp` FROM `positions`" .
-                    " WHERE `missing_id` = " . (int) $this->id .
-                    " AND `timestamp` > NOW() - INTERVAL ".(int)$maxAge." MINUTE" .
+                    " WHERE `missing_id` = %d AND `acc` %s AND `timestamp` > NOW() - INTERVAL %d MINUTE" .
                     " ORDER BY `acc` LIMIT 1";
-            
-            $res = DB::query($query);
 
-            if(!$res) return false;
+            // Handle positions with no accuracy as least accurate
+            $res = DB::query(sprintf($query, (int)$this->id, ">0", (int)$maxAge));
+
+            if(DB::isEmpty($res)) {
+                // Get least accurate
+                $res = DB::query(sprintf($query, (int)$this->id, "=0", (int)$maxAge));
+                if(DB::isEmpty($res)) {
+                    return false;
+                }
+            }
+
             $row = $res->fetch_assoc();
             if ($row === NULL) return false;
             return $row;
@@ -432,7 +439,7 @@
             $this->last_acc = $acc;
             
             $best_acc = $this->getMostAccurate();
-            $best_acc = $best_acc['acc'];
+            $best_acc = $best_acc ? (int)$best_acc['acc'] : 0;
 
             // Send SMS 2?
             if((int) $acc > 500 && sizeof($this->positions) > 1){
@@ -477,7 +484,7 @@
 
             // Alert person of concern if an accurate position is logged
             // Always send first position and if the accuracy improves by 20%
-            else if(($this->sms_mb_sent == 'false') || $acc < $best_acc * 0.8) {
+            else if(($this->sms_mb_sent == 'false') || $best_acc === 0 || $acc < $best_acc * 0.8) {
 
                 if($this->_sendSMS(
                     $this->alert_mobile_country, 
