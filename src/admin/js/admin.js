@@ -427,7 +427,7 @@ R.tabs = function(tabs) {
         id = 'tc_' + id;
         element.attr('id', id);
         // Conform to twitter bootstrap tab api contract
-        tab.attr('data-target', '#' + 'tc_' + id);
+        tab.attr('data-target', '#' + id);
     });
 
     R.toTab(tabs);
