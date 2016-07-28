@@ -30,7 +30,8 @@ $twig->addExtension(new Symfony\Bridge\Twig\Extension\TranslationExtension(
     new Symfony\Component\Translation\Translator(null)
 ));
 // Replaced default with RescueMe version of I18n support for Twig
-$twig->addExtension(new \RescueMe\Admin\Core\I18n());
+//$twig->addExtension(new \RescueMe\Twig\Extension\I18n());
+$twig->addExtension(new Twig_Extensions_Extension_I18n());
 $twig->addExtension(new Symfony\Bridge\Twig\Extension\RoutingExtension(
     new Twig\Gettext\Routing\Generator\UrlGenerator()
 ));
