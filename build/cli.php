@@ -417,7 +417,7 @@ function configure($opts, $name, $default) {
 
     // Load application context
     Context::load(array (
-        Context::PATH => $root,
+        Context::APP_PATH => $root,
         Context::DATA_PATH => $data,
         Context::LOCALE_PATH => $locale,
         Context::VENDOR_PATH => $vendor
