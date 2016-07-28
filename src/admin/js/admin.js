@@ -18,7 +18,7 @@ $(document).ready(function() {
     
     // Prepare DOM
     R.prepare(document.documentElement, R.options);
-  
+
 });
 
 /**
@@ -366,6 +366,7 @@ R.tabs = function(tabs) {
     
     // Listen to named tab selections
     $('#'+tabs+' a').click(function (e) {
+        e.preventDefault();
         var tab = $(e.target);
         var href = tab.attr("href");
         if(href !== undefined) {
@@ -377,7 +378,7 @@ R.tabs = function(tabs) {
             }
 
             R.hash(id);
-            var target = '#'+id;
+            var target = '#tc_'+id;
             var data = { name: id };
             var list = $(target).find('.pagination'); 
             if(list.length > 0) {
@@ -389,7 +390,8 @@ R.tabs = function(tabs) {
                     $this.data('name', id);
                     $this.data('target', target);
                 });
-            } 
+            }
+            //tab.tab('show');
 
             R.ajax(href, tab, data, function( data ) {
 
@@ -416,6 +418,18 @@ R.tabs = function(tabs) {
             });
         }
     });
+
+    // Ensure content div id's are not same as hash (prevents scroll-to when hash changes on load and reload)
+    $('#'+tabs+' a').each(function() {
+        var tab = $(this);
+        var id = tab.attr('href').replace("#", "");
+        var element = $('#' + id);        
+        id = 'tc_' + id;
+        element.attr('id', id);
+        // Conform to twitter bootstrap tab api contract
+        tab.attr('data-target', '#' + 'tc_' + id);
+    });
+
     R.toTab(tabs);
 };
 

@@ -26,8 +26,8 @@ R.toQuery = function(url) {
  * @param id Hash id
  */
 R.hash = function(id) {
-    if(history.pushState){
-        history.pushState(null,null,'#'+id);
+    if(history.replaceState){
+        history.replaceState({},'','#'+id);
     }else{
         var el = $(id);
         el.removeAttr('id');
