@@ -50,6 +50,9 @@ R.prepare = function (element, options) {
     $(element).find('li.missing').click(function () {
         window.location.href = R.admin.url + 'missing/' + $(this).attr('id');
     });
+    $(element).find('td.missing:not(.editor)').click(function () {
+        window.location.href = R.admin.url + 'missing/' + $(this).closest('tr').attr('id');
+    });
 
     $(element).find('li.position,.label-position').click(function () {
         if (R.map.panTo !== undefined) {
@@ -57,9 +60,6 @@ R.prepare = function (element, options) {
         }
     });
 
-    $(element).find('td.missing:not(.editor)').click(function () {
-        window.location.href = R.admin.url + 'missing/' + $(this).closest('tr').attr('id');
-    });
 
     var flagImg = null;
     $(element).find('.country').change(function () {
@@ -257,6 +257,65 @@ R.prepare = function (element, options) {
             });
             return true;
         }
+
+    });
+};
+
+R.remove = function(url, element) {
+    R.action(url, {
+        element: element,
+        success: function() {
+            $(element).remove();
+        }
+    });
+};
+
+R.action = function(url, options) {
+    options = options || {
+        data: {}
+    };
+    if(typeof options == 'string') {
+        options = {
+            data: {},
+            element: $(options)
+        };
+    }
+    var request = {
+        url: url,
+        data: options.data
+    };
+    var notify = function(response) {
+        var ctrl,
+            position,
+            success = (response.status < 400 || typeof response == 'string'),
+            message = (success ? response : response.responseText);
+
+        if(options.element) {
+            ctrl = $(options.element);
+            position = 'top center';
+        } else  {
+            ctrl = $;
+            position = 'top center';
+        }
+
+        ctrl.notify(message, {
+            position: position,
+            autoHideDelay: 3000,
+            className: success ? 'success' : 'error'
+        });
+
+        if(success && options.success) {
+            options.success(response);
+        }
+    };
+
+    $.ajax(request).done(function( response ) {
+
+        notify( response );
+
+    }).fail(function( response ) {
+
+        notify( response );
 
     });
 };

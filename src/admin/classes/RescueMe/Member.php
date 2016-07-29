@@ -322,8 +322,9 @@
                     'Members matching ' . $filter . ' was removed.'
 
                 );
-            }
-            return Member::error('Failed to remove members matching ' . $filter);
+            } else Member::error('Failed to remove members matching ' . $filter);
+
+            return $res;
         }
 
 

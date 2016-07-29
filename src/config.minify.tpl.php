@@ -47,6 +47,7 @@
                 '//js/bootstrap-editable.min.js',
                 '//js/bootstrap-paginator.min.js',
                 '//js/i18next.min.js',
+                '//js/notify.js',
                 '//js/selectize.js',
                 '//js/rescueme.js',
                 '//js/rescueme-accordion.js',
