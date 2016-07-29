@@ -236,6 +236,29 @@ R.prepare = function (element, options) {
         R.ajax(R.admin.url + 'alert/close/' + $(this).prop('id'));
     });
 
+    // Register pill-boxes
+    $(element).find('.pillbox.users').selectize({
+        delimiter: ',',
+        persist: false,
+        create: false,
+        preload: true,
+        options: [],
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            $.ajax({
+                url: R.admin.url + 'user/list?name=active&format=options&filter=' + encodeURIComponent(query),
+                type: 'GET',
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(JSON.parse(res));
+                }
+            });
+            return true;
+        }
+
+    });
 };
 
 R.ajax = function(url, element, data, done) {

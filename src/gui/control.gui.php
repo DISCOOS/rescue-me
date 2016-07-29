@@ -24,6 +24,13 @@
     <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
     <textarea class="<?= $class ?> id="<?= $id ?>" name="<?= $id ?>" width="100%" <?=$attributes?>><?=$value?></textarea>
 
+<? } elseif(stristr($type,"users") !== false) { $class = (empty($class) ? 'input-block-level' : $class) ?>
+
+    <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
+    <input id="<?= $id ?>" name="<?= $id ?>" type="text"
+           placeholder="<?= isset($placeholder) ? $placeholder : $label ?>"
+           class="input-block-level pillbox users" <?= $attributes ?> value="<?=$value?>">
+
 <? } elseif(stristr($type,"group") !== false) { $class = (empty($class) ? 'row-fluid' : $class) ?>
 
 <div class="<?= $class ?>">

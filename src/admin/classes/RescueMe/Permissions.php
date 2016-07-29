@@ -38,6 +38,7 @@
             'operations.all'=>array('read', 'write'),
             'user'=>array('read', 'write'),
             'user.all'=>array('read', 'write'),
+            'groups'=>array('read', 'write'),
             'roles'=>array('read', 'write'),
             'setup'=>array('read', 'write'),
             'setup.all'=>array('read', 'write')

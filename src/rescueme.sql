@@ -52,7 +52,33 @@ CREATE TABLE IF NOT EXISTS `issues` (
 
 -- --------------------------------------------------------
 
--- 
+--
+-- Structure for table `groups`
+--
+
+CREATE TABLE IF NOT EXISTS `groups` (
+  `group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_name` tinytext NOT NULL,
+  `group_owner_user_id` int(11) NOT NULL,
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for table `members`
+--
+
+CREATE TABLE IF NOT EXISTS `members` (
+  `member_id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_group_id` int(11) NOT NULL,
+  `member_user_id` int(11) NOT NULL,
+  PRIMARY KEY (`member_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for table `logs`
 -- 
 

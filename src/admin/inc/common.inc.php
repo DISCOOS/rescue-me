@@ -1,6 +1,8 @@
 <?php
 
+use Psr\Log\LogLevel;
 use RescueMe\Domain\Issue;
+use RescueMe\Log\Logs;
 use RescueMe\Manager;
 use RescueMe\Email\Provider as Email;
 use RescueMe\User;
@@ -24,6 +26,35 @@ function modules_exists($module, $_ = null) {
     }
 
     return empty($missing);
+}
+
+/**
+ * Assert argument count
+ * @param array $args Actual arguments
+ * @param int $count Expected argument count
+ * @param string $log Log name
+ * @param int $level Log level
+ * @param string $file File name
+ * @param string $method Method in file
+ * @param int $line Line in file
+ * @return boolean TRUE if valid, FALSE otherwise.
+ */
+function assert_args_count($args, $count, $log, $level, $file, $method, $line) {
+    $valid = count($args) >= $count;
+    if($valid) {
+        Logs::write(
+            $log,
+            $level,
+            "One or more required arguments are missing",
+            array(
+                'file' => $file,
+                'method' => $method,
+                'params' => $args,
+                'line' => $line,
+            )
+        );
+    }
+    return $valid;
 }
 
 /**

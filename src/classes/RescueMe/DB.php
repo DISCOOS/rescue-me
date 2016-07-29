@@ -307,7 +307,7 @@
          * @param string $table
          * @param string $filter
          * 
-         * @return boolean TRUE on success, FALSE otherswise.
+         * @return boolean TRUE on success, FALSE otherwise.
          */
         public static function delete($table, $filter='')
         {
@@ -420,8 +420,8 @@
         
         /**
          * Build string matching filter from fields and values
-         * @param array $fields Fully qualified table names
-         * @param array $values Values to match
+         * @param array|mixed $fields Fully qualified table names
+         * @param array|mixed $values Values to match
          * @param string $operand Operand between each predicate
          * @return string
          */

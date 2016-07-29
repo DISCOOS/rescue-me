@@ -2,8 +2,9 @@
 
     use RescueMe\DB;
     use RescueMe\Domain\Alert;
-use RescueMe\Domain\Issue;
-use RescueMe\User;
+    use RescueMe\Domain\Issue;
+    use RescueMe\Group;
+    use RescueMe\User;
     use RescueMe\Manager;
     use RescueMe\Missing;
     use RescueMe\Operation;
@@ -382,7 +383,7 @@ use RescueMe\User;
                 echo ajax_response("user.list");
 
                 exit;
-            }            
+            }
             
             $_ROUTER['name'] = T_('Users');
             $_ROUTER['view'] = $_GET['view'];
@@ -1563,6 +1564,100 @@ use RescueMe\User;
                             $_ROUTER['error'] = $result;
                         }
                     }
+                }
+            }
+
+            break;
+
+        case 'group/new':
+
+            if($user->allow('write', 'groups', User::currentId()) === FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('New group');
+            $_ROUTER['view'] = 'group/new';
+
+            // Process form?
+            if (is_post_request()) {
+
+                // Get inputs
+                $name = input_post_string('group_name');
+                $members = input_post_string('group_members');
+                $members = (empty($members) ? array() : explode(',', $members));
+
+                $group = Group::add($name, User::currentId(), $members);
+
+                if($group === false) {
+                    $_ROUTER['error'] = DB::errno() ? DB::error() :
+                        sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+                } else {
+                    header("Location: ".ADMIN_URI.'group/edit/'.$group->group_id);
+                    exit();
+                }
+            }
+
+            break;
+
+        case 'group/edit':
+
+            if(($id = input_get_int('id')) === FALSE) {
+
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "404";
+                $_ROUTER['error'] = T_('Id not defined');
+                break;
+            }
+
+            if($user->allow('write', 'groups', $id) === FALSE)
+            {
+                $_ROUTER['name'] = T_('Illegal operation');
+                $_ROUTER['view'] = "403";
+                $_ROUTER['error'] = T_('Access denied');
+                break;
+            }
+
+            $_ROUTER['name'] = T_('Edit group');
+            $_ROUTER['view'] = 'group/edit';
+
+            // Process form?
+            if (is_post_request()) {
+
+                $edit = Group::get($id);
+                if($edit === false) {
+                    $_ROUTER['error'] = sprintf(T_('Group %1$s not found'), $id);
+                    break;
+                }
+
+                // Get inputs
+                $name = input_post_string('group_name');
+                $members = input_post_string('group_members');
+                $members = (empty($members) ? array() : explode(',', $members));
+
+                if($edit->update($name, User::currentId(), $members) === false) {
+                    $_ROUTER['error'] = DB::errno() ? DB::error() :
+                        sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+                } else {
+
+//                    if($send) {
+//                        $result = send_issue_email($user, $edit, $bulk);
+//                        if($result === true) {
+//                            header("Location: ".ADMIN_URI.'group/edit/');
+//                            exit();
+//                        }
+//                        if(is_array($result)) {
+//                            $names = implode("\n", $result);
+//                            $cols = min(20, count($result));
+//                            $message = '<b>%1$s</b> <textarea rows="%2$s" class="span12" style="resize: none;">%3$s</textarea>';
+//                            $_ROUTER['error'] = sprintf($message, T_('Email not sent to following users'), $cols, $names);
+//                        } else {
+//                            $_ROUTER['error'] = $result;
+//                        }
+//                    }
                 }
             }
 

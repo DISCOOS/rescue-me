@@ -2,10 +2,10 @@
 
     // Minify constants
     define('MINIFY_MAXAGE', 1800);
-    
+
     /**
      * Get Minify groups configuration array
-     * 
+     *
      */
     function get_rescueme_minify_config()
     {
@@ -14,23 +14,24 @@
         (
             'index.css' => array
             (
-                '//css/bootstrap.min.css', 
+                '//css/bootstrap.min.css',
                 '//css/bootstrap.fix.css',
                 '//css/rescueme.css',
                 '//admin/css/admin.css'
             ),
             'index.js' => array
             (
-                '//js/i18next.min.js', 
-                '//js/rescueme.js', 
-                '//js/jquery.min.js', 
+                '//js/i18next.min.js',
+                '//js/rescueme.js',
+                '//js/jquery.min.js',
                 '//js/bootstrap.min.js'
             ),
             'admin.css' => array
             (
-                '//css/bootstrap.min.css', 
-                '//css/bootstrap.fix.css', 
+                '//css/bootstrap.min.css',
+                '//css/bootstrap.fix.css',
                 '//css/bootstrap-editable.css',
+                '//css/selectize.bootstrap2.css',
                 '//css/rescueme.css',
                 '//admin/css/admin.css',
                 '//admin/css/admin.responsive.css',
@@ -39,13 +40,14 @@
             ),
             'admin.js' => array
             (
-                '//js/jquery.min.js', 
-                '//js/jquery.ui-custom.min.js', 
-                '//js/jquery.validate.min.js', 
+                '//js/jquery.min.js',
+                '//js/jquery.ui-custom.min.js',
+                '//js/jquery.validate.min.js',
                 '//js/bootstrap.min.js',
-                '//js/bootstrap-editable.min.js', 
-                '//js/bootstrap-paginator.min.js', 
-                '//js/i18next.min.js', 
+                '//js/bootstrap-editable.min.js',
+                '//js/bootstrap-paginator.min.js',
+                '//js/i18next.min.js',
+                '//js/selectize.js',
                 '//js/rescueme.js',
                 '//js/rescueme-accordion.js',
                 '//js/capslock.js',
@@ -56,8 +58,8 @@
             (
                 '//admin/js/map.js'
             )
-            
-        );        
+
+        );
     }
 
     
