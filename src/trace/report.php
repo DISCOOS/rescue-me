@@ -4,7 +4,7 @@
     use RescueMe\Missing;
 
     $id = input_get_hash('id');
-    $acc = input_get_int('acc');
+    $acc = input_get_float('acc');
     $lat = input_get_float('lat');
     $lon = input_get_float('lon');
     $alt = input_get_float('alt');
