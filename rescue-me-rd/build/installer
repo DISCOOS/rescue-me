@@ -1,0 +1,367 @@
+#!/usr/bin/env php
+<?php
+    
+    /**
+	 * Installer script
+	 * 
+	 * @copyright Copyright 2013 {@link http://www.discoos.org DISCO Open Source Foundation} 
+	 *
+     * @since 11. July 2013
+	 * 
+	 * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
+	 */
+        
+    define('PHAR', 'rescueme.phar');
+    define('PHAR_URL', 'http://rescueme.discoos.org/'.PHAR);
+    define('INSTALLER_URL', 'http://rescueme.discoos.org/installer');
+    
+    define('HELP',"help");
+    define('NAME',"name");
+    define('QUIET',"quiet");
+    define('ACTION',"action");
+    define('VERSION',"version");
+    define('DOWNLOAD',"download");
+    define('DOWNLOAD_DIR',"download-dir");
+    
+    
+    // ---------------------------------------------------------------
+    // Constants copied from from inc/common.inc.php. 
+    // ---------------------------------------------------------------
+    // 
+    // Any changes should be applied there as well, or backported here.
+    //
+    define('PRE', -1);
+    define('NONE', 0);
+    define('POST', 1);
+    define('BOTH', 2);
+    define('ERROR', -1);
+    define('SUCCESS', 0);    
+    define('COLOR_NONE', 'none');
+    define('COLOR_INFO', 'info');
+    define('COLOR_ERROR', 'error');
+    define('COLOR_SUCCESS', 'success');
+    
+    
+
+    // Only run this when executed on the CLI
+    if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
+
+        if (extension_loaded('suhosin')) {
+            echo "suhosin";
+            if (stristr(ini_get('suhosin.executor.include.whitelist'), 'phar') === false) {
+                out("RescueMe Download Script requires 'phar://' includes to be enabled.", POST, COLOR_ERROR);
+                out("Add 'phar' to 'suhosin.executor.include.whitelist' in 'php.ini'.", POST, COLOR_ERROR);
+                exit(ERROR);
+            }
+            if (stristr(ini_get('suhosin.executor.include.blacklist'), 'phar') !== false
+            ) {
+                echo "RescueMe Download Script requires 'phar://' includes to be enabled.\n\n";
+                echo "Remove 'phar' from 'suhosin.executor.include.blacklist' in 'php.ini'.\n";
+                exit(ERROR);
+            }
+        }        
+        
+        // Get options
+        $opts = parse_opts($argv, array('quiet'));
+        
+       // Print help now?
+        if(isset($opts['h'])) print_help();
+        
+        // Get default path download directory
+        $dir = get($opts, DOWNLOAD_DIR, getcwd(), false);
+        if (false !== $dir && !is_dir($dir)) {
+            out("The defined download dir ({$dir}) does not exist.", POST, COLOR_INFO);
+            exit(ERROR);
+        }
+        
+        // Install rescue me
+        download($dir, get($opts, QUIET, false, false));
+        
+    }
+    
+    
+    /**
+     * Installs RescueMe to the current working directory
+     * 
+     * Adapted from https://github.com/composer/getcomposer.org/blob/master/web/installer
+     */
+    function download($dir, $quiet)
+    {
+        $path = (is_dir($dir) ? rtrim($dir, '/').'/' : '') . PHAR;
+        $dir = realpath($dir) ? realpath($dir) : getcwd();
+        $file = $dir.DIRECTORY_SEPARATOR.PHAR;
+
+        if (is_readable($file)) {
+            @unlink($file);
+        }
+
+        $retries = 3;
+        while ($retries--) {
+            if (!$quiet) {
+                out("Downloading...", PRE, COLOR_INFO);
+            }
+
+            $source = PHAR_URL;
+            $errorHandler = new ErrorHandler();
+            set_error_handler(array($errorHandler, 'handleError'));
+
+            $fh = fopen($file, 'w');
+            if (!$fh) {
+                out('Could not create file '.$file.': '.$errorHandler->message, POST, COLOR_ERROR);
+            }
+            if (!fwrite($fh, file_get_contents($source, false, get_stream_context()))) {
+                out('Download failed: '.$errorHandler->message, POST, COLOR_ERROR);
+            }
+            fclose($fh);
+
+            restore_error_handler();
+            if ($errorHandler->message) {
+                continue;
+            }
+
+            try {
+                // Test the phar validity
+                $phar = new Phar($file);
+                // Free the variable to unlock the file
+                unset($phar);
+                break;
+            } catch (Exception $e) {
+                if (!$e instanceof UnexpectedValueException && !$e instanceof PharException) {
+                    throw $e;
+                }
+                unlink($file);
+                if ($retries) {
+                    if (!$quiet) {
+                       out('The download is corrupt, retrying...', POST, COLOR_ERROR);
+                    }
+                } else {
+                    out('The download is corrupt ('.$e->getMessage().'), aborting.', POST, COLOR_ERROR);
+                    exit(1);
+                }
+            }
+        }
+
+        if ($errorHandler->message) {
+            out('The download failed repeatedly, aborting.', POST, COLOR_ERROR);
+            exit(1);
+        }
+
+        chmod($file, 0755);
+
+        if (!$quiet) {
+            out(PHP_EOL."Composer successfully installed to: " . $file, NONE, COLOR_SUCCESS);
+            out(PHP_EOL."Use it: php $path", POST, COLOR_INFO);
+        }
+        
+        echo PHP_EOL;
+    }
+
+
+    /**
+     * Parses parameters into an array.
+     *
+     * Supports:
+     * -e
+     * -e <value>
+     * --long-param
+     * --long-param=<value>
+     * --long-param <value>
+     * <value>
+     *
+     * function copied from from inc/common.inc.php
+     * 
+     * Any changes should be applied there as well, or backported here.
+     * 
+     * @param array $params List of parameters
+     * @param array $noopt List of parameters without values
+     */
+    function parse_opts($params, $noopt = array()) {
+        
+        $result = array();
+        
+        // Could use getopt() here (since PHP 5.3.0), but it doesn't work relyingly
+        reset($params);
+        while(list($tmp, $p) = each($params)) {
+            
+            if($p{0} == '-') {
+                
+                $pname = substr($p, 1);
+                $value = true;
+                if($pname{0} == '-') {
+                    
+                    // Long option? (--<param>)
+                    $pname = substr($pname, 1);
+                    if(strpos($p, '=') !== false){
+                        // Value specified inline (--<param>=<value>)
+                        list($pname, $value) = explode('=', substr($p, 2), 2);
+                    }
+                }
+                // Check if next parameter is a descriptor or a value
+                $nextparm = current($params);
+                if(!in_array($pname, $noopt) && $value === true && $nextparm !== false && $nextparm{0} != '-') {
+                    list($tmp, $value) = each($params);
+                }
+                $result[$pname] = $value;
+            } 
+            else {
+                // Param doesn't belong to any option
+                $result[] = $p;
+            }
+        }
+
+        // Set action
+        $result[ACTION] = isset($result[1]) ? $result[1] : null;
+        $result[NAME] = isset($result[2]) ? $result[2] : null;
+
+        // Finished
+        return $result;
+        
+    }// parse_opts    
+    
+    
+    /**
+     * Get option argument value
+     * 
+     * function copied from from inc/common.inc.php
+     * 
+     * Any changes should be applied there as well, or backported here.
+     * 
+     * @param array $opts Option array
+     * @param string $arg Argument name
+     * @param mixed $default Default value
+     * @return mixed
+     */
+    function get($opts, $arg, $default = NULL, $escape = true)
+    {
+        $value = isset($opts[$arg]) ? $opts[$arg] : $default;
+        if($escape && $value !== "''") {
+            $value = str_escape($value); 
+        }
+        return $value;
+    }// get
+    
+    
+    /**
+     * function copied from https://github.com/composer/getcomposer.org/blob/master/web/installer
+     */
+    function get_stream_context()
+    {
+        $options = array('http' => array());
+
+        // Handle system proxy
+        if (!empty($_SERVER['HTTP_PROXY']) || !empty($_SERVER['http_proxy'])) {
+            // Some systems seem to rely on a lowercased version instead...
+            $proxy = parse_url(!empty($_SERVER['http_proxy']) ? $_SERVER['http_proxy'] : $_SERVER['HTTP_PROXY']);
+        }
+
+        if (!empty($proxy)) {
+            $proxyURL = isset($proxy['scheme']) ? $proxy['scheme'] . '://' : '';
+            $proxyURL .= isset($proxy['host']) ? $proxy['host'] : '';
+
+            if (isset($proxy['port'])) {
+                $proxyURL .= ":" . $proxy['port'];
+            } elseif ('http://' == substr($proxyURL, 0, 7)) {
+                $proxyURL .= ":80";
+            } elseif ('https://' == substr($proxyURL, 0, 8)) {
+                $proxyURL .= ":443";
+            }
+
+            // http(s):// is not supported in proxy
+            $proxyURL = str_replace(array('http://', 'https://'), array('tcp://', 'ssl://'), $proxyURL);
+
+            if (0 === strpos($proxyURL, 'ssl:') && !extension_loaded('openssl')) {
+                throw new \RuntimeException('You must enable the openssl extension to use a proxy over https');
+            }
+
+            $options['http'] = array(
+                'proxy'           => $proxyURL,
+                'request_fulluri' => true,
+            );
+
+            if (isset($proxy['user'])) {
+                $auth = $proxy['user'];
+                if (isset($proxy['pass'])) {
+                    $auth .= ':' . $proxy['pass'];
+                }
+                $auth = base64_encode($auth);
+
+                $options['http']['header'] = "Proxy-Authorization: Basic {$auth}\r\n";
+            }
+        }
+
+        return stream_context_create($options);
+    }// get_stream_context
+    
+    
+    /**
+     * Output message
+     * 
+     * function copied from from inc/common.inc.php
+     * 
+     * Any changes should be applied there as well, or backported here.
+     * 
+     * @param string $message Message
+     * @param integer $newline Message newline [optional, default: POST]
+     * @param string $color Output color
+     * 
+     * @since 11. July 2013
+     * 
+     * @return void
+     * 
+     */
+    function out($message, $newline=POST, $color = COLOR_NONE)
+    {
+        if (DIRECTORY_SEPARATOR == '\\') {
+            $hasColorSupport = false !== getenv('ANSICON');
+        } else {
+            $hasColorSupport = true;
+        }
+
+        $styles = array(
+            'success' => "\033[0;32m%s\033[0m",
+            'error' => "\033[31;31m%s\033[0m",
+            'info' => "\033[33;33m%s\033[0m"
+        );
+
+        $format = '%s';
+
+        if (isset($styles[$color]) && $hasColorSupport) {
+            $format = $styles[$color];
+        }
+
+        switch($newline)
+        {
+            case PRE:
+                printf($format, PHP_EOL.$message);
+                break;
+            case POST:
+                printf($format, $message.PHP_EOL);
+                break;
+            case BOTH:
+                printf($format, PHP_EOL.$message.PHP_EOL);
+                break;
+            case NONE:
+            default:
+                printf($format, $message);
+                break;
+        }
+    }// out
+    
+    
+    /**
+     * Class copied from https://github.com/composer/getcomposer.org/blob/master/web/installer
+     */
+    class ErrorHandler
+    {
+        public $message = '';
+
+        public function handleError($code, $msg)
+        {
+            if ($this->message) {
+                $this->message .= "\n";
+            }
+            $this->message .= preg_replace('{^copy\(.*?\): }', '', $msg);
+        }
+    }    
+    
+?>
