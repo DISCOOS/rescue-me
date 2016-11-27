@@ -85,16 +85,18 @@
         public function execute()
         {
             begin(IMPORT);
-            
+
+            $path = "$this->root".DIRECTORY_SEPARATOR."db".DIRECTORY_SEPARATOR."init.sql";
+
             // Notify
-            info("  Importing [$this->root".DIRECTORY_SEPARATOR."rescueme.sql] into [".$this->db."]....",
+            info("  Importing [$path] into [".$this->db."]...",
                 BUILD_INFO, NEWLINE_NONE);
             
             // Connect to database
             DB::instance()->connect($this->host, $this->username, $this->password, $this->db);
             
             // Attempt to import
-            if(DB::import("$this->root".DIRECTORY_SEPARATOR."rescueme.sql") === false)
+            if(DB::import($path) === false)
             {
                 return error(SQL_NOT_IMPORTED." (".DB::error().")");
             }

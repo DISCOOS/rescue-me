@@ -14,8 +14,7 @@
 
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
-    use \RescueMe\TimeZone;
-    
+
 
     /**
      * Database class
@@ -468,7 +467,7 @@
                     foreach($lines as $line)
                     {
                         $line = trim($line);
-                        if(!preg_match("#^--|^/\*#", $line))
+                        if(!preg_match("#^--|^/\\*#", $line))
                         {
                             if(!trim($line))
                             {
@@ -596,7 +595,7 @@
         private static function columns($query, $table)
         {
             $body = array();
-            preg_match("#CREATE TABLE IF NOT EXISTS `$table` \((.*)\)#i", $query, $body);
+            preg_match("#CREATE TABLE IF NOT EXISTS `$table` \\((.*)\\)#i", $query, $body);
             $column = "";
             $columns = array();
             foreach(explode(",", $body[1]) as $item) {

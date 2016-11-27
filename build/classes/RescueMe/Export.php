@@ -77,7 +77,7 @@
         
         
         /**
-         * Execute import script
+         * Execute export structure script
          * 
          * @return mixed TRUE if success, error message otherwise.
          * 
@@ -85,16 +85,18 @@
         public function execute()
         {
             begin(EXPORT);
+
+            $path = "$this->root".DIRECTORY_SEPARATOR."db".DIRECTORY_SEPARATOR."init.sql";
             
             // Notify
-            info("  Exporting [".$this->db."] into [$this->root".DIRECTORY_SEPARATOR."rescueme.sql]....",
+            info("  Exporting [".$this->db."] into [$path]...",
                 BUILD_INFO, NEWLINE_NONE);
 
             // Connect to database
             DB::instance()->connect($this->host, $this->username, $this->password, $this->db);
             
             // Attempt to export
-            if(DB::export("$this->root".DIRECTORY_SEPARATOR."rescueme.sql") === false)
+            if(DB::export($path) === false)
             {
                 return error(SQL_NOT_EXPORTED." (".DB::error().")");
             }

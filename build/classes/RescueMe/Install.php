@@ -265,9 +265,10 @@ class Install {
         }
         info("DONE");
 
-        info("  Importing [rescueme.sql]....", BUILD_INFO, NEWLINE_NONE);
-        if (($executed = DB::import($this->root . DIRECTORY_SEPARATOR . "rescueme.sql")) === FALSE) {
-            return error(sprintf(DB_NOT_IMPORTED, "rescueme.sql") . " (" . DB::error() . ")");
+        info("  Importing [init.sql]....", BUILD_INFO, NEWLINE_NONE);
+        $path = "$this->root".DIRECTORY_SEPARATOR."db".DIRECTORY_SEPARATOR."init.sql";
+        if (($executed = DB::import($path)) === FALSE) {
+            return error(sprintf(DB_NOT_IMPORTED, "init.sql") . " (" . DB::error() . ")");
         }
         info("DONE");
 
