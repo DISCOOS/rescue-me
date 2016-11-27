@@ -280,13 +280,14 @@
         public static function current() {
             return isset($_SESSION['user_id']) ? User::get($_SESSION['user_id']) : false;
         }
-        
-        
+
+
         /**
          * Get user id from SMS provider reference id
-         * 
+         *
+         * @param $provider
          * @param integer $reference
-         * 
+         *
          * @return integer|boolean Operation id if success, FALSE otherwise.
          */
         public static function getProviderUserId($provider, $reference) {
@@ -549,7 +550,7 @@
                 return User::log("User $this->id deleted");
             }
             
-            return User::error("Failed to delete user $this->id", $this);
+            return User::error("Failed to delete user $this->id", $values);
             
         }// delete        
 
@@ -569,7 +570,7 @@
                 return User::log("User $this->id disabled");
             }
             
-            return User::error("Failed to disable user $this->id", $this);
+            return User::error("Failed to disable user $this->id", $values);
             
         }// disable        
 
@@ -785,7 +786,6 @@
         
         private function _grant($info) {
             
-            $granted = true;
             $this->id = (int)$info['user_id'];
             
             $exclude = array("user_id", 'password');
@@ -899,12 +899,13 @@
         public static function safe($string) {
             return preg_replace('/[^a-z0-9.@_\-\+]/', '', $string);
         }// safe
-        
+
 
         /**
          * Check if user is unique
-         * 
-         * @param string $string
+         *
+         * @param $email
+         * @internal param string $string
          * @return string
          */
         public static function unique($email) {
