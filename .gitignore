@@ -5,9 +5,11 @@ logs
 .idea/
 .vagrant/
 src/config.php
+src/config.php~
 src/config.minify.php
 src/vendor
 src/data
+src/db/rescueme.mwb.bak
 src/min/cache/
 src/composer.phar
 src/VERSION
