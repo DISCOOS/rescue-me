@@ -20,9 +20,9 @@ use RescueMe\Missing;
  * Trace state accepted
  * @package RescueMe\Finite\Trace
  */
-class Answered extends AbstractState {
+class Responded extends AbstractState {
 
-    const NAME = 'Answered';
+    const NAME = 'Responded';
 
     /**
      * Constructor

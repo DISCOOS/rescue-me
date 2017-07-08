@@ -10,7 +10,16 @@ use RescueMe\Properties;
 	 * 
 	 * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
 	 */
-    
+
+    function insert_label($type, $content, $attributes='', $output=true)
+    {
+        $html = '<span class="label label-' . $type . '" ' . $attributes. '>'. $content. '</span>';
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+
     function insert_action($label, $href, $icon="", $class="btn btn-small", $attributes='', $output=true)
     {
         $html = $icon? '<b class="icon '.$icon.'"></b>' : "";
@@ -19,9 +28,9 @@ use RescueMe\Properties;
             echo $html;
         }
         return $html;
-    }    
-    
-    function insert_item($label, $href, $icon="", $class="", $attributes='', $output=true) 
+    }
+
+    function insert_item($label, $href, $icon="", $class="", $attributes='', $output=true)
     {
         $attributes .= 'role="menuitem"';
         $html = '<li class="'.$class.'">'.insert_action($label, $href, $icon, "", $attributes, false).'</li>';

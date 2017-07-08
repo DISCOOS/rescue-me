@@ -674,9 +674,9 @@
         }
 
         if($label !== false) {
-            $type = $success ? 'label-success' : 'label-warning';
+            $type = $success ? 'success' : 'warning';
             $attributes = is_string($label) ? $label : '';
-            $position = '<span class="label ' . $type . ' label-position" ' . $attributes. '>'. $position. '</span>';
+            $position = insert_label($type .' label-position' , $position, $attributes, false);
         }
 
         return $position;

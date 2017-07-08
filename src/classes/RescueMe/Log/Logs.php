@@ -294,6 +294,22 @@
                 
             }
         }
-        
+
+
+        public static function toArray(\Exception $e) {
+            if($e === null) {
+                return '';
+            }
+
+            return array(
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'previous' => Logs::toArray($e->getPrevious()),
+            );
+        }
+
         
     }// Logs

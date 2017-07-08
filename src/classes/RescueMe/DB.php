@@ -56,8 +56,39 @@
             }
             return DB::$instance;
         }// instance
-        
-        
+
+
+        /**
+         * Get latest db version
+         * @return bool|string
+         */
+        public static function latestVersion() {
+
+            $res = self::select('db_versions','db_version_name', '', 'db_version_id DESC', '1');
+            if(self::isEmpty($res)) {
+                return false;
+            }
+            $row = $res->fetch_row();
+            return $row[0];
+        }
+
+        /**
+         * Get db version history
+         * @return bool|array
+         */
+        public static function versionHistory() {
+            $res = self::select(
+                'db_versions',
+                array('db_version_name','db_version_date')
+            );
+            if(self::isEmpty($res)) {
+                return false;
+            }
+            return $res->fetch_all(MYSQLI_ASSOC);
+
+        }
+
+
         /**
          * Connect to database.
          * 
@@ -442,101 +473,138 @@
             
             return $filter;
         }
-        
-        
+
+
         /**
-         * Import SQL dump into database.
+         * Migrate database to version
+         *
+         * @param string $root Database root
+         *
+         * @return boolean TRUE if success, FALSE otherwise.
+         */
+        public static function migrate($root) {
+
+            $latest = strtolower(DB::latestVersion());
+            $latest = $latest ? $latest : '';
+
+            $migrations = $root.DIRECTORY_SEPARATOR."migrations";
+
+            foreach (new \DirectoryIterator($migrations) as $fileInfo) {
+                if($fileInfo->isDot() || "sql" !== strtolower($fileInfo->getExtension())) continue;
+                $version = strtolower($fileInfo->getBasename('.sql'));
+                if(strcmp($version, $latest) > 0) {
+                    if(!self::source($fileInfo->getFilename())) {
+                        return false;
+                    }
+                    DB::insert("db_versions", array('db_version_name' => $version));
+                }
+            }
+            return true;
+        }
+
+
+        /**
+         * Source SQL into database.
          * 
          * @param string $pathname Path to file
          * 
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public static function import($pathname)
+        public static function source($pathname)
         {
-            $skipped = array();
+            $success = true;
             $executed = array();
-            $previous = array('INSERT');
-            $clauses = array('INSERT', 'UPDATE', 'DELETE', 'DROP', 'GRANT', 'REVOKE', 'CREATE', 'ALTER');
-            if(file_exists($pathname))
-            {
-                $query = '';
-                $queries = array();
-                $lines = file($pathname);
-                if(is_array($lines))
-                {
-                    foreach($lines as $line)
-                    {
-                        $line = trim($line);
-                        if(!preg_match("#^--|^/\\*#", $line))
-                        {
-                            if(!trim($line))
-                            {
-                                if($query != '')
-                                {
-                                    $clause = trim(strtoupper(substr($query, 0, strpos($query, ' '))));
-                                    if(in_array($clause, $clauses))
-                                    {
-                                        $pos = strpos($query, '`') + 1;
-                                        $query = substr($query, 0, $pos) . substr($query, $pos);
-                                    }
 
-                                    $priority = 1;
-                                    if(in_array($clause, $previous))
+            // Determine if database is versioned (if not, attempt to append missing columns)
+            $versioned = DB::latestVersion();
+
+            // Disable auto-commit, store current state
+            $flag = DB::instance()->mysqli->autocommit(false);
+
+            try {
+                $skipped = array();
+                if(file_exists($pathname))
+                {
+                    $query = '';
+                    $queries = array();
+                    $lines = file($pathname);
+                    if(is_array($lines))
+                    {
+                        foreach($lines as $line)
+                        {
+                            $line = trim($line);
+                            if(!preg_match("#^--|^/\\*#", $line))
+                            {
+                                if(!trim($line))
+                                {
+                                    if($query !== '')
                                     {
-                                        $priority = 10;
+                                        $queries[] = $query;
+                                        $query = '';
                                     }
-                                    $queries[$priority][] = $query;
-                                    $query = '';
+                                }
+                                else
+                                {
+                                    $query .= $line;
                                 }
                             }
-                            else
-                            {
-                                $query .= $line;
-                            }
                         }
-                    }
-                    ksort($queries);
-                    foreach($queries as $sqls)
-                    {
-                        foreach($sqls as $sql)
+                        if(!empty($query)) {
+                            $queries[] = $query;
+                        }
+                        foreach($queries as $sql)
                         {
                             // Check if table exists
                             $skip = false;
-                            if(strpos($sql, "CREATE TABLE") === 0) 
+                            if(strpos($sql, "CREATE TABLE") === 0)
                             {
                                 $table = DB::table($sql);
-                                if(($skip = DB::query("DESCRIBE `$table`")) !== false) 
+                                if(($skip = DB::query("DESCRIBE `$table`")) !== false)
                                 {
                                     $skipped[] = $sql;
                                 }
                             }
-                            if(DB::query($sql) === false)
-                            {
-                                return false;
+                            if(!$skip) {
+                                if(DB::query($sql) === false)
+                                {
+                                    $msg = sprintf("Query [$sql] failed. %s (code %s)", self::error(), self::errno());
+                                    throw new \Exception($msg, self::errno());
+                                }
+                                $executed[] = $sql;
                             }
-                            if(!$skip) $executed[] = $sql;
                         }
-                    }
-                    // Was tables skipped?
-                    if(!empty($skipped)) {
-                        
-                        // Add missing columns
-                        if(($altered = DB::alter($skipped))) {
-                            $executed = array_merge($executed, $altered);
+
+                        // Add add missing columns in skipped 'CREATE TABLE' queries?
+                        if($versioned === false && !empty($skipped)) {
+                            if(($altered = DB::alter($skipped))) {
+                                $executed = array_merge($executed, $altered);
+                            }
                         }
                     }
                 }
+
+                // Commit changes
+                if(FALSE === DB::instance()->mysqli->commit()) {
+                    Logs::write(Logs::DB, LogLevel::ERROR, "Failed to source $pathname.");
+                }
+
+            } catch (\Exception $e) {
+                $rollback = DB::instance()->mysqli->rollback();
+                Logs::write(Logs::DB, LogLevel::ERROR, "Failed to source $pathname.", Logs::toArray($e));
+                if($rollback === false) {
+                    Logs::write(Logs::DB, LogLevel::ERROR, "Failed to rollback $pathname.");
+                }
+                $success = false;
             }
-            
-            if(empty($executed) === FALSE)
-            {
-                $count = count($executed);
-                Logs::write(Logs::DB, LogLevel::INFO, "Imported $pathname ($count sentences executed).", $executed);
-            }            
-                        
-            return $executed;
-            
-        }// import
+
+            // Restore previous state
+            DB::instance()->mysqli->autocommit($flag);
+
+            $count = count($executed);
+            Logs::write(Logs::DB, LogLevel::INFO, "Sourced $pathname ($count sentences executed).", $executed);
+
+            return $success;
+        }// source
         
         
         private static function alter($skipped)
@@ -685,7 +753,7 @@
         
         
        /**
-         * Export SQL dump from database.
+         * Export database structure SQL.
          * 
          * @param string $pathname Path to export file
          * @param string $charset Default table charset 

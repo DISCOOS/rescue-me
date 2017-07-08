@@ -116,7 +116,6 @@
             return $this;
         }
 
-
         /**
          * Assert state
          * @param $states

@@ -67,14 +67,13 @@ if($list === false || $list <= $start) {
         $missing->getPositions();
 
         // Analyze trace state
-        $machine->apply($missing);
-
-        $state = $machine->getCurrent();
+        $state = $machine->init()->apply($missing);
 
         if(Located::NAME === $state->getName()) {
             $status = format_pos($state->getData());
         } else {
-            $status = T_($state->getName()) . ' ' . format_since($state->getData());
+            $status = insert_label('warning',
+                T_($state->getName()) . ' ' . format_since($state->getData()), '', false);
         }
 
 ?>

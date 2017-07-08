@@ -35,7 +35,7 @@
                 <?=T_('Delivered')?>
             </div>
             <div class="span">
-                <?=T_('Response')?>
+                <?=T_('Responded')?>
             </div>
             <div class="span">
                 <?=T_('Located')?>
@@ -64,9 +64,9 @@
                 </div>
             </div>
             <div class="span" 
-                 title="<?=$trace['response']['tooltip']?>" 
+                 title="<?=$trace['responded']['tooltip']?>"
                  rel="tooltip">
-                <div class="trace-bar <?=$trace['response']['state']?>">
+                <div class="trace-bar <?=$trace['responded']['state']?>">
                     <b class="icon <?=($collapsed ? 'response' : '')?>"></b>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                 <time datetime="<?=$trace['delivered']['timestamp']?>"><?= $trace['delivered']['time'] ?></time>
             </div>
             <div class="span">
-                <time datetime="<?=$trace['response']['timestamp']?>"><?= $trace['response']['time'] ?></time>
+                <time datetime="<?=$trace['responded']['timestamp']?>"><?= $trace['responded']['time'] ?></time>
             </div>
             <div class="span">
                 <time datetime="<?=$trace['located']['timestamp']?>"><?= $trace['located']['time'] ?></time>

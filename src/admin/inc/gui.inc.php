@@ -89,15 +89,15 @@
             }
         }            
         if($missing->answered !== null) {
-            $trace['response']['state'] = 'pass';
-            $trace['response']['time'] = format_since($missing->answered);
-            $trace['response']['timestamp'] = format_tz($missing->answered);
-            $trace['response']['tooltip'] = T_('Trace script downloaded');
+            $trace['responded']['state'] = 'pass';
+            $trace['responded']['time'] = format_since($missing->answered);
+            $trace['responded']['timestamp'] = format_tz($missing->answered);
+            $trace['responded']['tooltip'] = T_('Trace script downloaded');
         } else {
-            $trace['response']['state'] = '';
-            $trace['response']['time'] = T_('Unknown');
-            $trace['response']['timestamp'] = '';
-            $trace['response']['tooltip'] = T_('Trace script not downloaded') . '. ' .
+            $trace['responded']['state'] = '';
+            $trace['responded']['time'] = T_('Unknown');
+            $trace['responded']['timestamp'] = '';
+            $trace['responded']['tooltip'] = T_('Trace script not downloaded') . '. ' .
                 T_('The phone may be out of power, out of coverage, support for localization can be turned off or not possible, or the user chose not to share their location with you.');
         }            
         if($missing->last_pos->timestamp>-1) {
