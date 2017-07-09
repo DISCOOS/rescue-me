@@ -14,6 +14,7 @@
     use RescueMe\Finite\Machine;
     use RescueMe\Finite\Trace\State\Delivered;
     use RescueMe\Finite\Trace\State\Located;
+    use RescueMe\Finite\Trace\State\NotSent;
     use RescueMe\Finite\Trace\State\Responded;
     use RescueMe\Finite\Trace\State\Sent;
     use RescueMe\Finite\Trace\State\Alerted;
@@ -38,10 +39,12 @@
 
             return $machine->addState(new Alerted())
                 ->addState(new Sent())
+                ->addState(new NotSent())
                 ->addState(new Delivered($sms))
                 ->addState(new Responded())
                 ->addState(new Located())
                 ->addTransition(Alerted::NAME, Sent::NAME)
+                ->addTransition(Alerted::NAME, NotSent::NAME)
                 ->addTransition(Sent::NAME, Delivered::NAME)
                 ->addTransition(Delivered::NAME, Responded::NAME)
                 ->addTransition(Sent::NAME, Responded::NAME)

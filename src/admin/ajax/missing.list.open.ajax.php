@@ -2,8 +2,10 @@
     
 ob_start();
 
+use RescueMe\Finite\State;
 use RescueMe\Finite\Trace\Factory;
 use RescueMe\Finite\Trace\State\Located;
+use RescueMe\Finite\Trace\State\NotSent;
 use RescueMe\User;
 use RescueMe\Manager;
 use RescueMe\Missing;
@@ -54,7 +56,6 @@ if($list === false || $list <= $start) {
 
     /** @var Provider $sms */
     $sms = $factory->newInstance();
-    $params = Properties::getAll($user_id);
 
     // Create trace state machine
     $factory = new Factory();
@@ -66,20 +67,13 @@ if($list === false || $list <= $start) {
         // Prepare
         $missing->getPositions();
 
-        // Analyze trace state
-        $state = $machine->init()->apply($missing);
-
-        if(Located::NAME === $state->getName()) {
-            $status = format_pos($state->getData());
-        } else {
-            $status = insert_label('warning',
-                T_($state->getName()) . ' ' . format_since($state->getData()), '', false);
-        }
+        // Analyze and format trace state
+        $state = format_state($machine->init()->apply($missing));
 
 ?>
         <tr id="<?= $missing->id ?>">
             <td class="missing name"><?= $missing->name ?></td>
-            <td id="status-<?=$id?>" class="status"><?=$status?></td>
+            <td id="status-<?=$id?>" class="status"><?=$state?></td>
             <? if($admin) { ?>
             <td class="missing name hidden-phone"><?= $missing->user_name ?></td>
             <td class="missing editor">
@@ -124,4 +118,5 @@ if(isset($options) === false) {
 }
 
 return create_ajax_response(ob_get_clean(), $options);
+
 ?>

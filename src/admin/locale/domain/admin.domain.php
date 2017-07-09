@@ -8,6 +8,9 @@
 
         define('DOMAIN_ADMIN','admin');
 
+        // Define indirectly used messages
+        define('Not sent', T_('Not sent'));
+
         /**
          * Get json string in domain 'admin'
          * @return array

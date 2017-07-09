@@ -1,10 +1,10 @@
 <?php
 /**
- * File containing: Trace state alerted class
+ * File containing: Trace state sent class
  *
  * @copyright Copyright 2015 {@link http://www.discoos.org DISCO OS Foundation}
  *
- * @since 28. March 2015
+ * @since 08. March 2015
  *
  * @author Kenneth Gulbrandsøy <kenneth@discoos.org>
  */
@@ -17,18 +17,18 @@ use RescueMe\Missing;
 
 
 /**
- * Trace state alerted
+ * Trace state not sent
  * @package RescueMe\Finite\Trace\State
  */
-class Alerted extends AbstractState {
+class NotSent extends AbstractState {
 
-    const NAME = 'Alerted';
+    const NAME = 'Not sent';
 
     /**
      * Constructor
      */
     function __construct() {
-        parent::__construct(self::NAME, State::T_INITIAL);
+        parent::__construct(self::NAME, State::T_FINAL);
     }
 
     /**
@@ -38,6 +38,6 @@ class Alerted extends AbstractState {
      */
     function accept($condition) {
         $this->data = $condition->reported;
-        return $this->accepted = is_null($this->data) === false;
+        return $this->accepted = is_null($condition->sms_sent) === true;
     }
 }

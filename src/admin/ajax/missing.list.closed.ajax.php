@@ -1,8 +1,11 @@
 <?php
     
     ob_start();
-    
-    use RescueMe\User;
+
+use RescueMe\Finite\Trace\Factory;
+use RescueMe\Manager;
+use RescueMe\SMS\Provider;
+use RescueMe\User;
     use RescueMe\Missing;
     use RescueMe\Properties;
     
@@ -42,22 +45,40 @@
     
     // Get missing
     $list = Missing::getAll($filter, $admin, $start, $max);
-    
-    foreach($list as $id => $this_missing) {
-        $owner = ($this_missing->user_id === $user_id);
-?>
-            <tr id="<?= $this_missing->id ?>">
-                <td class="missing name"><?= $types[$this_missing->op_type] ?></td>
-                <td class="missing name"> <?= $this_missing->name ?> </td>
-                <td class="missing date"><?= format_dt($this_missing->op_closed) ?></td>
+
+    // Enable manual SMS delivery status check?
+    $factory = Manager::get(Provider::TYPE, $user_id);
+
+    /** @var Provider $sms */
+    $sms = $factory->newInstance();
+
+    // Create trace state machine
+    $factory = new Factory();
+    $machine = $factory->build($sms);
+
+    /** @var Missing $missing */
+    foreach($list as $id => $missing) {
+        $owner = ($missing->user_id === $user_id);
+
+        // Prepare
+        $missing->getPositions();
+
+        // Analyze and format trace state
+        $state = format_state($machine->init()->apply($missing));
+
+        ?>
+            <tr id="<?= $missing->id ?>">
+                <td class="missing name"><?= $types[$missing->op_type] ?></td>
+                <td class="missing name"> <?= $missing->name ?> </td>
+                <td class="missing date"><?= $state ?></td>
                 <? if($admin) { ?>
-                <td class="missing name hidden-phone"><?= $this_missing->user_name ?></td>
+                <td class="missing name hidden-phone"><?= $missing->user_name ?></td>
                 <td class="missing editor">
                 <? } else { ?>
                 <td class="missing editor" colspan="2">
                 <? } ?>
                     <div class="btn-group pull-right">
-                        <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/{$this_missing->op_id}"?>">
+                        <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/{$missing->op_id}"?>">
                             <b class="icon icon-edit"></b><?= T_('Reopen') ?>
                         </a>
                     </div>

@@ -1,7 +1,9 @@
 <?php
 
-use Psr\Log\LogLevel;
 use RescueMe\Domain\Issue;
+use RescueMe\Finite\State;
+use RescueMe\Finite\Trace\State\Located;
+use RescueMe\Finite\Trace\State\NotSent;
 use RescueMe\Log\Logs;
 use RescueMe\Manager;
 use RescueMe\Email\Provider as Email;
@@ -113,3 +115,16 @@ function send_issue_email($from, $issue, $bulk) {
 
 }
 
+function format_state(State $state) {
+    switch($state->getName()) {
+        case Located::NAME:
+            return format_pos($state->getData());
+        case NotSent::NAME:
+            return insert_label('important',
+                T_($state->getName()) . ' ' . format_since($state->getData()), '', false);
+        default:
+            return insert_label('default',
+                T_($state->getName()) . ' ' . format_since($state->getData()), '', false);
+    }
+
+}
