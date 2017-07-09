@@ -64,8 +64,8 @@
                     
                          <input type="text" 
                                class="input-medium search-query pull-right" 
-                               data-target="open .searchable"
-                               data-source="open .pagination"
+                               data-target="test .searchable"
+                               data-source="test .pagination"
                                placeholder="<?=T_('Search')?>">
                     </th>              
                 </tr>
@@ -73,7 +73,7 @@
             <tbody class="searchable">
             </tbody>
         </table>        
-        <div class="pagination" data-target="open .searchable"></div>
+        <div class="pagination" data-target="test .searchable"></div>
     </div>
     <div id="exercise" data-target=".searchable" class="tab-pane <?=($type === Operation::EXERCISE ? 'active' : '')?>">
         <table class="table table-striped">
@@ -90,8 +90,8 @@
                     
                          <input type="text" 
                                class="input-medium search-query pull-right" 
-                               data-target="open .searchable"
-                               data-source="open .pagination"
+                               data-target="exercise .searchable"
+                               data-source="exercise .pagination"
                                placeholder="<?=T_('Search')?>">
                     </th>              
                 </tr>
@@ -99,7 +99,7 @@
             <tbody class="searchable">
             </tbody>
         </table>        
-        <div class="pagination" data-target="open .searchable"></div>
+        <div class="pagination" data-target="exercise .searchable"></div>
     </div>
     <div id="closed" data-target=".searchable" class="tab-pane <?=($type === Operation::CLOSED ? 'active' : '')?>">
         <table class="table table-striped">

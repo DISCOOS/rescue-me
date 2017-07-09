@@ -506,10 +506,23 @@ R.tabs = function(tabs) {
         var tab = $(this);
         var id = tab.attr('href').replace("#", "");
         var element = $('#' + id);        
-        id = 'tc_' + id;
-        element.attr('id', id);
+        var tc_id = 'tc_' + id;
+        element.attr('id', tc_id);
         // Conform to twitter bootstrap tab api contract
-        tab.attr('data-target', '#' + id);
+        tab.attr('data-target', '#' + tc_id);
+
+        // Replace id in all data-source attributes
+        $(element).find('[data-source^='+id+']').each(function () {
+            var data = $(this).attr('data-source');
+            $(this).attr('data-source', 'tc_' + data);
+        });
+
+        // Replace id in all data-source and data-target attributes
+        $(element).find('[data-target^='+id+']').each(function () {
+            var data = $(this).attr('data-target');
+            $(this).attr('data-target', 'tc_' + data);
+        });
+
     });
 
     R.toTab(tabs);
