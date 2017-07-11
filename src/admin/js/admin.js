@@ -160,19 +160,31 @@ R.prepare = function (element, options) {
         $(this).attr("data-remote", false);
     });
 
-    // Add table filtering capability. Add class "searchable" to tbody element.
+    // Add table filtering capability. Add class "searchable" to make element in data-target searchable.
     $(element).find('input.search-query').bind('keyup', function () {
 
         var search = $(this).val();
-
         var target = '#' + $(this).attr('data-target');
-
         var pattern = new RegExp(search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
-        $(target).find('.searchable tr').hide();
-        $(target).find('.searchable tr').filter(function () {
+
+        var group_match = function (group) {
+            return $(group).filter(
+                function() {
+                    return pattern.test($(this).text());
+                }).length > 0;
+        };
+
+        $(target).each(function () {
             var text = $(this).text();
-            return pattern.test(text);
-        }).show();
+            var group = $(this).attr('data-group');
+            if(pattern.test(text) || group_match(group)) {
+                $(this).show();
+                $(group).show();
+            } else {
+                $(this).hide();
+                $(group).hide();
+            }
+        });
 
         var source = '#' + $(this).attr('data-source');
 

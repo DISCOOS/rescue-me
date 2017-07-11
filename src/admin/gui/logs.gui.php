@@ -24,7 +24,7 @@
 </ul>
 <div class="tab-content" style="width: auto; overflow: visible">       
 <? foreach($names as $name) { $active = ($name === $log ? 'active' : ''); ?>
-    <div id="<?=$name?>" data-target=".searchable" class="tab-pane <?=$active?>">
+    <div id="<?=$name?>" data-target=".page" class="tab-pane <?=$active?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -46,10 +46,9 @@
                     </th>            
                 </tr>
             </thead>        
-            <tbody class="searchable">
-            </tbody>
+            <tbody class="page"></tbody>
         </table>
-        <div class="pagination" data-target="<?=$name?> .searchable"></div>
+        <div class="pagination" data-target="<?=$name?> .page"></div>
     </div>    
 <? } ?>  
 </div>

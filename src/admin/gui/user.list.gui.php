@@ -31,7 +31,7 @@
 </ul>
 <div class="tab-content" style="width: auto; overflow: visible">       
 <? foreach($states as $state) { $active = ($name === $state ? 'active' : ''); ?>
-    <div id="<?=$state?>" data-target=".searchable" class="tab-pane <?=$active?>">
+    <div id="<?=$state?>" data-target=".page" class="tab-pane <?=$active?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -48,10 +48,10 @@
                     </th>            
                 </tr>
             </thead>        
-            <tbody class="searchable">
+            <tbody class="page">
             </tbody>
         </table>    
-        <div class="pagination" data-target="<?=$name?> .searchable"></div>
+        <div class="pagination" data-target="<?=$name?> .page"></div>
     </div>    
 <? } ?>  
 </div>

@@ -71,7 +71,7 @@ if($list === false || $list <= $start) {
         $state = format_state($machine->init()->apply($missing));
 
 ?>
-        <tr id="<?= $missing->id ?>">
+        <tr id="<?= $missing->id ?>" class="searchable">
             <td class="missing name"><?= $missing->name ?></td>
             <td id="status-<?=$id?>" class="status"><?=$state?></td>
             <? if($admin) { ?>

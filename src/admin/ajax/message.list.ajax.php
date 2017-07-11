@@ -47,7 +47,7 @@
 
 <div class="row-fluid" style="max-height: 300px; overflow-x: hidden; overflow-y: auto;">
     <table id="messages" class="table table-striped">
-        <tbody class="searchable">
+        <tbody class="page">
         <? foreach($messages as $message) { ?>
             <tr><td><?=$message?></td><td>
                     <a class="btn btn-primary pull-right"

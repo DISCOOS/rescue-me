@@ -44,7 +44,7 @@
         'type' => 'email', 
         'value' => $edit->email,
         'label' => T_('Email'),
-        'class' => 'span3',
+        'class' => 'span4',
         'attributes' => 'required'
     );    
     $fields[] = $group;
@@ -73,7 +73,7 @@
             'type' => 'checkbox',
             'value' => '1',
             'label' => T_('Use system SMS provider'),
-            'class' => 'span3'
+            'class' => 'span4'
         );
     }
 

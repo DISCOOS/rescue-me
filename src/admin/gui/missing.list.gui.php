@@ -23,7 +23,7 @@
 </ul>
 
 <div class="tab-content" style="width: auto; overflow: visible">
-    <div id="open" data-target=".searchable" class="tab-pane <?=($type === Operation::TRACE ? 'active' : '')?>">
+    <div id="open" data-target=".page" class="tab-pane <?=($type === Operation::TRACE ? 'active' : '')?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -43,13 +43,12 @@
                                placeholder="<?=T_('Search')?>">
                     </th>            
                 </tr>
-            </thead>        
-            <tbody class="searchable">
-            </tbody>
-        </table>        
-        <div class="pagination" data-target="open .searchable"></div>
+            </thead>
+            <tbody class="page"></tbody>
+        </table>
+        <div class="pagination" data-target="open .page"></div>
     </div>
-    <div id="test" data-target=".searchable" class="tab-pane <?=($type === Operation::TABLE ? 'active' : '')?>">
+    <div id="test" data-target=".page" class="tab-pane <?=($type === Operation::TABLE ? 'active' : '')?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -69,13 +68,12 @@
                                placeholder="<?=T_('Search')?>">
                     </th>              
                 </tr>
-            </thead>        
-            <tbody class="searchable">
-            </tbody>
+            </thead>
+            <tbody class="page"></tbody>
         </table>        
-        <div class="pagination" data-target="test .searchable"></div>
+        <div class="pagination" data-target="test .page"></div>
     </div>
-    <div id="exercise" data-target=".searchable" class="tab-pane <?=($type === Operation::EXERCISE ? 'active' : '')?>">
+    <div id="exercise" data-target=".page" class="tab-pane <?=($type === Operation::EXERCISE ? 'active' : '')?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -95,13 +93,12 @@
                                placeholder="<?=T_('Search')?>">
                     </th>              
                 </tr>
-            </thead>        
-            <tbody class="searchable">
-            </tbody>
+            </thead>
+            <tbody class="page"></tbody>
         </table>        
-        <div class="pagination" data-target="exercise .searchable"></div>
+        <div class="pagination" data-target="exercise .page"></div>
     </div>
-    <div id="closed" data-target=".searchable" class="tab-pane <?=($type === Operation::CLOSED ? 'active' : '')?>">
+    <div id="closed" data-target=".page" class="tab-pane <?=($type === Operation::CLOSED ? 'active' : '')?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -122,10 +119,9 @@
                     </th>            
                 </tr>
             </thead>        
-            <tbody class="searchable">
-            </tbody>
+            <tbody class="page"></tbody>
         </table>
-        <div class="pagination" data-target="closed .searchable"></div>
+        <div class="pagination" data-target="closed .page"></div>
     </div>
 </div>    
 

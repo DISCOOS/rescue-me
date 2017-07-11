@@ -24,7 +24,7 @@ if($factories !== false) {
             </th>            
         </tr>
     </thead>        
-    <tbody class="searchable">        
+    <tbody class="page">
 <?
         /** @var Factory $factory */
         foreach($factories as $id => $factory) {
@@ -34,7 +34,7 @@ if($factories !== false) {
                 $type = explode('\\',$factory->type);
                 $impl = explode('\\',$factory->impl);
 ?>
-        <tr id="<?= $id ?>">
+        <tr id="m<?= $id ?>" class="searchable" data-group="#m<?=$id?>+#m<?=$id?>-d:first">
             <td class="module type"> <?=end($type)?> </td>
             <td class="module impl"> <?=end($impl)?> </td>
             <td class="editor">
@@ -57,7 +57,7 @@ if($factories !== false) {
                 </div>
             </td>
         </tr>
-        <tr id="<?= $id ?>-d">
+        <tr id="m<?= $id ?>-d">
             <td colspan="3" class="description muted">
 <?
             if(($instance = $factory->newInstance()) === FALSE) {

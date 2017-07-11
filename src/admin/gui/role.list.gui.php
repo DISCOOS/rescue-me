@@ -15,7 +15,7 @@
                 </th>            
             </tr>
         </thead>        
-        <tbody class="searchable">
+        <tbody class="page">
             
 <? foreach($roles as $key => $value) { ?>
             
