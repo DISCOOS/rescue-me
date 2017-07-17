@@ -93,7 +93,7 @@
             // Start request
             $response = $this->invoke($url);
             
-            $valid = (!is_null($response));
+            $valid = !(is_null($response) || isset($response['error-code']));
             if($valid === false)
             {
                 $this->error['code'] = Provider::FATAL;
