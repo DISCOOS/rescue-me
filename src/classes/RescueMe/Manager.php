@@ -41,22 +41,23 @@
             Device\Lookup::TYPE => WURFL::TYPE,
             Email\Provider::TYPE => SMTP::TYPE
         );
-        
+
         /**
          * Install required modules if not already exist
          *
+         * @param bool $init Initialize modules (default: false, potential long operation)
          * @param callable $callback Progress callback function
-         * 
+         *
          * @return boolean.
          */
-        public static function install($callback = null) {
+        public static function install($init = false, $callback = null) {
             $modules = array();
 
             foreach(Manager::$required as $type => $impl) {
 
                 if(self::exists($type) === FALSE) {
 
-                    if(is_null($callback) === FALSE) {
+                    if(!is_null($callback) && is_callable($callback)) {
                         call_user_func($callback,"Installing [$type]...");
                     }
 
@@ -71,22 +72,19 @@
                     if($module->isSupported()) {
 
                         // Potentially long operation...
-                        $module->init();
+                        if($init) {
+                            $module->init();
+                        }
 
                         $modules[$id] = $module;
 
-                        if(is_null($callback) === FALSE) {
-                            call_user_func($callback,"Installing [$type]...DONE");
-                        }
-
                     }
 
-
-                }  else {
-
-                    if(is_null($callback) === FALSE) {
-                        call_user_func($callback,"Updating [$type]...", true);
+                    if(!is_null($callback) && is_callable($callback)) {
+                        call_user_func($callback,"Installing [$type]...".($modules[$id] ? 'DONE' : 'SKIPPED'));
                     }
+                }
+                else {
 
                     $factory = self::get($type);
                     $module = $factory->newInstance();
@@ -94,8 +92,14 @@
                     // Only install supported modules
                     if($module->isSupported()) {
 
+                        if(!is_null($callback) && is_callable($callback)) {
+                            call_user_func($callback, "Updating [$type]...", true);
+                        }
+
                         // Potentially long operation...
-                        $module->init();
+                        if($init) {
+                            $module->init();
+                        }
 
                         $modules[$factory->id] = $module;
 

@@ -50,26 +50,28 @@
          */
         public function execute()
         {
-            begin(UNINSTALL);
-            
             // Notify
-            info("  Inspecting [$this->root]....", BUILD_INFO, NEWLINE_NONE);
+            info("  Uninstalling [$this->root]...");
+
+            // Notify
+            info("    Inspecting [$this->root]...", BUILD_INFO, NEWLINE_NONE);
             
             // Not found?
             if(!file_exists(realpath($this->root))) {
                 return error(sprintf("[%s] not found",$this->root));
             }// if
             info("DONE");
-            
-            // Uninstall application
-            info("  Uninstalling [$this->root]....", BUILD_INFO, NEWLINE_NONE);
+
+            // Notify
+            info("    Deleting [$this->root]...", BUILD_INFO, NEWLINE_NONE);
             if(!rrmdir(realpath($this->root))) {
                 return error(FAILED."(".RM_DIR_FAILED.")");
-            }// if             
+            }// if
             info("DONE");
+
+            // Notify
+            info("  Uninstalling [$this->root]...DONE");
            
-            done(UNINSTALL);
-            
             // Finished
             return true;
             

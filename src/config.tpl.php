@@ -75,9 +75,6 @@ define('SALT', '');
 // Security constants
 define('PASSWORD_LENGTH', 4);
 
-// SMS integration constants
-define('SMS_FROM', 'RescueMe');
-
 // RescueMe database constants
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'rescueme');

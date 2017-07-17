@@ -23,11 +23,11 @@
          * RescueMe source archive (zip, filename)
          * @var string
          */
-        private $src;
+        private $zip;
         
         
         /**
-         * Installation root
+         * Extract to root
          * @var string
          */
         private $root;
@@ -36,14 +36,14 @@
         /**
          * Constructor
          * 
-         * @param string $src Source rooot
-         * @param string $root Installation root
+         * @param string $zip Path to zip achive
+         * @param string $root Extract to root
          * 
          * @since 18. August 2013
          */
-        public function __construct($src, $root)
+        public function __construct($zip, $root)
         {
-            $this->src = $src;
+            $this->zip = $zip;
             $this->root = $root;
             
         }// __construct
@@ -57,39 +57,31 @@
          */
         public function execute()
         {
-            begin(EXTRACT);
             
             // Notify
-            info("  Extracting [$this->src] to [$this->root]...", BUILD_INFO, NEWLINE_NONE);
+            info("  Extracting [$this->zip] to [$this->root]...");
             
             // Do not overwrite existing
             if(file_exists($this->root) === TRUE) {
                 return error(DIR_EXISTS);
             }// if
 
-            // Ensure source exists
-            if(!file_exists($this->src) === TRUE) {
-                return error(sprintf("[%s] not found", $this->src));
-            }// if
-            
             // Escape Phar context (HACK...)
-            $content = file_get_contents($this->src);
-            file_put_contents($this->src, $content);
-            
-            // Extract source filoes to root
+            $content = file_get_contents($this->zip);
+            file_put_contents($this->zip, $content);
+
+            // Extract source files to root
             $zip = new \ZipArchive();
-            if (($error = $zip->open($this->src)) !== TRUE) {
+            if (($error = $zip->open($this->zip)) !== TRUE) {
                 return error(ZIP_OPEN_FAILED.":$error");
             }// if 
             
             // Extract source to root directory
             $zip->extractTo($this->root);
             $zip->close();
-            
-            info("DONE");
+
+            info("  Extracting [$this->zip] to [$this->root]...DONE");
                         
-            done(EXTRACT);
-            
             // Finished
             return true;
             

@@ -23,7 +23,11 @@
     class Roles
     {
         const TABLE = 'roles';
-        
+
+        const ADMIN = 1;
+        const OPERATOR = 2;
+        const PERSONNEL = 3;
+
         private static $fields = array(
             'user_id',
             'role_id',
@@ -31,9 +35,9 @@
         );
         
         private static $roles = array(
-            1=>'Administrator', 
-            2=>'Operator', 
-            3=>'Personnel'
+            Roles::ADMIN => 'Administrator',
+            Roles::OPERATOR => 'Operator',
+            Roles::PERSONNEL => 'Personnel'
         );
 
 
@@ -44,13 +48,13 @@
          * @param integer $user_id
          * @return integer Number of inserted permissions
          */
-        public static function prepare($role_id, $user_id) {
+        public static function prepare($role_id, $user_id = 0) {
             
             $count = 0;
             
             switch($role_id) {
                 
-                case 1:
+                case Roles::ADMIN:
                     // Grant administrator default permissions
                     if(Permissions::grant($role_id, $user_id, 'read', 'logs')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'user.all')) $count++;
@@ -68,7 +72,7 @@
                     if(Permissions::grant($role_id, $user_id, 'read', 'operations.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'operations.all')) $count++;
                     break;                    
-                case 2:
+                case Roles::OPERATOR:
                     // Grant operator default permissions
                     if(Permissions::grant($role_id, $user_id, 'read', 'user')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'user')) $count++;
@@ -79,7 +83,7 @@
                     if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'operations')) $count++;
                     break;                    
-                case 3:
+                case Roles::PERSONNEL:
                     // Grant personnel default permissions
                     if(Permissions::grant($role_id, $user_id, 'read', 'user')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
@@ -118,7 +122,7 @@
             }
             
             if (in_array($role, self::$roles) === FALSE) {
-                return Roles::error("Failed grant user $user_id unknown role $role", self::$roles);
+                return Roles::error("Failed to grant user $user_id unknown role $role", self::$roles);
             }
             
             $res = true;
@@ -214,24 +218,24 @@
             return $perms;
         }
 
-        /**
-         * Get permissions for a role
-         *
-         * @param $user_id
-         * @internal param string $role Role
-         * @return boolean|array
-         */
-        public static function getPermissionsForUser($user_id) {
-            $filter = '`user_id` = '.(int)$user_id."";
-            
-            $res = DB::select('permissions', array('resource', 'access'), $filter, 'resource');
-            
-            $perms = array();
-            while ($row = $res->fetch_assoc()) {
-                $perms[$row['resource'].':'.$row['access']] = true;
-            }
-            return $perms;
-        }
+//        /**
+//         * Get permissions for a role
+//         *
+//         * @param $user_id
+//         * @internal param string $role Role
+//         * @return boolean|array
+//         */
+//        public static function getPermissionsForUser($user_id) {
+//            $filter = '`user_id` = '.(int)$user_id."";
+//
+//            $res = DB::select('permissions', array('resource', 'access'), $filter, 'resource');
+//
+//            $perms = array();
+//            while ($row = $res->fetch_assoc()) {
+//                $perms[$row['resource'].':'.$row['access']] = true;
+//            }
+//            return $perms;
+//        }
         
         
         /**

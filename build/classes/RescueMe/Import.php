@@ -20,96 +20,101 @@
     class Import
     {
         /**
-         * RescueMe database host
-         * @var string
+         * RescueMe import parameters
+         * @var array
          */
-        private $host;
-        
-        
+        private $params;
+
+
         /**
-         * RescueMe database username
+         * Sql file
          * @var string
          */
-        private $username;
-        
-        
-        /**
-         * RescueMe database password
-         * @var string
-         */
-        private $password;
-        
-        
-        /**
-         * RescueMe database name
-         * @var string
-         */
-        private $db;
-        
-        
-        /**
-         * Installation root
-         * @var string
-         */
-        private $root;
-        
-        
+        private $file;
+
+
         /**
          * Constructor
-         * 
-         * @param string $host RescueMe database host
-         * @param string $username RescueMe database username
-         * @param string $password RescueMe database password
-         * @param string $db RescueMe database name
-         * @param string $root Installation root
-         * 
+         *
+         * @param string $file Sql file
+         * @param array $params Import parameters
+         *
          * @since 18. August 2013
          */
-        public function __construct($host, $username, $password, $db, $root)
-        {
-            $this->host = $host;
-            $this->username = $username;
-            $this->password = $password;
-            $this->db = $db;
-            $this->root = $root;
-            
+        public function __construct($file, $params) {
+            $this->params = $params;
+            $this->file = $file;
+
         }// __construct
-        
-        
+
+
         /**
-         * Execute import script
+         * Execute database import script
          * 
          * @return mixed TRUE if success, error message otherwise.
          * 
          */
         public function execute()
         {
-            begin(IMPORT);
+            // Get database name and import file
+            $name = get($this->params, PARAM_DB, null);
+            $version = get($this->params, PARAM_VERSION, null);
 
-            $path = "$this->root".DIRECTORY_SEPARATOR."db".DIRECTORY_SEPARATOR."init.sql";
+            info("  Importing database [$name:$version] from [$this->file]...");
 
-            // Notify
-            info("  Importing [$path] into [".$this->db."]...",
-                BUILD_INFO, NEWLINE_NONE);
-            
-            // Connect to database
-            DB::instance()->connect($this->host, $this->username, $this->password, $this->db);
-            
-            // Attempt to import
-            if(DB::import($path) === false)
-            {
-                return error(SQL_NOT_IMPORTED." (".DB::error().")");
+            // Verify that import is allowed with given parameters
+            if(TRUE !== ($message = $this->verify($name, $version, $this->file))) {
+                return error(sprintf('    %s. %s', sprintf(DB_NOT_IMPORTED, 'Database'), $message));
             }
-            
-            info("DONE");
-            
-            done(IMPORT);
-            
-            // Finished
+
+            // Get queries
+            $queries = DB::instance()->fetch_queries(file($this->file));
+
+            if (DB::instance()->exists($name)) {
+                info(sprintf('    Database [%s] exists', $name));
+                info("  Importing database [$name:$version] from [$this->file]...SKIPPED");
+            }
+            else {
+                if(!DB::instance()->create($name)) {
+                    $message = 'check database credentials';
+                    return error(sprintf('    %s - %s', sprintf(DB_NOT_IMPORTED, 'Database'), $message));
+                }
+                info("    Database schema [$name] created");
+
+                try {
+                    $count = DB::instance()->source($queries);
+                    info(sprintf('    Sourced %s queries into [%s]', $count, $name));
+                } catch (DBException $e) {
+                    return error(SQL_NOT_IMPORTED . ' ' . $e);
+                }
+                DB::instance()->setVersion($version);
+
+                info("  Importing database [$name:$version] from [$this->file]...DONE");
+            }
+
             return true;
-            
-            
-        }// execute
-        
+
+        }// import
+
+        private function verify($name, $version, $file)
+        {
+            // Connect to database
+            DB::instance()->connect(
+                $this->params[PARAM_HOST],
+                $this->params[PARAM_USERNAME],
+                $this->params[PARAM_PASSWORD],
+                $name);
+
+            if(is_null($version) || empty($version)) {
+                return sprintf('Version is missing', $file);
+            }
+            else if(!file_exists($file)) {
+                return sprintf('File %s not found', $file);
+            }
+            else if(!endsWith($file,'.sql')) {
+                return sprintf('File %s does not end with sql', $file);
+            }
+            return true;
+        }
 
     }// Import

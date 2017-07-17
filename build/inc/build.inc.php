@@ -28,7 +28,10 @@
     define('ZIP_COPY_FAILED', "zip could not be copied");
     define('DB_NOT_CREATED', "%s could not be created");
     define('DB_NOT_IMPORTED', "%s could not be imported");
-    define('VERSION_NOT_SET', "Version %s could not be set");    
+    define('DB_NOT_SEEDED', "%s could not be seeded");
+    define('DB_NOT_MIGRATED', "%s could not be migrated");
+    define('DB_NOT_BASELINED', "%s could not be baselined");
+    define('VERSION_NOT_SET', "Version %s could not be set");
     define('ADMIN_NOT_CREATED', "Admin user not created");    
     define('SQL_NOT_IMPORTED', 'SQL not imported');
     define('SQL_NOT_EXPORTED', 'SQL not exported');
@@ -116,6 +119,8 @@
     {
         if(is_dir($dir))
         {
+            info(sprintf('      Adding %s', $dir));
+
             if(($dh = opendir($dir)) !== FALSE)
             {
                 // Loop through all the files
@@ -126,8 +131,6 @@
                     
                     // Include?
                     if($exclude === null || preg_match("#$exclude#", $filename) !== 1) {
-                        
-                        $match = preg_match("#$exclude#", $filename);
                         
                         // If it's a folder, run the function again!
                         if(!is_file($filename))
@@ -147,6 +150,8 @@
                             $zipArchive->addFile($dir . $file, $local);
 
                             // TODO: Add info($local) on verbose output;
+                            //info(sprintf('      Adding %s', $local));
+
                         }// else
                     }// if
                 }// while
@@ -332,7 +337,7 @@
      * @param bool $escape
      * @return mixed
      */
-    function get($opts, $arg, $default = NULL, $escape = true)
+    function get($opts, $arg, $default = NULL, $escape = false)
     {
         // Allow 0 as value, but not empty string
         $isset = isset($opts[$arg]) && (!empty($opts[$arg]) || $opts[$arg] == 0 && $opts[$arg] !== '');
@@ -364,16 +369,16 @@
         if(!isset($timezone) || empty($timezone) || trim($timezone,"'") == '') {            
             $timezone = $default;
         }
-        $timezone = in("Default timezone",$timezone, NEWLINE_NONE, true, false);
+        $timezone = in("  Default timezone",$timezone, NEWLINE_NONE, true, false);
         $old = error_reporting(E_ALL ^ E_NOTICE);
         $current = date_default_timezone_get();
         if(@date_default_timezone_set(trim($timezone,"'")) === FALSE) {
-            out("Invalid timezone: $timezone", NEWLINE_POST, COLOR_SUCCESS);
+            out("  Invalid timezone: $timezone", NEWLINE_POST, COLOR_SUCCESS);
             return in_timezone($opts, $default);
         }
         error_reporting($old);
         date_default_timezone_set($current);
-        out("Timezone: $timezone", NEWLINE_POST, COLOR_SUCCESS);
+        out("  Default timezone: $timezone", NEWLINE_POST, COLOR_SUCCESS);
         return $timezone;
     }
 
@@ -436,58 +441,65 @@
         ));        
         return $config;
     }
-    
+
     /**
      * Get database parameters
-     * 
+     *
      * @param array $opts
      * @param array $config
+     * @param bool $ensure
+     * @return array
      */
     function get_db_params($opts, $config, $ensure=false) {
 
         // Get database parameters
-        $db = get($opts, PARAM_DB, isset_get($config, "DB_NAME", ""), false);
-        $host = get( $opts, PARAM_HOST, isset_get($config, "DB_HOST", ""), false);
-        $username = get($opts, PARAM_USERNAME, isset_get($config, "DB_USERNAME", ""), false);
-        $password = get($opts, PARAM_PASSWORD, isset_get($config, "DB_PASSWORD", ""), false);
+        $db = get($opts, PARAM_DB, isset_get($config, "DB_NAME", ""));
+        $host = get( $opts, PARAM_HOST, isset_get($config, "DB_HOST", ""));
+        $username = get($opts, PARAM_USERNAME, isset_get($config, "DB_USERNAME", ""));
+        $password = get($opts, PARAM_PASSWORD, isset_get($config, "DB_PASSWORD", ""));
+        $version = get($opts, PARAM_VERSION, isset_get($config, INI_VERSION, get_version()));
 
         // Ensure missing parameters?
         if($ensure) {
-            $db = $db ? $db : in("Database Name", "rescueme");
-            $host = $host ? $host : in("Database Host", "localhost");
-            $username = $username ? $username : in("Database Username");
-            $password = $password ? $password : in("Database Password");
-        } 
+            $db = $db ? $db : in(" Database Name", "rescueme");
+            $host = $host ? $host : in(" Database Host", "localhost");
+            $username = $username ? $username : in(" Database Username");
+            $password = $password ? $password : in(" Database Password");
+            $version = $version ? $version : in(" Database Version");
+        }
         
         // Trim values
         $opts[PARAM_DB] = trim($db, "'");
         $opts[PARAM_HOST] = trim($host, "'");
         $opts[PARAM_USERNAME] = trim($username, "'");
         $opts[PARAM_PASSWORD] = trim($password, "'");
-               
+        $opts[PARAM_VERSION] = trim($version, "'");
+
         // Finished
         return $opts;        
     }
-    
-    
+
+
     /**
      * Get safe directory path (remove trailing slashes)
-     * 
+     *
      * @param array $opts
      * @param string $key
      * @param string $default
+     * @param bool $real
      * @return string
      */
-    function get_safe_dir($opts, $key, $default) {
+    function get_safe_dir($opts, $key, $default, $real=true) {
         
         // Get path 
-        $dir = get($opts, $key, $default, false);
+        $dir = get($opts, $key, $default);
 
         // Use current working directory?
         if($dir === ".") $dir = getcwd();
 
         // Remove trailing slashes
-        return rtrim($dir,DIRECTORY_SEPARATOR);
+        $dir = rtrim($dir,DIRECTORY_SEPARATOR);
+        return $real ? realpath($dir) : $dir;
         
     }
     
@@ -528,11 +540,11 @@
     {
         switch($status) { 
             case BUILD_ERROR:
-                fatal("rescueme [$action]...".FAILED.PHP_EOL, BUILD_ERROR, $newline);
+                fatal(PHP_EOL."rescueme [$action]...".FAILED.PHP_EOL, BUILD_ERROR, $newline);
             case BUILD_CANCEL:
-                fatal("rescueme [$action]...".CANCELLED.PHP_EOL, BUILD_CANCEL, $newline);
+                fatal(PHP_EOL."rescueme [$action]...".CANCELLED.PHP_EOL, BUILD_CANCEL, $newline);
             default:
-                info("rescueme [$action]...DONE".PHP_EOL, $status, $newline);
+                info(PHP_EOL."rescueme [$action]...DONE".PHP_EOL, $status, $newline);
                 break;
         }
     }// done
@@ -649,5 +661,39 @@
 
     function is_sudo() { 
         return !is_win() && posix_getuid() === 0;         
+    }
+
+    function startsWith($haystack,$needle,$case=false)
+    {
+        if ($case)
+            return strpos($haystack, $needle, 0) === 0;
+
+        return stripos($haystack, $needle, 0) === 0;
+    }
+
+    function endsWith($haystack,$needle,$case=false)
+    {
+        $expectedPosition = strlen($haystack) - strlen($needle);
+
+        if ($case)
+            return strrpos($haystack, $needle, 0) === $expectedPosition;
+
+        return strripos($haystack, $needle, 0) === $expectedPosition;
+    }
+
+    function get_current_git_commit( $branch='master' ) {
+        if ( $hash = file_get_contents( sprintf( '.git/refs/heads/%s', $branch ) ) ) {
+            return $hash;
+        } else {
+            return false;
+        }
+    }
+
+    function get_current_git_branch($src='.') {
+        $head = realpath(implode(DIRECTORY_SEPARATOR,array($src,'.git','HEAD')));
+        if($head) {
+            $branch = trim(implode(DIRECTORY_SEPARATOR, array_slice(explode(DIRECTORY_SEPARATOR, file_get_contents($head)), 2)));
+        }
+        return isset($branch) ? $branch : null;
     }
     

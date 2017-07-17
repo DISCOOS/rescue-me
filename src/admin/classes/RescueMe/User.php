@@ -147,7 +147,7 @@
 
         
         /**
-         * Check if one or more users exist
+         * Check if one or more admins exist
          * 
          * @return boolean
          */
@@ -158,8 +158,8 @@
             return $res !== FALSE && $res == 0;
             
         }// isEmpty
-        
-        
+
+
         /**
          * Get user state titles
          * @return array
@@ -382,40 +382,39 @@
             
             
         }// recover
-        
-        
+
+
         /**
          * Create new user
-         * 
+         *
          * @param string $name
          * @param string $email
-         * @param string $password
+         * @param string $hash
          * @param string $country
          * @param string $mobile
          * @param integer $role
          * @param string $state
+         * @internal param string $hash
          * @return User|boolean
          */
-        public static function create($name, $email, $password, $country, $mobile, $role, $state = User::ACTIVE) {
+        public static function create($name, $email, $hash, $country, $mobile, $role, $state = User::ACTIVE) {
 
             $user = false;
 
             $username = User::safe(strtolower($email));
 
-            $password = User::hash($password);
-
-            if(empty($username) || empty($password) || User::unique($email) === false) {
+            if(empty($username) || empty($hash) || User::unique($email) === false) {
                 return false;
             }
             
-            $values = array((string) $name, (string) $password, (string) $username, (int) $mobile, (string) $country, $state);
+            $values = array((string) $name, (string) $hash, (string) $username, (int) $mobile, (string) $country, $state);
             
             $values = \prepare_values(User::$insert, $values);
             
             $res = false;
             
             if(($id = DB::insert(self::TABLE, $values)) !== false) {
-                $user = self::get($id);
+                $user = User::get($id);
                 $res = Roles::grant($role, $user->id);
             }
             
@@ -515,22 +514,22 @@
          * @return boolean
          */
         public function password($tokens) {
+
+            $hash = User::hash($tokens);
             
-            $password = User::hash($tokens);
-            
-            $values = \prepare_values(array("password"), array($password));
+            $values = \prepare_values(array("password"), array($hash));
             
             $result = DB::update(self::TABLE, $values, "user_id=$this->id");
             
             if($result !== false && isset_get($_SESSION,'user_id') == $this->id) {
-                $_SESSION['password'] = $password;
+                $_SESSION['password'] = $hash;
             }
             
             if($result !== false) {
                 return User::log("User {$this->id} password changed");
             } 
             
-            return User::error("Failed to change user {$this->id} password", $password);
+            return User::error("Failed to change user {$this->id} password", $hash);
             
         }// password
         
@@ -652,7 +651,9 @@
                     return User::error(T_('Failed to get SMS provider'));
                 }
 
-                $res = $sms->send(SMS_FROM, $this->mobile_country, $this->mobile, $message);
+                $from = Properties::get(Properties::SMS_SENDER_ID, User::currentId());
+
+                $res = $sms->send($from, $this->mobile_country, $this->mobile, $message);
                 if($res === FALSE) {
                     User::error($sms->error());
                 } else {
@@ -677,12 +678,12 @@
 
             $username = User::safe(strtolower($email));
 
-            $password = User::hash($password);
-            
-            if(empty($username) || empty($password))
+            $hash = User::hash($password);
+
+            if(empty($username) || empty($hash))
                 return false;
             
-            $filter = "`email` = '$username' AND `password` = '$password'";
+            $filter = "`email` = '$username' AND `password` = '$hash'";
             
             $res = DB::select(self::TABLE, "*", $filter);
             
@@ -693,7 +694,7 @@
             
             $info = $res->fetch_assoc();
             
-            $info['password'] = $password;
+            $info['password'] = $hash;
             
             return $this->_grant($info);
             
@@ -760,14 +761,14 @@
          * Verify credentials
          * 
          * @param string $user_id
-         * @param string $password
+         * @param string $hash
          * @return boolean|string
          */
-        private function _verify($user_id, $password) {
+        private function _verify($user_id, $hash) {
             
             $user_id = (int)$user_id;
             
-            $filter = "`user_id` = '$user_id' AND `password` = '$password'";
+            $filter = "`user_id` = '$user_id' AND `password` = '$hash'";
             
             $res = DB::select(self::TABLE,'*', $filter);
             
@@ -777,7 +778,7 @@
             }
             
             $info = $res->fetch_assoc();
-            $info['password'] = $password;
+            $info['password'] = $hash;
             
             return $this->_grant($info);
             
@@ -883,10 +884,11 @@
         /**
          * Make hash
          * @param string $string
+         * @param string $salt
          * @return string
          */
-        public static function hash($string) {
-            return sha1(SALT . $string . '^[]|2"!#');
+        public static function hash($string, $salt = '') {
+            return sha1((empty($salt) ? SALT : $salt) . $string . '^[]|2"!#');
         }// hash
 
         

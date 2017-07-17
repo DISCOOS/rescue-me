@@ -12,6 +12,7 @@
     
     namespace RescueMe;
 
+    use Closure;
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
 
@@ -57,14 +58,21 @@
             return DB::$instance;
         }// instance
 
+        /**
+         * Check if database is an legacy version that requires migration
+         */
+        public static function legacyVersion() {
+            return DB::latestVersion() === false;
+        }
+
 
         /**
-         * Get latest db version
+         * Get latest database version
          * @return bool|string
          */
         public static function latestVersion() {
 
-            $res = self::select('db_versions','db_version_name', '', 'db_version_id DESC', '1');
+            $res = self::select('versions', 'version_name', '', 'version_id DESC', '1');
             if(self::isEmpty($res)) {
                 return false;
             }
@@ -78,8 +86,8 @@
          */
         public static function versionHistory() {
             $res = self::select(
-                'db_versions',
-                array('db_version_name','db_version_date')
+                'versions',
+                array('version_name','version_date')
             );
             if(self::isEmpty($res)) {
                 return false;
@@ -87,6 +95,19 @@
             return $res->fetch_all(MYSQLI_ASSOC);
 
         }
+
+        /**
+         * Set db version
+         * @param string $name
+         * @return bool|int
+         */
+        public static function setVersion($name) {
+            if($res = DB::insert('versions', array('version_name' => $name))) {
+
+            }
+            return $res;
+        }
+
 
 
         /**
@@ -102,13 +123,13 @@
         public function connect($host = null, $usr = null, $pwd = null, $name = null)
         {        
             // Use defaults?
-            $host = $host ? $host : (defined('DB_HOST') ? DB_HOST : "");
-            $usr = $usr ? $usr : (defined('DB_USERNAME') ? DB_USERNAME : "");
-            $pwd = $pwd ? $pwd : (defined('DB_PASSWORD') ? DB_PASSWORD : "");
-            $name = $name ? $name : (defined('DB_NAME') ? DB_NAME : "");
+            $host = $host ? $host : self::host();
+            $usr = $usr ? $usr : self::username();
+            $pwd = $pwd ? $pwd : self::password();
+            $name = $name ? $name : self::name();
             
             // Sanity check
-            if(!($host && $name)) {
+            if(!$host) {
                 return false;
             }
             
@@ -124,8 +145,7 @@
                 DB::configure($this->mysqli);
             }
 
-            
-            return $this->database($name);
+            return $name ? $this->database($name) : true;
             
         }// connect
 
@@ -152,7 +172,7 @@
          *
          * @param string $sql SQL query.
          *
-         * @throws \Exception
+         * @throws DBException
          * @return mixed FALSE on failure. For successful SELECT, SHOW, DESCRIBE or EXPLAIN queries
          * mysqli_query will return a mysqli_result object. For successfull INSERT queries with
          * AUTO_INCREMENT field, the auto generated id is returned. For other successful queries
@@ -165,7 +185,7 @@
             {
                 $code = mysqli_connect_errno(DB::instance()->mysqli);
                 $error = mysqli_connect_error(DB::instance()->mysqli);
-                throw new \Exception("Failed to connect to MySQL: " . $error, $code);
+                throw new DBException("Failed to connect to MySQL: " . $error, $code);
             }// if
                         
             $result = DB::instance()->mysqli->query($sql);
@@ -297,7 +317,7 @@
          * 
          * @param string $table
          * @param array $values
-         * @return integer|boolean FALSE on failure, integer if table has AUTO_INCREMENT primary id, TRUE otherswise.
+         * @return integer|boolean FALSE on failure, integer if table has AUTO_INCREMENT primary id, TRUE otherwise.
          */
         public static function insert($table, $values)
         {
@@ -316,13 +336,13 @@
             
             if($table !== 'logs')
             {
+                $context['query'] = $query;
                 if($res === FALSE)
                 {
-                    $context['query'] = $query;
                     $context['error'] = DB::error();
                     Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to insert ' . count($values) . " values into $table", $context);
                 } else {
-                    Logs::write(Logs::DB, LogLevel::INFO, 'Inserted ' . count($values) . " values into $table");
+                    Logs::write(Logs::DB, LogLevel::INFO, 'Inserted ' . count($values) . " values into $table", $context);
                 }
             }
             
@@ -395,23 +415,36 @@
             
         }// update
 
+        public static function host() {
+            return (defined('DB_HOST') ? DB_HOST : "");
+        }
+
+        public static function username() {
+            return (defined('DB_USERNAME') ? DB_USERNAME : "");
+        }
+        public static function password() {
+            return (defined('DB_PASSWORD') ? DB_PASSWORD : "");
+        }
+        public static function name() {
+            return (defined('DB_NAME') ? DB_NAME : "");
+        }
 
         /**
          * Check if database exists.
          *
          * @param string $name Database name
          *
-         * @throws \Exception
+         * @throws DBException
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public static function exists($name)
+        public function exists($name)
         {
-            $mysqli = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD);
+            $mysqli = DB::instance()->mysqli;
             if($mysqli->connect_error)
             {
                 $code = mysqli_connect_errno($mysqli);
                 $error = mysqli_connect_error($mysqli);
-                throw new \Exception("Failed to connect to MySQL: " . $error, $code);
+                throw new DBException("Failed to connect to MySQL: " . $error, $code);
             }// if
             $result = $mysqli->select_db($name);
             unset($mysqli);
@@ -423,27 +456,31 @@
          * Create database with given name.
          *
          * @param string $name Database name
+         * @param bool $use Use database after creation
          *
-         * @throws \Exception
+         * @throws DBException
+         *
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public static function create($name)
+        public function create($name, $use = true)
         {
-            $mysqli = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD);
-            if($mysqli->connect_error)
+            $mysqli = DB::instance()->mysqli;
+            if(DB::instance()->mysqli->connect_error)
             {
                 $code = mysqli_connect_errno($mysqli);
                 $error = mysqli_connect_error($mysqli);
-                throw new \Exception("Failed to connect to MySQL: " . $error, $code);
+                throw new DBException("Failed to connect to MySQL: " . $error, $code);
             }// if
-            $res = $mysqli->select_db($name);
-            if($res === FALSE)
-            {
-                $sql = "CREATE DATABASE IF NOT EXISTS $name";
-                $res = $mysqli->query($sql) && $mysqli->select_db($name);
+
+            if($use) {
+                $res = $mysqli->select_db($name);
+                if($res === FALSE)
+                {
+                    $sql = "CREATE DATABASE IF NOT EXISTS $name";
+                    $res = $mysqli->query($sql) && $mysqli->select_db($name);
+                }
             }
             unset($mysqli);
-            
             return $res;
         }// create
         
@@ -474,33 +511,87 @@
             return $filter;
         }
 
-
         /**
-         * Migrate database to version
+         * Source queries into database.
          *
-         * @param string $root Database root
+         * @param array $queries Data to source into database
          *
-         * @return boolean TRUE if success, FALSE otherwise.
+         * @throws DBException
+         *
+         * @return int Number of sources queries.
          */
-        public static function migrate($root) {
+        public function source($queries)
+        {
+            $executed = array();
 
-            $latest = strtolower(DB::latestVersion());
-            $latest = $latest ? $latest : '';
+            // Disable auto-commit, store current state
+            $flag = DB::instance()->mysqli->autocommit(false);
 
-            $migrations = $root.DIRECTORY_SEPARATOR."migrations";
-
-            foreach (new \DirectoryIterator($migrations) as $fileInfo) {
-                if($fileInfo->isDot() || "sql" !== strtolower($fileInfo->getExtension())) continue;
-                $version = strtolower($fileInfo->getBasename('.sql'));
-                if(strcmp($version, $latest) > 0) {
-                    if(!self::source($fileInfo->getFilename())) {
-                        return false;
+            try {
+                foreach($queries as $sql)
+                {
+                    if(DB::query($sql) === false)
+                    {
+                        $msg = sprintf("Query [$sql] failed. %s (code %s)", self::error(), self::errno());
+                        throw new DBException($msg, DB::errno());
                     }
-                    DB::insert("db_versions", array('db_version_name' => $version));
+                    $executed[] = $sql;
+                }
+
+                // Commit changes
+                if(FALSE === DB::instance()->mysqli->commit()) {
+                    throw new DBException(DB::error(), DB::errno());
+                }
+
+            } catch (DBException $e) {
+                if(DB::instance()->mysqli->rollback()) {
+                    $exception = DBException::asFatal("Failed to source queries.", $e);
+                } else {
+                    $exception = DBException::asFatal("Failed to rollback queries.", $e);
                 }
             }
-            return true;
+
+            // Restore previous state
+            DB::instance()->mysqli->autocommit($flag);
+
+            if(!isset($exception)) {
+                return count($executed);
+            } else {
+                throw $exception;
+            }
+
         }
+
+        /**
+         * @param array $lines Lines to fetch queries from
+         * @param callable $prepare Called before each query is added to result
+         * @return array Identified queries
+         */
+        public function fetch_queries($lines, Closure $prepare = null) {
+            $query = '';
+            $queries = array();
+            if(is_array($lines))
+            {
+                foreach($lines as $line)
+                {
+                    $line = trim($line);
+
+                    // Skip until first legal character in query
+                    if(!preg_match("#^--|^/\\*#", $line)) {
+                        $query .= ' ' . $line;
+                        if(endsWith($line,';')) {
+                            $queries[] = is_callable($prepare) ? $prepare(trim($query)) : trim($query);
+                            $query = '';
+                        }
+                    }
+                }
+                if(!empty($query)) {
+                    $queries[] = is_callable($prepare) ? $prepare(trim($query)) : trim($query);
+                }
+            }
+            return $queries;
+        }
+
 
 
         /**
@@ -510,7 +601,7 @@
          * 
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public static function source($pathname)
+        public static function source_old($pathname)
         {
             $success = true;
             $executed = array();
@@ -520,6 +611,7 @@
 
             // Disable auto-commit, store current state
             $flag = DB::instance()->mysqli->autocommit(false);
+
 
             try {
                 $skipped = array();
@@ -750,18 +842,20 @@
             return DB::query("SET time_zone='$offset';");
 
         }
-        
-        
-       /**
+
+
+        /**
          * Export database structure SQL.
-         * 
+         *
          * @param string $pathname Path to export file
-         * @param string $charset Default table charset 
-         * 
+         * @param string $generator Generator name
+         * @param string $charset Default table charset
+         *
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public static function export($pathname, $charset="utf8")
+        public static function export($pathname, $generator, $charset="utf8")
         {
+            // TODO: Fix export that create tables in order that ensures all foreign keys exists before constraints
             $count = 0;
             if(file_exists($pathname)){
                 unlink($pathname);
@@ -769,7 +863,14 @@
             $tables = DB::query("SHOW TABLES");
             if(DB::isEmpty($tables)) return false;
 
-            $lines = '';
+            // Export header
+            $lines  = sprintf('-- MySQL Script generated by %s', $generator);
+            $lines .= sprintf('-- %s', date('c'));
+            $lines .= sprintf('-- Model: %s', 'RescueMe');
+            $lines .= sprintf('-- Version: %s', DB::latestVersion());
+            $lines .= "\n\n";
+
+            // Export database structure
             while ($row = $tables->fetch_row()) {
                 $result = DB::query("SHOW CREATE TABLE `$row[0]`");
                 if(DB::isEmpty($result)) return false;
@@ -779,8 +880,9 @@
                 $lines .= "-- Structure for table `$row[0]`\n";
                 $lines .= "-- \n\n";    
                 $create = preg_replace("#CREATE TABLE#i", "CREATE TABLE IF NOT EXISTS", $table['Create Table']);
-                $create = preg_replace("# AUTO_INCREMENT=[0-9]+#i", "", $create);
-                $create = preg_replace("#CHARSET=.+#i", "CHARSET=$charset", $create);
+                $create = preg_replace("#AUTO_INCREMENT\\s*=[0-9]+#i", "AUTO_INCREMENT = 1", $create);
+                $create = preg_replace("#CHARSET\\s*=[.^\\s]+#i", "CHARSET = $charset", $create);
+                $create = preg_replace("#DEFAULT CHARACTER SET\\s*=[.^\\s]+#i", "DEFAULT CHARACTER SET = $charset", $create);
                 $lines .= "$create;\n\n";
                 $count++;
             }

@@ -206,7 +206,7 @@
             
             self::SMS_SENDER_ID => array(
                 'type' => 'text',
-                'default' => SMS_FROM,
+                'default' => TITLE,
                 'options' => false,
                 'description' => "Use custom alphanumeric sms sender id (if supported)."
             ),

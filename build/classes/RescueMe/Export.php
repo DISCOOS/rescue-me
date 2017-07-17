@@ -20,59 +20,31 @@
     class Export
     {
         /**
-         * RescueMe database host
-         * @var string
+         * RescueMe export parameters
+         * @var array
          */
-        private $host;
-        
-        
+        private $params;
+
+
         /**
-         * RescueMe database username
-         * @var string
-         */
-        private $username;
-        
-        
-        /**
-         * RescueMe database password
-         * @var string
-         */
-        private $password;
-        
-        
-        /**
-         * RescueMe database name
-         * @var string
-         */
-        private $db;
-        
-        
-        /**
-         * Installation root
+         * Database directory root
          * @var string
          */
         private $root;
-        
+
 
         /**
          * Constructor
-         * 
-         * @param string $host RescueMe database host
-         * @param string $username RescueMe database username
-         * @param string $password RescueMe database password
-         * @param string $db RescueMe database name
-         * @param string $root Installation root
-         * 
+         *
+         * @param string $root Database directory root
+         * @param array $params Export parameters
+         *
          * @since 18. August 2013
          */
-        public function __construct($host, $username, $password, $db, $root)
-        {
-            $this->host = $host;
-            $this->username = $username;
-            $this->password = $password;
-            $this->db = $db;
+        public function __construct($root, $params) {
+            $this->params = $params;
             $this->root = $root;
-            
+
         }// __construct
         
         
@@ -84,32 +56,32 @@
          */
         public function execute()
         {
-            begin(EXPORT);
+            // Get export path and database name
+            $name = get($this->params, 'DB_NAME', null);
+            $path = "$this->root".DIRECTORY_SEPARATOR."init.sql";
 
-            $path = "$this->root".DIRECTORY_SEPARATOR."db".DIRECTORY_SEPARATOR."init.sql";
-            
             // Notify
-            info("  Exporting [".$this->db."] into [$path]...",
-                BUILD_INFO, NEWLINE_NONE);
+            info("  Exporting [".$name."] into [$path]...", BUILD_INFO, NEWLINE_NONE);
 
             // Connect to database
-            DB::instance()->connect($this->host, $this->username, $this->password, $this->db);
-            
+            DB::instance()->connect(
+                $this->params[PARAM_HOST],
+                $this->params[PARAM_USERNAME],
+                $this->params[PARAM_PASSWORD],
+                $name);
+
             // Attempt to export
-            if(DB::export($path) === false)
+            if(DB::export($path, "RescueMe Database Export Script") === false)
             {
                 return error(SQL_NOT_EXPORTED." (".DB::error().")");
             }
-            
+
             info("DONE");
-            
-            done(EXPORT);
-            
+
             // Finished
             return true;
-            
-            
-        }// execute
+
+        }// export
         
 
     }// Export

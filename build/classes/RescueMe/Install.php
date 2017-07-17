@@ -27,10 +27,10 @@ class Install {
 
 
     /**
-     * Installation ini values
+     * Installation parameters
      * @var array
      */
-    private $ini;
+    private $params;
 
 
     /**
@@ -51,22 +51,24 @@ class Install {
      * Constructor
      *
      * @param string $root Installation root
-     * @param array $ini Installation ini parameters
+     * @param array $params Installation parameters
      * @param boolean $silent Use defaults if TRUE, prompt otherwise.
+     * @param boolean $init Initialize modules (long operation).
      * @param boolean $update Update libraries if installed.
      *
      *
      * @since 19. June 2013
      *
      */
-    public function __construct($root, $ini, $silent, $update)
+    public function __construct($root, $params, $silent, $init, $update)
     {
         $this->root = $root;
-        $this->ini = $ini;
+        $this->params = $params;
         $this->silent = $silent;
+        $this->init = $init;
         $this->update = $update;
-
     }// __construct
+
 
 
     /**
@@ -77,31 +79,22 @@ class Install {
      */
     public function execute()
     {
-        begin(in_phar() ? INSTALL : CONFIGURE);
-
         // In dev-mode?
         if (in_phar() === false) {
-
             $this->initComposer();
-
             $this->initLibs();
-
         }
 
         $this->initConfig();
 
-        $this->initDB();
+        $this->initMinify();
 
         $this->initModules();
 
-        $this->initMinify();
-
-        // Create VERSION file
-        if (file_put_contents($this->root . DIRECTORY_SEPARATOR . "VERSION", $this->ini['VERSION']) === FALSE) {
-            return error(sprintf(VERSION_NOT_SET, $this->ini['VERSION']));
+        // Create RescueMe VERSION file
+        if (file_put_contents($this->root . DIRECTORY_SEPARATOR . "VERSION", $this->params[PARAM_VERSION]) === FALSE) {
+            return error(sprintf(VERSION_NOT_SET, $this->params[PARAM_VERSION]));
         }
-
-        done(in_phar() ? INSTALL : CONFIGURE);
 
         // Finished
         return true;
@@ -110,8 +103,14 @@ class Install {
     }// execute
 
 
-    private function initConfig()
+    /**
+     * Initialize config from ini and write to files
+     * @return bool|string
+     */
+    public function initConfig()
     {
+        info("  Initializing config...");
+
         // Get template from phar?
         if (in_phar()) {
             $config = file_get_contents("config.tpl.php");
@@ -125,43 +124,56 @@ class Install {
         // Get config template
         $config = replace_define_array($config, array
         (
-            'SALT' => $this->ini['SALT'],
-            'TITLE' => $this->ini['TITLE'],
-            'SMS_FROM' => $this->ini['SMS_FROM'],
-            'DB_HOST' => $this->ini['DB_HOST'],
-            'DB_NAME' => $this->ini['DB_NAME'],
-            'DB_USERNAME' => $this->ini['DB_USERNAME'],
-            'DB_PASSWORD' => $this->ini['DB_PASSWORD'],
-            'COUNTRY_PREFIX' => $this->ini['COUNTRY_PREFIX'],
-            'DEFAULT_LOCALE' => $this->ini['DEFAULT_LOCALE'],
-            'DEFAULT_TIMEZONE' => $this->ini['DEFAULT_TIMEZONE'],
-            'DEBUG' => $this->ini['DEBUG'],
-            'MAINTAIN' => $this->ini['MAINTAIN']
+            'SALT' => str_escape($this->params['SALT']),
+            'TITLE' => str_escape($this->params['TITLE']),
+            'DB_HOST' => str_escape($this->params['DB_HOST']),
+            'DB_NAME' => str_escape($this->params['DB_NAME']),
+            'DB_USERNAME' => str_escape($this->params['DB_USERNAME']),
+            'DB_PASSWORD' => str_escape($this->params['DB_PASSWORD']),
+            'COUNTRY_PREFIX' => str_escape($this->params['COUNTRY_PREFIX']),
+            'DEFAULT_LOCALE' => str_escape($this->params['DEFAULT_LOCALE']),
+            'DEFAULT_TIMEZONE' => str_escape($this->params['DEFAULT_TIMEZONE']),
+            'DEBUG' => $this->params['DEBUG'],
+            'MAINTAIN' => $this->params['MAINTAIN']
         ));
 
         // Create config.php
-        if (file_put_contents($this->root . DIRECTORY_SEPARATOR . "config.php", $config) === FALSE) {
+        $path = implode(DIRECTORY_SEPARATOR, array($this->root,"config.php"));
+        if (file_put_contents($path, $config) === FALSE) {
             return error(CONFIG_NOT_CREATED);
         }
+        info(sprintf("    Initialized [%s]",$path));
 
         // Get config minify template
         $config_minify = replace_define_array($config_minify, array
         (
-            'MINIFY_MAXAGE' => $this->ini['MINIFY_MAXAGE']
+            'MINIFY_MAXAGE' => $this->params['MINIFY_MAXAGE']
         ));
 
-        // Create config.php
-        if (file_put_contents($this->root . DIRECTORY_SEPARATOR . "config.minify.php", $config_minify) === FALSE) {
+        // Create config.minify.php
+        $path = implode(DIRECTORY_SEPARATOR, array($this->root,"config.minify.php"));
+        if (file_put_contents($path, $config_minify) === FALSE) {
             return error(CONFIG_MINIFY_NOT_CREATED);
         }
+        info(sprintf("    Initialized [%s]",$path));
 
         // Create apache logs folder
-        if (!file_exists(realpath($this->root . DIRECTORY_SEPARATOR . "logs"))) {
+        $path = realpath($this->root . DIRECTORY_SEPARATOR . "logs");
+        if (!file_exists($path)) {
             mkdir($this->root . DIRECTORY_SEPARATOR . "logs");
+            info(sprintf("    Initialized [%s]",$path));
         }
 
-        // Include dependent resources
-        $root = $this->root . DIRECTORY_SEPARATOR . 'config.php';
+        // Define minimum constants required by install script (loading config files is not necessary)
+        if(!defined('SALT')) define('SALT', $config['SALT']);
+        if(!defined('DB_NAME')) define('DB_NAME', $config['DB_NAME']);
+        if(!defined('DB_HOST')) define('DB_HOST', $config['DB_HOST']);
+        if(!defined('DB_USERNAME')) define('DB_USERNAME', $config['DB_USERNAME']);
+        if(!defined('DB_PASSWORD')) define('DB_PASSWORD', $config['DB_PASSWORD']);
+
+        info("  Initializing config...DONE");
+
+        return true;
 
     }// initConfig
 
@@ -207,7 +219,7 @@ class Install {
 
         if(realpath($vendor)) {
 
-            info("     composer update...", BUILD_INFO, NEWLINE_NONE);
+            info("     Update dependencies...", BUILD_INFO, NEWLINE_NONE);
 
             if ($this->update) {
 
@@ -217,7 +229,7 @@ class Install {
                 exec($cmd, $output, $retval);
                 if ($retval !== 0) {
                     $output = implode("\n", $output);
-                    return error("Failed to update libraries: \n$output\n");
+                    return error("     Failed to update libraries: \n$output\n");
                 }
 
                 info("DONE");
@@ -229,7 +241,7 @@ class Install {
 
         } else {
 
-            info("     composer install...", BUILD_INFO, NEWLINE_NONE);
+            info("     Install dependencies...", BUILD_INFO, NEWLINE_NONE);
 
             $composer = $this->root . DIRECTORY_SEPARATOR . "composer.phar";
 
@@ -237,140 +249,28 @@ class Install {
             exec($cmd, $output, $retval);
             if ($retval !== 0) {
                 $output = implode("\n", $output);
-                return error("Failed to install libraries: \n$output\n");
+                return error("     Failed to install libraries: \n$output\n");
             }
 
             info("DONE");
         }
 
         info("  Initializing libraries....DONE");
+
     }// initLabs
-
-
-    private function initDB(){
-
-        // Install database
-        $name = get($this->ini, 'DB_NAME', null, false);
-        if (!defined('DB_NAME')) {
-            // RescueMe database constants
-            define('DB_NAME', $name);
-            define('DB_HOST', get($this->ini, 'DB_HOST', null, false));
-            define('DB_USERNAME', get($this->ini, 'DB_USERNAME', null, false));
-            define('DB_PASSWORD', get($this->ini, 'DB_PASSWORD', null, false));
-        }
-
-        info("  Creating database [$name]....", BUILD_INFO, NEWLINE_NONE);
-        if (DB::create($name) === FALSE) {
-            return error(sprintf(DB_NOT_CREATED, "$name") . " (check database credentials)");
-        }
-        info("DONE");
-
-        info("  Importing [init.sql]....", BUILD_INFO, NEWLINE_NONE);
-        $path = "$this->root".DIRECTORY_SEPARATOR."db".DIRECTORY_SEPARATOR."init.sql";
-        if (($executed = DB::import($path)) === FALSE) {
-            return error(sprintf(DB_NOT_IMPORTED, "init.sql") . " (" . DB::error() . ")");
-        }
-        info("DONE");
-
-        info("  Initializing database....");
-
-        $skipped = true;
-
-        if (User::isEmpty()) {
-
-            if (!defined('SALT')) {
-                define('SALT', get($this->ini, 'SALT', null, false));
-            }
-            if (!defined('SMS_FROM')) {
-                define('SMS_FROM', get($this->ini, 'SMS_FROM', 'RescueMe', false));
-            }
-
-            $fullname = in("    Admin Full Name");
-            $username = in("    Admin Username (e-mail)");
-            $password = in("    Admin Password");
-            $country = strtoupper(in("Default Country Code (ISO2)", trim($this->ini["COUNTRY_PREFIX"],'\'"')));
-            $mobile = in("    Admin Phone Number Without Int'l Dial Code");
-
-            $user = User::create($fullname, $username, $password, $country, $mobile, 1);
-            if ($user === FALSE) {
-                return error(ADMIN_NOT_CREATED . " (" . DB::error() . ")");
-            }
-
-            $skipped = false;
-
-        }
-
-        // Prepare role permissions
-        if (($count = Roles::prepare(1, 0)) > 0) {
-            info("    Added $count administrator permissions...OK");
-            $skipped = false;
-        }
-        if (($count = Roles::prepare(2, 0)) > 0) {
-            info("    Added $count operator permissions...OK");
-            $skipped = false;
-        }
-        if (($count = Roles::prepare(3, 0)) > 0) {
-            info("    Added $count personnel permissions...OK");
-            $skipped = false;
-        }
-
-
-        // Ensure user 1 is in the administrator group
-        if (Roles::has(1, 1)) {
-            info("    Add user 1 to administrator group...SKIPPED");
-        } elseif(Roles::grant(1, 1)) {
-            info("    Add user 1 to administrator group...OK");
-            $skipped = false;
-        } else {
-            error("    Add user 1 to administrator group...FAILED");
-        }
-
-        info("  Initializing database...." . ($skipped ? 'SKIPPED' : 'DONE'));
-
-    }
-
-
-    private function initModules(){
-
-        $inline = true;
-        info("  Initializing modules....", BUILD_INFO);
-
-        $callback = function($progress) use ($inline) {
-            info("    $progress", BUILD_INFO);
-        };
-
-        if (Manager::install($callback) !== false) {
-            info("    System modules installed", BUILD_INFO);
-            $inline = false;
-        }
-
-        // Prepare user modules
-        $users = User::getAll();
-        if ($users !== false) {
-            /** @var User $user */
-            foreach ($users as $user) {
-                if (Manager::prepare($user->id)) {
-                    info("    Modules for [$user->name] installed", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST);
-                    $inline = false;
-                }
-            }
-        }
-        info($inline ? "SKIPPED" : "  Initializing modules....DONE");
-
-    }// initModules
-
 
     private function initMinify() {
 
         $inline = true;
-        info("  Initializing minify...", BUILD_INFO, NEWLINE_NONE);
+        info("  Initializing minify...");
 
-        $cache = $this->root . DIRECTORY_SEPARATOR . "min" . DIRECTORY_SEPARATOR . "cache";
-        if (realpath($cache) === false) {
+        $cache = implode(DIRECTORY_SEPARATOR, array($this->root, "min", "cache"));
+        info(sprintf("    Cache path is [%s]", $cache));
+        if (!file_exists($cache)) {
+
             if (mkdir($cache) === false) {
                 return error(sprintf(DIR_NOT_CREATED, $cache));
             }
-            $cache = realpath($this->root . DIRECTORY_SEPARATOR . "min" . DIRECTORY_SEPARATOR . "cache");
             if(is_linux()) {
                 if (!is_sudo()) {
                     rmdir($cache);
@@ -378,7 +278,7 @@ class Install {
                 }
                 $user = "www-data:www-data";
                 if ($this->silent === false) {
-                    $user = in("    Webservice username", $user, NEWLINE_PRE);
+                    $user = in("    Webservice username", $user);
                     $inline = false;
                 }
                 $user = explode(":", $user);
@@ -391,10 +291,41 @@ class Install {
                     return error(sprintf(CHGRP_NOT_SET, $user[1], $cache));
                 }
             }
+            info(sprintf("    Configured minify cache [%s]",$cache));
+        } else {
+            info(sprintf("    Minify cache [%s] is configured",$cache));
         }
-        info($inline ? "SKIPPED" : "  Initializing minify....DONE");
+        info("  Initializing minify..." . ($inline ? "SKIPPED" : "DONE"));
 
     }// initMinify
+
+    private function initModules() {
+        $inline = true;
+        info("  Initializing modules....", BUILD_INFO);
+
+        $callback = function($progress) use ($inline) {
+            info("    $progress", BUILD_INFO);
+        };
+
+        if (Manager::install($this->init, $callback) !== false) {
+            info("    >> System modules installed", BUILD_INFO);
+            $inline = false;
+        }
+
+        // Prepare user modules
+        $users = User::getAll();
+        if ($users !== false) {
+            /** @var User $user */
+            foreach ($users as $user) {
+                if (Manager::prepare($user->id)) {
+                    info("    >> Modules for [$user->name] installed", BUILD_INFO, $inline ? NEWLINE_BOTH : NEWLINE_POST);
+                    $inline = false;
+                }
+            }
+        }
+        info($inline ? "SKIPPED" : "  Initializing modules....DONE");
+
+    }
 
 
 }// Install

@@ -76,13 +76,11 @@
          */
         public function execute()
         {
-            begin(PACKAGE);
-            
             // Get package file without extension
             $package = "$this->dist".DIRECTORY_SEPARATOR."rescueme-" . $this->version;
 
             // Notify
-            info("  Packaging [$this->src] into [$package]....", BUILD_INFO, NEWLINE_NONE);
+            info("  Packaging [$this->src] into [$package]...");
             
             // Create folder if not exists
             if(!file_exists($this->dist)) {
@@ -98,7 +96,12 @@
             ini_set("phar.readonly", "0");
 
             // Creating new Phar
-            $oPhar = new \Phar("$package.phar");
+            $file = "$package.phar";
+            if(file_exists(realpath($file))) {
+                unlink($file);
+                info("    Removed [$file]");
+            }
+            $oPhar = new \Phar($file);
 
             // Start buffering
             $oPhar->startBuffering();
@@ -109,9 +112,10 @@
             // Add build scripts source
             $oPhar->buildFromDirectory("$this->build");
 
-            // Add dependencies
+            // Add in-phar dependencies
             $oPhar->addFile("$this->src/inc/common.inc.php", "inc/common.inc.php");
             $oPhar->addFile("$this->src/inc/locale.inc.php", "inc/locale.inc.php");
+            $oPhar->addFile("$this->src/classes/RescueMe/Context.php", "classes/RescueMe/Context.php");
 
             // Add 5.4+ compatible class loader
             $oPhar->addFile("$this->src/vendor/composer/ClassLoader.php", "classes/ClassLoader.php");
@@ -132,27 +136,42 @@
             $config_minify = file_get_contents(realpath("$this->src/config.minify.tpl.php"));
 
             // Add minify configuration template
-            $oPhar->addFromString("config.minify.tpl.php", $config_minify);            
-            
+            $oPhar->addFromString("config.minify.tpl.php", $config_minify);
+
             // Package source files as zip file, exclude dev-local (ignored) files
             $zip = new \ZipArchive();
-            $zip->open("src.zip", \ZipArchive::CREATE);
-            add_folder_to_zip("$this->src/", $zip, "src/", "$this->src/config.php|$this->src/config.minify.php|.*min/cache");            
+            $file = implode(DIRECTORY_SEPARATOR, array(dirname($package),'src.zip'));
+            if(file_exists(realpath($file))) {
+                unlink($file);
+                info("    Removed [$file]");
+            }
+            $zip->open($file, \ZipArchive::CREATE);
+            $exclude  = "$this->src/config.php";
+            $exclude .= "|$this->src/config.minify.php";
+            $exclude .= "|data";
+            $exclude .= "|.*min/cache";
+
+            // Notify
+            info("    Packing source files...");
+            add_folder_to_zip($this->src.DIRECTORY_SEPARATOR, $zip, $this->src.DIRECTORY_SEPARATOR, $exclude);
+
+            // Notify
+            info("      Finalizing package...");
+
             $zip->close();
 
+            // Notify
+            info("    Packing source files...DONE");
+
             // Add source to package
-            $oPhar->addFile("src.zip");
+            $oPhar->addFile($file);
 
             // Write changes to file
             $oPhar->stopBuffering();
 
-            // Cleanup
-            unlink("src.zip");
+            // Notify
+            info("  Packaging [$this->src] into [$package]...DONE");
 
-            info("DONE");
-            
-            done(PACKAGE);
-            
             return true;            
             
         }// execute

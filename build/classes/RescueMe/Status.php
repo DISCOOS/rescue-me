@@ -20,23 +20,31 @@
     class Status
     {
         /**
-         * Installation root
+         * RescueMe Status parameters
+         * @var array
+         */
+        private $params;
+
+
+        /**
+         * Database directory root
          * @var string
          */
         private $root;
-        
+
 
         /**
          * Constructor
-         * 
-         * @param string $root Installation root
-         * 
+         *
+         * @param string $root Database directory root
+         * @param array $params Status parameters
+         *
          * @since 18. August 2013
          */
-        public function __construct($root)
-        {
+        public function __construct($root, $params) {
+            $this->params = $params;
             $this->root = $root;
-            
+
         }// __construct
 
 
@@ -49,8 +57,6 @@
          */
         public function execute($keys)
         {
-            begin(STATUS);
-            
             info("  Analysing [$this->root".DIRECTORY_SEPARATOR."config.php]...", BUILD_INFO, NEWLINE_NONE);
             
             // Get current database parameters?
@@ -74,10 +80,21 @@
             // Print all parameters
             foreach($config as $key => $value) {
                 info("  $key = $value");
-            }            
-            
-            done(STATUS);
-            
+            }
+
+            // Connect to database
+            DB::instance()->connect(
+                $this->params[PARAM_HOST],
+                $this->params[PARAM_USERNAME],
+                $this->params[PARAM_PASSWORD],
+                $this->params[PARAM_DB]);
+
+            $latest = DB::latestVersion();
+            info("  DB_VERSION = $latest");
+
+            $version = get_version($this->root);
+            info("  APP_VERSION = $version");
+
             // Finished
             return $config;
             

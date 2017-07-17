@@ -18,6 +18,11 @@ use RescueMe\Email\Provider as Email;
 $user = User::verify();
 $granted = ($user instanceof User);
 
+// Use user-specified locale and timezone
+$id = ($user ? $user->id : 0);
+set_system_locale(DOMAIN_ADMIN, Properties::get(Properties::SYSTEM_LOCALE, $id));
+TimeZone::set(Properties::get(Properties::SYSTEM_TIMEZONE, $id));
+
 // Force logon?
 if($granted === false) {
 
@@ -80,11 +85,6 @@ else if(!isset($_GET['view']) || empty($_GET['view']) || $_GET['view'] === 'logo
 
     $_GET['view'] = 'start';
 }
-
-// Use user-specified locale and timezone
-$id = ($user ? $user->id : 0);
-set_system_locale(DOMAIN_ADMIN, Properties::get(Properties::SYSTEM_LOCALE, $id));
-TimeZone::set(Properties::get(Properties::SYSTEM_TIMEZONE, $id));
 
 // Dispatch view
 switch($_GET['view']) {
@@ -438,12 +438,14 @@ switch($_GET['view']) {
                 break;
             }
 
+            $hash = User::hash(input_get_string('password'));
+
             $user = User::create(
-                $_POST['name'],
-                $_POST['email'],
-                $_POST['password'],
-                $_POST['country'],
-                $_POST['mobile'],
+                input_get_string('name'),
+                input_get_string('email'),
+                $hash,
+                input_get_string('country'),
+                input_get_string('mobile'),
                 (int)$role,
                 $state
             );
