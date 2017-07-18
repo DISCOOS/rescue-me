@@ -611,7 +611,7 @@ function get_version($root="src")
 {
     // Get configured version
     $verfile = $root . DIRECTORY_SEPARATOR . "VERSION";
-    $version = file_exists(realpath($verfile)) ? file_get_contents($verfile) : get_current_git_branch();
+    $version = trim(file_exists(realpath($verfile)) ? file_get_contents($verfile) : get_current_git_branch());
 
     return $version;
 
