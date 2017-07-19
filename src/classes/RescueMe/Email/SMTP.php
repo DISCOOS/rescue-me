@@ -113,6 +113,12 @@ class SMTP extends AbstractProvider {
             }
         }
 
+        // Host is not null
+        $host = $this->config->get('host');
+        if(is_null($host) || empty($host) || strpos($host,".") == -1 ) {
+            return $this->fatal('Host is invalid');
+        }
+
         // Create the Transport
         $transport = $this->newTransport();
 
