@@ -119,17 +119,17 @@ class Alert {
     }
 
     /**
-     * Prepare timestamp for insert or update
-     * @param $date
+     * Prepare value for insert or update
+     * @param $value
      * @param bool $nullable
      * @return string
      */
-    function prepareTimestamp($date, $nullable = false) {
-        if ($nullable && (is_null($date) || empty($date))) {
-            $date = 'NULL';
+    function prepare($value, $nullable = false) {
+        if ($nullable && (is_null($value) || empty($value))) {
+            $value = 'NULL';
         }
 
-        return $date;
+        return $value;
     }
 
     /**
@@ -137,7 +137,8 @@ class Alert {
      */
     public function insert($values = array()) {
         $this->values = array_merge($this->values, $values);
-        $this->values['alert_until'] = $this->prepareTimestamp($this->values['alert_until'], true);
+        $this->values['alert_until'] = $this->prepare($this->values['alert_until'], true);
+        $this->values['issue_id'] = $this->prepare($this->values['issue_id'], true);
         $values = array_exclude($this->values, 'alert_id');
         return DB::insert(self::TABLE, $values);
     }
@@ -149,7 +150,8 @@ class Alert {
 
         $this->values = array_merge($this->values, $values);
 
-        $this->values['alert_until'] = $this->prepareTimestamp($this->values['alert_until'], true);
+        $this->values['alert_until'] = $this->prepare($this->values['alert_until'], true);
+        $this->values['issue_id'] = $this->prepare($this->values['issue_id'], true);
 
         $values = array_exclude($this->values, 'alert_id');
         $filter = sprintf('%1$s.alert_id = %2$s', self::TABLE, $this->values['alert_id']);

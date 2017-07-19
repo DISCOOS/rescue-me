@@ -271,6 +271,11 @@ R.prepare = function (element, options) {
         }
 
     });
+
+    // Register datatimepickers
+    $(element).find('.date').datetimepicker({
+        language: 'nb-NO'
+    });
     
     // Hide fixed header on input focus
     $('body').on('focus', 'input', function() {
