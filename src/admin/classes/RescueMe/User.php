@@ -128,6 +128,12 @@
          * @var integer
          */
         public $role_id = null;
+
+        /**
+         * User created.
+         * @var string
+         */
+        public $created = null;
         
         
         /**

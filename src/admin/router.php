@@ -439,14 +439,14 @@ switch($_GET['view']) {
                 break;
             }
 
-            $hash = User::hash(input_get_string('password'));
+            $hash = User::hash(input_post_string('password'));
 
             $user = User::create(
-                input_get_string('name'),
-                input_get_string('email'),
+                input_post_string('name'),
+                input_post_email('email'),
                 $hash,
-                input_get_string('country'),
-                input_get_string('mobile'),
+                input_post_string('country'),
+                input_post_string('mobile'),
                 (int)$role,
                 $state
             );
@@ -502,9 +502,6 @@ switch($_GET['view']) {
 
         // Process form?
         if (is_post_request()) {
-
-            // Get requested user
-            $id = input_get_int('id', User::currentId());
 
             $edit = User::get($id);
             if($edit === false) {
@@ -1531,9 +1528,6 @@ switch($_GET['view']) {
 
         // Process form?
         if (is_post_request()) {
-
-            // Get requested alert
-            $id = input_get_int('id');
 
             $edit = Issue::get($id);
             if($edit === false) {

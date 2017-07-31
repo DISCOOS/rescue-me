@@ -497,22 +497,23 @@
      * @return string
      */
     function format_since($timestamp) {
+        $since = T_('Unknown');
         if(isset($timestamp)) {
-            $ts = (int)(time() - strtotime($timestamp));
-            $since = "~".T_('sec');
+            $ts = strtotime($timestamp);
             if($ts > 0) {
-                if($ts < 60) {
-                    $since = "$ts ".T_('sec');
+                $dt = (int)(time() - $ts);
+                if($dt > 0) {
+                    if($dt < 60) {
+                        $since = "$dt ".T_('sec');
+                    }
+                    else if($dt < 2*60*60) {
+                        $since = (int)($dt/60)." ".T_('min');
+                    }
+                    else {
+                        $since = format_dt($timestamp);
+                    }
                 }
-                else if($ts < 2*60*60) {
-                    $since = (int)($ts/60)." ".T_('min');
-                }
-                else {
-                    $since = format_dt($timestamp);
-                }
-            }        
-        } else {
-            $since = T_('Unknown');
+            } 
         }
         return $since;
     }
