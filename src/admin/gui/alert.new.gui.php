@@ -11,16 +11,16 @@ $group['value'][] = array(
     'id' => 'alert_subject',
     'type' => 'text',
     'label' => T_('Subject'),
-    'class' => 'span9',
+    'class' => 'span8',
     'placeholder' => T_('Enter subject'),
     'attributes' => 'required autofocus'
 );
 
 $group['value'][] = array(
     'id' => 'alert_until',
-    'type' => 'text',
+    'type' => 'datetime',
     'label' => T_('Until'),
-    'class' => 'span3',
+    'class' => 'span2',
     'placeholder' => T_('Alert expires')
 );
 
