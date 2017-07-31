@@ -39,6 +39,7 @@
             "missing_mobile_country", 
             "missing_mobile", 
             "missing_locale", 
+            "missing_hash",
             "missing_reported",
             "op_id",
             "sms_text"
@@ -50,6 +51,7 @@
             "missing_mobile_country", 
             "missing_mobile",
             "missing_locale", 
+            "missing_hash",
             "sms_text"
         );
 
@@ -247,9 +249,11 @@
             $values = array(
                 (string) $m_name, 
                 (string) $m_mobile_country, 
-                (int)$m_mobile, 
-                (string)$m_locale, 
-                "NOW()", 
+                (int) $m_mobile,
+                (string) $m_locale,
+                // Make unique hash of intl phone number
+                (string) sha1(SALT.$m_mobile_country.$m_mobile),
+                "NOW()",
                 (int) $op_id, 
                 $sms_text
             );
@@ -321,7 +325,16 @@
                 return false;
             }
 
-            $values = prepare_values(Missing::$update, array($m_name, $m_mobile_country, $m_mobile, $m_locale, $sms_text));
+            $values = prepare_values(Missing::$update,
+                array(
+                    (string) $m_name,
+                    (string) $m_mobile_country,
+                    (int) $m_mobile,
+                    (string) $m_locale,
+                    // Make unique hash of intl phone number
+                    (string) sha1(SALT.$m_mobile_country.$m_mobile),
+                    (string) $sms_text)
+            );
 
             $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
             
