@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-23 21:57+0100\n"
-"PO-Revision-Date: 2015-02-23 21:57+0100\n"
+"POT-Creation-Date: 2017-07-31 17:46+0100\n"
+"PO-Revision-Date: 2017-07-31 17:46+0100\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
 "Language: nb_NO\n"
@@ -25,11 +25,11 @@ msgstr "Innstillinger"
 msgid "Select"
 msgstr "Velg"
 
-#: gui/selector.dialog.gui.php:27 gui/form.gui.php:53
+#: gui/selector.dialog.gui.php:27 gui/form.gui.php:47
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: gui/form.gui.php:48
+#: gui/form.gui.php:45
 msgid "Save"
 msgstr "Lagre"
 
@@ -69,7 +69,15 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nei"
 
-#: classes/RescueMe/Module.php:180
+#: gui/control.gui.php:89
+msgid "On"
+msgstr "På"
+
+#: gui/control.gui.php:89
+msgid "Off"
+msgstr "Av"
+
+#: classes/RescueMe/Manager.php:301
 #, php-format
 msgid "Failed to create instance of module [%1$s]"
 msgstr "Kunne ikke opprette instanse av modul  [%1$s]"
@@ -102,6 +110,34 @@ msgstr "Database"
 #: classes/RescueMe/Document/Compiler.php:143
 msgid "System"
 msgstr "System"
+
+#: classes/RescueMe/Domain/Issue.php:119
+msgid "Open"
+msgstr "Åpen"
+
+#: classes/RescueMe/Domain/Issue.php:120
+msgid "Closed"
+msgstr "Lukket"
+
+#: classes/RescueMe/Email/SMTP.php:86
+msgid "Host"
+msgstr "Vert"
+
+#: classes/RescueMe/Email/SMTP.php:87
+msgid "Port"
+msgstr "Port"
+
+#: classes/RescueMe/Email/SMTP.php:88
+msgid "Encryption"
+msgstr "Kryptering"
+
+#: classes/RescueMe/Email/SMTP.php:89
+msgid "Username"
+msgstr "Brukernavn"
+
+#: classes/RescueMe/Email/SMTP.php:90
+msgid "Password"
+msgstr "Passord"
 
 #~ msgid "Trace"
 #~ msgstr "Sporing"
@@ -163,12 +199,6 @@ msgstr "System"
 #~ msgid "Failed to get SMS provider"
 #~ msgstr "Klarte ikke å finne SMS leverandør"
 
-#~ msgid "User"
-#~ msgstr "Bruker"
-
-#~ msgid "Password"
-#~ msgstr "Passord"
-
 #~ msgid "Callback"
 #~ msgstr "Tilbakemelding"
 
@@ -210,9 +240,6 @@ msgstr "System"
 
 #~ msgid "Illegal"
 #~ msgstr "Ulovlig"
-
-#~ msgid "Closed"
-#~ msgstr "Lukket"
 
 #~ msgid "Id"
 #~ msgstr "Id"
@@ -666,9 +693,6 @@ msgstr "System"
 #~ msgid "Executed"
 #~ msgstr "Gjennomført"
 
-#~ msgid "Open"
-#~ msgstr "Åpen"
-
 #~ msgid "Tests"
 #~ msgstr "Tester"
 
@@ -701,9 +725,6 @@ msgstr "System"
 
 #~ msgid "Gender"
 #~ msgstr "Kjønn"
-
-#~ msgid "Description"
-#~ msgstr "Beskrivelse"
 
 #~ msgid "Short description"
 #~ msgstr "Kort beskrivelse"
