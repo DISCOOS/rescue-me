@@ -36,8 +36,13 @@
                                     9=>'Illegal Number',
                                     10=>'Invalid Message',
                                     11=>'Unroutable',
+                                    12=>'Destination unreachable',
+                                    13=>'Subscriber Age Restriction',
+                                    14=>'Number Blocked by Carrier',
+                                    15=>'Pre-Paid - Insufficent funds',
                                     99=>'General Error');
-        
+
+
         /**
          * Constructor
          *
@@ -97,7 +102,7 @@
             if($valid === false)
             {
                 $this->error['code'] = Provider::FATAL;
-                $this->error['message'] = _('Invalid key or secret');
+                $this->error['message'] = T_('Invalid key or secret');
             }
             return $valid;
         } // validateAccount
@@ -183,9 +188,8 @@
             
                 $this->delivered($params['messageId'], $params['msisdn'], 
                         $params['status'], new \DateTime(), 
-                        (isset($params['err-code']) ? 
-                        $this->errorCodes[(int)$params['err-code']].' ('.$params['err-code'].')'
-                        : ''));
+                        (in_array($params['status'], array('delivered', 'accepted')) ? '' :
+                        $this->errorCodes[(int)$params['err-code']].' ('.$params['err-code'].')'));
             }
         }
         
