@@ -23,7 +23,8 @@ $user = User::current();
 $user_id = $user->id;
 $admin = User::current()->allow("read", 'operations.all');
 
-$filter = "(op_type = '$type') AND (op_closed IS NULL)";
+$timeout = Properties::get(Properties::TRACE_TIMEOUT, $user_id);
+$filter = "(op_type = '$type') AND (op_closed IS NULL) AND `op_opened` > NOW() - INTERVAL $timeout HOUR";
 
 if(isset($_GET['filter'])) {
     $filter .= ' AND ' . Missing::filter(isset_get($_GET, 'filter', ''), 'OR');

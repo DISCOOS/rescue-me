@@ -19,6 +19,7 @@
   <li><a href="#open" data-toggle="tab"><?=T_('Open')?></a></li>
   <li><a href="#test" data-toggle="tab"><?=T_('Tests')?></a></li>
   <li><a href="#exercise" data-toggle="tab"><?=T_('Exercises')?></a></li>
+  <li><a href="#timeout" data-toggle="tab"><?=T_('Timeouts')?></a></li>
   <li><a href="#closed" data-toggle="tab"><?=T_('Closed')?></a></li>
 </ul>
 
@@ -97,6 +98,31 @@
             <tbody class="page"></tbody>
         </table>        
         <div class="pagination" data-target="exercise .page"></div>
+    </div>
+    <div id="timeout" data-target=".page" class="tab-pane <?=($type === 'timeout' ? 'active' : '')?>">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><?=T_('Type')?></th>
+                <th><?=T_('Name')?></th>
+                <th><?=T_('Status')?></th>
+                <? if($admin) { ?>
+                <th class="hidden-phone"><?= T_('User') ?></th>
+                <th>
+                    <? } else { ?>
+                <th colspan="2">
+                    <? } ?>
+                    <input type="text"
+                           class="input-medium search-query pull-right"
+                           data-target="timeout .searchable"
+                           data-source="timeout .pagination"
+                           placeholder="<?=T_('Search')?>">
+                </th>
+            </tr>
+            </thead>
+            <tbody class="page"></tbody>
+        </table>
+        <div class="pagination" data-target="timeout .page"></div>
     </div>
     <div id="closed" data-target=".page" class="tab-pane <?=($type === Operation::CLOSED ? 'active' : '')?>">
         <table class="table table-striped">

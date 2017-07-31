@@ -185,11 +185,11 @@ switch($_GET['view']) {
                 default:
                 case 'general':
                     $index = 'property.list';
-                    $include = "system.*|location.*";
+                    $include = "general";
                     break;
                 case 'design':
                     $index = 'property.list';
-                    $include = "trace.*|alert.*";
+                    $include = "design";
                     break;
                 case 'sms':
                     $index = 'module.list';
@@ -201,7 +201,7 @@ switch($_GET['view']) {
                     break;
                 case 'maps':
                     $index = 'property.list';
-                    $include = "map.*";
+                    $include = "map";
                     break;
             }
 
@@ -1095,6 +1095,10 @@ switch($_GET['view']) {
             if($_GET["name"] === 'closed') {
 
                 echo ajax_response('missing.list','closed');
+
+            } else if($_GET["name"] === 'timeout') {
+
+                echo ajax_response('missing.list','timeout');
 
             } else {
 

@@ -35,7 +35,7 @@ if($inline === false) { ?>
 
     $i=1;
     foreach(property_row_editors($id) as $name => $cells) {
-        if(preg_match($pattern, $name)) {
+        if(preg_match($pattern, $name) || preg_match($pattern, Properties::category($name))) {
 
             $id = "p$i"; $i++;
 

@@ -57,7 +57,9 @@
         const LOCATION_APPCACHE = 'location.appcache';
         const LOCATION_APPCACHE_VERSION = 'version';
         const LOCATION_APPCACHE_SETTINGS = 'settings';
-        
+
+        const TRACE_TIMEOUT = 'trace.timeout';
+
         const TRACE_ALERT_NEW = 'trace.alert.new';
         
         const TRACE_BAR_STATE = 'trace.bar.state';
@@ -107,6 +109,7 @@
                 'type' => 'select',
                 'default' => '',
                 'options' => true,
+                'category' => 'general',
                 'description' => 'Use phone number prefix for given country as default.'
             ),
             
@@ -114,6 +117,7 @@
                 'type' => 'select',
                 'default' => '',
                 'options' => true,
+                'category' => 'general',
                 'description' => 'Use given language (locale).'
             ),
 
@@ -121,6 +125,7 @@
                 'type' => 'select',
                 'default' => '',
                 'options' => true,
+                'category' => 'general',
                 'description' => 'Use given timezone.'
             ),
 
@@ -128,6 +133,7 @@
                 'type' => 'text',
                 'default' => 25,
                 'options' => false,
+                'category' => 'general',
                 'description' => 'Maximum number of lines per page (pagination)'
             ),
             
@@ -135,6 +141,7 @@
                 'type' => 'text',
                 'default' => 900000,
                 'options' => false,
+                'category' => 'general',
                 'description' => "Don't use positions older than maximum age (milliseconds)."
             ),
             
@@ -142,6 +149,7 @@
                 'type' => 'text',
                 'default' => 600000,
                 'options' => false,
+                'category' => 'general',
                 'description' => "Give up finding location after maximum time (milliseconds)."
             ),
             
@@ -149,6 +157,7 @@
                 'type' => 'text',
                 'default' => 100,
                 'options' => false,
+                'category' => 'general',
                 'description' => "Track until location with accuracy is found (meter)."
             ),
             
@@ -159,19 +168,29 @@
                     'none' => 'None',
                     self::LOCATION_APPCACHE_SETTINGS => 'Settings'
                  ),
+                'category' => 'general',
                 'description' => "Make locate script available offline with HTML5 appcache."
             ),
             
+            self::TRACE_TIMEOUT => array(
+                'type' => 'text',
+                'default' => '24',
+                'options' => false,
+                'category' => 'general',
+                'description' => "Number of hours before trace times out"
+            ),
+
             self::TRACE_ALERT_NEW => array(
                 'type' => 'select',
                 'default' => self::YES,
-                'options' => array(                   
+                'options' => array(
                     self::YES => 'Yes',
                     self::NO => 'No',
-                 ),
+                ),
+                'category' => 'design',
                 'description' => "Show warning about link merge field and information about trace script?"
             ),
-            
+
             self::TRACE_BAR_STATE => array(
                 'type' => 'select',
                 'default' => self::EXPANDED,
@@ -179,6 +198,7 @@
                     self::EXPANDED => 'Expanded',
                     self::COLLAPSED => 'Collapsed',
                  ),
+                'category' => 'design',
                 'description' => "Trace bar layout state."
             ),
             
@@ -189,6 +209,7 @@
                     self::TOP => 'Top',
                     self::BOTTOM => 'Bottom',
                  ),
+                'category' => 'design',
                 'description' => "Trace bar location."
             ),
             
@@ -201,6 +222,7 @@
                     self::TRACE_DETAILS_LOCATION_TIME => 'Last timestamp',
                     self::TRACE_DETAILS_LOCATION_URL => 'Location URL'
                  ),
+                'category' => 'design',
                 'description' => "Show trace details"
             ),
             
@@ -208,6 +230,7 @@
                 'type' => 'text',
                 'default' => TITLE,
                 'options' => false,
+                'category' => 'sms',
                 'description' => "Use custom alphanumeric sms sender id (if supported)."
             ),
             
@@ -218,6 +241,7 @@
                     self::SMS_OPTIMIZE_DELIVERY => 'Delivery', 
                     self::SMS_OPTIMIZE_ENCODING => 'Encoding'
                  ),
+                'category' => 'sms',
                 'description' => "Use 'Delivery' to minimize delivery delay, use 'Encoding' otherwise."
             ),
             
@@ -230,6 +254,7 @@
                     self::SMS_REQUIRE_SENDER_ID_ALPHA => 'Alpha Sender ID',
                     self::SMS_REQUIRE_SENDER_ID_NUMERIC => 'Numeric Sender ID'
                  ),
+                'category' => 'sms',
                 'description' => "Features must be present for delivery to occur (if supported)."
             ),
             
@@ -242,6 +267,7 @@
                     self::MAP_DEFAULT_BASE_SATELLITE => 'Satellite',
                     self::MAP_DEFAULT_BASE_HYBRID => 'Hybrid'
                  ),
+                'category' => 'map',
                 'description' => "Use given basemap as default (on refresh)."
             ),
             
@@ -256,6 +282,7 @@
                     self::MAP_DEFAULT_FORMAT_DMS => 'Degrees, minutes, seconds'
                     
                  ),
+                'category' => 'map',
                 'description' => "Show coordinates in given format"
             ),
 
@@ -266,6 +293,7 @@
                     self::YES => 'Yes',
                     self::NO => 'No',
                 ),
+                'category' => 'map',
                 'description' => "Show axis label with coordinates when appropriate?"
             ),
 
@@ -276,6 +304,7 @@
                     self::YES => 'Yes',
                     self::NO => 'No',
                 ),
+                'category' => 'map',
                 'description' => "Show coordinate units when appropriate?"
             ),
 
@@ -286,6 +315,7 @@
                     self::YES => 'Yes',
                     self::NO => 'No',
                 ),
+                'category' => 'map',
                 'description' => "Wrap negative coordinates?"
             )
 
@@ -559,16 +589,27 @@
         
         
         /**
-         * Get property description
+         * Get property category
          * 
+         * @param string $name Property
+         * @return string
+         */
+        public static final function category($name) {
+            return self::$meta[$name]['category'];
+        }
+
+
+        /**
+         * Get property description
+         *
          * @param string $name Property
          * @return string
          */
         public static final function description($name) {
             return self::$meta[$name]['description'];
         }
-        
-        
+
+
         /**
          * Ensure value is not empty
          * 
