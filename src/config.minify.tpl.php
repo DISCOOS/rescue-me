@@ -50,6 +50,7 @@
                 '//js/bootstrap-paginator.min.js',
                 '//js/bootstrap2-toggle.min.js',
                 '//js/bootstrap-datetimepicker.min.js',
+                '//js/bootstrap-datetimepicker.nb.js',
                 '//js/i18next.min.js',
                 '//js/notify.js',
                 '//js/selectize.js',

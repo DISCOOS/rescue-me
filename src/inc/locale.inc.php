@@ -81,6 +81,7 @@
             $_SESSION['domain'] = $domain;
             $_SESSION['locale'] = $locale;
 
+
         } else {
             $previous = false;
         }

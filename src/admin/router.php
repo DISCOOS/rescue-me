@@ -22,6 +22,7 @@ $granted = ($user instanceof User);
 $id = ($user ? $user->id : 0);
 set_system_locale(DOMAIN_ADMIN, Properties::get(Properties::SYSTEM_LOCALE, $id));
 TimeZone::set(Properties::get(Properties::SYSTEM_TIMEZONE, $id));
+setcookie('locale', $_SESSION['locale']);
 
 // Force logon?
 if($granted === false) {
