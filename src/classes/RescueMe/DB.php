@@ -464,6 +464,7 @@
          */
         public function create($name, $use = true)
         {
+            $res = true;
             $mysqli = DB::instance()->mysqli;
             if(DB::instance()->mysqli->connect_error)
             {
@@ -476,7 +477,7 @@
                 $res = $mysqli->select_db($name);
                 if($res === FALSE)
                 {
-                    $sql = "CREATE DATABASE IF NOT EXISTS $name";
+                    $sql = "CREATE DATABASE IF NOT EXISTS $name DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci";
                     $res = $mysqli->query($sql) && $mysqli->select_db($name);
                 }
             }
@@ -592,203 +593,6 @@
             return $queries;
         }
 
-
-
-        /**
-         * Source SQL into database.
-         * 
-         * @param string $pathname Path to file
-         * 
-         * @return boolean TRUE if success, FALSE otherwise.
-         */
-        public static function source_old($pathname)
-        {
-            $success = true;
-            $executed = array();
-
-            // Determine if database is versioned (if not, attempt to append missing columns)
-            $versioned = DB::latestVersion();
-
-            // Disable auto-commit, store current state
-            $flag = DB::instance()->mysqli->autocommit(false);
-
-
-            try {
-                $skipped = array();
-                if(file_exists($pathname))
-                {
-                    $query = '';
-                    $queries = array();
-                    $lines = file($pathname);
-                    if(is_array($lines))
-                    {
-                        foreach($lines as $line)
-                        {
-                            $line = trim($line);
-                            if(!preg_match("#^--|^/\\*#", $line))
-                            {
-                                if(!trim($line))
-                                {
-                                    if($query !== '')
-                                    {
-                                        $queries[] = $query;
-                                        $query = '';
-                                    }
-                                }
-                                else
-                                {
-                                    $query .= $line;
-                                }
-                            }
-                        }
-                        if(!empty($query)) {
-                            $queries[] = $query;
-                        }
-                        foreach($queries as $sql)
-                        {
-                            // Check if table exists
-                            $skip = false;
-                            if(strpos($sql, "CREATE TABLE") === 0)
-                            {
-                                $table = DB::table($sql);
-                                if(($skip = DB::query("DESCRIBE `$table`")) !== false)
-                                {
-                                    $skipped[] = $sql;
-                                }
-                            }
-                            if(!$skip) {
-                                if(DB::query($sql) === false)
-                                {
-                                    $msg = sprintf("Query [$sql] failed. %s (code %s)", self::error(), self::errno());
-                                    throw new \Exception($msg, self::errno());
-                                }
-                                $executed[] = $sql;
-                            }
-                        }
-
-                        // Add add missing columns in skipped 'CREATE TABLE' queries?
-                        if($versioned === false && !empty($skipped)) {
-                            if(($altered = DB::alter($skipped))) {
-                                $executed = array_merge($executed, $altered);
-                            }
-                        }
-                    }
-                }
-
-                // Commit changes
-                if(FALSE === DB::instance()->mysqli->commit()) {
-                    Logs::write(Logs::DB, LogLevel::ERROR, "Failed to source $pathname.");
-                }
-
-            } catch (\Exception $e) {
-                $rollback = DB::instance()->mysqli->rollback();
-                Logs::write(Logs::DB, LogLevel::ERROR, "Failed to source $pathname.", Logs::toArray($e));
-                if($rollback === false) {
-                    Logs::write(Logs::DB, LogLevel::ERROR, "Failed to rollback $pathname.");
-                }
-                $success = false;
-            }
-
-            // Restore previous state
-            DB::instance()->mysqli->autocommit($flag);
-
-            $count = count($executed);
-            Logs::write(Logs::DB, LogLevel::INFO, "Sourced $pathname ($count sentences executed).", $executed);
-
-            return $success;
-        }// source
-        
-        
-        private static function alter($skipped)
-        {
-            $executed=array();
-            foreach($skipped as $create)
-            {
-                $exists = array();
-                $table = DB::table($create);
-                $result = DB::query("SHOW COLUMNS FROM `$table`;");
-                if($result !== false)
-                {
-                    while($row = $result->fetch_row())
-                    {
-                        $exists[] = $row[0];
-                    }
-                    $columns = DB::columns($create, $table);
-                    
-                    foreach($columns as $sql)
-                    {
-                        if(strpos($sql, "`") === 0)
-                        {
-                            $sql = rtrim($sql, ",");
-                            $column = DB::column($sql);
-                            if(!in_array($column, $exists))
-                            {
-                                $query = "ALTER TABLE `$table` ADD COLUMN $sql;";
-                                if(DB::query($query) === false)
-                                {
-                                    return false;
-                                }
-                                $executed[] = $query;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            if(empty($executed) === FALSE)
-            {
-                $count = count($executed);
-                Logs::write(Logs::DB, LogLevel::INFO, "Altered $count database entities.", $executed);
-            }            
-            
-            return $executed;
-        }
-
-        private static function table($query)
-        {
-            $table = array();
-            preg_match("#CREATE TABLE IF NOT EXISTS `([a-z_]*)`#i", $query, $table);
-            return $table[1];
-        }
-        
-        
-        private static function columns($query, $table)
-        {
-            $body = array();
-            preg_match("#CREATE TABLE IF NOT EXISTS `$table` \\((.*)\\)#i", $query, $body);
-            $column = "";
-            $columns = array();
-            foreach(explode(",", $body[1]) as $item) {
-                // Next column found?
-                if(strpos($item, "`") === 0 && $column) {
-                    $columns[] = $column;
-                    $column = $item;
-                } 
-                // Key found?
-                else if(stripos($item, "primary") === 0 || stripos($item, "key") === 0) {
-                    $columns[] = $column;
-                    $column = "";
-                }
-                else {
-                    // Implode enum values
-                    $column = "$column, $item";
-                }
-            }
-            
-            // Add trailing column? (no keys found)
-            if($column) $columns[] = $column;
-            
-            // Finished
-            return $columns;
-        }
-        
-        
-        private static function column($query)
-        {
-            $column = array();
-            preg_match("#`.*`#", $query, $column);
-            return trim($column[0], "`");
-        }
         
         /**
          * Configure database connection.
