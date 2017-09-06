@@ -47,6 +47,7 @@
                 '//js/jquery.validate.min.js',
                 '//js/bootstrap.min.js',
                 '//js/bootstrap-editable.min.js',
+                '//js/bootstrap-editable-dropdown.js',
                 '//js/bootstrap-paginator.min.js',
                 '//js/bootstrap2-toggle.min.js',
                 '//js/bootstrap-datetimepicker.min.js',
