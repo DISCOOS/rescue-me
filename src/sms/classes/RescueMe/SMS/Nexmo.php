@@ -113,7 +113,7 @@
 
             $from = urlencode( $from );
             $message = urlencode( $message );
-            $callbackURL = APP_URL.Callback::URL.$this->user_id;
+            $callbackURL = urlencode( APP_URL.Callback::URL.$this->user_id );
             
             // Create SMS provider url
             $smsURL =  'https://rest.nexmo.com/sms/json'
