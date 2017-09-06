@@ -109,10 +109,11 @@
         } // validateAccount
         
         protected function _send($from, $to, $message, $account)
-        {            
-            
+        {
+
             $from = urlencode( $from );
             $message = urlencode( $message );
+            $callbackURL = APP_URL.Callback::URL.$this->user_id;
             
             // Create SMS provider url
             $smsURL =  'https://rest.nexmo.com/sms/json'
@@ -121,7 +122,8 @@
                        . '&from='.$from
                        . '&to='.$to
                        . '&text='.$message
-                       . '&status-report-req=1';
+                       . '&status-report-req=1'
+                       . '&callback='.$callbackURL;
 
             // Require unicode message?
             if(in_array(Properties::SMS_REQUIRE_UNICODE,

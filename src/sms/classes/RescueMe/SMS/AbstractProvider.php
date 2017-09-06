@@ -76,7 +76,7 @@
 
             $from = $this->getSenderID($user, $country);
 
-            $id = $this->_send($from, $code.$to, $message, $account);
+            $id = $this->_send($user, $from, $code.$to, $message, $account);
             
             if(is_string($id)) {
                 $id = trim($id);
