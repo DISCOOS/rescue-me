@@ -80,9 +80,33 @@ use RescueMe\User;
                 <td class="missing editor" colspan="2">
                 <? } ?>
                     <div class="btn-group pull-right">
-                        <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/{$missing->op_id}"?>">
-                            <b class="icon icon-edit"></b><?= T_('Reopen') ?>
+                        <a class="btn btn-small" href="<?=ADMIN_URI."missing/edit/$missing->id"?>">
+                            <b class="icon icon-edit hidden-phone"></b><?= T_('Edit') ?>
                         </a>
+                        <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a role="menuitem" data-toggle="modal"
+                                   href="<?=ADMIN_URI."operation/close/{$missing->op_id}"?>" >
+                                    <b class="icon icon-off"></b><?= T_('Close operation') ?>
+                                </a>
+                            </li>
+                            <li>
+                                <a role="menuitem" data-toggle="modal" data-target="#confirm"
+                                   data-content="<?=sprintf(T_('Do you want to resend SMS to %1$s?'),"<u>{$missing->name}</u>")?>"
+                                   data-onclick="R.ajax('<?=ADMIN_URI."missing/resend/{$missing->id}"?>','#sent-<?=$missing->id?>');" >
+                                    <b class="icon icon-envelope"></b><?= T_('Resend SMS') ?>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a role="menuitem" onclick="R.ajax('<?=ADMIN_URI."missing/check/$missing->id"?>','#delivered-<?=$missing->id?>');">
+                                    <b class="icon icon-refresh"></b><?=T_('Check SMS delivery status')?>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </td>
             </tr>
