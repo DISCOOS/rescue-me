@@ -5,8 +5,8 @@ require_once('../config.php');
 use RescueMe\Missing;
 use RescueMe\Properties;
 
-$id = $_GET['id'];
-$missing = Missing::get($id);
+$id = input_get_hash('id');
+$missing = ($id === false ? false : Missing::get(decrypt_id($id)));
 
 if($missing !== false) {
 

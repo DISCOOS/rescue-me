@@ -22,7 +22,7 @@
         }
 
         $type = Properties::get(Properties::LOCATION_APPCACHE, $missing->user_id);
-        $manifest =  ($type !== 'none' ? 'manifest="locate.appcache"' : '');
+        $manifest =  ($type !== 'none' ? 'manifest="'.$id.'/locate.appcache"' : '');
 
         // Set state
         $missing->answered();                

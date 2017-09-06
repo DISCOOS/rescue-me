@@ -33,16 +33,16 @@ AddType application/x-httpd-php .appcache
     RewriteCond %{SCRIPT_FILENAME} !-f  
     RewriteRule ^l/.*img/(.*)$ img/$1 [L]
     
-    # Location request
-    RewriteCond %{SCRIPT_FILENAME} !-d  
-    RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^l/(.*)$ trace/locate.php?id=$1 [L]
-
     # Location request - appcache
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
-    RewriteRule ^l/(.*)/.*appcache$ trace/locate.appcache.php?id=$1 [L]
+    RewriteRule ^l/(.*)/locate.appcache$ trace/locate.appcache.php?id=$1 [L]
     
+    # Location request
+    RewriteCond %{SCRIPT_FILENAME} !-d
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteRule ^l/(.*)$ trace/locate.php?id=$1 [L]
+
     # Location request - abort
     RewriteCond %{SCRIPT_FILENAME} !-d  
     RewriteCond %{SCRIPT_FILENAME} !-f  
