@@ -767,9 +767,7 @@
                 $message
             );
 
-            $from = Properties::get(Properties::SMS_SENDER_ID, $user_id);
-
-            $res = $sms->send($from, $country, $to, $message);
+            $res = $sms->send($user_id, $country, $to, $message);
             
             if($res) {
                 

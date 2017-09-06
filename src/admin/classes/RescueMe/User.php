@@ -657,9 +657,7 @@
                     return User::error(T_('Failed to get SMS provider'));
                 }
 
-                $from = Properties::get(Properties::SMS_SENDER_ID, User::currentId());
-
-                $res = $sms->send($from, $this->mobile_country, $this->mobile, $message);
+                $res = $sms->send($this, $this->mobile_country, $this->mobile, $message);
                 if($res === FALSE) {
                     User::error($sms->error());
                 } else {

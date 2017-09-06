@@ -19,7 +19,8 @@
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
     use \RescueMe\Properties;
-    
+    use RescueMe\User;
+
 
     /**
      * AbstractProvider class
@@ -46,14 +47,14 @@
         /**
          * Send SMS message to given number.
          * 
-         * @param string $from Sender
-         * @param string $country International dial code
+         * @param int|User $user User
+         * @param string $country ISO country code
          * @param string $to Recipient phone number without dial code
          * @param string $message Message text
          * 
          * @return mixed|array Message id if success, FALSE otherwise.
          */
-        public function send($from, $country, $to, $message)
+        public function send($user, $country, $to, $message)
         {
             // Prepare
             unset($this->error);
@@ -72,7 +73,9 @@
             if($account === FALSE) {
                 return $this->fatal("SMS provider configuration is invalid");
             }
-            
+
+            $from = $this->getSenderID($user, $country);
+
             $id = $this->_send($from, $code.$to, $message, $account);
             
             if(is_string($id)) {
@@ -94,6 +97,27 @@
             return $id;
             
         }// send
+
+        protected function getSenderID($user, $code) {
+            $id = ($user instanceof User ? $user->id : $user);
+            $default = Properties::get(Properties::SMS_SENDER_ID, $id);
+            if(in_array(Properties::SMS_SENDER_ID_COUNTRY,$this->uses())) {
+                $json = json_decode(Properties::get(Properties::SMS_SENDER_ID_COUNTRY, $id), true);
+                if(isset($json[$code])) {
+                    // Select next id
+                    $ids = preg_split('/,/', $json[$code]);
+                    $size = sizeof($ids);
+                    if(!isset($_SESSION['SENDER_ID_NEXT']) || ($index = $_SESSION['SENDER_ID_NEXT']) >= $size) {
+                        $index = 0;
+                        $_SESSION['SENDER_ID_NEXT'] = $index + 1;
+                    } else {
+                        $_SESSION['SENDER_ID_NEXT']++;
+                    }
+                    $default = $ids[$index];
+                }
+            }
+            return trim($default);
+        }
         
         /**
          * Actual send implementation

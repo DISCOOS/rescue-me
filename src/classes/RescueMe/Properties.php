@@ -79,7 +79,8 @@
         const SMS_REQUIRE_SENDER_ID_NUMERIC = 'numeric';        
         
         const SMS_SENDER_ID = 'sms.sender.id';
-        
+        const SMS_SENDER_ID_COUNTRY = 'sms.sender.id.country';
+
         const SMS_OPTIMIZE = 'sms.optimize';
         const SMS_OPTIMIZE_DELIVERY = 'delivery';
         const SMS_OPTIMIZE_ENCODING = 'encoding';
@@ -229,11 +230,19 @@
             self::SMS_SENDER_ID => array(
                 'type' => 'text',
                 'default' => TITLE,
-                'options' => false,
+                'options' => true,
                 'category' => 'sms',
                 'description' => "Use custom alphanumeric sms sender id (if supported)."
             ),
-            
+
+            self::SMS_SENDER_ID_COUNTRY => array(
+                'type' => 'dropdown',
+                'default' => '',
+                'options' => true,
+                'category' => 'sms',
+                'description' => "Use custom alphanumeric sms sender id for each country (if supported). Overrides sms.sender.id value."
+            ),
+
             self::SMS_OPTIMIZE => array(
                 'type' => 'select',
                 'default' => self::SMS_OPTIMIZE_DELIVERY,
@@ -532,6 +541,7 @@
             switch(self::$meta[$name]['type']) {
                 case 'select':
                 case 'checklist':
+                case 'dropdown':
                     return "property/options?name=$name";
             }
             return false;
@@ -550,6 +560,7 @@
             $options = array();
             switch($name) {
                 case self::SYSTEM_COUNTRY_PREFIX:
+                case self::SMS_SENDER_ID_COUNTRY:
                     foreach(Locale::getCountryNames() as $code => $country) {
                         $options[] = array('value' =>  $code, 'text' => $country);
                     }
@@ -727,13 +738,38 @@
                 
                 // Any alphanumeric value allowed
                 case self::SMS_SENDER_ID:
-                    
-                    if(!ctype_alnum($value)) {
-                        return '"'.$value.'" is not alphanumeric';
-                    }                        
-                    
+
+                    $ids = preg_split('/,/', $value);
+
+                    foreach($ids as $id) {
+                        if(!ctype_alnum(trim($id))) {
+                            return '"'.$id.'" is not alphanumeric';
+                        }
+                    }
+
                     break;
-                    
+
+                // Must be a JSON object
+                case self::SMS_SENDER_ID_COUNTRY:
+
+                    $countries = json_decode($value);
+
+                    if(!is_object($countries)) {
+                        return '"'.$value.'" is not an object';
+                    }
+
+                    foreach($countries as $country) {
+                        $ids = preg_split('/,/', $country);
+
+                        foreach($ids as $id) {
+                            if(!ctype_alnum(trim($id))) {
+                                return '"'.$id.'" is not alphanumeric';
+                            }
+                        }
+                    }
+
+                    break;
+
                 default:
 
                     return 'Setting "'."$name=$value".'" is invalid';

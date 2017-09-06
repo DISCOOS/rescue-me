@@ -60,9 +60,10 @@
                     $user_id, $account_key, $account_secret
                 ),
                 array(
-                Properties::SMS_SENDER_ID,
-                Properties::SMS_REQUIRE,
-                Properties::SMS_REQUIRE_UNICODE
+                    Properties::SMS_SENDER_ID,
+                    Properties::SMS_SENDER_ID_COUNTRY,
+                    Properties::SMS_REQUIRE,
+                    Properties::SMS_REQUIRE_UNICODE
             ));
             $this->user_id = $user_id;
         }// __construct

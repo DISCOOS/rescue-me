@@ -241,7 +241,7 @@ R.prepare = function (element, options) {
     });
 
     // Enable collapse enabled elements
-    $(element).find('.collapse').collapse()
+    $(element).find('.collapse').collapse();
 
     // Register alert close closure
     $(element).find('.alert').bind('closed', function () {
@@ -274,7 +274,6 @@ R.prepare = function (element, options) {
 
     // Register datatimepickers
     var language = R.cookie.get('locale').split('_')[0];
-    console.log(language);
     $(element).find('.date').datetimepicker({
         language: language
     });

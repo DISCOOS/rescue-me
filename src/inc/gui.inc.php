@@ -287,7 +287,7 @@ use RescueMe\Properties;
 
                 $text = Properties::text($name,$user_id);
                 $attributes = 'data-type="'.$type.'" '.$source.' href="#" class="editable editable-click"';
-                $value  = '<a id="name" data-pk="'.$name.'" data-value="'.$value.'"'.'" data-url="'.$url.'"'.$attributes .'>'.$text.'</a>';
+                $value  = '<a id="name" data-pk="'.$name.'" data-value="'.htmlspecialchars($value).'"'.'" data-url="'.$url.'"'.$attributes .'></a>';
                 $cells[] = array('value' => $value, 'attributes' => 'colspan="2"');
 
                 $rows[$name] = $cells;

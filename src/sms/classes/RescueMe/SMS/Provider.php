@@ -13,6 +13,7 @@
     namespace RescueMe\SMS;
 
     use RescueMe\Module;
+    use RescueMe\User;
 
     /**
      * Provider class
@@ -30,14 +31,14 @@
         /**
          * Send SMS message to given number.
          * 
-         * @param string $from Sender
+         * @param int|User $user User
          * @param string $code International dial code
          * @param string $to Recipient phone number without dial code
          * @param string $message Message text
          * 
          * @return mixed|array Message id if success, FALSE otherwise.
          */
-        public function send($from, $code, $to, $message);
+        public function send($user, $code, $to, $message);
 
         
         /**

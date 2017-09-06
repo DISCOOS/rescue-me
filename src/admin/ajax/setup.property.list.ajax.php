@@ -10,7 +10,7 @@ $include = (isset($context) ? $context : ".*");
 $id = input_get_int('id', User::currentId());
 
 $name = input_get_string('name', 'general');
-$pattern = '#'.$include.'#';
+$pattern = '#^('.$include.')$#';
 
 
 ob_start();
