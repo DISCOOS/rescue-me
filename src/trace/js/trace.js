@@ -63,7 +63,17 @@ R.trace.locate = function() {
      */
     var rID = 0;
 
-    /**
+    /*
+     * Permission denied timer id
+     */
+    var dID = 0;
+
+    /*
+     * Reload timeout
+     */
+    var dw = (q.wait/10);
+
+    /*
      * Seconds until failure in seconds
      */
     var w = (q.wait/1000);
@@ -155,7 +165,14 @@ R.trace.locate = function() {
     function se(e) {
         switch (e.code) {
             case e.PERMISSION_DENIED:
+                w = dw/1000;
                 f.innerHTML = msg[4]+rt();
+                if(!dID) {
+                    dID = setTimeout(function() {
+                        dID = 0;
+                        location.reload();
+                    }, dw);
+                }
                 break;
             case e.POSITION_UNAVAILABLE:
                 f.innerHTML = msg[5];
@@ -163,7 +180,7 @@ R.trace.locate = function() {
             case e.TIMEOUT:
                 f.innerHTML = msg[6];
                 break;
-            case e.UNKNOWN_ERROR:
+            default:
                 f.innerHTML = msg[7];
                 break;
         }
@@ -214,6 +231,7 @@ R.trace.locate = function() {
                                 f.innerHTML += '<br />' + msg[3];
                             }
                             clearTimeout(rID);
+                            clearTimeout(dID);
                         } else {
                             rs(c, t, a);
                         }
