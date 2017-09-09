@@ -69,7 +69,8 @@
         public $locale = DEFAULT_LOCALE;
         public $number;
         public $country;
-        
+        public $network_code;
+
         public $trace_alert_country;
         public $trace_alert_number;
 
@@ -84,8 +85,9 @@
         public $sms_provider_ref;
         public $sms_text;
 
+        public $requests = array();
         public $positions = array();
-        
+
         public static function filter($values, $operand) {
             
             $fields = array(
@@ -457,6 +459,30 @@
         }
 
         /**
+         * Get all requests
+         * @return array|bool
+         */
+        public function getRequests(){
+
+            if($this->id === -1) {
+                return false;
+            }
+
+            $res = DB::select('requests', '*', "`mobile_id`=" . (int) $this->id, "`request_timestamp`");
+
+            if(DB::isEmpty($res)) {
+                return false;
+            }
+
+            $this->requests = array();
+            while($row = $res->fetch_assoc()){
+                $this->requests[$row['request_id']] = $row;
+            }
+
+            return $this->requests;
+        }// getRequests
+
+        /**
          * Register location
          * @param $lat
          * @param $lon
@@ -584,7 +610,7 @@
             return $ref;
 
         }// sendSMS
-        
+
         
         /**
          * Check mobile state
@@ -645,9 +671,9 @@
 
         /**
          * Register response device from user_agent string and store client ip
-         * @param $ua
-         * @param $ip
-         * 
+         * @param string $ua
+         * @param string $ip
+         *
          * @return boolean
          */
         public function responded($ua, $ip) {

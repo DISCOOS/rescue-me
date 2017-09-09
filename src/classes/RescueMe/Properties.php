@@ -15,7 +15,7 @@
     use RescueMe\SMS;
     
     /**
-     * Properties class0
+     * Properties class
      * 
      * @package 
      */
@@ -103,6 +103,7 @@
 
         const MAP_FORMAT_WRAP = 'map.format.wrap';
 
+        const DEVICE_LOOKUP = 'device.lookup';
 
         public static $meta = array(
             
@@ -326,8 +327,18 @@
                 ),
                 'category' => 'map',
                 'description' => "Wrap negative coordinates?"
-            )
+            ),
 
+            self::DEVICE_LOOKUP => array(
+                'type' => 'select',
+                'default' => self::YES,
+                'options' => array(
+                    self::YES => 'Yes',
+                    self::NO => 'No',
+                ),
+                'category' => 'device',
+                'description' => "Lookup type of device from incoming requests?"
+            ),
 
         );
 
@@ -720,6 +731,7 @@
                 case self::TRACE_ALERT_NEW:
                 case self::TRACE_BAR_STATE:
                 case self::TRACE_BAR_LOCATION:
+                case self::DEVICE_LOOKUP:
 
                     $array = is_array($value) ? $value : explode(",", $value);
                     

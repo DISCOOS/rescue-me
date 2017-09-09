@@ -1,6 +1,7 @@
 <?php
 
 use RescueMe\DB;
+use RescueMe\Device\Lookup;
 use RescueMe\Domain\Alert;
 use RescueMe\Domain\Issue;
 use RescueMe\Group;
@@ -202,6 +203,10 @@ switch($_GET['view']) {
                 case 'maps':
                     $index = 'property.list';
                     $include = "map";
+                    break;
+                case 'device':
+                    $index = 'module.list';
+                    $include = preg_quote(Lookup::TYPE);
                     break;
             }
 

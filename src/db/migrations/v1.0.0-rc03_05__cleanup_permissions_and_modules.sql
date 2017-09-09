@@ -13,14 +13,14 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 -- Replace 'operations' with 'traces' in all permissions
 CREATE TEMPORARY TABLE IF NOT EXISTS `tmp` ENGINE=MEMORY AS
 (
-	SELECT `role_id`, `user_id`, `access`, REPLACE(`resource`, 'operations', 'traces') as `resource` FROM `permissions`
+	SELECT `role_id`, `user_id`, `access`, REPLACE(`resource`, 'operations', 'traces') as `resource` FROM `${schema}`.`permissions`
 );
-TRUNCATE `permissions`;
-INSERT INTO `permissions` SELECT * FROM `tmp`;
+TRUNCATE `${schema}`.`permissions`;
+INSERT INTO `${schema}`.`permissions` SELECT * FROM `tmp`;
 DROP TABLE `tmp`;
 
 -- Remove all WURFL modules if any
-DELETE FROM `modules` WHERE `impl` LIKE '%WURFL%';
+DELETE FROM `${schema}`.`modules` WHERE `impl` LIKE '%WURFL%';
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

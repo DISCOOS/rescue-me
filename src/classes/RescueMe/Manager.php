@@ -12,6 +12,7 @@
     
     namespace RescueMe;
 
+    use RescueMe\Device\L51D;
     use RescueMe\Email\SMTP;
     use RescueMe\SMS\Nexmo;
 
@@ -37,7 +38,8 @@
          */
         private static $required = array(
             SMS\Provider::TYPE => Nexmo::TYPE,
-            Email\Provider::TYPE => SMTP::TYPE
+            Email\Provider::TYPE => SMTP::TYPE,
+            Device\Lookup::TYPE => L51D::TYPE,
         );
 
         /**

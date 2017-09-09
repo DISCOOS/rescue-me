@@ -1,4 +1,7 @@
 <?
+    use RescueMe\Device\Lookup;
+    use RescueMe\Locale;
+    use RescueMe\Manager;
     use RescueMe\User;
     use RescueMe\Mobile;
     use RescueMe\Trace;
@@ -7,6 +10,8 @@
     $id = input_get_int('id');
 
     $mobile = Mobile::get($id);
+
+    $user_id = User::currentId();
 
     if($mobile === false)
     {
@@ -21,6 +26,22 @@
             $name .= ' ('.T_('Closed').')';
         }
 
+        $device = null;
+        $supported = null;
+        if(($requests = $mobile->getRequests()) !== false) {
+            $request = current($requests);
+            $factory = Manager::get(Lookup::TYPE, $user_id);
+            /** @var Lookup $lookup */
+            $lookup = $factory->newInstance();
+            $device = $lookup->device($request);
+
+            $supported = isset($device->device_supports_xhr2)
+                && isset($device->device_supports_geolocation)
+                && $device->device_supports_xhr2 === 'True'
+                && $device->device_supports_geolocation=== 'True';
+        }
+
+
 ?>
 <div>
     <h3 class="pagetitle"><?= $name ?></h3>
@@ -29,7 +50,6 @@
             insert_error($_ROUTER['error']);
         }
 
-        $user_id = User::currentId();
         $params = Properties::getAll($user_id);
         $top = ($params[Properties::TRACE_BAR_LOCATION] === Properties::TOP);
         $collapsed = ($params[Properties::TRACE_BAR_STATE] === Properties::COLLAPSED);
@@ -95,9 +115,74 @@
             </span>
         </div>
     <? } ?>
-    </div>    
-                
-    
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="infos clearfix pull-left">
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=T_('Device type')?></label>
+            <span class="label label-<?= isset($device->device_type) ? 'success' : 'warning' ?>">
+                <?= isset($device->device_type) ? $device->device_type : T_('Unknown')?>
+            </span>
+        </div>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=T_('Is SmartPhone')?></label>
+            <span class="label label-<?= isset($device->device_is_smartphone) ? 'success' : 'warning' ?>">
+                <?= isset($device->device_is_smartphone) ? ($device->device_is_smartphone === 'True' ? T_('Yes') : T_('No'))
+                    : T_('Unknown') ?>
+            </span>
+        </div>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=T_('Supports location')?></label>
+            <span class="label label-<?= $supported  ? 'success' : 'warning' ?>">
+                <?= $supported  ? T_('Yes') : T_('No')?>
+            </span>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="infos clearfix pull-left">
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=T_('Is Phone')?></label>
+            <span class="label label-<?= isset($device->device_is_phone) ? 'success' : 'warning' ?>">
+                <?= isset($device->device_is_phone) ? ($device->device_is_phone === 'True' ? T_('Yes') : T_('No'))
+                    : T_('Unknown')?>
+            </span>
+        </div>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=T_('Device OS')?></label>
+            <span class="label label-<?= isset($device->device_os_name) ? 'success' : 'warning' ?>">
+                <?= isset($device->device_os_name) ? $device->device_os_name
+                    . " ({$device->device_os_version})": T_('Unknown')?>
+            </span>
+        </div>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=T_('Device Browser')?></label>
+            <span class="label label-<?= isset($device->device_browser_name) ? 'success' : 'warning' ?>">
+                <?= isset($device->device_browser_name) ? $device->device_browser_name
+                    . " ({$device->device_browser_version})" : T_('Unknown') ?>
+            </span>
+        </div>
+    </div>
+
+    <div class="infos clearfix pull-left">
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=T_('Phone Number')?></label>
+            <span class="label label-success">
+                <?= Locale::getDialCode($mobile->country).$mobile->number ?>
+            </span>
+        </div>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=T_('Phone Network')?></label>
+            <span class="label label-<?= isset($mobile->network_code) ? 'success' : 'warning' ?>">
+                <?= isset($mobile->network_code) ? $mobile->network_code : T_('Unknown') ?>
+            </span>
+        </div>
+    </div>
+
+
 </div>
 
     <? } ?>    

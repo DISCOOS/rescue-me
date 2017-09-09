@@ -12,8 +12,8 @@
     
     namespace RescueMe\Device;
 
-    use RescueMe\Configuration;
     use RescueMe\Module;
+    use RescueMe\Domain\Device;
 
     /**
      * Lookup class
@@ -43,46 +43,56 @@
         const UNKNOWN = -1;
 
         /**
-         * Handset name
+         * Device name
          */
-        const HANDSET_NAME = 'handset_name';
+        const DEVICE_TYPE = 'device_type';
 
         /**
-         * Handset operating system
+         * Device operating system name
          */
-        const HANDSET_OS = 'handset_os';
+        const DEVICE_OS_NAME = 'device_os_name';
 
         /**
-         * Handset browser
+         * Device operating system version
          */
-        const HANDSET_BROWSER = 'handset_browser';
+        const DEVICE_OS_VERSION = 'device_os_version';
 
         /**
-         * Handset model name
+         * Device browser name
          */
-        const MODEL_NAME = 'model_name';
+        const DEVICE_BROWSER_NAME = 'device_browser_name';
 
         /**
-         * Is generic device flag
+         * Device browser version
          */
-        const IS_GENERIC = 'is_generic';
+        const DEVICE_BROWSER_VERSION = 'device_browser_version';
 
         /**
-         * Is smartphone flag
+         * Is device phone flag
          */
-        const IS_SMARTPHONE = 'is_smartphone';
+        const DEVICE_IS_PHONE = 'device_is_phone';
+
+        /**
+         * Is device smartphone flag
+         */
+        const DEVICE_IS_SMARTPHONE = 'device_is_smartphone';
+
+        /**
+         * Is W3C XHR2 supported flag
+         */
+        const DEVICE_SUPPORTS_XHR2 = 'device_supports_xhr2';
 
         /**
          * Is W3C geolocation api supported flag
          */
-        const SUPPORTS_GEOLOC = 'supports_geoloc';
-
+        const DEVICE_SUPPORTS_GEOLOCATION = 'device_supports_geolocation';
+        
         /**
          * Get device configuration from given request
          *
          * @param $request Mixed Device request
          * 
-         * @return Configuration
+         * @return Device
          */
         public function device($request);
 

@@ -138,9 +138,10 @@
          * @param string $status Delivery status
          * @param \DateTime $datetime Time of delivery
          * @param string $error Delivery error description
+         * @param string $plnm Standard MCC/MNC tuple
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public function delivered($reference, $to, $status, $datetime=null, $error='') {
+        public function delivered($reference, $to, $status, $datetime=null, $error='', $plnm='') {
 
             $context['params'] = func_get_args();
             if(empty($reference) || empty($to) || empty($status)) {
@@ -176,8 +177,8 @@
 
                     // Update mobile state
                     $values = prepare_values(
-                        array('sms_delivered'),
-                        array($delivered)
+                        array('sms_delivered', 'mobile_network_code'),
+                        array($delivered, $plnm)
                     );
 
                     $filter = sprintf("`mobile_id`=%s", $row['mobile_id']);
