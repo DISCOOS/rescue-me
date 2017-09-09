@@ -188,11 +188,13 @@
         public function handle($params) {
             
             if(assert_isset_all($params,array('messageId','msisdn','status'))) {
+
+                $error = (in_array($params['status'], array('delivered', 'accepted')) ? '' :
+                    $this->errorCodes[(int)$params['err-code']].' ('.$params['err-code'].')');
             
                 $this->delivered($params['messageId'], $params['msisdn'], 
                         $params['status'], new \DateTime(), 
-                        (in_array($params['status'], array('delivered', 'accepted')) ? '' :
-                        $this->errorCodes[(int)$params['err-code']].' ('.$params['err-code'].')'));
+                        $error, $params['network-code']);
             }
         }
         
