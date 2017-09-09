@@ -177,7 +177,7 @@
         <div class="info pull-left no-wrap">
             <label class="label label-info"><?=T_('Phone Network')?></label>
             <span class="label label-<?= isset($mobile->network_code) ? 'success' : 'warning' ?>">
-                <?= isset($mobile->network_code) ? $mobile->network_code : T_('Unknown') ?>
+                <?= $mobile->network_code ? $mobile->network_code : T_('Unknown') ?>
             </span>
         </div>
     </div>

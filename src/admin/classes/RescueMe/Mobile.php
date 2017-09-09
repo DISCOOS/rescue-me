@@ -468,7 +468,7 @@
                 return false;
             }
 
-            $res = DB::select('requests', '*', "`mobile_id`=" . (int) $this->id, "`request_timestamp`");
+            $res = DB::select('requests', '*', "`mobile_id`=" . (int) $this->id, "`request_timestamp` DESC");
 
             if(DB::isEmpty($res)) {
                 return false;
