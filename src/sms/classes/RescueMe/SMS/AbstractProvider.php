@@ -137,49 +137,65 @@
          * @param string $to International phone number
          * @param string $status Delivery status
          * @param \DateTime $datetime Time of delivery
-         * @param string $errorDesc Delivery error description
+         * @param string $error Delivery error description
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public function delivered($reference, $to, $status, $datetime=null, $errorDesc='') {
-                        
+        public function delivered($reference, $to, $status, $datetime=null, $error='') {
+
+            $context['params'] = func_get_args();
             if(empty($reference) || empty($to) || empty($status)) {
-                $context['params'] = func_get_args();
                 return $this->critical("One or more required arguments are missing", $context);
             }
-                        
-            // Get all missing with given reference
-            $select = "SELECT `missing_id`, `missing_mobile_country`, `missing_mobile`  
-                       FROM `missing` 
-                       WHERE `sms_provider` = '".DB::escape(get_class($this))."' AND `sms_provider_ref` = '".$reference."';";
-            
-            $res = DB::query($select);
-            
-            if(DB::isEmpty($res) === FALSE) { 
+
+            // Get all sms messages with given reference and update message and mobile states
+            $delivered = isset($datetime) ? "FROM_UNIXTIME({$datetime->getTimestamp()})" : "NULL";
+            $filter = "`message_provider`='%s' AND `message_provider_ref` = '%s'";
+            $filter = sprintf($filter, DB::escape(get_class($this)), $reference);
+            $res = DB::select('messages', array('mobile_id', 'message_id'), $filter);
+
+            if(DB::isEmpty($res) === FALSE) {
 
                 while($row = $res->fetch_assoc()) {
 
-                    $code = Locale::getDialCode($row['missing_mobile_country']);
-                    $number = $this->accept($code).$row['missing_mobile'];
+                    // Update message state
+                    $values = prepare_values(
+                        array('message_delivered', 'message_provider_status', 'message_provider_error'),
+                        array($delivered, $status, $error)
+                    );
 
-                    if(ltrim($number,'0') === ltrim($to,'0')) {
+                    $filter = sprintf("`message_id`=%s", $row['message_id']);
+                    if(DB::update('messages', $values, $filter)) {
+                        Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
+                    } else {
+                        $context['values'] = $values;
+                        $context['filter'] = $filter;
+                        $this->critical(
+                            "Failed to update SMS delivery status for message " . $row['message_id'], $context
+                        );
+                    }// if
 
-                        $delivered = isset($datetime) ? "FROM_UNIXTIME({$datetime->getTimestamp()})" : "NULL";
+                    // Update mobile state
+                    $values = prepare_values(
+                        array('sms_delivered'),
+                        array($delivered)
+                    );
 
-                        $update = "UPDATE `missing` 
-                                   SET `sms_delivery` = $delivered, `sms_error` = '".(string)$errorDesc."'
-                                   WHERE `missing_id` = {$row['missing_id']}";
-
-                        if(DB::query($update)) {
-                            Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
-                        } else {
-                            $context = array('sql' => $update);
-                            $this->critical("Failed to update SMS delivery status for missing " . $row['missing_id'], $context);
-                        }// if
-                    }
+                    $filter = sprintf("`mobile_id`=%s", $row['mobile_id']);
+                    if(DB::update('mobiles', $values, $filter)) {
+                        Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
+                    } else {
+                        $context['values'] = $values;
+                        $context['filter'] = $filter;
+                        $this->critical(
+                            "Failed to update SMS delivery status for mobile " . $row['mobile_id'], $context
+                        );
+                    }// if
 
                 }
+            } else {
+                Logs::write(Logs::SMS, LogLevel::WARNING, "No SMS with reference $reference found");
             }
-            
+
             return true;
 
         }// delivered

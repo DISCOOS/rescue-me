@@ -1,8 +1,8 @@
 <?
     use RescueMe\User;
     use RescueMe\Locale;
-    use RescueMe\Missing;
-    use RescueMe\Operation;
+    use RescueMe\Mobile;
+    use RescueMe\Trace;
     use RescueMe\SMS\Provider;
 
     $id = input_get_int('id');
@@ -11,11 +11,11 @@
 
     $admin = $user->allow('write', 'operations.all');
 
-    $missing = Missing::get($id, $admin);
+    $mobile = Mobile::get($id, $admin);
 
-    if($missing !== false)
+    if($mobile !== false)
     {
-        $operation = Operation::get($missing->op_id);
+        $trace = Trace::get($mobile->trace_id);
         
         if(modules_exists(Provider::TYPE)) {
 
@@ -24,7 +24,7 @@
             $fields[] = array(
                 'id' => 'm_name',
                 'type' => 'text', 
-                'value' => $missing->name,
+                'value' => $mobile->name,
                 'label' => T_('Name'),
                 'attributes' => 'required'
             );
@@ -34,7 +34,7 @@
                 'class' => 'row-fluid'
             );
             
-            $country = empty($missing->mobile_country) ? Locale::getCurrentCountryCode() : $missing->mobile_country;
+            $country = empty($mobile->country) ? Locale::getCurrentCountryCode() : $mobile->country;
             
             $group['value'][] = array(
                 'id' => 'm_mobile_country',
@@ -47,7 +47,7 @@
             $group['value'][] = array(
                 'id' => 'm_mobile',
                 'type' => 'tel', 
-                'value' => $missing->mobile, 
+                'value' => $mobile->number,
                 'label' => T_('Mobile phone'),
                 'class' => 'span3',
                 'attributes' => 'required pattern="[0-9]*"'
@@ -66,7 +66,7 @@
                 'class' => 'row-fluid'
             );
             
-            $locale = empty($missing->locale) ? Locale::getCurrentLocale() : $missing->locale;
+            $locale = empty($mobile->locale) ? Locale::getCurrentLocale() : $mobile->locale;
             
             $group['value'][] = array(
                 'id' => 'm_locale',
@@ -80,7 +80,7 @@
             $group['value'][] = array(
                 'id' => 'sms_text',
                 'type' => 'text', 
-                'value' => $missing->sms_text,
+                'value' => $mobile->sms_text,
                 'label' => T_('SMS'),
                 'class' => 'span8',
                 'attributes' => 'required'
@@ -101,11 +101,11 @@
             $actions['warning'] = sprintf(T_('Remember to include %1$s so that %2$s can replace it with the actual trace url.'),
                 '<span class="label">%LINK%</span>', TITLE);
             $actions['warning'] = '<span style="">' . $actions['warning'] . '</span>';
-            if(empty($operation->op_closed) === false) {
-                $actions['message'] = T_('Note: This will reopen this operation');
+            if(empty($trace->trace_closed) === false) {
+                $actions['message'] = T_('Note: This will reopen this trace');
             }
             
-            insert_form("user", T_('Edit trace'), $fields, ADMIN_URI."missing/edit/$missing->id", $actions);
+            insert_form("user", T_('Edit trace'), $fields, ADMIN_URI."trace/edit/$mobile->id", $actions);
             
             insert_dialog_selector("library", T_('Library'), T_('Loading'), array('progress' => '.modal-label'));
             

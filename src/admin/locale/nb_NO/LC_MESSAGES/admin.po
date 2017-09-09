@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2017-08-01 00:49+0100\n"
+"POT-Creation-Date: 2017-09-09 17:14+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: admin/index.php:57 admin/router.php:107
 msgid "Dashboard"
-msgstr "Dashboard"
+msgstr "closeDashboard"
 
 #: admin/index.php:127 admin/router.php:93 admin/gui/logon.gui.php:2
 #: admin/gui/logon.gui.php:10 gui/nav.gui.php:10
@@ -41,10 +41,10 @@ msgstr "Er deaktivert"
 msgid "Awaits approval"
 msgstr "Avventer godkjenning"
 
-#: admin/router.php:46 admin/router.php:782 admin/router.php:1264
+#: admin/router.php:46 admin/router.php:782 admin/router.php:1187
 #: admin/inc/gui.inc.php:52 admin/inc/gui.inc.php:70 admin/inc/gui.inc.php:98
 #: admin/inc/gui.inc.php:123 admin/inc/common.inc.php:101
-#: admin/gui/missing.gui.php:45 admin/gui/missing.gui.php:87
+#: admin/gui/trace.gui.php:45 admin/gui/trace.gui.php:87
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -75,15 +75,15 @@ msgstr "Om %1$s"
 #: admin/router.php:731 admin/router.php:739 admin/router.php:766
 #: admin/router.php:815 admin/router.php:829 admin/router.php:837
 #: admin/router.php:862 admin/router.php:872 admin/router.php:930
-#: admin/router.php:943 admin/router.php:974 admin/router.php:986
-#: admin/router.php:1006 admin/router.php:1055 admin/router.php:1069
-#: admin/router.php:1087 admin/router.php:1120 admin/router.php:1137
-#: admin/router.php:1181 admin/router.php:1236 admin/router.php:1279
-#: admin/router.php:1300 admin/router.php:1322 admin/router.php:1330
-#: admin/router.php:1361 admin/router.php:1394 admin/router.php:1404
-#: admin/router.php:1443 admin/router.php:1466 admin/router.php:1514
-#: admin/router.php:1524 admin/router.php:1597 admin/router.php:1616
-#: admin/router.php:1641 admin/router.php:1684 admin/router.php:1691
+#: admin/router.php:977 admin/router.php:992 admin/router.php:1010
+#: admin/router.php:1043 admin/router.php:1060 admin/router.php:1104
+#: admin/router.php:1159 admin/router.php:1198 admin/router.php:1214
+#: admin/router.php:1248 admin/router.php:1263 admin/router.php:1282
+#: admin/router.php:1303 admin/router.php:1325 admin/router.php:1333
+#: admin/router.php:1364 admin/router.php:1397 admin/router.php:1407
+#: admin/router.php:1446 admin/router.php:1469 admin/router.php:1517
+#: admin/router.php:1527 admin/router.php:1600 admin/router.php:1619
+#: admin/router.php:1644 admin/router.php:1687 admin/router.php:1694
 msgid "Illegal operation"
 msgstr "Ulovlig handling"
 
@@ -93,13 +93,13 @@ msgstr "Ulovlig handling"
 #: admin/router.php:578 admin/router.php:623 admin/router.php:668
 #: admin/router.php:705 admin/router.php:741 admin/router.php:768
 #: admin/router.php:817 admin/router.php:839 admin/router.php:874
-#: admin/router.php:945 admin/router.php:988 admin/router.php:1008
-#: admin/router.php:1071 admin/router.php:1089 admin/router.php:1139
-#: admin/router.php:1208 admin/router.php:1256 admin/router.php:1281
-#: admin/router.php:1332 admin/router.php:1363 admin/router.php:1406
-#: admin/router.php:1445 admin/router.php:1468 admin/router.php:1526
-#: admin/router.php:1618 admin/router.php:1643 admin/router.php:1693
-#: admin/router.php:1748
+#: admin/router.php:932 admin/router.php:994 admin/router.php:1012
+#: admin/router.php:1062 admin/router.php:1131 admin/router.php:1179
+#: admin/router.php:1216 admin/router.php:1265 admin/router.php:1284
+#: admin/router.php:1335 admin/router.php:1366 admin/router.php:1409
+#: admin/router.php:1448 admin/router.php:1471 admin/router.php:1529
+#: admin/router.php:1621 admin/router.php:1646 admin/router.php:1696
+#: admin/router.php:1751
 msgid "Access denied"
 msgstr "Ingen tilgang"
 
@@ -118,11 +118,11 @@ msgstr "Id ikke definert"
 
 #: admin/router.php:164
 #, php-format
-msgid "Missing %1s$ not found"
-msgstr "Sporing %1$s ikke funnet"
+msgid "Mobile %1s$ not found"
+msgstr "Mobil %1$s ikke funnet"
 
 #: admin/router.php:213 admin/router.php:223 admin/gui/system.menu.gui.php:32
-#: admin/gui/missing.new.gui.php:153 admin/gui/setup.gui.php:18
+#: admin/gui/setup.gui.php:18 admin/gui/trace.new.gui.php:153
 #: admin/ajax/user.list.ajax.php:105
 msgid "Setup"
 msgstr "Oppsett"
@@ -134,10 +134,10 @@ msgstr "Modul %1$s ikke funnet"
 
 #: admin/router.php:273 admin/router.php:472 admin/router.php:558
 #: admin/router.php:598 admin/router.php:643 admin/router.php:853
-#: admin/router.php:902 admin/router.php:921 admin/router.php:966
-#: admin/router.php:1046 admin/router.php:1167 admin/router.php:1381
-#: admin/router.php:1430 admin/router.php:1488 admin/router.php:1550
-#: admin/router.php:1662 admin/router.php:1716
+#: admin/router.php:902 admin/router.php:921 admin/router.php:968
+#: admin/router.php:1090 admin/router.php:1240 admin/router.php:1384
+#: admin/router.php:1433 admin/router.php:1491 admin/router.php:1553
+#: admin/router.php:1665 admin/router.php:1719
 #, php-format
 msgid "Operation [%1$s] not executed, try again"
 msgstr "Operasjon [%1$s] ikke utført, prøv igjen"
@@ -145,10 +145,10 @@ msgstr "Operasjon [%1$s] ikke utført, prøv igjen"
 #: admin/router.php:305 admin/router.php:355 admin/router.php:484
 #: admin/router.php:568 admin/router.php:615 admin/router.php:660
 #: admin/router.php:697 admin/router.php:733 admin/router.php:831
-#: admin/router.php:864 admin/router.php:932 admin/router.php:976
-#: admin/router.php:1057 admin/router.php:1122 admin/router.php:1196
-#: admin/router.php:1324 admin/router.php:1396 admin/router.php:1516
-#: admin/router.php:1686
+#: admin/router.php:864 admin/router.php:979 admin/router.php:1045
+#: admin/router.php:1119 admin/router.php:1200 admin/router.php:1250
+#: admin/router.php:1327 admin/router.php:1399 admin/router.php:1519
+#: admin/router.php:1689
 msgid "Id not defined"
 msgstr "Id ikke definert"
 
@@ -157,10 +157,10 @@ msgstr "Id ikke definert"
 msgid "Setting %1$s not saved"
 msgstr "Innstilling %1$s ikke lagret"
 
-#: admin/router.php:367 admin/router.php:500 admin/gui/missing.list.gui.php:34
-#: admin/gui/missing.list.gui.php:59 admin/gui/missing.list.gui.php:84
-#: admin/gui/missing.list.gui.php:110 admin/gui/missing.list.gui.php:135
-#: admin/gui/logs.gui.php:39
+#: admin/router.php:367 admin/router.php:500 admin/gui/logs.gui.php:39
+#: admin/gui/trace.list.gui.php:34 admin/gui/trace.list.gui.php:59
+#: admin/gui/trace.list.gui.php:84 admin/gui/trace.list.gui.php:110
+#: admin/gui/trace.list.gui.php:135
 msgid "User"
 msgstr "Bruker"
 
@@ -211,10 +211,11 @@ msgstr "Du vil motta en SMS når din forespørsel er behandlet"
 msgid "Approve"
 msgstr "Godkjenn"
 
-#: admin/router.php:500 admin/router.php:1410 admin/gui/group.list.gui.php:34
-#: admin/gui/role.list.gui.php:27 admin/ajax/setup.module.list.ajax.php:43
-#: admin/ajax/issue.list.ajax.php:52 admin/ajax/user.list.ajax.php:72
-#: admin/ajax/alert.list.ajax.php:49 admin/ajax/missing.list.open.ajax.php:86
+#: admin/router.php:500 admin/router.php:1413 admin/gui/group.list.gui.php:34
+#: admin/gui/role.list.gui.php:27 admin/ajax/trace.list.open.ajax.php:86
+#: admin/ajax/setup.module.list.ajax.php:43
+#: admin/ajax/trace.list.timeout.ajax.php:84 admin/ajax/issue.list.ajax.php:52
+#: admin/ajax/user.list.ajax.php:72 admin/ajax/alert.list.ajax.php:49
 msgid "Edit"
 msgstr "Endre"
 
@@ -276,7 +277,7 @@ msgstr "Ingen <em>%1$s</em> brukere funnet."
 msgid "Email sent to %1$s users"
 msgstr "E-post sendt til %1$s brukere"
 
-#: admin/router.php:804 admin/router.php:1497 admin/router.php:1563
+#: admin/router.php:804 admin/router.php:1500 admin/router.php:1566
 msgid "Email not sent to following users"
 msgstr "E-post ble ikke sendt til følgende brukere"
 
@@ -301,139 +302,139 @@ msgstr "Passordet må være minst 8 tegn"
 msgid "Recover Password"
 msgstr "Gjenopprett passord"
 
-#: admin/router.php:936 admin/gui/operation.close.gui.php:81
-#: admin/gui/operation.close.gui.php:101
-#: admin/ajax/missing.list.open.ajax.php:95
-msgid "Close operation"
-msgstr "Avslutt operasjon"
-
-#: admin/router.php:980
-msgid "Reopen operation"
-msgstr "Gjenåpne operasjon"
-
-#: admin/router.php:1013 admin/gui/dash.gui.php:4
-#: admin/gui/missing.new.gui.php:21
+#: admin/router.php:937 admin/gui/dash.gui.php:4
+#: admin/gui/trace.new.gui.php:21
 msgid "Start new trace"
 msgstr "Start ny sporing"
 
-#: admin/router.php:1076 admin/router.php:1187 admin/router.php:1225
-#: admin/router.php:1244
+#: admin/router.php:999 admin/router.php:1110 admin/router.php:1148
+#: admin/router.php:1167
 #, php-format
 msgid "Trace %1$s not found"
 msgstr "Sporing %1$s ikke funnet"
 
-#: admin/router.php:1079 admin/classes/RescueMe/Operation.php:53
+#: admin/router.php:1002 admin/classes/RescueMe/Trace.php:64
 #: admin/gui/trace.menu.gui.php:15
 msgid "Trace"
 msgstr "Sporing"
 
-#: admin/router.php:1112 admin/gui/missing.list.gui.php:16
-#: admin/gui/trace.menu.gui.php:21 admin/gui/trace.menu.gui.php:30
+#: admin/router.php:1035 admin/gui/trace.menu.gui.php:21
+#: admin/gui/trace.menu.gui.php:30 admin/gui/trace.list.gui.php:16
 msgid "Traces"
 msgstr "Sporinger"
 
-#: admin/router.php:1130 admin/gui/missing.edit.gui.php:108
-#: admin/gui/missing.edit.gui.php:114
+#: admin/router.php:1053 admin/gui/trace.edit.gui.php:108
+#: admin/gui/trace.edit.gui.php:114
 msgid "Edit trace"
 msgstr "Endre sporing"
 
-#: admin/router.php:1150
+#: admin/router.php:1073
 #, php-format
-msgid "Failed to reopen operation %1$s"
-msgstr "Klarte ikke  å gjenåpne operasjon %1$s"
+msgid "Failed to reopen trace %1$s"
+msgstr "Klarte ikke  å gjenåpne sporing %1$s"
 
-#: admin/router.php:1183
+#: admin/router.php:1106
 #, php-format
-msgid "Operation [%1$s] is closed"
+msgid "Trace [%1$s] is closed"
 msgstr "Operasjon [%1$s] er lukket"
 
-#: admin/router.php:1212
+#: admin/router.php:1135
 #, php-format
 msgid "Trace %1$s is closed"
 msgstr "Sporing %1$s er lukket"
 
-#: admin/router.php:1216 admin/inc/gui.inc.php:54
+#: admin/router.php:1139 admin/inc/gui.inc.php:54
 msgid "SMS not sent"
 msgstr "SMS ble ikke sendt"
 
-#: admin/router.php:1238 admin/router.php:1302
+#: admin/router.php:1161 admin/router.php:1305
 msgid "Not an ajax request"
 msgstr "Ikke en ajax-foresprsel"
 
-#: admin/router.php:1292 admin/router.php:1336 admin/gui/alert.list.gui.php:22
+#: admin/router.php:1204 admin/gui/trace.close.gui.php:85
+#: admin/gui/trace.close.gui.php:105 admin/ajax/trace.list.open.ajax.php:95
+#: admin/ajax/trace.list.timeout.ajax.php:93
+msgid "Close trace"
+msgstr "Avslutt sporing"
+
+#: admin/router.php:1254
+msgid "Reopen trace"
+msgstr "Gjenåpne sporing"
+
+#: admin/router.php:1295 admin/router.php:1339 admin/gui/alert.list.gui.php:22
 #: admin/gui/system.menu.gui.php:46
 msgid "Alerts"
 msgstr "Varsler"
 
-#: admin/router.php:1308 admin/router.php:1342 admin/router.php:1421
+#: admin/router.php:1311 admin/router.php:1345 admin/router.php:1424
 #, php-format
 msgid "Alert %1$s not found"
 msgstr "Varsel %1$s ikke funnet"
 
-#: admin/router.php:1345
+#: admin/router.php:1348
 #, php-format
 msgid "Alert %1$s not deleted"
 msgstr "Varsel %1$s ble ikke slettet"
 
-#: admin/router.php:1367
+#: admin/router.php:1370
 msgid "New"
 msgstr "Ny"
 
-#: admin/router.php:1367 admin/router.php:1410
+#: admin/router.php:1370 admin/router.php:1413
 msgid "Alert"
 msgstr "Varsel"
 
-#: admin/router.php:1456 admin/gui/system.menu.gui.php:48
+#: admin/router.php:1459 admin/gui/system.menu.gui.php:48
 #: admin/gui/issue.list.gui.php:22
 msgid "Issues"
 msgstr "Hendelser"
 
-#: admin/router.php:1472 admin/gui/issue.list.gui.php:54
+#: admin/router.php:1475 admin/gui/issue.list.gui.php:54
 #: admin/gui/issue.new.gui.php:77
 msgid "New issue"
 msgstr "Ny hendelse"
 
-#: admin/router.php:1530 admin/gui/issue.edit.gui.php:81
+#: admin/router.php:1533 admin/gui/issue.edit.gui.php:81
 msgid "Edit issue"
 msgstr "Endre hendelse"
 
-#: admin/router.php:1538
+#: admin/router.php:1541
 #, php-format
 msgid "Issue %1$s not found"
 msgstr "Hendelse %1$s ikke funnet"
 
-#: admin/router.php:1622 admin/gui/group.list.gui.php:11
+#: admin/router.php:1625 admin/gui/group.list.gui.php:11
 msgid "Groups"
 msgstr "Grupper"
 
-#: admin/router.php:1647 admin/gui/group.new.gui.php:22
+#: admin/router.php:1650 admin/gui/group.new.gui.php:22
 #: admin/gui/group.list.gui.php:56
 msgid "New group"
 msgstr "Ny gruppe"
 
-#: admin/router.php:1697 admin/gui/group.edit.gui.php:49
+#: admin/router.php:1700 admin/gui/group.edit.gui.php:49
 msgid "Edit group"
 msgstr "Endre gruppe"
 
-#: admin/router.php:1705 admin/router.php:1754
+#: admin/router.php:1708 admin/router.php:1757
 #, php-format
 msgid "Group %1$s not found"
 msgstr "Gruppe %1$s ikke funnet"
 
-#: admin/router.php:1737
+#: admin/router.php:1740
 msgid "XHR request only"
 msgstr "XHR reguest only"
 
-#: admin/router.php:1743
+#: admin/router.php:1746
 msgid "Id not found"
 msgstr "Id ikke funnet"
 
-#: admin/router.php:1760
+#: admin/router.php:1763
 #, php-format
 msgid "Group %1$s not removed"
 msgstr "Gruppe %1$s ikke fjernet"
 
-#: admin/router.php:1764
+#: admin/router.php:1767
 #, php-format
 msgid "Group %1$s removed"
 msgstr "Gruppe %1$s fjernet"
@@ -599,42 +600,50 @@ msgstr "Årsak"
 msgid "Actions"
 msgstr "Tiltak"
 
-#: admin/classes/RescueMe/Operation.php:53
-msgid "Test"
-msgstr "Test"
+#: admin/classes/RescueMe/Mobile.php:635
+msgid "Failed to check message status for mobile"
+msgstr "Klarte ikke å sjekke status for mobil  [%1$s]"
 
-#: admin/classes/RescueMe/Operation.php:53
-msgid "Exercise"
-msgstr "Øvelse"
+#: admin/classes/RescueMe/Mobile.php:665
+msgid "Failed to update status to RESPONDED for mobile "
+msgstr "Klarte ikke å oppdatere status til <b>Besvart</b> for"
+
+#: admin/classes/RescueMe/Mobile.php:693
+msgid "Failed to add request from mobile "
+msgstr "Klarte ikke å lagre repons av mobil  [%1$s]"
+
+#: admin/classes/RescueMe/Mobile.php:710
+msgid "Missing person"
+msgstr "Savnet person"
+
+#: admin/classes/RescueMe/Mobile.php:906
+#, php-format
+msgid "Failed to send second SMS to mobile %1$s"
+msgstr "Kunne ikke sende engangspassord til bruker %1$s."
+
+#: admin/classes/RescueMe/Mobile.php:917
+#, php-format
+msgid "Failed to update SMS status for mobile %1$s"
+msgstr "Klarte ikke å opprette instanse av modul  [%1$s]"
+
+#: admin/classes/RescueMe/Mobile.php:938
+#, php-format
+msgid "Failed to send SMS with position from mobile [%1$s]"
+msgstr "Klarte ikke å sende SMS med posisjon fra [%1$s]"
 
 #: admin/classes/RescueMe/Template.php:78 admin/gui/alert.edit.gui.php:39
-#: admin/gui/alert.new.gui.php:32 admin/gui/missing.new.gui.php:106
+#: admin/gui/alert.new.gui.php:32 admin/gui/trace.new.gui.php:106
 #: admin/gui/logs.gui.php:38 admin/gui/user.email.gui.php:20
 msgid "Message"
 msgstr "Melding"
 
-#: admin/classes/RescueMe/Missing.php:480
-#, php-format
-msgid "Failed to send second SMS to missing %1$s"
-msgstr "Kunne ikke sende engangspassord til bruker %1$s."
+#: admin/classes/RescueMe/Trace.php:64
+msgid "Test"
+msgstr "Test"
 
-#: admin/classes/RescueMe/Missing.php:491
-#, php-format
-msgid "Failed to update SMS status for missing %1$s"
-msgstr "Klarte ikke å opprette instanse av modul  [%1$s]"
-
-#: admin/classes/RescueMe/Missing.php:510
-#, php-format
-msgid "Failed to send SMS with position from missing [%1$s]"
-msgstr "Klarte ikke å sende SMS med posisjon fra [%1$s]"
-
-#: admin/classes/RescueMe/Missing.php:677
-msgid "Failed to update status to ANSWERED for missing "
-msgstr "Klarte ikke å oppdatere status til <b>Besvart</b> for"
-
-#: admin/classes/RescueMe/Missing.php:694
-msgid "Missing person"
-msgstr "Savnet person"
+#: admin/classes/RescueMe/Trace.php:64
+msgid "Exercise"
+msgstr "Øvelse"
 
 #: admin/classes/RescueMe/User.php:175 admin/gui/alert.list.gui.php:13
 msgid "Active"
@@ -767,46 +776,6 @@ msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
 msgid "See active traces"
 msgstr "Se aktive sporinger"
 
-#: admin/gui/missing.trace.gui.php:5
-msgid "When trace was registered"
-msgstr "Når sporing ble opprettet"
-
-#: admin/gui/missing.trace.gui.php:10
-msgid "When SMS was sent"
-msgstr "Når SMS ble sendt"
-
-#: admin/gui/missing.trace.gui.php:14
-msgid "When SMS was delivered to mobile"
-msgstr "Når SMS ble levert til telefonen"
-
-#: admin/gui/missing.trace.gui.php:18
-msgid "When location script was downloaded"
-msgstr "Når lokaliseringsskript ble nedlastet"
-
-#: admin/gui/missing.trace.gui.php:22
-msgid "When last location was received"
-msgstr "Når siste lokasjon ble mottatt"
-
-#: admin/gui/missing.trace.gui.php:29
-msgid "Alerted"
-msgstr "Varslet"
-
-#: admin/gui/missing.trace.gui.php:32 admin/gui/issue.list.gui.php:37
-msgid "Sent"
-msgstr "Sendt"
-
-#: admin/gui/missing.trace.gui.php:35
-msgid "Delivered"
-msgstr "Levert"
-
-#: admin/gui/missing.trace.gui.php:38
-msgid "Responded"
-msgstr "Besvart"
-
-#: admin/gui/missing.trace.gui.php:41
-msgid "Located"
-msgstr "Lokalisert"
-
 #: admin/gui/system.menu.gui.php:25 admin/gui/setup.gui.php:14
 #: admin/ajax/logs.ajax.php:55
 msgid "System"
@@ -833,74 +802,46 @@ msgstr "Vil du logge ut?"
 msgid "Settings"
 msgstr "Innstillinger"
 
-#: admin/gui/missing.edit.gui.php:28 admin/gui/missing.new.gui.php:36
-#: admin/gui/missing.list.gui.php:31 admin/gui/missing.list.gui.php:56
-#: admin/gui/missing.list.gui.php:81 admin/gui/missing.list.gui.php:107
-#: admin/gui/missing.list.gui.php:132 admin/gui/group.new.gui.php:11
-#: admin/gui/group.list.gui.php:15 admin/gui/role.list.gui.php:12
-#: admin/gui/user.list.gui.php:38 admin/gui/group.edit.gui.php:35
-msgid "Name"
-msgstr "Navn"
-
-#: admin/gui/missing.edit.gui.php:43 admin/gui/missing.new.gui.php:48
-#: admin/gui/missing.new.gui.php:86 admin/gui/user.new.gui.php:28
-msgid "Country code"
-msgstr "Landskode"
-
-#: admin/gui/missing.edit.gui.php:51 admin/gui/missing.new.gui.php:44
-#: admin/gui/user.edit.gui.php:38 admin/gui/user.new.gui.php:38
-msgid "Mobile phone"
-msgstr "Mobilnummer"
-
-#: admin/gui/missing.edit.gui.php:59
-msgid "Send SMS"
-msgstr "Send SMS"
-
-#: admin/gui/missing.edit.gui.php:75 admin/gui/missing.new.gui.php:110
-#: admin/ajax/message.list.ajax.php:27
-msgid "Language"
-msgstr "Språk"
-
-#: admin/gui/missing.edit.gui.php:84 admin/gui/missing.new.gui.php:116
-#: admin/gui/missing.new.gui.php:117 admin/gui/setup.gui.php:25
-msgid "SMS"
-msgstr "SMS"
-
-#: admin/gui/missing.edit.gui.php:94 admin/gui/missing.new.gui.php:128
-#: admin/ajax/message.list.ajax.php:56 gui/selector.dialog.gui.php:25
-msgid "Select"
-msgstr "Velg"
-
-#: admin/gui/missing.edit.gui.php:95 admin/gui/missing.edit.gui.php:110
-#: admin/gui/missing.new.gui.php:126 admin/gui/missing.new.gui.php:178
-#: admin/gui/missing.list.gui.php:159
-msgid "Library"
-msgstr "Bibliotek"
-
-#: admin/gui/missing.edit.gui.php:101
-#, php-format
-msgid ""
-"Remember to include %1$s so that %2$s can replace it with the actual trace "
-"url."
-msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
-
-#: admin/gui/missing.edit.gui.php:105 admin/gui/operation.close.gui.php:75
-msgid "Note: This will reopen this operation"
-msgstr "Merk: Dette vil gjenåpne operasjonen"
-
-#: admin/gui/missing.edit.gui.php:110 admin/gui/missing.new.gui.php:178
-#: admin/gui/missing.list.gui.php:159
-msgid "Loading"
-msgstr "Laster"
-
-#: admin/gui/missing.edit.gui.php:115 admin/gui/missing.gui.php:13
-#: admin/gui/group.list.gui.php:25 admin/gui/operation.close.gui.php:102
-#: admin/ajax/missing.list.closed.ajax.php:35
-#: admin/ajax/missing.list.timeout.ajax.php:37 admin/ajax/logs.ajax.php:39
-#: admin/ajax/issue.list.ajax.php:27 admin/ajax/user.list.ajax.php:44
-#: admin/ajax/alert.list.ajax.php:27 admin/ajax/missing.list.open.ajax.php:44
+#: admin/gui/trace.gui.php:13 admin/gui/trace.close.gui.php:106
+#: admin/gui/group.list.gui.php:25 admin/gui/trace.edit.gui.php:115
+#: admin/ajax/trace.list.open.ajax.php:44
+#: admin/ajax/trace.list.closed.ajax.php:35 admin/ajax/logs.ajax.php:39
+#: admin/ajax/trace.list.timeout.ajax.php:37 admin/ajax/issue.list.ajax.php:27
+#: admin/ajax/user.list.ajax.php:44 admin/ajax/alert.list.ajax.php:27
 msgid "None found"
 msgstr "Ingen funnet"
+
+#: admin/gui/trace.gui.php:21 admin/gui/issue.list.gui.php:14
+#: admin/gui/trace.list.gui.php:23
+msgid "Closed"
+msgstr "Lukket"
+
+#: admin/gui/trace.gui.php:57
+msgid "Last location"
+msgstr "Siste lokasjon"
+
+#: admin/gui/trace.gui.php:61
+msgid "Location received"
+msgstr "Lokasjon mottatt"
+
+#: admin/gui/trace.gui.php:70
+#, php-format
+msgid "Locations &le; %1$s"
+msgstr "Lokasjoner &le; %1$s"
+
+#: admin/gui/trace.gui.php:73
+#, php-format
+msgid "Locations &gt; %1$s"
+msgstr "Lokasjoner  &gt; %1$s"
+
+#: admin/gui/trace.gui.php:85 admin/gui/trace.close.gui.php:35
+#: admin/gui/trace.new.gui.php:75
+msgid "Reference"
+msgstr "Aksjonsreferanse"
+
+#: admin/gui/trace.gui.php:92
+msgid "Location link"
+msgstr "Sporingslink"
 
 #: admin/gui/form.gui.php:48 gui/form.gui.php:45
 msgid "Save"
@@ -911,140 +852,6 @@ msgstr "Lagre"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: admin/gui/missing.new.gui.php:39
-msgid "Place, region or country"
-msgstr "Sted, region eller land"
-
-#: admin/gui/missing.new.gui.php:50 admin/gui/missing.new.gui.php:88
-msgid "Select country"
-msgstr "Velg land"
-
-#: admin/gui/missing.new.gui.php:56 admin/gui/missing.new.gui.php:93
-msgid "Phone number"
-msgstr "Mobilnummer"
-
-#: admin/gui/missing.new.gui.php:58 admin/gui/missing.new.gui.php:95
-msgid "Numbers only, no spaces"
-msgstr "Kun nummer, ingen mellomrom"
-
-#: admin/gui/missing.new.gui.php:63
-msgid "Is the receiving phone from another country?"
-msgstr "Er telefone registrert i et annet land?"
-
-#: admin/gui/missing.new.gui.php:64
-msgid ""
-"It is critically important to include instructions about how to turn on data "
-"roaming in the SMS if the phone is not registered on the home network!"
-msgstr ""
-"Det er kritisk viktig å inkludere instruksjoner for hvordan dataroaming slås "
-"på i SMSen hvis telefonen ikke er registrert på sitt hjemmenettverk!"
-
-#: admin/gui/missing.new.gui.php:75 admin/gui/missing.gui.php:85
-#: admin/gui/operation.close.gui.php:31
-msgid "Reference"
-msgstr "Aksjonsreferanse"
-
-#: admin/gui/missing.new.gui.php:77 admin/gui/operation.close.gui.php:32
-msgid "Operation number, etc."
-msgstr "SAR- eller AMIS-nr"
-
-#: admin/gui/missing.new.gui.php:82
-msgid "Report to"
-msgstr "Rapporter til"
-
-#: admin/gui/missing.new.gui.php:111 admin/ajax/message.list.ajax.php:31
-msgid "Select language"
-msgstr "Velg språk"
-
-#: admin/gui/missing.new.gui.php:117
-msgid "Character"
-msgstr "Tegn"
-
-#: admin/gui/missing.new.gui.php:122
-msgid "Not all SMS-carriers support more than 160 chars!"
-msgstr "Ikke alle SMS-leverandører støtter flere en 160 tegn!"
-
-#: admin/gui/missing.new.gui.php:138
-msgid "More"
-msgstr "Mer"
-
-#: admin/gui/missing.new.gui.php:140
-#, php-format
-msgid ""
-"Remember to include %1$s so that %2$s can replace it with the actual trace "
-"url"
-msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke"
-
-#: admin/gui/missing.new.gui.php:144
-msgid "Standard message"
-msgstr "Standard melding"
-
-#: admin/gui/missing.new.gui.php:147
-msgid "Location script"
-msgstr "Lokasjonsskript"
-
-#: admin/gui/missing.new.gui.php:148
-msgid ""
-"When the user clicks on the link a webpage is downloaded which contain a "
-"script that attempts to locate the mobile phone. The user must authorize the "
-"script access before location can be determined"
-msgstr ""
-"Når brukeren trykker på linken åpnes en nettside med et skript som vil "
-"forsøke  lokalisere mobiltelefonen. Brukeren må godkjenne deling av posisjon "
-"i nettleseren før posisjonen kan bestemmes."
-
-#: admin/gui/missing.new.gui.php:149
-msgid "Script download time"
-msgstr "Nedlastingstid"
-
-#: admin/gui/missing.new.gui.php:150
-msgid ""
-"The location script is compressed (gzip, 1.8KB). Is should not take more "
-"than a second to download this even on a low-bandwidth network (2G). If it "
-"does, the user must be patient and wait until the script is downloaded."
-msgstr ""
-"Skriptet er komprimert (1.8KB). Det tar mindre enn ett sekund på mobilnett "
-"med laveste båndbredde (2G) å  laste den ned. Det er likevel viktig at "
-"brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes."
-
-#: admin/gui/missing.new.gui.php:151
-msgid "Repeated localization"
-msgstr "Gjentatt lokalisering"
-
-#: admin/gui/missing.new.gui.php:152
-msgid ""
-"If the location is inaccurate, the script will continue to listen for "
-"location updates until desired accuracy or maximum wait time is is reached. "
-"A count-down is shown during this time. Last known location is presented to "
-"the user, which allow the user to read out the location over the phone or "
-"send ith with an SMS (tell the user to click on the link presented to the "
-"user when the script timed out)"
-msgstr ""
-"Hvis posisjonen er unøyaktig, vil nettsiden vente til posisjon med ønsket "
-"nøyaktighet er funnet, eller maksimum ventetid er nådd. En nedtelling vises "
-"mens dette foregår. Siste posisjon vises også til brukeren, slik at brukeren "
-"kan leses opp på telefonen, eller sendes på SMS (be brukeren klikke på "
-"linken bak posisjonen)."
-
-#: admin/gui/missing.new.gui.php:153
-#, php-format
-msgid ""
-"Desired accurary (location.desired.accuracy), maximum wait time (location."
-"max.wait) and maximum location age (location.max.age) can be configured on "
-"page %1$s"
-msgstr ""
-" Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location."
-"max.wait) og maksimum alder på gammel posisjon (location.max.age) kan "
-"konfigureres på siden %1$s"
-
-#: admin/gui/missing.new.gui.php:154
-msgid "All traces are listed at"
-msgstr "Alle sporinger er listet på denne siden"
-
-#: admin/gui/missing.new.gui.php:165
-msgid "Create"
-msgstr "Opprett"
-
 #: admin/gui/setup.gui.php:23
 msgid "General"
 msgstr "Generelt"
@@ -1052,6 +859,11 @@ msgstr "Generelt"
 #: admin/gui/setup.gui.php:24
 msgid "Design"
 msgstr "Design"
+
+#: admin/gui/setup.gui.php:25 admin/gui/trace.new.gui.php:116
+#: admin/gui/trace.new.gui.php:117 admin/gui/trace.edit.gui.php:84
+msgid "SMS"
+msgstr "SMS"
 
 #: admin/gui/setup.gui.php:26 admin/gui/logon.gui.php:8
 #: admin/gui/user.edit.gui.php:46 admin/gui/user.new.gui.php:48
@@ -1061,50 +873,6 @@ msgstr "E-post"
 #: admin/gui/setup.gui.php:27
 msgid "Maps"
 msgstr "Kart"
-
-#: admin/gui/missing.list.gui.php:19 admin/gui/issue.list.gui.php:13
-msgid "Open"
-msgstr "Åpne"
-
-#: admin/gui/missing.list.gui.php:20
-msgid "Tests"
-msgstr "Tester"
-
-#: admin/gui/missing.list.gui.php:21
-msgid "Exercises"
-msgstr "Øvelser"
-
-#: admin/gui/missing.list.gui.php:22
-msgid "Timeouts"
-msgstr "Utløpt"
-
-#: admin/gui/missing.list.gui.php:23 admin/gui/missing.gui.php:21
-#: admin/gui/issue.list.gui.php:14
-msgid "Closed"
-msgstr "Lukket"
-
-#: admin/gui/missing.list.gui.php:32 admin/gui/missing.list.gui.php:57
-#: admin/gui/missing.list.gui.php:82 admin/gui/missing.list.gui.php:108
-#: admin/gui/missing.list.gui.php:133
-msgid "Status"
-msgstr "Status"
-
-#: admin/gui/missing.list.gui.php:44 admin/gui/missing.list.gui.php:69
-#: admin/gui/missing.list.gui.php:94 admin/gui/missing.list.gui.php:119
-#: admin/gui/missing.list.gui.php:144 admin/gui/logs.gui.php:45
-#: admin/ajax/message.list.ajax.php:41
-#: admin/ajax/setup.property.list.ajax.php:28
-msgid "Search"
-msgstr "Søk"
-
-#: admin/gui/missing.list.gui.php:106 admin/gui/missing.list.gui.php:131
-msgid "Type"
-msgstr "Type"
-
-#: admin/gui/missing.list.gui.php:157 admin/gui/trace.menu.gui.php:18
-#: admin/gui/trace.menu.gui.php:26
-msgid "New trace"
-msgstr "Start ny sporing"
 
 #: admin/gui/logon.gui.php:9 admin/gui/password.change.gui.php:17
 #: admin/gui/user.new.gui.php:58
@@ -1127,31 +895,88 @@ msgstr "Har du ikke en konto?"
 msgid "Sign up here"
 msgstr "Registrer deg her"
 
-#: admin/gui/missing.gui.php:57
-msgid "Last location"
-msgstr "Siste lokasjon"
+#: admin/gui/trace.close.gui.php:27
+msgid "Trace name"
+msgstr "Aksjonsnavn"
 
-#: admin/gui/missing.gui.php:61
-msgid "Location received"
-msgstr "Lokasjon mottatt"
+#: admin/gui/trace.close.gui.php:36 admin/gui/trace.new.gui.php:77
+msgid "Trace number, etc."
+msgstr "SAR- eller AMIS-nr"
 
-#: admin/gui/missing.gui.php:70
-#, php-format
-msgid "Locations &le; %1$s"
-msgstr "Lokasjoner &le; %1$s"
+#: admin/gui/trace.close.gui.php:44
+msgid "Comments"
+msgstr "Kommentarer"
 
-#: admin/gui/missing.gui.php:73
-#, php-format
-msgid "Locations &gt; %1$s"
-msgstr "Lokasjoner  &gt; %1$s"
+#: admin/gui/trace.close.gui.php:45
+msgid "Short description"
+msgstr "Kort beskrivelse"
 
-#: admin/gui/missing.gui.php:92
-msgid "Location link"
-msgstr "Sporingslink"
+#: admin/gui/trace.close.gui.php:59
+msgid "Man"
+msgstr "Mann"
 
-#: admin/gui/missing.position.list.gui.php:76
-msgid "Google Maps not loaded"
-msgstr "Google Maps ikke lastet"
+#: admin/gui/trace.close.gui.php:60
+msgid "Woman"
+msgstr "Kvinne"
+
+#: admin/gui/trace.close.gui.php:64
+msgid "Gender"
+msgstr "Kjønn"
+
+#: admin/gui/trace.close.gui.php:72
+msgid "Age"
+msgstr "Alder"
+
+#: admin/gui/trace.close.gui.php:79 admin/gui/trace.edit.gui.php:105
+msgid "Note: This will reopen this trace"
+msgstr "Merk: Dette vil gjenåpne sporingen"
+
+#: admin/gui/trace.close.gui.php:82
+msgid ""
+"Note: This will permanently delete name and mobile numbers (privacy concerns)"
+msgstr ""
+"Merk: Dette vil slette navn og mobilnummer til savnede permanent (av "
+"personvernhensyn)"
+
+#: admin/gui/trace.progress.gui.php:5
+msgid "When trace was registered"
+msgstr "Når sporing ble opprettet"
+
+#: admin/gui/trace.progress.gui.php:10
+msgid "When SMS was sent"
+msgstr "Når SMS ble sendt"
+
+#: admin/gui/trace.progress.gui.php:14
+msgid "When SMS was delivered to mobile"
+msgstr "Når SMS ble levert til telefonen"
+
+#: admin/gui/trace.progress.gui.php:18
+msgid "When location script was downloaded"
+msgstr "Når lokaliseringsskript ble nedlastet"
+
+#: admin/gui/trace.progress.gui.php:22
+msgid "When last location was received"
+msgstr "Når siste lokasjon ble mottatt"
+
+#: admin/gui/trace.progress.gui.php:29
+msgid "Alerted"
+msgstr "Varslet"
+
+#: admin/gui/trace.progress.gui.php:32 admin/gui/issue.list.gui.php:37
+msgid "Sent"
+msgstr "Sendt"
+
+#: admin/gui/trace.progress.gui.php:35
+msgid "Delivered"
+msgstr "Levert"
+
+#: admin/gui/trace.progress.gui.php:38
+msgid "Responded"
+msgstr "Besvart"
+
+#: admin/gui/trace.progress.gui.php:41
+msgid "Located"
+msgstr "Lokalisert"
 
 #: admin/gui/password.recover.gui.php:9
 msgid "If user exist a SMS with reset link is sent to registered mobile phone"
@@ -1165,6 +990,20 @@ msgstr "E-post"
 msgid "Reset"
 msgstr "Nullstill"
 
+#: admin/gui/trace.menu.gui.php:18 admin/gui/trace.menu.gui.php:26
+#: admin/gui/trace.list.gui.php:157
+msgid "New trace"
+msgstr "Start ny sporing"
+
+#: admin/gui/group.new.gui.php:11 admin/gui/trace.new.gui.php:36
+#: admin/gui/group.list.gui.php:15 admin/gui/role.list.gui.php:12
+#: admin/gui/user.list.gui.php:38 admin/gui/group.edit.gui.php:35
+#: admin/gui/trace.list.gui.php:31 admin/gui/trace.list.gui.php:56
+#: admin/gui/trace.list.gui.php:81 admin/gui/trace.list.gui.php:107
+#: admin/gui/trace.list.gui.php:132 admin/gui/trace.edit.gui.php:28
+msgid "Name"
+msgstr "Navn"
+
 #: admin/gui/group.new.gui.php:12 admin/gui/group.edit.gui.php:36
 msgid "Enter group name"
 msgstr "Skriv inn navn på gruppe"
@@ -1176,6 +1015,162 @@ msgstr "Medlemmer"
 #: admin/gui/group.new.gui.php:19 admin/gui/group.edit.gui.php:44
 msgid "Enter member names"
 msgstr "Skriv inn medlemmer"
+
+#: admin/gui/trace.new.gui.php:39
+msgid "Place, region or country"
+msgstr "Sted, region eller land"
+
+#: admin/gui/trace.new.gui.php:44 admin/gui/user.edit.gui.php:38
+#: admin/gui/user.new.gui.php:38 admin/gui/trace.edit.gui.php:51
+msgid "Mobile phone"
+msgstr "Mobilnummer"
+
+#: admin/gui/trace.new.gui.php:48 admin/gui/trace.new.gui.php:86
+#: admin/gui/user.new.gui.php:28 admin/gui/trace.edit.gui.php:43
+msgid "Country code"
+msgstr "Landskode"
+
+#: admin/gui/trace.new.gui.php:50 admin/gui/trace.new.gui.php:88
+msgid "Select country"
+msgstr "Velg land"
+
+#: admin/gui/trace.new.gui.php:56 admin/gui/trace.new.gui.php:93
+msgid "Phone number"
+msgstr "Mobilnummer"
+
+#: admin/gui/trace.new.gui.php:58 admin/gui/trace.new.gui.php:95
+msgid "Numbers only, no spaces"
+msgstr "Kun nummer, ingen mellomrom"
+
+#: admin/gui/trace.new.gui.php:63
+msgid "Is the receiving phone from another country?"
+msgstr "Er telefone registrert i et annet land?"
+
+#: admin/gui/trace.new.gui.php:64
+msgid ""
+"It is critically important to include instructions about how to turn on data "
+"roaming in the SMS if the phone is not registered on the home network!"
+msgstr ""
+"Det er kritisk viktig å inkludere instruksjoner for hvordan dataroaming slås "
+"på i SMSen hvis telefonen ikke er registrert på sitt hjemmenettverk!"
+
+#: admin/gui/trace.new.gui.php:82
+msgid "Report to"
+msgstr "Rapporter til"
+
+#: admin/gui/trace.new.gui.php:110 admin/gui/trace.edit.gui.php:75
+#: admin/ajax/message.list.ajax.php:27
+msgid "Language"
+msgstr "Språk"
+
+#: admin/gui/trace.new.gui.php:111 admin/ajax/message.list.ajax.php:31
+msgid "Select language"
+msgstr "Velg språk"
+
+#: admin/gui/trace.new.gui.php:117
+msgid "Character"
+msgstr "Tegn"
+
+#: admin/gui/trace.new.gui.php:122
+msgid "Not all SMS-carriers support more than 160 chars!"
+msgstr "Ikke alle SMS-leverandører støtter flere en 160 tegn!"
+
+#: admin/gui/trace.new.gui.php:126 admin/gui/trace.new.gui.php:178
+#: admin/gui/trace.list.gui.php:159 admin/gui/trace.edit.gui.php:95
+#: admin/gui/trace.edit.gui.php:110
+msgid "Library"
+msgstr "Bibliotek"
+
+#: admin/gui/trace.new.gui.php:128 admin/gui/trace.edit.gui.php:94
+#: admin/ajax/message.list.ajax.php:56 gui/selector.dialog.gui.php:25
+msgid "Select"
+msgstr "Velg"
+
+#: admin/gui/trace.new.gui.php:138
+msgid "More"
+msgstr "Mer"
+
+#: admin/gui/trace.new.gui.php:140
+#, php-format
+msgid ""
+"Remember to include %1$s so that %2$s can replace it with the actual trace "
+"url"
+msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke"
+
+#: admin/gui/trace.new.gui.php:144
+msgid "Standard message"
+msgstr "Standard melding"
+
+#: admin/gui/trace.new.gui.php:147
+msgid "Location script"
+msgstr "Lokasjonsskript"
+
+#: admin/gui/trace.new.gui.php:148
+msgid ""
+"When the user clicks on the link a webpage is downloaded which contain a "
+"script that attempts to locate the mobile phone. The user must authorize the "
+"script access before location can be determined"
+msgstr ""
+"Når brukeren trykker på linken åpnes en nettside med et skript som vil "
+"forsøke  lokalisere mobiltelefonen. Brukeren må godkjenne deling av posisjon "
+"i nettleseren før posisjonen kan bestemmes."
+
+#: admin/gui/trace.new.gui.php:149
+msgid "Script download time"
+msgstr "Nedlastingstid"
+
+#: admin/gui/trace.new.gui.php:150
+msgid ""
+"The location script is compressed (gzip, 1.8KB). Is should not take more "
+"than a second to download this even on a low-bandwidth network (2G). If it "
+"does, the user must be patient and wait until the script is downloaded."
+msgstr ""
+"Skriptet er komprimert (1.8KB). Det tar mindre enn ett sekund på mobilnett "
+"med laveste båndbredde (2G) å  laste den ned. Det er likevel viktig at "
+"brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes."
+
+#: admin/gui/trace.new.gui.php:151
+msgid "Repeated localization"
+msgstr "Gjentatt lokalisering"
+
+#: admin/gui/trace.new.gui.php:152
+msgid ""
+"If the location is inaccurate, the script will continue to listen for "
+"location updates until desired accuracy or maximum wait time is is reached. "
+"A count-down is shown during this time. Last known location is presented to "
+"the user, which allow the user to read out the location over the phone or "
+"send ith with an SMS (tell the user to click on the link presented to the "
+"user when the script timed out)"
+msgstr ""
+"Hvis posisjonen er unøyaktig, vil nettsiden vente til posisjon med ønsket "
+"nøyaktighet er funnet, eller maksimum ventetid er nådd. En nedtelling vises "
+"mens dette foregår. Siste posisjon vises også til brukeren, slik at brukeren "
+"kan leses opp på telefonen, eller sendes på SMS (be brukeren klikke på "
+"linken bak posisjonen)."
+
+#: admin/gui/trace.new.gui.php:153
+#, php-format
+msgid ""
+"Desired accurary (location.desired.accuracy), maximum wait time (location."
+"max.wait) and maximum location age (location.max.age) can be configured on "
+"page %1$s"
+msgstr ""
+" Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location."
+"max.wait) og maksimum alder på gammel posisjon (location.max.age) kan "
+"konfigureres på siden %1$s"
+
+#: admin/gui/trace.new.gui.php:154
+msgid "All traces are listed at"
+msgstr "Alle sporinger er listet på denne siden"
+
+#: admin/gui/trace.new.gui.php:165
+msgid "Create"
+msgstr "Opprett"
+
+#: admin/gui/trace.new.gui.php:178 admin/gui/trace.list.gui.php:159
+#: admin/gui/trace.edit.gui.php:110
+msgid "Loading"
+msgstr "Laster"
 
 #: admin/gui/logs.gui.php:32 admin/gui/logs.gui.php:35
 msgid "Date"
@@ -1189,6 +1184,14 @@ msgstr "Logg"
 msgid "Level"
 msgstr "Nivå"
 
+#: admin/gui/logs.gui.php:45 admin/gui/trace.list.gui.php:44
+#: admin/gui/trace.list.gui.php:69 admin/gui/trace.list.gui.php:94
+#: admin/gui/trace.list.gui.php:119 admin/gui/trace.list.gui.php:144
+#: admin/ajax/message.list.ajax.php:41
+#: admin/ajax/setup.property.list.ajax.php:28
+msgid "Search"
+msgstr "Søk"
+
 #: admin/gui/setup.module.gui.php:10
 msgid "Module"
 msgstr "Modul"
@@ -1196,6 +1199,10 @@ msgstr "Modul"
 #: admin/gui/setup.module.gui.php:12
 msgid "No module found. Run install script."
 msgstr "Ingen modul funnet. Kjør installeringsskript."
+
+#: admin/gui/trace.position.list.gui.php:76
+msgid "Google Maps not loaded"
+msgstr "Google Maps ikke lastet"
 
 #: admin/gui/group.list.gui.php:42
 #, php-format
@@ -1214,6 +1221,10 @@ msgstr "Rolle"
 #: admin/gui/user.list.gui.php:40
 msgid "Mobile"
 msgstr "Mobil"
+
+#: admin/gui/issue.list.gui.php:13 admin/gui/trace.list.gui.php:19
+msgid "Open"
+msgstr "Åpne"
 
 #: admin/gui/issue.list.gui.php:35 admin/gui/issue.new.gui.php:13
 #: admin/gui/issue.edit.gui.php:14
@@ -1291,49 +1302,58 @@ msgstr "Minimum %1$s tegn"
 msgid "Repeat Password"
 msgstr "Gjenta passord"
 
-#: admin/gui/operation.close.gui.php:23
-msgid "Operation name"
-msgstr "Aksjonsnavn"
+#: admin/gui/trace.list.gui.php:20
+msgid "Tests"
+msgstr "Tester"
 
-#: admin/gui/operation.close.gui.php:40
-msgid "Comments"
-msgstr "Kommentarer"
+#: admin/gui/trace.list.gui.php:21
+msgid "Exercises"
+msgstr "Øvelser"
 
-#: admin/gui/operation.close.gui.php:41
-msgid "Short description"
-msgstr "Kort beskrivelse"
+#: admin/gui/trace.list.gui.php:22
+msgid "Timeouts"
+msgstr "Utløpt"
 
-#: admin/gui/operation.close.gui.php:55
-msgid "Man"
-msgstr "Mann"
+#: admin/gui/trace.list.gui.php:32 admin/gui/trace.list.gui.php:57
+#: admin/gui/trace.list.gui.php:82 admin/gui/trace.list.gui.php:108
+#: admin/gui/trace.list.gui.php:133
+msgid "Status"
+msgstr "Status"
 
-#: admin/gui/operation.close.gui.php:56
-msgid "Woman"
-msgstr "Kvinne"
+#: admin/gui/trace.list.gui.php:106 admin/gui/trace.list.gui.php:131
+msgid "Type"
+msgstr "Type"
 
-#: admin/gui/operation.close.gui.php:60
-msgid "Gender"
-msgstr "Kjønn"
+#: admin/gui/trace.edit.gui.php:59
+msgid "Send SMS"
+msgstr "Send SMS"
 
-#: admin/gui/operation.close.gui.php:68
-msgid "Age"
-msgstr "Alder"
-
-#: admin/gui/operation.close.gui.php:78
+#: admin/gui/trace.edit.gui.php:101
+#, php-format
 msgid ""
-"Note: This will permanently delete name and mobile numbers (privacy concerns)"
-msgstr ""
-"Merk: Dette vil slette navn og mobilnummer til savnede permanent (av "
-"personvernhensyn)"
+"Remember to include %1$s so that %2$s can replace it with the actual trace "
+"url."
+msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
 
 #: admin/gui/continue.gui.php:18
 msgid "Continue"
 msgstr "Fortsett"
 
-#: admin/ajax/missing.list.closed.ajax.php:82
-#: admin/ajax/missing.list.timeout.ajax.php:84
-msgid "Reopen"
-msgstr "Gjenåpne"
+#: admin/ajax/trace.list.open.ajax.php:100
+#: admin/ajax/trace.list.timeout.ajax.php:98
+#, php-format
+msgid "Do you want to resend SMS to %1$s?"
+msgstr "Vil du sende SMS til  %1$s på nytt?"
+
+#: admin/ajax/trace.list.open.ajax.php:102
+#: admin/ajax/trace.list.timeout.ajax.php:100
+msgid "Resend SMS"
+msgstr "Send SMS på nytt"
+
+#: admin/ajax/trace.list.open.ajax.php:108
+#: admin/ajax/trace.list.timeout.ajax.php:106
+msgid "Check SMS delivery status"
+msgstr "Sjekk leveringsstatus"
 
 #: admin/ajax/setup.module.list.ajax.php:64
 msgid "Module is not installed correctly."
@@ -1355,6 +1375,10 @@ msgstr "Modulen er konfigurert og klar til bruk"
 #: admin/ajax/message.list.ajax.php:38
 msgid "Messages"
 msgstr "Meldinger"
+
+#: admin/ajax/trace.list.closed.ajax.php:82
+msgid "Reopen"
+msgstr "Gjenåpne"
 
 #: admin/ajax/issue.list.ajax.php:60
 #, php-format
@@ -1406,19 +1430,6 @@ msgstr "Nullstill passord"
 msgid "Confirm"
 msgstr "Bekreft"
 
-#: admin/ajax/missing.list.open.ajax.php:100
-#, php-format
-msgid "Do you want to resend SMS to %1$s?"
-msgstr "Vil du sende SMS til  %1$s på nytt?"
-
-#: admin/ajax/missing.list.open.ajax.php:102
-msgid "Resend SMS"
-msgstr "Send SMS på nytt"
-
-#: admin/ajax/missing.list.open.ajax.php:108
-msgid "Check SMS delivery status"
-msgstr "Sjekk leveringsstatus"
-
 #: admin/locale/domain/admin.domain.php:12
 msgid "Not sent"
 msgstr "Ikke sendt"
@@ -1466,6 +1477,9 @@ msgstr "På"
 #: gui/control.gui.php:89
 msgid "Off"
 msgstr "Av"
+
+#~ msgid "Missing %1s$ not found"
+#~ msgstr "Sporing %1$s ikke funnet"
 
 #~ msgid "Failure"
 #~ msgstr "Feil"

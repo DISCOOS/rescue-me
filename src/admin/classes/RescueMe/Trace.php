@@ -1,6 +1,6 @@
 <?php
     /**
-     * File containing: Operation class
+     * File containing: Trace class
      * 
      * @copyright Copyright 2013 {@link http://www.discoos.org DISCO OS Foundation} 
      *
@@ -15,25 +15,36 @@
     use RescueMe\Log\Logs;
 
     /**
-     * Operation class
-     * 
+     * Trace class
+     *
+     * @parameter $trace_id
+     * @parameter $trace_type
+     * @parameter $trace_name
+     * @parameter $user_id
+     * @parameter $trace_ref
+     * @parameter $trace_opened
+     * @parameter $trace_closed
+     * @parameter $trace_comments
+     * @parameter $trace_alert_country
+     * @parameter $trace_alert_number
+     *
      * @package RescueMe
      */
-    class Operation {
+    class Trace {
 
-        const TABLE = "operations";
+        const TABLE = "traces";
 
         private static $fields = array
         (
-            "op_type", 
-            "op_name", 
+            "trace_type",
+            "trace_name",
             "user_id", 
-            "alert_mobile_country",
-            "alert_mobile",
-            "op_ref", 
-            "op_opened", 
-            "op_closed",
-            "op_comments"
+            "trace_alert_country",
+            "trace_alert_number",
+            "trace_ref",
+            "trace_opened",
+            "trace_closed",
+            "trace_comments"
         );
         
         const TRACE = 'trace';
@@ -54,39 +65,39 @@
         }
 
         /**
-         * Get Operation instance
+         * Get Trace instance
          * 
-         * @param integer $id Operation id
-         * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
+         * @param integer $id Trace id
+         * @return Trace|bool Instance of \RescueMe\Trace if success, FALSE otherwise.
          */
         public static function get($id){
-            $query = "SELECT * FROM `".self::TABLE."` WHERE `op_id`=" . (int) $id;
+            $query = "SELECT * FROM `".self::TABLE."` WHERE `trace_id`=" . (int) $id;
             $res = DB::query($query);
 
             if(DB::isEmpty($res)) 
                 return false;
 
-            $operation = new Operation();
-            $operation->id = $id;
+            $trace = new Trace();
+            $trace->id = $id;
 
             $row = $res->fetch_assoc();
             foreach($row as $key => $val){
-                $operation->$key = $val;
+                $trace->$key = $val;
             }
 
-            return $operation;
+            return $trace;
         }// get
 
 
         /**
-         * Check i given operation is closed
+         * Check i given trace is closed
          * 
-         * @param integer $id Operation id
+         * @param integer $id Trace id
          * @return boolean TRUE if closed (or not found), FALSE otherwise.
          */
         public static function isClosed($id) {
 
-            $query = "SELECT op_closed FROM `".self::TABLE."` WHERE `op_id`=" . (int) $id;
+            $query = "SELECT trace_closed FROM `".self::TABLE."` WHERE `trace_id`=" . (int) $id;
             $res = DB::query($query);
 
             if(DB::isEmpty($res)) 
@@ -100,28 +111,28 @@
 
 
         /**
-         * Close given operation
+         * Close given trace
          * 
-         * @param integer $id Operation id
-         * @param array $update Operation values
+         * @param integer $id Trace id
+         * @param array $update Trace values
          * 
          * @return boolean
          */
         public static function close($id, $update = array()) {
             
-            // Anonymize operation
-            if (isset($update['op_name']) === FALSE) {
-                $op_name = date('Y-m-d');
+            // Anonymize trace
+            if (isset($update['trace_name']) === FALSE) {
+                $trace_name = date('Y-m-d');
             } else {
-                $op_name = $update['op_name'];
+                $trace_name = $update['trace_name'];
             }
             
             // Overwrite existing values
             $update = array_merge(
                 $update, 
                 prepare_values(
-                    array('op_closed','op_name'), 
-                    array('NOW()', $op_name)
+                    array('trace_closed','trace_name'),
+                    array('NOW()', $trace_name)
                 )
             );
             
@@ -134,17 +145,17 @@
             }
                 
 
-            // Close operation
-            $res = DB::update(self::TABLE, $values, "`op_id`=" . (int) $id);
+            // Close trace
+            $res = DB::update(self::TABLE, $values, "`trace_id`=" . (int) $id);
 
             if($res === FALSE) {
-                return Operation::error("Failed to close operation $id");
+                return Trace::error("Failed to close trace $id");
             }
 
             Logs::write(
                 Logs::TRACE, 
                 LogLevel::INFO, 
-                "Operation $id closed"
+                "Trace $id closed"
             );        
 
             return true;
@@ -153,17 +164,17 @@
 
         /**
          * Update a field in the DB
-         * @param int $id Operation ID
+         * @param int $id Trace ID
          * @param string $field DB-field to update
          * @param string $value New valye
          * @return boolean
          */
         public static function set($id, $field, $value) {
 
-            $res = DB::update(self::TABLE,array($field => $value), "`op_id`=" . (int) $id);
+            $res = DB::update(self::TABLE,array($field => $value), "`trace_id`=" . (int) $id);
 
             if($res === FALSE) {
-                return Operation::error("Failed to update field [$field] in operation $id");
+                return Trace::error("Failed to update field [$field] in trace $id");
             }
 
             return $res;
@@ -171,23 +182,23 @@
 
 
         /**
-         * Reopen given operation
+         * Reopen given trace
          * 
-         * @param integer $id Operation id
+         * @param integer $id Trace id
          * @return boolean
          */
         public static function reopen($id) {
 
-            $res = DB::update(self::TABLE,array('op_closed' => 'NULL'), "`op_id`=" . (int) $id);
+            $res = DB::update(self::TABLE,array('trace_closed' => 'NULL'), "`trace_id`=" . (int) $id);
 
             if($res === FALSE) {
-                Operation::error("Failed to reopen operation $id");
+                Trace::error("Failed to reopen trace $id");
             } else {
 
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::INFO, 
-                    "Operation $id reopened"
+                    "Trace $id reopened"
                 );                
             }
 
@@ -199,42 +210,43 @@
         public function getData() {
             return array
             (
-                "op_id" => (int) $this->op_id, 
+                "trace_id" => (int) $this->trace_id,
                 "user_id" => (int) $this->user_id, 
-                "op_name" => $this->op_name, 
-                "alert_mobile_country" => $this->alert_mobile_country,
-                "alert_mobile" => $this->alert_mobile,
-                "op_ref" => $this->op_ref, 
-                "op_opened" => $this->op_opened, 
-                "op_closed" => $this->op_closed,
-                "op_comments" => $this->op_comments
+                "trace_name" => $this->trace_name,
+                "trace_alert_country" => $this->trace_alert_country,
+                "trace_alert_number" => $this->trace_alert_number,
+                "trace_ref" => $this->trace_ref,
+                "trace_opened" => $this->trace_opened,
+                "trace_closed" => $this->trace_closed,
+                "trace_comments" => $this->trace_comments
             );
         }        
 
 
         /**
-         * Add a new operation
+         * Add a new trace
          * 
-         * @param string $op_type Operation type
-         * @param string $op_name Operation name
+         * @param string $trace_type Trace type
+         * @param string $trace_name Trace name
          * @param int $user_id User ID of the "owner" (Tip: often $_SESSION['user_id'])
-         * @param string $alert_mobile_country Country code (ISO)
-         * @param string $alert_mobile Mobilephone to alert of recieced positions, etc
-         * @param string $op_ref Reference of the operation, like SAR-number or something
-         * @param string $op_comments Any comments to the operation
+         * @param string $trace_alert_country Country code (ISO)
+         * @param string $trace_alert_number phone to alert of received positions, etc
+         * @param string $trace_ref Reference of the trace, like SAR-number or something
+         * @param string $trace_comments Any comments to the trace
          * @return boolean
          */
-        public function add(
-            $op_type, $op_name, $user_id, $alert_mobile_country, 
-            $alert_mobile, $op_ref = '', $op_comments = ''){
+        public static function add(
+            $trace_type, $trace_name, $user_id, $trace_alert_country,
+            $trace_alert_number, $trace_ref = '', $trace_comments = ''){
 
-            if(empty($op_type) || empty($op_name) || empty($user_id) || empty($alert_mobile_country) || empty($alert_mobile)) {
+            if(empty($trace_type) || empty($trace_name) || empty($user_id)
+                || empty($trace_alert_country) || empty($trace_alert_number)) {
 
                 $line = __LINE__;
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::ERROR, 
-                    "One or more required values are missing", 
+                    "One or more required values are missing",
                     array(
                         'file' => __FILE__,
                         'method' => 'add',
@@ -245,39 +257,41 @@
             }
 
             $values = array(
-                (string) $op_type, 
-                (string) $op_name, 
+                (string) $trace_type,
+                (string) $trace_name,
                 (int) $user_id, 
-                (string) $alert_mobile_country, 
-                (string) $alert_mobile, 
-                (string) $op_ref, 
-                "NOW()", 
-                (string) $op_comments
+                (string) $trace_alert_country,
+                (string) $trace_alert_number,
+                (string) $trace_ref,
+                "NOW()",
+                "NULL",
+                (string) $trace_comments
             );
             
-            $values = array_exclude(prepare_values(self::$fields, $values),'op_closed');
-            $this->id = DB::insert(self::TABLE, $values);
+            $values = array_exclude(prepare_values(self::$fields, $values),'trace_closed');
+            $id = DB::insert(self::TABLE, $values);
             
-            if($this->id === FALSE) {
-                $this->error("Failed to create operation", $values);
+            if($id === FALSE) {
+                self::error("Failed to create trace", $values);
             } else {
 
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::INFO, 
-                    "Operation {$this->id} created"
+                    "Trace {$id} created"
                 );                
             }        
 
-            return self::get($this->id);
+            return self::get($id);
 
         }// add
 
         /**
-         * Get all operations
-         * 
+         * Get all trace
+         *
          * @param string $status NULL, 'open' or 'closed'
-         * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
+         * @param bool $admin
+         * @return mixed. Instance of \RescueMe\Trace if success, FALSE otherwise.
          */
         public static function getAll($status='open', $admin = false) {
             $user = User::current();
@@ -294,36 +308,36 @@
             
             $owned = ($admin ? '' : "AND `".self::TABLE."`.`user_id` = ".(int)$user->id);
 
-            $query = "SELECT `op_id`, `op_name` FROM `".self::TABLE."`
-                      WHERE `op_closed` {$where} {$owned} ORDER BY `op_opened` DESC";
+            $query = "SELECT `trace_id`, `trace_name` FROM `".self::TABLE."`
+                      WHERE `trace_closed` {$where} {$owned} ORDER BY `trace_opened` DESC";
 
             $res = DB::query($query);
 
             if (DB::isEmpty($res))
                 return false;
 
-            $operation_ids = array();
+            $traces_ids = array();
             while ($row = $res->fetch_assoc()) {
-                $operation = new Operation();
-                $operation = $operation->get($row['op_id']);
-                $operation_ids[$row['op_id']] = $operation;
+                $trace = new Trace();
+                $trace = $trace->get($row['trace_id']);
+                $traces_ids[$row['trace_id']] = $trace;
             }
 
-            return $operation_ids;
+            return $traces_ids;
 
         } // getAll
         
 
-        public function getAllMissing($admin = false, $start = 0, $max = false) {
-            return Missing::getAll('`missing`.`op_id` = ' .(int)$this->id, $admin, $start, $max);
+        public function getAllMobiles($admin = false, $start = 0, $max = false) {
+            return Mobile::getAll('`mobiles`.`trace_id` = ' .(int)$this->id, $admin, $start, $max);
         }
 
         public function getAlertMobile() {
-            if (empty($this->alert_mobile))
+            if (empty($this->trace_alert_number))
                 return false;
 
-            return array('country'=>$this->alert_mobile_country, 
-                        'mobile'=>$this->alert_mobile);
+            return array('country'=>$this->trace_alert_country,
+                        'mobile'=>$this->trace_alert_number);
         }
 
         public function getError() {
@@ -346,4 +360,4 @@
 
 
 
-    }// Operation
+    }// Trace

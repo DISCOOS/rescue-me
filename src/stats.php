@@ -30,7 +30,7 @@ $stmt->store_result() or die("Failed to store result");
 
 // Status - last successful trace
 $type = "trace";
-$stmt = $conn->prepare("SELECT MAX(positions.timestamp) FROM operations, missing, positions WHERE missing.missing_id = positions.missing_id AND missing.op_id = operations.op_id AND op_type=?");
+$stmt = $conn->prepare("SELECT MAX(positions.timestamp) FROM traces, mobiles, positions WHERE mobiles.mobile_id = positions.mobile_id AND mobiles.trace_id = traces.trace_id AND trace_type=?");
 $stmt->bind_param("s", $type) or die("Failed to bind param");
 $stmt->bind_result($timestamp) or die ("Failed to bind result");
 $stmt->execute() or die("Failed to execute stmt");
@@ -56,10 +56,10 @@ echo json_encode($json);
 
 
 function type_stats($type, $conn)  {
-	$no_response = stage_stats($type, $conn, "SELECT COUNT(distinct missing_mobile), COUNT(*) FROM missing, operations WHERE missing.op_id=operations.op_id AND NOT EXISTS (SELECT * FROM positions WHERE missing.missing_id = positions.missing_id) AND missing_answered IS NULL AND op_type=?");
-	$no_location = stage_stats($type, $conn, "SELECT COUNT(distinct missing_mobile), COUNT(*) FROM missing, operations WHERE missing.op_id=operations.op_id AND NOT EXISTS (SELECT * FROM positions WHERE missing.missing_id = positions.missing_id) AND missing_answered IS NOT NULL AND op_type=?");
-	$located = stage_stats($type, $conn, "SELECT COUNT(distinct missing_mobile), COUNT(*) FROM missing, operations WHERE EXISTS(SELECT * FROM positions WHERE missing.missing_id = positions.missing_id) AND missing.op_id = operations.op_id AND op_type=?");
-	$totals = stage_stats($type, $conn, "SELECT COUNT(distinct missing_mobile), COUNT(*) FROM missing, operations WHERE missing.op_id = operations.op_id AND op_type=?");
+	$no_response = stage_stats($type, $conn, "SELECT COUNT(distinct mobile_number), COUNT(*) FROM mobiles, traces WHERE mobiles.trace_id=traces.trace_id AND NOT EXISTS (SELECT * FROM positions WHERE mobiles.mobile_id = positions.mobile_id) AND mobile_responded IS NULL AND trace_type=?");
+	$no_location = stage_stats($type, $conn, "SELECT COUNT(distinct mobile_number), COUNT(*) FROM mobiles, traces WHERE mobiles.trace_id=traces.trace_id AND NOT EXISTS (SELECT * FROM positions WHERE mobiles.mobile_id = positions.mobile_id) AND mobile_responded IS NOT NULL AND trace_type=?");
+	$located = stage_stats($type, $conn, "SELECT COUNT(distinct mobile_number), COUNT(*) FROM mobiles, traces WHERE EXISTS(SELECT * FROM positions WHERE mobiles.mobile_id = positions.mobile_id) AND mobiles.trace_id = traces.trace_id AND trace_type=?");
+	$totals = stage_stats($type, $conn, "SELECT COUNT(distinct mobile_number), COUNT(*) FROM mobiles, traces WHERE mobiles.trace_id = traces.trace_id AND trace_type=?");
 
 	return array(
 	        "type" => $type,

@@ -663,7 +663,7 @@ msgstr "Zimbabwe"
 #~ msgid "Arguments"
 #~ msgstr "Argumenter"
 
-#~ msgid "Operation"
+#~ msgid "Trace"
 #~ msgstr "Aksjon"
 
 #~ msgid "User"
@@ -828,7 +828,7 @@ msgstr "Zimbabwe"
 #~ msgid "is aborted"
 #~ msgstr "er avbrudt"
 
-#~ msgid "Failed to abort operation"
+#~ msgid "Failed to abort trace"
 #~ msgstr "Klarte ikke å avbryte operasjonen"
 
 #~ msgid ""
@@ -858,7 +858,7 @@ msgstr "Zimbabwe"
 #~ msgid "Recover Password"
 #~ msgstr "Gjenopprett passord"
 
-#~ msgid "Close operation"
+#~ msgid "Close trace"
 #~ msgstr "Avslutt operasjon"
 
 #~ msgid "Not an ajax request"
@@ -1051,7 +1051,7 @@ msgstr "Zimbabwe"
 #~ msgid "Could not initiate trace"
 #~ msgstr "Kunne ikke starte sporing"
 
-#~ msgid "System error: could not initiate operation"
+#~ msgid "System error: could not initiate trace"
 #~ msgstr "Kunne ikke utføre operasjon."
 
 #~ msgid "Please try again"
@@ -1178,7 +1178,7 @@ msgstr "Zimbabwe"
 #~ msgid "Unknown"
 #~ msgstr "Ukjent"
 
-#~ msgid "Operation name"
+#~ msgid "Trace name"
 #~ msgstr "Aksjonsnavn"
 
 #~ msgid "Username not safe"
@@ -1226,7 +1226,7 @@ msgstr "Zimbabwe"
 #~ msgid "Reopen"
 #~ msgstr "Gjenåpen"
 
-#~ msgid "Reopen operation"
+#~ msgid "Reopen trace"
 #~ msgstr "Gjenåpne operasjon"
 
 #~ msgid "Access denied"
@@ -1301,7 +1301,7 @@ msgstr "Zimbabwe"
 #~ msgid "Reference"
 #~ msgstr "Aksjonsreferanse"
 
-#~ msgid "Operation number, etc."
+#~ msgid "Trace number, etc."
 #~ msgstr "SAR- eller AMIS-nr"
 
 #~ msgid "Report to"
@@ -1322,7 +1322,7 @@ msgstr "Zimbabwe"
 #~ msgid "Start new trace"
 #~ msgstr "Start ny sporing"
 
-#~ msgid "See active traces"
+#~ msgid "See active trace"
 #~ msgstr "Se aktive sporinger"
 
 #~ msgid "More"
@@ -1345,7 +1345,7 @@ msgstr "Zimbabwe"
 #~ "trace url."
 #~ msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
 
-#~ msgid "Note: This will reopen this operation"
+#~ msgid "Note: This will reopen this trace"
 #~ msgstr "Merk: Dette vil gjenåpne aksjonen"
 
 #~ msgid "Send SMS"

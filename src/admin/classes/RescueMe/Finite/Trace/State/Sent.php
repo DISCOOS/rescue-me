@@ -13,7 +13,7 @@ namespace RescueMe\Finite\Trace\State;
 
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
-use RescueMe\Missing;
+use RescueMe\Mobile;
 
 
 /**
@@ -33,7 +33,7 @@ class Sent extends AbstractState {
 
     /**
      * Check if trace exists
-     * @param Missing $condition
+     * @param Mobile $condition
      * @return mixed
      */
     function accept($condition) {

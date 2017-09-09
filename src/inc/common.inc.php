@@ -349,13 +349,13 @@
     
     function assert_isset_all($values, $keys, $message = '', $log = Logs::SYSTEM, $level = LogLevel::ERROR) {
         $keys = is_array($keys) ? $keys : array($keys);
-        $missing = array();
+        $mobile = array();
         foreach($keys as $key) {
             if(isset($values[$key]) === FALSE) {
-                $missing[] = $key;
+                $mobile[] = $key;
             }
         }
-        $valid = empty($missing);
+        $valid = empty($mobile);
         if($valid === FALSE) {
             if($message) {
                 $message .= ". ";
@@ -685,7 +685,9 @@
     }
 
 
-
+    function get_user_agent() {
+        return $_SERVER['HTTP_USER_AGENT'];
+    }
     
     
     function get_client_ip() {

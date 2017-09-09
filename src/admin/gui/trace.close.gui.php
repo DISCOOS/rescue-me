@@ -1,42 +1,46 @@
 <?
+    use RescueMe\Mobile;
     use RescueMe\User;
-    use RescueMe\Operation;
+    use RescueMe\Trace;
     
     $id = input_get_int('id');
-    $operation = Operation::get($id);
-    $admin = User::current()->allow("read", 'operations.all');
-    
-    $missings = $operation === FALSE ? FALSE : $operation->getAllMissing($admin);
-    if($missings !== false)
+    $mobile = Mobile::get($id);
+
+    if($mobile !== false)
     {
-        $missing = current($missings);
-        $missing->getPositions();
-        
+        // TODO: Change from using single mobile as id everywhere to identify trace
+
+        /** @var Trace $trace */
+        $trace = Trace::get($mobile->trace_id);
+        $admin = User::current()->allow("read", 'operations.all');
+
+        $mobile->getPositions();
+
         if(modules_exists('RescueMe\SMS\Provider')) {
 
             $fields = array();
 
             $fields[] = array(
-                'id' => 'op_name',
+                'id' => 'trace_name',
                 'type' => 'text', 
-                'value' => $operation->op_name,
-                'label' => T_('Operation name'),
+                'value' => $trace->trace_name,
+                'label' => T_('Trace name'),
                 'attributes' => 'required autofocus'
             );
             
             $fields[] = array(
-                'id' => 'op_ref',
+                'id' => 'trace_ref',
                 'type' => 'text', 
-                'value' => $operation->op_ref, 
+                'value' => $trace->trace_ref,
                 'label' => T_('Reference'),
-                'placeholder' => T_('Operation number, etc.'),
+                'placeholder' => T_('Trace number, etc.'),
                 'attributes' => ''
             );
                         
             $fields[] = array(
-                'id' => 'op_comments',
+                'id' => 'trace_comments',
                 'type' => 'text', 
-                'value' => $operation->op_comments, 
+                'value' => $trace->trace_comments,
                 'label' => T_('Comments'),
                 'placeholder' => T_('Short description'),
                 'attributes' => ''
@@ -71,26 +75,26 @@
             );    
             $fields[] = $group;                                    
             
-            if(!empty($operation->op_closed)) {
-                $actions['message'] = T_('Note: This will reopen this operation');
+            if(!empty($trace->trace_closed)) {
+                $actions['message'] = T_('Note: This will reopen this trace');
             }
             else {
                 $actions['message'] = T_("Note: This will permanently delete name and mobile numbers (privacy concerns)");
             }
             
-            insert_form("user", T_('Close operation'), $fields, ADMIN_URI."operation/close/$operation->id", $actions);
+            insert_form("user", T_('Close trace'), $fields, ADMIN_URI."trace/close/$mobile->id", $actions);
             
-            if (is_numeric($missing->last_pos->lat)) {
+            if (is_numeric($mobile->last_pos->lat)) {
             ?>
             <script>
             $(document).ready(function(){
                 function updateLocation(loc) {
                     if (loc !== false)
-                        document.getElementsByName("op_name")[0].value = loc;
+                        document.getElementsByName("trace_name")[0].value = loc;
                 }
            
-                R.geoname(<?=$missing->last_pos->lat; ?>, 
-                          <?=$missing->last_pos->lon; ?>, updateLocation);
+                R.geoname(<?=$mobile->last_pos->lat; ?>,
+                          <?=$mobile->last_pos->lon; ?>, updateLocation);
             
             });
             </script>
@@ -98,5 +102,5 @@
             }
         }
     } else { ?> 
-<h3 class="pagetitle"><?= T_('Close operation') ?></h3>
+<h3 class="pagetitle"><?= T_('Close trace') ?></h3>
 <?  insert_alert(T_('None found')); } ?>

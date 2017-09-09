@@ -6,7 +6,7 @@ use RescueMe\Finite\Trace\Factory;
 use RescueMe\Manager;
 use RescueMe\SMS\Provider;
 use RescueMe\User;
-    use RescueMe\Missing;
+    use RescueMe\Mobile;
     use RescueMe\Properties;
     
     if(isset($_ROUTER['error'])) {
@@ -17,12 +17,12 @@ use RescueMe\User;
     $user_id = $user->id;
     $admin = User::current()->allow("read", 'operations.all');
     
-    $filter = '(op_closed IS NOT NULL)';
+    $filter = '(trace_closed IS NOT NULL)';
     if(isset($_GET['filter'])) {
-        $filter .= ' AND ' . Missing::filter(isset_get($_GET, 'filter', ''), 'OR');
+        $filter .= ' AND ' . Mobile::filter(isset_get($_GET, 'filter', ''), 'OR');
     }
     
-    $list = Missing::countAll($filter, $admin);
+    $list = Mobile::countAll($filter, $admin);
     
     $page = input_get_int('page', 1);
     $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
@@ -40,11 +40,11 @@ use RescueMe\User;
     $total = ceil($list/$max);
     $options = create_paginator(1, $total, $user_id);
     
-    // Get operation types
-    $types = RescueMe\Operation::titles();
+    // Get trace types
+    $types = RescueMe\Trace::titles();
     
-    // Get missing
-    $list = Missing::getAll($filter, $admin, $start, $max);
+    // Get mobile
+    $list = Mobile::getAll($filter, $admin, $start, $max);
 
     // Enable manual SMS delivery status check?
     $factory = Manager::get(Provider::TYPE, $user_id);
@@ -56,29 +56,29 @@ use RescueMe\User;
     $factory = new Factory();
     $machine = $factory->build($sms);
 
-    /** @var Missing $missing */
-    foreach($list as $id => $missing) {
-        $owner = ($missing->user_id === $user_id);
+    /** @var Mobile $mobile */
+    foreach($list as $id => $mobile) {
+        $owner = ($mobile->user_id === $user_id);
 
         // Prepare
-        $missing->getPositions();
+        $mobile->getPositions();
 
         // Analyze and format trace state
-        $state = format_state($machine->init()->apply($missing));
+        $state = format_state($machine->init()->apply($mobile));
 
         ?>
-            <tr id="<?= $missing->id ?>">
-                <td class="missing name"><?= $types[$missing->op_type] ?></td>
-                <td class="missing name"> <?= $missing->name ?> </td>
-                <td class="missing date"><?= $state ?></td>
+            <tr id="<?= $mobile->id ?>">
+                <td class="mobile name"><?= $types[$mobile->trace_type] ?></td>
+                <td class="mobile name"> <?= $mobile->name ?> </td>
+                <td class="mobile date"><?= $state ?></td>
                 <? if($admin) { ?>
-                <td class="missing name hidden-phone"><?= $missing->user_name ?></td>
-                <td class="missing editor">
+                <td class="mobile name hidden-phone"><?= $mobile->user_name ?></td>
+                <td class="mobile editor">
                 <? } else { ?>
-                <td class="missing editor" colspan="2">
+                <td class="mobile editor" colspan="2">
                 <? } ?>
                     <div class="btn-group pull-right">
-                        <a class="btn btn-small" href="<?=ADMIN_URI."operation/reopen/{$missing->op_id}"?>">
+                        <a class="btn btn-small" href="<?=ADMIN_URI."trace/reopen/{$mobile->id}"?>">
                             <b class="icon icon-edit"></b><?= T_('Reopen') ?>
                         </a>
                     </div>

@@ -24,7 +24,7 @@ if(sizeof($missing_modules) > 0) {
         $TWIG['data']	= $_POST;
         require_once(APP_PATH_INC.'common.inc.php');
         
-		$operation = new RescueMe\Operation;
+		$operation = new RescueMe\Trace;
 		$operation = $operation->add(
 			'trace', 
 			$_POST['m_name'], 

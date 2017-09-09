@@ -13,7 +13,7 @@ namespace RescueMe\Finite\Trace\State;
 
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
-use RescueMe\Missing;
+use RescueMe\Mobile;
 
 
 /**
@@ -33,11 +33,11 @@ class Alerted extends AbstractState {
 
     /**
      * Check if trace exists
-     * @param Missing $condition
+     * @param Mobile $condition
      * @return mixed
      */
     function accept($condition) {
-        $this->data = $condition->reported;
+        $this->data = $condition->alerted;
         return $this->accepted = is_null($this->data) === false;
     }
 }

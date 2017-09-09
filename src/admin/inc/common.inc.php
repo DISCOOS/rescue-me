@@ -11,23 +11,23 @@ use RescueMe\User;
 
 function modules_exists($module, $_ = null) {
 
-    $missing = array();
+    $mobile = array();
 
     foreach(func_get_args() as $module) {
         if(!RescueMe\Manager::exists($module))
         {
-            $missing[] = $module;
+            $mobile[] = $module;
         }
     }    
 
     if(defined('USE_SILEX') && USE_SILEX)
-        return empty($missing);
+        return empty($mobile);
 
-    if(!empty($missing)) {
-        insert_errors(T_("Missing modules").' ( <a href="'.ADMIN_URI.'setup">'. T_("Configure"). "</a>): ", $missing);
+    if(!empty($mobile)) {
+        insert_errors(T_("Missing modules").' ( <a href="'.ADMIN_URI.'setup">'. T_("Configure"). "</a>): ", $mobile);
     }
 
-    return empty($missing);
+    return empty($mobile);
 }
 
 /**
@@ -47,7 +47,7 @@ function assert_args_count($args, $count, $log, $level, $file, $method, $line) {
         Logs::write(
             $log,
             $level,
-            "One or more required arguments are missing",
+            "One or more required arguments are mobile",
             array(
                 'file' => $file,
                 'method' => $method,

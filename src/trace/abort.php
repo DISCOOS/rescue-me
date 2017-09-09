@@ -1,8 +1,8 @@
 <? 
 require('config.php');
 
-use \RescueMe\Missing;
-use \RescueMe\Operation;
+use \RescueMe\Mobile;
+use \RescueMe\Trace;
 
 $id = input_get_hash('id');
 
@@ -14,15 +14,15 @@ if ($id === false) {
 
     $id = decrypt_id($id);
 
-    $m = Missing::get($id);
+    $m = Mobile::get($id);
 
     if($m !== false)
     {
         set_system_locale(DOMAIN_TRACE, $m->locale);
         
-        $op_name = sprintf(T_('Closed by %1$s at %2$s'), $m->id, date('Y-m-d'));
+        $trace_name = sprintf(T_('Closed by %1$s at %2$s'), $m->id, date('Y-m-d'));
         
-        if(Operation::close($m->op_id, array('op_name' => $op_name))) {
+        if(Trace::close($m->trace_id, array('trace_name' => $trace_name))) {
             
             $message = sprintf(T_('Trace %1$s aborted'), $m->name);
             

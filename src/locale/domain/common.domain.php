@@ -48,7 +48,7 @@
 //        define('EXERCISE', 'Exercise');
 //        define('LOCATIONS', 'Locations');
 //        define('ARGUMENTS', 'Arguments');
-//        define('OPERATION', 'Operation');
+//        define('OPERATION', 'Trace');
         
 //        define('USER', 'User');
 //        define('API_ID', 'API ID');

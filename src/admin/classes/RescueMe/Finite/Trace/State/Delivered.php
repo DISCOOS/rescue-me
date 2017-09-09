@@ -14,7 +14,7 @@ namespace RescueMe\Finite\Trace\State;
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
 use RescueMe\Locale;
-use RescueMe\Missing;
+use RescueMe\Mobile;
 use RescueMe\SMS\Check;
 use RescueMe\SMS\Provider;
 
@@ -46,23 +46,23 @@ class Delivered extends AbstractState {
 
     /**
      * Check trace request is delivered
-     * @param Missing $condition
+     * @param Mobile $condition
      * @return boolean
      */
     function accept($condition) {
 
         // Check SMS status?
         if(is_null($this->sms) === false) {
-            $code = Locale::getDialCode($condition->mobile_country);
+            $code = Locale::getDialCode($condition->country);
             $code = $this->sms->accept($code);
             $ref = $condition->sms_provider_ref;
             // Check request status?
-            if(!empty($ref) && $this->sms->request($ref,$code.$condition->mobile)) {
-                $condition = Missing::get($condition->id);
+            if(!empty($ref) && $this->sms->request($ref,$code.$condition->number)) {
+                $condition = Mobile::get($condition->id);
             }
         }
 
-        $this->data = $condition->sms_delivery;
+        $this->data = $condition->sms_delivered;
         return $this->accepted = is_null($this->data) === false;
     }
 }

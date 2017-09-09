@@ -61,8 +61,8 @@ define('APP_URL', get_rescueme_url());
 define('ADMIN_URI', APP_URI.'admin/');
 
 // RescueMe derived URLs
-define('LOCATE_URL', APP_URL.'l/#missing_id');
-define('ADMIN_TRACE_URL', APP_URL.'admin/missing/#missing_id');
+define('LOCATE_URL', APP_URL.'l/#mobile_id');
+define('ADMIN_TRACE_URL', APP_URL.'admin/trace/#mobile_id');
 
 // Include dependent resources
 foreach(array('locale', 'common', 'gui') as $lib) {

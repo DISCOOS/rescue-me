@@ -129,20 +129,20 @@
 }
 
 /*==========================================
-/ [Missing List] page
+/ [Mobile List] page
 /=========================================*/
-.missing {
+.mobile {
     cursor: pointer;
     background-color: #f1f1f1;
 }
 
-.missing div.name {
+.mobile div.name {
     font-weight: bold;
     color: #da2727;
 }
 
 /*==========================================
-/ [Missing Details] page
+/ [Mobile Details] page
 /=========================================*/
 .infos .info {
     margin-right: 10px;

@@ -30,7 +30,7 @@ R.prepare = function (element, options) {
 
     options = options || {};
 
-    // Workaround for missing iphone click event delegation (needed to show dropdowns from nav-buttons),
+    // Workaround for mobile iphone click event delegation (needed to show dropdowns from nav-buttons),
     //      see http://www.quirksmode.org/blog/archives/2010/09/click_event_del.html#c14807
     $(element).find('[data-toggle=dropdown]').each(function () {
         this.addEventListener('click', function () {
@@ -47,11 +47,11 @@ R.prepare = function (element, options) {
         window.location.href = R.admin.url + 'user/' + $(this).closest('tr').attr('id');
     });
 
-    $(element).find('li.missing').click(function () {
-        window.location.href = R.admin.url + 'missing/' + $(this).attr('id');
+    $(element).find('li.mobile').click(function () {
+        window.location.href = R.admin.url + 'trace/' + $(this).attr('id');
     });
-    $(element).find('td.missing:not(.editor)').click(function () {
-        window.location.href = R.admin.url + 'missing/' + $(this).closest('tr').attr('id');
+    $(element).find('td.mobile:not(.editor)').click(function () {
+        window.location.href = R.admin.url + 'trace/' + $(this).closest('tr').attr('id');
     });
 
     $(element).find('li.position,.label-position').click(function () {
@@ -397,7 +397,7 @@ R.modal.load = function(url, target, data) {
     });
 };
 
-// Used in operation.close.gui.php to get the place of a location
+// Used in trace.close.gui.php to get the place of a location
 R.geoname = function(lat, lon, callback) {
     var geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(lat, lon);

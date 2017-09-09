@@ -13,7 +13,7 @@ namespace RescueMe\Finite\Trace\State;
 
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
-use RescueMe\Missing;
+use RescueMe\Mobile;
 
 
 /**
@@ -33,11 +33,11 @@ class Responded extends AbstractState {
 
     /**
      * Check if request is accepted
-     * @param Missing $condition
+     * @param Mobile $condition
      * @return boolean
      */
     function accept($condition) {
-        $this->data = $condition->answered;
+        $this->data = $condition->responded;
         return $this->accepted = is_null($this->data) === false;
     }
 

@@ -74,7 +74,7 @@
             <fieldset>
                 <legend><?=T_('Reference')?></legend>
 
-                <input class="input-block-level" type="text" id="op_ref" name="op_ref" placeholder="<?=T_('Operation number, etc.')?>">
+                <input class="input-block-level" type="text" id="trace_ref" name="trace_ref" placeholder="<?=T_('Trace number, etc.')?>">
 
             </fieldset>
             
@@ -116,7 +116,7 @@
                         <label for="sms_text"><?=T_('SMS')?> (<span id="sms_char">0</span>/160
                             <?=strtolower(T_('Character'))?> - <span id="sms_num">1</span><?=T_('SMS')?>)</label>
                         <? // This assumes the encrypted ID is always 3 chars, but maybe it could be more? ?>
-                        <input type="hidden" name="link_len" id="link_len" value="<?=strlen(str_replace("#missing_id", "111", LOCATE_URL))?>">
+                        <input type="hidden" name="link_len" id="link_len" value="<?=strlen(str_replace("#mobile_id", "111", LOCATE_URL))?>">
                         <textarea class="field span12" id="sms_text" name="sms_text" required rows="1"><?=$sms_text?></textarea>
                         <div id="sms_warning" style="display: none" class="alert-error">
                             <?=T_("Not all SMS-carriers support more than 160 chars!")?>
@@ -151,7 +151,7 @@
                     <h5><?=T_('Repeated localization')?></h5>
                     <p><?=T_('If the location is inaccurate, the script will continue to listen for location updates until desired accuracy or maximum wait time is is reached. A count-down is shown during this time. Last known location is presented to the user, which allow the user to read out the location over the phone or send ith with an SMS (tell the user to click on the link presented to the user when the script timed out)')?>
                     <p><?=sprintf(T_('Desired accurary (location.desired.accuracy), maximum wait time (location.max.wait) and maximum location age (location.max.age) can be configured on page %1$s'),'<a href="'.ADMIN_URI.'setup#general">' . T_('Setup') .' </a>.')?><p/>
-                    <p><?=T_('All traces are listed at')?> <a href="<?=ADMIN_URI?>missing/list">admin/missing/list</a>.<p/>
+                    <p><?=T_('All traces are listed at')?> <a href="<?=ADMIN_URI?>trace/list">admin/trace/list</a>.<p/>
                 </div>
             </div>
         </div>
@@ -164,7 +164,7 @@
          <div class="row-fluid">
             <button type="submit" class="btn btn-success span2 column"><b class="icon icon-envelope icon-white"></b><?=T_('Create')?></button>
             <select id="m_type" name="m_type" class="span2" >
-                <? insert_options(RescueMe\Operation::titles(), 'trace'); ?>
+                <? insert_options(RescueMe\Trace::titles(), 'trace'); ?>
             </select>            
         </div>
     </div>

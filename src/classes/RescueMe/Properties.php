@@ -218,7 +218,7 @@
                 'type' => 'checklist',
                 'default' => '',
                 'options' => array(                   
-                    self::TRACE_DETAILS_REFERENCE => 'Operation reference',
+                    self::TRACE_DETAILS_REFERENCE => 'Trace reference',
                     self::TRACE_DETAILS_LOCATION => 'Last location',
                     self::TRACE_DETAILS_LOCATION_TIME => 'Last timestamp',
                     self::TRACE_DETAILS_LOCATION_URL => 'Location URL'

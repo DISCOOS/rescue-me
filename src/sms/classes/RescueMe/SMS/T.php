@@ -44,7 +44,8 @@ class T {
         if(is_numeric($msgid)) {
             switch($msgid) {
                 case T::ALERT_SMS:
-                    return T_locale('We are searching for you! Click on this link so we can locate you: %LINK%', $locale, DOMAIN_SMS);
+                    return T_locale('We are searching for you! Click on this link so we can locate you: %LINK%',
+                        $locale, DOMAIN_SMS);
                 case T::ALERT_SMS_NOT_SENT:
                     return T_locale('Warning: SMS not sent to #m_name', $locale, DOMAIN_SMS);
                 case T::ALERT_SMS_COARSE_LOCATION:

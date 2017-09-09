@@ -2,12 +2,12 @@
 ob_start();
 
 use RescueMe\User;
-use RescueMe\Missing;
+use RescueMe\Mobile;
 use RescueMe\Properties;
 
 $num = (int)$_GET['num'];
 $user_id = User::currentId();
-$missing = Missing::get((int)$_GET['id']);
+$mobile = Mobile::get((int)$_GET['id']);
 $params = Properties::getAll($user_id);
 
 // Close the session prematurely to avoid usleep() from locking other requests
@@ -17,7 +17,7 @@ set_time_limit(120);
 // Counter to manually keep track of time elapsed (PHP's set_time_limit() is unrealiable while sleeping)
 $endtime = time() + 110;    
 while(time() <= $endtime){
-    $positions = $missing->getAjaxPositions($num);
+    $positions = $mobile->getAjaxPositions($num);
 
     if (sizeof($positions) > 0) {
         break;

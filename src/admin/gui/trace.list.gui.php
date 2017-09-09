@@ -1,7 +1,7 @@
 <?php
     
     use RescueMe\User;
-    use RescueMe\Operation;
+    use RescueMe\Trace;
     
     if(isset($_ROUTER['error'])) {
         insert_error($_ROUTER['error']);
@@ -9,7 +9,7 @@
     }
     
     $admin = User::current()->allow("read", 'operations.all');
-    $type = isset($_GET['name']) === false || $_GET['name'] === 'open' ? Operation::TRACE : $_GET['name'];
+    $type = isset($_GET['name']) === false || $_GET['name'] === 'open' ? Trace::TRACE : $_GET['name'];
     
 ?>
 
@@ -24,7 +24,7 @@
 </ul>
 
 <div class="tab-content" style="width: auto; overflow: visible">
-    <div id="open" data-target=".page" class="tab-pane <?=($type === Operation::TRACE ? 'active' : '')?>">
+    <div id="open" data-target=".page" class="tab-pane <?=($type === Trace::TRACE ? 'active' : '')?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -49,7 +49,7 @@
         </table>
         <div class="pagination" data-target="open .page"></div>
     </div>
-    <div id="test" data-target=".page" class="tab-pane <?=($type === Operation::TABLE ? 'active' : '')?>">
+    <div id="test" data-target=".page" class="tab-pane <?=($type === Trace::TABLE ? 'active' : '')?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -74,7 +74,7 @@
         </table>        
         <div class="pagination" data-target="test .page"></div>
     </div>
-    <div id="exercise" data-target=".page" class="tab-pane <?=($type === Operation::EXERCISE ? 'active' : '')?>">
+    <div id="exercise" data-target=".page" class="tab-pane <?=($type === Trace::EXERCISE ? 'active' : '')?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -124,7 +124,7 @@
         </table>
         <div class="pagination" data-target="timeout .page"></div>
     </div>
-    <div id="closed" data-target=".page" class="tab-pane <?=($type === Operation::CLOSED ? 'active' : '')?>">
+    <div id="closed" data-target=".page" class="tab-pane <?=($type === Trace::CLOSED ? 'active' : '')?>">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -154,7 +154,7 @@
 <?php
 
     // Insert actions
-    insert_action(T_('New trace'), ADMIN_URI."missing/new", "icon-plus-sign");
+    insert_action(T_('New trace'), ADMIN_URI."trace/new", "icon-plus-sign");
 
     insert_dialog_selector('library', T_('Library'), T_('Loading'), array('progress' => '.modal-label'));?>
     

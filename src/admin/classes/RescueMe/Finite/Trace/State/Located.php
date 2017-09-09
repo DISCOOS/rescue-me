@@ -13,7 +13,7 @@ namespace RescueMe\Finite\Trace\State;
 
 use RescueMe\Finite\AbstractState;
 use RescueMe\Finite\State;
-use RescueMe\Missing;
+use RescueMe\Mobile;
 
 
 /**
@@ -33,7 +33,7 @@ class Located extends AbstractState {
 
     /**
      * Check if state accepts condition
-     * @param Missing $condition
+     * @param Mobile $condition
      * @return mixed
      */
     function accept($condition) {

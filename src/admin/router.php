@@ -6,8 +6,8 @@ use RescueMe\Domain\Issue;
 use RescueMe\Group;
 use RescueMe\User;
 use RescueMe\Manager;
-use RescueMe\Missing;
-use RescueMe\Operation;
+use RescueMe\Mobile;
+use RescueMe\Trace;
 use RescueMe\Properties;
 use RescueMe\Roles;
 use RescueMe\TimeZone;
@@ -148,10 +148,10 @@ switch($_GET['view']) {
         }
 
         $admin = $user->allow('write', 'operations.all');
-        $missing = Missing::get($id);
+        $mobile = Mobile::get($id);
 
-        if ($missing !== FALSE) {
-            if (($user->allow('write', 'operations', $missing->op_id) || $admin) === FALSE) {
+        if ($mobile !== FALSE) {
+            if (($user->allow('write', 'operations', $mobile->trace_id) || $admin) === FALSE) {
                 $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
                 $_ROUTER['error'] = T_('Access denied');
@@ -161,7 +161,7 @@ switch($_GET['view']) {
             echo ajax_response("positions");
 
         } else {
-            $_ROUTER['error'] = sprintf(T_("Missing %1s$ not found"),$id);
+            $_ROUTER['error'] = sprintf(T_("Mobile %1s$ not found"),$id);
         }
 
         break;
@@ -923,83 +923,7 @@ switch($_GET['view']) {
 
         break;
 
-    case 'operation/close':
-
-        if(($id = input_get_int('id')) === FALSE) {
-
-            $_ROUTER['name'] = T_('Illegal operation');
-            $_ROUTER['view'] = "404";
-            $_ROUTER['error'] = T_('Id not defined');
-            break;
-        }
-
-        $_ROUTER['name'] = T_('Close operation');
-        $_ROUTER['view'] = 'operation/close';
-
-        $admin = $user->allow('write', 'operations.all');
-
-        if (($user->allow('write', 'operations', $id)  || $admin)=== FALSE) {
-
-            $_ROUTER['name'] = T_('Illegal operation');
-            $_ROUTER['view'] = "404";
-            $_ROUTER['error'] = T_('Access denied');
-            break;
-        }
-
-        if (is_post_request()) {
-
-            $missings = Operation::get($id)->getAllMissing($admin);
-            if($missings !== FALSE) {
-                foreach($missings as $missing) {
-                    $missing->anonymize($_POST['m_sex']. ' ('.$_POST['m_age'].')');
-                }
-            }
-
-            $status = RescueMe\Operation::close($id, $_POST);
-
-            if ($status) {
-                header("Location: ".ADMIN_URI.'missing/list');
-                exit();
-            }
-
-            $_ROUTER['error'] = DB::errno() ? DB::error() :
-                sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
-        }
-        break;
-
-    case 'operation/reopen':
-
-        if(($id = input_get_int('id')) === FALSE) {
-
-            $_ROUTER['name'] = T_('Illegal operation');
-            $_ROUTER['view'] = "404";
-            $_ROUTER['error'] = T_('Id not defined');
-            break;
-        }
-
-        $_ROUTER['name'] = T_('Reopen operation');
-        $_ROUTER['view'] = 'missing/list';
-
-        $admin = $user->allow('write', 'operations.all');
-
-        if (($user->allow('write', 'operations', $id)  || $admin)=== FALSE) {
-            $_ROUTER['name'] = T_('Illegal operation');
-            $_ROUTER['view'] = "404";
-            $_ROUTER['error'] = T_('Access denied');
-            break;
-        }
-
-        $operation = Operation::get($id);
-        $missings = $operation->getAllMissing($admin);
-        $missing = reset($missings);
-        $missing_id = $missing->id;
-
-        header("Location: ".ADMIN_URI."missing/edit/{$missing_id}?reopen");
-        exit();
-
-        break;
-
-    case 'missing/new':
+    case 'trace/new':
 
         if (($user->allow('write', 'operations') || $user->allow('write', 'operations.all')) === FALSE) {
 
@@ -1016,39 +940,37 @@ switch($_GET['view']) {
         // Process form?
         if (is_post_request()) {
 
-            $operation = new RescueMe\Operation;
-
-            $operation = $operation->add(
+            $trace = Trace::add(
                 $_POST['m_type'],
                 $_POST['m_name'],
                 $user->id,
                 $_POST['mb_mobile_country'],
                 $_POST['mb_mobile'],
-                $_POST['op_ref']);
+                $_POST['trace_ref']);
 
             if (strpos($_POST['sms_text'], '%LINK%')===false) {
                 $_POST['sms_text'] .= ' %LINK%';
             }
 
-            $missing = Missing::add(
+            $mobile = Mobile::add(
                 $_POST['m_name'],
                 $_POST['m_mobile_country'],
                 $_POST['m_mobile'],
                 $_POST['m_locale'],
                 $_POST['sms_text'],
-                $operation->id);
+                $trace->id);
 
-            if($missing) {
-                header("Location: ".ADMIN_URI.'missing/'.$missing->id);
+            if($mobile) {
+                header("Location: ".ADMIN_URI.'trace/'.$mobile->id);
                 exit();
             }
             $_ROUTER['error'] = DB::errno() ? DB::error() :
-                sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+                sprintf(T_('Operation [%1$s] not executed, try again'), "trace/new");
         }
 
         break;
 
-    case 'missing':
+    case 'trace':
 
         if(($id = input_get_int('id')) === FALSE) {
 
@@ -1058,13 +980,14 @@ switch($_GET['view']) {
             break;
         }
 
-        $missing = Missing::check($id);
+        // Check state every time
+        $mobile = Mobile::check($id);
 
-        if($missing !== FALSE){
+        if($mobile !== FALSE){
 
             $admin = $user->allow('read', 'operations.all');
 
-            if(($user->allow('read', 'operations', $missing->op_id) || $admin) === FALSE) {
+            if(($user->allow('read', 'operations', $mobile->trace_id) || $admin) === FALSE) {
 
                 $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
@@ -1080,7 +1003,7 @@ switch($_GET['view']) {
         $_ROUTER['view'] = $_GET['view'];
         break;
 
-    case 'missing/list':
+    case 'trace/list':
 
         if (($user->allow('read', 'operations') || $user->allow('read', 'operations.all')) === FALSE) {
 
@@ -1094,15 +1017,15 @@ switch($_GET['view']) {
 
             if($_GET["name"] === 'closed') {
 
-                echo ajax_response('missing.list','closed');
+                echo ajax_response('trace.list','closed');
 
             } else if($_GET["name"] === 'timeout') {
 
-                echo ajax_response('missing.list','timeout');
+                echo ajax_response('trace.list','timeout');
 
             } else {
 
-                echo ajax_response('missing.list','open');
+                echo ajax_response('trace.list','open');
             }
 
             exit;
@@ -1113,7 +1036,7 @@ switch($_GET['view']) {
         $_ROUTER['view'] = $_GET['view'];
         break;
 
-    case 'missing/edit':
+    case 'trace/edit':
 
         if(($id = input_get_int('id')) === FALSE) {
 
@@ -1125,14 +1048,14 @@ switch($_GET['view']) {
 
         $admin = $user->allow('write', 'operations.all');
 
-        $missing = Missing::get($id);
+        $mobile = Mobile::get($id);
 
         $_ROUTER['name'] = T_('Edit trace');
         $_ROUTER['view'] = $_GET['view'];
 
-        if($missing !== FALSE){
+        if($mobile !== FALSE){
 
-            if (($user->allow('write', 'operations', $missing->op_id)  || $admin)=== FALSE) {
+            if (($user->allow('write', 'operations', $mobile->trace_id)  || $admin)=== FALSE) {
 
                 $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
@@ -1140,20 +1063,20 @@ switch($_GET['view']) {
                 break;
             }
 
-            $closed = Operation::isClosed($missing->op_id);
+            $closed = Trace::isClosed($mobile->trace_id);
 
             // Process form?
             if (is_post_request()) {
 
                 if($closed) {
-                    if(Operation::reopen($missing->op_id) === FALSE) {
-                        $_ROUTER['error'] = sprintf(T_('Failed to reopen operation %1$s'), "[{$missing->op_id}]");
+                    if(Trace::reopen($mobile->trace_id) === FALSE) {
+                        $_ROUTER['error'] = sprintf(T_('Failed to reopen trace %1$s'), "[{$mobile->trace_id}]");
                     }
                 }
 
                 if(isset($_ROUTER['error']) === false) {
 
-                    if($missing->update(
+                    if($mobile->update(
                         $_POST['m_name'],
                         $_POST['m_mobile_country'],
                         $_POST['m_mobile'],
@@ -1162,25 +1085,25 @@ switch($_GET['view']) {
 
                         if(isset($_POST['resend'])) {
 
-                            if($missing->sendSMS() === FALSE) {
+                            if($mobile->sendSMS() === FALSE) {
                                 $_ROUTER['error'] =
-                                    sprintf(T_('Operation [%1$s] not executed, try again'), " missing/resend/$id ");
+                                    sprintf(T_('Operation [%1$s] not executed, try again'), " trace/resend/$id ");
                             }
                         }
 
                         if(isset($_ROUTER['error']) === FALSE){
-                            header("Location: ".ADMIN_URI."missing/list");
+                            header("Location: ".ADMIN_URI."trace/list");
                             exit();
                         }
                     }
                 }
             }
 
-            // Reopen operation
+            // Reopen trace
             if($closed && !isset($_GET['reopen'])) {
                 $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
-                $_ROUTER['error'] = sprintf(T_('Operation [%1$s] is closed'), $missing->op_id);
+                $_ROUTER['error'] = sprintf(T_('Trace [%1$s] is closed'), $mobile->trace_id);
             }
 
         } else {
@@ -1189,7 +1112,7 @@ switch($_GET['view']) {
 
         break;
 
-    case 'missing/resend':
+    case 'trace/resend':
 
         if(($id = input_get_int('id')) === FALSE) {
 
@@ -1197,27 +1120,27 @@ switch($_GET['view']) {
 
         } else {
 
-            $missing = Missing::get($id);
+            $mobile = Mobile::get($id);
 
-            if($missing !== FALSE) {
+            if($mobile !== FALSE) {
 
                 $admin = $user->allow('write', 'operations.all');
 
-                if (($user->allow('write', 'operations', $missing->op_id) || $admin)=== FALSE) {
+                if (($user->allow('write', 'operations', $mobile->trace_id) || $admin)=== FALSE) {
 
                     echo T_('Access denied');
 
-                } else if(Operation::isClosed($missing->op_id)) {
+                } else if(Trace::isClosed($mobile->trace_id)) {
 
-                    echo sprintf(T_('Trace %1$s is closed'), $missing->id);
+                    echo sprintf(T_('Trace %1$s is closed'), $mobile->id);
 
-                } elseif($missing->sendSMS() === FALSE) {
+                } elseif($mobile->sendSMS() === FALSE) {
 
                     echo T_('SMS not sent');
 
                 } else {
 
-                    echo format_since($missing->sms_sent);
+                    echo format_since($mobile->sms_sent);
 
                 }
             } else {
@@ -1229,7 +1152,7 @@ switch($_GET['view']) {
 
         exit;
 
-    case 'missing/check':
+    case 'trace/check':
 
         if(is_ajax_request() === FALSE) {
 
@@ -1247,17 +1170,17 @@ switch($_GET['view']) {
 
             $admin = $user->allow('read', 'operations.all');
 
-            $missing = Missing::check($id, $admin);
+            $mobile = Mobile::check($id, $admin);
 
-            if($missing !== FALSE) {
+            if($mobile !== FALSE) {
 
-                if (($admin || $user->allow('read', 'operations', $missing->op_id))=== FALSE) {
+                if (($admin || $user->allow('read', 'operations', $mobile->trace_id))=== FALSE) {
 
                     echo T_('Access denied');
 
                 } else {
 
-                    echo format_since($missing->sms_delivery);
+                    echo format_since($mobile->sms_delivered);
 
                 }
             } else {
@@ -1267,6 +1190,86 @@ switch($_GET['view']) {
         }
 
         exit;
+
+    case 'trace/close':
+
+        if(($id = input_get_int('id')) === FALSE) {
+
+            $_ROUTER['name'] = T_('Illegal operation');
+            $_ROUTER['view'] = "404";
+            $_ROUTER['error'] = T_('Id not defined');
+            break;
+        }
+
+        $_ROUTER['name'] = T_('Close trace');
+        $_ROUTER['view'] = 'trace/close';
+
+        $admin = $user->allow('write', 'operations.all');
+
+        // TODO: Change from using single mobile as id everywhere to identify trace
+        $mobile = Mobile::get($id);
+
+        if (($user->allow('write', 'operations', $mobile->trace_id)  || $admin)=== FALSE) {
+
+            $_ROUTER['name'] = T_('Illegal operation');
+            $_ROUTER['view'] = "404";
+            $_ROUTER['error'] = T_('Access denied');
+            break;
+        }
+
+        if (is_post_request()) {
+
+            $trace = Trace::get($mobile->trace_id);
+            $mobiles = $trace->getAllMobiles($admin);
+
+            if($mobiles !== FALSE) {
+                /** @var Mobile $mobile */
+                foreach($mobiles as $mobile) {
+                    $mobile->anonymize(T_($_POST['m_sex']). ' ('.$_POST['m_age'].')');
+                }
+            }
+
+            $status = Trace::close($mobile->trace_id, $_POST);
+
+            if ($status) {
+                header("Location: ".ADMIN_URI.'trace/list');
+                exit();
+            }
+
+            $_ROUTER['error'] = DB::errno() ? DB::error() :
+                sprintf(T_('Operation [%1$s] not executed, try again'), $_GET['view']."/$id");
+        }
+        break;
+
+    case 'trace/reopen':
+
+        if(($id = input_get_int('id')) === FALSE) {
+
+            $_ROUTER['name'] = T_('Illegal operation');
+            $_ROUTER['view'] = "404";
+            $_ROUTER['error'] = T_('Id not defined');
+            break;
+        }
+
+        $_ROUTER['name'] = T_('Reopen trace');
+        $_ROUTER['view'] = 'trace/list';
+
+        $admin = $user->allow('write', 'operations.all');
+
+        // TODO: Change from using single mobile as id everywhere to identify trace
+        $mobile = Mobile::get($id);
+
+        if (($user->allow('write', 'operations', $mobile->trace_id)  || $admin)=== FALSE) {
+            $_ROUTER['name'] = T_('Illegal operation');
+            $_ROUTER['view'] = "404";
+            $_ROUTER['error'] = T_('Access denied');
+            break;
+        }
+
+        header("Location: ".ADMIN_URI."trace/edit/{$mobile->id}?reopen");
+        exit();
+
+        break;
 
     case 'message/list':
 

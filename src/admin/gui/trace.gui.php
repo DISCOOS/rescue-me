@@ -1,23 +1,23 @@
 <?
     use RescueMe\User;
-    use RescueMe\Missing;
-    use RescueMe\Operation;
+    use RescueMe\Mobile;
+    use RescueMe\Trace;
     use RescueMe\Properties;
     
     $id = input_get_int('id');
 
-    $missing = Missing::get($id);
+    $mobile = Mobile::get($id);
 
-    if($missing === false)
+    if($mobile === false)
     {
         insert_alert(T_('None found'));
     }
     else
     {        
     
-        $positions = $missing->getPositions();
-        $name = $missing->name;
-        if(Operation::isClosed($missing->op_id)) {
+        $positions = $mobile->getPositions();
+        $name = $mobile->name;
+        if(Trace::isClosed($mobile->trace_id)) {
             $name .= ' ('.T_('Closed').')';
         }
 
@@ -34,10 +34,10 @@
         $top = ($params[Properties::TRACE_BAR_LOCATION] === Properties::TOP);
         $collapsed = ($params[Properties::TRACE_BAR_STATE] === Properties::COLLAPSED);
         $details = explode(',', $params[Properties::TRACE_DETAILS]);
-        if($missing->last_pos->timestamp>-1) {
+        if($mobile->last_pos->timestamp>-1) {
             $pan_to = 'data-pan-to="'. (count($positions)-1) . '"';
-            $position = format_pos($missing->last_pos, $params, $pan_to);
-            $located = format_since($missing->last_pos->timestamp);
+            $position = format_pos($mobile->last_pos, $params, $pan_to);
+            $located = format_since($mobile->last_pos->timestamp);
             $located_state = "success";
         } else {
             $pan_to = '';
@@ -48,7 +48,7 @@
 
     ?>
     
-    <? if($top) { insert_trace_bar($missing, $collapsed); } ?>
+    <? if($top) { insert_trace_bar($mobile, $collapsed); } ?>
         
     <div class="infos pull-left">
     <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
@@ -64,7 +64,7 @@
     <? } ?>
     </div>
     
-    <? require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
+    <? require_once(ADMIN_PATH_GUI . 'trace.position.list.gui.php'); ?>
     <div id="map" class="map"></div>
     <div id="sidebar">
         <h4 id="under1kmtitle" class="hide"><?=sprintf(T_('Locations &le; %1$s'),'1 km')?></h4>
@@ -76,22 +76,22 @@
 
     <div class="clearfix"></div>
     
-    <? if($top === false) { insert_trace_bar($missing, $collapsed); } ?>
+    <? if($top === false) { insert_trace_bar($mobile, $collapsed); } ?>
     
     <div class="infos clearfix pull-left">
         
     <? if (in_array(Properties::TRACE_DETAILS_REFERENCE, $details)) { ?>
         <div class="info pull-left no-wrap">
             <label class="label label-info"><?=T_('Reference')?></label>
-            <span class="label label-<?=empty($missing->op_ref) ? 'warning' : 'success' ?>">
-                <?= empty($missing->op_ref) ? T_('Unknown') : $missing->op_ref ?>
+            <span class="label label-<?=empty($mobile->trace_ref) ? 'warning' : 'success' ?>">
+                <?= empty($mobile->trace_ref) ? T_('Unknown') : $mobile->trace_ref ?>
             </span>
         </div>
     <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_URL, $details)) { ?>
         <div class="info pull-left no-wrap">
             <label class="label label-info"><?=T_('Location link')?></label>
             <span class="label label-success">
-                <?= str_replace("#missing_id", encrypt_id($missing->id), LOCATE_URL); ?>
+                <?= str_replace("#mobile_id", encrypt_id($mobile->id), LOCATE_URL); ?>
             </span>
         </div>
     <? } ?>

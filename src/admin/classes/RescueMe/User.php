@@ -294,21 +294,21 @@
          * @param $provider
          * @param integer $reference
          *
-         * @return integer|boolean Operation id if success, FALSE otherwise.
+         * @return integer|boolean Trace id if success, FALSE otherwise.
          */
         public static function getProviderUserId($provider, $reference) {
             
             
-            // Get all missing with given reference
-            $select = "SELECT `op_id` FROM `missing` WHERE `sms_provider` = '".$provider."' AND `sms_provider_ref` = '".$reference."';";
+            // Get all mobile with given reference
+            $select = "SELECT `trace_id` FROM `mobiles` WHERE `sms_provider` = '".$provider."' AND `sms_provider_ref` = '".$reference."';";
 
             $result = DB::query($select);
             if(DB::isEmpty($result)) {                 
                 return User::error("No user id found. $provider reference $reference not found.");                
             }
             $row = $result->fetch_row();
-            $operation = Operation::get($row[0]);
-            return $operation ? $operation->user_id : false;
+            $trace = Trace::get($row[0]);
+            return $trace ? $trace->user_id : false;
         }
 
         
@@ -856,8 +856,8 @@
                         return ($condition === null ? $this->id : $condition) == $this->id;
                     case 'operations':
                         if($condition !== null) {
-                            $sql = "SELECT COUNT(*) FROM `operations` 
-                                WHERE `op_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
+                            $sql = "SELECT COUNT(*) FROM `traces`
+                                WHERE `trace_id`=".(int)$condition." AND `user_id`=".(int)$this->id;
                         }
                         break;
                     default:
