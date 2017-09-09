@@ -20,9 +20,6 @@ function modules_exists($module, $_ = null) {
         }
     }    
 
-    if(defined('USE_SILEX') && USE_SILEX)
-        return empty($mobile);
-
     if(!empty($mobile)) {
         insert_errors(T_("Missing modules").' ( <a href="'.ADMIN_URI.'setup">'. T_("Configure"). "</a>): ", $mobile);
     }

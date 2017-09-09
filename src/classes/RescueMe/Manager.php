@@ -12,7 +12,6 @@
     
     namespace RescueMe;
 
-    use RescueMe\Device\WURFL;
     use RescueMe\Email\SMTP;
     use RescueMe\SMS\Nexmo;
 
@@ -38,7 +37,6 @@
          */
         private static $required = array(
             SMS\Provider::TYPE => Nexmo::TYPE,
-            Device\Lookup::TYPE => WURFL::TYPE,
             Email\Provider::TYPE => SMTP::TYPE
         );
 

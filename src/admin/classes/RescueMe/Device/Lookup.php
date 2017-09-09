@@ -25,7 +25,7 @@
         /**
          * Device lookup module type
          */
-        const TYPE = 'RescueMe\Device\WURFL';
+        const TYPE = 'RescueMe\Device\Lookup';
 
         /**
          * Yes flag
