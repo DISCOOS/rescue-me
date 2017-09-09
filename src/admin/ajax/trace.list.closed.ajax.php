@@ -15,7 +15,7 @@ use RescueMe\User;
     
     $user = User::current();
     $user_id = $user->id;
-    $admin = User::current()->allow("read", 'operations.all');
+    $admin = User::current()->allow("read", 'traces.all');
     
     $filter = '(trace_closed IS NOT NULL)';
     if(isset($_GET['filter'])) {

@@ -9,7 +9,7 @@
 
     $user = User::current();
 
-    $admin = $user->allow('write', 'operations.all');
+    $admin = $user->allow('write', 'traces.all');
 
     $mobile = Mobile::get($id, $admin);
 

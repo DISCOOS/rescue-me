@@ -8,7 +8,7 @@
         unset($_ROUTER['error']);
     }
     
-    $admin = User::current()->allow("read", 'operations.all');
+    $admin = User::current()->allow("read", 'traces.all');
     $type = isset($_GET['name']) === false || $_GET['name'] === 'open' ? Trace::TRACE : $_GET['name'];
     
 ?>

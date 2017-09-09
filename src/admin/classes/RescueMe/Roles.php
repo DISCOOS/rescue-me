@@ -69,8 +69,8 @@
                     if(Permissions::grant($role_id, $user_id, 'write', 'issue.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'setup.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'setup.all')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'read', 'operations.all')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'write', 'operations.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'traces.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'traces.all')) $count++;
                     break;                    
                 case Roles::OPERATOR:
                     // Grant operator default permissions
@@ -80,13 +80,13 @@
                     if(Permissions::grant($role_id, $user_id, 'write', 'groups')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'setup')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'setup')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'write', 'operations')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'traces')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'traces')) $count++;
                     break;                    
                 case Roles::PERSONNEL:
                     // Grant personnel default permissions
                     if(Permissions::grant($role_id, $user_id, 'read', 'user')) $count++;
-                    if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'traces')) $count++;
                     break;                    
             }
             

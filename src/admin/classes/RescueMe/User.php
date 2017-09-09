@@ -854,7 +854,7 @@
                     case 'user':
                     case 'setup':               
                         return ($condition === null ? $this->id : $condition) == $this->id;
-                    case 'operations':
+                    case 'traces':
                         if($condition !== null) {
                             $sql = "SELECT COUNT(*) FROM `traces`
                                 WHERE `trace_id`=".(int)$condition." AND `user_id`=".(int)$this->id;

@@ -147,11 +147,11 @@ switch($_GET['view']) {
             break;
         }
 
-        $admin = $user->allow('write', 'operations.all');
+        $admin = $user->allow('write', 'traces.all');
         $mobile = Mobile::get($id);
 
         if ($mobile !== FALSE) {
-            if (($user->allow('write', 'operations', $mobile->trace_id) || $admin) === FALSE) {
+            if (($user->allow('write', 'traces', $mobile->trace_id) || $admin) === FALSE) {
                 $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
                 $_ROUTER['error'] = T_('Access denied');
@@ -925,7 +925,7 @@ switch($_GET['view']) {
 
     case 'trace/new':
 
-        if (($user->allow('write', 'operations') || $user->allow('write', 'operations.all')) === FALSE) {
+        if (($user->allow('write', 'traces') || $user->allow('write', 'traces.all')) === FALSE) {
 
             $_ROUTER['name'] = T_('Illegal operation');
             $_ROUTER['view'] = "404";
@@ -985,9 +985,9 @@ switch($_GET['view']) {
 
         if($mobile !== FALSE){
 
-            $admin = $user->allow('read', 'operations.all');
+            $admin = $user->allow('read', 'traces.all');
 
-            if(($user->allow('read', 'operations', $mobile->trace_id) || $admin) === FALSE) {
+            if(($user->allow('read', 'traces', $mobile->trace_id) || $admin) === FALSE) {
 
                 $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
@@ -1005,7 +1005,7 @@ switch($_GET['view']) {
 
     case 'trace/list':
 
-        if (($user->allow('read', 'operations') || $user->allow('read', 'operations.all')) === FALSE) {
+        if (($user->allow('read', 'traces') || $user->allow('read', 'traces.all')) === FALSE) {
 
             $_ROUTER['name'] = T_('Illegal operation');
             $_ROUTER['view'] = "404";
@@ -1046,7 +1046,7 @@ switch($_GET['view']) {
             break;
         }
 
-        $admin = $user->allow('write', 'operations.all');
+        $admin = $user->allow('write', 'traces.all');
 
         $mobile = Mobile::get($id);
 
@@ -1055,7 +1055,7 @@ switch($_GET['view']) {
 
         if($mobile !== FALSE){
 
-            if (($user->allow('write', 'operations', $mobile->trace_id)  || $admin)=== FALSE) {
+            if (($user->allow('write', 'traces', $mobile->trace_id)  || $admin)=== FALSE) {
 
                 $_ROUTER['name'] = T_('Illegal operation');
                 $_ROUTER['view'] = "404";
@@ -1124,9 +1124,9 @@ switch($_GET['view']) {
 
             if($mobile !== FALSE) {
 
-                $admin = $user->allow('write', 'operations.all');
+                $admin = $user->allow('write', 'traces.all');
 
-                if (($user->allow('write', 'operations', $mobile->trace_id) || $admin)=== FALSE) {
+                if (($user->allow('write', 'traces', $mobile->trace_id) || $admin)=== FALSE) {
 
                     echo T_('Access denied');
 
@@ -1168,13 +1168,13 @@ switch($_GET['view']) {
 
         } else {
 
-            $admin = $user->allow('read', 'operations.all');
+            $admin = $user->allow('read', 'traces.all');
 
             $mobile = Mobile::check($id, $admin);
 
             if($mobile !== FALSE) {
 
-                if (($admin || $user->allow('read', 'operations', $mobile->trace_id))=== FALSE) {
+                if (($admin || $user->allow('read', 'traces', $mobile->trace_id))=== FALSE) {
 
                     echo T_('Access denied');
 
@@ -1204,12 +1204,12 @@ switch($_GET['view']) {
         $_ROUTER['name'] = T_('Close trace');
         $_ROUTER['view'] = 'trace/close';
 
-        $admin = $user->allow('write', 'operations.all');
+        $admin = $user->allow('write', 'traces.all');
 
         // TODO: Change from using single mobile as id everywhere to identify trace
         $mobile = Mobile::get($id);
 
-        if (($user->allow('write', 'operations', $mobile->trace_id)  || $admin)=== FALSE) {
+        if (($user->allow('write', 'traces', $mobile->trace_id)  || $admin)=== FALSE) {
 
             $_ROUTER['name'] = T_('Illegal operation');
             $_ROUTER['view'] = "404";
@@ -1254,12 +1254,12 @@ switch($_GET['view']) {
         $_ROUTER['name'] = T_('Reopen trace');
         $_ROUTER['view'] = 'trace/list';
 
-        $admin = $user->allow('write', 'operations.all');
+        $admin = $user->allow('write', 'traces.all');
 
         // TODO: Change from using single mobile as id everywhere to identify trace
         $mobile = Mobile::get($id);
 
-        if (($user->allow('write', 'operations', $mobile->trace_id)  || $admin)=== FALSE) {
+        if (($user->allow('write', 'traces', $mobile->trace_id)  || $admin)=== FALSE) {
             $_ROUTER['name'] = T_('Illegal operation');
             $_ROUTER['view'] = "404";
             $_ROUTER['error'] = T_('Access denied');

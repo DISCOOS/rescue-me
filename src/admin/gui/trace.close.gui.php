@@ -12,7 +12,7 @@
 
         /** @var Trace $trace */
         $trace = Trace::get($mobile->trace_id);
-        $admin = User::current()->allow("read", 'operations.all');
+        $admin = User::current()->allow("read", 'traces.all');
 
         $mobile->getPositions();
 

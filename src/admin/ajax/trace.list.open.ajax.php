@@ -21,7 +21,7 @@ $type = isset($_GET['name']) === false || $_GET['name'] === 'open' ? Trace::TRAC
 
 $user = User::current();
 $user_id = $user->id;
-$admin = User::current()->allow("read", 'operations.all');
+$admin = User::current()->allow("read", 'traces.all');
 
 $timeout = Properties::get(Properties::TRACE_TIMEOUT, $user_id);
 $filter = "(trace_type = '$type') AND (trace_closed IS NULL) AND `trace_opened` > NOW() - INTERVAL $timeout HOUR";
