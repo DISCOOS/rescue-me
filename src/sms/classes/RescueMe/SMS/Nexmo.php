@@ -153,7 +153,8 @@
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json'));
             $res = trim(curl_exec($curl));
-            
+            curl_close($curl);
+
             return json_decode($res, TRUE);
         } // invoke
         

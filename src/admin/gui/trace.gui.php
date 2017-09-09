@@ -41,6 +41,8 @@
                 && $device->device_supports_geolocation=== 'True';
         }
 
+        // Get mobile network from mcc-mnc network code
+        $network = get_mobile_network($mobile->network_code);
 
 ?>
 <div>
@@ -176,8 +178,8 @@
         </div>
         <div class="info pull-left no-wrap">
             <label class="label label-info"><?=T_('Phone Network')?></label>
-            <span class="label label-<?= isset($mobile->network_code) ? 'success' : 'warning' ?>">
-                <?= $mobile->network_code ? $mobile->network_code : T_('Unknown') ?>
+            <span class="label label-<?= $network ? 'success' : 'warning' ?>">
+                <?= $network ? (sprintf('%s (%s)', $network['network'], $network['country']))  : T_('Unknown') ?>
             </span>
         </div>
     </div>

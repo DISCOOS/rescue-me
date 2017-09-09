@@ -707,7 +707,21 @@
         }
         return $ip; 
         
-    }    
+    }
+
+    function get_mobile_network($code) {
+        if($code) {
+            // See https://github.com/musalbas/mcc-mnc-table
+            $file = APP_PATH . implode(DIRECTORY_SEPARATOR,array('sms','mcc-mnc-table.json'));
+            $networks = json_decode(file_get_contents($file), TRUE);
+            foreach($networks as $network) {
+                if($network['mcc'] . $network['mnc'] === $code) {
+                    return $network;
+                }
+            }
+        }
+        return false;
+    }
     
     
     /**
