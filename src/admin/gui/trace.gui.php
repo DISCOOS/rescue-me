@@ -75,7 +75,7 @@
 
     <div class="clearfix"></div>
 
-    <? if($mobile->errors) { ?>
+    <? if($mobile->errors && $mobile->last_pos->timestamp === -1) { ?>
         <div class="alert alert-error">
         <?
             $header = T_('Trace script has reported errors');
