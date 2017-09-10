@@ -98,7 +98,7 @@ use RescueMe\Mobile;
         }            
         if($mobile->responded !== null) {
             // Get number of errors reported from mobile
-            if($mobile->last_pos->timestamp>-1 && ($errors = $mobile->getErrors(true)) === FALSE) {
+            if($mobile->last_pos->timestamp>-1 || ($errors = $mobile->getErrors(true)) === FALSE) {
                 $trace['responded']['state'] = 'pass';
                 $trace['responded']['time'] = format_since($mobile->responded);
                 $trace['responded']['timestamp'] = format_tz($mobile->responded);
