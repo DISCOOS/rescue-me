@@ -69,9 +69,44 @@
         }
 
     ?>
-    
-    <? if($top) { insert_trace_bar($mobile, $collapsed); } ?>
-        
+
+
+    <? if($top) { insert_trace_progress($mobile, $collapsed); } ?>
+
+    <div class="clearfix"></div>
+
+    <? if($mobile->errors) { ?>
+        <div class="alert alert-error">
+        <?
+            $header = T_('Trace script has reported errors');
+            $items = array();
+            foreach($mobile->errors as $number => $count) {
+                switch($number) {
+                    case 1:
+                        $items[] = implode(' ', array(
+                            sprintf(T_('Permission denied %s times.'), $count),
+                            T_('Ask if location sharing prompt was accepted.')
+                        ));
+                        break;
+                    case 2:
+                        $items[] = implode(' ', array(
+                            sprintf(T_('Location unavailable %s times.'), $count),
+                            T_('Ask if location services are turned on.')
+                        ));
+                        break;
+                    case 3:
+                        $items[] = implode(' ', array(
+                            sprintf(T_('Location timeout %s times.'), $count),
+                            T_('Ask if location services are turned on.')
+                        ));
+                        break;
+                }
+            }
+            echo sprintf("<b>%s</b> <nl><li>%s</li></nl>",$header, implode('</li><li>',$items));
+        ?>
+        </div>
+    <? } ?>
+
     <div class="infos pull-left">
     <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
         <div class="info pull-left no-wrap">
@@ -98,7 +133,7 @@
 
     <div class="clearfix"></div>
     
-    <? if($top === false) { insert_trace_bar($mobile, $collapsed); } ?>
+    <? if($top === false) { insert_trace_progress($mobile, $collapsed); } ?>
     
     <div class="infos clearfix pull-left">
         
@@ -183,7 +218,6 @@
             </span>
         </div>
     </div>
-
 
 </div>
 

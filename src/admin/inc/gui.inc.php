@@ -1,6 +1,7 @@
 <?php
+use RescueMe\Mobile;
 
-    /**
+/**
      * Admin GUI functions
      *
      * @copyright Copyright 2014 {@link http://www.discoos.org DISCO OS Foundation}
@@ -34,10 +35,17 @@
     }
 
 
-    function insert_trace_bar($mobile, $collapsed = false, $output=true) {
+    /**
+     * Insert trace progress bar
+     * @param Mobile $mobile
+     * @param bool $collapsed
+     * @param bool $output
+     * @return string
+     */
+    function insert_trace_progress($mobile, $collapsed = false, $output=true) {
         
         $timeout = (time() - strtotime($mobile->alerted)) > 3*60*60*1000;
-        
+
         $trace['alerted']['state'] = 'pass';
         $trace['alerted']['time'] = format_since($mobile->alerted);
         $trace['alerted']['timestamp'] = format_tz($mobile->alerted);
@@ -59,7 +67,7 @@
             $trace['delivered']['timestamp'] = format_tz($mobile->sms_delivered);
             $trace['delivered']['tooltip'] = T_('SMS received');
         } else {
-            
+
             $state = '';
             if($mobile->responded !== null || $mobile->sms_sent !== null) {
                 $state = 'warning';
@@ -89,10 +97,35 @@
             }
         }            
         if($mobile->responded !== null) {
-            $trace['responded']['state'] = 'pass';
-            $trace['responded']['time'] = format_since($mobile->responded);
-            $trace['responded']['timestamp'] = format_tz($mobile->responded);
-            $trace['responded']['tooltip'] = T_('Trace script downloaded');
+            // Get number of errors reported from mobile
+            if(($errors = $mobile->getErrors(true)) === FALSE) {
+                $trace['responded']['state'] = 'pass';
+                $trace['responded']['time'] = format_since($mobile->responded);
+                $trace['responded']['timestamp'] = format_tz($mobile->responded);
+                $trace['responded']['tooltip'] = T_('Trace script downloaded');
+            } else {
+                $trace['responded']['state'] = 'fail';
+                $trace['responded']['time'] = format_since($mobile->responded);
+                $trace['responded']['timestamp'] = format_tz($mobile->responded);
+                $header = T_('Trace script has reported errors');
+                $items = array();
+                foreach($errors as $number => $count) {
+                    switch($number) {
+                        case 1:
+                            $items[] = sprintf(T_('Permission denied %s times.'), $count);
+                            break;
+                        case 2:
+                            $items[] = sprintf(T_('Location unavailable %s times.'), $count);
+                            break;
+                        case 3:
+                            $items[] = sprintf(T_('Location timeout %s times.'), $count);
+                            break;
+                    }
+                }
+                $tooltip = sprintf("%s %s",$header, implode('\\n',$items));
+                $trace['responded']['tooltip'] = $tooltip;
+            }
+
         } else {
             $trace['responded']['state'] = '';
             $trace['responded']['time'] = T_('Unknown');

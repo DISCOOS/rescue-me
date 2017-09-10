@@ -17,6 +17,7 @@
 
         set_system_locale(DOMAIN_TRACE, $mobile->locale);
 
+        $message = '';
         if(($delay = isset($message)) === false) {
             $message = T_('Calculating');
         }
@@ -29,7 +30,7 @@
 
         // Create minified js
         $trace = JSMin::minify(file_get_contents(APP_PATH.'trace/js/trace.js'));
-        
+
         // Is iPhone?
         if (strstr($_SERVER['HTTP_USER_AGENT'],'iPhone')) {
             $extra = JSMin::minify(file_get_contents(APP_PATH.'trace/js/iPhone.js'));

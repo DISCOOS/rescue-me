@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2017-09-10 01:44+0100\n"
+"POT-Creation-Date: 2017-09-10 23:52+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
@@ -38,12 +38,12 @@ msgid "Awaits approval"
 msgstr "Avventer godkjenning"
 
 #: admin/router.php:47 admin/router.php:787 admin/router.php:1192
-#: admin/inc/gui.inc.php:52 admin/inc/gui.inc.php:70 admin/inc/gui.inc.php:98
-#: admin/inc/gui.inc.php:123 admin/inc/common.inc.php:98
-#: admin/gui/trace.gui.php:67 admin/gui/trace.gui.php:109
-#: admin/gui/trace.gui.php:128 admin/gui/trace.gui.php:135
-#: admin/gui/trace.gui.php:153 admin/gui/trace.gui.php:160
-#: admin/gui/trace.gui.php:167 admin/gui/trace.gui.php:182
+#: admin/inc/gui.inc.php:60 admin/inc/gui.inc.php:78 admin/inc/gui.inc.php:131
+#: admin/inc/gui.inc.php:156 admin/inc/common.inc.php:98
+#: admin/gui/trace.gui.php:67 admin/gui/trace.gui.php:144
+#: admin/gui/trace.gui.php:163 admin/gui/trace.gui.php:170
+#: admin/gui/trace.gui.php:188 admin/gui/trace.gui.php:195
+#: admin/gui/trace.gui.php:202 admin/gui/trace.gui.php:217
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -346,7 +346,7 @@ msgstr "Operasjon [%1$s] er lukket"
 msgid "Trace %1$s is closed"
 msgstr "Sporing %1$s er lukket"
 
-#: admin/router.php:1144 admin/inc/gui.inc.php:54
+#: admin/router.php:1144 admin/inc/gui.inc.php:62
 msgid "SMS not sent"
 msgstr "SMS ble ikke sendt"
 
@@ -442,50 +442,69 @@ msgstr "Gruppe %1$s ikke fjernet"
 msgid "Group %1$s removed"
 msgstr "Gruppe %1$s fjernet"
 
-#: admin/inc/gui.inc.php:44
+#: admin/inc/gui.inc.php:52
 msgid "Trace started"
 msgstr "Sporing startet"
 
-#: admin/inc/gui.inc.php:49
+#: admin/inc/gui.inc.php:57
 msgid "SMS sent"
 msgstr "SMS sendt"
 
-#: admin/inc/gui.inc.php:54
+#: admin/inc/gui.inc.php:62
 msgid "Check log"
 msgstr "Sjekk loggen"
 
-#: admin/inc/gui.inc.php:60
+#: admin/inc/gui.inc.php:68
 msgid "SMS received"
 msgstr "SMS mottatt"
 
-#: admin/inc/gui.inc.php:76
+#: admin/inc/gui.inc.php:84
 msgid "SMS is delivered, but delivery report from SMS provider not received"
 msgstr ""
 "SMS er levert, men ingen leveranserapport er mottatt fra SMS leverandør"
 
-#: admin/inc/gui.inc.php:80
+#: admin/inc/gui.inc.php:88
 #, php-format
 msgid "SMS not delivered after %1$d hours"
 msgstr "SMS fremdeles ikke levert etter [%1$d] timer"
 
-#: admin/inc/gui.inc.php:80 admin/inc/gui.inc.php:84
+#: admin/inc/gui.inc.php:88 admin/inc/gui.inc.php:92
 msgid "The phone may be out of power or coverage."
 msgstr "Telefonen kan være tom for strøm etter utenfor dekning"
 
-#: admin/inc/gui.inc.php:84
+#: admin/inc/gui.inc.php:92
 msgid "SMS probably not delivered"
 msgstr "SMS sannsynligvis ikke levert"
 
-#: admin/inc/gui.inc.php:95
+#: admin/inc/gui.inc.php:105
 msgid "Trace script downloaded"
 msgstr "Sporingsskript lasted ned"
 
-#: admin/inc/gui.inc.php:100 admin/inc/gui.inc.php:120
+#: admin/inc/gui.inc.php:110 admin/gui/trace.gui.php:81
+msgid "Trace script has reported errors"
+msgstr "Sporingskriptet har rapportert feil"
+
+#: admin/inc/gui.inc.php:115 admin/gui/trace.gui.php:87
+#, php-format
+msgid "Permission denied %s times."
+msgstr "Tillatelse avslått %s ganger."
+
+#: admin/inc/gui.inc.php:118 admin/gui/trace.gui.php:93
+#, php-format
+msgid "Location unavailable %s times."
+msgstr "Lokasjon  ikke tilgjengelig %s ganger."
+
+#: admin/inc/gui.inc.php:121 admin/gui/trace.gui.php:99
+#, php-format
+msgid "Location timeout %s times."
+msgstr "Lokasjon tidsutløp %s ganger."
+
+#: admin/inc/gui.inc.php:133 admin/inc/gui.inc.php:153
 msgid "Trace script not downloaded"
 msgstr "Sporingsskript ikke lastet ned"
 
-#: admin/inc/gui.inc.php:101 admin/inc/gui.inc.php:118
-#: admin/inc/gui.inc.php:121
+#: admin/inc/gui.inc.php:134 admin/inc/gui.inc.php:151
+#: admin/inc/gui.inc.php:154
 msgid ""
 "The phone may be out of power, out of coverage, support for localization can "
 "be turned off or not possible, or the user chose not to share their location "
@@ -495,11 +514,11 @@ msgstr ""
 "være slått av,  bruker kan ha avvist deling av posisjon eller telefonen "
 "støtter ikke deling av posisjon"
 
-#: admin/inc/gui.inc.php:107
+#: admin/inc/gui.inc.php:140
 msgid "Mobile located"
 msgstr "Telefon lokalisert"
 
-#: admin/inc/gui.inc.php:117
+#: admin/inc/gui.inc.php:150
 msgid "Trace script is downloaded, but not location is received"
 msgstr "Sporingsskriptet er lastet ned, men ingen posisjon er mottatt"
 
@@ -520,33 +539,37 @@ msgstr "Årsak"
 msgid "Actions"
 msgstr "Tiltak"
 
-#: admin/classes/RescueMe/Mobile.php:661
+#: admin/classes/RescueMe/Mobile.php:719
 msgid "Failed to check message status for mobile"
 msgstr "Klarte ikke å sjekke status for mobil  [%1$s]"
 
-#: admin/classes/RescueMe/Mobile.php:691
+#: admin/classes/RescueMe/Mobile.php:751
 msgid "Failed to update status to RESPONDED for mobile "
 msgstr "Klarte ikke å oppdatere status til <b>Besvart</b> for"
 
-#: admin/classes/RescueMe/Mobile.php:719
+#: admin/classes/RescueMe/Mobile.php:777
 msgid "Failed to add request from mobile "
 msgstr "Klarte ikke å lagre repons av mobil  [%1$s]"
 
-#: admin/classes/RescueMe/Mobile.php:736
+#: admin/classes/RescueMe/Mobile.php:801
+msgid "Failed to add error from mobile "
+msgstr "Klarte ikke å lagre feilmelding fra mobil  [%1$s]"
+
+#: admin/classes/RescueMe/Mobile.php:818
 msgid "Missing person"
 msgstr "Savnet person"
 
-#: admin/classes/RescueMe/Mobile.php:932
+#: admin/classes/RescueMe/Mobile.php:1009
 #, php-format
 msgid "Failed to send second SMS to mobile %1$s"
 msgstr "Kunne ikke sende engangspassord til bruker %1$s."
 
-#: admin/classes/RescueMe/Mobile.php:943
+#: admin/classes/RescueMe/Mobile.php:1020
 #, php-format
 msgid "Failed to update SMS status for mobile %1$s"
 msgstr "Klarte ikke å opprette instanse av modul  [%1$s]"
 
-#: admin/classes/RescueMe/Mobile.php:964
+#: admin/classes/RescueMe/Mobile.php:1041
 #, php-format
 msgid "Failed to send SMS with position from mobile [%1$s]"
 msgstr "Klarte ikke å sende SMS med posisjon fra [%1$s]"
@@ -755,72 +778,80 @@ msgstr "Ingen funnet"
 msgid "Closed"
 msgstr "Lukket"
 
-#: admin/gui/trace.gui.php:79
+#: admin/gui/trace.gui.php:88
+msgid "Ask if location sharing prompt was accepted."
+msgstr "Spør om deling av posisjon ble innvilget når forespurt om dette."
+
+#: admin/gui/trace.gui.php:94 admin/gui/trace.gui.php:100
+msgid "Ask if location services are turned on."
+msgstr "Spør om stedstjenester er påslått."
+
+#: admin/gui/trace.gui.php:114
 msgid "Last location"
 msgstr "Siste lokasjon"
 
-#: admin/gui/trace.gui.php:83
+#: admin/gui/trace.gui.php:118
 msgid "Location received"
 msgstr "Lokasjon mottatt"
 
-#: admin/gui/trace.gui.php:92
+#: admin/gui/trace.gui.php:127
 #, php-format
 msgid "Locations &le; %1$s"
 msgstr "Lokasjoner &le; %1$s"
 
-#: admin/gui/trace.gui.php:95
+#: admin/gui/trace.gui.php:130
 #, php-format
 msgid "Locations &gt; %1$s"
 msgstr "Lokasjoner  &gt; %1$s"
 
-#: admin/gui/trace.gui.php:107 admin/gui/trace.close.gui.php:35
+#: admin/gui/trace.gui.php:142 admin/gui/trace.close.gui.php:35
 #: admin/gui/trace.new.gui.php:75
 msgid "Reference"
 msgstr "Aksjonsreferanse"
 
-#: admin/gui/trace.gui.php:114
+#: admin/gui/trace.gui.php:149
 msgid "Location link"
 msgstr "Sporingslink"
 
-#: admin/gui/trace.gui.php:126
+#: admin/gui/trace.gui.php:161
 msgid "Device type"
 msgstr "Enhetstype"
 
-#: admin/gui/trace.gui.php:132
+#: admin/gui/trace.gui.php:167
 msgid "Is SmartPhone"
 msgstr "Er smarttelefon"
 
-#: admin/gui/trace.gui.php:134 admin/gui/trace.gui.php:141
-#: admin/gui/trace.gui.php:152 gui/confirm.dialog.gui.php:23
+#: admin/gui/trace.gui.php:169 admin/gui/trace.gui.php:176
+#: admin/gui/trace.gui.php:187 gui/confirm.dialog.gui.php:23
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/gui/trace.gui.php:134 admin/gui/trace.gui.php:141
-#: admin/gui/trace.gui.php:152 gui/confirm.dialog.gui.php:24
+#: admin/gui/trace.gui.php:169 admin/gui/trace.gui.php:176
+#: admin/gui/trace.gui.php:187 gui/confirm.dialog.gui.php:24
 msgid "No"
 msgstr "Nei"
 
-#: admin/gui/trace.gui.php:139
+#: admin/gui/trace.gui.php:174
 msgid "Supports location"
 msgstr "Støtter lokalisering"
 
-#: admin/gui/trace.gui.php:150
+#: admin/gui/trace.gui.php:185
 msgid "Is Phone"
 msgstr "Er mobil"
 
-#: admin/gui/trace.gui.php:157
+#: admin/gui/trace.gui.php:192
 msgid "Device OS"
 msgstr "Enhet OS"
 
-#: admin/gui/trace.gui.php:164
+#: admin/gui/trace.gui.php:199
 msgid "Device Browser"
 msgstr "Enhet nettleser"
 
-#: admin/gui/trace.gui.php:174
+#: admin/gui/trace.gui.php:209
 msgid "Phone Number"
 msgstr "Mobilnummer"
 
-#: admin/gui/trace.gui.php:180
+#: admin/gui/trace.gui.php:215
 msgid "Phone Network"
 msgstr "Mobilt nettverk"
 
@@ -2033,9 +2064,6 @@ msgstr "Av"
 
 #~ msgid "Turn on permission to access location data!"
 #~ msgstr "Sl p tilgang til stedsinformasjon!"
-
-#~ msgid "Location is unavailable."
-#~ msgstr "Lokasjon er ikke tilgjengelig"
 
 #~ msgid "Plese approve access to location faster."
 #~ msgstr "Vennligst bekreft tilgang til lokasjonsdata raskere."

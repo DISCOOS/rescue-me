@@ -85,6 +85,7 @@
         public $sms_provider_ref;
         public $sms_text;
 
+        public $errors = array();
         public $requests = array();
         public $positions = array();
 
@@ -482,6 +483,63 @@
             return $this->requests;
         }// getRequests
 
+
+        /**
+         * Get all errors
+         * @param bool $count Return array with count of each error number
+         * @return array|bool
+         */
+        public function getErrors($count = false){
+
+            if($this->id === -1) {
+                return false;
+            }
+
+            $res = DB::select('errors', '*', "`mobile_id`=" . (int) $this->id);
+
+            if(DB::isEmpty($res)) {
+                return false;
+            }
+
+            $this->errors = array();
+            while($row = $res->fetch_assoc()){
+                $index = (string)$row['error_number'];
+                if($count) {
+                    if(isset($this->errors[$index])) {
+                        $this->errors[$index]++;
+                    } else {
+                        $this->errors[$index] = 1;
+                    }
+                } else {
+                    $this->errors[$row['error_id']] = $row;
+                }
+
+            }
+
+            return $this->errors;
+        }// getErrors
+
+
+        /**
+         * Register error
+         * @param $number
+         * @param $ua
+         * @param $ip
+         * @return bool
+         */
+        public function register($number, $ua, $ip) {
+
+            $success = ($this->id !== -1);
+
+            // Sanity check
+            if($success && ($id = $this->addError($number))) {
+                $success = $this->addRequest('error', $ua, $ip, $id) !== FALSE;
+            }
+
+            return $success;
+        }
+
+
         /**
          * Register location
          * @param $lat
@@ -687,7 +745,9 @@
             $res = DB::query($query);
 
             if($res === FALSE) {
-                $context = array('sql' => $query);
+                $context = array(
+                    'sql' => $query
+                );
                 Mobile::error(T_('Failed to update status to RESPONDED for mobile ') . $this->id, $context);
             } else {
                 Logs::write(Logs::TRACE, LogLevel::INFO, "Mobile {$this->id} has loaded tracking page");
@@ -712,13 +772,35 @@
 
             if(($res = DB::insert('requests', $values)) === FALSE) {
                 $context = array(
-                    'user_agent' => $ua,
-                    'client_ip' => $ip,
-                    'mobile_id' => $this->id,
+                    'values' => $values
                 );
                 Mobile::error(T_('Failed to add request from mobile ') . $this->id, $context);
             } else {
                 Logs::write(Logs::TRACE, LogLevel::INFO, "Added request {$res} to mobile {$this->id} ");
+            }
+            return $res;
+        }
+
+        private function addError($number) {
+
+            $values = prepare_values(
+                array(
+                    'error_number',
+                    'mobile_id'
+                ),
+                array(
+                    $number,
+                    $this->id
+                )
+            );
+
+            if(($res = DB::insert('errors', $values)) === FALSE) {
+                $context = array(
+                    'values' => $values
+                );
+                Mobile::error(T_('Failed to add error from mobile ') . $this->id, $context);
+            } else {
+                Logs::write(Logs::TRACE, LogLevel::INFO, "Added error {$res} to mobile {$this->id} ");
             }
             return $res;
         }
@@ -837,11 +919,6 @@
 
         }// _sendSMS
 
-        public function getError() {
-            return DB::error();
-        }
-        
-        
         private static function error($message, $context = array())
         {
             $context['code'] = DB::errno();
