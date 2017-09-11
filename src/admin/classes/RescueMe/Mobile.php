@@ -639,7 +639,7 @@
 
 
                 if(DB::update('mobiles', $values, "`mobile_id` = '{$this->id}'") === FALSE) {
-                    Mobile::error('Failed to update SMS status for mobile ' . $this->id);
+                    Mobile::error(sprintf(T_('Failed to update SMS status for mobile %s'),$this->id));
                 }
 
                 $values = prepare_values(
@@ -692,11 +692,10 @@
                     if(empty($mobile->sms_delivered) === true) {
 
                         // Get last pending sms
-                        $filter = "`message_delivered` IS NULL AND mobile_id=%s`";
+                        $filter = "`message_delivered` IS NULL AND mobile_id=%s";
                         $filter = sprintf($filter, $id);
                         // Sort pending messages on descending timestamp (latest first)
-                        $sql = DB::select('messages', $filter, '`message_sent` DESC');
-                        $res = DB::query($sql);
+                        $res = DB::select('messages', '*', $filter, '`message_sent` DESC');
                         if(DB::isEmpty($res) === FALSE) {
 
                             $code = Locale::getDialCode($mobile->country);
@@ -715,8 +714,12 @@
                             }
 
                         } else {
-                            $context = array('sql' => $sql);
-                            Mobile::error(T_('Failed to check message status for mobile') . $id, $context);
+                            $context = array(
+                                'table' => 'messages',
+                                'fields' => '*',
+                                'filter' => $filter
+                            );
+                            Mobile::error(sprintf(T_('Failed to check message status for mobile %s'),$id) , $context);
                         }
                     }
                 }
@@ -748,7 +751,7 @@
                 $context = array(
                     'sql' => $query
                 );
-                Mobile::error(T_('Failed to update status to RESPONDED for mobile ') . $this->id, $context);
+                Mobile::error(sprintf(T_('Failed to update status to RESPONDED for mobile %s'), $this->id), $context);
             } else {
                 Logs::write(Logs::TRACE, LogLevel::INFO, "Mobile {$this->id} has loaded tracking page");
             }
@@ -774,7 +777,7 @@
                 $context = array(
                     'values' => $values
                 );
-                Mobile::error(T_('Failed to add request from mobile ') . $this->id, $context);
+                Mobile::error(sprintf(T_('Failed to add request from mobile %s'), $this->id), $context);
             } else {
                 Logs::write(Logs::TRACE, LogLevel::INFO, "Added request {$res} to mobile {$this->id} ");
             }
@@ -798,7 +801,7 @@
                 $context = array(
                     'values' => $values
                 );
-                Mobile::error(T_('Failed to add error from mobile ') . $this->id, $context);
+                Mobile::error(sprintf(T_('Failed to add error from mobile %s'), $this->id), $context);
             } else {
                 Logs::write(Logs::TRACE, LogLevel::INFO, "Added error {$res} to mobile {$this->id} ");
             }
@@ -1017,7 +1020,7 @@
                 if (DB::query($query) === false) {
                     $context = array('sql' => $query);
                     Mobile::error(
-                        sprintf(T_('Failed to update SMS status for mobile %1$s'), $this->id),
+                        sprintf(T_('Failed to update SMS status for mobile %$s'), $this->id),
                         $context
                     );
                 }
@@ -1049,7 +1052,7 @@
 
                 if (DB::query($query) === false) {
                     $context = array('sql' => $query);
-                    Mobile::error('Failed to update SMS status for mobile ' . $this->id, $context);
+                    Mobile::error(sprintf(T_('Failed to update SMS status for mobile %s'),$this->id), $context);
                 }
             }
         }
