@@ -30,7 +30,11 @@ if($factories !== false) {
         foreach($factories as $id => $factory) {
             
             if(preg_match($pattern, $factory->type)) {
-                $classes = \Inspector::subclassesOf($factory->type);
+                $classes = \Inspector::subclassesOf($factory->type, array(
+                    APP_PATH . 'classes',
+                    ADMIN_PATH . 'classes',
+                    APP_PATH . implode(DIRECTORY_SEPARATOR, array('sms', 'classes'))
+                ));
                 $type = explode('\\',$factory->type);
                 $impl = explode('\\',$factory->impl);
 ?>
