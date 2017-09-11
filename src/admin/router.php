@@ -28,10 +28,12 @@ setcookie('locale', $_SESSION['locale']);
 // Force logon?
 if($granted === false) {
 
-    // Set message?
+    // Set message on on post
     if(isset($_GET['view']) && !isset($_GET['uri']) && $_GET['view'] === 'logon') {
         if($user === false) {
-            $_ROUTER['error'] = T_('You have entered wrong username or password');
+            if(is_post_request()) {
+                $_ROUTER['error'] = T_('You have entered wrong username or password');
+            }
         } else {
             switch($user) {
                 case User::DELETED:
