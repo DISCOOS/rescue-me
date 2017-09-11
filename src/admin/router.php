@@ -891,17 +891,20 @@ switch($_GET['view']) {
         // Process form?
         if (is_post_request()) {
 
-            if (strlen($_POST['password']) < PASSWORD_LENGTH) {
+            $password = trim($_POST['password']);
+            $repeat = trim($_POST['repeat-pwd']);
+
+            if (strlen($password) < PASSWORD_LENGTH) {
                 $_ROUTER['error'] = sprintf(T_('Password must be at least %1$d characters long'), PASSWORD_LENGTH);
                 break;
             }
 
-            if ($_POST['password'] !== $_POST['repeat-pwd']) {
+            if ($password !== $repeat) {
                 $_ROUTER['error'] = T_("Passwords do not match");
                 break;
             }
 
-            if($edit->password($_POST['password'])) {
+            if($edit->password($password)) {
                 header("Location: ".ADMIN_URI.($allow ? 'user/list' : ''));
                 exit();
             }

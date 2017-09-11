@@ -521,7 +521,7 @@
          */
         public function password($tokens) {
 
-            $hash = User::hash($tokens);
+            $hash = User::hash(trim($tokens));
             
             $values = \prepare_values(array("password"), array($hash));
             
@@ -754,7 +754,7 @@
             }
             elseif(isset($_POST['username']) && isset($_POST['password'])) {
                 $user = new User();
-                $state = $user->logon($_POST['username'], $_POST['password']);
+                $state = $user->logon(trim($_POST['username']), trim($_POST['password']));
             }
                         
             return $state === true ? $user : $state;
