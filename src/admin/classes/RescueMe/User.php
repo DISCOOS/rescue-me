@@ -499,11 +499,11 @@
          * 
          * Returns random password
          * 
-         * @param integer $length Length of random password
+         * @param integer $length Length of random password (default: PASSWORD_LENGTH)
          * 
          * @return string|boolean
          */
-        public function reset($length = 8) {
+        public function reset($length = PASSWORD_LENGTH) {
             
             $password = self::generate($length);
 
@@ -926,7 +926,7 @@
          * @param integer $length String lengt
          * @return string
          */
-        public static function generate($length = 8)
+        public static function generate($length = PASSWORD_LENGTH)
         {
             return str_rnd($length);
         }// generate

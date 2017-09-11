@@ -434,8 +434,8 @@ switch($_GET['view']) {
                 break;
             }
 
-            if (strlen($_POST['password']) < 8) {
-                $_ROUTER['error'] = sprintf(T_('Password must be at least %1$d characters long'), 8);
+            if (strlen($_POST['password']) < PASSWORD_LENGTH) {
+                $_ROUTER['error'] = sprintf(T_('Password must be at least %1$d characters long'), PASSWORD_LENGTH);
                 break;
             }
 
@@ -889,8 +889,8 @@ switch($_GET['view']) {
         // Process form?
         if (is_post_request()) {
 
-            if (strlen($_POST['password']) < 8) {
-                $_ROUTER['error'] = T_("Password must be at least 8 characters long");
+            if (strlen($_POST['password']) < PASSWORD_LENGTH) {
+                $_ROUTER['error'] = sprintf(T_('Password must be at least %1$d characters long'), PASSWORD_LENGTH);
                 break;
             }
 
