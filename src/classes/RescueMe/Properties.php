@@ -706,6 +706,7 @@
                 case self::LOCATION_MAX_AGE:
                 case self::LOCATION_MAX_WAIT:
                 case self::LOCATION_DESIRED_ACC:
+                case self::TRACE_TIMEOUT:
 
                     if(is_numeric($value) === false) {
                         return '"'.$value.'" is not a number';

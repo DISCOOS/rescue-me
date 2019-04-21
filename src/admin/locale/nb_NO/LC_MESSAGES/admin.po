@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2017-09-11 20:59+0100\n"
+"POT-Creation-Date: 2019-04-22 01:34+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
@@ -9,581 +9,261 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src/\n"
+"X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: T_;T_locale\n"
 "X-Poedit-SearchPath-0: admin\n"
 "X-Poedit-SearchPath-1: gui\n"
 
-#: admin/index.php:55 admin/router.php:96 admin/gui/logon.gui.php:2
-#: admin/gui/logon.gui.php:10 gui/nav.gui.php:10
-msgid "Login"
-msgstr "Logg inn"
+#: admin/ajax/alert.list.ajax.php:27 admin/ajax/issue.list.ajax.php:27
+#: admin/ajax/logs.ajax.php:39 admin/ajax/trace.list.closed.ajax.php:35
+#: admin/ajax/trace.list.open.ajax.php:44
+#: admin/ajax/trace.list.timeout.ajax.php:37 admin/ajax/user.list.ajax.php:44
+#: admin/gui/group.list.gui.php:25 admin/gui/trace.close.gui.php:106
+#: admin/gui/trace.edit.gui.php:115 admin/gui/trace.gui.php:18
+msgid "None found"
+msgstr "Ingen funnet"
 
-#: admin/router.php:35
-msgid "You have entered wrong username or password"
-msgstr "Du har oppgitt feil brukernavn eller passord"
-
-#: admin/router.php:40
-msgid "Is deleted"
-msgstr "Er slettet"
-
-#: admin/router.php:43
-msgid "Is disabled"
-msgstr "Er deaktivert"
-
-#: admin/router.php:46
-msgid "Awaits approval"
-msgstr "Avventer godkjenning"
-
-#: admin/router.php:49 admin/router.php:789 admin/router.php:1197
-#: admin/inc/gui.inc.php:60 admin/inc/gui.inc.php:78 admin/inc/gui.inc.php:131
-#: admin/inc/gui.inc.php:156 admin/inc/common.inc.php:98
-#: admin/gui/trace.gui.php:67 admin/gui/trace.gui.php:144
-#: admin/gui/trace.gui.php:163 admin/gui/trace.gui.php:170
-#: admin/gui/trace.gui.php:188 admin/gui/trace.gui.php:195
-#: admin/gui/trace.gui.php:202 admin/gui/trace.gui.php:217
-msgid "Unknown"
-msgstr "Ukjent"
-
-#: admin/router.php:52
-#, php-format
-msgid "User %1$s"
-msgstr "Bruker %1$s"
-
-#: admin/router.php:100 admin/gui/system.menu.gui.php:56 gui/nav.gui.php:3
-msgid "Logout"
-msgstr "Logg ut"
-
-#: admin/router.php:110
-msgid "Dashboard"
-msgstr "Dashboard"
-
-#: admin/router.php:114
-#, php-format
-msgid "About %1$s"
-msgstr "Om %1$s"
-
-#: admin/router.php:121 admin/router.php:140 admin/router.php:147
-#: admin/router.php:158 admin/router.php:178 admin/router.php:246
-#: admin/router.php:256 admin/router.php:301 admin/router.php:310
-#: admin/router.php:321 admin/router.php:351 admin/router.php:360
-#: admin/router.php:368 admin/router.php:383 admin/router.php:489
-#: admin/router.php:499 admin/router.php:573 admin/router.php:583
-#: admin/router.php:591 admin/router.php:597 admin/router.php:603
-#: admin/router.php:620 admin/router.php:628 admin/router.php:636
-#: admin/router.php:642 admin/router.php:648 admin/router.php:665
-#: admin/router.php:673 admin/router.php:702 admin/router.php:710
-#: admin/router.php:738 admin/router.php:746 admin/router.php:773
-#: admin/router.php:822 admin/router.php:836 admin/router.php:844
-#: admin/router.php:869 admin/router.php:879 admin/router.php:940
-#: admin/router.php:987 admin/router.php:1002 admin/router.php:1020
-#: admin/router.php:1053 admin/router.php:1070 admin/router.php:1114
-#: admin/router.php:1169 admin/router.php:1208 admin/router.php:1224
-#: admin/router.php:1258 admin/router.php:1273 admin/router.php:1292
-#: admin/router.php:1313 admin/router.php:1335 admin/router.php:1343
-#: admin/router.php:1374 admin/router.php:1407 admin/router.php:1417
-#: admin/router.php:1456 admin/router.php:1479 admin/router.php:1527
-#: admin/router.php:1537 admin/router.php:1610 admin/router.php:1629
-#: admin/router.php:1654 admin/router.php:1697 admin/router.php:1704
-msgid "Illegal operation"
-msgstr "Ulovlig handling"
-
-#: admin/router.php:123 admin/router.php:160 admin/router.php:180
-#: admin/router.php:248 admin/router.php:258 admin/router.php:323
-#: admin/router.php:370 admin/router.php:385 admin/router.php:501
-#: admin/router.php:585 admin/router.php:630 admin/router.php:675
-#: admin/router.php:712 admin/router.php:748 admin/router.php:775
-#: admin/router.php:824 admin/router.php:846 admin/router.php:881
-#: admin/router.php:942 admin/router.php:1004 admin/router.php:1022
-#: admin/router.php:1072 admin/router.php:1141 admin/router.php:1189
-#: admin/router.php:1226 admin/router.php:1275 admin/router.php:1294
-#: admin/router.php:1345 admin/router.php:1376 admin/router.php:1419
-#: admin/router.php:1458 admin/router.php:1481 admin/router.php:1539
-#: admin/router.php:1631 admin/router.php:1656 admin/router.php:1706
-#: admin/router.php:1761
-msgid "Access denied"
-msgstr "Ingen tilgang"
-
-#: admin/router.php:134 admin/gui/system.menu.gui.php:44
-#: admin/gui/logs.gui.php:18
-msgid "Logs"
-msgstr "Logger"
-
-#: admin/router.php:142
-msgid "Not an ajax request."
-msgstr "Ikke en ajax-forespørsel"
-
-#: admin/router.php:149
-msgid "Id not defined."
-msgstr "Id ikke definert"
-
-#: admin/router.php:167
-#, php-format
-msgid "Mobile %1s$ not found"
-msgstr "Mobil %1$s ikke funnet"
-
-#: admin/router.php:220 admin/router.php:230 admin/gui/system.menu.gui.php:32
-#: admin/gui/setup.gui.php:18 admin/gui/trace.new.gui.php:153
-#: admin/ajax/user.list.ajax.php:105
-msgid "Setup"
-msgstr "Oppsett"
-
-#: admin/router.php:235
-#, php-format
-msgid "Module %1$s not found"
-msgstr "Modul %1$s ikke funnet"
-
-#: admin/router.php:280 admin/router.php:479 admin/router.php:565
-#: admin/router.php:605 admin/router.php:650 admin/router.php:860
-#: admin/router.php:912 admin/router.php:931 admin/router.php:978
-#: admin/router.php:1100 admin/router.php:1250 admin/router.php:1394
-#: admin/router.php:1443 admin/router.php:1501 admin/router.php:1563
-#: admin/router.php:1675 admin/router.php:1729
-#, php-format
-msgid "Operation [%1$s] not executed, try again"
-msgstr "Operasjon [%1$s] ikke utført, prøv igjen"
-
-#: admin/router.php:312 admin/router.php:362 admin/router.php:491
-#: admin/router.php:575 admin/router.php:622 admin/router.php:667
-#: admin/router.php:704 admin/router.php:740 admin/router.php:838
-#: admin/router.php:871 admin/router.php:989 admin/router.php:1055
-#: admin/router.php:1129 admin/router.php:1210 admin/router.php:1260
-#: admin/router.php:1337 admin/router.php:1409 admin/router.php:1529
-#: admin/router.php:1699
-msgid "Id not defined"
-msgstr "Id ikke definert"
-
-#: admin/router.php:344
-#, php-format
-msgid "Setting %1$s not saved"
-msgstr "Innstilling %1$s ikke lagret"
-
-#: admin/router.php:374 admin/router.php:507 admin/gui/logs.gui.php:39
-#: admin/gui/trace.list.gui.php:34 admin/gui/trace.list.gui.php:59
-#: admin/gui/trace.list.gui.php:84 admin/gui/trace.list.gui.php:110
-#: admin/gui/trace.list.gui.php:135
-msgid "User"
-msgstr "Bruker"
-
-#: admin/router.php:396 admin/router.php:679 admin/router.php:716
-#: admin/router.php:752 admin/gui/system.menu.gui.php:40
-#: admin/gui/user.list.gui.php:21 admin/gui/issue.new.gui.php:70
-#: admin/gui/issue.edit.gui.php:74 admin/gui/user.email.gui.php:33
-msgid "Users"
-msgstr "Brukere"
-
-#: admin/router.php:407
-msgid "Request new user"
-msgstr "Forespørsel om ny bruker"
-
-#: admin/router.php:419 admin/gui/system.menu.gui.php:36
-#: admin/ajax/user.list.ajax.php:138
-msgid "New user"
-msgstr "Ny bruker"
-
-#: admin/router.php:429 admin/router.php:522
-msgid "Email must contain at least one alphanumeric character"
-msgstr "E-post må inneholde minst ett alphanumerisk tegn"
-
-#: admin/router.php:435 admin/router.php:529
-#, php-format
-msgid "User with e-mail %1$s already exist"
-msgstr "Bruker med e-post %1$s finnes allerede"
-
-#: admin/router.php:440 admin/router.php:898
-#, php-format
-msgid "Password must be at least %1$d characters long"
-msgstr "Passordet må være minst %1$d tegn"
-
-#: admin/router.php:445 admin/router.php:903
-msgid "Passwords do not match"
-msgstr "Passordene stemmer ikke"
-
-#: admin/router.php:469
-msgid "Request sent"
-msgstr "Forespørsel sendt"
-
-#: admin/router.php:472
-msgid "You will receive an SMS when the request is processed"
-msgstr "Du vil motta en SMS når din forespørsel er behandlet"
-
-#: admin/router.php:507 admin/gui/user.edit.gui.php:86
-#: admin/ajax/user.list.ajax.php:89
-msgid "Approve"
-msgstr "Godkjenn"
-
-#: admin/router.php:507 admin/router.php:1423 admin/gui/group.list.gui.php:34
-#: admin/gui/role.list.gui.php:27 admin/ajax/trace.list.open.ajax.php:86
+#: admin/ajax/alert.list.ajax.php:49 admin/ajax/issue.list.ajax.php:52
 #: admin/ajax/setup.module.list.ajax.php:47
-#: admin/ajax/trace.list.timeout.ajax.php:84 admin/ajax/issue.list.ajax.php:52
-#: admin/ajax/user.list.ajax.php:72 admin/ajax/alert.list.ajax.php:49
+#: admin/ajax/trace.list.open.ajax.php:86
+#: admin/ajax/trace.list.timeout.ajax.php:84 admin/ajax/user.list.ajax.php:72
+#: admin/gui/group.list.gui.php:34 admin/gui/role.list.gui.php:27
+#: admin/router.php:507 admin/router.php:1423
 msgid "Edit"
 msgstr "Endre"
 
-#: admin/router.php:515 admin/router.php:592 admin/router.php:637
-#: admin/router.php:685 admin/router.php:722 admin/router.php:757
+#: admin/ajax/alert.list.ajax.php:57 admin/ajax/issue.list.ajax.php:69
+#: admin/ajax/user.list.ajax.php:110 admin/ajax/user.list.ajax.php:133
 #, php-format
-msgid "User %1$s not found"
-msgstr "Bruker %1$s ikke funnet"
+msgid "Do you want to delete %1$s?"
+msgstr "Vil du slette %1$s?"
 
-#: admin/router.php:521
-msgid "Username not safe"
-msgstr "Brukernavn er ikke sikkert"
+#: admin/ajax/alert.list.ajax.php:59 admin/ajax/issue.list.ajax.php:71
+#: admin/ajax/user.list.ajax.php:112
+msgid "Delete"
+msgstr "Slett"
 
-#: admin/router.php:547 admin/router.php:598 admin/router.php:643
+#: admin/ajax/issue.list.ajax.php:60
 #, php-format
-msgid "User %1$s cannot be approved"
-msgstr "Bruker %1$s kunne ikke godkjennes"
+msgid "Do you want to change %1$s to %2$s?"
+msgstr "Vil du endre %1$s til %2$s?"
 
-#: admin/router.php:609
-msgid "User approved"
-msgstr "Bruker godkjent"
+#: admin/ajax/issue.list.ajax.php:64
+msgid "Progress"
+msgstr "Fremdrift"
 
-#: admin/router.php:612 admin/router.php:657
+#: admin/ajax/logs.ajax.php:55 admin/gui/setup.gui.php:14
+#: admin/gui/system.menu.gui.php:25
+msgid "System"
+msgstr "System"
+
+#: admin/ajax/message.list.ajax.php:27 admin/gui/trace.edit.gui.php:75
+#: admin/gui/trace.new.gui.php:110
+msgid "Language"
+msgstr "Språk"
+
+#: admin/ajax/message.list.ajax.php:31 admin/gui/trace.new.gui.php:111
+msgid "Select language"
+msgstr "Velg språk"
+
+#: admin/ajax/message.list.ajax.php:38
+msgid "Messages"
+msgstr "Meldinger"
+
+#: admin/ajax/message.list.ajax.php:41
+#: admin/ajax/setup.property.list.ajax.php:28 admin/gui/logs.gui.php:45
+#: admin/gui/trace.list.gui.php:44 admin/gui/trace.list.gui.php:69
+#: admin/gui/trace.list.gui.php:94 admin/gui/trace.list.gui.php:119
+#: admin/gui/trace.list.gui.php:144
+msgid "Search"
+msgstr "Søk"
+
+#: admin/ajax/message.list.ajax.php:56 admin/gui/trace.edit.gui.php:94
+#: admin/gui/trace.new.gui.php:128 gui/selector.dialog.gui.php:25
+msgid "Select"
+msgstr "Velg"
+
+#: admin/ajax/setup.module.list.ajax.php:21
+#: admin/ajax/setup.property.list.ajax.php:23 admin/gui/table.gui.php:25
+#: gui/table.gui.php:25
+msgid "Settings"
+msgstr "Innstillinger"
+
+#: admin/ajax/setup.module.list.ajax.php:68
+msgid "Module is not installed correctly."
+msgstr "Modulen er ikke installert riktig. Kjør installeringsskript."
+
+#: admin/ajax/setup.module.list.ajax.php:69
 #, php-format
-msgid "Message sent to %1$s"
-msgstr "Melding sendt til %1$s"
+msgid "Failed to create instance of module [%1$s]"
+msgstr "Kunne ikke opprette instanse av modul  [%1$s]"
 
-#: admin/router.php:654
-msgid "Reject user"
-msgstr "Avvis bruker"
+#: admin/ajax/setup.module.list.ajax.php:72
+msgid "Module is not configured correctly."
+msgstr "Modulen er ikke konfigurert riktig."
 
-#: admin/router.php:688
-#, php-format
-msgid "User %1$s not deleted"
-msgstr "Bruker %1$s ble ikke slettet"
+#: admin/ajax/setup.module.list.ajax.php:75
+msgid "Module is configured and ready for use."
+msgstr "Modulen er konfigurert og klar til bruk."
 
-#: admin/router.php:725
-#, php-format
-msgid "User %1$s not disabled"
-msgstr "Bruker %1$s ble ikke deaktivert"
+#: admin/ajax/trace.list.closed.ajax.php:82
+msgid "Reopen"
+msgstr "Gjenåpne"
 
-#: admin/router.php:760
-#, php-format
-msgid "User %1$s not enabled"
-msgstr "Bruker %1$s ble ikke aktivert"
-
-#: admin/router.php:779 admin/gui/system.menu.gui.php:37
-#: admin/gui/user.email.gui.php:53
-msgid "Email users"
-msgstr "Send e-post"
-
-#: admin/router.php:790 admin/inc/common.inc.php:99
-#, php-format
-msgid "No <em>%1$s</em> users found."
-msgstr "Ingen <em>%1$s</em> brukere funnet."
-
-#: admin/router.php:806
-#, php-format
-msgid "Email sent to %1$s users"
-msgstr "E-post sendt til %1$s brukere"
-
-#: admin/router.php:811 admin/router.php:1510 admin/router.php:1576
-msgid "Email not sent to following users"
-msgstr "E-post ble ikke sendt til følgende brukere"
-
-#: admin/router.php:828 admin/gui/system.menu.gui.php:42
-#: admin/gui/role.list.gui.php:8
-msgid "Roles"
-msgstr "Roller"
-
-#: admin/router.php:850 admin/gui/role.edit.gui.php:32
-msgid "Edit role"
-msgstr "Endre rolle"
-
-#: admin/router.php:885
-msgid "Change Password"
-msgstr "Bytt passord"
-
-#: admin/router.php:920
-msgid "Recover Password"
-msgstr "Gjenopprett passord"
-
-#: admin/router.php:947 admin/gui/dash.gui.php:4
-#: admin/gui/trace.new.gui.php:21
-msgid "Start new trace"
-msgstr "Start ny sporing"
-
-#: admin/router.php:1009 admin/router.php:1120 admin/router.php:1158
-#: admin/router.php:1177
-#, php-format
-msgid "Trace %1$s not found"
-msgstr "Sporing %1$s ikke funnet"
-
-#: admin/router.php:1012 admin/classes/RescueMe/Trace.php:64
-#: admin/gui/trace.menu.gui.php:15
-msgid "Trace"
-msgstr "Sporing"
-
-#: admin/router.php:1045 admin/gui/trace.menu.gui.php:21
-#: admin/gui/trace.menu.gui.php:30 admin/gui/trace.list.gui.php:16
-msgid "Traces"
-msgstr "Sporinger"
-
-#: admin/router.php:1063 admin/gui/trace.edit.gui.php:108
-#: admin/gui/trace.edit.gui.php:114
-msgid "Edit trace"
-msgstr "Endre sporing"
-
-#: admin/router.php:1083
-#, php-format
-msgid "Failed to reopen trace %1$s"
-msgstr "Klarte ikke  å gjenåpne sporing %1$s"
-
-#: admin/router.php:1116
-#, php-format
-msgid "Trace [%1$s] is closed"
-msgstr "Operasjon [%1$s] er lukket"
-
-#: admin/router.php:1145
-#, php-format
-msgid "Trace %1$s is closed"
-msgstr "Sporing %1$s er lukket"
-
-#: admin/router.php:1149 admin/inc/gui.inc.php:62
-msgid "SMS not sent"
-msgstr "SMS ble ikke sendt"
-
-#: admin/router.php:1171 admin/router.php:1315
-msgid "Not an ajax request"
-msgstr "Ikke en ajax-foresprsel"
-
-#: admin/router.php:1214 admin/gui/trace.close.gui.php:85
-#: admin/gui/trace.close.gui.php:105 admin/ajax/trace.list.open.ajax.php:95
-#: admin/ajax/trace.list.timeout.ajax.php:93
+#: admin/ajax/trace.list.open.ajax.php:95
+#: admin/ajax/trace.list.timeout.ajax.php:93 admin/gui/trace.close.gui.php:85
+#: admin/gui/trace.close.gui.php:105 admin/router.php:1214
 msgid "Close trace"
 msgstr "Avslutt sporing"
 
-#: admin/router.php:1264
-msgid "Reopen trace"
-msgstr "Gjenåpne sporing"
-
-#: admin/router.php:1305 admin/router.php:1349 admin/gui/alert.list.gui.php:22
-#: admin/gui/system.menu.gui.php:46
-msgid "Alerts"
-msgstr "Varsler"
-
-#: admin/router.php:1321 admin/router.php:1355 admin/router.php:1434
+#: admin/ajax/trace.list.open.ajax.php:100
+#: admin/ajax/trace.list.timeout.ajax.php:98
 #, php-format
-msgid "Alert %1$s not found"
-msgstr "Varsel %1$s ikke funnet"
+msgid "Do you want to resend SMS to %1$s?"
+msgstr "Vil du sende SMS til  %1$s på nytt?"
 
-#: admin/router.php:1358
+#: admin/ajax/trace.list.open.ajax.php:102
+#: admin/ajax/trace.list.timeout.ajax.php:100
+msgid "Resend SMS"
+msgstr "Send SMS på nytt"
+
+#: admin/ajax/trace.list.open.ajax.php:108
+#: admin/ajax/trace.list.timeout.ajax.php:106
+msgid "Check SMS delivery status"
+msgstr "Sjekk leveringsstatus"
+
+#: admin/ajax/user.list.ajax.php:83
 #, php-format
-msgid "Alert %1$s not deleted"
-msgstr "Varsel %1$s ble ikke slettet"
+msgid "Do you want to enable %1$s?"
+msgstr "Vil du aktivere %1$s?"
 
-#: admin/router.php:1380
-msgid "New"
-msgstr "Ny"
+#: admin/ajax/user.list.ajax.php:85
+msgid "Enable"
+msgstr "Aktiver"
 
-#: admin/router.php:1380 admin/router.php:1423
-msgid "Alert"
-msgstr "Varsel"
+#: admin/ajax/user.list.ajax.php:89 admin/gui/user.edit.gui.php:86
+#: admin/router.php:507
+msgid "Approve"
+msgstr "Godkjenn"
 
-#: admin/router.php:1469 admin/gui/system.menu.gui.php:48
-#: admin/gui/issue.list.gui.php:22
-msgid "Issues"
-msgstr "Hendelser"
+#: admin/ajax/user.list.ajax.php:90
+msgid "Deny"
+msgstr "Avvis"
 
-#: admin/router.php:1485 admin/gui/issue.list.gui.php:54
-#: admin/gui/issue.new.gui.php:77
-msgid "New issue"
-msgstr "Ny hendelse"
-
-#: admin/router.php:1543 admin/gui/issue.edit.gui.php:81
-msgid "Edit issue"
-msgstr "Endre hendelse"
-
-#: admin/router.php:1551
+#: admin/ajax/user.list.ajax.php:95
 #, php-format
-msgid "Issue %1$s not found"
-msgstr "Hendelse %1$s ikke funnet"
+msgid "Do you want to disable %1$s?"
+msgstr "Vil du deaktivere %1$s?"
 
-#: admin/router.php:1635 admin/gui/group.list.gui.php:11
-msgid "Groups"
-msgstr "Grupper"
+#: admin/ajax/user.list.ajax.php:97
+msgid "Disable"
+msgstr "Deaktiver"
 
-#: admin/router.php:1660 admin/gui/group.new.gui.php:22
-#: admin/gui/group.list.gui.php:56
-msgid "New group"
-msgstr "Ny gruppe"
+#: admin/ajax/user.list.ajax.php:102 admin/gui/system.menu.gui.php:30
+msgid "Change password"
+msgstr "Endre passord"
 
-#: admin/router.php:1710 admin/gui/group.edit.gui.php:49
-msgid "Edit group"
-msgstr "Endre gruppe"
+#: admin/ajax/user.list.ajax.php:103
+msgid "Reset password"
+msgstr "Nullstill passord"
 
-#: admin/router.php:1718 admin/router.php:1767
+#: admin/ajax/user.list.ajax.php:105 admin/gui/setup.gui.php:18
+#: admin/gui/system.menu.gui.php:32 admin/gui/trace.new.gui.php:153
+#: admin/router.php:220 admin/router.php:230
+msgid "Setup"
+msgstr "Oppsett"
+
+#: admin/ajax/user.list.ajax.php:132 gui/nav.gui.php:5
+msgid "Confirm"
+msgstr "Bekreft"
+
+#: admin/ajax/user.list.ajax.php:138 admin/gui/system.menu.gui.php:36
+#: admin/router.php:419
+msgid "New user"
+msgstr "Ny bruker"
+
+#: admin/classes/RescueMe/Device/AbstractLookup.php:62
 #, php-format
-msgid "Group %1$s not found"
-msgstr "Gruppe %1$s ikke funnet"
+msgid "Request %s not found"
+msgstr "Forespørsel %1$s ikke funnet"
 
-#: admin/router.php:1750
-msgid "XHR request only"
-msgstr "XHR reguest only"
-
-#: admin/router.php:1756
-msgid "Id not found"
-msgstr "Id ikke funnet"
-
-#: admin/router.php:1773
+#: admin/classes/RescueMe/Device/AbstractLookup.php:68
 #, php-format
-msgid "Group %1$s not removed"
-msgstr "Gruppe %1$s ikke fjernet"
+msgid "User-agent not found in %s"
+msgstr "User-Agent ikke funnet i %1$s"
 
-#: admin/router.php:1777
+#: admin/classes/RescueMe/Device/AbstractLookup.php:72
 #, php-format
-msgid "Group %1$s removed"
-msgstr "Gruppe %1$s fjernet"
+msgid "Request %s is not supported"
+msgstr "Forespørsel  [%1$s] er ikke støttet"
 
-#: admin/inc/gui.inc.php:52
-msgid "Trace started"
-msgstr "Sporing startet"
+#: admin/classes/RescueMe/Device/L51D.php:53
+msgid "API key"
+msgstr "API nøkkel"
 
-#: admin/inc/gui.inc.php:57
-msgid "SMS sent"
-msgstr "SMS sendt"
+#: admin/classes/RescueMe/Device/L51D.php:76
+msgid "Invalid api key"
+msgstr "Ugyldig API nøkkel"
 
-#: admin/inc/gui.inc.php:62
-msgid "Check log"
-msgstr "Sjekk loggen"
+#: admin/classes/RescueMe/Device/L51D.php:103
+msgid "Failed to lookup device"
+msgstr "Klarte ikke  å finne enhet %1$s"
 
-#: admin/inc/gui.inc.php:68
-msgid "SMS received"
-msgstr "SMS mottatt"
-
-#: admin/inc/gui.inc.php:84
-msgid "SMS is delivered, but delivery report from SMS provider not received"
-msgstr ""
-"SMS er levert, men ingen leveranserapport er mottatt fra SMS leverandør"
-
-#: admin/inc/gui.inc.php:88
-#, php-format
-msgid "SMS not delivered after %1$d hours"
-msgstr "SMS fremdeles ikke levert etter [%1$d] timer"
-
-#: admin/inc/gui.inc.php:88 admin/inc/gui.inc.php:92
-msgid "The phone may be out of power or coverage."
-msgstr "Telefonen kan være tom for strøm etter utenfor dekning"
-
-#: admin/inc/gui.inc.php:92
-msgid "SMS probably not delivered"
-msgstr "SMS sannsynligvis ikke levert"
-
-#: admin/inc/gui.inc.php:105
-msgid "Trace script downloaded"
-msgstr "Sporingsskript lasted ned"
-
-#: admin/inc/gui.inc.php:110 admin/gui/trace.gui.php:81
-msgid "Trace script has reported errors"
-msgstr "Sporingskriptet har rapportert feil"
-
-#: admin/inc/gui.inc.php:115 admin/gui/trace.gui.php:87
-#, php-format
-msgid "Permission denied %s times."
-msgstr "Tillatelse avslått %s ganger."
-
-#: admin/inc/gui.inc.php:118 admin/gui/trace.gui.php:93
-#, php-format
-msgid "Location unavailable %s times."
-msgstr "Lokasjon  ikke tilgjengelig %s ganger."
-
-#: admin/inc/gui.inc.php:121 admin/gui/trace.gui.php:99
-#, php-format
-msgid "Location timeout %s times."
-msgstr "Lokasjon tidsutløp %s ganger."
-
-#: admin/inc/gui.inc.php:133 admin/inc/gui.inc.php:153
-msgid "Trace script not downloaded"
-msgstr "Sporingsskript ikke lastet ned"
-
-#: admin/inc/gui.inc.php:134 admin/inc/gui.inc.php:151
-#: admin/inc/gui.inc.php:154
-msgid ""
-"The phone may be out of power, out of coverage, support for localization can "
-"be turned off or not possible, or the user chose not to share their location "
-"with you."
-msgstr ""
-"Telefonen kan være tom for strøm, utenfor dekning, deling av posisjon kan "
-"være slått av,  bruker kan ha avvist deling av posisjon eller telefonen "
-"støtter ikke deling av posisjon"
-
-#: admin/inc/gui.inc.php:140
-msgid "Mobile located"
-msgstr "Telefon lokalisert"
-
-#: admin/inc/gui.inc.php:150
-msgid "Trace script is downloaded, but not location is received"
-msgstr "Sporingsskriptet er lastet ned, men ingen posisjon er mottatt"
-
-#: admin/inc/common.inc.php:24
-msgid "Missing modules"
-msgstr "Moduler mangler"
-
-#: admin/inc/common.inc.php:24
-msgid "Configure"
-msgstr "Konfigurer"
-
-#: admin/inc/common.inc.php:105
-msgid "Root cause"
-msgstr "Årsak"
-
-#: admin/inc/common.inc.php:108 admin/gui/issue.new.gui.php:38
-#: admin/gui/issue.edit.gui.php:42
-msgid "Actions"
-msgstr "Tiltak"
-
-#: admin/classes/RescueMe/Mobile.php:642
-#: admin/classes/RescueMe/Mobile.php:1055
+#: admin/classes/RescueMe/Mobile.php:666 admin/classes/RescueMe/Mobile.php:1079
 #, php-format
 msgid "Failed to update SMS status for mobile %s"
 msgstr "Klarte ikke å oppdatere SMS status for mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:722
+#: admin/classes/RescueMe/Mobile.php:746
 #, php-format
 msgid "Failed to check message status for mobile %s"
 msgstr "Klarte ikke å sjekke meldingsstatus for mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:754
+#: admin/classes/RescueMe/Mobile.php:778
 #, php-format
 msgid "Failed to update status to RESPONDED for mobile %s"
 msgstr "Klarte ikke å oppdatere status til BESVART for %s"
 
-#: admin/classes/RescueMe/Mobile.php:780
+#: admin/classes/RescueMe/Mobile.php:804
 #, php-format
 msgid "Failed to add request from mobile %s"
 msgstr "Klarte ikke å lagre repons av mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:804
+#: admin/classes/RescueMe/Mobile.php:828
 #, php-format
 msgid "Failed to add error from mobile %s"
 msgstr "Klarte ikke å lagre feilmelding fra mobil  %s"
 
-#: admin/classes/RescueMe/Mobile.php:821
+#: admin/classes/RescueMe/Mobile.php:845
 msgid "Missing person"
 msgstr "Savnet person"
 
-#: admin/classes/RescueMe/Mobile.php:1012
+#: admin/classes/RescueMe/Mobile.php:1036
 #, php-format
 msgid "Failed to send second SMS to mobile %1$s"
-msgstr "Kunne ikke sende engangspassord til bruker %1$s."
+msgstr "Kunne ikke sende engangspassord til bruker %1$s"
 
-#: admin/classes/RescueMe/Mobile.php:1023
+#: admin/classes/RescueMe/Mobile.php:1047
 msgid "Failed to update SMS status for mobile %$s"
 msgstr "Klarte ikke å oppdatere SMS status for mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:1044
+#: admin/classes/RescueMe/Mobile.php:1068
 #, php-format
 msgid "Failed to send SMS with position from mobile [%1$s]"
 msgstr "Klarte ikke å sende SMS med posisjon fra [%1$s]"
 
 #: admin/classes/RescueMe/Template.php:78 admin/gui/alert.edit.gui.php:39
-#: admin/gui/alert.new.gui.php:32 admin/gui/trace.new.gui.php:106
-#: admin/gui/logs.gui.php:38 admin/gui/user.email.gui.php:20
+#: admin/gui/alert.new.gui.php:32 admin/gui/logs.gui.php:38
+#: admin/gui/trace.new.gui.php:106 admin/gui/user.email.gui.php:20
 msgid "Message"
 msgstr "Melding"
+
+#: admin/classes/RescueMe/Trace.php:64 admin/gui/trace.menu.gui.php:15
+#: admin/router.php:1012
+msgid "Trace"
+msgstr "Sporing"
 
 #: admin/classes/RescueMe/Trace.php:64
 msgid "Test"
@@ -640,7 +320,7 @@ msgstr "Klarte ikke å sende engangspassord til bruker %1$s"
 #: admin/classes/RescueMe/User.php:428
 #, php-format
 msgid "User %1$s is created."
-msgstr "Bruker %1$s er opprettet"
+msgstr "Bruker %1$s er opprettet."
 
 #: admin/classes/RescueMe/User.php:431
 msgid "Failed to create user"
@@ -664,33 +344,6 @@ msgstr "Din %1$s kontoforespørsel er avvist"
 #: admin/classes/RescueMe/User.php:657
 msgid "Failed to get SMS provider"
 msgstr "Klarte ikke å hente SMS leverandør"
-
-#: admin/classes/RescueMe/Device/AbstractLookup.php:62
-#, php-format
-msgid "Request %s not found"
-msgstr "Forespørsel %1$s ikke funnet"
-
-#: admin/classes/RescueMe/Device/AbstractLookup.php:68
-#, php-format
-msgid "User-agent not found in %s"
-msgstr "User-Agent ikke funnet i %1$s"
-
-#: admin/classes/RescueMe/Device/AbstractLookup.php:72
-#, php-format
-msgid "Request %s is not supported"
-msgstr "Forespørsel  [%1$s] er ikke støttet"
-
-#: admin/classes/RescueMe/Device/L51D.php:53
-msgid "API key"
-msgstr "API nøkkel"
-
-#: admin/classes/RescueMe/Device/L51D.php:76
-msgid "Invalid api key"
-msgstr "Ugyldig API nøkkel"
-
-#: admin/classes/RescueMe/Device/L51D.php:103
-msgid "Failed to lookup device"
-msgstr "Klarte ikke  å finne enhet %1$s"
 
 #: admin/gui/alert.edit.gui.php:18 admin/gui/alert.list.gui.php:35
 #: admin/gui/alert.new.gui.php:13 admin/gui/user.email.gui.php:11
@@ -727,9 +380,18 @@ msgstr "Endre varsel"
 msgid "Expired"
 msgstr "Utløpt"
 
+#: admin/gui/alert.list.gui.php:22 admin/gui/system.menu.gui.php:46
+#: admin/router.php:1305 admin/router.php:1349
+msgid "Alerts"
+msgstr "Varsler"
+
 #: admin/gui/alert.list.gui.php:54 admin/gui/alert.new.gui.php:45
 msgid "New alert"
 msgstr "Nytt varsel"
+
+#: admin/gui/continue.gui.php:18
+msgid "Continue"
+msgstr "Fortsett"
 
 #: admin/gui/dash.gui.php:2
 msgid "Get started"
@@ -739,22 +401,269 @@ msgstr "Kom i gang"
 msgid "Use mobile phone to trace persons fast and easy."
 msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
 
+#: admin/gui/dash.gui.php:4 admin/gui/trace.new.gui.php:21 admin/router.php:947
+msgid "Start new trace"
+msgstr "Start ny sporing"
+
 #: admin/gui/dash.gui.php:5
 msgid "See active traces"
 msgstr "Se aktive sporinger"
 
-#: admin/gui/system.menu.gui.php:25 admin/gui/setup.gui.php:14
-#: admin/ajax/logs.ajax.php:55
-msgid "System"
-msgstr "System"
+#: admin/gui/form.gui.php:48 gui/form.gui.php:45
+msgid "Save"
+msgstr "Lagre"
+
+#: admin/gui/form.gui.php:53 gui/form.gui.php:47 gui/selector.dialog.gui.php:27
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: admin/gui/group.edit.gui.php:35 admin/gui/group.list.gui.php:15
+#: admin/gui/group.new.gui.php:11 admin/gui/role.list.gui.php:12
+#: admin/gui/trace.edit.gui.php:28 admin/gui/trace.list.gui.php:31
+#: admin/gui/trace.list.gui.php:56 admin/gui/trace.list.gui.php:81
+#: admin/gui/trace.list.gui.php:107 admin/gui/trace.list.gui.php:132
+#: admin/gui/trace.new.gui.php:36 admin/gui/user.list.gui.php:38
+msgid "Name"
+msgstr "Navn"
+
+#: admin/gui/group.edit.gui.php:36 admin/gui/group.new.gui.php:12
+msgid "Enter group name"
+msgstr "Skriv inn navn på gruppe"
+
+#: admin/gui/group.edit.gui.php:43 admin/gui/group.new.gui.php:18
+msgid "Members"
+msgstr "Medlemmer"
+
+#: admin/gui/group.edit.gui.php:44 admin/gui/group.new.gui.php:19
+msgid "Enter member names"
+msgstr "Skriv inn medlemmer"
+
+#: admin/gui/group.edit.gui.php:49 admin/router.php:1710
+msgid "Edit group"
+msgstr "Endre gruppe"
+
+#: admin/gui/group.list.gui.php:11 admin/router.php:1635
+msgid "Groups"
+msgstr "Grupper"
+
+#: admin/gui/group.list.gui.php:42
+#, php-format
+msgid "Do you want to remove %1$s?"
+msgstr "Vil du slette %1$s?"
+
+#: admin/gui/group.list.gui.php:44
+msgid "Remove group"
+msgstr "Fjern gruppe"
+
+#: admin/gui/group.list.gui.php:56 admin/gui/group.new.gui.php:22
+#: admin/router.php:1660
+msgid "New group"
+msgstr "Ny gruppe"
+
+#: admin/gui/issue.edit.gui.php:14 admin/gui/issue.list.gui.php:35
+#: admin/gui/issue.new.gui.php:13
+msgid "Summary"
+msgstr "Oppsummering"
+
+#: admin/gui/issue.edit.gui.php:16 admin/gui/issue.new.gui.php:15
+msgid "Enter summary"
+msgstr "Skriv inn oppsummering"
+
+#: admin/gui/issue.edit.gui.php:24 admin/gui/issue.new.gui.php:22
+msgid "Description"
+msgstr "Beskrivelse"
+
+#: admin/gui/issue.edit.gui.php:25 admin/gui/issue.new.gui.php:23
+msgid "Enter description"
+msgstr "Skriv inn beskrivelse"
+
+#: admin/gui/issue.edit.gui.php:33 admin/gui/issue.new.gui.php:30
+msgid "Cause"
+msgstr "Årsak"
+
+#: admin/gui/issue.edit.gui.php:34 admin/gui/issue.new.gui.php:31
+msgid "Enter root cause"
+msgstr "Skriv inn årsak"
+
+#: admin/gui/issue.edit.gui.php:42 admin/gui/issue.new.gui.php:38
+#: admin/inc/common.inc.php:110
+msgid "Actions"
+msgstr "Tiltak"
+
+#: admin/gui/issue.edit.gui.php:43 admin/gui/issue.new.gui.php:39
+msgid "Enter actions"
+msgstr "Skriv inn aksjoner"
+
+#: admin/gui/issue.edit.gui.php:57 admin/gui/issue.new.gui.php:53
+msgid "Send issue"
+msgstr "Send hendelse"
+
+#: admin/gui/issue.edit.gui.php:67 admin/gui/issue.new.gui.php:63
+#: admin/gui/user.email.gui.php:43
+msgid "Send as bulk"
+msgstr "Send i bulk"
+
+#: admin/gui/issue.edit.gui.php:74 admin/gui/issue.new.gui.php:70
+#: admin/gui/system.menu.gui.php:40 admin/gui/user.email.gui.php:33
+#: admin/gui/user.list.gui.php:21 admin/router.php:396 admin/router.php:679
+#: admin/router.php:716 admin/router.php:752
+msgid "Users"
+msgstr "Brukere"
+
+#: admin/gui/issue.edit.gui.php:81 admin/router.php:1543
+msgid "Edit issue"
+msgstr "Endre hendelse"
+
+#: admin/gui/issue.list.gui.php:13 admin/gui/trace.list.gui.php:19
+msgid "Open"
+msgstr "Åpne"
+
+#: admin/gui/issue.list.gui.php:14 admin/gui/trace.gui.php:26
+#: admin/gui/trace.list.gui.php:23
+msgid "Closed"
+msgstr "Lukket"
+
+#: admin/gui/issue.list.gui.php:22 admin/gui/system.menu.gui.php:48
+#: admin/router.php:1469
+msgid "Issues"
+msgstr "Hendelser"
+
+#: admin/gui/issue.list.gui.php:36
+msgid "State"
+msgstr "Tilstand"
+
+#: admin/gui/issue.list.gui.php:37 admin/gui/trace.progress.gui.php:32
+msgid "Sent"
+msgstr "Sendt"
+
+#: admin/gui/issue.list.gui.php:54 admin/gui/issue.new.gui.php:77
+#: admin/router.php:1485
+msgid "New issue"
+msgstr "Ny hendelse"
+
+#: admin/gui/logon.gui.php:2 admin/gui/logon.gui.php:10 admin/index.php:57
+#: admin/router.php:96 gui/nav.gui.php:10
+msgid "Login"
+msgstr "Logg inn"
+
+#: admin/gui/logon.gui.php:8 admin/gui/setup.gui.php:26
+#: admin/gui/user.edit.gui.php:46 admin/gui/user.new.gui.php:48
+msgid "Email"
+msgstr "E-post"
+
+#: admin/gui/logon.gui.php:9 admin/gui/password.change.gui.php:17
+#: admin/gui/user.new.gui.php:58
+msgid "Password"
+msgstr "Passord"
+
+#: admin/gui/logon.gui.php:9
+msgid "Caps-lock is on!"
+msgstr "Caps-lock er på!"
+
+#: admin/gui/logon.gui.php:11
+msgid "Forgot your password?"
+msgstr "Glemt passordet?"
+
+#: admin/gui/logon.gui.php:14 gui/nav.gui.php:8
+msgid "Don't have an account?"
+msgstr "Har du ikke en konto?"
+
+#: admin/gui/logon.gui.php:14 gui/nav.gui.php:8
+msgid "Sign up here"
+msgstr "Registrer deg her"
+
+#: admin/gui/logs.gui.php:18 admin/gui/system.menu.gui.php:44
+#: admin/router.php:134
+msgid "Logs"
+msgstr "Logger"
+
+#: admin/gui/logs.gui.php:32 admin/gui/logs.gui.php:35
+msgid "Date"
+msgstr "Dato"
+
+#: admin/gui/logs.gui.php:33
+msgid "Log"
+msgstr "Logg"
+
+#: admin/gui/logs.gui.php:37
+msgid "Level"
+msgstr "Nivå"
+
+#: admin/gui/logs.gui.php:39 admin/gui/trace.list.gui.php:34
+#: admin/gui/trace.list.gui.php:59 admin/gui/trace.list.gui.php:84
+#: admin/gui/trace.list.gui.php:110 admin/gui/trace.list.gui.php:135
+#: admin/router.php:374 admin/router.php:507
+msgid "User"
+msgstr "Bruker"
+
+#: admin/gui/password.change.gui.php:18 admin/gui/password.change.gui.php:26
+#: admin/gui/user.new.gui.php:59 admin/gui/user.new.gui.php:67
+#, php-format
+msgid "Minimum %1$s characters"
+msgstr "Minimum %1$s tegn"
+
+#: admin/gui/password.change.gui.php:25 admin/gui/user.new.gui.php:66
+msgid "Repeat Password"
+msgstr "Gjenta passord"
+
+#: admin/gui/password.recover.gui.php:9
+msgid "If user exist a SMS with reset link is sent to registered mobile phone"
+msgstr "Hvis brukeren finnes i databasen sendes det en reset link på SMS"
+
+#: admin/gui/password.recover.gui.php:26 admin/gui/user.list.gui.php:41
+msgid "E-mail"
+msgstr "E-post"
+
+#: admin/gui/password.recover.gui.php:54 admin/gui/user.email.gui.php:51
+msgid "Reset"
+msgstr "Nullstill"
+
+#: admin/gui/role.edit.gui.php:32 admin/router.php:850
+msgid "Edit role"
+msgstr "Endre rolle"
+
+#: admin/gui/role.list.gui.php:8 admin/gui/system.menu.gui.php:42
+#: admin/router.php:828
+msgid "Roles"
+msgstr "Roller"
+
+#: admin/gui/setup.gui.php:23
+msgid "General"
+msgstr "Generelt"
+
+#: admin/gui/setup.gui.php:24
+msgid "Design"
+msgstr "Design"
+
+#: admin/gui/setup.gui.php:25 admin/gui/trace.edit.gui.php:84
+#: admin/gui/trace.new.gui.php:116 admin/gui/trace.new.gui.php:117
+msgid "SMS"
+msgstr "SMS"
+
+#: admin/gui/setup.gui.php:27
+msgid "Maps"
+msgstr "Kart"
+
+#: admin/gui/setup.gui.php:28
+msgid "Device"
+msgstr "Enhet"
+
+#: admin/gui/setup.module.gui.php:10
+msgid "Module"
+msgstr "Modul"
+
+#: admin/gui/setup.module.gui.php:12
+msgid "No module found. Run install script."
+msgstr "Ingen modul funnet. Kjør installeringsskript."
 
 #: admin/gui/system.menu.gui.php:29
 msgid "Account"
 msgstr "Konto"
 
-#: admin/gui/system.menu.gui.php:30 admin/ajax/user.list.ajax.php:102
-msgid "Change password"
-msgstr "Endre passord"
+#: admin/gui/system.menu.gui.php:37 admin/gui/user.email.gui.php:53
+#: admin/router.php:779
+msgid "Email users"
+msgstr "Send e-post"
 
 #: admin/gui/system.menu.gui.php:51
 msgid "System setup"
@@ -764,32 +673,131 @@ msgstr "Systemoppsett"
 msgid "Do you want to logout?"
 msgstr "Vil du logge ut?"
 
-#: admin/gui/table.gui.php:25 admin/ajax/setup.module.list.ajax.php:21
-#: admin/ajax/setup.property.list.ajax.php:23 gui/table.gui.php:25
-msgid "Settings"
-msgstr "Innstillinger"
+#: admin/gui/system.menu.gui.php:56 admin/router.php:100 gui/nav.gui.php:3
+msgid "Logout"
+msgstr "Logg ut"
 
-#: admin/gui/trace.gui.php:18 admin/gui/trace.close.gui.php:106
-#: admin/gui/group.list.gui.php:25 admin/gui/trace.edit.gui.php:115
-#: admin/ajax/trace.list.open.ajax.php:44
-#: admin/ajax/trace.list.closed.ajax.php:35 admin/ajax/logs.ajax.php:39
-#: admin/ajax/trace.list.timeout.ajax.php:37 admin/ajax/issue.list.ajax.php:27
-#: admin/ajax/user.list.ajax.php:44 admin/ajax/alert.list.ajax.php:27
-msgid "None found"
-msgstr "Ingen funnet"
+#: admin/gui/trace.close.gui.php:27
+msgid "Trace name"
+msgstr "Aksjonsnavn"
 
-#: admin/gui/trace.gui.php:26 admin/gui/issue.list.gui.php:14
-#: admin/gui/trace.list.gui.php:23
-msgid "Closed"
-msgstr "Lukket"
+#: admin/gui/trace.close.gui.php:35 admin/gui/trace.gui.php:142
+#: admin/gui/trace.new.gui.php:75
+msgid "Reference"
+msgstr "Aksjonsreferanse"
+
+#: admin/gui/trace.close.gui.php:36 admin/gui/trace.new.gui.php:77
+msgid "Trace number, etc."
+msgstr "SAR- eller AMIS-nr."
+
+#: admin/gui/trace.close.gui.php:44
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: admin/gui/trace.close.gui.php:45
+msgid "Short description"
+msgstr "Kort beskrivelse"
+
+#: admin/gui/trace.close.gui.php:59
+msgid "Man"
+msgstr "Mann"
+
+#: admin/gui/trace.close.gui.php:60
+msgid "Woman"
+msgstr "Kvinne"
+
+#: admin/gui/trace.close.gui.php:64
+msgid "Gender"
+msgstr "Kjønn"
+
+#: admin/gui/trace.close.gui.php:72
+msgid "Age"
+msgstr "Alder"
+
+#: admin/gui/trace.close.gui.php:79 admin/gui/trace.edit.gui.php:105
+msgid "Note: This will reopen this trace"
+msgstr "Merk: Dette vil gjenåpne sporingen"
+
+#: admin/gui/trace.close.gui.php:82
+msgid ""
+"Note: This will permanently delete name and mobile numbers (privacy concerns)"
+msgstr ""
+"Merk: Dette vil slette navn og mobilnummer til savnede permanent (av "
+"personvernhensyn)"
+
+#: admin/gui/trace.edit.gui.php:43 admin/gui/trace.new.gui.php:48
+#: admin/gui/trace.new.gui.php:86 admin/gui/user.new.gui.php:28
+msgid "Country code"
+msgstr "Landskode"
+
+#: admin/gui/trace.edit.gui.php:51 admin/gui/trace.new.gui.php:44
+#: admin/gui/user.edit.gui.php:38 admin/gui/user.new.gui.php:38
+msgid "Mobile phone"
+msgstr "Mobilnummer"
+
+#: admin/gui/trace.edit.gui.php:59
+msgid "Send SMS"
+msgstr "Send SMS"
+
+#: admin/gui/trace.edit.gui.php:95 admin/gui/trace.edit.gui.php:110
+#: admin/gui/trace.list.gui.php:159 admin/gui/trace.new.gui.php:126
+#: admin/gui/trace.new.gui.php:178
+msgid "Library"
+msgstr "Bibliotek"
+
+#: admin/gui/trace.edit.gui.php:101
+#, php-format
+msgid ""
+"Remember to include %1$s so that %2$s can replace it with the actual trace "
+"url."
+msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
+
+#: admin/gui/trace.edit.gui.php:108 admin/gui/trace.edit.gui.php:114
+#: admin/router.php:1063
+msgid "Edit trace"
+msgstr "Endre sporing"
+
+#: admin/gui/trace.edit.gui.php:110 admin/gui/trace.list.gui.php:159
+#: admin/gui/trace.new.gui.php:178
+msgid "Loading"
+msgstr "Laster"
+
+#: admin/gui/trace.gui.php:67 admin/gui/trace.gui.php:144
+#: admin/gui/trace.gui.php:163 admin/gui/trace.gui.php:170
+#: admin/gui/trace.gui.php:188 admin/gui/trace.gui.php:195
+#: admin/gui/trace.gui.php:202 admin/gui/trace.gui.php:217
+#: admin/inc/common.inc.php:100 admin/inc/gui.inc.php:71
+#: admin/inc/gui.inc.php:84 admin/inc/gui.inc.php:155 admin/inc/gui.inc.php:180
+#: admin/router.php:49 admin/router.php:789 admin/router.php:1197
+msgid "Unknown"
+msgstr "Ukjent"
+
+#: admin/gui/trace.gui.php:81 admin/inc/gui.inc.php:134
+msgid "Trace script has reported errors"
+msgstr "Sporingskriptet har rapportert feil"
+
+#: admin/gui/trace.gui.php:87 admin/inc/gui.inc.php:139
+#, php-format
+msgid "Permission denied %s times."
+msgstr "Tillatelse avslått %s ganger."
 
 #: admin/gui/trace.gui.php:88
 msgid "Ask if location sharing prompt was accepted."
 msgstr "Spør om deling av posisjon ble innvilget når forespurt om dette."
 
+#: admin/gui/trace.gui.php:93 admin/inc/gui.inc.php:142
+#, php-format
+msgid "Location unavailable %s times."
+msgstr "Lokasjon  ikke tilgjengelig %s ganger."
+
 #: admin/gui/trace.gui.php:94 admin/gui/trace.gui.php:100
 msgid "Ask if location services are turned on."
 msgstr "Spør om stedstjenester er påslått."
+
+#: admin/gui/trace.gui.php:99 admin/inc/gui.inc.php:145
+#, php-format
+msgid "Location timeout %s times."
+msgstr "Lokasjon tidsutløp %s ganger."
 
 #: admin/gui/trace.gui.php:114
 msgid "Last location"
@@ -808,11 +816,6 @@ msgstr "Lokasjoner &le; %1$s"
 #, php-format
 msgid "Locations &gt; %1$s"
 msgstr "Lokasjoner  &gt; %1$s"
-
-#: admin/gui/trace.gui.php:142 admin/gui/trace.close.gui.php:35
-#: admin/gui/trace.new.gui.php:75
-msgid "Reference"
-msgstr "Aksjonsreferanse"
 
 #: admin/gui/trace.gui.php:149
 msgid "Location link"
@@ -860,196 +863,41 @@ msgstr "Mobilnummer"
 msgid "Phone Network"
 msgstr "Mobilt nettverk"
 
-#: admin/gui/form.gui.php:48 gui/form.gui.php:45
-msgid "Save"
-msgstr "Lagre"
+#: admin/gui/trace.list.gui.php:16 admin/gui/trace.menu.gui.php:21
+#: admin/gui/trace.menu.gui.php:30 admin/router.php:1045
+msgid "Traces"
+msgstr "Sporinger"
 
-#: admin/gui/form.gui.php:53 gui/selector.dialog.gui.php:27
-#: gui/form.gui.php:47
-msgid "Cancel"
-msgstr "Avbryt"
+#: admin/gui/trace.list.gui.php:20
+msgid "Tests"
+msgstr "Tester"
 
-#: admin/gui/setup.gui.php:23
-msgid "General"
-msgstr "Generelt"
+#: admin/gui/trace.list.gui.php:21
+msgid "Exercises"
+msgstr "Øvelser"
 
-#: admin/gui/setup.gui.php:24
-msgid "Design"
-msgstr "Design"
+#: admin/gui/trace.list.gui.php:22
+msgid "Timeouts"
+msgstr "Utløpt"
 
-#: admin/gui/setup.gui.php:25 admin/gui/trace.new.gui.php:116
-#: admin/gui/trace.new.gui.php:117 admin/gui/trace.edit.gui.php:84
-msgid "SMS"
-msgstr "SMS"
+#: admin/gui/trace.list.gui.php:32 admin/gui/trace.list.gui.php:57
+#: admin/gui/trace.list.gui.php:82 admin/gui/trace.list.gui.php:108
+#: admin/gui/trace.list.gui.php:133
+msgid "Status"
+msgstr "Status"
 
-#: admin/gui/setup.gui.php:26 admin/gui/logon.gui.php:8
-#: admin/gui/user.edit.gui.php:46 admin/gui/user.new.gui.php:48
-msgid "Email"
-msgstr "E-post"
+#: admin/gui/trace.list.gui.php:106 admin/gui/trace.list.gui.php:131
+msgid "Type"
+msgstr "Type"
 
-#: admin/gui/setup.gui.php:27
-msgid "Maps"
-msgstr "Kart"
-
-#: admin/gui/setup.gui.php:28
-msgid "Device"
-msgstr "Enhet"
-
-#: admin/gui/logon.gui.php:9 admin/gui/password.change.gui.php:17
-#: admin/gui/user.new.gui.php:58
-msgid "Password"
-msgstr "Passord"
-
-#: admin/gui/logon.gui.php:9
-msgid "Caps-lock is on!"
-msgstr "Caps-lock er på!"
-
-#: admin/gui/logon.gui.php:11
-msgid "Forgot your password?"
-msgstr "Glemt passordet?"
-
-#: admin/gui/logon.gui.php:14 gui/nav.gui.php:8
-msgid "Don't have an account?"
-msgstr "Har du ikke en konto?"
-
-#: admin/gui/logon.gui.php:14 gui/nav.gui.php:8
-msgid "Sign up here"
-msgstr "Registrer deg her"
-
-#: admin/gui/trace.close.gui.php:27
-msgid "Trace name"
-msgstr "Aksjonsnavn"
-
-#: admin/gui/trace.close.gui.php:36 admin/gui/trace.new.gui.php:77
-msgid "Trace number, etc."
-msgstr "SAR- eller AMIS-nr"
-
-#: admin/gui/trace.close.gui.php:44
-msgid "Comments"
-msgstr "Kommentarer"
-
-#: admin/gui/trace.close.gui.php:45
-msgid "Short description"
-msgstr "Kort beskrivelse"
-
-#: admin/gui/trace.close.gui.php:59
-msgid "Man"
-msgstr "Mann"
-
-#: admin/gui/trace.close.gui.php:60
-msgid "Woman"
-msgstr "Kvinne"
-
-#: admin/gui/trace.close.gui.php:64
-msgid "Gender"
-msgstr "Kjønn"
-
-#: admin/gui/trace.close.gui.php:72
-msgid "Age"
-msgstr "Alder"
-
-#: admin/gui/trace.close.gui.php:79 admin/gui/trace.edit.gui.php:105
-msgid "Note: This will reopen this trace"
-msgstr "Merk: Dette vil gjenåpne sporingen"
-
-#: admin/gui/trace.close.gui.php:82
-msgid ""
-"Note: This will permanently delete name and mobile numbers (privacy concerns)"
-msgstr ""
-"Merk: Dette vil slette navn og mobilnummer til savnede permanent (av "
-"personvernhensyn)"
-
-#: admin/gui/trace.progress.gui.php:5
-msgid "When trace was registered"
-msgstr "Når sporing ble opprettet"
-
-#: admin/gui/trace.progress.gui.php:10
-msgid "When SMS was sent"
-msgstr "Når SMS ble sendt"
-
-#: admin/gui/trace.progress.gui.php:14
-msgid "When SMS was delivered to mobile"
-msgstr "Når SMS ble levert til telefonen"
-
-#: admin/gui/trace.progress.gui.php:18
-msgid "When location script was downloaded"
-msgstr "Når lokaliseringsskript ble nedlastet"
-
-#: admin/gui/trace.progress.gui.php:22
-msgid "When last location was received"
-msgstr "Når siste lokasjon ble mottatt"
-
-#: admin/gui/trace.progress.gui.php:29
-msgid "Alerted"
-msgstr "Varslet"
-
-#: admin/gui/trace.progress.gui.php:32 admin/gui/issue.list.gui.php:37
-msgid "Sent"
-msgstr "Sendt"
-
-#: admin/gui/trace.progress.gui.php:35
-msgid "Delivered"
-msgstr "Levert"
-
-#: admin/gui/trace.progress.gui.php:38
-msgid "Responded"
-msgstr "Besvart"
-
-#: admin/gui/trace.progress.gui.php:41
-msgid "Located"
-msgstr "Lokalisert"
-
-#: admin/gui/password.recover.gui.php:9
-msgid "If user exist a SMS with reset link is sent to registered mobile phone"
-msgstr "Hvis brukeren finnes i databasen sendes det en reset link på SMS"
-
-#: admin/gui/password.recover.gui.php:26 admin/gui/user.list.gui.php:41
-msgid "E-mail"
-msgstr "E-post"
-
-#: admin/gui/password.recover.gui.php:54 admin/gui/user.email.gui.php:51
-msgid "Reset"
-msgstr "Nullstill"
-
-#: admin/gui/trace.menu.gui.php:18 admin/gui/trace.menu.gui.php:26
-#: admin/gui/trace.list.gui.php:157
+#: admin/gui/trace.list.gui.php:157 admin/gui/trace.menu.gui.php:18
+#: admin/gui/trace.menu.gui.php:26
 msgid "New trace"
 msgstr "Start ny sporing"
-
-#: admin/gui/group.new.gui.php:11 admin/gui/trace.new.gui.php:36
-#: admin/gui/group.list.gui.php:15 admin/gui/role.list.gui.php:12
-#: admin/gui/user.list.gui.php:38 admin/gui/group.edit.gui.php:35
-#: admin/gui/trace.list.gui.php:31 admin/gui/trace.list.gui.php:56
-#: admin/gui/trace.list.gui.php:81 admin/gui/trace.list.gui.php:107
-#: admin/gui/trace.list.gui.php:132 admin/gui/trace.edit.gui.php:28
-msgid "Name"
-msgstr "Navn"
-
-#: admin/gui/group.new.gui.php:12 admin/gui/group.edit.gui.php:36
-msgid "Enter group name"
-msgstr "Skriv inn navn på gruppe"
-
-#: admin/gui/group.new.gui.php:18 admin/gui/group.edit.gui.php:43
-msgid "Members"
-msgstr "Medlemmer"
-
-#: admin/gui/group.new.gui.php:19 admin/gui/group.edit.gui.php:44
-msgid "Enter member names"
-msgstr "Skriv inn medlemmer"
 
 #: admin/gui/trace.new.gui.php:39
 msgid "Place, region or country"
 msgstr "Sted, region eller land"
-
-#: admin/gui/trace.new.gui.php:44 admin/gui/user.edit.gui.php:38
-#: admin/gui/user.new.gui.php:38 admin/gui/trace.edit.gui.php:51
-msgid "Mobile phone"
-msgstr "Mobilnummer"
-
-#: admin/gui/trace.new.gui.php:48 admin/gui/trace.new.gui.php:86
-#: admin/gui/user.new.gui.php:28 admin/gui/trace.edit.gui.php:43
-msgid "Country code"
-msgstr "Landskode"
 
 #: admin/gui/trace.new.gui.php:50 admin/gui/trace.new.gui.php:88
 msgid "Select country"
@@ -1079,15 +927,6 @@ msgstr ""
 msgid "Report to"
 msgstr "Rapporter til"
 
-#: admin/gui/trace.new.gui.php:110 admin/gui/trace.edit.gui.php:75
-#: admin/ajax/message.list.ajax.php:27
-msgid "Language"
-msgstr "Språk"
-
-#: admin/gui/trace.new.gui.php:111 admin/ajax/message.list.ajax.php:31
-msgid "Select language"
-msgstr "Velg språk"
-
 #: admin/gui/trace.new.gui.php:117
 msgid "Character"
 msgstr "Tegn"
@@ -1095,17 +934,6 @@ msgstr "Tegn"
 #: admin/gui/trace.new.gui.php:122
 msgid "Not all SMS-carriers support more than 160 chars!"
 msgstr "Ikke alle SMS-leverandører støtter flere en 160 tegn!"
-
-#: admin/gui/trace.new.gui.php:126 admin/gui/trace.new.gui.php:178
-#: admin/gui/trace.list.gui.php:159 admin/gui/trace.edit.gui.php:95
-#: admin/gui/trace.edit.gui.php:110
-msgid "Library"
-msgstr "Bibliotek"
-
-#: admin/gui/trace.new.gui.php:128 admin/gui/trace.edit.gui.php:94
-#: admin/ajax/message.list.ajax.php:56 gui/selector.dialog.gui.php:25
-msgid "Select"
-msgstr "Velg"
 
 #: admin/gui/trace.new.gui.php:138
 msgid "More"
@@ -1134,7 +962,7 @@ msgid ""
 msgstr ""
 "Når brukeren trykker på linken åpnes en nettside med et skript som vil "
 "forsøke  lokalisere mobiltelefonen. Brukeren må godkjenne deling av posisjon "
-"i nettleseren før posisjonen kan bestemmes."
+"i nettleseren før posisjonen kan bestemmes"
 
 #: admin/gui/trace.new.gui.php:149
 msgid "Script download time"
@@ -1176,7 +1004,7 @@ msgid ""
 "max.wait) and maximum location age (location.max.age) can be configured on "
 "page %1$s"
 msgstr ""
-" Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location."
+"Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location."
 "max.wait) og maksimum alder på gammel posisjon (location.max.age) kan "
 "konfigureres på siden %1$s"
 
@@ -1188,106 +1016,45 @@ msgstr "Alle sporinger er listet på denne siden"
 msgid "Create"
 msgstr "Opprett"
 
-#: admin/gui/trace.new.gui.php:178 admin/gui/trace.list.gui.php:159
-#: admin/gui/trace.edit.gui.php:110
-msgid "Loading"
-msgstr "Laster"
-
-#: admin/gui/logs.gui.php:32 admin/gui/logs.gui.php:35
-msgid "Date"
-msgstr "Dato"
-
-#: admin/gui/logs.gui.php:33
-msgid "Log"
-msgstr "Logg"
-
-#: admin/gui/logs.gui.php:37
-msgid "Level"
-msgstr "Nivå"
-
-#: admin/gui/logs.gui.php:45 admin/gui/trace.list.gui.php:44
-#: admin/gui/trace.list.gui.php:69 admin/gui/trace.list.gui.php:94
-#: admin/gui/trace.list.gui.php:119 admin/gui/trace.list.gui.php:144
-#: admin/ajax/message.list.ajax.php:41
-#: admin/ajax/setup.property.list.ajax.php:28
-msgid "Search"
-msgstr "Søk"
-
-#: admin/gui/setup.module.gui.php:10
-msgid "Module"
-msgstr "Modul"
-
-#: admin/gui/setup.module.gui.php:12
-msgid "No module found. Run install script."
-msgstr "Ingen modul funnet. Kjør installeringsskript."
-
 #: admin/gui/trace.position.list.gui.php:76
 msgid "Google Maps not loaded"
 msgstr "Google Maps ikke lastet"
 
-#: admin/gui/group.list.gui.php:42
-#, php-format
-msgid "Do you want to remove %1$s?"
-msgstr "Vil du slette %1$s?"
+#: admin/gui/trace.progress.gui.php:5
+msgid "When trace was registered"
+msgstr "Når sporing ble opprettet"
 
-#: admin/gui/group.list.gui.php:44
-msgid "Remove group"
-msgstr "Fjern gruppe"
+#: admin/gui/trace.progress.gui.php:10
+msgid "When SMS was sent"
+msgstr "Når SMS ble sendt"
 
-#: admin/gui/user.list.gui.php:39 admin/gui/user.edit.gui.php:64
-#: admin/gui/user.new.gui.php:85
-msgid "Role"
-msgstr "Rolle"
+#: admin/gui/trace.progress.gui.php:14
+msgid "When SMS was delivered to mobile"
+msgstr "Når SMS ble levert til telefonen"
 
-#: admin/gui/user.list.gui.php:40
-msgid "Mobile"
-msgstr "Mobil"
+#: admin/gui/trace.progress.gui.php:18
+msgid "When location script was downloaded"
+msgstr "Når lokaliseringsskript ble nedlastet"
 
-#: admin/gui/issue.list.gui.php:13 admin/gui/trace.list.gui.php:19
-msgid "Open"
-msgstr "Åpne"
+#: admin/gui/trace.progress.gui.php:22
+msgid "When last location was received"
+msgstr "Når siste lokasjon ble mottatt"
 
-#: admin/gui/issue.list.gui.php:35 admin/gui/issue.new.gui.php:13
-#: admin/gui/issue.edit.gui.php:14
-msgid "Summary"
-msgstr "Oppsummering"
+#: admin/gui/trace.progress.gui.php:29
+msgid "Alerted"
+msgstr "Varslet"
 
-#: admin/gui/issue.list.gui.php:36
-msgid "State"
-msgstr "Tilstand"
+#: admin/gui/trace.progress.gui.php:35
+msgid "Delivered"
+msgstr "Levert"
 
-#: admin/gui/issue.new.gui.php:15 admin/gui/issue.edit.gui.php:16
-msgid "Enter summary"
-msgstr "Skriv inn oppsummering"
+#: admin/gui/trace.progress.gui.php:38
+msgid "Responded"
+msgstr "Besvart"
 
-#: admin/gui/issue.new.gui.php:22 admin/gui/issue.edit.gui.php:24
-msgid "Description"
-msgstr "Beskrivelse"
-
-#: admin/gui/issue.new.gui.php:23 admin/gui/issue.edit.gui.php:25
-msgid "Enter description"
-msgstr "Skriv inn beskrivelse"
-
-#: admin/gui/issue.new.gui.php:30 admin/gui/issue.edit.gui.php:33
-msgid "Cause"
-msgstr "Årsak"
-
-#: admin/gui/issue.new.gui.php:31 admin/gui/issue.edit.gui.php:34
-msgid "Enter root cause"
-msgstr "Skriv inn årsak"
-
-#: admin/gui/issue.new.gui.php:39 admin/gui/issue.edit.gui.php:43
-msgid "Enter actions"
-msgstr "Skriv inn aksjoner"
-
-#: admin/gui/issue.new.gui.php:53 admin/gui/issue.edit.gui.php:57
-msgid "Send issue"
-msgstr "Send hendelse"
-
-#: admin/gui/issue.new.gui.php:63 admin/gui/issue.edit.gui.php:67
-#: admin/gui/user.email.gui.php:43
-msgid "Send as bulk"
-msgstr "Send i bulk"
+#: admin/gui/trace.progress.gui.php:41
+msgid "Located"
+msgstr "Lokalisert"
 
 #: admin/gui/user.edit.gui.php:18 admin/gui/user.new.gui.php:14
 msgid "Full name"
@@ -1296,6 +1063,11 @@ msgstr "Fullt navn"
 #: admin/gui/user.edit.gui.php:30
 msgid "Mobile country"
 msgstr "Mobil land"
+
+#: admin/gui/user.edit.gui.php:64 admin/gui/user.list.gui.php:39
+#: admin/gui/user.new.gui.php:85
+msgid "Role"
+msgstr "Rolle"
 
 #: admin/gui/user.edit.gui.php:75 admin/gui/user.new.gui.php:97
 msgid "Use system SMS provider"
@@ -1313,143 +1085,92 @@ msgstr "Endre bruker"
 msgid "Send"
 msgstr "Send"
 
-#: admin/gui/password.change.gui.php:18 admin/gui/password.change.gui.php:26
-#: admin/gui/user.new.gui.php:59 admin/gui/user.new.gui.php:67
+#: admin/gui/user.list.gui.php:40
+msgid "Mobile"
+msgstr "Mobil"
+
+#: admin/inc/common.inc.php:26
+msgid "Missing modules"
+msgstr "Moduler mangler"
+
+#: admin/inc/common.inc.php:26
+msgid "Configure"
+msgstr "Konfigurer"
+
+#: admin/inc/common.inc.php:101 admin/router.php:790
 #, php-format
-msgid "Minimum %1$s characters"
-msgstr "Minimum %1$s tegn"
+msgid "No <em>%1$s</em> users found."
+msgstr "Ingen <em>%1$s</em> brukere funnet."
 
-#: admin/gui/password.change.gui.php:25 admin/gui/user.new.gui.php:66
-msgid "Repeat Password"
-msgstr "Gjenta passord"
+#: admin/inc/common.inc.php:107
+msgid "Root cause"
+msgstr "Årsak"
 
-#: admin/gui/trace.list.gui.php:20
-msgid "Tests"
-msgstr "Tester"
+#: admin/inc/gui.inc.php:63
+msgid "Trace started"
+msgstr "Sporing startet"
 
-#: admin/gui/trace.list.gui.php:21
-msgid "Exercises"
-msgstr "Øvelser"
+#: admin/inc/gui.inc.php:68
+msgid "SMS sent"
+msgstr "SMS sendt"
 
-#: admin/gui/trace.list.gui.php:22
-msgid "Timeouts"
-msgstr "Utløpt"
+#: admin/inc/gui.inc.php:73 admin/router.php:1149
+msgid "SMS not sent"
+msgstr "SMS ble ikke sendt"
 
-#: admin/gui/trace.list.gui.php:32 admin/gui/trace.list.gui.php:57
-#: admin/gui/trace.list.gui.php:82 admin/gui/trace.list.gui.php:108
-#: admin/gui/trace.list.gui.php:133
-msgid "Status"
-msgstr "Status"
+#: admin/inc/gui.inc.php:73
+msgid "Check log"
+msgstr "Sjekk loggen"
 
-#: admin/gui/trace.list.gui.php:106 admin/gui/trace.list.gui.php:131
-msgid "Type"
-msgstr "Type"
+#: admin/inc/gui.inc.php:81
+msgid "SMS received"
+msgstr "SMS mottatt"
 
-#: admin/gui/trace.edit.gui.php:59
-msgid "Send SMS"
-msgstr "Send SMS"
+#: admin/inc/gui.inc.php:90
+msgid "SMS is delivered, but delivery report from SMS provider not received"
+msgstr ""
+"SMS er levert, men ingen leveranserapport er mottatt fra SMS leverandør"
 
-#: admin/gui/trace.edit.gui.php:101
+#: admin/inc/gui.inc.php:109
 #, php-format
+msgid "SMS not delivered, provider reported %1$d"
+msgstr "SMS ikke levert, leverandør rapporterte ‘%1$d’"
+
+#: admin/inc/gui.inc.php:113
+#, php-format
+msgid "SMS not delivered after %1$d hours"
+msgstr "SMS ikke levert etter %1$d timer"
+
+#: admin/inc/gui.inc.php:114
+msgid "The phone may be out of power or coverage."
+msgstr "Telefonen kan være tom for strøm etter utenfor dekning."
+
+#: admin/inc/gui.inc.php:129
+msgid "Trace script downloaded"
+msgstr "Sporingsskript lasted ned"
+
+#: admin/inc/gui.inc.php:157 admin/inc/gui.inc.php:177
+msgid "Trace script not downloaded"
+msgstr "Sporingsskript ikke lastet ned"
+
+#: admin/inc/gui.inc.php:158 admin/inc/gui.inc.php:175
+#: admin/inc/gui.inc.php:178
 msgid ""
-"Remember to include %1$s so that %2$s can replace it with the actual trace "
-"url."
-msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
+"The phone may be out of power, out of coverage, support for localization can "
+"be turned off or not possible, or the user chose not to share their location "
+"with you."
+msgstr ""
+"Telefonen kan være tom for strøm, utenfor dekning, deling av posisjon kan "
+"være slått av,  bruker kan ha avvist deling av posisjon eller telefonen "
+"støtter ikke deling av posisjon."
 
-#: admin/gui/continue.gui.php:18
-msgid "Continue"
-msgstr "Fortsett"
+#: admin/inc/gui.inc.php:164
+msgid "Mobile located"
+msgstr "Telefon lokalisert"
 
-#: admin/ajax/trace.list.open.ajax.php:100
-#: admin/ajax/trace.list.timeout.ajax.php:98
-#, php-format
-msgid "Do you want to resend SMS to %1$s?"
-msgstr "Vil du sende SMS til  %1$s på nytt?"
-
-#: admin/ajax/trace.list.open.ajax.php:102
-#: admin/ajax/trace.list.timeout.ajax.php:100
-msgid "Resend SMS"
-msgstr "Send SMS på nytt"
-
-#: admin/ajax/trace.list.open.ajax.php:108
-#: admin/ajax/trace.list.timeout.ajax.php:106
-msgid "Check SMS delivery status"
-msgstr "Sjekk leveringsstatus"
-
-#: admin/ajax/setup.module.list.ajax.php:68
-msgid "Module is not installed correctly."
-msgstr "Modulen er ikke installert riktig. Kjør installeringsskript."
-
-#: admin/ajax/setup.module.list.ajax.php:69
-#, php-format
-msgid "Failed to create instance of module [%1$s]"
-msgstr "Kunne ikke opprette instanse av modul  [%1$s]"
-
-#: admin/ajax/setup.module.list.ajax.php:72
-msgid "Module is not configured correctly."
-msgstr "Modulen er ikke konfigurert riktig"
-
-#: admin/ajax/setup.module.list.ajax.php:75
-msgid "Module is configured and ready for use."
-msgstr "Modulen er konfigurert og klar til bruk"
-
-#: admin/ajax/message.list.ajax.php:38
-msgid "Messages"
-msgstr "Meldinger"
-
-#: admin/ajax/trace.list.closed.ajax.php:82
-msgid "Reopen"
-msgstr "Gjenåpne"
-
-#: admin/ajax/issue.list.ajax.php:60
-#, php-format
-msgid "Do you want to change %1$s to %2$s?"
-msgstr "Vil du endre %1$s til %2$s?"
-
-#: admin/ajax/issue.list.ajax.php:64
-msgid "Progress"
-msgstr "Fremdrift"
-
-#: admin/ajax/issue.list.ajax.php:69 admin/ajax/user.list.ajax.php:110
-#: admin/ajax/user.list.ajax.php:133 admin/ajax/alert.list.ajax.php:57
-#, php-format
-msgid "Do you want to delete %1$s?"
-msgstr "Vil du slette %1$s?"
-
-#: admin/ajax/issue.list.ajax.php:71 admin/ajax/user.list.ajax.php:112
-#: admin/ajax/alert.list.ajax.php:59
-msgid "Delete"
-msgstr "Slett"
-
-#: admin/ajax/user.list.ajax.php:83
-#, php-format
-msgid "Do you want to enable %1$s?"
-msgstr "Vil du aktivere %1$s?"
-
-#: admin/ajax/user.list.ajax.php:85
-msgid "Enable"
-msgstr "Aktiver"
-
-#: admin/ajax/user.list.ajax.php:90
-msgid "Deny"
-msgstr "Avvis"
-
-#: admin/ajax/user.list.ajax.php:95
-#, php-format
-msgid "Do you want to disable %1$s?"
-msgstr "Vil du deaktivere %1$s?"
-
-#: admin/ajax/user.list.ajax.php:97
-msgid "Disable"
-msgstr "Deaktiver"
-
-#: admin/ajax/user.list.ajax.php:103
-msgid "Reset password"
-msgstr "Nullstill passord"
-
-#: admin/ajax/user.list.ajax.php:132 gui/nav.gui.php:5
-msgid "Confirm"
-msgstr "Bekreft"
+#: admin/inc/gui.inc.php:174
+msgid "Trace script is downloaded, but not location is received"
+msgstr "Sporingsskriptet er lastet ned, men ingen posisjon er mottatt"
 
 #: admin/locale/domain/admin.domain.php:12
 msgid "Not sent"
@@ -1479,9 +1200,284 @@ msgstr "Vennligst oppgi en lovlig e-postadresse"
 msgid "Please enter the same value again"
 msgstr "Skriv inn samme verdi igjen"
 
-#: gui/nav.gui.php:2
-msgid "Start"
-msgstr "Start"
+#: admin/router.php:35
+msgid "You have entered wrong username or password"
+msgstr "Du har oppgitt feil brukernavn eller passord"
+
+#: admin/router.php:40
+msgid "Is deleted"
+msgstr "Er slettet"
+
+#: admin/router.php:43
+msgid "Is disabled"
+msgstr "Er deaktivert"
+
+#: admin/router.php:46
+msgid "Awaits approval"
+msgstr "Avventer godkjenning"
+
+#: admin/router.php:52
+#, php-format
+msgid "User %1$s"
+msgstr "Bruker %1$s"
+
+#: admin/router.php:110
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: admin/router.php:114
+#, php-format
+msgid "About %1$s"
+msgstr "Om %1$s"
+
+#: admin/router.php:121 admin/router.php:140 admin/router.php:147
+#: admin/router.php:158 admin/router.php:178 admin/router.php:246
+#: admin/router.php:256 admin/router.php:301 admin/router.php:310
+#: admin/router.php:321 admin/router.php:351 admin/router.php:360
+#: admin/router.php:368 admin/router.php:383 admin/router.php:489
+#: admin/router.php:499 admin/router.php:573 admin/router.php:583
+#: admin/router.php:591 admin/router.php:597 admin/router.php:603
+#: admin/router.php:620 admin/router.php:628 admin/router.php:636
+#: admin/router.php:642 admin/router.php:648 admin/router.php:665
+#: admin/router.php:673 admin/router.php:702 admin/router.php:710
+#: admin/router.php:738 admin/router.php:746 admin/router.php:773
+#: admin/router.php:822 admin/router.php:836 admin/router.php:844
+#: admin/router.php:869 admin/router.php:879 admin/router.php:940
+#: admin/router.php:987 admin/router.php:1002 admin/router.php:1020
+#: admin/router.php:1053 admin/router.php:1070 admin/router.php:1114
+#: admin/router.php:1169 admin/router.php:1208 admin/router.php:1224
+#: admin/router.php:1258 admin/router.php:1273 admin/router.php:1292
+#: admin/router.php:1313 admin/router.php:1335 admin/router.php:1343
+#: admin/router.php:1374 admin/router.php:1407 admin/router.php:1417
+#: admin/router.php:1456 admin/router.php:1479 admin/router.php:1527
+#: admin/router.php:1537 admin/router.php:1610 admin/router.php:1629
+#: admin/router.php:1654 admin/router.php:1697 admin/router.php:1704
+msgid "Illegal operation"
+msgstr "Ulovlig handling"
+
+#: admin/router.php:123 admin/router.php:160 admin/router.php:180
+#: admin/router.php:248 admin/router.php:258 admin/router.php:323
+#: admin/router.php:370 admin/router.php:385 admin/router.php:501
+#: admin/router.php:585 admin/router.php:630 admin/router.php:675
+#: admin/router.php:712 admin/router.php:748 admin/router.php:775
+#: admin/router.php:824 admin/router.php:846 admin/router.php:881
+#: admin/router.php:942 admin/router.php:1004 admin/router.php:1022
+#: admin/router.php:1072 admin/router.php:1141 admin/router.php:1189
+#: admin/router.php:1226 admin/router.php:1275 admin/router.php:1294
+#: admin/router.php:1345 admin/router.php:1376 admin/router.php:1419
+#: admin/router.php:1458 admin/router.php:1481 admin/router.php:1539
+#: admin/router.php:1631 admin/router.php:1656 admin/router.php:1706
+#: admin/router.php:1761
+msgid "Access denied"
+msgstr "Ingen tilgang"
+
+#: admin/router.php:142
+msgid "Not an ajax request."
+msgstr "Ikke en ajax-forespørsel."
+
+#: admin/router.php:149
+msgid "Id not defined."
+msgstr "Id ikke definert."
+
+#: admin/router.php:167
+#, php-format
+msgid "Mobile %1s$ not found"
+msgstr "Mobil %1$s ikke funnet"
+
+#: admin/router.php:235
+#, php-format
+msgid "Module %1$s not found"
+msgstr "Modul %1$s ikke funnet"
+
+#: admin/router.php:280 admin/router.php:479 admin/router.php:565
+#: admin/router.php:605 admin/router.php:650 admin/router.php:860
+#: admin/router.php:912 admin/router.php:931 admin/router.php:978
+#: admin/router.php:1100 admin/router.php:1250 admin/router.php:1394
+#: admin/router.php:1443 admin/router.php:1501 admin/router.php:1563
+#: admin/router.php:1675 admin/router.php:1729
+#, php-format
+msgid "Operation [%1$s] not executed, try again"
+msgstr "Operasjon [%1$s] ikke utført, prøv igjen"
+
+#: admin/router.php:312 admin/router.php:362 admin/router.php:491
+#: admin/router.php:575 admin/router.php:622 admin/router.php:667
+#: admin/router.php:704 admin/router.php:740 admin/router.php:838
+#: admin/router.php:871 admin/router.php:989 admin/router.php:1055
+#: admin/router.php:1129 admin/router.php:1210 admin/router.php:1260
+#: admin/router.php:1337 admin/router.php:1409 admin/router.php:1529
+#: admin/router.php:1699
+msgid "Id not defined"
+msgstr "Id ikke definert"
+
+#: admin/router.php:344
+#, php-format
+msgid "Setting %1$s not saved"
+msgstr "Innstilling %1$s ikke lagret"
+
+#: admin/router.php:407
+msgid "Request new user"
+msgstr "Forespørsel om ny bruker"
+
+#: admin/router.php:429 admin/router.php:522
+msgid "Email must contain at least one alphanumeric character"
+msgstr "E-post må inneholde minst ett alphanumerisk tegn"
+
+#: admin/router.php:435 admin/router.php:529
+#, php-format
+msgid "User with e-mail %1$s already exist"
+msgstr "Bruker med e-post %1$s finnes allerede"
+
+#: admin/router.php:440 admin/router.php:898
+#, php-format
+msgid "Password must be at least %1$d characters long"
+msgstr "Passordet må være minst %1$d tegn"
+
+#: admin/router.php:445 admin/router.php:903
+msgid "Passwords do not match"
+msgstr "Passordene stemmer ikke"
+
+#: admin/router.php:469
+msgid "Request sent"
+msgstr "Forespørsel sendt"
+
+#: admin/router.php:472
+msgid "You will receive an SMS when the request is processed"
+msgstr "Du vil motta en SMS når din forespørsel er behandlet"
+
+#: admin/router.php:515 admin/router.php:592 admin/router.php:637
+#: admin/router.php:685 admin/router.php:722 admin/router.php:757
+#, php-format
+msgid "User %1$s not found"
+msgstr "Bruker %1$s ikke funnet"
+
+#: admin/router.php:521
+msgid "Username not safe"
+msgstr "Brukernavn er ikke sikkert"
+
+#: admin/router.php:547 admin/router.php:598 admin/router.php:643
+#, php-format
+msgid "User %1$s cannot be approved"
+msgstr "Bruker %1$s kunne ikke godkjennes"
+
+#: admin/router.php:609
+msgid "User approved"
+msgstr "Bruker godkjent"
+
+#: admin/router.php:612 admin/router.php:657
+#, php-format
+msgid "Message sent to %1$s"
+msgstr "Melding sendt til %1$s"
+
+#: admin/router.php:654
+msgid "Reject user"
+msgstr "Avvis bruker"
+
+#: admin/router.php:688
+#, php-format
+msgid "User %1$s not deleted"
+msgstr "Bruker %1$s ble ikke slettet"
+
+#: admin/router.php:725
+#, php-format
+msgid "User %1$s not disabled"
+msgstr "Bruker %1$s ble ikke deaktivert"
+
+#: admin/router.php:760
+#, php-format
+msgid "User %1$s not enabled"
+msgstr "Bruker %1$s ble ikke aktivert"
+
+#: admin/router.php:806
+#, php-format
+msgid "Email sent to %1$s users"
+msgstr "E-post sendt til %1$s brukere"
+
+#: admin/router.php:811 admin/router.php:1510 admin/router.php:1576
+msgid "Email not sent to following users"
+msgstr "E-post ble ikke sendt til følgende brukere"
+
+#: admin/router.php:885
+msgid "Change Password"
+msgstr "Bytt passord"
+
+#: admin/router.php:920
+msgid "Recover Password"
+msgstr "Gjenopprett passord"
+
+#: admin/router.php:1009 admin/router.php:1120 admin/router.php:1158
+#: admin/router.php:1177
+#, php-format
+msgid "Trace %1$s not found"
+msgstr "Sporing %1$s ikke funnet"
+
+#: admin/router.php:1083
+#, php-format
+msgid "Failed to reopen trace %1$s"
+msgstr "Klarte ikke  å gjenåpne sporing %1$s"
+
+#: admin/router.php:1116
+#, php-format
+msgid "Trace [%1$s] is closed"
+msgstr "Operasjon [%1$s] er lukket"
+
+#: admin/router.php:1145
+#, php-format
+msgid "Trace %1$s is closed"
+msgstr "Sporing %1$s er lukket"
+
+#: admin/router.php:1171 admin/router.php:1315
+msgid "Not an ajax request"
+msgstr "Ikke en ajax-foresprsel"
+
+#: admin/router.php:1264
+msgid "Reopen trace"
+msgstr "Gjenåpne sporing"
+
+#: admin/router.php:1321 admin/router.php:1355 admin/router.php:1434
+#, php-format
+msgid "Alert %1$s not found"
+msgstr "Varsel %1$s ikke funnet"
+
+#: admin/router.php:1358
+#, php-format
+msgid "Alert %1$s not deleted"
+msgstr "Varsel %1$s ble ikke slettet"
+
+#: admin/router.php:1380
+msgid "New"
+msgstr "Ny"
+
+#: admin/router.php:1380 admin/router.php:1423
+msgid "Alert"
+msgstr "Varsel"
+
+#: admin/router.php:1551
+#, php-format
+msgid "Issue %1$s not found"
+msgstr "Hendelse %1$s ikke funnet"
+
+#: admin/router.php:1718 admin/router.php:1767
+#, php-format
+msgid "Group %1$s not found"
+msgstr "Gruppe %1$s ikke funnet"
+
+#: admin/router.php:1750
+msgid "XHR request only"
+msgstr "XHR reguest only"
+
+#: admin/router.php:1756
+msgid "Id not found"
+msgstr "Id ikke funnet"
+
+#: admin/router.php:1773
+#, php-format
+msgid "Group %1$s not removed"
+msgstr "Gruppe %1$s ikke fjernet"
+
+#: admin/router.php:1777
+#, php-format
+msgid "Group %1$s removed"
+msgstr "Gruppe %1$s fjernet"
 
 #: gui/control.gui.php:89
 msgid "On"
@@ -1490,6 +1486,13 @@ msgstr "På"
 #: gui/control.gui.php:89
 msgid "Off"
 msgstr "Av"
+
+#: gui/nav.gui.php:2
+msgid "Start"
+msgstr "Start"
+
+#~ msgid "SMS probably not delivered"
+#~ msgstr "SMS sannsynligvis ikke levert"
 
 #~ msgid "Password must be at least 8 characters long"
 #~ msgstr "Passordet må være minst 8 tegn"

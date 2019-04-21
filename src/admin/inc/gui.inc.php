@@ -1,5 +1,12 @@
 <?php
+
+use RescueMe\Finite\Trace\Factory;
+use RescueMe\Finite\Trace\State\NotDelivered;
+use RescueMe\Finite\Trace\State\Timeout;
+use RescueMe\Manager;
 use RescueMe\Mobile;
+use RescueMe\Properties;
+use RescueMe\SMS\Provider;
 
 /**
      * Admin GUI functions
@@ -10,6 +17,7 @@ use RescueMe\Mobile;
      *
      * @author Kenneth Gulbrandsøy <kenneth@onevoice.no>
      */
+
 
     function insert_trace_menu($user, $id='trace', $output=true) {
 
@@ -34,17 +42,20 @@ use RescueMe\Mobile;
         return $html;
     }
 
-
-    /**
-     * Insert trace progress bar
-     * @param Mobile $mobile
-     * @param bool $collapsed
-     * @param bool $output
-     * @return string
-     */
+/**
+ * Insert trace progress bar
+ * @param Mobile $mobile
+ * @param bool $collapsed
+ * @param bool $output
+ * @return string
+ * @throws \RescueMe\Finite\FiniteException
+ * @throws Exception
+ */
     function insert_trace_progress($mobile, $collapsed = false, $output=true) {
+
+        $hours = Properties::get(Properties::TRACE_TIMEOUT, $mobile->user_id);
         
-        $timeout = (time() - strtotime($mobile->alerted)) > 3*60*60*1000;
+        $timeout = (time() - strtotime($mobile->alerted)) > $hours*60*60*1000;
 
         $trace['alerted']['state'] = 'pass';
         $trace['alerted']['time'] = format_since($mobile->alerted);
@@ -60,7 +71,9 @@ use RescueMe\Mobile;
             $trace['sent']['time'] = T_('Unknown');
             $trace['sent']['timestamp'] = '';
             $trace['sent']['tooltip'] = T_('SMS not sent').'. '.T_('Check log');
-        }            
+        }
+
+
         if($mobile->sms_delivered !== null) {
             $trace['delivered']['state'] = 'pass';
             $trace['delivered']['time'] = format_since($mobile->sms_delivered);
@@ -68,34 +81,45 @@ use RescueMe\Mobile;
             $trace['delivered']['tooltip'] = T_('SMS received');
         } else {
 
-            $state = '';
-            if($mobile->responded !== null || $mobile->sms_sent !== null) {
-                $state = 'warning';
-            } elseif($timeout) {
-                $state = 'fail'; 
-            } 
-            $trace['delivered']['state'] = $state;
             $trace['delivered']['time'] = T_('Unknown');
             $trace['delivered']['timestamp'] = '';
-            switch($state)
-            {
-                case 'warning':
-                    $trace['delivered']['tooltip'] = 
-                        T_('SMS is delivered, but delivery report from SMS provider not received');
-                    break;
-                case 'fail':
-                    $trace['delivered']['tooltip'] = 
-                        sprintf(T_('SMS not delivered after %1$d hours'),3) . '. ' . T_('The phone may be out of power or coverage.');
-                    break;
-                default:
-                    $trace['delivered']['tooltip'] = 
-                        T_('SMS probably not delivered') . '. ' . T_('The phone may be out of power or coverage.');
-                    break;
-            }
-            if($state) {
+
+            if($mobile->responded !== null && $mobile->sms_sent !== null) {
+                $trace['delivered']['state'] = 'warning';
+                $trace['delivered']['tooltip'] =
+                    T_('SMS is delivered, but delivery report from SMS provider not received');
             } else {
+
+                $trace['delivered']['state'] = 'fail';
+
+                $factory = Manager::get(Provider::TYPE, $mobile->user_id);
+
+                /** @var Provider $sms */
+                $sms = $factory->newInstance();
+
+                // Create trace state machine
+                $factory = new Factory();
+                $machine = $factory->build($sms);
+                $state = $machine->init()->apply($mobile);
+
+                switch($state->getName())
+                {
+                    case NotDelivered::NAME:
+                        $trace['delivered']['tooltip'] =
+                            sprintf(T_('SMS not delivered, provider reported %1$d'),$state->getData());
+                        break;
+                    case Timeout::NAME:
+                        $trace['delivered']['tooltip'] =
+                            sprintf(T_('SMS not delivered after %1$d hours'),$hours) . '. '
+                            . T_('The phone may be out of power or coverage.');
+                        break;
+                    default:
+                        throw new Exception("Unexpected state -> " . $state);
+                }
             }
-        }            
+        }
+
+
         if($mobile->responded !== null) {
             // Get number of errors reported from mobile
             if($mobile->last_pos->timestamp>-1 || ($errors = $mobile->getErrors(true)) === FALSE) {

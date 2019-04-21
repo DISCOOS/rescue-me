@@ -168,15 +168,16 @@
         public static function count($id, $admin = false) {
             return Mobile::countAll('`mobile_id`=' . (int) $id, $admin);
         }
-        
+
 
         /**
          * Get Mobile instance
-         * 
+         *
          * @param integer $id Mobile id
          * @param boolean $admin Administrator flag
          *
          * @return \RescueMe\Mobile|boolean. Instance of \RescueMe\Mobile is success, FALSE otherwise.
+         * @throws DBException
          */
         public static function get($id, $admin = true){
 
@@ -374,23 +375,45 @@
             return $res;
 
         }// update
-        
+
+
+        public function getUndeliveredMessages() {
+
+            $messages = array();
+
+            // Get last pending sms
+            $filter = "`message_delivered` IS NULL AND mobile_id=%s";
+            $filter = sprintf($filter, $this->id);
+
+            // Sort pending messages on descending timestamp (latest first)
+            $res = DB::select('messages', '*', $filter, '`message_sent` DESC');
+            if(DB::isEmpty($res) === FALSE) {
+
+                // Check all pending messages
+                while($row = $res->fetch_assoc()){
+                    array_push($messages, $row);
+                }
+            }
+            return $messages;
+        }
+
+
         // TODO: Merge with getPositions()!
         public function getAjaxPositions($num) {
             if($this->id === -1)
                 return false;
-            
+
             $query = "SELECT `pos_id` FROM `positions` WHERE `mobile_id` = " . (int) $this->id
                     . " ORDER BY `timestamp` LIMIT ".$num.",100";
             $res = DB::query($query);
 
             if(!$res) return false;
-            
+
             $positions = array();
             while($row = $res->fetch_assoc()){
                 $positions[] = new Position($row['pos_id']);
             }
-            
+
             return $positions;
         } // getAjaxPositions
 
@@ -434,6 +457,7 @@
          * Get the most accurate position that's newer than a given minutes.
          * @param integer $maxAge How many minutes old.
          * @return boolean|array
+         * @throws DBException
          */
         public function getMostAccurate($maxAge = 15) {
             if($this->id === -1)

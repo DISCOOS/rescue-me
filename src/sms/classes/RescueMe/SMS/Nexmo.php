@@ -12,6 +12,7 @@
     
     namespace RescueMe\SMS;
     
+    use DateTime;
     use RescueMe\Configuration;
     use RescueMe\Properties;
 
@@ -190,12 +191,22 @@
             
             if(assert_isset_all($params,array('messageId','msisdn','status'))) {
 
-                $error = (in_array($params['status'], array('delivered', 'accepted')) ? '' :
-                    $this->errorCodes[(int)$params['err-code']].' ('.$params['err-code'].')');
-            
-                $this->delivered($params['messageId'], $params['msisdn'], 
-                        $params['status'], new \DateTime(), 
-                        $error, $params['network-code']);
+                // Accepted is just an intermediate state not tracked by RescueMe
+                if($params['status'] !== 'accepted') {
+
+                    $isDelivered = ($params['status'] == 'delivered');
+
+                    $this->delivered(
+                        $params['messageId'],
+                        $params['msisdn'],
+                        $params['status'],
+                        $isDelivered ? new DateTime() : null,
+                        $isDelivered
+                            ? ''
+                            : "{$this->errorCodes[(int)$params['err-code']]} ({$params['err-code']})",
+                        $params['network-code']
+                    );
+                }
             }
         }
         

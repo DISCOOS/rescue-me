@@ -4,6 +4,8 @@ use RescueMe\Domain\Issue;
 use RescueMe\Finite\State;
 use RescueMe\Finite\Trace\State\Located;
 use RescueMe\Finite\Trace\State\NotSent;
+use RescueMe\Finite\Trace\State\NotDelivered;
+use RescueMe\Finite\Trace\State\Timeout;
 use RescueMe\Log\Logs;
 use RescueMe\Manager;
 use RescueMe\Email\Provider as Email;
@@ -119,6 +121,12 @@ function format_state(State $state) {
         case NotSent::NAME:
             return insert_label('important',
                 T_($state->getName()) . ' ' . format_since($state->getData()), '', false);
+        case NotDelivered::NAME:
+            return insert_label('important',
+                T_($state->getName()) . ' ' . $state->getData(), '', false);
+        case Timeout::NAME:
+            return insert_label('important',
+                T_($state->getName()) . ' ' . $state->getData(), '', false);
         default:
             return insert_label('default',
                 T_($state->getName()) . ' ' . format_since($state->getData()), '', false);
