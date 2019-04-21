@@ -1,5 +1,6 @@
 <?php
 
+    use RescueMe\Manager;
     use RescueMe\User;
     
     if(isset($_ROUTER['error'])) {
@@ -11,8 +12,11 @@
 
     $id = input_get_int('id', User::currentId());
 
+    if($id > 0) {
+        Manager::prepare($id);
+    }
+
     $user = $id > 0 ? User::get($id)->name : T_('System');
-    
     
 ?>
 <h3><?=T_('Setup')?><div class="visible-phone pull-right">
