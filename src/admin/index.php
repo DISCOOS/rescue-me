@@ -3,7 +3,9 @@
 require('config.php');
 
 use RescueMe\User;
+use RescueMe\Properties;
 use RescueMe\Domain\Alert;
+
 
 
 require('router.php');
@@ -34,7 +36,7 @@ $alerts = $user ? Alert::getActive($user->id) : array();
         <link rel="apple-touch-icon" href="<?=APP_URI?>img/rescueme-non-trans.png" >
         <link href="<?=APP_URI?>css/admin.css" rel="stylesheet">
 
-        <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?=GOOGLE_MAPS_API_KEY?>"></script>
         <script type="text/javascript" src="<?=APP_URI?>js/admin.js"></script>
     </head>
 

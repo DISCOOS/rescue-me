@@ -2,7 +2,7 @@
     
     use RescueMe\User;
     use RescueMe\Properties;
-         
+
     global $positions; 
     
     $user_id = User::currentId();
@@ -46,7 +46,7 @@ var posFormat = '<?=Properties::text(Properties::MAP_DEFAULT_FORMAT, $user_id)?>
             }
 
             // TODO: Add default location to properties/configuration, use Oslo for now.
-            R.map.load('map', 10.75225, 59.91387, 30000, type);
+            R.map.load('map', 59.91387, 10.75225, 30000, type);
             
      <? } 
 

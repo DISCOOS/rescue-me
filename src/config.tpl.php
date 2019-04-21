@@ -1,6 +1,7 @@
 <?php
 
 use RescueMe\Context;
+use RescueMe\TimeZone;
 
 $verfile = dirname(__FILE__).DIRECTORY_SEPARATOR."VERSION";
     
@@ -77,8 +78,11 @@ define('DB_NAME', 'rescueme');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 
+// Google Maps integration
+define('GOOGLE_MAPS_API_KEY', '');
+
 // Set current timezone
-if(\RescueMe\TimeZone::set(DEFAULT_TIMEZONE) === FALSE) {
+if(TimeZone::set(DEFAULT_TIMEZONE) === FALSE) {
     trigger_error("Failed to set timesone to [" . DEFAULT_TIMEZONE . "]");
 }
 
