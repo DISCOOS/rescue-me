@@ -2,6 +2,7 @@
 
 use RescueMe\Finite\Trace\Factory;
 use RescueMe\Finite\Trace\State\NotDelivered;
+use RescueMe\Finite\Trace\State\Sent;
 use RescueMe\Finite\Trace\State\Timeout;
 use RescueMe\Manager;
 use RescueMe\Mobile;
@@ -90,8 +91,6 @@ use RescueMe\SMS\Provider;
                     T_('SMS is delivered, but delivery report from SMS provider not received');
             } else {
 
-                $trace['delivered']['state'] = 'fail';
-
                 $factory = Manager::get(Provider::TYPE, $mobile->user_id);
 
                 /** @var Provider $sms */
@@ -105,12 +104,20 @@ use RescueMe\SMS\Provider;
                 switch($state->getName())
                 {
                     case NotDelivered::NAME:
+                        $trace['delivered']['state'] = 'fail';
                         $trace['delivered']['tooltip'] =
                             sprintf(T_('SMS not delivered, provider reported %1$d'),$state->getData());
                         break;
                     case Timeout::NAME:
+                        $trace['delivered']['state'] = 'fail';
                         $trace['delivered']['tooltip'] =
                             sprintf(T_('SMS not delivered after %1$d hours'),$hours) . '. '
+                            . T_('The phone may be out of power or coverage.');
+                        break;
+                    case Sent::NAME:
+                        $trace['delivered']['state'] = 'warning';
+                        $trace['delivered']['tooltip'] =
+                            sprintf(T_('SMS not delivered yet'),$hours) . '. '
                             . T_('The phone may be out of power or coverage.');
                         break;
                     default:
