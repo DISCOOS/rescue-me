@@ -114,7 +114,8 @@ use RescueMe\SMS\Provider;
                             . T_('The phone may be out of power or coverage.');
                         break;
                     default:
-                        throw new Exception("Unexpected state -> " . $state);
+                        // Continue to check for other states.
+                        // TODO: Rewrite to using Finite state on all cases
                 }
             }
         }
