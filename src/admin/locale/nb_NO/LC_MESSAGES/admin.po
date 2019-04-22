@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2019-04-22 21:49+0200\n"
+"POT-Creation-Date: 2019-04-22 22:03+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
@@ -31,7 +31,7 @@ msgstr "Ingen funnet"
 #: admin/ajax/trace.list.open.ajax.php:86
 #: admin/ajax/trace.list.timeout.ajax.php:84 admin/ajax/user.list.ajax.php:72
 #: admin/gui/group.list.gui.php:34 admin/gui/role.list.gui.php:27
-#: admin/gui/trace.gui.php:59 admin/router.php:507 admin/router.php:1423
+#: admin/gui/trace.gui.php:61 admin/router.php:507 admin/router.php:1423
 msgid "Edit"
 msgstr "Endre"
 
@@ -109,7 +109,7 @@ msgstr "Modulen er ikke konfigurert riktig."
 msgid "Module is configured and ready for use."
 msgstr "Modulen er konfigurert og klar til bruk."
 
-#: admin/ajax/trace.list.closed.ajax.php:82
+#: admin/ajax/trace.list.closed.ajax.php:82 admin/gui/trace.gui.php:85
 msgid "Reopen"
 msgstr "Gjenåpne"
 
@@ -120,7 +120,7 @@ msgid "Close trace"
 msgstr "Avslutt sporing"
 
 #: admin/ajax/trace.list.open.ajax.php:100
-#: admin/ajax/trace.list.timeout.ajax.php:98 admin/gui/trace.gui.php:66
+#: admin/ajax/trace.list.timeout.ajax.php:98 admin/gui/trace.gui.php:68
 #, php-format
 msgid "Do you want to resend SMS to %1$s?"
 msgstr "Vil du sende SMS til  %1$s på nytt?"
@@ -762,136 +762,140 @@ msgstr "Endre sporing"
 msgid "Loading"
 msgstr "Laster"
 
-#: admin/gui/trace.gui.php:68
+#: admin/gui/trace.gui.php:70
 msgid "Resend"
 msgstr "Send på nytt"
 
-#: admin/gui/trace.gui.php:75
+#: admin/gui/trace.gui.php:77
 msgid "Close"
 msgstr "Lukk"
 
-#: admin/gui/trace.gui.php:97 admin/gui/trace.gui.php:199
-#: admin/gui/trace.gui.php:206 admin/gui/trace.gui.php:248
-#: admin/gui/trace.gui.php:256 admin/gui/trace.gui.php:264
-#: admin/gui/trace.gui.php:287 admin/gui/trace.gui.php:296
-#: admin/gui/trace.gui.php:304 admin/inc/common.inc.php:100
+#: admin/gui/trace.gui.php:109 admin/gui/trace.gui.php:214
+#: admin/gui/trace.gui.php:221 admin/gui/trace.gui.php:263
+#: admin/gui/trace.gui.php:271 admin/gui/trace.gui.php:279
+#: admin/gui/trace.gui.php:302 admin/gui/trace.gui.php:311
+#: admin/gui/trace.gui.php:319 admin/inc/common.inc.php:100
 #: admin/inc/gui.inc.php:72 admin/inc/gui.inc.php:85 admin/inc/gui.inc.php:163
 #: admin/inc/gui.inc.php:188 admin/router.php:49 admin/router.php:789
 #: admin/router.php:1197
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: admin/gui/trace.gui.php:111 admin/inc/gui.inc.php:142
+#: admin/gui/trace.gui.php:123 admin/inc/gui.inc.php:142
 msgid "Trace script has reported errors"
 msgstr "Sporingskriptet har rapportert feil"
 
-#: admin/gui/trace.gui.php:117 admin/inc/gui.inc.php:147
+#: admin/gui/trace.gui.php:129 admin/inc/gui.inc.php:147
 #, php-format
 msgid "Permission denied %s times."
 msgstr "Tillatelse avslått %s ganger."
 
-#: admin/gui/trace.gui.php:118
+#: admin/gui/trace.gui.php:130
 msgid "Ask if location sharing prompt was accepted."
 msgstr "Spør om deling av posisjon ble innvilget når forespurt om dette."
 
-#: admin/gui/trace.gui.php:123 admin/inc/gui.inc.php:150
+#: admin/gui/trace.gui.php:135 admin/inc/gui.inc.php:150
 #, php-format
 msgid "Location unavailable %s times."
 msgstr "Lokasjon  ikke tilgjengelig %s ganger."
 
-#: admin/gui/trace.gui.php:124 admin/gui/trace.gui.php:130
+#: admin/gui/trace.gui.php:136 admin/gui/trace.gui.php:142
 msgid "Ask if location services are turned on."
 msgstr "Spør om stedstjenester er påslått."
 
-#: admin/gui/trace.gui.php:129 admin/inc/gui.inc.php:153
+#: admin/gui/trace.gui.php:141 admin/inc/gui.inc.php:153
 #, php-format
 msgid "Location timeout %s times."
 msgstr "Lokasjon tidsutløp %s ganger."
 
-#: admin/gui/trace.gui.php:155 admin/gui/trace.list.gui.php:32
+#: admin/gui/trace.gui.php:167 admin/gui/trace.list.gui.php:32
 #: admin/gui/trace.list.gui.php:57 admin/gui/trace.list.gui.php:82
 #: admin/gui/trace.list.gui.php:108 admin/gui/trace.list.gui.php:133
 msgid "Status"
 msgstr "Status"
 
-#: admin/gui/trace.gui.php:161 admin/gui/trace.position.table.gui.php:11
+#: admin/gui/trace.gui.php:173 admin/gui/trace.position.table.gui.php:11
 msgid "Last location"
 msgstr "Siste lokasjon"
 
-#: admin/gui/trace.gui.php:165
+#: admin/gui/trace.gui.php:177
 msgid "Location received"
 msgstr "Lokasjon mottatt"
 
-#: admin/gui/trace.gui.php:169
+#: admin/gui/trace.gui.php:181
 msgid "Location link"
 msgstr "Sporingslink"
 
-#: admin/gui/trace.gui.php:185 admin/gui/user.list.gui.php:40
+#: admin/gui/trace.gui.php:197 admin/gui/user.list.gui.php:40
 msgid "Mobile"
 msgstr "Mobil"
 
-#: admin/gui/trace.gui.php:191
+#: admin/gui/trace.gui.php:203
 msgid "Phone Number"
 msgstr "Mobilnummer"
 
-#: admin/gui/trace.gui.php:197
+#: admin/gui/trace.gui.php:207
+msgid "Redacted"
+msgstr "Fjernet"
+
+#: admin/gui/trace.gui.php:212
 msgid "Phone Network"
 msgstr "Mobilt nettverk"
 
-#: admin/gui/trace.gui.php:203
+#: admin/gui/trace.gui.php:218
 msgid "Undelivered messages"
 msgstr "Uleverte meldinger"
 
-#: admin/gui/trace.gui.php:222
+#: admin/gui/trace.gui.php:237
 #, php-format
 msgid "Locations &le; %1$s"
 msgstr "Lokasjoner &le; %1$s"
 
-#: admin/gui/trace.gui.php:225
+#: admin/gui/trace.gui.php:240
 #, php-format
 msgid "Locations &gt; %1$s"
 msgstr "Lokasjoner  &gt; %1$s"
 
-#: admin/gui/trace.gui.php:240
+#: admin/gui/trace.gui.php:255
 msgid "Device details"
 msgstr "Enhetsdetaljer"
 
-#: admin/gui/trace.gui.php:246 admin/gui/trace.list.gui.php:106
+#: admin/gui/trace.gui.php:261 admin/gui/trace.list.gui.php:106
 #: admin/gui/trace.list.gui.php:131
 msgid "Type"
 msgstr "Type"
 
-#: admin/gui/trace.gui.php:252
+#: admin/gui/trace.gui.php:267
 msgid "Is Phone"
 msgstr "Er mobil"
 
-#: admin/gui/trace.gui.php:255 admin/gui/trace.gui.php:263
-#: admin/gui/trace.gui.php:288 gui/confirm.dialog.gui.php:23
+#: admin/gui/trace.gui.php:270 admin/gui/trace.gui.php:278
+#: admin/gui/trace.gui.php:303 gui/confirm.dialog.gui.php:23
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/gui/trace.gui.php:255 admin/gui/trace.gui.php:263
-#: admin/gui/trace.gui.php:288 gui/confirm.dialog.gui.php:24
+#: admin/gui/trace.gui.php:270 admin/gui/trace.gui.php:278
+#: admin/gui/trace.gui.php:303 gui/confirm.dialog.gui.php:24
 msgid "No"
 msgstr "Nei"
 
-#: admin/gui/trace.gui.php:260
+#: admin/gui/trace.gui.php:275
 msgid "Is SmartPhone"
 msgstr "Er smarttelefon"
 
-#: admin/gui/trace.gui.php:278
+#: admin/gui/trace.gui.php:293
 msgid "Device capabilities"
 msgstr "Enhetsfunksjoner"
 
-#: admin/gui/trace.gui.php:284
+#: admin/gui/trace.gui.php:299
 msgid "Supports location"
 msgstr "Støtter lokalisering"
 
-#: admin/gui/trace.gui.php:292
+#: admin/gui/trace.gui.php:307
 msgid "Operating system"
 msgstr "Operativsystem"
 
-#: admin/gui/trace.gui.php:300
+#: admin/gui/trace.gui.php:315
 msgid "Last browser used"
 msgstr "Siste nettleser brukt"
 

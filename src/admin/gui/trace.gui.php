@@ -47,38 +47,50 @@
         // Get undelivered messages
         $messages = $mobile->getUndeliveredMessages();
 
-?>
+    ?>
 
     <div style="width: 100%; height: 50px; border: 0; border-bottom:1px solid lightgray; align-items: stretch">
         <div class="pull-left no-wrap">
             <h3 class="pagetitle"><?= $name ?></h3>
         </div>
+        <? if(!Trace::isClosed($mobile->trace_id)) { ?>
         <div class="pull-right no-wrap">
+
             <span style="line-height: 40px; height: 40px; display: block; margin-bottom: 5px; margin-top: 10px;">
-                <a class="btn btn-small" href="/admin/trace/edit/<?=$id?>" data-title="Start ny sporing">
-                    <b class="icon icon-edit"></b><?=T_('Edit')?>
+                <a class="btn btn-small" href="/admin/trace/edit/<?= $id ?>" data-title="Start ny sporing">
+                    <b class="icon icon-edit"></b><?= T_('Edit') ?>
                 </a>
             </span>
         </div>
         <div class="pull-right no-wrap" style="margin-right: 5px;">
             <span style="line-height: 40px; height: 40px; display: block; margin-bottom: 5px; margin-top: 10px;">
                 <a class="btn btn-small" data-toggle="modal" data-target="#confirm"
-                   data-content="<?=sprintf(T_('Do you want to resend SMS to %1$s?'),"<u>{$mobile->name}</u>")?>"
-                   data-onclick="R.ajax('<?=ADMIN_URI."trace/resend/{$mobile->id}"?>','#sent-<?=$mobile->id?>');" >
+                   data-content="<?= sprintf(T_('Do you want to resend SMS to %1$s?'), "<u>{$mobile->name}</u>") ?>"
+                   data-onclick="R.ajax('<?= ADMIN_URI . "trace/resend/{$mobile->id}" ?>','#sent-<?= $mobile->id ?>');">
                     <b class="icon icon-envelope"></b><?= T_('Resend') ?>
                 </a>
             </span>
         </div>
         <div class="pull-right no-wrap" style="margin-right: 5px;">
             <span style="line-height: 40px; height: 40px; display: block; margin-bottom: 5px; margin-top: 10px;">
-                <a class="btn btn-small" data-toggle="modal" href="/admin/trace/close/<?=$id?>">
-                    <b class="icon icon-off"></b><?=T_('Close')?>
+                <a class="btn btn-small" data-toggle="modal" href="/admin/trace/close/<?= $id ?>">
+                    <b class="icon icon-off"></b><?= T_('Close') ?>
                 </a>
             </span>
         </div>
+        <? } else { ?>
+        <div class="pull-right no-wrap" style="margin-right: 5px;">
+            <span style="line-height: 40px; height: 40px; display: block; margin-bottom: 5px; margin-top: 10px;">
+                <a class="btn btn-small" href="<?=ADMIN_URI."trace/reopen/{$mobile->id}"?>">
+                    <b class="icon icon-edit"></b><?= T_('Reopen') ?>
+                </a>
+            </span>
+        </div>
+        <? } ?>
     </div>
 
-<?
+    <?
+
         if(isset($_ROUTER['error'])) {
             insert_error($_ROUTER['error']);
         }
@@ -190,7 +202,10 @@
                         <tr>
                             <td><?=T_('Phone Number')?></td>
                             <td><span class="label label-success">
-                                <?= Locale::getDialCode($mobile->country).$mobile->number ?>
+                                <?= $mobile->number
+                                    ? Locale::getDialCode($mobile->country).$mobile->number
+                                    : T_('Redacted')
+                                ?>
                             </span></td>
                         </tr>
                         <tr>
