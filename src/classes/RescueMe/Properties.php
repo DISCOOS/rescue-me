@@ -66,12 +66,6 @@
         
         const TRACE_BAR_LOCATION = 'trace.bar.location';
         
-        const TRACE_DETAILS = 'trace.details';
-        const TRACE_DETAILS_REFERENCE = 'trace.reference';
-        const TRACE_DETAILS_LOCATION = 'trace.details.location';
-        const TRACE_DETAILS_LOCATION_TIME = 'trace.details.location.time';
-        const TRACE_DETAILS_LOCATION_URL = 'trace.details.location.url';
-        
         const SMS_REQUIRE = 'sms.require';
         const SMS_REQUIRE_MULTIPLE = 'multiple';
         const SMS_REQUIRE_UNICODE = 'unicode';
@@ -214,20 +208,7 @@
                 'category' => 'design',
                 'description' => "Trace bar location."
             ),
-            
-            self::TRACE_DETAILS => array(
-                'type' => 'checklist',
-                'default' => '',
-                'options' => array(                   
-                    self::TRACE_DETAILS_REFERENCE => 'Trace reference',
-                    self::TRACE_DETAILS_LOCATION => 'Last location',
-                    self::TRACE_DETAILS_LOCATION_TIME => 'Last timestamp',
-                    self::TRACE_DETAILS_LOCATION_URL => 'Location URL'
-                 ),
-                'category' => 'design',
-                'description' => "Show trace details"
-            ),
-            
+
             self::SMS_SENDER_ID => array(
                 'type' => 'text',
                 'default' => TITLE,
@@ -356,8 +337,6 @@
                 self::$meta[self::SYSTEM_TIMEZONE]['default'] = TimeZone::getDefault();
                 self::$meta[self::SYSTEM_LOCALE]['default'] = Locale::getDefaultLocale();
                 self::$meta[self::SYSTEM_COUNTRY_PREFIX]['default'] = Locale::getDefaultCountryCode();
-                self::$meta[self::TRACE_DETAILS]['default'] =
-                    implode(',', array_keys(self::$meta[self::TRACE_DETAILS]['options']));
 
                 $res = DB::select(self::TABLE, "*", "`user_id`=0");
 
@@ -526,7 +505,6 @@
                 case self::SYSTEM_TIMEZONE:
                     return TimeZone::getName($value);
                 case self::SMS_REQUIRE:
-                case self::TRACE_DETAILS:
                     $selected = array();
                     if(empty($value)) {
                         return T_(self::NONE);
@@ -643,8 +621,7 @@
         public static final function ensure($name, $value) {
             switch($name) {
                 case self::SMS_REQUIRE:
-                case self::TRACE_DETAILS:
-                    
+
                     if(is_array($value)) {
                         $value = implode(",", $value);
                     }
@@ -716,7 +693,6 @@
 
                 // Check if empty value is allowed
                 case self::SMS_REQUIRE:
-                case self::TRACE_DETAILS:
 
                     if(empty($value)) {
                         return true;

@@ -57,7 +57,6 @@
         $params = Properties::getAll($user_id);
         $top = ($params[Properties::TRACE_BAR_LOCATION] === Properties::TOP);
         $collapsed = ($params[Properties::TRACE_BAR_STATE] === Properties::COLLAPSED);
-        $details = explode(',', $params[Properties::TRACE_DETAILS]);
         if($mobile->last_pos->timestamp>-1) {
             $pan_to = 'data-pan-to="'. (count($positions)-1) . '"';
             $position = format_pos($mobile->last_pos, $params, $pan_to);
