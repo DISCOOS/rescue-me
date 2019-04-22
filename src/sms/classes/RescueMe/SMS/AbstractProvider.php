@@ -166,7 +166,15 @@
 
                     $filter = sprintf("`message_id`=%s", $row['message_id']);
                     if(DB::update('messages', $values, $filter)) {
-                        Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
+                        Logs::write(Logs::SMS, LogLevel::INFO,
+                            sprintf('SMS %1$s is %2$s%3$s', $reference,
+                                is_bool($status)
+                                ? $status
+                                    ? 'delivered'
+                                    : 'not delivered'
+                                : $status,
+                                $error !== '' ? ' with error ' . $error : ''
+                            ));
                     } else {
                         $context['values'] = $values;
                         $context['filter'] = $filter;
@@ -182,9 +190,7 @@
                     );
 
                     $filter = sprintf("`mobile_id`=%s", $row['mobile_id']);
-                    if(DB::update('mobiles', $values, $filter)) {
-                        Logs::write(Logs::SMS, LogLevel::INFO, "SMS $reference is delivered");
-                    } else {
+                    if(!DB::update('mobiles', $values, $filter)) {
                         $context['values'] = $values;
                         $context['filter'] = $filter;
                         $this->critical(
