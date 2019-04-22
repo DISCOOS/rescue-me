@@ -60,7 +60,7 @@
 
 .pull-right li:last-child .dropdown-menu {
     left: auto;
-    right: 0;
+    right: 0px;
 }
 
 /*==========================================
@@ -361,9 +361,9 @@ li.position {
     margin: 0px 0px 0px 0px;
     clear: left;
     float: left;
-    width: 500px;
+    width: 60%;
+    max-width: calc(60em * 0.6);
     height: 500px;
-    max-width: 500px;
     max-height: 500px;
     border: 1px solid lightgray;
 }
@@ -373,11 +373,11 @@ li.position {
 }
 
 #sidebar {
-    float: left;
-    width: 300px;
+    float: right;
+    width: calc(40% - 1em);
+    max-width: calc(60em * 0.4);
     height: 500px;
-    min-width: 225px;
-    min-height: 255px;
+    min-height: 50px;
     margin: 0;
     margin-bottom: 5px;
     padding-left: 5px;

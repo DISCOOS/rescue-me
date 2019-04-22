@@ -45,7 +45,6 @@
         $network = get_mobile_network($mobile->network_code);
 
 ?>
-<div>
     <h3 class="pagetitle"><?= $name ?></h3>
 <?
         if(isset($_ROUTER['error'])) {
@@ -219,6 +218,4 @@
         </div>
     </div>
 
-</div>
-
-    <? } ?>    
+    <? } ?>
