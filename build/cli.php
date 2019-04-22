@@ -81,7 +81,7 @@ function execute($actions)
     (
         'SALT', 'TITLE', 'COUNTRY_PREFIX', 'DEFAULT_LOCALE',
         'DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD', 'DEFAULT_TIMEZONE',
-        'DEBUG', 'MAINTAIN'
+        'GOOGLE_MAPS_API_KEY', 'DEBUG', 'MAINTAIN'
     );
 
     foreach($actions as $action => $opts)

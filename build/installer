@@ -178,11 +178,12 @@
      * <value>
      *
      * function copied from from inc/common.inc.php
-     * 
+     *
      * Any changes should be applied there as well, or backported here.
-     * 
+     *
      * @param array $params List of parameters
      * @param array $noopt List of parameters without values
+     * @return array
      */
     function parse_opts($params, $noopt = array()) {
         
