@@ -10,9 +10,9 @@
 ?>
 
 <script>
-var markers = new Array();
-var circles = new Array();
-var infowindows = new Array();
+var markers = [];
+var circles = [];
+var infowindows = [];
 var lastInfoWindow = null;
 var markerNo = 0;
 var type = '<?=Properties::get(Properties::MAP_DEFAULT_BASE, $user_id)?>';

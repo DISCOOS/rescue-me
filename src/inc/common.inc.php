@@ -614,7 +614,7 @@
                     $position = sprintf($format, $lat, $lon);
 
                     break;
-                case Properties::MAP_DEFAULT_FORMAT_DEM:
+                case Properties::MAP_DEFAULT_FORMAT_DMM:
 
                     $lat = floatval($p->lat);
                     $wrap = $axis && (abs($lat) !== $lat);

@@ -93,7 +93,7 @@
         const MAP_DEFAULT_FORMAT = 'map.default.format';
         const MAP_DEFAULT_FORMAT_UTM = 'utm';
         const MAP_DEFAULT_FORMAT_DD = 'dd';
-        const MAP_DEFAULT_FORMAT_DEM = 'dem';
+        const MAP_DEFAULT_FORMAT_DMM = 'dmm';
         const MAP_DEFAULT_FORMAT_DMS = 'dms';
         const MAP_DEFAULT_FORMAT_6D = '6d';
 
@@ -286,9 +286,9 @@
                 'default' => self::MAP_DEFAULT_FORMAT_UTM,
                 'options' => array(                    
                     self::MAP_DEFAULT_FORMAT_UTM => 'Full UTM',
-                    self::MAP_DEFAULT_FORMAT_6D => '6 digit MRGS',
+                    self::MAP_DEFAULT_FORMAT_6D => '6 digit MGRS',
                     self::MAP_DEFAULT_FORMAT_DD => 'Decimal degrees',
-                    self::MAP_DEFAULT_FORMAT_DEM => 'Decimal minutes',
+                    self::MAP_DEFAULT_FORMAT_DMM => 'Decimal minutes',
                     self::MAP_DEFAULT_FORMAT_DMS => 'Degrees, minutes, seconds'
                     
                  ),

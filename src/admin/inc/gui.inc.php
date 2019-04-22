@@ -9,7 +9,7 @@ use RescueMe\Mobile;
 use RescueMe\Properties;
 use RescueMe\SMS\Provider;
 
-/**
+    /**
      * Admin GUI functions
      *
      * @copyright Copyright 2014 {@link http://www.discoos.org DISCO OS Foundation}
@@ -43,15 +43,15 @@ use RescueMe\SMS\Provider;
         return $html;
     }
 
-/**
- * Insert trace progress bar
- * @param Mobile $mobile
- * @param bool $collapsed
- * @param bool $output
- * @return string
- * @throws \RescueMe\Finite\FiniteException
- * @throws Exception
- */
+    /**
+     * Insert trace progress bar
+     * @param Mobile $mobile
+     * @param bool $collapsed
+     * @param bool $output
+     * @return string
+     * @throws \RescueMe\Finite\FiniteException
+     * @throws Exception
+     */
     function insert_trace_progress($mobile, $collapsed = false, $output=true) {
 
         $hours = Properties::get(Properties::TRACE_TIMEOUT, $mobile->user_id);
@@ -192,6 +192,35 @@ use RescueMe\SMS\Provider;
         ob_start();
         require(ADMIN_PATH . "gui/trace.progress.gui.php");
         $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+
+
+    /**
+     * Insert trace progress bar
+     * @param Mobile $mobile
+     * @param bool $output
+     * @return string
+     * @throws Exception
+     */
+    function insert_last_position_table($mobile, $output=true) {
+
+        $formats = array(
+            array(Properties::MAP_DEFAULT_FORMAT => Properties::MAP_DEFAULT_FORMAT_UTM),
+            array(Properties::MAP_DEFAULT_FORMAT => Properties::MAP_DEFAULT_FORMAT_DMM),
+            array(Properties::MAP_DEFAULT_FORMAT => Properties::MAP_DEFAULT_FORMAT_DD),
+            array(Properties::MAP_DEFAULT_FORMAT => Properties::MAP_DEFAULT_FORMAT_DMS),
+        );
+
+        $position = $mobile->last_pos;
+
+        ob_start();
+        require(ADMIN_PATH . "gui/trace.position.table.gui.php");
+        $html = ob_get_clean();
+
         if($output) {
             echo $html;
         }

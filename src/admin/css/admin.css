@@ -177,9 +177,9 @@ li.position {
     position: relative;
     left: -30px;
     float: left;
-    width: 700px;
+    width: 100%;
     min-width: 400px;
-    max-width: 700px;
+    max-width: 60em;
     min-height: 40px;
     padding: 10px;
     text-align: center;

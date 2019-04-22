@@ -55,6 +55,7 @@
                 '//js/i18next.min.js',
                 '//js/notify.js',
                 '//js/selectize.js',
+                '//js/clipboard.min.js',
                 '//js/rescueme.js',
                 '//js/rescueme-accordion.js',
                 '//js/capslock.js',

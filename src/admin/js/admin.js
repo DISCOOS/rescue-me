@@ -273,9 +273,16 @@ R.prepare = function (element, options) {
     });
 
     // Register datatimepickers
-    var language = R.cookie.get('locale').split('_')[0];
+    let language = R.cookie.get('locale').split('_')[0];
     $(element).find('.date').datetimepicker({
         language: language
+    });
+
+    // Register clipboard action on
+    var clipboard = new ClipboardJS('.copy');
+    clipboard.on('error', function(e) {
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
     });
     
     // Hide fixed header on input focus

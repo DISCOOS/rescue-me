@@ -106,6 +106,13 @@
         </div>
     <? } ?>
 
+        <?
+            $mobile->last_pos->lat = 59.911491;
+            $mobile->last_pos->lon = 10.757933;
+            $now = new DateTime();
+            $mobile->last_pos->timestamp = $now->getTimestamp();
+        ?>
+
     <div class="infos pull-left">
     <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
         <div class="info pull-left no-wrap">
@@ -122,13 +129,18 @@
     
     <? require_once(ADMIN_PATH_GUI . 'trace.position.list.gui.php'); ?>
     <div id="map" class="map"></div>
+
     <div id="sidebar">
-        <h4 id="under1kmtitle" class="hide"><?=sprintf(T_('Locations &le; %1$s'),'1 km')?></h4>
+        <? insert_last_position_table($mobile); ?>
+        <h4 id="under1kmtitle" class="hide" style="border: 0; border-bottom:1px solid lightgray;"><?=sprintf(T_('Locations &le; %1$s'),'1 km')?></h4>
         <ul class="unstyled" id="under1km"></ul>
         </ul>
-        <h4 id="over1kmtitle" class="hide"><?=sprintf(T_('Locations &gt; %1$s'),'1 km')?></h4>
+        <h4 id="over1kmtitle" class="hide" style="border: 0; border-bottom:1px solid lightgray;"><?=sprintf(T_('Locations &gt; %1$s'),'1 km')?></h4>
         <ul class="unstyled" id="over1km"></ul>
     </div>
+
+    <div class="clearfix"></div>
+
 
     <div class="clearfix"></div>
     
