@@ -30,7 +30,7 @@
 /  Landscape phone to portrait tablet
 /  ==========================================*/
 
-@media (max-width: 767px) {
+@media (min-width: 480px) and (max-width: 767px) {
 
     #sidebar {
         width: 225px;
