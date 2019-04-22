@@ -44,8 +44,11 @@
         // Get mobile network from mcc-mnc network code
         $network = get_mobile_network($mobile->network_code);
 
+        // Get undelivered messages
+        $messages = $mobile->getUndeliveredMessages();
+
 ?>
-    <h3 class="pagetitle"><?= $name ?></h3>
+    <h3 class="pagetitle" style="border: 0; border-bottom:1px solid lightgray;"><?= $name ?></h3>
 <?
         if(isset($_ROUTER['error'])) {
             insert_error($_ROUTER['error']);
@@ -106,27 +109,83 @@
         </div>
     <? } ?>
 
-        <?
-            $mobile->last_pos->lat = 59.911491;
-            $mobile->last_pos->lon = 10.757933;
-            $now = new DateTime();
-            $mobile->last_pos->timestamp = $now->getTimestamp();
-        ?>
+<!--        --><?//
+//            $mobile->last_pos->lat = 59.911491;
+//            $mobile->last_pos->lon = 10.757933;
+//            $now = new DateTime();
+//            $mobile->last_pos->timestamp = $now->getTimestamp();
+//        ?>
 
-    <div class="infos pull-left">
-    <? if(in_array(Properties::TRACE_DETAILS_LOCATION, $details)) { ?>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info label-position" <?=$pan_to?>>
-                <?=T_('Last location')?></label> <?= $position ?>
-        </div>
-    <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_TIME, $details)) { ?>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Location received')?></label>
-            <span class="label label-<?=$located_state?>"><?= $located ?></span>
-        </div>
-    <? } ?>
-    </div>
-    
+
+    <ul class="thumbnails" style="margin-top: 10px;">
+        <li class="span6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th><h4><?=T_('Status')?></h4></th>
+                            <th style="width: 90px;"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><?=T_('Last location')?></td>
+                            <td <?=$pan_to?>><?= $position ?></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Location received')?></td>
+                            <td><span class="label label-<?=$located_state?>"><?= $located ?></span></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Location link')?></td>
+                            <td><span class="label label-success">
+                                <?= str_replace("#mobile_id", encrypt_id($mobile->id), LOCATE_URL); ?>
+                            </span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </li>
+        <li class="span6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th><h4><?=T_('Mobile')?></h4></th>
+                            <th style="width: 90px;"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><?=T_('Phone Number')?></td>
+                            <td><span class="label label-success">
+                                <?= Locale::getDialCode($mobile->country).$mobile->number ?>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Phone Network')?></td>
+                            <td><span class="label label-<?= $network ? 'success' : 'warning' ?>">
+                                <?= $network ? (sprintf('%s (%s)', $network['network'], $network['country']))  : T_('Unknown') ?>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Undelivered messages')?></td>
+                            <td><span class="label label-<?= $messages !== null   ? 'warning' : 'success' ?>">
+                                <?= $messages === null
+                                    ? T_('Unknown')
+                                    : count($messages)?>
+                            </span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </li>
+    </ul>
+
     <? require_once(ADMIN_PATH_GUI . 'trace.position.list.gui.php'); ?>
     <div id="map" class="map"></div>
 
@@ -140,94 +199,88 @@
     </div>
 
     <div class="clearfix"></div>
-
-
-    <div class="clearfix"></div>
     
     <? if($top === false) { insert_trace_progress($mobile, $collapsed); } ?>
-    
-    <div class="infos clearfix pull-left">
-        
-    <? if (in_array(Properties::TRACE_DETAILS_REFERENCE, $details)) { ?>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Reference')?></label>
-            <span class="label label-<?=empty($mobile->trace_ref) ? 'warning' : 'success' ?>">
-                <?= empty($mobile->trace_ref) ? T_('Unknown') : $mobile->trace_ref ?>
-            </span>
-        </div>
-    <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_URL, $details)) { ?>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Location link')?></label>
-            <span class="label label-success">
-                <?= str_replace("#mobile_id", encrypt_id($mobile->id), LOCATE_URL); ?>
-            </span>
-        </div>
-    <? } ?>
-    </div>
 
-    <div class="clearfix"></div>
+    <ul class="thumbnails" style="margin-top: 20px;">
+        <li class="span6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th><h4><?=T_('Device details')?></h4></th>
+                            <th style="width: 90px;"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><?=T_('Type')?></td>
+                            <td><span class="label label-<?= isset($device->device_type) ? 'success' : 'warning' ?>">
+                                <?= isset($device->device_type) ? $device->device_type : T_('Unknown')?>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Is Phone')?></td>
+                            <td><span class="label label-<?= isset($device->device_is_phone) ? 'success' : 'warning' ?>">
+                                <?= isset($device->device_is_phone) ? ($device->device_is_phone === 'True'
+                                    ? T_('Yes') : T_('No'))
+                                    : T_('Unknown')?>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Is SmartPhone')?></td>
+                            <td><span class="label label-<?= isset($device->device_is_smartphone) ? 'success' : 'warning' ?>">
+                                <?= isset($device->device_is_smartphone) ? ($device->device_is_smartphone === 'True'
+                                    ? T_('Yes') : T_('No'))
+                                    : T_('Unknown') ?>
+                            </span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </li>
+        <li class="span6">
+            <div class="thumbnail">
+                <div class="caption">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th><h4><?=T_('Device capabilities')?></h4></th>
+                            <th style="width: 90px;"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><?=T_('Supports location')?></td>
+                            <td><span class="label label-<?= $supported  ? 'success' : 'warning' ?>">
+                            <?= $supported === null
+                                ? T_('Unknown')
+                                : ($supported ? T_('Yes') : T_('No'))?>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Operating system')?></td>
+                            <td><span class="label label-<?= isset($device->device_os_name) ? 'success' : 'warning' ?>">
+                                <?= isset($device->device_os_name)
+                                    ? $device->device_os_name . " ({$device->device_os_version})"
+                                    : T_('Unknown')?>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Last browser used')?></td>
+                            <td><span class="label label-<?= isset($device->device_browser_name) ? 'success' : 'warning' ?>">
+                                <?= isset($device->device_browser_name)
+                                    ? $device->device_browser_name . " ({$device->device_browser_version})"
+                                    : T_('Unknown') ?>
+                            </span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </li>
+    </ul>
 
-    <div class="infos clearfix pull-left">
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Device type')?></label>
-            <span class="label label-<?= isset($device->device_type) ? 'success' : 'warning' ?>">
-                <?= isset($device->device_type) ? $device->device_type : T_('Unknown')?>
-            </span>
-        </div>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Is SmartPhone')?></label>
-            <span class="label label-<?= isset($device->device_is_smartphone) ? 'success' : 'warning' ?>">
-                <?= isset($device->device_is_smartphone) ? ($device->device_is_smartphone === 'True' ? T_('Yes') : T_('No'))
-                    : T_('Unknown') ?>
-            </span>
-        </div>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Supports location')?></label>
-            <span class="label label-<?= $supported  ? 'success' : 'warning' ?>">
-                <?= $supported  ? T_('Yes') : T_('No')?>
-            </span>
-        </div>
-    </div>
-
-    <div class="clearfix"></div>
-
-    <div class="infos clearfix pull-left">
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Is Phone')?></label>
-            <span class="label label-<?= isset($device->device_is_phone) ? 'success' : 'warning' ?>">
-                <?= isset($device->device_is_phone) ? ($device->device_is_phone === 'True' ? T_('Yes') : T_('No'))
-                    : T_('Unknown')?>
-            </span>
-        </div>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Device OS')?></label>
-            <span class="label label-<?= isset($device->device_os_name) ? 'success' : 'warning' ?>">
-                <?= isset($device->device_os_name) ? $device->device_os_name
-                    . " ({$device->device_os_version})": T_('Unknown')?>
-            </span>
-        </div>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Device Browser')?></label>
-            <span class="label label-<?= isset($device->device_browser_name) ? 'success' : 'warning' ?>">
-                <?= isset($device->device_browser_name) ? $device->device_browser_name
-                    . " ({$device->device_browser_version})" : T_('Unknown') ?>
-            </span>
-        </div>
-    </div>
-
-    <div class="infos clearfix pull-left">
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Phone Number')?></label>
-            <span class="label label-success">
-                <?= Locale::getDialCode($mobile->country).$mobile->number ?>
-            </span>
-        </div>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=T_('Phone Network')?></label>
-            <span class="label label-<?= $network ? 'success' : 'warning' ?>">
-                <?= $network ? (sprintf('%s (%s)', $network['network'], $network['country']))  : T_('Unknown') ?>
-            </span>
-        </div>
-    </div>
-
-    <? } ?>
+<? } ?>
