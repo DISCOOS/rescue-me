@@ -373,13 +373,15 @@ li.position {
 }
 
 #sidebar {
+    float: left;
+    width: 300px;
+    height: 500px;
+    min-width: 225px;
+    min-height: 255px;
     margin: 0;
     margin-bottom: 5px;
     padding-left: 5px;
     padding-right: 5px;
-    float: left;
-    width: 300px;
-    height: 500px;
     border: 1px solid lightgray;
     border-left: 0px;
 }

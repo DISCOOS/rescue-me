@@ -20,9 +20,24 @@
 /  Portrait tablet to landscape and desktop
 /  ==========================================*/
 
-@media (min-width: 768px) and (max-width: 979px) {  
+@media (min-width: 768px) and (max-width: 1200px) {
 
     /* Use defaults */
+
+}
+
+/* ==========================================
+/  Fix for sidebars on tablets
+/  ==========================================*/
+
+@media (min-width: 768px) and (max-width: 830px) {
+
+    #sidebar {
+        clear: left;
+        float: left;
+        width: 491px;
+        height: auto;
+    }
 
 }
 
@@ -33,10 +48,10 @@
 @media (min-width: 480px) and (max-width: 767px) {
 
     #sidebar {
-        width: 225px;
+        clear: left;
+        float: left;
+        width: 491px;
         height: auto;
-        min-width: 225px;
-        min-height: 255px;
     }
     
     #trace div {
@@ -69,12 +84,8 @@
     #sidebar {
         clear: left;
         float: left;
-        width: 330px;
+        width: 491px;
         height: auto;
-        min-width: 330px;
-        min-height: 330px;
-        border: 1px solid lightgray;
-        border-top: 0px;
     }
     
     .trace {
