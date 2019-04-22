@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2019-04-22 01:34+0200\n"
+"POT-Creation-Date: 2019-04-22 02:14+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
-"Language: en_US\n"
+"Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,6 +13,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: T_;T_locale\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: admin\n"
 "X-Poedit-SearchPath-1: gui\n"
 
@@ -54,7 +55,7 @@ msgstr "Vil du endre %1$s til %2$s?"
 msgid "Progress"
 msgstr "Fremdrift"
 
-#: admin/ajax/logs.ajax.php:55 admin/gui/setup.gui.php:14
+#: admin/ajax/logs.ajax.php:55 admin/gui/setup.gui.php:19
 #: admin/gui/system.menu.gui.php:25
 msgid "System"
 msgstr "System"
@@ -169,7 +170,7 @@ msgstr "Endre passord"
 msgid "Reset password"
 msgstr "Nullstill passord"
 
-#: admin/ajax/user.list.ajax.php:105 admin/gui/setup.gui.php:18
+#: admin/ajax/user.list.ajax.php:105 admin/gui/setup.gui.php:22
 #: admin/gui/system.menu.gui.php:32 admin/gui/trace.new.gui.php:153
 #: admin/router.php:220 admin/router.php:230
 msgid "Setup"
@@ -546,7 +547,7 @@ msgstr "Ny hendelse"
 msgid "Login"
 msgstr "Logg inn"
 
-#: admin/gui/logon.gui.php:8 admin/gui/setup.gui.php:26
+#: admin/gui/logon.gui.php:8 admin/gui/setup.gui.php:30
 #: admin/gui/user.edit.gui.php:46 admin/gui/user.new.gui.php:48
 msgid "Email"
 msgstr "E-post"
@@ -627,24 +628,24 @@ msgstr "Endre rolle"
 msgid "Roles"
 msgstr "Roller"
 
-#: admin/gui/setup.gui.php:23
+#: admin/gui/setup.gui.php:27
 msgid "General"
 msgstr "Generelt"
 
-#: admin/gui/setup.gui.php:24
+#: admin/gui/setup.gui.php:28
 msgid "Design"
 msgstr "Design"
 
-#: admin/gui/setup.gui.php:25 admin/gui/trace.edit.gui.php:84
+#: admin/gui/setup.gui.php:29 admin/gui/trace.edit.gui.php:84
 #: admin/gui/trace.new.gui.php:116 admin/gui/trace.new.gui.php:117
 msgid "SMS"
 msgstr "SMS"
 
-#: admin/gui/setup.gui.php:27
+#: admin/gui/setup.gui.php:31
 msgid "Maps"
 msgstr "Kart"
 
-#: admin/gui/setup.gui.php:28
+#: admin/gui/setup.gui.php:32
 msgid "Device"
 msgstr "Enhet"
 
@@ -766,17 +767,17 @@ msgstr "Laster"
 #: admin/gui/trace.gui.php:163 admin/gui/trace.gui.php:170
 #: admin/gui/trace.gui.php:188 admin/gui/trace.gui.php:195
 #: admin/gui/trace.gui.php:202 admin/gui/trace.gui.php:217
-#: admin/inc/common.inc.php:100 admin/inc/gui.inc.php:71
-#: admin/inc/gui.inc.php:84 admin/inc/gui.inc.php:155 admin/inc/gui.inc.php:180
+#: admin/inc/common.inc.php:100 admin/inc/gui.inc.php:72
+#: admin/inc/gui.inc.php:85 admin/inc/gui.inc.php:163 admin/inc/gui.inc.php:188
 #: admin/router.php:49 admin/router.php:789 admin/router.php:1197
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: admin/gui/trace.gui.php:81 admin/inc/gui.inc.php:134
+#: admin/gui/trace.gui.php:81 admin/inc/gui.inc.php:142
 msgid "Trace script has reported errors"
 msgstr "Sporingskriptet har rapportert feil"
 
-#: admin/gui/trace.gui.php:87 admin/inc/gui.inc.php:139
+#: admin/gui/trace.gui.php:87 admin/inc/gui.inc.php:147
 #, php-format
 msgid "Permission denied %s times."
 msgstr "Tillatelse avslått %s ganger."
@@ -785,7 +786,7 @@ msgstr "Tillatelse avslått %s ganger."
 msgid "Ask if location sharing prompt was accepted."
 msgstr "Spør om deling av posisjon ble innvilget når forespurt om dette."
 
-#: admin/gui/trace.gui.php:93 admin/inc/gui.inc.php:142
+#: admin/gui/trace.gui.php:93 admin/inc/gui.inc.php:150
 #, php-format
 msgid "Location unavailable %s times."
 msgstr "Lokasjon  ikke tilgjengelig %s ganger."
@@ -794,7 +795,7 @@ msgstr "Lokasjon  ikke tilgjengelig %s ganger."
 msgid "Ask if location services are turned on."
 msgstr "Spør om stedstjenester er påslått."
 
-#: admin/gui/trace.gui.php:99 admin/inc/gui.inc.php:145
+#: admin/gui/trace.gui.php:99 admin/inc/gui.inc.php:153
 #, php-format
 msgid "Location timeout %s times."
 msgstr "Lokasjon tidsutløp %s ganger."
@@ -1106,27 +1107,27 @@ msgstr "Ingen <em>%1$s</em> brukere funnet."
 msgid "Root cause"
 msgstr "Årsak"
 
-#: admin/inc/gui.inc.php:63
+#: admin/inc/gui.inc.php:64
 msgid "Trace started"
 msgstr "Sporing startet"
 
-#: admin/inc/gui.inc.php:68
+#: admin/inc/gui.inc.php:69
 msgid "SMS sent"
 msgstr "SMS sendt"
 
-#: admin/inc/gui.inc.php:73 admin/router.php:1149
+#: admin/inc/gui.inc.php:74 admin/router.php:1149
 msgid "SMS not sent"
 msgstr "SMS ble ikke sendt"
 
-#: admin/inc/gui.inc.php:73
+#: admin/inc/gui.inc.php:74
 msgid "Check log"
 msgstr "Sjekk loggen"
 
-#: admin/inc/gui.inc.php:81
+#: admin/inc/gui.inc.php:82
 msgid "SMS received"
 msgstr "SMS mottatt"
 
-#: admin/inc/gui.inc.php:90
+#: admin/inc/gui.inc.php:91
 msgid "SMS is delivered, but delivery report from SMS provider not received"
 msgstr ""
 "SMS er levert, men ingen leveranserapport er mottatt fra SMS leverandør"
@@ -1136,25 +1137,29 @@ msgstr ""
 msgid "SMS not delivered, provider reported %1$d"
 msgstr "SMS ikke levert, leverandør rapporterte ‘%1$d’"
 
-#: admin/inc/gui.inc.php:113
+#: admin/inc/gui.inc.php:114
 #, php-format
 msgid "SMS not delivered after %1$d hours"
 msgstr "SMS ikke levert etter %1$d timer"
 
-#: admin/inc/gui.inc.php:114
+#: admin/inc/gui.inc.php:115 admin/inc/gui.inc.php:121
 msgid "The phone may be out of power or coverage."
 msgstr "Telefonen kan være tom for strøm etter utenfor dekning."
 
-#: admin/inc/gui.inc.php:129
+#: admin/inc/gui.inc.php:120
+msgid "SMS not delivered yet"
+msgstr "SMS sannsynligvis ikke levert"
+
+#: admin/inc/gui.inc.php:137
 msgid "Trace script downloaded"
 msgstr "Sporingsskript lasted ned"
 
-#: admin/inc/gui.inc.php:157 admin/inc/gui.inc.php:177
+#: admin/inc/gui.inc.php:165 admin/inc/gui.inc.php:185
 msgid "Trace script not downloaded"
 msgstr "Sporingsskript ikke lastet ned"
 
-#: admin/inc/gui.inc.php:158 admin/inc/gui.inc.php:175
-#: admin/inc/gui.inc.php:178
+#: admin/inc/gui.inc.php:166 admin/inc/gui.inc.php:183
+#: admin/inc/gui.inc.php:186
 msgid ""
 "The phone may be out of power, out of coverage, support for localization can "
 "be turned off or not possible, or the user chose not to share their location "
@@ -1164,11 +1169,11 @@ msgstr ""
 "være slått av,  bruker kan ha avvist deling av posisjon eller telefonen "
 "støtter ikke deling av posisjon."
 
-#: admin/inc/gui.inc.php:164
+#: admin/inc/gui.inc.php:172
 msgid "Mobile located"
 msgstr "Telefon lokalisert"
 
-#: admin/inc/gui.inc.php:174
+#: admin/inc/gui.inc.php:182
 msgid "Trace script is downloaded, but not location is received"
 msgstr "Sporingsskriptet er lastet ned, men ingen posisjon er mottatt"
 
@@ -1490,9 +1495,6 @@ msgstr "Av"
 #: gui/nav.gui.php:2
 msgid "Start"
 msgstr "Start"
-
-#~ msgid "SMS probably not delivered"
-#~ msgstr "SMS sannsynligvis ikke levert"
 
 #~ msgid "Password must be at least 8 characters long"
 #~ msgstr "Passordet må være minst 8 tegn"
