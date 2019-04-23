@@ -382,7 +382,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
   `request_ua` TEXT NOT NULL,
   `request_client_ip` VARCHAR(40) NULL,
   `request_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `request_type` ENUM('response', 'position') NOT NULL,
+  `request_type` ENUM('response', 'error', 'position') NOT NULL,
   `foreign_id` INT(11) NOT NULL,
   `mobile_id` INT(11) NOT NULL,
   PRIMARY KEY (`request_id`),
@@ -420,6 +420,29 @@ CREATE TABLE IF NOT EXISTS `devices` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `errors`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `errors` (
+  `error_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `error_number` INT(6) NOT NULL,
+  `error_data` BLOB NULL DEFAULT NULL,
+  `mobile_id` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`error_id`),
+  INDEX `fk_errors_mobiles_idx` (`mobile_id` ASC),
+  CONSTRAINT `fk_errors_mobiles`
+    FOREIGN KEY (`mobile_id`)
+      REFERENCES `mobiles` (`mobile_id`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
