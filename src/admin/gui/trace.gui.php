@@ -50,11 +50,11 @@
 
         // Get undelivered messages
         $messages = $mobile->getUndeliveredMessages();
-        $messageCount = ($messages === null ? 0 : count($messages));
+        $messageCount = ($messages === false ? 0 : count($messages));
 
         // Get reported errors
         $errors = $mobile->getErrors();
-        $errorCount = ($errors === null ? 0 : count($errors));
+        $errorCount = ($errors === false ? 0 : count($errors));
 
 
     ?>
