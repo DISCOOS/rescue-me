@@ -28,6 +28,7 @@
 
         $device = null;
         $supported = null;
+        $requestCount = 0;
         if(($requests = $mobile->getRequests()) !== false) {
             $request = current($requests);
             $factory = Manager::get(Lookup::TYPE, $user_id);
@@ -39,6 +40,9 @@
                 && isset($device->device_supports_geolocation)
                 && $device->device_supports_xhr2 === 'True'
                 && $device->device_supports_geolocation=== 'True';
+
+            $requestCount = count($requests);
+
         }
 
         // Get mobile network from mcc-mnc network code
@@ -46,6 +50,12 @@
 
         // Get undelivered messages
         $messages = $mobile->getUndeliveredMessages();
+        $messageCount = ($messages === null ? 0 : count($messages));
+
+        // Get reported errors
+        $errors = $mobile->getErrors();
+        $errorCount = ($errors === null ? 0 : count($errors));
+
 
     ?>
 
@@ -177,9 +187,20 @@
                             <td><span class="label label-<?=$located_state?>"><?= $located ?></span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Location link')?></td>
-                            <td><span class="label label-success">
-                                <?= str_replace("#mobile_id", encrypt_id($mobile->id), LOCATE_URL); ?>
+                            <td><?=T_('Trace reloads')?></td>
+                            <td><span class="label label-<?=
+                                $requestCount === 1
+                                    ? 'success'
+                                    : $requestCount < 10
+                                        ? 'warning'
+                                        : 'important' ?>">
+                                <?=$requestCount?>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Trace errors')?></td>
+                            <td><span class="label label-<?=$errorCount === 0 ? 'success' : 'important' ?>">
+                                <?=$errorCount?>
                             </span></td>
                         </tr>
                         </tbody>
@@ -215,10 +236,14 @@
                         </tr>
                         <tr>
                             <td><?=T_('Undelivered messages')?></td>
-                            <td><span class="label label-<?= $messages !== null   ? 'warning' : 'success' ?>">
-                                <?= $messages === null
-                                    ? T_('Unknown')
-                                    : count($messages)?>
+                            <td><span class="label label-<?= $messageCount > 0  ? 'warning' : 'success' ?>">
+                                <?= $messages === null ? T_('Unknown') : $messageCount?>
+                            </span></td>
+                        </tr>
+                        <tr>
+                            <td><?=T_('Location link')?></td>
+                            <td><span class="label label-success">
+                                <?= str_replace("#mobile_id", encrypt_id($mobile->id), LOCATE_URL); ?>
                             </span></td>
                         </tr>
                         </tbody>

@@ -380,6 +380,11 @@
         }// update
 
 
+        /**
+         * Get undelivered messages
+         * @return array
+         * @throws DBException
+         */
         public function getUndeliveredMessages() {
 
             $messages = array();
@@ -775,6 +780,8 @@
                       WHERE `mobile_id` = '" . $this->id . "';";
 
             $res = DB::query($query);
+
+
 
             if($res === FALSE) {
                 $context = array(
