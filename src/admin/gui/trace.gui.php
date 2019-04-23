@@ -56,14 +56,14 @@
         <? if(!Trace::isClosed($mobile->trace_id)) { ?>
         <div class="pull-right no-wrap">
 
-            <span style="line-height: 40px; height: 40px; display: block; margin-bottom: 5px; margin-top: 10px;">
+            <span class="pagetitle">
                 <a class="btn btn-small" href="/admin/trace/edit/<?= $id ?>" data-title="Start ny sporing">
                     <b class="icon icon-edit"></b><?= T_('Edit') ?>
                 </a>
             </span>
         </div>
         <div class="pull-right no-wrap" style="margin-right: 5px;">
-            <span style="line-height: 40px; height: 40px; display: block; margin-bottom: 5px; margin-top: 10px;">
+            <span class="pagetitle">
                 <a class="btn btn-small" data-toggle="modal" data-target="#confirm"
                    data-content="<?= sprintf(T_('Do you want to resend SMS to %1$s?'), "<u>{$mobile->name}</u>") ?>"
                    data-onclick="R.ajax('<?= ADMIN_URI . "trace/resend/{$mobile->id}" ?>','#sent-<?= $mobile->id ?>');">
@@ -72,7 +72,7 @@
             </span>
         </div>
         <div class="pull-right no-wrap" style="margin-right: 5px;">
-            <span style="line-height: 40px; height: 40px; display: block; margin-bottom: 5px; margin-top: 10px;">
+            <span class="pagetitle">
                 <a class="btn btn-small" data-toggle="modal" href="/admin/trace/close/<?= $id ?>">
                     <b class="icon icon-off"></b><?= T_('Close') ?>
                 </a>
@@ -80,7 +80,7 @@
         </div>
         <? } else { ?>
         <div class="pull-right no-wrap" style="margin-right: 5px;">
-            <span style="line-height: 40px; height: 40px; display: block; margin-bottom: 5px; margin-top: 10px;">
+            <span class="pagetitle">
                 <a class="btn btn-small" href="<?=ADMIN_URI."trace/reopen/{$mobile->id}"?>">
                     <b class="icon icon-edit"></b><?= T_('Reopen') ?>
                 </a>
