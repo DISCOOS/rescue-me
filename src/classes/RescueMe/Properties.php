@@ -80,6 +80,7 @@
         const SMS_OPTIMIZE_ENCODING = 'encoding';
         
         const MAP_DEFAULT_BASE = 'map.default.base';
+        const MAP_DEFAULT_BASE_TOPO = 'statkart.topo';
         const MAP_DEFAULT_BASE_TERRAIN = 'terrain';
         const MAP_DEFAULT_BASE_SATELLITE = 'satellite';
         const MAP_DEFAULT_BASE_HYBRID = 'hybrid';
@@ -253,7 +254,7 @@
                 'type' => 'select',
                 'default' => self::MAP_DEFAULT_BASE_TERRAIN,
                 'options' => array(
-                    'statkart.topo' => 'Norway Topo4',
+                    self::MAP_DEFAULT_BASE_TOPO => 'Norway Topo4',
                     self::MAP_DEFAULT_BASE_TERRAIN => 'Terrain', 
                     self::MAP_DEFAULT_BASE_SATELLITE => 'Satellite',
                     self::MAP_DEFAULT_BASE_HYBRID => 'Hybrid'
@@ -362,6 +363,7 @@
          * @param integer $user_id
          * 
          * @return boolean|array
+         * @throws DBException
          */
         public static function getAll($user_id=0)
         {
@@ -378,31 +380,33 @@
             return empty($properties) ? false : $properties;
             
         }// getAll       
-        
-        
+
+
         /**
          * Check if property exists
-         * 
+         *
          * @param string $name Property name
          * @param integer $user_id
-         * 
+         *
          * @return boolean
+         * @throws DBException
          */
         public static function exists($name, $user_id=0) 
         {
             $res = DB::select(self::TABLE, "*", self::filter($name, $user_id));
             
             return !DB::isEmpty($res);
-        }        
-        
-        
+        }
+
+
         /**
          * Get value of property with given name
-         * 
+         *
          * @param string $name Property name
          * @param integer $user_id
-         * 
+         *
          * @return boolean|mixed
+         * @throws DBException
          */
         public static function get($name, $user_id=0) {
             
@@ -426,20 +430,30 @@
             }
             
             $row = $res->fetch_row();
-            
-            return $row[0];
+
+            $value = $row[0];
+
+            // Overwrite deprecated options with default value
+            if(is_array(self::$meta[$name]['options'])) {
+                if(!self::in_options($name, $value)) {
+                    $value = self::$meta[$name]['default'];
+                }
+            }
+
+            return $value;
             
         }// get
-        
-        
+
+
         /**
          * Set value of property with given name
-         * 
+         *
          * @param string $name
          * @param mixed $value
          * @param integer $user_id
-         * 
+         *
          * @return boolean TRUE if success, FALSE otherwise
+         * @throws DBException
          */
         public static function set($name, $value, $user_id=0) {
             
@@ -461,14 +475,15 @@
             
         }// set
 
-        
+
         /**
          * Set value of property with given name
-         * 
+         *
          * @param string $name
          * @param int $user_id
-         * 
+         *
          * @return boolean TRUE if success, FALSE otherwise
+         * @throws DBException
          */
         public function delete($name, $user_id=0) {
             
@@ -494,6 +509,7 @@
          * @param integer $user_id
          * 
          * @return string|boolean
+         * @throws DBException
          */
         public static final function text($name, $user_id=0) {
             $value = self::get($name, $user_id);
@@ -710,20 +726,11 @@
                 case self::TRACE_BAR_LOCATION:
                 case self::DEVICE_LOOKUP:
 
-                    $array = is_array($value) ? $value : explode(",", $value);
-                    
-                    foreach($array as $value)
-                    {
-                        if(!in_array($value, array_keys(self::$meta[$name]['options']))) {
-                            return '"'.$value.'" is not allowed';
-                        }                        
-                    }                    
-                    
-                    if(!in_array($value, array_keys(self::$meta[$name]['options']))) {
+                    if(!self::in_options($name, $value)) {
                         return '"'.$value.'" is not allowed';
                     }
-                    
-                    break;
+
+                break;
                 
                 // Any alphanumeric value allowed
                 case self::SMS_SENDER_ID:
@@ -766,7 +773,20 @@
             
             return true;
         }
-        
+
+        private static function in_options($name, $value) {
+            $array = is_array($value) ? $value : explode(",", $value);
+
+            foreach($array as $value)
+            {
+                if(!in_array($value, array_keys(self::$meta[$name]['options']))) {
+                    return false;
+                }
+            }
+
+            return in_array($value, array_keys(self::$meta[$name]['options']));
+        }
+
         
         /**
          * Get property filter
