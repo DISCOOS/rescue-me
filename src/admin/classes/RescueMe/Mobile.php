@@ -77,13 +77,13 @@
         public $last_pos;
         public $last_acc;
 
+        public $sms_text;
         public $sms_sent;
         public $sms2_sent;
         public $sms_mb_sent;
         public $sms_delivered;
         public $sms_provider;
         public $sms_provider_ref;
-        public $sms_text;
 
         public $errors = array();
         public $requests = array();
@@ -232,6 +232,7 @@
          * @param $message
          * @param $trace_id
          * @return bool|Mobile
+         * @throws DBException
          */
         public static function add($name, $country, $number,  $locale, $message, $trace_id){
 
@@ -293,7 +294,7 @@
                 $values
             );
             
-            return $mobile->sendSMS() ? $mobile : false;
+            return $mobile->send() ? $mobile : false;
 
         }// add
 
@@ -303,6 +304,7 @@
          * @param boolean $admin Administrator flag
          *
          * @return \RescueMe\Mobile|boolean. Instance of \RescueMe\Mobile is success, FALSE otherwise.
+         * @throws DBException
          */
         public function load($admin = true){
 
@@ -327,6 +329,7 @@
          * @param $locale
          * @param $message
          * @return bool
+         * @throws DBException
          */
         public function update($name, $country, $number, $locale, $message){
 
@@ -421,6 +424,7 @@
         /**
          * Get all positions found
          * @return array|bool
+         * @throws DBException
          */
         public function getPositions(){
             if($this->id === -1) {
@@ -486,6 +490,7 @@
         /**
          * Get all requests
          * @return array|bool
+         * @throws DBException
          */
         public function getRequests(){
 
@@ -512,6 +517,7 @@
          * Get all errors
          * @param bool $count Return array with count of each error number
          * @return array|bool
+         * @throws DBException
          */
         public function getErrors($count = false){
 
@@ -546,9 +552,9 @@
 
         /**
          * Register error
-         * @param $number
-         * @param $ua
-         * @param $ip
+         * @param $number int Error number
+         * @param $ua string User agent string
+         * @param $ip string Client ip address
          * @return bool
          */
         public function register($number, $ua, $ip) {
@@ -574,6 +580,7 @@
          * @param $ua
          * @param $ip
          * @return bool
+         * @throws DBException
          */
         public function located($lat, $lon, $acc, $alt, $timestamp, $ua, $ip){
 
@@ -604,7 +611,7 @@
                 // Is SMS2 already sent
                 if($this->sms2_sent == 'false'){
 
-                    $this->_sendSMSCoarseLocation();
+                    $this->_sendCoarseLocationUpdate();
                 }
             }
 
@@ -612,7 +619,7 @@
             // Always send first position and if the accuracy improves by 20%
             else if(($this->sms_mb_sent == 'false') || $best_acc === 0 || $acc < $best_acc * 0.8) {
 
-                $this->_sendSMSLocationUpdate();
+                $this->_sendLocationUpdate();
 
             }
 
@@ -626,22 +633,18 @@
 
 
         /**
-         * Send message to mobile
+         * Send current message (stored in $sms_text)
          * @return array|bool|mixed|Mobile
+         * @throws DBException
          */
-        public function sendSMS(){
+        public function send() {
 
-            $ref = $this->_sendSMS($this->country, $this->number, $this->sms_text, true);
+            $ref = $this->_send($this->sms_text, true);
             
             if($ref === FALSE) {
 
                 // TODO: Replace with proper error handling
-                $this->_sendSMS(
-                   $this->trace_alert_country,
-                   $this->trace_alert_number,
-                   T::_(T::ALERT_SMS_NOT_SENT, $this->locale),
-                   false
-                );
+                $this->_send(T::_(T::ALERT_SMS_NOT_SENT, $this->locale),false);
                
             } else {
 
@@ -653,7 +656,7 @@
                 $module = Manager::get('RescueMe\SMS\Provider', $user_id);
 
                 $dt = new \DateTime();
-                $dt = "FROM_UNIXTIME({$dt->getTimestamp()})";
+                $dt = DB::timestamp($dt->getTimestamp());
 
 
                 $values = prepare_values(
@@ -691,16 +694,17 @@
 
             return $ref;
 
-        }// sendSMS
+        }// send
 
-        
+
         /**
          * Check mobile state
-         * 
+         *
          * @param integer $id Mobile id
          * @param boolean $admin
-         * 
+         *
          * @return Mobile|boolean
+         * @throws DBException
          */
         public static function check($id, $admin = true) {
             
@@ -760,6 +764,7 @@
          * @param string $ip
          *
          * @return boolean
+         * @throws DBException
          */
         public function responded($ua, $ip) {
 
@@ -836,8 +841,9 @@
          * Anonymize mobile data
          *
          * @param string|boolean $name Name
-         * 
+         *
          * @return boolean
+         * @throws DBException
          */
         public function anonymize($name='') {
 
@@ -865,24 +871,27 @@
         /**
          * Send SMS
          * 
-         * @param string $country International phone number to sender
-         * @param string $to Local phone number to recipient (without country dial code)
-         * @param string $message Message string
-         * @param boolean $mobile True if recipient is mobile
+         * @param string $message Message string with optional placeholders: [%LINK%, #mobile_id', '#to', '#m_name', '#acc', '#pos']
+         * @param boolean $tracee True if recipient is the mobile being traces (if false, operator is recipient)
          * 
          * @return mixed|array Message id if success, errors otherwise (array).
          */
-        private function _sendSMS($country, $to, $message, $mobile) {
-            
+        private function _send($message, $tracee) {
+
+            // Get country code and number to use
+            $country = $tracee ? $this->country : $this->trace_alert_country;
+            $number = $this->fix($tracee ? $this->number : $this->trace_alert_number);
+
+
             $user_id = User::currentId();
             if(isset($user_id) === false) {
                 $user_id = $this->user_id;
             }
 
-            /** @var Provider $sms */
-            $sms = Manager::get(Provider::TYPE, $user_id)->newInstance();
+            /** @var Provider $provider */
+            $provider = Manager::get(Provider::TYPE, $user_id)->newInstance();
             
-            if($sms === FALSE)
+            if($provider === FALSE)
             {
                 Logs::write(
                     Logs::TRACE, 
@@ -892,47 +901,43 @@
                 return false;
             }
 
-            // facebook-copy fix (includes 3 invisible chars..)
-            if(strlen($to) == 11 && (int) $to == 0) {
-                $to = substr($to, 3);
-            }
-
             $params = Properties::getAll($user_id);
             $p = format_pos($this->last_pos, $params, false);
             
-            $id = $mobile ? encrypt_id($this->id) : $this->id;
-            
+            $id = $tracee ? encrypt_id($this->id) : $this->id;
+
+            // Replace known placeholders with actual values
             $message = str_replace
             (
                 array('%LINK%', '#mobile_id', '#to', '#m_name', '#acc', '#pos'),
-                array(LOCATE_URL,  $id, $to, $this->name, $this->last_acc, $p),
+                array(LOCATE_URL,  $id, $number, $this->name, $this->last_acc, $p),
                 $message
             );
 
-            $res = $sms->send($user_id, $country, $to, $message);
+            $res = $provider->send($user_id, $country, $number, $message);
             
             if($res) {
                 
                 $context = array(
                     'from' => $user_id,
                     'country' => $country,
-                    'to' => $to,
+                    'to' => $number,
                 );
                 
-                $recipient = $mobile ? "mobile $this->id" : " to operator of $this->id";
+                $recipient = $tracee ? "mobile $this->id" : " to operator of $this->id";
                 
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::INFO,
-                    "SMS sent to $recipient ($to)",
+                    "SMS sent to $recipient ($number)",
                     $context
                 );
                 
             } else {
                 
                 $context = array(
-                    'code' => $sms->errno(),
-                    'error' => $sms->error()
+                    'code' => $provider->errno(),
+                    'error' => $provider->error()
                 );
                 Logs::write(
                     Logs::TRACE, 
@@ -944,7 +949,7 @@
             }
             return $res;
 
-        }// _sendSMS
+        }// _send
 
         private static function error($message, $context = array())
         {
@@ -1015,15 +1020,9 @@
             return $posID;
         }
 
-        private function _sendSMSCoarseLocation()
+        private function _sendCoarseLocationUpdate()
         {
-            if ($this->_sendSMS(
-                    $this->country,
-                    $this->number,
-                    T::_(T::ALERT_SMS_COARSE_LOCATION, $this->locale),
-                    true
-                ) === false
-            ) {
+            if ($this->_send(T::_(T::ALERT_SMS_COARSE_LOCATION, $this->locale),true) === false) {
 
                 $context = array(
                     'country' => $this->country,
@@ -1052,15 +1051,9 @@
             }
         }
 
-        private function _sendSMSLocationUpdate()
+        private function _sendLocationUpdate()
         {
-            if ($this->_sendSMS(
-                    $this->trace_alert_country,
-                    $this->trace_alert_number,
-                    T::_(T::ALERT_SMS_LOCATION_UPDATE, $this->locale),
-                    false
-                ) === false
-            ) {
+            if ($this->_send(T::_(T::ALERT_SMS_LOCATION_UPDATE, $this->locale),false) === false) {
 
                 Logs::write(
                     Logs::TRACE,
@@ -1079,6 +1072,19 @@
                     Mobile::error(sprintf(T_('Failed to update SMS status for mobile %s'),$this->id), $context);
                 }
             }
+        }
+
+        /**
+         * Facebook-copy fix (removes 3 invisible chars)
+         * @param $number
+         * @return bool|string
+         */
+        private function fix($number)
+        {
+            if (strlen($number) == 11 && (int)$number == 0) {
+                $to = substr($number, 3);
+            }
+            return $to;
         }
 
     }

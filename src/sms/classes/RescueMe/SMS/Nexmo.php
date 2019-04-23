@@ -191,7 +191,7 @@
             
             if(assert_isset_all($params,array('messageId','msisdn','status'))) {
 
-                // Accepted is just an intermediate state not tracked by RescueMe
+                // Status 'accepted' is an intermediate state not tracked by RescueMe
                 if($params['status'] !== 'accepted') {
 
                     $isDelivered = ($params['status'] == 'delivered');

@@ -1095,9 +1095,10 @@ switch($_GET['view']) {
 
                         if(isset($_POST['resend'])) {
 
-                            if($mobile->sendSMS() === FALSE) {
-                                $_ROUTER['error'] =
-                                    sprintf(T_('Operation [%1$s] not executed, try again'), " trace/resend/$id ");
+                            if($mobile->send() === FALSE) {
+                                $_ROUTER['error'] = sprintf(
+                                    T_('Operation [%1$s] not executed, try again'), "trace/resend/$id"
+                                );
                             }
                         }
 
@@ -1144,7 +1145,7 @@ switch($_GET['view']) {
 
                     echo sprintf(T_('Trace %1$s is closed'), $mobile->id);
 
-                } elseif($mobile->sendSMS() === FALSE) {
+                } elseif($mobile->send() === FALSE) {
 
                     echo T_('SMS not sent');
 

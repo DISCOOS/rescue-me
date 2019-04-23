@@ -55,7 +55,6 @@
         </div>
         <? if(!Trace::isClosed($mobile->trace_id)) { ?>
         <div class="pull-right no-wrap">
-
             <span class="pagetitle">
                 <a class="btn btn-small" href="/admin/trace/edit/<?= $id ?>" data-title="Start ny sporing">
                     <b class="icon icon-edit"></b><?= T_('Edit') ?>

@@ -129,10 +129,10 @@
          */
         protected abstract function _send($from, $to, $message, $account);
 
-        
+
         /**
          * Update SMS delivery status.
-         * 
+         *
          * @param string $reference
          * @param string $to International phone number
          * @param string $status Delivery status
@@ -140,6 +140,7 @@
          * @param string $error Delivery error description
          * @param string $plnm Standard MCC/MNC tuple
          * @return boolean TRUE if success, FALSE otherwise.
+         * @throws \RescueMe\DBException
          */
         public function delivered($reference, $to, $status, $datetime=null, $error='', $plnm='') {
 
@@ -149,7 +150,7 @@
             }
 
             // Get all sms messages with given reference and update message and mobile states
-            $delivered = isset($datetime) ? "FROM_UNIXTIME({$datetime->getTimestamp()})" : "NULL";
+            $delivered = isset($datetime) ? DB::timestamp($datetime->getTimestamp()) : "NULL";
             $filter = "`message_provider`='%s' AND `message_provider_ref` = '%s'";
             $filter = sprintf($filter, DB::escape(get_class($this)), $reference);
             $res = DB::select('messages', array('mobile_id', 'message_id'), $filter);

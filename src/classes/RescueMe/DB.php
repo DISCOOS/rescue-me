@@ -221,6 +221,17 @@
         {
            return DB::instance()->mysqli->real_escape_string($string);
         }// escape
+
+
+        /**
+         * Get Mysql timestamp
+         * @param $timestamp
+         * @return string Returns conversion of UNIX to mysql timestamp
+         */
+        public static function timestamp($timestamp)
+        {
+            return "FROM_UNIXTIME({$timestamp})";
+        }
         
         
         /**
@@ -255,13 +266,14 @@
             return call_user_func_array("sprintf",  $params);
         }
 
-        
+
         /**
          * Get row count
-         * 
+         *
          * @param string $table
          * @param string $filter
          * @return boolean|integer
+         * @throws DBException
          */
         public static function count($table, $filter='') 
         {
@@ -278,17 +290,18 @@
             return (int)$row[0];
             
         }// count
-        
+
 
         /**
          * Get selection from given table
-         * 
+         *
          * @param string $table
          * @param mixed $fields
          * @param string $filter
          * @param string $order
          * @param string $limit
          * @return boolean|\mysqli_result
+         * @throws DBException
          */
         public static function select($table, $fields='*', $filter='', $order='', $limit = '') 
         {
@@ -310,14 +323,15 @@
             return DB::query($query);
             
         }// select
-        
-        
+
+
         /**
          * Insert values into given table.
-         * 
+         *
          * @param string $table
          * @param array $values
          * @return integer|boolean FALSE on failure, integer if table has AUTO_INCREMENT primary id, TRUE otherwise.
+         * @throws DBException
          */
         public static function insert($table, $values)
         {
@@ -349,15 +363,16 @@
             return $res;
             
         }// insert
-        
-        
+
+
         /**
          * Delete rows from given table.
-         * 
+         *
          * @param string $table
          * @param string $filter
-         * 
+         *
          * @return boolean TRUE on success, FALSE otherwise.
+         * @throws DBException
          */
         public static function delete($table, $filter='')
         {
@@ -379,15 +394,16 @@
             return true;
             
         }// delete        
-        
-        
+
+
         /**
          * Update table with given values.
-         * 
+         *
          * @param string $table
          * @param array $values
          * @param string $filter
          * @return boolean TRUE on success, FALSE otherswise.
+         * @throws DBException
          */
         public static function update($table, $values, $filter) 
         {
@@ -442,8 +458,8 @@
             $mysqli = DB::instance()->mysqli;
             if($mysqli->connect_error)
             {
-                $code = mysqli_connect_errno($mysqli);
-                $error = mysqli_connect_error($mysqli);
+                $code = mysqli_connect_errno();
+                $error = mysqli_connect_error();
                 throw new DBException("Failed to connect to MySQL: " . $error, $code);
             }// if
             $result = $mysqli->select_db($name);
@@ -468,8 +484,8 @@
             $mysqli = DB::instance()->mysqli;
             if(DB::instance()->mysqli->connect_error)
             {
-                $code = mysqli_connect_errno($mysqli);
-                $error = mysqli_connect_error($mysqli);
+                $code = mysqli_connect_errno();
+                $error = mysqli_connect_error();
                 throw new DBException("Failed to connect to MySQL: " . $error, $code);
             }// if
 
@@ -565,7 +581,7 @@
 
         /**
          * @param array $lines Lines to fetch queries from
-         * @param callable $prepare Called before each query is added to result
+         * @param Closure $prepare Called before each query is added to result
          * @return array Identified queries
          */
         public function fetch_queries($lines, Closure $prepare = null) {
@@ -634,6 +650,7 @@
          *
          * @return boolean
          *
+         * @throws DBException
          */
         public static function reconfigure() {
             //
@@ -656,6 +673,7 @@
          * @param string $charset Default table charset
          *
          * @return boolean TRUE if success, FALSE otherwise.
+         * @throws DBException
          */
         public static function export($pathname, $generator, $charset="utf8")
         {
