@@ -174,7 +174,7 @@
                         <thead>
                         <tr>
                             <th><h4><?=T_('Status')?></h4></th>
-                            <th style="width: 90px;"></th>
+                            <t></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -215,7 +215,7 @@
                         <thead>
                         <tr>
                             <th><h4><?=T_('Mobile')?></h4></th>
-                            <th style="width: 90px;"></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -277,7 +277,7 @@
                         <thead>
                         <tr>
                             <th><h4><?=T_('Device details')?></h4></th>
-                            <th style="width: 90px;"></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -315,7 +315,7 @@
                         <thead>
                         <tr>
                             <th><h4><?=T_('Device capabilities')?></h4></th>
-                            <th style="width: 90px;"></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
