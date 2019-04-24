@@ -1089,9 +1089,9 @@
         private function fix($number)
         {
             if (strlen($number) == 11 && (int)$number == 0) {
-                $to = substr($number, 3);
+                $number = substr($number, 3);
             }
-            return $to;
+            return $number;
         }
 
     }
