@@ -63,6 +63,7 @@
         <div class="pull-left no-wrap">
             <h3 class="pagetitle"><?= $name ?></h3>
         </div>
+	<div class="hidden-phone" style="width:100%">
         <? if(!Trace::isClosed($mobile->trace_id)) { ?>
         <div class="pull-right no-wrap">
             <span class="pagetitle">
@@ -74,7 +75,7 @@
         <div class="pull-right no-wrap" style="margin-right: 5px;">
             <span class="pagetitle">
                 <a class="btn btn-small" data-toggle="modal" data-target="#confirm"
-                   data-content="<?= sprintf(T_('Do you want to resend SMS to %1$s?'), "<u>{$mobile->name}</u>") ?>"
+                   data-content="<?= sprintf(T_('Do you want to resend SMS to %1$s?'), "<u>{$mobile->number}</u>") ?>"
                    data-onclick="R.ajax('<?= ADMIN_URI . "trace/resend/{$mobile->id}" ?>','#sent-<?= $mobile->id ?>');">
                     <b class="icon icon-envelope"></b><?= T_('Resend') ?>
                 </a>
@@ -96,6 +97,7 @@
             </span>
         </div>
         <? } ?>
+        </div>
     </div>
 
     <?

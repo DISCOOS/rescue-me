@@ -1,6 +1,6 @@
 <div class="trace <?=($collapsed ? '' : 'expanded')?>">
-    <!--div class="container-fluid pull-left"-->
-        <div class="row-fluid <?=($collapsed ? 'hidden' : '')?>">
+    <!--div class="container pull-left"-->
+        <div class="row <?=($collapsed ? 'hidden' : '')?>">
             <div class="span" 
                  title="<?=T_('When trace was registered')?>" 
                  rel="tooltip" data-placement="right">
@@ -24,7 +24,7 @@
                 <b class="icon located icon-flag"></b>
             </div>
         </div>
-        <div class="row-fluid <?=($collapsed ? 'hidden' : '')?>">
+        <div class="row <?=($collapsed ? 'hidden' : '')?>">
             <div class="span">
                 <?=T_('Alerted')?>
             </div>
@@ -41,7 +41,7 @@
                 <?=T_('Located')?>
             </div>
         </div>
-        <div class="row-fluid">
+        <div class="row">
             <div class="span" 
                  title="<?=$trace['alerted']['tooltip']?>" 
                  rel="tooltip" data-placement="right">
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        <div class="row-fluid trace-details <?=($collapsed ? 'hidden' : '')?>">
+        <div class="row trace-details <?=($collapsed ? 'hidden' : '')?>">
             <div class="span">
                 <time datetime="<?=$trace['alerted']['timestamp']?>"><?= $trace['alerted']['time'] ?></time>
             </div>
