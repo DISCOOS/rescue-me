@@ -1,5 +1,5 @@
 <div class="trace <?=($collapsed ? '' : 'expanded')?>">
-    <div class="container-fluid pull-left">
+    <!--div class="container-fluid pull-left"-->
         <div class="row-fluid <?=($collapsed ? 'hidden' : '')?>">
             <div class="span" 
                  title="<?=T_('When trace was registered')?>" 
@@ -95,5 +95,5 @@
                 <time datetime="<?=$trace['located']['timestamp']?>"><?= $trace['located']['time'] ?></time>
             </div>
         </div>    
-    </div>
+    <!--/div-->
 </div>

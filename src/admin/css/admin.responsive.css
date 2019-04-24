@@ -109,22 +109,6 @@
         border-top: 0px;
     }
 
-    .trace {
-        left: -10px;
-    }
-
-    .trace .span
-    {
-        width: 70px;
-    }
-    
-    .trace .trace-bar
-    {
-        width: 40px;
-        left: -20px;
-    }
-    
-
     /* Make search field smaller */
     input.search-query {
         width: 5.25em;

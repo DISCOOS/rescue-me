@@ -174,10 +174,6 @@ li.position {
 }
 
 .trace {
-    position: relative;
-    left: -30px;
-    float: left;
-    width: 100%;
     min-width: 400px;
     max-width: 60em;
     min-height: 40px;
@@ -192,10 +188,13 @@ li.position {
 .trace .span
 {
     float: left;
-    width: 100px;
+    width: calc(100%/5);
     min-height: 0px;
     text-align: center;
     margin-left:0 !important;
+    margin-right: 0px;
+
+
 }
 
 .trace .icon
@@ -210,30 +209,45 @@ li.position {
 .trace .trace-bar
 {
     position: relative;
-    left: -35px;
-    width: 70px;
+    float: left;
+    left: -50%;
+    width: calc(100% - 14px);
     height: 1.2em;
+    overflow: visible;
+    background-color: none;
+    background-clip: content-box;
     border-bottom: 0.5em solid #ddd;
+    border-image: linear-gradient(to left, #ddd calc(100% - 14px), rgb(0,0,0,0)  calc(100% - 14px));
+    border-image-slice: 1;
+
 }
 
 .trace .trace-bar.pass 
 {
     border-bottom: 0.5em solid #468847;
+    border-image: linear-gradient(to left, #468847 calc(100% - 16px), rgb(0,0,0,0)  calc(100% - 14px));
+    border-image-slice: 1;
+
 }
 
 .trace .trace-bar.warning
 {
     border-bottom: 0.5em solid #f89406;
+    border-image: linear-gradient(to left, #f89406 calc(100% - 16px), rgb(0,0,0,0)  calc(100% - 14px));
+    border-image-slice: 1;
+
 }
 
 .trace .trace-bar.fail
 {
     border-bottom: 0.5em solid #da2727;
+    border-image: linear-gradient(to left, #da2727 calc(100% - 16px), rgb(0,0,0,0)  calc(100% - 14px));
+    border-image-slice: 1;
 }
 
-.trace :first-child > .trace-bar 
+.trace :first-child > .trace-bar
 {
-    border: 0px;
+    border: 0;
 }
 
 .trace .icon.alarm
@@ -263,15 +277,16 @@ li.position {
 
 .trace .trace-bar > .icon  {
     position: relative;
-    float: right;
-    left: 24px;
+    float: left;
+    left: 100%;
     top: 0.8em;
     width: 14px;
     height: 14px;
     padding: 2px;
- 	border-radius: 10em;
+    margin-left: 5px;
+    border-radius: 10em;
     -webkit-border-radius: 10em;
-	-moz-border-radius: 10em;
+    -moz-border-radius: 10em;
     vertical-align: middle;
     background-color:  #ddd;
     background-position: -286px 2px;
