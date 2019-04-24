@@ -181,15 +181,15 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td><?=T_('Last location')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Last location')?></td>
                             <td <?=$pan_to?>><?= $position ?></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Location received')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Location received')?></td>
                             <td><span class="label label-<?=$located_state?>"><?= $located ?></span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Trace reloads')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Trace reloads')?></td>
                             <td><span class="label label-<?=
                                 $requestCount === 1
                                     ? 'success'
@@ -200,7 +200,7 @@
                             </span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Trace errors')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Trace errors')?></td>
                             <td><span class="label label-<?=$errorCount === 0 ? 'success' : 'important' ?>">
                                 <?=$errorCount?>
                             </span></td>
@@ -222,7 +222,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td><?=T_('Phone Number')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Phone Number')?></td>
                             <td><span class="label label-success">
                                 <?= $mobile->number
                                     ? Locale::getDialCode($mobile->country).$mobile->number
@@ -231,19 +231,19 @@
                             </span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Phone Network')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Phone Network')?></td>
                             <td><span class="label label-<?= $network ? 'success' : 'warning' ?>">
                                 <?= $network ? (sprintf('%s (%s)', $network['network'], $network['country']))  : T_('Unknown') ?>
                             </span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Undelivered messages')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Undelivered messages')?></td>
                             <td><span class="label label-<?= $messageCount > 0  ? 'warning' : 'success' ?>">
                                 <?= $messages === null ? T_('Unknown') : $messageCount?>
                             </span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Location link')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Location link')?></td>
                             <td><span class="label label-success">
                                 <?= str_replace("#mobile_id", encrypt_id($mobile->id), LOCATE_URL); ?>
                             </span></td>
@@ -284,13 +284,13 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td><?=T_('Type')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Type')?></td>
                             <td><span class="label label-<?= isset($device->device_type) ? 'success' : 'warning' ?>">
                                 <?= isset($device->device_type) ? $device->device_type : T_('Unknown')?>
                             </span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Is Phone')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Is Phone')?></td>
                             <td><span class="label label-<?= isset($device->device_is_phone) ? 'success' : 'warning' ?>">
                                 <?= isset($device->device_is_phone) ? ($device->device_is_phone === 'True'
                                     ? T_('Yes') : T_('No'))
@@ -298,7 +298,7 @@
                             </span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Is SmartPhone')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Is SmartPhone')?></td>
                             <td><span class="label label-<?= isset($device->device_is_smartphone) ? 'success' : 'warning' ?>">
                                 <?= isset($device->device_is_smartphone) ? ($device->device_is_smartphone === 'True'
                                     ? T_('Yes') : T_('No'))
@@ -322,7 +322,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td><?=T_('Supports location')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Supports location')?></td>
                             <td><span class="label label-<?= $supported  ? 'success' : 'warning' ?>">
                             <?= $supported === null
                                 ? T_('Unknown')
@@ -330,7 +330,7 @@
                             </span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Operating system')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Operating system')?></td>
                             <td><span class="label label-<?= isset($device->device_os_name) ? 'success' : 'warning' ?>">
                                 <?= isset($device->device_os_name)
                                     ? $device->device_os_name . " ({$device->device_os_version})"
@@ -338,7 +338,7 @@
                             </span></td>
                         </tr>
                         <tr>
-                            <td><?=T_('Last browser used')?></td>
+                            <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Last browser used')?></td>
                             <td><span class="label label-<?= isset($device->device_browser_name) ? 'success' : 'warning' ?>">
                                 <?= isset($device->device_browser_name)
                                     ? $device->device_browser_name . " ({$device->device_browser_version})"
