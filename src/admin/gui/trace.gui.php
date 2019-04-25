@@ -51,6 +51,10 @@
         // Get undelivered messages
         $messages = $mobile->getUndeliveredMessages();
         $messageCount = ($messages === false ? 0 : count($messages));
+        $format = htmlentities('<div class="alert alert-info"><b>%1$s</b>: %2$s</div>');
+        $messageList = array_reduce($messages, function($list, $message) use($format) {
+            return $list . sprintf($format, format_dt($message['message_sent']), $message['message_text']);
+        }, '');
 
         // Get reported errors
         $errors = $mobile->getErrors();
@@ -195,7 +199,8 @@
                                     ? 'success'
                                     : $requestCount < 10
                                         ? 'warning'
-                                        : 'important' ?>">
+                                        : 'important' ?>"
+                                   >
                                 <?=$requestCount?>
                             </span></td>
                         </tr>
@@ -238,9 +243,11 @@
                         </tr>
                         <tr>
                             <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Undelivered messages')?></td>
-                            <td><span class="label label-<?= $messageCount > 0  ? 'warning' : 'success' ?>">
+                            <td><a class="label label-<?= $messageCount > 0  ? 'warning' : 'success' ?>"
+                                   href="#" rel="popover" data-toggle="popover" title="Meldinger"
+                                   data-html="true" data-content="<?=$messageList?>" data-placement="left">
                                 <?= $messages === null ? T_('Unknown') : $messageCount?>
-                            </span></td>
+                            </a></td>
                         </tr>
                         <tr>
                             <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Location link')?></td>

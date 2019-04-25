@@ -198,6 +198,7 @@ R.prepare = function (element, options) {
     });
 
     $(element).find('[rel="tooltip"]').tooltip();
+    $(element).find('[rel="popover"]').popover();
 
     // Add form validation
     R.form.validate(element);
