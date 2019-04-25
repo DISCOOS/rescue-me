@@ -1,9 +1,11 @@
 body {
 
     width: 100%;
+    min-width: 20em;
+    max-width: 60em;
     height:100%;
-    margin: 0;
     padding: 0;
+    margin: auto;
     background-color: #f5f5f5;
 }
 
@@ -34,19 +36,20 @@ span.pagetitle {
 .masthead {
     position: fixed;
     top: 0;
-    left: 0;
-    width: calc(100% - 0.0em);
+    width: 100%;
     max-width: 60em;
     min-width: 20em;
     z-index: 1000;
     height: 2.4em;
-    padding: 0.2em;
+/*    padding-top: 0.2em;*/
+    margin: auto 0.2em;
     border-bottom: 1px solid #ddd;
     background-color: #f5f5f5;
 }
 
 .container-narrow {
     overflow: auto;
+    width: 100%;
     max-width: 60em;
     min-width: 20em;
     min-height:100%;

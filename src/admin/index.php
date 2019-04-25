@@ -42,7 +42,6 @@ $alerts = $user ? Alert::getActive($user->id) : array();
 
     <body>
 
-
         <div class="row-fluid masthead">
             <a class="lead no-wrap" href="<?=APP_URI?>"><b><?= TITLE ?></b></a>
             <ul class="nav nav-pills pull-right" style="display: <?= isset($_SESSION['logon']) ? 'block' : 'none' ?>;">
@@ -57,8 +56,8 @@ $alerts = $user ? Alert::getActive($user->id) : array();
             </ul>
         </div>
 
-        <div class="container-narrow">
 
+        <div class="container-narrow">
 
             <div class="row-fluid">
             <?
