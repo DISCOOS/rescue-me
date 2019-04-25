@@ -106,7 +106,7 @@ use RescueMe\SMS\Provider;
                     case NotDelivered::NAME:
                         $trace['delivered']['state'] = 'fail';
                         $trace['delivered']['tooltip'] =
-                            sprintf(T_('SMS not delivered, provider reported %1$d'),$state->getData());
+                            sprintf(T_('SMS not delivered, provider reported %1$s'),$state->getData());
                         break;
                     case Timeout::NAME:
                         $trace['delivered']['state'] = 'fail';
