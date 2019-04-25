@@ -176,7 +176,7 @@
                         <thead>
                         <tr>
                             <th><h4><?=T_('Status')?></h4></th>
-                            <t></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
