@@ -41,25 +41,24 @@ $alerts = $user ? Alert::getActive($user->id) : array();
     </head>
 
     <body>
-        
+
+
+        <div class="row-fluid masthead">
+            <a class="lead no-wrap" href="<?=APP_URI?>"><b><?= TITLE ?></b></a>
+            <ul class="nav nav-pills pull-right" style="display: <?= isset($_SESSION['logon']) ? 'block' : 'none' ?>;">
+        <? if(($logon = isset($_SESSION['logon']) && $_SESSION['logon']) === true) {
+                insert_trace_menu($user);
+                insert_system_menu($user);
+        } else { ?>
+                <li id="logout"><a href="<?=ADMIN_URI?>logon"><?=T_('Login')?></a></li>
+
+        <? } ?>
+
+            </ul>
+        </div>
+
         <div class="container-narrow">
-            
-            <div class="row-fluid masthead">
-                <a class="lead no-wrap" href="<?=APP_URI?>"><b><?= TITLE ?></b></a>                    
-                <ul class="nav nav-pills pull-right" style="display: <?= isset($_SESSION['logon']) ? 'block' : 'none' ?>;">
-            <?
-                
-            if(($logon = isset($_SESSION['logon']) && $_SESSION['logon']) === true) {
-                    insert_trace_menu($user,  $_ROUTER['view']);
-                    insert_system_menu($user);
-             } else { ?>
-                    
-                    <li id="logout"><a href="<?=ADMIN_URI?>logon"><?=T_('Login')?></a></li>
-                    
-            <? } ?>
-                    
-                </ul>
-            </div>
+
 
             <div class="row-fluid">
             <?

@@ -9,12 +9,12 @@ body {
 
 h3.pagetitle {
     margin-bottom: 5px;
-    display:block;
-    width:100%;
-    padding:0;
-    font-size:21px;
-    line-height:40px;
-    color:#333333;
+    display: block;
+    width: 100%;
+    padding :0;
+    font-size: 21px;
+    line-height: 40px;
+    color: #333333;
 }
 
 hr {
@@ -32,15 +32,15 @@ span.pagetitle {
 
 
 .masthead {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: calc(100% - 0.4em);
+    width: calc(100% - 0.0em);
     max-width: 60em;
     min-width: 20em;
     z-index: 1000;
     height: 2.4em;
-    margin: 0.2em;
+    padding: 0.2em;
     border-bottom: 1px solid #ddd;
     background-color: #f5f5f5;
 }
@@ -50,7 +50,7 @@ span.pagetitle {
     max-width: 60em;
     min-width: 20em;
     min-height:100%;
-    margin: 1em 0.1em 30em 0.1em;
+    margin: 3em 0.1em 3em 0.1em;
     padding: 0.1em;
 }
 

@@ -255,21 +255,24 @@
         </li>
     </ul>
 
-    <? require_once(ADMIN_PATH_GUI . 'trace.position.list.gui.php'); ?>
-    <div id="map" class="map"></div>
+    <div class="map">
+        <? require_once(ADMIN_PATH_GUI . 'trace.position.list.gui.php'); ?>
+        <div id="map"></div>
 
-    <div id="sidebar">
-        <? insert_last_position_table($mobile); ?>
-        <h4 id="under1kmtitle" class="hide" style="border: 0; border-bottom:1px solid lightgray;"><?=sprintf(T_('Locations &le; %1$s'),'1 km')?></h4>
-        <ul class="unstyled" id="under1km"></ul>
-        </ul>
-        <h4 id="over1kmtitle" class="hide" style="border: 0; border-bottom:1px solid lightgray;"><?=sprintf(T_('Locations &gt; %1$s'),'1 km')?></h4>
-        <ul class="unstyled" id="over1km"></ul>
+        <div id="sidebar">
+            <? insert_last_position_table($mobile); ?>
+            <h4 id="under1kmtitle" class="hide" style="border: 0; border-bottom:1px solid lightgray;"><?=sprintf(T_('Locations &le; %1$s'),'1 km')?></h4>
+            <ul class="unstyled" id="under1km"></ul>
+            </ul>
+            <h4 id="over1kmtitle" class="hide" style="border: 0; border-bottom:1px solid lightgray;"><?=sprintf(T_('Locations &gt; %1$s'),'1 km')?></h4>
+            <ul class="unstyled" id="over1km"></ul>
+        </div>
     </div>
 
     <div class="clearfix"></div>
-    
+
     <? if($top === false) { insert_trace_progress($mobile, $collapsed); } ?>
+
 
     <ul class="thumbnails" style="margin-top: 20px;">
         <li class="span6">
