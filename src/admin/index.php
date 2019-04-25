@@ -50,7 +50,7 @@ $alerts = $user ? Alert::getActive($user->id) : array();
             <?
                 
             if(($logon = isset($_SESSION['logon']) && $_SESSION['logon']) === true) {
-                    insert_trace_menu($user);
+                    insert_trace_menu($user,  $_ROUTER['view']);
                     insert_system_menu($user);
              } else { ?>
                     
