@@ -61,9 +61,9 @@
     }
     
     /* Make dropdown toggles easier to hit */
-    .editor .dropdown-toggle {
+    /*.editor .dropdown-toggle {
         width: 1.25em;
-    }
+    }*/
 
     /* Move dropdown to the left */
     .pull-right li:last-child .dropdown-menu {
@@ -118,10 +118,11 @@
     }
 
     /* Make dropdown toggles easier to hit */
+/*
     .editor .dropdown-toggle {
         width: 1.25em;
     }
-
+*/
     /* Move dropdown to the left */
     .pull-right li:last-child .dropdown-menu {
         left: auto;
