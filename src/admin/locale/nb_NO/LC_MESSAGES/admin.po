@@ -792,7 +792,7 @@ msgstr "Tillatelse avslått %s ganger."
 
 #: admin/gui/trace.gui.php:139
 msgid "Ask if location sharing prompt was accepted."
-msgstr "Spør om deling av posisjon ble innvilget når forespurt om dette."
+msgstr "Spør om deling av posisjon ble akseptert."
 
 #: admin/gui/trace.gui.php:144 admin/inc/gui.inc.php:150
 #, php-format
