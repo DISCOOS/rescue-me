@@ -75,7 +75,7 @@ HTML;
             $value = sprintf('%s ( %s meter )', implode('<br>',explode(',',$copy)), round($distance));
         }
         $label = T_('Copy');
-        $tooltip = isset_get($address, 'error_message', T_('Copy address'));
+        $tooltip = isset_get($response, 'error_message', T_('Copy address'));
 
         $rows[] = <<<HTML
             <tr>
