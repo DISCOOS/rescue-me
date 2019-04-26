@@ -53,13 +53,26 @@ HTML;
         $url = sprintf('https://maps.googleapis.com/maps/api/geocode/json?latlng=%1$s,%2$s&key=%3$s',
             $position->lat, $position->lon, GOOGLE_GEOCODING_API_KEY);
 
-        $address = get_json($url);
+        $response = get_json($url);
 
         $key = "address";
         $name = T_('Address');
-        $value = isset_get($address, 'results', T_('Unknown'));
-        if(is_array($value)) {
-            $value=implode("<br>",explode(",",$value[0]['formatted_address']));
+        $addresses = isset_get($response, 'results', T_('Unknown'));
+        if(is_array($addresses)) {
+
+            $distances = array_map(function($address) use($position) {
+                return distance(floatval($position->lat), floatval($position->lon),
+                    floatval($address['geometry']['location']['lat']),
+                    floatval($address['geometry']['location']['lng']));
+            }, $addresses);
+
+            $distances = array_combine(array_keys($distances),$distances);
+            asort($distances);
+            $idx = reset(array_keys($distances));
+            $value = $addresses[$idx];
+            $distance = $distances[$idx];
+            $copy = $value['formatted_address'];
+            $value = sprintf('%s ( %s meter )', implode('<br>',explode(',',$copy)), round($distance));
         }
         $label = T_('Copy');
         $tooltip = isset_get($address, 'error_message', T_('Copy address'));
@@ -70,7 +83,7 @@ HTML;
                 <td id="copy-{$key}"><span class="label">{$value}</span></td>
                 <td style="align-items: end;">
                     <button class="btn copy" type="button" 
-                        data-clipboard-action="copy" data-clipboard-target="#copy-{$key}"
+                        data-clipboard-action="copy" data-clipboard-text="{$copy}"
                         title="{$tooltip}" rel="tooltip">
                         <i class="icon-upload""></i>                        
                         {$label}
@@ -100,3 +113,19 @@ HTML;
 
     </tbody>
 </table>
+
+<?
+
+function distance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)
+{
+    $rad = M_PI / 180;
+    //Calculate distance from latitude and longitude
+    $theta = $longitudeFrom - $longitudeTo;
+    $dist = sin($latitudeFrom * $rad) 
+        * sin($latitudeTo * $rad) +  cos($latitudeFrom * $rad)
+        * cos($latitudeTo * $rad) * cos($theta * $rad);
+
+    return (acos($dist) / $rad * 60 *  1.853) * 1000;
+}
+
+?>
