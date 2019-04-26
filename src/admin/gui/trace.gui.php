@@ -165,10 +165,12 @@
     <? } ?>
 
         <?
+        /*
             $mobile->last_pos->lat = 59.911491;
             $mobile->last_pos->lon = 10.757933;
             $now = new DateTime();
             $mobile->last_pos->timestamp = $now->getTimestamp();
+        */
         ?>
 
 
