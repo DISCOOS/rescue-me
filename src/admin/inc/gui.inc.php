@@ -217,6 +217,7 @@ use RescueMe\SMS\Provider;
 
         $position = $mobile->last_pos;
 
+
         ob_start();
         require(ADMIN_PATH . "gui/trace.position.table.gui.php");
         $html = ob_get_clean();

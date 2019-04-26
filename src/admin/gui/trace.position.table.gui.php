@@ -50,10 +50,40 @@ HTML;
 
         }, $formats);
 
+        $url = sprintf('https://maps.googleapis.com/maps/api/geocode/json?latlng=%1$s,%2$s&key=%3$s',
+            $position->lat, $position->lon, GOOGLE_GEOCODING_API_KEY);
+
+        $address = get_json($url);
+
+        $key = "address";
+        $name = T_('Address');
+        $value = isset_get($address, 'formatted_address', T_('Unknown'));
+        $label = T_('Copy');
+        $tooltip = isset_get($address, 'error_message', T_('Copy address'));
+
+        $rows[] = <<<HTML
+            <tr>
+                <td>{$name}</td>
+                <td id="copy-{$key}"><span class="label">{$value}</span></td>
+                <td style="align-items: end;">
+                    <button class="btn copy" type="button" 
+                        data-clipboard-action="copy" data-clipboard-target="#copy-{$key}"
+                        title="{$tooltip}" rel="tooltip">
+                        <i class="icon-upload""></i>                        
+                        {$label}
+                    </button>
+                </td>
+            </tr>
+
+HTML;
+
+
 
         foreach ($rows as $row) {
             echo $row;
         }
+
+
     }
     else {
 

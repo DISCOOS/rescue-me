@@ -133,3 +133,16 @@ function format_state(State $state) {
     }
 
 }
+
+function get_json($url) {
+
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+    $res = trim(curl_exec($curl));
+    curl_close($curl);
+
+    return json_decode($res, TRUE);
+} // invoke

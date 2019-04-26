@@ -78,8 +78,9 @@ define('DB_NAME', 'rescueme');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 
-// Google Maps integration
+// Google API KEYS
 define('GOOGLE_MAPS_API_KEY', '');
+define('GOOGLE_GEOCODING_API_KEY', '');
 
 // Set current timezone
 if(TimeZone::set(DEFAULT_TIMEZONE) === FALSE) {

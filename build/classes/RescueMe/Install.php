@@ -134,6 +134,7 @@ class Install {
             'DEFAULT_LOCALE' => str_escape($this->params['DEFAULT_LOCALE']),
             'DEFAULT_TIMEZONE' => str_escape($this->params['DEFAULT_TIMEZONE']),
             'GOOGLE_MAPS_API_KEY' => str_escape($this->params['GOOGLE_MAPS_API_KEY']),
+            'GOOGLE_GEOCODING_API_KEY' => str_escape($this->params['GOOGLE_GEOCODING_API_KEY']),
             'DEBUG' => $this->params['DEBUG'],
             'MAINTAIN' => $this->params['MAINTAIN']
         ));
