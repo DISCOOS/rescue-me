@@ -57,7 +57,10 @@ HTML;
 
         $key = "address";
         $name = T_('Address');
-        $value = isset_get($address, 'formatted_address', T_('Unknown'));
+        $value = isset_get($address, 'results', T_('Unknown'));
+        if(is_array($value)) {
+            $value=implode("<br>",explode(",",$value[0]['formatted_address']));
+        }
         $label = T_('Copy');
         $tooltip = isset_get($address, 'error_message', T_('Copy address'));
 
