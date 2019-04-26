@@ -247,7 +247,7 @@
                             <td class="no-wrap" style="min-width: 100px; width: 40%;"><?=T_('Undelivered messages')?></td>
                             <td><a class="label label-<?= $messageCount > 0  ? 'warning' : 'success' ?>"
                                    href="#" rel="popover" data-toggle="popover" title="Meldinger"
-                                   data-html="true" data-content="<?=$messageList?>" data-placement="left">
+                                   data-html="true" data-content="<?=$messageList?>" data-placement="top">
                                 <?= $messages === null ? T_('Unknown') : $messageCount?>
                             </a></td>
                         </tr>
