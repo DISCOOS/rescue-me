@@ -12,10 +12,12 @@
     
     namespace RescueMe\SMS;
     
+    use Exception;
     use RescueMe\Configuration;
     use RescueMe\DBException;
     use RescueMe\Properties;
-    
+    use SoapClient;
+
 
     /**
      * SMS class
@@ -79,13 +81,13 @@
         {
             try {
                 
-                $client = new \SoapClient(UMS::WDSL_URL);
+                $client = new SoapClient(UMS::WDSL_URL);
                 
                 // Perform dummy-check. Will fail with SoapException if credentials does not match
                 $client->doGetStatus($account, 0);
                 
             }
-            catch(\Exception $e) 
+            catch(Exception $e)
             {
                 if('Reference not found.' !== $e->getMessage())
                 {
@@ -96,8 +98,19 @@
             return true;
         }
 
-        
-        protected function _send($from, $to, $message, $account)
+
+        /**
+         * Actual send implementation
+         *
+         * @param string $from Sender
+         * @param string $to Recipient international phone number
+         * @param string $message Message text
+         * @param string $client_ref Client reference (only used if provider supports it)
+         * @param array $account Provider configuration
+         * @return bool|array Provider message references, FALSE on failure
+         * @throws DBException
+         */
+        protected function _send($from, $to, $message, $client_ref, $account)
         {
             try {
                 
@@ -110,14 +123,14 @@
                 
                 $recipients = array($to);
 
-                $client = new \SoapClient(UMS::WDSL_URL);
+                $client = new SoapClient(UMS::WDSL_URL);
                 
                 $refno = $client->doSendSMS($account, $sms, $recipients);
                 
-                return $refno;
+                return array($refno);
                 
             }
-            catch(\Exception $e) 
+            catch(Exception $e)
             {
                 return $this->exception($e);
             }
@@ -142,7 +155,7 @@
         {
             try {
                 
-                $client = new \SoapClient(UMS::WDSL_URL);
+                $client = new SoapClient(UMS::WDSL_URL);
                 
                 $result = $client->doGetStatus($this->config->params(), $provider_ref);
                 
@@ -173,7 +186,7 @@
 
                 }
             }
-            catch(\Exception $e) 
+            catch(Exception $e)
             {
                 return $this->exception($e);
             }

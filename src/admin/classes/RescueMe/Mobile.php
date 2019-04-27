@@ -17,8 +17,6 @@
     use \Psr\Log\LogLevel;
     use ReflectionException;
     use RescueMe\Log\Logs;
-    use RescueMe\SMS\AbstractProvider;
-    use RescueMe\SMS\Callback;
     use RescueMe\SMS\Check;
     use RescueMe\SMS\Provider;
     use RescueMe\SMS\T;
@@ -294,7 +292,7 @@
             $trace = Trace::get($trace_id);
             
             if($trace === false) {
-                return Mobile::log_trace_error(sentence(array(
+                return Mobile::log_trace_error(sentences(array(
                     T_('Mobile not added'),
                     sprintf(T_('Trace %s does not exist'), $trace_id)))
                 );
@@ -692,7 +690,8 @@
             });
 
             if($res === FALSE) {
-                return Mobile::log_trace_error(T_('Failed to trace mobile %s'), $this->id);
+                return Mobile::log_trace_error(
+                    sprintf(T_('Failed to trace mobile %s'), $this->id));
             }
 
             $dt = new DateTime();
@@ -711,39 +710,6 @@
                     DB::last_error()
                 );
             }
-
-            /*
-
-            list ($text, $provider, $client_ref, $references) = $res;
-
-            foreach($references as $reference) {
-
-                $values = prepare_values(
-                    array(
-                        'mobile_id',
-                        'message_type',
-                        'message_sent',
-                        'message_locale',
-                        'message_text',
-                        'message_provider',
-                        'message_provider_ref',
-                        'message_client_ref'),
-                    array(
-                        $this->id, 'sms', $dt,
-                        $provider,
-                        $client_ref,
-                        $this->locale,
-                        $this->sms_text
-                    )
-                );
-
-                if (DB::insert('messages', $values) === FALSE) {
-                    Mobile::log_trace_error(T_('Failed to insert SMS message'),
-                        DB::last_error()
-                    );
-                }
-            }
-            */
 
             // Load data from database
             return $this->load();
@@ -1084,8 +1050,8 @@
             if($provider === FALSE)
             {
                 Mobile::log_trace_error(
-                    sentence(array(
-                        sprintf('Failed to get SMS provider for %s', $user_id),
+                    sentences(array(
+                        sprintf(T_('Failed to get SMS provider for %s'), $user_id),
                         call_user_func($on_error))
                     )
                 );

@@ -38,10 +38,22 @@
      * @param string $ending
      * @return string
      */
-    function sentence($elements, $delimiter = ' ', $ending = '') {
+    function sentence($elements, $delimiter = '.', $ending = '.') {
         return ucfirst(implode($delimiter, array_map(function($element) {
             return strtolower($element);
         },$elements))).$ending;
+    }
+
+    /**
+     * Get sentences
+     *
+     * @param array $elements
+     * @return string
+     */
+    function sentences($elements) {
+        return implode('.', array_map(function($element) {
+            return trim(trim($element),'.');
+        },$elements)).".";
     }
 
     /**

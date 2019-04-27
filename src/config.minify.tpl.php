@@ -60,6 +60,7 @@
                 '//js/rescueme-accordion.js',
                 '//js/capslock.js',
                 '//js/validate.js',
+		'//js/pubsub.js',
                 '//admin/js/admin.js'
             ),
             'map.js' => array

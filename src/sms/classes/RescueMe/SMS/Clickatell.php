@@ -91,8 +91,15 @@
                 )
             );
         }// newConfig
-        
-        
+
+
+        /**
+         * Validate configuration parameters.
+         *
+         * @param array $account Associative array of parameters
+         * @return boolean TRUE if success, FALSE otherwise.
+         * @throws DBException
+         */
         protected function validateParameters($account)
         {
             $user = $account['user'];
@@ -110,7 +117,7 @@
             $response = explode(":", $result[0]);
             if($response[0] !== "OK")
             {
-                return $this->errors(
+                return $this->fatal(
                     "Authentication failure: {$response[1]}"
                 );
             }
@@ -123,11 +130,12 @@
          * @param string $from Sender
          * @param string $to Recipient international phone number
          * @param string $message Message text
+         * @param string $client_ref Client reference (only used if provider supports it)
          * @param array $account Provider configuration
          * @return bool|array Provider message references, FALSE on failure
          * @throws DBException
          */
-        protected function _send($from, $to, $message, $account)
+        protected function _send($from, $to, $message, $client_ref, $account)
         {
             $user = $account['user'];
             $api_id = $account['api_id'];
@@ -147,7 +155,7 @@
                 $sess_id = trim($response[1]);
                 
                 // Analyse message and determine if concatenation and unicode encoding is required
-                list($text, $concat, $unicode) = $this->prepare($this->user_id, $message);
+                list($text, $concat, $unicode) = $this->prepare($message);
                 
                 // Require alpha and numeric sender id support
                 $require = 1;
@@ -176,11 +184,11 @@
                 
                 if($response[0] === "ID")
                 {
-                    return $response[1];
+                    return array($response[1]);
                 }
                 else
                 {
-                    return $this->errors
+                    return $this->fatal
                     (
                         $response[1]
                     );
@@ -188,7 +196,7 @@
             }
             else
             {
-                return $this->errors(
+                return $this->fatal(
                     "Authentication failure: {$response[1]}"
                 );
             }
@@ -206,9 +214,16 @@
                 return $code;
             }
             return false;
-        }        
-                
-        
+        }
+
+        /**
+         * Handle given status
+         *
+         * @param mixed $params
+         *
+         * @return void
+         * @throws DBException
+         */
         public function handle($params) {
             
             // Required callback params: apiMsgId, to and status (optional: cliMsgId, timestamp, from and charge)
@@ -226,14 +241,12 @@
             }
         }
         
-        private function errors($message, $code = Provider::FATAL) {
-            
-            $this->error['code'] = $code;
-            $this->error['message'] = $message;
-
-            return false;
-        }
-        
+        /**
+         * Prepare SMS text message
+         * @param $data
+         * @return array
+         * @throws DBException
+         */
         private function prepare($data) {
             $n = 0;
             $text = '';

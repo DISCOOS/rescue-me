@@ -25,6 +25,12 @@ use RescueMe\Log\Logs;
 abstract class AbstractModule extends AbstractUses implements Module {
 
     /**
+     * Error code unknown
+     */
+    const UNKNOWN = 99;
+
+
+    /**
      * Description of last error
      * @var array
      */
@@ -154,18 +160,17 @@ abstract class AbstractModule extends AbstractUses implements Module {
      * @throws DBException
      */
     protected final function exception(Exception $e, $value = false) {
+        $message = Logger::toString($e);
         $this->set_last(
             $e->getCode(),
-            Logger::toString($e)
+            $message
         );
-        Logs::write(
-            $this->logger,
+        return $this->log(
             LogLevel::ERROR,
-            $e->getMessage(),
-            $this->error
+            $message,
+            array(),
+            $value
         );
-
-        return $value;
     }
 
 
@@ -181,14 +186,12 @@ abstract class AbstractModule extends AbstractUses implements Module {
             Module::FATAL,
             $message
         );
-        Logs::write(
-            $this->logger,
+        return $this->log(
             LogLevel::CRITICAL,
             $message,
-            $this->error
+            array(),
+            true
         );
-
-        return false;
     }
 
 
@@ -203,17 +206,15 @@ abstract class AbstractModule extends AbstractUses implements Module {
      */
     protected final function critical($message, $context = array()) {
         $this->set_last(
-            0,
+            self::UNKNOWN,
             $message
         );
-        Logs::write(
-            $this->logger,
+        return $this->log(
             LogLevel::CRITICAL,
             $message,
-            $context
+            $context,
+            true
         );
-
-        return false;
     }
 
     /**
@@ -227,17 +228,15 @@ abstract class AbstractModule extends AbstractUses implements Module {
      */
     protected final function error($message, $context = array()) {
         $this->set_last(
-            0,
+            self::UNKNOWN,
             $message
         );
-        Logs::write(
-            $this->logger,
+        return $this->log(
             LogLevel::ERROR,
             $message,
-            $context
+            $context,
+            true
         );
-
-        return false;
     }
 
     /**
@@ -250,13 +249,12 @@ abstract class AbstractModule extends AbstractUses implements Module {
      * @throws DBException
      */
     protected final function warning($message, $context = array()) {
-        Logs::write(
-            $this->logger,
+        return $this->log(
             LogLevel::WARNING,
             $message,
-            $context
+            $context,
+            true
         );
-        return false;
     }
 
 
@@ -270,13 +268,12 @@ abstract class AbstractModule extends AbstractUses implements Module {
      * @throws DBException
      */
     protected final function info($message, $context = array()) {
-        Logs::write(
-            $this->logger,
+        return $this->log(
             LogLevel::INFO,
             $message,
-            $context
+            $context,
+            true
         );
-        return true;
     }
 
 
@@ -291,13 +288,34 @@ abstract class AbstractModule extends AbstractUses implements Module {
      * @throws DBException
      */
     protected final function debug($message, $context = array()) {
+        return $this->log(
+            LogLevel::DEBUG,
+            $message,
+            $context,
+            true
+        );
+    }
+
+
+    /**
+     * Log message
+     *
+     * @param string $level
+     * @param string $message
+     * @param array $context
+     * @param mixed $return
+     *
+     * @return mixed
+     * @throws DBException
+     */
+    protected final function log($level, $message, $context, $return) {
         Logs::write(
             $this->logger,
-            LogLevel::DEBUG,
+            $level,
             $message,
             $context
         );
-        return true;
+        return $return;
     }
 
 

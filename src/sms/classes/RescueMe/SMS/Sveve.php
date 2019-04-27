@@ -12,7 +12,9 @@
     
     namespace RescueMe\SMS;
     
+    use DateTime;
     use RescueMe\Configuration;
+    use RescueMe\DBException;
     use RescueMe\Properties;
 
     /**
@@ -89,8 +91,19 @@
             return $valid;
         }
 
-        
-        protected function _send($from, $to, $message, $account)
+
+        /**
+         * Actual send implementation
+         *
+         * @param string $from Sender
+         * @param string $to Recipient international phone number
+         * @param string $message Message text
+         * @param string $client_ref Client reference (only used if provider supports it)
+         * @param array $account Provider configuration
+         * @return bool|array Provider message references, FALSE on failure
+         * @throws DBException
+         */
+        protected function _send($from, $to, $message, $client_ref, $account)
         {            
             // Create SMS provider url
             $smsURL = utf8_decode
@@ -109,8 +122,7 @@
             
             if(isset($response['msg_ok_count']) && is_numeric($response['msg_ok_count']) && $response['msg_ok_count']>0)
             {
-                // Get first id (only one message is sent)
-                return \reset($response['ids']);
+                return $response['ids'];
             }
             
             return $this->errors($response['errors']);
@@ -133,22 +145,41 @@
             }
             return $res;
         }
-        
-        
+
+        /**
+         * Get supported country dial code pattern.
+         *
+         * See {@link http://countrycode.org/ Country Codes} for more information.
+         *
+         * @return string Country code as
+         * {@link http://www.php.net/manual/en/pcre.pattern.php PCRE pattern}
+         */
         public function getDialCodePattern() {
             return '\d{1,4}';
         }
-        
-        
-        public function accept($code) {
+
+        /**
+         * Check if provider accepts given telephone number.
+         *
+         * @param mixed $number
+         *
+         * @return boolean|string. Accepted code, FALSE otherwise
+         */
+        public function accept($number) {
             $pattern = $this->getDialCodePattern();
-            if(preg_match("#$pattern#", $code) === 1) {
-                return $code;
+            if(preg_match("#$pattern#", $number) === 1) {
+                return $number;
             }
             return false;
-        }        
-                
-        
+        }
+
+
+        /**
+         * Parse provider errors and log as fatal
+         * @param $errors
+         * @return bool Always FALSE
+         * @throws DBException
+         */
         private function errors($errors) {
             $messages = array();
             foreach($errors as $error) {
@@ -158,16 +189,22 @@
                 }
                 $messages[] = $error['number'].":".$error['message'];
             }
-            $this->error['code'] = Provider::FATAL;
-            $this->error['message'] = implode("\n", $messages);
-            return false;
+            return $this->fatal(implode("\n", $messages));
         }
-        
+
+        /**
+         * Handle given status
+         *
+         * @param mixed $params
+         *
+         * @return void
+         * @throws DBException
+         */
         public function handle($params) {
             
             if(assert_isset_all($params,array('id','number','status'))) {
             
-                $this->delivered($params['id'], $params['number'], $params['status'], new \DateTime(),
+                $this->delivered($params['id'], $params['number'], $params['status'], new DateTime(),
                         (isset($params['errorDesc']) ? $params['errorDesc'] : ''));
             }
         }

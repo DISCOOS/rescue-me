@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
-"POT-Creation-Date: 2019-04-27 20:25+0200\n"
+"POT-Creation-Date: 2019-04-27 23:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
@@ -214,132 +214,137 @@ msgstr "Ugyldig API nøkkel"
 msgid "Failed to lookup device"
 msgstr "Klarte ikke  å finne enhet %1$s"
 
-#: admin/classes/RescueMe/Mobile.php:284 admin/classes/RescueMe/Mobile.php:375
+#: admin/classes/RescueMe/Mobile.php:282 admin/classes/RescueMe/Mobile.php:373
 msgid "One or more required arguments are missing"
 msgstr "En eller flere argumenter mangler"
 
-#: admin/classes/RescueMe/Mobile.php:298
+#: admin/classes/RescueMe/Mobile.php:296
 msgid "Mobile not added"
 msgstr "Mobil ikke lagt til"
 
-#: admin/classes/RescueMe/Mobile.php:299
+#: admin/classes/RescueMe/Mobile.php:297
 #, php-format
 msgid "Trace %s does not exist"
 msgstr "Sporing %s eksisterer ikke"
 
-#: admin/classes/RescueMe/Mobile.php:320
+#: admin/classes/RescueMe/Mobile.php:318
 #, php-format
 msgid "Failed to insert mobile for trace %s"
 msgstr "Klarte ikke å legge mobil til sporing %s"
 
-#: admin/classes/RescueMe/Mobile.php:332
+#: admin/classes/RescueMe/Mobile.php:330
 #, php-format
 msgid "Mobile %s created."
 msgstr "Mobil %s opprettet."
 
-#: admin/classes/RescueMe/Mobile.php:401
+#: admin/classes/RescueMe/Mobile.php:399
 #, php-format
 msgid "Mobile %s updated"
 msgstr "Mobil %s oppdatert"
 
-#: admin/classes/RescueMe/Mobile.php:403
+#: admin/classes/RescueMe/Mobile.php:401
 #, php-format
 msgid "Failed to update  mobile %s"
 msgstr "Klarte ikke å oppdatere mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:691 admin/classes/RescueMe/Mobile.php:961
+#: admin/classes/RescueMe/Mobile.php:689 admin/classes/RescueMe/Mobile.php:927
 #, php-format
 msgid "SMS not sent to mobile %s"
 msgstr "SMS ble ikke sendt til mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:695
+#: admin/classes/RescueMe/Mobile.php:694
 #, php-format
 msgid "Failed to trace mobile %s"
 msgstr "Klarte ikke spore mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:710
+#: admin/classes/RescueMe/Mobile.php:709
 #, php-format
 msgid "Failed to update SMS status for mobile %s"
 msgstr "Klarte ikke å oppdatere SMS status for mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:801
+#: admin/classes/RescueMe/Mobile.php:767
 #, php-format
 msgid "Failed to check message status for mobile %s"
 msgstr "Klarte ikke å sjekke meldingsstatus for mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:836
+#: admin/classes/RescueMe/Mobile.php:802
 #, php-format
 msgid "Mobile %s has loaded tracking page"
 msgstr "Mobil %s har lastet sporingssiden"
 
-#: admin/classes/RescueMe/Mobile.php:838
+#: admin/classes/RescueMe/Mobile.php:804
 #, php-format
 msgid "Failed to update status to RESPONDED for mobile %s"
 msgstr "Klarte ikke å oppdatere status til BESVART for %s"
 
-#: admin/classes/RescueMe/Mobile.php:871
+#: admin/classes/RescueMe/Mobile.php:837
 #, php-format
 msgid "Added request %s to mobile %s"
 msgstr "La til respons %s fra mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:873
+#: admin/classes/RescueMe/Mobile.php:839
 #, php-format
 msgid "Failed to add request from mobile %s"
 msgstr "Klarte ikke å lagre repons av mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:896
+#: admin/classes/RescueMe/Mobile.php:862
 #, php-format
 msgid "Added error %s to mobile %s"
 msgstr "La til feilmelding %s fra mobil  %s"
 
-#: admin/classes/RescueMe/Mobile.php:898
+#: admin/classes/RescueMe/Mobile.php:864
 #, php-format
 msgid "Failed to add error from mobile %s"
 msgstr "Klarte ikke å lagre feilmelding fra mobil  %s"
 
-#: admin/classes/RescueMe/Mobile.php:914
+#: admin/classes/RescueMe/Mobile.php:880
 msgid "Missing person"
 msgstr "Savnet person"
 
-#: admin/classes/RescueMe/Mobile.php:926
+#: admin/classes/RescueMe/Mobile.php:892
 #, php-format
 msgid "Mobile %s has been anonymized"
 msgstr "Mobil %1$s er anonymisert"
 
-#: admin/classes/RescueMe/Mobile.php:928
+#: admin/classes/RescueMe/Mobile.php:894
 #, php-format
 msgid "Failed to anonymize mobile %s"
 msgstr "Klarte ikke å anonymiserte mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:1012
+#: admin/classes/RescueMe/Mobile.php:978
 msgid "Failed to insert SMS message"
 msgstr "Klarte ikke å legge til SMS"
 
-#: admin/classes/RescueMe/Mobile.php:1165
+#: admin/classes/RescueMe/Mobile.php:1054
+#, php-format
+msgid "Failed to get SMS provider for %s"
+msgstr "Klarte ikke å hente SMS leverandør for %s"
+
+#: admin/classes/RescueMe/Mobile.php:1131
 #, php-format
 msgid "Failed to insert position for mobile %s"
 msgstr "Klarte ikke å legge til posisjon fra mobil [%1$s]"
 
-#: admin/classes/RescueMe/Mobile.php:1176
+#: admin/classes/RescueMe/Mobile.php:1142
 #, php-format
 msgid "Mobile %s reported position %s"
 msgstr "Mobil %s rapporterte posisjon %s"
 
-#: admin/classes/RescueMe/Mobile.php:1233
+#: admin/classes/RescueMe/Mobile.php:1199
 #, php-format
 msgid "Failed to send second SMS to mobile %1$s"
 msgstr "Kunne ikke sende engangspassord til bruker %1$s"
 
-#: admin/classes/RescueMe/Mobile.php:1243
+#: admin/classes/RescueMe/Mobile.php:1209
 msgid "Failed to update `sms2_sent` for mobile %$s"
 msgstr "Klarte ikke å oppdatere SMS `sms2_sent` for mobil %s"
 
-#: admin/classes/RescueMe/Mobile.php:1261
+#: admin/classes/RescueMe/Mobile.php:1227
 #, php-format
 msgid "Failed to send location update SMS to mobile %1$s"
 msgstr "Kunne ikke sende posisjonsoppdatering til mobil %1$s"
 
-#: admin/classes/RescueMe/Mobile.php:1271
+#: admin/classes/RescueMe/Mobile.php:1237
 msgid "Failed to update `sms_mb_sent` for mobile %$s"
 msgstr "Klarte ikke å oppdatere SMS `sms_mb_sent` for mobil %s"
 

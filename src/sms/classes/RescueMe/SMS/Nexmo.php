@@ -13,6 +13,7 @@
     namespace RescueMe\SMS;
     
     use DateTime;
+    use Psr\Log\LogLevel;
     use RescueMe\Configuration;
     use RescueMe\DBException;
     use RescueMe\Properties;
@@ -26,7 +27,30 @@
     {
         const TYPE = 'RescueMe\SMS\Nexmo';
 
-        private $errorCodes = array(
+        private $statusCodes = array(
+            0 => array('name' => "Success", "description" => "The message was successfully accepted for delivery."),
+            1 => array("name" => "Throttled", "description" => 'You are sending SMS faster than the account limit (see <a href="https://help.nexmo.com/hc/en-us/articles/203993598">What is the Throughput Limit for Outbound SMS?</a>).'),
+            2 => array("name" => "Missing Parameters", "description" => "Your request is missing one of the required parameters: from, to, api_key, api_secret or text."),
+            3 => array("name" => "Invalid Parameters", "description" => "The value of one or more parameters is invalid."),
+            4 => array("name" => "Invalid Credentials", "description" => "Your API key and/or secret are incorrect, invalid or disabled."),
+            5 => array("name" => "Internal Error", "description" => "An error has occurred in the platform whilst processing this message."),
+            6 => array("name" => "Invalid Message", "description" => "The platform was unable to process this message, for example, an un-recognized number prefix."),
+            7 => array("name" => "Number Barred", "description" => "The number you are trying to send messages to is blacklisted and may not receive them."),
+            8 => array("name" => "Partner Account Barred", "description" => "Your Nexmo account has been suspended. Contact support@nexmo.com."),
+            9 => array("name" => "Partner Quota Violation", "description" => "You do not have sufficient credit to send the message. Top-up and retry."),
+            10 => array("name" => "Too Many Existing Binds", "description" => "The number of simultaneous connections to the platform exceeds your account allocation."),
+            11 => array("name" => "Account Not Enabled For HTTP", "description" => "This account is not provisioned for the SMS API, you should use SMPP instead."),
+            12 => array("name" => "Message Too Long", "description" => "The message length exceeds the maximum allowed."),
+            14 => array("name" => "Invalid Signature", "description" => "The signature supplied could not be verified."),
+            15 => array("name" => "Invalid Sender Address", "description" => "You are using a non-authorized sender ID in the from field. This is most commonly in North America, where a Nexmo long virtual number or short code is required."),
+            22 => array("name" => "Invalid Network Code", "description" => "The network code supplied was either not recognized, or does not match the country of the destination address."),
+            23 => array("name" => "Invalid Callback Url", "description" => "The callback URL supplied was either too long or contained illegal characters."),
+            29 => array("name" => "Non-Whitelisted Destination", "description" => "Your Nexmo account is still in demo mode. While in demo mode you must add target numbers to your whitelisted destination list. Top-up your account to remove this limitation."),
+            32 => array("name" => "Signature And API Secret Disallowed", "description" => "A signed request may not also present an api_secret."),
+            33 => array("name" => "Number De-activated", "description" => "The number you are trying to send messages to is de-activated and may not receive them."),
+        );
+
+        private $deliveryCodes = array(
              0 => 'Delivered',
              1 => 'Unknown',
              2 => 'Absent Subscriber - Temporary',
@@ -116,11 +140,12 @@
          * @param string $from Sender
          * @param string $to Recipient international phone number
          * @param string $message Message text
+         * @param string $client_ref Client reference (only used if provider supports it)
          * @param array $account Provider configuration
          * @return bool|array Provider message references, FALSE on failure
          * @throws DBException
          */
-        protected function _send($from, $to, $message, $account)
+        protected function _send($from, $to, $message, $client_ref, $account)
         {
 
             $from = urlencode( $from );
@@ -134,6 +159,7 @@
                        . '&from='.$from
                        . '&to='.$to
                        . '&text='.$message
+                       . '&client-ref='.$client_ref
                        . '&status-report-req=1'
                        . '&callback='.$callbackURL;
 
@@ -144,23 +170,50 @@
             }
             
             // Start request
-            $response = $this->invoke($smsURL);
-            
-            if (isset($response['messages'][0]['status']) && 
-                    $response['messages'][0]['status']==="0")
-            {
-                // Get first id
-                return $response['messages'][0]['message-id'];
-            }
-            
-            return $this->errors(array(
-                array(
-                    'fatal'=>utf8_encode($response['messages'][0]['error-text']),
-                    'number'=>$response['messages'][0]['status'])
-                )
-            );
+            return $this->parse($this->invoke($smsURL));
+
 
         } // _send
+
+        /**
+         * Parse response
+         * @param array $response
+         * @return bool|array References to accepted messages, FALSE if none was accepted.
+         * @throws DBException
+         */
+        private function parse($response) {
+
+            $messages = isset_get($response,'messages', false);
+
+            if(FALSE === $messages){
+                return $this->fatal("Invalid response");
+            }
+
+            $references = array();
+
+            foreach($messages as $message) {
+
+                $status = (int)isset_get($message,'status', 99);
+                $reference = isset_get($message,'message-id', false);
+                if($status !== 0) {
+                    $error = $this->statusCodes[$status];
+                    $this->set_last($status, $error['name']);
+                    $this->log(LogLevel::CRITICAL, sentences(
+                        array(
+                            sprintf(T_('Failed to send SMS message %s'), $reference),
+                            sprintf(T_('Provider responded %s'),"{$error['name']} ($status)")
+                        )),
+                        $message, false);
+
+                }
+                $references[] = $reference;
+            }
+
+            var_dump($references);
+            die();
+
+            return count($references) > 0 ? $references : false;
+        }
         
         private function invoke($url) {
             
@@ -202,7 +255,11 @@
             $this->error['message'] = implode("\n", $messages);
             return false;
         }
-        
+
+        /**
+         * @param mixed $params
+         * @throws DBException
+         */
         public function handle($params) {
             
             if(assert_isset_all($params,array('messageId','msisdn','status'))) {
@@ -216,10 +273,12 @@
                         $params['messageId'],
                         $params['msisdn'],
                         $params['status'],
-                        $isDelivered ? new DateTime() : null,
+                        $isDelivered
+                            ? new DateTime()
+                            : null,
                         $isDelivered
                             ? ''
-                            : "{$this->errorCodes[(int)$params['err-code']]} ({$params['err-code']})",
+                            : "{$this->deliveryCodes[(int)$params['err-code']]} ({$params['err-code']})",
                         $params['network-code']
                     );
                 }

@@ -13,12 +13,12 @@
     namespace RescueMe\SMS;
     
     use Closure;
+    use DateTime;
     use RescueMe\AbstractModule;
     use RescueMe\Configuration;
     use \RescueMe\DB;
     use RescueMe\DBException;
     use \RescueMe\Locale;
-    use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
     use \RescueMe\Properties;
 
@@ -72,7 +72,7 @@
             
             if(($code = Locale::getDialCode($code)) === FALSE) {
                 return $this->fatal(
-                    sentence(array(
+                    sentences(array(
                         sprintf(T_('Failed to get country dial code %s'), $code),
                         is_null($on_error) ? '' : call_user_func($on_error))
                     )
@@ -81,7 +81,7 @@
                 
             if(($code = $this->accept($code)) === FALSE) {
                 return $this->fatal(
-                    sentence(array(
+                    sentences(array(
                         sprintf(T_('SMS provider does not accept country dial code %s'), $code),
                         is_null($on_error) ? '' : call_user_func($on_error))
                     )
@@ -92,7 +92,7 @@
             
             if($account === FALSE) {
                 return $this->fatal(
-                    sentence(array(
+                    sentences(array(
                         T_('SMS provider configuration is invalid'),
                         is_null($on_error) ? '' : call_user_func($on_error))
                     )
@@ -102,7 +102,7 @@
             $sender = $this->getSenderID($this->user_id, $code);
             $recipient = $code.$number;
 
-            $references = $this->_send($sender, $recipient, $text, $account);
+            $references = $this->_send($sender, $recipient, $text, $client_ref, $account);
             
             $context = prepare_values(
                 array('sender', 'recipient', 'text'),
@@ -111,17 +111,18 @@
             
             if($references === FALSE) {
                 return $this->error(
-                    sentence(array(
+                    sentences(array(
                         sprintf(T_('Failed to send SMS to %s'), $recipient),
                         is_null($on_error) ? '' : call_user_func($on_error))
-                    ),
-                    $context
+                    ), $context
                 );
             }
 
-            $this->info(sentence(array(
+            $this->info(sentences(array(
                 sprintf(T_('SMS sent to %s'), $recipient),
-                sprintf(T_('References are %s'), implode(', ',$references)))),
+                count($references) > 0
+                    ? sprintf(T_('References are %s'), implode(', ',$references))
+                    : sprintf(T_('Reference is %s'), reset($references)))),
                 $context
             );
             
@@ -155,10 +156,11 @@
          * @param string $from Sender
          * @param string $to Recipient international phone number
          * @param string $message Message text
+         * @param string $client_ref Client reference (only used if provider supports it)
          * @param array $account Provider configuration
          * @return bool|array Provider message references, FALSE on failure
          */
-        protected abstract function _send($from, $to, $message, $account);
+        protected abstract function _send($from, $to, $message, $client_ref, $account);
 
 
         /**
@@ -167,7 +169,7 @@
          * @param string $reference
          * @param string $to International phone number
          * @param string $status Delivery status
-         * @param \DateTime $datetime Time of delivery
+         * @param DateTime $datetime Time of delivery
          * @param string $error Delivery error description
          * @param string $plnm Standard MCC/MNC tuple
          * @return boolean TRUE if success, FALSE otherwise.
@@ -201,14 +203,17 @@
 
                     $filter = sprintf("`message_id`=%s", $row['message_id']);
                     if(DB::update('messages', $values, $filter)) {
-                        Logs::write(Logs::SMS, LogLevel::INFO,
-                            sprintf(T_('SMS %1$s is %2$s%3$s'), $reference,
-                                is_bool($status)
+                        $this->info(
+                            sprintf(T_('SMS %1$s is %2$s%3$s'),
+                                /* #1 */ $reference,
+                                /* #2 */is_bool($status)
                                 ? $status
                                     ? T_('delivered')
                                     : T_('not delivered')
                                 : $status,
-                                $error !== '' ? sprintf(' %s ', T_('with error')) . $error : ''
+                                /* #3 */ $error !== ''
+                                    ? sprintf(' %s ', T_('with error')) . $error
+                                    : ''
                             ));
                     } else {
                         $context['values'] = $values;
@@ -225,8 +230,7 @@
                         array($delivered, $plnm)
                     );
 
-                    $filter = sprintf("`mobile_id`=%s", $row['mobile_id']);
-                    if(!DB::update('mobiles', $values, $filter)) {
+                    if(!DB::update('mobiles', $values, "`mobile_id`={$row['mobile_id']}")) {
                         $context['values'] = $values;
                         $context['filter'] = $filter;
                         $this->critical(
@@ -237,7 +241,7 @@
 
                 }
             } else {
-                $this->warning(T_('No SMS with reference %s found'), $reference);
+                $this->warning(sprintf(T_('No SMS with reference %s found'), $reference));
             }
 
             return true;
