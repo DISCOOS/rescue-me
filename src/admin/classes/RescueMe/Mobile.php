@@ -923,7 +923,7 @@
             $params = $this->build($message, $user_id, $encrypt);
             list ($country, $number, $text, $client_ref) = $params;
 
-            $refs = $provider->send($country, $number, $text, $this->locale, $client_ref, function () {
+            $refs = $provider->send($this->id, $country, $number, $text, $this->locale, $client_ref, function () {
                 return sprintf(T_('SMS not sent to mobile %s'), $this->id);
             });
 

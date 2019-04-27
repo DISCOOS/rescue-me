@@ -678,7 +678,7 @@
                     return User::error(T_('Failed to get SMS provider'));
                 }
 
-                $res = $sms->send($this->mobile_country, $this->mobile, $message, null, null, function () {
+                $res = $sms->send(, $this->mobile_country, $this->mobile, $message, null, null, function () {
                     return sprintf(T_('Failed to send SMS to user %s'), $this->id);
                 });
 

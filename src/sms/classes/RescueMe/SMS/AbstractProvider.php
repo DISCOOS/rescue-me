@@ -56,6 +56,10 @@
         /**
          * Send SMS message to given number.
          *
+         * TODO: Relax relation from mobile_id to recipient_id?
+         * TODO: Add Params class?
+         *
+         * @param $mobile_id
          * @param string $code ISO country code
          * @param string $number Recipient phone number without dial code
          * @param string $text SMS message text
@@ -66,7 +70,7 @@
          * @return bool|array Provider message references, array of message ids, FALSE on failure.
          * @throws DBException
          */
-        public function send($code, $number, $text, $locale, $client_ref = null, $on_error = null)
+        public function send($mobile_id, $code, $number, $text, $locale, $client_ref = null, $on_error = null)
         {
             // Prepare
             unset($this->error);
@@ -106,8 +110,8 @@
             $references = $this->_send($sender, $recipient, $text, $client_ref, $account);
 
             // Prepare updating messages
-            $dt = new DateTime();
-            $dt = DB::timestamp($dt->getTimestamp());
+            $datetime = new DateTime();
+            $datetime = DB::timestamp($datetime->getTimestamp());
             $values = prepare_values(
                 array(
                     'mobile_id',
@@ -117,7 +121,9 @@
                     'message_provider',
                     'message_client_ref'),
                 array(
-                    $this->id, 'sms', $dt,
+                    $mobile_id,
+                    'sms',
+                    $datetime,
                     $locale,
                     $this->impl,
                     $client_ref
