@@ -34,12 +34,13 @@
          * @param string $code ISO country code
          * @param string $number Recipient phone number without dial code
          * @param string $text SMS message text
+         * @param string $locale SMS message text locale
          * @param string $client_ref (optional) Client reference (only used if provider supports it)
          * @param $on_error (optional) Closure that returns string logged with error message
          *
          * @return bool|array Provider message references, FALSE on failure
          */
-        public function send($code, $number, $text, $client_ref = null, $on_error = null);
+        public function send($code, $number, $text, $locale, $client_ref = null, $on_error = null);
 
         
         /**

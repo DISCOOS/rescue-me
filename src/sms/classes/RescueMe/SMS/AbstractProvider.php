@@ -59,13 +59,14 @@
          * @param string $code ISO country code
          * @param string $number Recipient phone number without dial code
          * @param string $text SMS message text
+         * @param string $locale SMS message text locale
          * @param string $client_ref Client reference (only used if provider supports it)
          * @param $on_error Closure that returns string logged with error message
          *
          * @return bool|array Provider message references, array of message ids, FALSE on failure.
          * @throws DBException
          */
-        public function send($code, $number, $text, $client_ref = null, $on_error = null)
+        public function send($code, $number, $text, $locale, $client_ref = null, $on_error = null)
         {
             // Prepare
             unset($this->error);
@@ -99,11 +100,61 @@
                 );
             }
 
+            // Send SMS using provider implementation
             $sender = $this->getSenderID($this->user_id, $code);
             $recipient = $code.$number;
-
             $references = $this->_send($sender, $recipient, $text, $client_ref, $account);
-            
+
+            // Prepare updating messages
+            $dt = new DateTime();
+            $dt = DB::timestamp($dt->getTimestamp());
+            $values = prepare_values(
+                array(
+                    'mobile_id',
+                    'message_type',
+                    'message_sent',
+                    'message_locale',
+                    'message_provider',
+                    'message_client_ref'),
+                array(
+                    $this->id, 'sms', $dt,
+                    $locale,
+                    $this->impl,
+                    $client_ref
+                )
+            );
+
+            // Prepare to clip text to multipart sms
+            $offset = 0;
+            $parts = count($references);
+            $length = empty($text) ? 0 : mb_strlen($text);
+            $part = floor($length / $parts);
+
+            foreach($references as $reference) {
+
+                $values = array_merge(
+                    $values,
+                    prepare_values(
+                        array(
+                            'message_text',
+                            'message_provider_ref'),
+                        array(
+                            substr($text, $offset, $part),
+                            $reference
+                        )
+                    ));
+
+                // Goto next text part
+                $offset += $part + 1;
+
+                if (DB::insert('messages', $values) === FALSE) {
+                    $this->error(T_('Failed to insert SMS message'),
+                        DB::last_error()
+                    );
+                }
+            }
+
+
             $context = prepare_values(
                 array('sender', 'recipient', 'text'),
                 array($sender, $recipient, $text)
@@ -168,11 +219,11 @@
          *
          * @param string $reference SMS Provider id
          * @param string $to Recipient phone number
-         * @param DateTime $datetime Time of delivery
          * @param bool $status Delivery status. TRUE if delivered, FALSE if not delivered.
+         * @param DateTime $datetime Time of delivery
          * @param string $client_ref (optional) Client reference (only used if provider supports it)
-         * @param string $plnm (optional) Standard MCC/MNC tuple
          * @param string $error (optional) Error description
+         * @param string $plnm (optional) Standard MCC/MNC tuple
          *
          * @return boolean TRUE if success, FALSE otherwise.
          * @throws DBException
@@ -249,6 +300,6 @@
             return true;
 
         }// delivered
-        
+
         
     }// AbstractProvider

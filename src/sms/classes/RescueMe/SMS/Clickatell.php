@@ -240,7 +240,13 @@
                 $description = $this->status[$params['status']];
 
                 // Update status
-                $this->delivered($params['apiMsgId'], $params['to'], $delivered, $when, '', $description);
+                $this->delivered(
+                    $params['apiMsgId'],
+                    $params['to'],
+                    $delivered,
+                    $when,
+                    '',
+                    $description);
                 
             }
         }

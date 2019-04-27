@@ -27,14 +27,14 @@
          *
          * @param string $reference SMS Provider message reference
          * @param string $to Recipient phone number
-         * @param DateTime $datetime Time of delivery
          * @param bool $status Delivery status
+         * @param DateTime $datetime Time of delivery
          * @param string $client_ref (optional) Client reference (only used if provider supports it)
-         * @param string $plnm (optional) Standard MCC/MNC tuple
          * @param string $error (optional) Error description
+         * @param string $plnm (optional) Standard MCC/MNC tuple
          *
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public function delivered($reference, $to, $datetime, $status, $client_ref='', $error='', $plnm='');
+        public function delivered($reference, $to, $status, $datetime, $client_ref='', $error='', $plnm='');
         
     }// Provider

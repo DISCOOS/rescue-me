@@ -923,65 +923,11 @@
             $params = $this->build($message, $user_id, $encrypt);
             list ($country, $number, $text, $client_ref) = $params;
 
-            $refs = $provider->send($country, $number, $text, $client_ref, function () {
+            $refs = $provider->send($country, $number, $text, $this->locale, $client_ref, function () {
                 return sprintf(T_('SMS not sent to mobile %s'), $this->id);
             });
 
-            if($refs === FALSE) {
-                return false;
-            }
-
-            // Prepare message
-            $dt = new DateTime();
-            $dt = DB::timestamp($dt->getTimestamp());
-            $values = prepare_values(
-                array(
-                    'mobile_id',
-                    'message_type',
-                    'message_sent',
-                    'message_locale',
-                    'message_provider'),
-                array(
-                    $this->id, 'sms', $dt,
-                    $this->locale,
-                    $text,
-                    $provider
-                )
-            );
-
-            // Prepare to clip text to multipart sms
-            $offset = 0;
-            $parts = count($refs);
-            $length = empty($text) ? 0 : mb_strlen($text);
-            $part = floor($length / $parts);
-
-            foreach($refs as $ref) {
-
-                $values = array_merge(
-                    $values,
-                    prepare_values(
-                        array(
-                            'message_text',
-                            'message_provider_ref',
-                            'message_client_ref'),
-                        array(
-                            substr($text, $offset, $part),
-                            $ref,
-                            $client_ref
-                        )
-                    ));
-
-                // Goto next text part
-                $offset += $part + 1;
-
-                if (DB::insert('messages', $values) === FALSE) {
-                    Mobile::log_trace_error(T_('Failed to insert SMS message'),
-                        DB::last_error()
-                    );
-                }
-            }
-
-            return true;
+            return $refs !== FALSE;
 
         }// _send
 

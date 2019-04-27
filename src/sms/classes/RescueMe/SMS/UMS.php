@@ -179,7 +179,7 @@
 
                         default:
 
-                            $this->delivered($reference, $status->sentTo, false, null, '', $status->errorMessage);
+                            $this->delivered($reference, $status->sentTo, $status->queueStatus, null, '', $status->errorMessage);
 
                             break;
                     }

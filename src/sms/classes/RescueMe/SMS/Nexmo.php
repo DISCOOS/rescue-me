@@ -252,12 +252,11 @@
                 if($params['status'] !== 'accepted') {
 
                     // Prepare values
-                    $delivered = $params['status'] === 'delivered';
+                    $delivered = $params['status'] == 'delivered' ? true : $params['status'];
                     $datetime = $delivered ? new DateTime() : null;
                     $client_ref = isset_get($params,'client-ref', false);
-                    $error = $delivered
-                        ? "{$this->deliveryCodes[(int)$params['err-code']]} ({$params['err-code']})"
-                        : '';
+                    $error = $delivered ? ''
+                        : "'{$this->deliveryCodes[(int)$params['err-code']]} ({$params['err-code']})'";
 
                     // Update message status
                     $this->delivered(

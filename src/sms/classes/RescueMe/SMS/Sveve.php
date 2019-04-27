@@ -209,8 +209,8 @@
                 $this->delivered(
                     $params['id'],
                     $params['number'],
-                    $dt,
                     $params['status'],
+                    $dt,
                     '',
                     isset($params['errorDesc'])
                         ? $params['errorDesc']
