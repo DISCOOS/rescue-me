@@ -232,7 +232,18 @@
         {
             return "FROM_UNIXTIME({$timestamp})";
         }
-        
+
+
+        /**
+         * Get last error
+         * @return array
+         */
+        public static function last_error() {
+            return array(
+                'code' => self::errno(),
+                'message' => self::error(),
+            );
+        }
         
         /**
          * Returns the error code for the most recent function call.

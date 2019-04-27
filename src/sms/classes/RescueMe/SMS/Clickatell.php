@@ -13,6 +13,7 @@
     namespace RescueMe\SMS;
 
     use RescueMe\Configuration;
+    use RescueMe\DBException;
     use RescueMe\User;
     use RescueMe\Properties;
     
@@ -44,7 +45,7 @@
         /**
          * Constructor
          *
-         * @param integer $user_id RescueMe user id
+         * @param int $user_id User id associated with given configuration
          * @param string $api_id Clickatell user credentials
          * @param string $user Clickatell user credentials
          * @param string $passwd Clickatell user credentials (optional)
@@ -55,6 +56,7 @@
         public function __construct($user_id=0, $api_id='', $user='', $passwd='')
         {
             parent::__construct(
+                $user_id,
                 $this->newConfig(
                     $user_id, $api_id, $user, $passwd
                 ),
@@ -115,7 +117,16 @@
             return true;
         }
 
-        
+
+        /**
+         * Provider implementation
+         * @param string $from Sender
+         * @param string $to Recipient international phone number
+         * @param string $message Message text
+         * @param array $account Provider configuration
+         * @return bool|array Provider message references, FALSE on failure
+         * @throws DBException
+         */
         protected function _send($from, $to, $message, $account)
         {
             $user = $account['user'];
@@ -135,12 +146,12 @@
             {
                 $sess_id = trim($response[1]);
                 
-                // Analyse message and determine if concatenation and unicode encoding is requried
-                list($text, $concat, $unicode) = $this->prepare($message);
+                // Analyse message and determine if concatenation and unicode encoding is required
+                list($text, $concat, $unicode) = $this->prepare($this->user_id, $message);
                 
                 // Require alpha and numeric sender id support
                 $require = 1;
-                $values = explode(',', Properties::get(Properties::SMS_REQUIRE, User::currentId()));
+                $values = explode(',', Properties::get(Properties::SMS_REQUIRE, $this->user_id));
                 if(in_array(Properties::SMS_REQUIRE_UNICODE, $values)) $require += ($unicode ? 8 : 0);
                 if(in_array(Properties::SMS_REQUIRE_SENDER_ID_ALPHA, $values)) $require += 16;
                 if(in_array(Properties::SMS_REQUIRE_SENDER_ID_NUMERIC, $values)) $require += 32;
@@ -227,7 +238,7 @@
             $n = 0;
             $text = '';
             $concat = 1;
-            $optimize = Properties::get(Properties::SMS_OPTIMIZE, User::currentId());
+            $optimize = Properties::get(Properties::SMS_OPTIMIZE, $this->user_id);
             $unicode = $optimize === Properties::SMS_OPTIMIZE_ENCODING && !$this->isASCII($data);
             $max = ($unicode ? 70 : 160);
             for($i = 0; $i < mb_strlen($data, 'UTF-8'); $i++) {

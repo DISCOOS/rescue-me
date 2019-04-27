@@ -12,8 +12,8 @@
     
     namespace RescueMe\SMS;
 
+    use Closure;
     use RescueMe\Module;
-    use RescueMe\User;
 
     /**
      * Provider class
@@ -27,18 +27,19 @@
          */
         const TYPE = 'RescueMe\SMS\Provider';
 
-        
+
         /**
          * Send SMS message to given number.
-         * 
-         * @param int|User $user User
-         * @param string $code International dial code
-         * @param string $to Recipient phone number without dial code
-         * @param string $message Message text
-         * 
-         * @return mixed|array Message id if success, FALSE otherwise.
+         *
+         * @param string $code ISO country code
+         * @param string $number Recipient phone number without dial code
+         * @param string $text SMS message text
+         * @param string $client_ref (optional) Client reference (only used if provider supports it)
+         * @param $on_error (optional) Closure that returns string logged with error message
+         *
+         * @return bool|array Provider message references, FALSE on failure
          */
-        public function send($user, $code, $to, $message);
+        public function send($code, $number, $text, $client_ref = null, $on_error = null);
 
         
         /**

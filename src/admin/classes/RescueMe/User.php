@@ -13,6 +13,7 @@
     namespace RescueMe;
     
     use \Psr\Log\LogLevel;
+    use ReflectionException;
     use \RescueMe\Log\Logs;
     use RescueMe\SMS\Provider;
 
@@ -151,11 +152,12 @@
             
         }
 
-        
+
         /**
          * Check if one or more admins exist
-         * 
+         *
          * @return boolean
+         * @throws DBException
          */
         public static function isEmpty() {
             
@@ -198,6 +200,7 @@
          * @param array $states User state (optional, default: null, values: {'pending', 'disabled', 'deleted'})
          * @param string $filter
          * @return boolean|array
+         * @throws DBException
          */
         public static function count($states=null, $filter = '') {
             
@@ -228,6 +231,7 @@
          * @param int $start
          * @param bool $max
          * @return boolean|array
+         * @throws DBException
          */
         public static function getAll($states = null, $filter = '', $start = 0, $max = false) {
 
@@ -277,11 +281,12 @@
             return (int)isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
         }
 
-        
+
         /**
          * Get current user.
-         * 
+         *
          * @return boolean|User User instance if found, FALSE otherwise.
+         * @throws DBException
          */
         public static function current() {
             return isset($_SESSION['user_id']) ? User::get($_SESSION['user_id']) : false;
@@ -295,6 +300,7 @@
          * @param integer $reference
          *
          * @return integer|boolean Trace id if success, FALSE otherwise.
+         * @throws DBException
          */
         public static function getProviderUserId($provider, $reference) {
             
@@ -311,14 +317,14 @@
             return $trace ? $trace->user_id : false;
         }
 
-        
+
         /**
          * Get user with given id
-         * 
+         *
          * @param integer $id User id
-         * @param \RescueMe\User Update user instance
-         * 
-         * @return boolean|\RescueMe\User
+         * @param null $user
+         * @return boolean|User
+         * @throws DBException
          */
         public static function get($id, $user = null) {
             
@@ -349,15 +355,17 @@
             return $user;
             
         }// get
-        
-        
+
+
         /**
          * Recover user
-         * 
-         * @param string $email 
-         * @param array $methods 
-         * 
+         *
+         * @param string $email
+         * @param array $methods
+         *
          * @return boolean
+         * @throws DBException
+         * @throws ReflectionException
          */
         public static function recover($email, $methods = array()) {
             
@@ -400,8 +408,9 @@
          * @param string $mobile
          * @param integer $role
          * @param string $state
-         * @internal param string $hash
          * @return User|boolean
+         * @throws DBException
+         * @internal param string $hash
          */
         public static function create($name, $email, $hash, $country, $mobile, $role, $state = User::ACTIVE) {
 
@@ -446,17 +455,18 @@
             return $this->state === $state;
             
         }// isEmpty
-        
-        
+
+
         /**
          * Update user
-         * 
+         *
          * @param string $name
          * @param string $email
          * @param string $country
          * @param string $mobile
          * @param mixed $role id or name
          * @return boolean
+         * @throws DBException
          */
         public function update($name, $email, $country, $mobile, $role = null) {
             
@@ -492,16 +502,17 @@
             return User::error("Failed to update user {$this->id}", func_get_args());
             
         }// update
-        
+
 
         /**
          * Reset user password.
-         * 
+         *
          * Returns random password
-         * 
+         *
          * @param integer $length Length of random password (default: PASSWORD_LENGTH)
-         * 
+         *
          * @return string|boolean
+         * @throws DBException
          */
         public function reset($length = PASSWORD_LENGTH) {
             
@@ -510,14 +521,15 @@
             return $this->password($password) ? $password : false;
             
         }// reset
-        
-        
+
+
         /**
          * Set user password.
-         * 
+         *
          * @param string $tokens Password
-         * 
+         *
          * @return boolean
+         * @throws DBException
          */
         public function password($tokens) {
 
@@ -538,12 +550,13 @@
             return User::error("Failed to change user {$this->id} password", $hash);
             
         }// password
-        
-        
+
+
         /**
          * Delete user.
-         * 
+         *
          * @return boolean
+         * @throws DBException
          */
         public function delete() {
             
@@ -559,11 +572,12 @@
             
         }// delete        
 
-        
+
         /**
          * Disable user.
-         * 
+         *
          * @return boolean
+         * @throws DBException
          */
         public function disable() {
             
@@ -579,11 +593,12 @@
             
         }// disable        
 
-        
+
         /**
          * Enable user.
-         * 
+         *
          * @return boolean
+         * @throws DBException
          */
         public function enable() {
             
@@ -598,12 +613,14 @@
             return User::error("Failed to enable user $this->id");
             
         }// disable     
-        
+
         /**
          * Approve a pending user.
          * Will alert the user by mail and SMS.
-         * 
+         *
          * @return boolean
+         * @throws DBException
+         * @throws ReflectionException
          */
         public function approve() {
             if ($this->enable()) {
@@ -614,12 +631,14 @@
             }
             return false;
         }
-        
+
         /**
          * Reject a pending user.
          * Will alert the user by mail and SMS.
-         * 
+         *
          * @return boolean
+         * @throws DBException
+         * @throws ReflectionException
          */
         public function reject() {
             if ($this->delete()) {
@@ -632,14 +651,16 @@
 
         /**
          * Send message to user devices
-         * 
+         *
          * @param string $message The text to send
          * @param array $devices Send to given devices {'sms','email'};
-         * 
+         *
          * @return boolean
+         * @throws DBException
+         * @throws ReflectionException
          */
         public function send($message, $devices = array()) {
-            
+
             $sent = 0;
             
             $devices = array_map(function($device) { return strtolower($device);}, $devices);
@@ -657,26 +678,27 @@
                     return User::error(T_('Failed to get SMS provider'));
                 }
 
-                $res = $sms->send($this, $this->mobile_country, $this->mobile, $message);
-                if($res === FALSE) {
-                    User::error($sms->error());
-                } else {
+                $res = $sms->send($this->mobile_country, $this->mobile, $message, null, function () {
+                    return sprintf(T_('Failed to send SMS to user %s'), $this->id);
+                });
+
+                if($res !== FALSE) {
                     $sent++;
                 }
             }
                 
             return $sent > 0;
-            
-        }// send
-        
 
-        
+        }// send
+
+
         /**
          * Attempt to login in user
-         * 
+         *
          * @param string $email
          * @param string $password
          * @return boolean
+         * @throws DBException
          */
         public function logon($email, $password) {
 
@@ -736,11 +758,12 @@
             
         }// logout        
 
-        
+
         /**
          * Verify current user login credentials
-         * 
-         * @return boolean|string|User Returns User object if success, illegal state or FALSE if illegal credentials 
+         *
+         * @return boolean|string|User Returns User object if success, illegal state or FALSE if illegal credentials
+         * @throws DBException
          */
         public static function verify() {
             
@@ -759,14 +782,15 @@
                         
             return $state === true ? $user : $state;
         }// verify
-        
-        
+
+
         /**
          * Verify credentials
-         * 
+         *
          * @param string $user_id
          * @param string $hash
          * @return boolean|string
+         * @throws DBException
          */
         private function _verify($user_id, $hash) {
             
@@ -830,14 +854,15 @@
             
         }// _login_ok
 
-        
+
         /**
          * Check if a user is authorized to access given object
-         * 
+         *
          * @param string $access read/write
          * @param string $resource resource to access
          * @param mixed $condition Optional condition
          * @return boolean
+         * @throws DBException
          */
         public function allow($access, $resource, $condition = null) {
             
@@ -911,8 +936,9 @@
          * Check if user is unique
          *
          * @param $email
-         * @internal param string $string
          * @return string
+         * @throws DBException
+         * @internal param string $string
          */
         public static function unique($email) {
             $email = User::safe($email);

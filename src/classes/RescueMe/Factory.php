@@ -12,6 +12,8 @@
     namespace RescueMe;
 
 
+    use ReflectionException;
+
     /**
      * Module factory class
      *
@@ -63,6 +65,7 @@
          * @param boolean $empty Create empty instance if true
          *
          * @return Module|false
+         * @throws ReflectionException
          */
         public function newInstance($empty=false) {
 

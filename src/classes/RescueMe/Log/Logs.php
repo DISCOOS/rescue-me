@@ -13,6 +13,7 @@
     namespace RescueMe\Log;
     
     use \RescueMe\DB;
+    use RescueMe\DBException;
     use \RescueMe\User;
 
     /**
@@ -258,9 +259,8 @@
             return Logs::getAll(array($name), $filter, $start, $max);
             
         }// get
-        
-        
-        
+
+
         /**
          * Write message to log.
          *
@@ -271,6 +271,7 @@
          * @param integer $user_id User id
          *
          * @return void
+         * @throws DBException
          */
         public static function write($name, $level, $message, $context = array(), $user_id = null) {
             

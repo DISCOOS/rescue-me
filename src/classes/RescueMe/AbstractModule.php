@@ -11,6 +11,7 @@
 
 namespace RescueMe;
 
+use Exception;
 use Psr\Log\LogLevel;
 use RescueMe\Log\Logger;
 use RescueMe\Log\Logs;
@@ -33,9 +34,16 @@ abstract class AbstractModule extends AbstractUses implements Module {
     /**
      * Provider configuration
      *
-     * @var \RescueMe\Configuration
+     * @var Configuration
      */
     protected $config;
+
+
+    /**
+     * Log name
+     * @var string
+     */
+    protected $logger;
 
 
     /**
@@ -44,14 +52,16 @@ abstract class AbstractModule extends AbstractUses implements Module {
      * @param $config Configuration Configuration
      * @param mixed $uses Uses (optional, default - empty array)
      *
+     * @param string $logger Log name
      * @since 29. September 2013
-     *
      */
-    protected function __construct($config, $uses=array())
+    protected function __construct($config, $uses=array(), $logger=Logs::SYSTEM)
     {
         parent::__construct($uses);
 
         $this->config = $config;
+        $this->logger = $logger;
+
     }
 
     /**
@@ -95,7 +105,7 @@ abstract class AbstractModule extends AbstractUses implements Module {
     /**
      * Validate configuration
      *
-     * @param \RescueMe\Configuration $config Account [optional, null - use current
+     * @param Configuration $config Account [optional, null - use current
      * @return boolean TRUE if success, FALSE otherwise.
      */
     public final function validate($config = null) {
@@ -110,7 +120,7 @@ abstract class AbstractModule extends AbstractUses implements Module {
 
     /**
      * Validate that required parameters exists
-     * @param \RescueMe\Configuration $config Account [optional, null - use current]
+     * @param Configuration $config Account [optional, null - use current]
      * @return boolean|array TRUE if success, parameters otherwise.
      */
     protected function validateRequired($config) {
@@ -135,19 +145,21 @@ abstract class AbstractModule extends AbstractUses implements Module {
     }
 
     /**
-     * Set last error from exception.
+     * Set level from exception.
      *
-     * @param \Exception $e Exception
+     * @param Exception $e Exception
      * @param boolean $value Return value
      *
      * @return boolean
+     * @throws DBException
      */
-    protected final function exception(\Exception $e, $value = false) {
-        $this->error['code'] = $e->getCode();
-        $this->error['message'] = Logger::toString($e);
-
+    protected final function exception(Exception $e, $value = false) {
+        $this->set_last(
+            $e->getCode(),
+            Logger::toString($e)
+        );
         Logs::write(
-            Logs::SYSTEM,
+            $this->logger,
             LogLevel::ERROR,
             $e->getMessage(),
             $this->error
@@ -158,16 +170,19 @@ abstract class AbstractModule extends AbstractUses implements Module {
 
 
     /**
-     * Set fatal error
+     * Log fatal error level
      * @param string $message
      *
      * @return boolean
+     * @throws DBException
      */
     protected final function fatal($message) {
-        $this->error['code'] = Module::FATAL;
-        $this->error['message'] = $message;
+        $this->set_last(
+            Module::FATAL,
+            $message
+        );
         Logs::write(
-            Logs::SYSTEM,
+            $this->logger,
             LogLevel::CRITICAL,
             $message,
             $this->error
@@ -178,16 +193,21 @@ abstract class AbstractModule extends AbstractUses implements Module {
 
 
     /**
-     * Set critical error
+     * Log critical level
      *
      * @param string $message
      * @param array $context
      *
      * @return boolean
+     * @throws DBException
      */
     protected final function critical($message, $context = array()) {
+        $this->set_last(
+            0,
+            $message
+        );
         Logs::write(
-            Logs::SYSTEM,
+            $this->logger,
             LogLevel::CRITICAL,
             $message,
             $context
@@ -196,13 +216,118 @@ abstract class AbstractModule extends AbstractUses implements Module {
         return false;
     }
 
+    /**
+     * Log error level
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return boolean
+     * @throws DBException
+     */
+    protected final function error($message, $context = array()) {
+        $this->set_last(
+            0,
+            $message
+        );
+        Logs::write(
+            $this->logger,
+            LogLevel::ERROR,
+            $message,
+            $context
+        );
+
+        return false;
+    }
+
+    /**
+     * Log warning level
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return boolean
+     * @throws DBException
+     */
+    protected final function warning($message, $context = array()) {
+        Logs::write(
+            $this->logger,
+            LogLevel::WARNING,
+            $message,
+            $context
+        );
+        return false;
+    }
+
+
+    /**
+     * Log info level
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return boolean
+     * @throws DBException
+     */
+    protected final function info($message, $context = array()) {
+        Logs::write(
+            $this->logger,
+            LogLevel::INFO,
+            $message,
+            $context
+        );
+        return true;
+    }
+
+
+
+    /**
+     * Log debug level
+     *
+     * @param string $message
+     * @param array $context
+     *
+     * @return boolean
+     * @throws DBException
+     */
+    protected final function debug($message, $context = array()) {
+        Logs::write(
+            $this->logger,
+            LogLevel::DEBUG,
+            $message,
+            $context
+        );
+        return true;
+    }
+
+
+    /**
+     * Set last error
+     * @param $code int Error code
+     * @param $message string Error messate
+     */
+    protected function set_last($code, $message){
+        $this->error['code'] = $code;
+        $this->error['message'] = $message;
+    }
+
+    /**
+     * Returns last error code and message for the most recent function call.
+     *
+     * @return bool|array Array with error code and message if the last call failed, FALSE otherwise.
+     */
+    public final function last_error()
+    {
+        return isset($this->error) ? $this->error : false;
+    }
+
 
     /**
      * Returns the error code for the most recent function call.
      *
      * @return integer An error code value for the last call, if it failed. zero means no error occurred.
      */
-    public final function errno()
+    public final function last_error_code()
     {
         return isset($this->error) ? $this->error['code'] : 0;
     }
@@ -213,7 +338,7 @@ abstract class AbstractModule extends AbstractUses implements Module {
      *
      * @return string A string that describes the error. An empty string if no error occurred.
      */
-    public final function error()
+    public final function last_error_message()
     {
         return isset($this->error) ? $this->error['message'] : '';
     }

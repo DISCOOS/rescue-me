@@ -15,6 +15,7 @@
     use RescueMe\AbstractModule;
     use RescueMe\Configuration;
     use RescueMe\DB;
+    use RescueMe\DBException;
     use RescueMe\Domain\Device;
 
     /**
@@ -45,7 +46,8 @@
          *
          * @param int|string $request Mixed Device request
          *
-         * @return Device
+         * @return bool|Device
+         * @throws DBException
          */
         public function device($request)
         {

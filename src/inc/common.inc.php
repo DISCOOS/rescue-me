@@ -954,3 +954,91 @@
 
         return implode(DIRECTORY_SEPARATOR, $elements);
     }
+
+    /**
+     * Count number of SMS messages given text will be cut into
+     *
+     * @param string $str String
+     *
+     * @return int String length
+     *
+     * @author https://stackoverflow.com/a/32389803
+     */
+    function sms_multipart_count($str)
+    {
+        $one_part_limit = 160; // use a constant i.e. GSM::SMS_SINGLE_7BIT
+        $multi_limit = 153; // again, use a constant
+        $max_parts = 3; // ... constant
+
+        $str_length = $this->count_gsm_string($str);
+        if($str_length === -1) {
+            $one_part_limit = 70; // ... constant
+            $multi_limit = 67; // ... constant
+            $str_length = $this->count_ucs2_string($str);
+        }
+
+        if($str_length <= $one_part_limit) {
+            // fits in one part
+            return 1;
+        } else if($str_length > ($max_parts * $multi_limit)) {
+            // too long
+            return -1; // or throw exception, or false, etc.
+        } else {
+            // divide the string length by multi_limit and round up to get number of parts
+            return ceil($str_length / $multi_limit);
+        }
+    }
+
+    /**
+     * Count number of GSM UTF-7 characters in given string
+     *
+     * Internal encoding must be set to UTF-8, and the input string must be UTF-8 encoded for this to work correctly
+     *
+     * @param string $str String
+     *
+     * @return int String length
+     *
+     * @author https://stackoverflow.com/a/32389803
+     */
+    function sms_count_gsm_string($str)
+    {
+        // Basic GSM character set (one 7-bit encoded char each)
+        $gsm_7bit_basic = '@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà';
+
+        // Extended set (requires escape code before character thus 2x7-bit encodings per)
+        $gsm_7bit_extended = "^{}\\[~]|€";
+
+        $len = 0;
+
+        for($i = 0; $i < mb_strlen($str); $i++) {
+            if(mb_strpos($gsm_7bit_basic, $str[$i]) !== FALSE) {
+                $len++;
+            } else if(mb_strpos($gsm_7bit_extended, $str[$i]) !== FALSE) {
+                $len += 2;
+            } else {
+                return -1; // cannot be encoded as GSM, immediately return -1
+            }
+        }
+
+        return $len;
+    }
+
+    /**
+     * Count number of UCS2 characters in given string
+     *
+     * Internal encoding must be set to UTF-8, and the input string must be UTF-8 encoded for this to work correctly
+     *
+     * @param string $str String
+     *
+     * @return int String length
+     *
+     * @author https://stackoverflow.com/a/32389803
+     */
+    function sms_count_ucs2_string($str)
+    {
+        $utf16str = mb_convert_encoding($str, 'UTF-16', 'UTF-8');
+        // C* option gives an unsigned 16-bit integer representation of each byte
+        // which option you choose doesn't actually matter as long as you get one value per byte
+        $byteArray = unpack('C*', $utf16str);
+        return count($byteArray) / 2;
+    }

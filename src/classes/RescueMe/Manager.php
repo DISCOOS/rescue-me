@@ -210,15 +210,16 @@
             
             return DB::isEmpty($res) === false;
         }
-        
-        
+
+
         /**
          * Get module factory
-         * 
+         *
          * @param mixed $type Module id or type
          * @param integer $user_id
-         * 
+         *
          * @return Factory|boolean
+         * @throws DBException
          */
         public static function get($type, $user_id=null)
         {
@@ -241,6 +242,7 @@
          * @param array $config Module construction arguments as (name=>value) pairs
          *
          * @return boolean TRUE if success, FALSE otherwise.
+         * @throws DBException
          */
         public static function set($id, $type, $impl, $config)
         {
@@ -301,7 +303,7 @@
             $valid = $instance === FALSE ? sprintf(T_('Failed to create instance of module [%1$s]'), $impl) : TRUE;
             
             if($valid === TRUE && $instance->validate() === FALSE) {
-                $valid = $instance->error();
+                $valid = $instance->last_error_message();
             }
             
             return $valid;

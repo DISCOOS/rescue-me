@@ -39,7 +39,7 @@
 
         /**
          * Get module configuration
-         * @return \RescueMe\Configuration
+         * @return Configuration
          */
         public function getConfig();
 
@@ -51,7 +51,7 @@
          *
          * Check Module::errno() and Module::error() for more information about if validate does not succeed.
          *
-         * @param \RescueMe\Configuration $config Account [optional, null - verify current]
+         * @param Configuration $config Account [optional, null - verify current]
          *
          * @return boolean|string
          */
@@ -63,11 +63,18 @@
          *
          * Returns TRUE if initialization succeeded, FALSE otherwise.
          *
-         * Check Module::errno() and Module::error() for more information if initialization does not succeed.
+         * Check Module::last_error() for more information if initialization does not succeed.
          *
          * @return boolean
          */
         public function init();
+
+        /**
+         * Returns last error code and message for the most recent function call.
+         *
+         * @return bool|array Array with error code and message if the last call failed, FALSE otherwise.
+         */
+        public function last_error();
 
 
         /**
@@ -75,7 +82,7 @@
          *
          * @return integer An error code value for the last call, if it failed. zero means no error occurred.
          */
-        public function errno();
+        public function last_error_code();
 
 
         /**
@@ -83,7 +90,7 @@
          *
          * @return string A string that describes the error. An empty string if no error occurred.
          */
-        public function error();
+        public function last_error_message();
 
 
     }

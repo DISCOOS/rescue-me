@@ -92,16 +92,24 @@
          *
          * @param $request Mixed Device request
          * 
-         * @return Device
+         * @return bool|Device
          */
         public function device($request);
+
+
+        /**
+         * Returns last error code and message for the most recent function call.
+         *
+         * @return bool|array Array with error code and message if the last call failed, FALSE otherwise.
+         */
+        public function last_error();
 
         /**
          * Returns the error code for the most recent function call.
          *
          * @return integer An error code value for the last call, if it failed. zero means no error occurred.
          */
-        public function errno();
+        public function last_error_code();
 
 
         /**
@@ -109,7 +117,7 @@
          *
          * @return string A string that describes the error. An empty string if no error occurred.
          */
-        public function error();
+        public function last_error_message();
 
 
     }// Lookup

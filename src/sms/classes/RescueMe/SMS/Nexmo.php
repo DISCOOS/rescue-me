@@ -14,6 +14,7 @@
     
     use DateTime;
     use RescueMe\Configuration;
+    use RescueMe\DBException;
     use RescueMe\Properties;
 
     /**
@@ -25,29 +26,31 @@
     {
         const TYPE = 'RescueMe\SMS\Nexmo';
 
-        private $errorCodes = array(0=>'Delivered',
-                                    1=>'Unknown',
-                                    2=>'Absent Subscriber - Temporary',
-                                    3=>'Absent Subscriber - Permanent',
-                                    4=>'Call barred by user',
-                                    5=>'Portability Error',
-                                    6=>'Anti-Spam Rejection',
-                                    7=>'Handset Busy',
-                                    8=>'Network Error',
-                                    9=>'Illegal Number',
-                                    10=>'Invalid Message',
-                                    11=>'Unroutable',
-                                    12=>'Destination unreachable',
-                                    13=>'Subscriber Age Restriction',
-                                    14=>'Number Blocked by Carrier',
-                                    15=>'Pre-Paid - Insufficent funds',
-                                    99=>'General Error');
+        private $errorCodes = array(
+             0 => 'Delivered',
+             1 => 'Unknown',
+             2 => 'Absent Subscriber - Temporary',
+             3 => 'Absent Subscriber - Permanent',
+             4 => 'Call barred by user',
+             5 => 'Portability Error',
+             6 => 'Anti-Spam Rejection',
+             7 => 'Handset Busy',
+             8 => 'Network Error',
+             9 => 'Illegal Number',
+            10 => 'Invalid Message',
+            11 => 'Unroutable',
+            12 => 'Destination unreachable',
+            13 => 'Subscriber Age Restriction',
+            14 => 'Number Blocked by Carrier',
+            15 => 'Pre-Paid - Insufficent funds',
+            99 => 'General Error'
+        );
 
 
         /**
          * Constructor
          *
-         * @param integer $user_id RescueMe user id
+         * @param int $user_id User id associated with given configuration
          * @param string $account_key Nexmo account-key
          * @param string $account_secret Nexmo account-secret
          *
@@ -57,6 +60,7 @@
         public function __construct($user_id=0, $account_key='', $account_secret='')
         {
             parent::__construct(
+                $user_id,
                 $this->newConfig(
                     $user_id, $account_key, $account_secret
                 ),
@@ -66,7 +70,6 @@
                     Properties::SMS_REQUIRE,
                     Properties::SMS_REQUIRE_UNICODE
             ));
-            $this->user_id = $user_id;
         }// __construct
 
         private function newConfig($user_id=0, $account_key='', $account_secret='')
@@ -103,12 +106,20 @@
             $valid = !(is_null($response) || isset($response['error-code']));
             if($valid === false)
             {
-                $this->error['code'] = Provider::FATAL;
-                $this->error['message'] = T_('Invalid key or secret');
+                $this->fatal(T_('Invalid key or secret'));
             }
             return $valid;
         } // validateAccount
-        
+
+        /**
+         * Provider implementation
+         * @param string $from Sender
+         * @param string $to Recipient international phone number
+         * @param string $message Message text
+         * @param array $account Provider configuration
+         * @return bool|array Provider message references, FALSE on failure
+         * @throws DBException
+         */
         protected function _send($from, $to, $message, $account)
         {
 
@@ -142,8 +153,13 @@
                 return $response['messages'][0]['message-id'];
             }
             
-            return $this->errors(array(array('fatal'=>utf8_encode($response['messages'][0]['error-text']),
-                                       'number'=>$response['messages'][0]['status'])));
+            return $this->errors(array(
+                array(
+                    'fatal'=>utf8_encode($response['messages'][0]['error-text']),
+                    'number'=>$response['messages'][0]['status'])
+                )
+            );
+
         } // _send
         
         private function invoke($url) {

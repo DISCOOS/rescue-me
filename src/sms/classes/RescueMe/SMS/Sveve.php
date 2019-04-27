@@ -27,7 +27,7 @@
         /**
          * Constructor
          *
-         * @param integer $user_id RescueMe user id
+         * @param int $user_id User id associated with given configuration
          * @param string $user Sveve user credentials
          * @param string $passwd Sveve user credentials (optional)
          *
@@ -37,6 +37,7 @@
         public function __construct($user_id=0, $user='', $passwd='')
         {
             parent::__construct(
+                $user_id,
                 $this->newConfig(
                     $user_id, $user, $passwd
                 ),

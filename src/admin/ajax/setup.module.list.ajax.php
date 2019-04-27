@@ -70,7 +70,7 @@ if($factories !== false) {
             } else {
                 if(method_exists($instance,'validate') && $instance->validate() === FALSE) {
                     echo insert_icon('remove', 'red', true, false).T_('Module is not configured correctly.');
-                    insert_error($instance->error());
+                    insert_error($instance->last_error_message());
                 } else {
                     echo insert_icon('ok', 'green', true, false).T_('Module is configured and ready for use.');
                 }

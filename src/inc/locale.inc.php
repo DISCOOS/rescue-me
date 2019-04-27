@@ -33,7 +33,7 @@
     /**
      * Get sentence
      *
-     * @param $elements
+     * @param array $elements
      * @param string $delimiter
      * @param string $ending
      * @return string

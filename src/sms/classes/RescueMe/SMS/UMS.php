@@ -13,6 +13,7 @@
     namespace RescueMe\SMS;
     
     use RescueMe\Configuration;
+    use RescueMe\DBException;
     use RescueMe\Properties;
     
 
@@ -30,7 +31,7 @@
         /**
          * Constructor
          *
-         * @param int $user_id RescueMe user id (not used)
+         * @param int $user_id User id associated with given configuration
          * @param string $company UMS company id
          * @param string $department UMS user id
          * @param string $password UMS webservice password
@@ -40,8 +41,9 @@
         public function __construct($user_id=0, $company='', $department='', $password='')
         {
             parent::__construct(
+                $user_id, /* Not used */
                 $this->newConfig(
-                    $company, $department, $password
+                    $user_id, $company, $department, $password
                 ),
                 array(
                 Properties::SMS_SENDER_ID
@@ -71,8 +73,8 @@
                 )
             );
         }// newConfig
-        
-        
+
+
         protected function validateParameters($account)
         {
             try {
