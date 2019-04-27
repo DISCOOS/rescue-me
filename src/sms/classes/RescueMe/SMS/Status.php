@@ -12,23 +12,29 @@
     
     namespace RescueMe\SMS;
 
+    use DateTime;
+    use RescueMe\DBException;
+
     /**
      * Provider class
      * 
      * @package 
      */
     interface Status
-    {       
+    {
         /**
-         * Register that a message has been delivered.
-         * 
-         * @param string $provider_ref SMS Provider id
+         * Update SMS delivery status.
+         *
+         * @param string $reference SMS Provider message reference
          * @param string $to Recipient phone number
-         * @param bool $status Deliverystatus
-         * @param \DateTime $datetime Time of delivery
-         * @param string $errorDesc Error description
-         * 
+         * @param DateTime $datetime Time of delivery
+         * @param bool $status Delivery status
+         * @param string $client_ref (optional) Client reference (only used if provider supports it)
+         * @param string $plnm (optional) Standard MCC/MNC tuple
+         * @param string $error (optional) Error description
+         *
+         * @return boolean TRUE if success, FALSE otherwise.
          */
-        public function delivered($provider_ref,$to,$datetime,$status,$errorDesc);
+        public function delivered($reference, $to, $datetime, $status, $client_ref='', $error='', $plnm='');
         
     }// Provider

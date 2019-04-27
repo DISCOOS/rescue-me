@@ -166,16 +166,18 @@
         /**
          * Update SMS delivery status.
          *
-         * @param string $reference
-         * @param string $to International phone number
-         * @param string $status Delivery status
+         * @param string $reference SMS Provider id
+         * @param string $to Recipient phone number
          * @param DateTime $datetime Time of delivery
-         * @param string $error Delivery error description
-         * @param string $plnm Standard MCC/MNC tuple
+         * @param bool $status Delivery status. TRUE if delivered, FALSE if not delivered.
+         * @param string $client_ref (optional) Client reference (only used if provider supports it)
+         * @param string $plnm (optional) Standard MCC/MNC tuple
+         * @param string $error (optional) Error description
+         *
          * @return boolean TRUE if success, FALSE otherwise.
          * @throws DBException
          */
-        public function delivered($reference, $to, $status, $datetime=null, $error='', $plnm='') {
+        public function delivered($reference, $to, $status, $datetime=null, $client_ref='', $error='', $plnm='') {
 
             $context['params'] = func_get_args();
             if(empty($reference) || empty($to) || empty($status)) {
@@ -186,7 +188,6 @@
             }
 
             // Get all sms messages with given reference and update message and mobile states
-            $delivered = isset($datetime) ? DB::timestamp($datetime->getTimestamp()) : "NULL";
             $filter = "`message_provider`='%s' AND `message_provider_ref` = '%s'";
             $filter = sprintf($filter, DB::escape(get_class($this)), $reference);
             $res = DB::select('messages', array('mobile_id', 'message_id'), $filter);
@@ -196,6 +197,7 @@
                 while($row = $res->fetch_assoc()) {
 
                     // Update message state
+                    $delivered = $status && isset($datetime) ? DB::timestamp($datetime->getTimestamp()) : "NULL";
                     $values = prepare_values(
                         array('message_delivered', 'message_provider_status', 'message_provider_error'),
                         array($delivered, $status, $error)

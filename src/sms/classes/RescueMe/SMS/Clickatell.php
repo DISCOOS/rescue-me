@@ -12,6 +12,7 @@
     
     namespace RescueMe\SMS;
 
+    use DateTime;
     use RescueMe\Configuration;
     use RescueMe\DBException;
     use RescueMe\User;
@@ -230,13 +231,16 @@
             if(assert_isset_all($params,array('apiMsgId','to','status'))) {
             
                 // Get timestamp
-                $when = isset($params['timestamp']) ? \DateTime::createFromFormat('U', $params['timestamp']) : new \DateTime();
+                $when = isset($params['timestamp']) ? DateTime::createFromFormat('U', $params['timestamp']) : new DateTime();
+
+                // Get delivery status flag
+                $delivered = ($params['status'] === "004");
 
                 // Status description
                 $description = $this->status[$params['status']];
 
                 // Update status
-                $this->delivered($params['apiMsgId'], $params['to'], $params['status'], $when, $description);
+                $this->delivered($params['apiMsgId'], $params['to'], $delivered, $when, '', $description);
                 
             }
         }

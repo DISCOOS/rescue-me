@@ -203,9 +203,19 @@
         public function handle($params) {
             
             if(assert_isset_all($params,array('id','number','status'))) {
+
+                $dt = new DateTime();
             
-                $this->delivered($params['id'], $params['number'], $params['status'], new DateTime(),
-                        (isset($params['errorDesc']) ? $params['errorDesc'] : ''));
+                $this->delivered(
+                    $params['id'],
+                    $params['number'],
+                    $dt,
+                    $params['status'],
+                    '',
+                    isset($params['errorDesc'])
+                        ? $params['errorDesc']
+                        : ''
+                );
             }
         }
         

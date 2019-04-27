@@ -22,12 +22,12 @@
         /**
          * Request SMS status from provider
          * 
-         * @param string $provider_ref Provider message reference id
+         * @param string $reference Provider message reference id
          * @param string $number Recipient phone number
          * 
          * @return boolean TRUE if success, FALSE otherwise.
          */
-        public function request($provider_ref,$number);
+        public function request($reference, $number);
         
         
     }// Check

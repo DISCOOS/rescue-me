@@ -209,9 +209,6 @@
                 $references[] = $reference;
             }
 
-            var_dump($references);
-            die();
-
             return count($references) > 0 ? $references : false;
         }
         
@@ -243,19 +240,6 @@
         }        
                 
         
-        private function errors($errors) {
-            $messages = array();
-            foreach($errors as $error) {
-                if(isset($error['fatal'])) {
-                    $error['message'] = $error['fatal'];
-                }
-                $messages[] = $error['number'].":".$error['message'];
-            }
-            $this->error['code'] = Provider::FATAL;
-            $this->error['message'] = implode("\n", $messages);
-            return false;
-        }
-
         /**
          * @param mixed $params
          * @throws DBException
@@ -267,18 +251,22 @@
                 // Status 'accepted' is an intermediate state not tracked by RescueMe
                 if($params['status'] !== 'accepted') {
 
-                    $isDelivered = ($params['status'] == 'delivered');
+                    // Prepare values
+                    $delivered = $params['status'] === 'delivered';
+                    $datetime = $delivered ? new DateTime() : null;
+                    $client_ref = isset_get($params,'client-ref', false);
+                    $error = $delivered
+                        ? "{$this->deliveryCodes[(int)$params['err-code']]} ({$params['err-code']})"
+                        : '';
 
+                    // Update message status
                     $this->delivered(
                         $params['messageId'],
                         $params['msisdn'],
-                        $params['status'],
-                        $isDelivered
-                            ? new DateTime()
-                            : null,
-                        $isDelivered
-                            ? ''
-                            : "{$this->deliveryCodes[(int)$params['err-code']]} ({$params['err-code']})",
+                        $delivered,
+                        $datetime,
+                        $client_ref,
+                        $error,
                         $params['network-code']
                     );
                 }

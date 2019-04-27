@@ -12,6 +12,8 @@
     
     namespace RescueMe\SMS;
     
+    use DateTime;
+    use DateTimeZone;
     use Exception;
     use RescueMe\Configuration;
     use RescueMe\DBException;
@@ -151,13 +153,13 @@
         }        
         
                 
-        public function request($provider_ref, $number)
+        public function request($reference, $number)
         {
             try {
                 
                 $client = new SoapClient(UMS::WDSL_URL);
                 
-                $result = $client->doGetStatus($this->config->params(), $provider_ref);
+                $result = $client->doGetStatus($this->config->params(), $reference);
                 
                 $checked = false;
 
@@ -167,17 +169,17 @@
                         case 'delivered':
 
                             // This is a workaround for strange UTC timezone behavior
-                            $timezone = new \DateTimeZone("UTC");
-                            $datetime = \DateTime::createFromFormat(\DateTime::W3C, $status->deliveredToRecipient, $timezone);
+                            $timezone = new DateTimeZone("UTC");
+                            $datetime = DateTime::createFromFormat(DateTime::W3C, $status->deliveredToRecipient, $timezone);
                             $datetime->setTimestamp($datetime->getTimestamp()-$datetime->getOffset());
 
-                            $this->delivered($provider_ref, $status->sentTo, 'true', $datetime);
+                            $this->delivered($reference, $status->sentTo, true, $datetime);
 
                             break;
 
                         default:
 
-                            $this->delivered($provider_ref, $status->sentTo, 'false', null, $status->errorMessage);
+                            $this->delivered($reference, $status->sentTo, false, null, '', $status->errorMessage);
 
                             break;
                     }
