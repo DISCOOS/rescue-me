@@ -364,7 +364,7 @@
                 $context['query'] = $query;
                 if($res === FALSE)
                 {
-                    $context['error'] = DB::error();
+                    $context['error'] = DB::last_error();
                     Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to insert ' . count($values) . " values into $table", $context);
                 } else {
                     Logs::write(Logs::DB, LogLevel::INFO, 'Inserted ' . count($values) . " values into $table", $context);

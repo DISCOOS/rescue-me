@@ -54,7 +54,10 @@
             $account = $this->validateRequired($this->getConfig());
 
             if($account === FALSE) {
-                return $this->fatal("Device lookup configuration is invalid");
+                return $this->fatal(
+                    T_('Device lookup configuration is invalid'),
+                    $this->getConfig()
+                );
             }
 
             if(is_numeric($request)) {

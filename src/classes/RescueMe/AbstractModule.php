@@ -178,10 +178,11 @@ abstract class AbstractModule extends AbstractUses implements Module {
      * Log fatal error level
      * @param string $message
      *
+     * @param array $context
      * @return boolean
      * @throws DBException
      */
-    protected final function fatal($message) {
+    protected final function fatal($message, $context = array()) {
         $this->set_last(
             Module::FATAL,
             $message
@@ -189,7 +190,7 @@ abstract class AbstractModule extends AbstractUses implements Module {
         return $this->log(
             LogLevel::CRITICAL,
             $message,
-            array(),
+            $context,
             true
         );
     }

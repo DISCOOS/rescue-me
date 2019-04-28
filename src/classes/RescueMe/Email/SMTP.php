@@ -13,6 +13,7 @@
 namespace RescueMe\Email;
 
 use RescueMe\Configuration;
+use RescueMe\DBException;
 
 /**
  * SMTP Mailer provider
@@ -102,6 +103,7 @@ class SMTP extends AbstractProvider {
      * Validate SMTP transport
      * @param array $params
      * @return bool
+     * @throws DBException
      */
     protected function validateParameters($params)
     {
@@ -116,7 +118,7 @@ class SMTP extends AbstractProvider {
         // Host is not null
         $host = $this->config->get('host');
         if(is_null($host) || empty($host) || strpos($host,".") == -1 ) {
-            return $this->fatal('Host is invalid');
+            return $this->fatal('Host is invalid', $this->config);
         }
 
         // Create the Transport

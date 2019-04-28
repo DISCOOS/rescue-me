@@ -195,6 +195,7 @@
             $filter = "`message_provider`='%s' AND `message_provider_ref` = '%s'";
             $filter = sprintf($filter, DB::escape(get_class($this)), $reference);
             $res = DB::select('messages', array('mobile_id', 'message_id'), $filter);
+            $context['filter'] = $filter;
 
             if(DB::isEmpty($res) === FALSE) {
 
@@ -206,6 +207,7 @@
                         array('message_delivered', 'message_provider_status', 'message_provider_error'),
                         array($delivered, $status, $error)
                     );
+                    $context['values'] = $values;
 
                     $filter = sprintf("`message_id`=%s", $row['message_id']);
                     if(DB::update('messages', $values, $filter)) {
@@ -222,8 +224,6 @@
                                     : ''
                             ));
                     } else {
-                        $context['values'] = $values;
-                        $context['filter'] = $filter;
                         $this->critical(
                             sprintf(T_('Failed to update SMS delivery status for message %s'),
                                 $row['message_id']), $context
@@ -247,7 +247,10 @@
 
                 }
             } else {
-                $this->warning(sprintf(T_('No SMS with reference %s found'), $reference));
+                $this->warning(
+                    sprintf(T_('No SMS with reference %s found'), $reference),
+                    array_merge($context, array('db' => DB::last_error()))
+                );
             }
 
             return true;
