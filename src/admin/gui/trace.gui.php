@@ -36,6 +36,7 @@
             $lookup = $factory->newInstance();
             $device = $lookup->device($request);
 
+
             $supported = isset($device->device_supports_xhr2)
                 && isset($device->device_supports_geolocation)
                 && $device->device_supports_xhr2 === 'True'

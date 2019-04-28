@@ -540,7 +540,7 @@
             }
 
             $res = DB::select('requests', '*',
-                sprintf("`mobile_id`=%s, `request_timestamp` DESC", $this->id)
+                sprintf("`mobile_id`=%d", $this->id), "`request_timestamp` DESC"
             );
 
             if(DB::isEmpty($res)) {
@@ -568,7 +568,7 @@
                 return false;
             }
 
-            $res = DB::select('errors', '*', "`mobile_id`=" . (int) $this->id);
+            $res = DB::select('errors', '*', sprintf("`mobile_id`=%d",$this->id));
 
             if(DB::isEmpty($res)) {
                 return false;
@@ -686,12 +686,12 @@
         public function trace() {
 
             $res = $this->_send($this->sms_text, true, function() {
-                return sprintf(T_('SMS not sent to mobile %s'), $this->id);
+                return sprintf(T_('SMS not sent to mobile %s'), (int)$this->id);
             });
 
             if($res === FALSE) {
                 return Mobile::log_trace_error(
-                    sprintf(T_('Failed to trace mobile %s'), $this->id));
+                    sprintf(T_('Failed to trace mobile %s'), (int)$this->id));
             }
 
             list($provider, $text, $client_ref, $references) = $res;
