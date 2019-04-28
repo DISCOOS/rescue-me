@@ -694,13 +694,63 @@
                     sprintf(T_('Failed to trace mobile %s'), $this->id));
             }
 
-            $dt = new DateTime();
-            $dt = DB::timestamp($dt->getTimestamp());
+            list($provider, $text, $client_ref, $references) = $res;
+
+            // Prepare updating messages
+            $datetime = new DateTime();
+            $datetime = DB::timestamp($datetime->getTimestamp());
+            $values = prepare_values(
+                array(
+                    'mobile_id',
+                    'message_type',
+                    'message_sent',
+                    'message_locale',
+                    'message_provider',
+                    'message_client_ref'),
+                array(
+                    $this->id,
+                    'sms',
+                    $datetime,
+                    $this->locale,
+                    $provider,
+                    $client_ref
+                )
+            );
+
+            // Prepare to clip text to multipart sms
+            $offset = 0;
+            $parts = count($references);
+            $length = empty($text) ? 0 : mb_strlen($text);
+            $part = floor($length / $parts);
+
+            foreach($references as $reference) {
+
+                $values = array_merge(
+                    $values,
+                    prepare_values(
+                        array(
+                            'message_text',
+                            'message_provider_ref'),
+                        array(
+                            substr($text, $offset, $part),
+                            $reference
+                        )
+                    ));
+
+                // Goto next text part
+                $offset += $part + 1;
+
+                if (DB::insert('messages', $values) === FALSE) {
+                    Mobile::log_trace_error(T_('Failed to insert SMS message'),
+                        DB::last_error()
+                    );
+                }
+            }
 
             // Reset to 'sent' state
             $values = prepare_values(
                 array('sms_sent','sms_delivered'),
-                array($dt, 'NULL')
+                array($datetime, 'NULL')
             );
 
 
@@ -905,7 +955,7 @@
          * @param bool $encrypt Encrypt mobile id*
          * @param $on_error Closure that returns string logged with error message
          *
-         * @return bool TRUE if sent, FALSE otherwise.
+         * @return array|bool $provider, $text, $client_ref, $references if sent, FALSE otherwise.
          *
          * @throws DBException
          * @throws ReflectionException
@@ -915,19 +965,39 @@
             // In case user_id is not set in current session
             $user_id = $this->ensureUserId();
 
+
+            /** @var Manager $manager */
+            $manager = Manager::get(Provider::TYPE, $user_id);
+            if($manager === FALSE) {
+                return Mobile::log_trace_error(
+                    sentences(array(
+                        sprintf(T_('Failed to get SMS provider factory for %s'), $user_id),
+                        call_user_func($on_error))
+                    )
+                );
+            }
+
             /** @var Provider $provider */
-            if(FALSE === ($provider = $this->getProvider($user_id, $on_error))){
-                return false;
-            };
-            
+            $provider = $manager->newInstance();
+            if($provider === FALSE) {
+                return Mobile::log_trace_error(
+                    sentences(array(
+                        sprintf(T_('Failed to get SMS provider for %s'), $user_id),
+                        call_user_func($on_error))
+                    )
+                );
+            }
+
             $params = $this->build($message, $user_id, $encrypt);
             list ($country, $number, $text, $client_ref) = $params;
 
-            $refs = $provider->send($this->id, $country, $number, $text, $this->locale, $client_ref, function () {
+            $refs = $provider->send($country, $number, $text, $this->locale, $client_ref, function () {
                 return sprintf(T_('SMS not sent to mobile %s'), $this->id);
             });
 
-            return $refs !== FALSE;
+            return $refs !== FALSE
+                ? array($manager->impl, $text, $client_ref, $refs)
+                : false;
 
         }// _send
 
@@ -980,32 +1050,6 @@
 
         }
 
-        /**
-         * Get provider for given user id
-         * @param $user_id
-         * @param $on_error Closure that returns string logged with error message
-         * @return Provider
-         * @throws DBException
-         * @throws ReflectionException
-         */
-        private function getProvider($user_id, $on_error) {
-
-            /** @var Provider $provider */
-            $provider = Manager::get(Provider::TYPE, $user_id)->newInstance();
-
-            if($provider === FALSE)
-            {
-                Mobile::log_trace_error(
-                    sentences(array(
-                        sprintf(T_('Failed to get SMS provider for %s'), $user_id),
-                        call_user_func($on_error))
-                    )
-                );
-            }
-
-            return $provider;
-
-        }
 
         /**
          * Log trace message

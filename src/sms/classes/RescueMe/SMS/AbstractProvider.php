@@ -59,7 +59,6 @@
          * TODO: Relax relation from mobile_id to recipient_id?
          * TODO: Add Params class?
          *
-         * @param $mobile_id
          * @param string $code ISO country code
          * @param string $number Recipient phone number without dial code
          * @param string $text SMS message text
@@ -70,7 +69,7 @@
          * @return bool|array Provider message references, array of message ids, FALSE on failure.
          * @throws DBException
          */
-        public function send($mobile_id, $code, $number, $text, $locale, $client_ref = null, $on_error = null)
+        public function send($code, $number, $text, $locale, $client_ref = null, $on_error = null)
         {
             // Prepare
             unset($this->error);
@@ -109,58 +108,6 @@
             $recipient = $code.$number;
             $references = $this->_send($sender, $recipient, $text, $client_ref, $account);
 
-            // Prepare updating messages
-            $datetime = new DateTime();
-            $datetime = DB::timestamp($datetime->getTimestamp());
-            $values = prepare_values(
-                array(
-                    'mobile_id',
-                    'message_type',
-                    'message_sent',
-                    'message_locale',
-                    'message_provider',
-                    'message_client_ref'),
-                array(
-                    $mobile_id,
-                    'sms',
-                    $datetime,
-                    $locale,
-                    $this->impl,
-                    $client_ref
-                )
-            );
-
-            // Prepare to clip text to multipart sms
-            $offset = 0;
-            $parts = count($references);
-            $length = empty($text) ? 0 : mb_strlen($text);
-            $part = floor($length / $parts);
-
-            foreach($references as $reference) {
-
-                $values = array_merge(
-                    $values,
-                    prepare_values(
-                        array(
-                            'message_text',
-                            'message_provider_ref'),
-                        array(
-                            substr($text, $offset, $part),
-                            $reference
-                        )
-                    ));
-
-                // Goto next text part
-                $offset += $part + 1;
-
-                if (DB::insert('messages', $values) === FALSE) {
-                    $this->error(T_('Failed to insert SMS message'),
-                        DB::last_error()
-                    );
-                }
-            }
-
-
             $context = prepare_values(
                 array('sender', 'recipient', 'text'),
                 array($sender, $recipient, $text)
@@ -177,7 +124,7 @@
 
             $this->info(sentences(array(
                 sprintf(T_('SMS sent to %s'), $recipient),
-                count($references) > 0
+                count($references) > 1
                     ? sprintf(T_('References are %s'), implode(', ',$references))
                     : sprintf(T_('Reference is %s'), reset($references)))),
                 $context

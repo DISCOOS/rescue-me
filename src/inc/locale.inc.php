@@ -51,7 +51,7 @@
      * @return string
      */
     function sentences($elements) {
-        return implode('.', array_map(function($element) {
+        return implode('. ', array_map(function($element) {
             return trim(trim($element),'.');
         },$elements)).".";
     }

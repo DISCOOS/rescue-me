@@ -12,7 +12,6 @@
     
     namespace RescueMe\SMS;
 
-    use Closure;
     use RescueMe\Module;
 
     /**
@@ -31,7 +30,6 @@
         /**
          * Send SMS message to given number.
          *
-         * @param int $mobile_id Mobile id
          * @param string $code ISO country code
          * @param string $number Recipient phone number without dial code
          * @param string $text SMS message text
@@ -41,7 +39,7 @@
          *
          * @return bool|array Provider message references, FALSE on failure
          */
-        public function send($mobile_id, $code, $number, $text, $locale, $client_ref = null, $on_error = null);
+        public function send($code, $number, $text, $locale, $client_ref = null, $on_error = null);
 
         
         /**

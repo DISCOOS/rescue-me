@@ -12,6 +12,7 @@
     
     namespace RescueMe;
 
+    use ReflectionException;
     use RescueMe\Device\L51D;
     use RescueMe\Email\SMTP;
     use RescueMe\SMS\Nexmo;
@@ -49,6 +50,8 @@
          * @param callable $callback Progress callback function
          *
          * @return boolean.
+         * @throws DBException
+         * @throws ReflectionException
          */
         public static function install($init = false, $callback = null) {
             $modules = array();
