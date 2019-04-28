@@ -37,6 +37,7 @@
                     <th width="8%" class="hidden-phone"><?=T_('Level')?></th>
                     <th><?=T_('Message')?></th>
                     <th width="10%"><?=T_('User')?></th>
+                    <th></th>
                     <th width="10%">
                         <input type="text" 
                                class="input-medium search-query pull-right" 
@@ -49,9 +50,12 @@
             <tbody class="page"></tbody>
         </table>
         <div class="pagination" data-target="<?=$name?> .page"></div>
-    </div>    
-<? } ?>  
+    </div>
+
+<? } insert_dialog("context", T_('Context')); ?>
 </div>
+
+
     
 <script>
     R.tabs('tabs');

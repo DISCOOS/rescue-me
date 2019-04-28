@@ -171,6 +171,7 @@
          * @param string $logs Log name
          * @param string $filter Log filter
          * @return integer|boolean
+         * @throws DBException
          */
         public static function countAll($logs, $filter = '') {
             
@@ -207,6 +208,7 @@
          * @param int $start
          * @param bool $max
          * @return array|boolean
+         * @throws DBException
          */
         public static function getAll($logs = null, $filter = '', $start = 0, $max = false) {
             
@@ -227,32 +229,34 @@
             return $logs;
             
         }// getAll     
-        
-        
+
+
         /**
          * Get number of lines in given log
-         * 
+         *
          * @param string $name Log name
          * @param string $filter Log filter
          *
          * @return integer|boolean
+         * @throws DBException
          */
         public static function count($name, $filter = '') {
             
             return Logs::countAll(array($name), $filter);
             
         }// get        
-        
-        
+
+
         /**
          * Get log with given name
-         * 
+         *
          * @param string $name Log name
          * @param string $filter Log filter
          * @param int $start
          * @param bool $max
          *
          * @return array|boolean
+         * @throws DBException
          */
         public static function get($name, $filter = '', $start = 0, $max = false) {
             

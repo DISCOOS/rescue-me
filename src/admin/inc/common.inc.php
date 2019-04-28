@@ -39,6 +39,7 @@ function modules_exists($module, $_ = null) {
  * @param string $method Method in file
  * @param int $line Line in file
  * @return boolean TRUE if valid, FALSE otherwise.
+ * @throws \RescueMe\DBException
  */
 function assert_args_count($args, $count, $log, $level, $file, $method, $line) {
     $valid = count($args) >= $count;
@@ -65,6 +66,8 @@ function assert_args_count($args, $count, $log, $level, $file, $method, $line) {
  * @param string $body Email body
  * @param boolean $bulk Bulk flag
  * @return array|bool|string
+ * @throws ReflectionException
+ * @throws \RescueMe\DBException
  */
 function send_email($from, $to, $subject, $body, $bulk) {
     /** @var Email $email */
@@ -88,6 +91,8 @@ function send_email($from, $to, $subject, $body, $bulk) {
  * @param Issue $issue Issue instance
  * @param boolean $bulk Bulk control flag
  * @return string
+ * @throws ReflectionException
+ * @throws \RescueMe\DBException
  */
 function send_issue_email($from, $issue, $bulk) {
 
@@ -146,3 +151,58 @@ function get_json($url) {
 
     return json_decode($res, TRUE);
 } // invoke
+
+
+/**
+ * Formats a JSON string for pretty printing
+ *
+ * @param string $json The JSON to make pretty
+ * @param bool $html Insert nonbreaking spaces and <br />s for tabs and linebreaks
+ * @return string The prettified output
+ * @author Jay Roberts
+ */
+function format_json($json, $html = false) {
+    $tabcount = 0;
+    $result = '';
+    $inquote = false;
+    $ignorenext = false;
+    if ($html) {
+        $tab = "&nbsp;&nbsp;&nbsp;";
+        $newline = "<br/>";
+    } else {
+        $tab = "\t";
+        $newline = "\n";
+    }
+    for($i = 0; $i < strlen($json); $i++) {
+        $char = $json[$i];
+        if ($ignorenext) {
+            $result .= $char;
+            $ignorenext = false;
+        } else {
+            switch($char) {
+                case '{':
+                    $tabcount++;
+                    $result .= $char . $newline . str_repeat($tab, $tabcount);
+                    break;
+                case '}':
+                    $tabcount--;
+                    $result = trim($result) . $newline . str_repeat($tab, $tabcount) . $char;
+                    break;
+                case ',':
+                    $result .= $char . $newline . str_repeat($tab, $tabcount);
+                    break;
+                case '"':
+                    $inquote = !$inquote;
+                    $result .= $char;
+                    break;
+                case '\\':
+                    if ($inquote) $ignorenext = true;
+                    $result .= $char;
+                    break;
+                default:
+                    $result .= $char;
+            }
+        }
+    }
+    return $result;
+}

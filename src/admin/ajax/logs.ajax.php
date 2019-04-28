@@ -36,7 +36,7 @@
 
 <? if($lines == false) { ?>
 
-        <tr><td colspan="6"><?=T_('None found')?></td></tr>
+        <tr><td colspan="7"><?=T_('None found')?></td></tr>
 
 <? } else { 
     
@@ -45,14 +45,22 @@
         <tr id="<?= $id ?>">
             
 <? if($all) { ?>                    
-            <td><?= format_dt($line['date']) ?></td>
-            <td><?= $line['name'] ?></td>
+            <td class="no-wrap"><?= format_dt($line['date']) ?></td>
+            <td class="no-wrap"><?= $line['name'] ?></td>
 <? } else { ?>                    
-            <td colspan="2"><?= format_dt($line['date']) ?></td>
+            <td colspan="2" class="no-wrap"><?= format_dt($line['date']) ?></td>
 <? } ?>                                        
             <td class="hidden-phone"><?= $line['level'] ?></td>
             <td><?= $line['message'] ?></td>
-            <td colspan="2"><?= empty($line['user']) ? T_('System') : $line['user'] ?></td>
+            <td colspan="2" class="no-wrap"><?= empty($line['user']) ? T_('System') : $line['user'] ?></td>
+            <td>
+                <? if($line['context']) { ?>
+                    <a class="btn btn-small pull-right" data-toggle="modal" data-target="#context"
+                       data-content="<?=htmlentities(format_json($line['context']))?>" >
+                        <?= T_('Context') ?>
+                    </a>
+                <? } ?>
+            </td>
         </tr>
 <? }} 
 

@@ -187,6 +187,22 @@ use RescueMe\Properties;
 //        return $html;
 //    }
     
+    function insert_dialog($id, $title = null, $message = null, $output=true)
+    {
+        ob_start();
+
+        // Localize title and message
+        $title = is_null($title) ? T_('Information') : $title;
+
+        require(APP_PATH . "gui/dialog.gui.php");
+        $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+
+
     function insert_dialog_confirm($id, $title = null, $message = null, $action = null, $output=true)
     {
         ob_start();
@@ -200,10 +216,9 @@ use RescueMe\Properties;
             echo $html;
         }
         return $html;
-    }        
-    
-    
-    function insert_dialog_selector($id, $title, $content, $params=array(), $output=true)
+    }
+
+function insert_dialog_selector($id, $title, $content, $params=array(), $output=true)
     {
         $action = isset_get($params,'action',null);
         $progress = isset_get($params,'progress','.modal-body');
