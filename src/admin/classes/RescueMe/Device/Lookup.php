@@ -38,11 +38,6 @@
         const NO = 0;
 
         /**
-         * Unknown flag
-         */
-        const UNKNOWN = -1;
-
-        /**
          * Device name
          */
         const DEVICE_TYPE = 'device_type';
