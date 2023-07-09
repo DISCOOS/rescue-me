@@ -12,19 +12,19 @@
 
 ?>
 
-<div id="<?= $id ?>" data-progress="<?= $progress ?>" class="modal fade hide" tabindex="-1" role="dialog" aria-labelledby="<?= $id ?>-label" aria-hidden="true">
+<div id="<?= $id ?>" class="modal fade hide" tabindex="-1" role="dialog" aria-labelledby="<?= $id ?>-label" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 class="modal-label"><?= $title ?></h3>
+        <h3 class="model-label"><?= $title ?></h3>
     </div>
     <div class="modal-body">
         <?= $content ?>
     </div>
     <div class="modal-footer">
     <? if(isset($action) && $action) { ?>
-        <a class="btn btn-primary" href="<?= $action ?>"><?=T_('Select')?></a>
+        <a class="btn btn-primary" href="<?= $action ?>"><?= SELECT ?></a>
     <? }?>
-        <button class="btn" data-dismiss="modal" aria-hidden="true"><?=T_('Cancel')?></button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true"><?= CANCEL ?></button>
     </div>
 </div>
 

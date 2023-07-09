@@ -15,16 +15,16 @@
                 </th>            
             </tr>
         </thead>        
-        <tbody class="page">
+        <tbody class="searchable">
             
 <? foreach($roles as $key => $value) { ?>
             
             <tr id="<?= $key ?>">
-                <td class="role name"><?= $value ?></td>
+                <td class="role name"><?=T_($value) ?></td>
                 <td class="role editor">
                     <div class="btn-group pull-right">
                         <a class="btn btn-small" href="<?=ADMIN_URI."role/edit/$key"?>">
-                            <b class="icon icon-edit"></b><?= T_('Edit') ?>
+                            <b class="icon icon-edit"></b><?= EDIT ?>
                         </a>
                     </div>
                 </td>

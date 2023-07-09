@@ -195,28 +195,21 @@
 
         return array("deg" => $deg, "min" => $min, "sec" => $sec, "des" => $des);
     }
-
-    function is_get_request() {
-        return !empty($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'get';
-    }
-
-    function is_post_request() {
-        return !empty($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'post';
-    }
-
+    
+    
     function is_ajax_request() {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
-    }
-
-
+    }        
+    
+    
     /**
      * Converts ajax request into response.
-     *
+     * 
      * Returns json string with structure {html: 'string', options: 'array'}
-     *
+     * 
      * @param string $resource Resource name
      * @param string $index Resource index
-     * @param array|string $context Resource context
+     * @param array $context Resouce context
      * @return string
      */
     function ajax_response($resource, $index = '', $context = '') {
@@ -249,7 +242,7 @@
         return json_encode($response);
         
     }
-
+    
     
     function input_get_int($key, $default = false) {
         $value = filter_input(INPUT_GET, $key, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
@@ -349,18 +342,18 @@
     
     function assert_isset_all($values, $keys, $message = '', $log = Logs::SYSTEM, $level = LogLevel::ERROR) {
         $keys = is_array($keys) ? $keys : array($keys);
-        $mobile = array();
+        $missing = array();
         foreach($keys as $key) {
             if(isset($values[$key]) === FALSE) {
-                $mobile[] = $key;
+                $missing[] = $key;
             }
         }
-        $valid = empty($mobile);
+        $valid = empty($missing);
         if($valid === FALSE) {
             if($message) {
                 $message .= ". ";
             }
-            Logs::write($log, $level, $message. sprintf(T_('Missing values: %1$s'), implode(", ", $missing)));
+            Logs::write($log, $level, $message. sprintf(MISSING_VALUES_S, implode(", ", $missing)));
         }
         return $valid;
     }
@@ -417,7 +410,7 @@
     
     
     function is_function($value) {
-        return preg_match("#^([A-Za-z0-9_]+)\\(.*\\)$#", $value) !== 0;
+        return preg_match("#^([A-Za-z0-9_]+)\(.*\)$#", $value) !== 0;
     }
     
     /** 
@@ -497,43 +490,24 @@
      * @return string
      */
     function format_since($timestamp) {
-        $since = T_('Unknown');
         if(isset($timestamp)) {
-            $ts = strtotime($timestamp);
+            $ts = (int)(time() - strtotime($timestamp));
+            $since = "~".UNIT_SECOND;
             if($ts > 0) {
-                $dt = (int)(time() - $ts);
-                if($dt > 0) {
-                    if($dt < 60) {
-                        $since = "$dt ".T_('sec');
-                    }
-                    else if($dt < 2*60*60) {
-                        $since = (int)($dt/60)." ".T_('min');
-                    }
-                    else {
-                        $since = format_dt($timestamp);
-                    }
+                if($ts < 60) {
+                    $since = "$ts ".UNIT_SECOND;
                 }
-            } 
+                else if($ts < 2*60*60) {
+                    $since = (int)($ts/60)." ".UNIT_MINUTE;
+                }
+                else {
+                    $since = format_dt($timestamp);
+                }
+            }        
+        } else {
+            $since = UNKNOWN;
         }
         return $since;
-    }
-
-
-    /**
-     * Format unix timestamp with locale timezone
-     *
-     * @param $timestamp Timestamp
-     *
-     * @return string
-     */
-    function format_tz($timestamp) {
-
-        if(is_string($timestamp))
-            $timestamp = strtotime($timestamp);
-
-        $date = date( 'Y-m-d\TH:i:s', $timestamp);
-
-        return sprintf('%1$s%2$s', $date, \RescueMe\TimeZone::getOffset());
     }
     
     
@@ -555,7 +529,7 @@
 
         if(isset($p) === false) {
             $success = false;
-            $position = 'Unknown';
+            $position = UNKNOWN;
         } else {
             $success = true;
             $type = isset_get($params, Properties::MAP_DEFAULT_FORMAT, Properties::MAP_DEFAULT_FORMAT_UTM);
@@ -614,7 +588,7 @@
                     $position = sprintf($format, $lat, $lon);
 
                     break;
-                case Properties::MAP_DEFAULT_FORMAT_DMM:
+                case Properties::MAP_DEFAULT_FORMAT_DEM:
 
                     $lat = floatval($p->lat);
                     $wrap = $axis && (abs($lat) !== $lat);
@@ -675,9 +649,9 @@
         }
 
         if($label !== false) {
-            $type = $success ? 'success' : 'warning';
+            $type = $success ? 'label-success' : 'label-warning';
             $attributes = is_string($label) ? $label : '';
-            $position = insert_label($type .' label-position' , $position, $attributes, false);
+            $position = '<span class="label ' . $type . ' label-position" ' . $attributes. '>'. $position. '</span>';
         }
 
         return $position;
@@ -685,9 +659,7 @@
     }
 
 
-    function get_user_agent() {
-        return $_SERVER['HTTP_USER_AGENT'];
-    }
+
     
     
     function get_client_ip() {
@@ -707,21 +679,7 @@
         }
         return $ip; 
         
-    }
-
-    function get_mobile_network($code) {
-        if($code) {
-            // See https://github.com/musalbas/mcc-mnc-table
-            $file = APP_PATH . implode(DIRECTORY_SEPARATOR,array('sms','mcc-mnc-table.json'));
-            $networks = json_decode(file_get_contents($file), TRUE);
-            foreach($networks as $network) {
-                if($network['mcc'] . $network['mnc'] === $code) {
-                    return $network;
-                }
-            }
-        }
-        return false;
-    }
+    }    
     
     
     /**
@@ -937,108 +895,4 @@
 
         return $out;
     }
-
-    /**
-     * Convert path elements to valid path string
-     * @param $root string Root path
-     * @param $elements string Path elements
-     * @return string Path
-     */
-    function get_path($root, $elements) {
-
-        if(is_array($elements) === false) {
-            $elements = array($elements);
-        }
-
-        array_unshift($elements, $root);
-
-        return implode(DIRECTORY_SEPARATOR, $elements);
-    }
-
-    /**
-     * Count number of SMS messages given text will be cut into
-     *
-     * @param string $str String
-     *
-     * @return int String length
-     *
-     * @author https://stackoverflow.com/a/32389803
-     */
-    function sms_multipart_count($str)
-    {
-        $one_part_limit = 160; // use a constant i.e. GSM::SMS_SINGLE_7BIT
-        $multi_limit = 153; // again, use a constant
-        $max_parts = 3; // ... constant
-
-        $str_length = $this->count_gsm_string($str);
-        if($str_length === -1) {
-            $one_part_limit = 70; // ... constant
-            $multi_limit = 67; // ... constant
-            $str_length = $this->count_ucs2_string($str);
-        }
-
-        if($str_length <= $one_part_limit) {
-            // fits in one part
-            return 1;
-        } else if($str_length > ($max_parts * $multi_limit)) {
-            // too long
-            return -1; // or throw exception, or false, etc.
-        } else {
-            // divide the string length by multi_limit and round up to get number of parts
-            return ceil($str_length / $multi_limit);
-        }
-    }
-
-    /**
-     * Count number of GSM UTF-7 characters in given string
-     *
-     * Internal encoding must be set to UTF-8, and the input string must be UTF-8 encoded for this to work correctly
-     *
-     * @param string $str String
-     *
-     * @return int String length
-     *
-     * @author https://stackoverflow.com/a/32389803
-     */
-    function sms_count_gsm_string($str)
-    {
-        // Basic GSM character set (one 7-bit encoded char each)
-        $gsm_7bit_basic = '@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà';
-
-        // Extended set (requires escape code before character thus 2x7-bit encodings per)
-        $gsm_7bit_extended = "^{}\\[~]|€";
-
-        $len = 0;
-
-        for($i = 0; $i < mb_strlen($str); $i++) {
-            if(mb_strpos($gsm_7bit_basic, $str[$i]) !== FALSE) {
-                $len++;
-            } else if(mb_strpos($gsm_7bit_extended, $str[$i]) !== FALSE) {
-                $len += 2;
-            } else {
-                return -1; // cannot be encoded as GSM, immediately return -1
-            }
-        }
-
-        return $len;
-    }
-
-    /**
-     * Count number of UCS2 characters in given string
-     *
-     * Internal encoding must be set to UTF-8, and the input string must be UTF-8 encoded for this to work correctly
-     *
-     * @param string $str String
-     *
-     * @return int String length
-     *
-     * @author https://stackoverflow.com/a/32389803
-     */
-    function sms_count_ucs2_string($str)
-    {
-        $utf16str = mb_convert_encoding($str, 'UTF-16', 'UTF-8');
-        // C* option gives an unsigned 16-bit integer representation of each byte
-        // which option you choose doesn't actually matter as long as you get one value per byte
-        $byteArray = unpack('C*', $utf16str);
-        return count($byteArray) / 2;
-    }
+    

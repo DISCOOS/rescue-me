@@ -5,12 +5,7 @@
     "homepage": "http://www.discoos.org/rescueme",
     
     "autoload": {
-        "psr-0": {"": [
-            "classes/",
-            "sms/classes/",
-            "trace/classes/",
-            "admin/classes/"
-        ]},
+        "psr-0": {"": "classes/"},
         "classmap": [
             "classes/Inspector.php", 
             "classes/gPoint.class.php"
@@ -19,12 +14,10 @@
 
     "require": {
         "psr/log": "1.0.0",
+        "silex/silex": "1.*",
         "twig/twig": ">=1.8,<2.0-dev",
         "twig/extensions": "*",
-        "umpirsky/twig-gettext-extractor": "1.1.*",
-        "erusev/parsedown": "1.0.1",
-        "erusev/parsedown-extra": "0.2.0",
-        "swiftmailer/swiftmailer": "@stable"
+        "umpirsky/twig-gettext-extractor": "1.1.*"
     },
             
     "scripts": {

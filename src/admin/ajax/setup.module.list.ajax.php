@@ -1,50 +1,44 @@
 <?    
-ob_start();
+    ob_start();
+    
+    use RescueMe\User;
+    use RescueMe\Module;
+    
+    $id = input_get_int('id', User::currentId());
+    
+    $modules = Module::getAll($id);
+    
+    if($modules !== false) {
 
-use RescueMe\User;
-use RescueMe\Manager;
-use RescueMe\Factory;
+        if(!isset($include)) $include = ".*";
 
-$id = input_get_int('id', User::currentId());
-
-$factories = Manager::getAll($id);
-
-if($factories !== false) {
-
-    $include = (isset($context) ? $context : ".*");
-    $pattern = '#'.$include.'#';
+        $pattern = '#'.$include.'#';
 ?>
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th width="25%"><?=T_("Settings")?></th>
-            <th>
+            <th width="25%"></th>
+            <th width="50%">
                 <input type="search" class="input-medium search-query pull-right" placeholder="Search">
             </th>            
         </tr>
     </thead>        
-    <tbody class="page">
+    <tbody class="searchable">        
 <?
-        /** @var Factory $factory */
-        foreach($factories as $id => $factory) {
+        foreach($modules as $id => $module) {
             
-            if(preg_match($pattern, $factory->type)) {
-                $classes = \Inspector::subclassesOf($factory->type, array(
-                    APP_PATH . 'classes',
-                    ADMIN_PATH . 'classes',
-                    APP_PATH . implode(DIRECTORY_SEPARATOR, array('sms', 'classes'))
-                ));
-                $type = explode('\\',$factory->type);
-                $impl = explode('\\',$factory->impl);
+            if(preg_match($pattern, $module->type)) {
+                $classes = \Inspector::subclassesOf($module->type);
 ?>
-        <tr id="m<?= $id ?>" class="searchable" data-group="#m<?=$id?>+#m<?=$id?>-d:first">
-            <td class="module type"> <?=end($type)?> </td>
-            <td class="module impl"> <?=end($impl)?> </td>
+        <tr id="<?= $id ?>">
+            <td class="module type"> <?=T_($module->type)?> </td>
+            <td class="module impl"> <?=T_($module->impl)?> </td>
             <td class="editor">
                 <div class="btn-group pull-right">
                     <a class="btn btn-small" href="<?=ADMIN_URI."setup/module/$id"?>">
-                        <b class="icon icon-edit"></b><?= T_('Edit') ?>
+                        <b class="icon icon-edit"></b><?= EDIT ?>
                     </a>
                     <a class="btn btn-small dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
@@ -52,7 +46,7 @@ if($factories !== false) {
                     <ul class="dropdown-menu">
 <?
                     foreach(array_keys($classes) as $class) {
-                        if($factory->impl !== $class) {
+                        if($module->impl !== $class) {
                             insert_item($class, ADMIN_URI."setup/module/$id?type=$class");
                         }
                     }
@@ -61,25 +55,8 @@ if($factories !== false) {
                 </div>
             </td>
         </tr>
-        <tr id="m<?= $id ?>-d">
-            <td colspan="3" class="description muted">
 <?
-            if(($instance = $factory->newInstance()) === FALSE) {
-                echo insert_icon('remove', 'red', true, false).T_('Module is not installed correctly.');
-                insert_error(sprintf(T_('Failed to create instance of module [%1$s]'),$impl));
-            } else {
-                if(method_exists($instance,'validate') && $instance->validate() === FALSE) {
-                    echo insert_icon('remove', 'red', true, false).T_('Module is not configured correctly.');
-                    insert_error($instance->last_error_message());
-                } else {
-                    echo insert_icon('ok', 'green', true, false).T_('Module is configured and ready for use.');
-                }
-            }
-?>
-            </td>
-        </tr>
-<?
-            $instance = $factory->newInstance();
+            $instance = $module->newInstance();
             if($instance instanceof RescueMe\Uses) {
 
                 $inline = true;

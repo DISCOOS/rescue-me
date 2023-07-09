@@ -34,7 +34,7 @@ if(typeof google !== "undefined") {
 
             mapTypeControlOptions: {
                 mapTypeIds: [
-                    'statkart.topo',
+                    'statkart.topo2',
                     google.maps.MapTypeId.ROADMAP,
                     google.maps.MapTypeId.SATELLITE,
                     google.maps.MapTypeId.HYBRID,
@@ -45,7 +45,7 @@ if(typeof google !== "undefined") {
 
         };
         map = new google.maps.Map(document.getElementById(id), mapProp);
-        map.mapTypes.set('statkart.topo', new R.map.StatkartMapType("Norway Topo4", "topo4"));
+        map.mapTypes.set('statkart.topo2', new R.map.StatkartMapType("Norway Topo4", "topo4"));
 
         google.maps.event.addListener(map, 'click', function() {
             if (lastInfoWindow !== null) {

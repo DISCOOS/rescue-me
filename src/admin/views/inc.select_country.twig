@@ -1,0 +1,10 @@
+{% if name is not defined %}
+	{% set name = "country" %}
+{% endif %}
+
+<select id="{{name}}" name="{{name}}" type="select"
+	class="input-block-level" required>
+{% for code,name in countries %}
+	<option value="{{code}}" {% if selected_country == code %}selected="selected"{% endif %}>{{name}}</option>
+{% endfor %}
+</select>

@@ -1,0 +1,40 @@
+<?
+
+require 'config.php';
+
+// Create connection
+$conn = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME) or die("Connection failed: " . mysqli_connect_error());
+echo "Connected successfully<br>";
+
+// Query stats
+$type = "trace";
+
+$stmt = $conn->prepare("SELECT COUNT(distinct missing_mobile), COUNT(*) FROM missing, operations WHERE missing.op_id = operations.op_id AND op_type=?");
+$stmt->bind_param("s", $type);
+
+echo "test1";
+
+
+$stmt->execute();
+
+echo "test2";
+
+
+$stmt->store_result();
+
+e//cho "test3";
+
+$stats = array();
+
+//$stmt->bind_result($stats);
+//var_dump($stats);
+
+//echo "mysql" . mysqli_error();
+
+// Cleanup
+$stmt->close();
+$conn->close();
+
+
+?>
+

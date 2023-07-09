@@ -15,7 +15,7 @@
 <form id="<?=$id?>-form" name="<?=$id?>-form" method="post" class="form well" <?if(isset($action)){?>action="<?=$action?>"<?}?>>
 <? if(isset($title) && $title) {?>
     <div class="form-header">
-        <h3 id="<?= $id ?>-label"><?= $title ?></h3>
+        <h3 id="<?= $id ?>-label"><?= T_($title) ?></h3>
     </div>
 <? } ?>    
     <div id="<?= $id ?>-body" class="form-body">
@@ -42,10 +42,15 @@
     ?>
     </div>
     <div class="form-footer">
-        <? $label = isset_get($actions, 'submit', T_('Save'));  ?>
-        <button type="submit" class="btn btn-primary"><?= $label ?></button>
-        <? $label = isset_get($actions, 'cancel', T_('Cancel')); ?>
-        <? $onclick = isset_get($actions, 'cancel_onclick', 'history.go(-1);') ?>
-        <button type="reset" class="btn" onclick="<?=$onclick?>"><?= $label ?></button>
+        <? if(isset($actions['submit'])) { ?>
+        <button type="submit" class="btn btn-primary"><?= T_($actions['submit']) ?></button>
+        <? } else { ?>
+        <button type="submit" class="btn btn-primary"><?= T_(SAVE) ?></button>
+        <? } ?>
+        <? if(isset($actions['cancel'])) { ?>
+        <button type="reset" class="btn" onclick="history.go(-1);"><?= T_($actions['cancel']) ?></button>
+        <? } else { ?>
+        <button type="reset" class="btn" onclick="history.go(-1);"><?= T_(CANCEL) ?></button>
+        <? } ?>
     </div>
 </form>

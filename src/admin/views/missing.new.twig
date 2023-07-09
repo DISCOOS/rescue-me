@@ -1,0 +1,102 @@
+{% extends 'design_admin.twig' %}
+
+{% if data is not defined %}
+	{% set data = {'m_name':'',
+				   'm_mobile_country':selected_country,
+				   'm_mobile':'',
+				   'mb_mobile_country':selected_country,
+				   'mb_mobile':''}
+	%}
+{% endif %}
+
+{% block content %}
+	<h3>{% trans "Start trace of missing" %}</h3>
+<form method="post">
+	<fieldset class="new-missing pull-left" style="margin-right: 2em;">
+		<legend>{% trans "About the missing" %}</legend>
+
+		<label for="m_name">{% trans "First name of missing" %}</label>
+		<input class="input-block-level" type="text" id="m_name" name="m_name" value="{{data.m_name}}"
+			placeholder="{% trans "First name" %}" autofocus required>
+
+        <div class="row-fluid">
+            <div class="span4">
+                <label for="m_mobile_country">{% trans "Mobile country" %}</label>
+                {% embed "inc.select_country.twig" 
+                	with {'name': 'm_mobile_country',
+                		  'selected_country': data.m_mobile_country} %}
+                {% endembed %}
+            </div>
+            <div class="span8">
+                <label for="m_mobile">{% trans "Mobile number of missing" %}</label>
+                <input class="input-block-level" type="tel" id="m_mobile" name="m_mobile" value="{{data.m_mobile}}"
+                	placeholder="{% trans "Only numbers, no spaces" %}" required pattern="[0-9]*">
+            </div>
+        </div>
+	</fieldset>
+    
+	<fieldset class="new-missing pull-left">
+		<legend>{% trans "Report to" %}</legend>
+
+        <div class="row-fluid">
+            <div class="span4">
+                <label for="mb_mobile">{% trans "Mobile country" %}</label>
+                {% embed "inc.select_country.twig" 
+                	with {'name': 'mb_mobile_country',
+                		  'selected_country': data.mb_mobile_country} %}
+                {% endembed %}
+            </div>
+            <div class="span8">
+                <label for="mb_mobile">{% trans "Mobile number" %}</label>
+                <input class="input-block-level" type="tel" id="mb_mobile" name="mb_mobile" value="{{data.mb_mobile}}" 
+                	placeholder="{% trans "Only numbers, no spaces" %}" required pattern="[0-9]*">
+            </div>
+        </div>	</fieldset>
+
+	<div class="clearfix"></div>
+    <div class="alert alert-info">
+        <em>{% trans "A SMS is sent automatically to the missing when tracing is initiated" %}</em>
+        <button type="button" data-toggle="readmore" class="toggle btn btn-mini btn-info pull-right">
+        	{% trans "Read more" %}
+        </button>	
+        <div id="readmore" style="display:none;">
+            <h4>{% trans "SMS-text" %}</h4>
+            <div class="alert">{{SMS_TEXT_MISSING}}</div>
+            <h4>{% trans "Tracing page" %}</h4>
+            <p>{% trans %}
+            	When the missing opens the SMS link, a webpage is loaded and 
+            	will prompt the user for positioning access.
+            	{% endtrans %}</p>
+            <p>
+                <strong>{% trans "Load time" %}</strong>
+                <br />
+                {% trans %}
+                	The webpage is approximately 1,9Kb, which should take less than a second 
+                	to open on a bad cell reception. Still, it is important that the missing 
+                	is patient, and let the browser use whatever time it needs to open the 
+                	positioning webpage.
+                {% endtrans %}
+            </p>
+            <p>
+                <strong>{% trans "Repeated positioning" %}</strong>
+                <br />
+                {% trans %}
+                	If the position is inaccurate, 
+                	the tracing positioning webpage will reload after 10 seconds. 
+					The user will be shown a countdown, and the page will reload. 
+					This will be repeated 10 times, or until the positioning is
+					sufficient accurate.
+				{% endtrans %}
+                <br />
+                {% trans %}
+                	All traces will be available in the 
+                	<a href="{{APP_ADMIN_URI}}missing/list">traces-page</a>
+                {% endtrans %}
+                <br />
+            </p>
+        </div>
+	</div>        
+	<div class="clearfix"></div>
+    <button type="submit" class="btn btn-success">{% trans "Start trace" %}</button>
+</form>
+{% endblock %}

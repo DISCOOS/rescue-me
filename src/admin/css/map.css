@@ -6,6 +6,10 @@
         Override default Google Maps styling
 */
 
+div.map {
+    /*display: table;*/
+    text-align: center;
+}
 
 p.map {
     display: table-cell;

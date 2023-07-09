@@ -13,7 +13,6 @@
     namespace RescueMe\Log;
     
     use \RescueMe\DB;
-    use RescueMe\DBException;
     use \RescueMe\User;
 
     /**
@@ -107,13 +106,13 @@
          */
         public static function getTitles() {
             return array(
-                Logs::ALL => T_('All'),
-                Logs::TRACE => T_('Traces'),
-                Logs::LOCATION => T_('Locations'),
-                Logs::SMS => T_('SMS'),
-                Logs::ACCESS => T_('Access'),
-                Logs::DB =>  T_('Database'),
-                Logs::SYSTEM => T_('System'),
+                Logs::ALL => ALL,
+                Logs::TRACE => TRACES,
+                Logs::LOCATION => LOCATIONS,
+                Logs::SMS => SMS,
+                Logs::ACCESS => ACCESS,
+                Logs::DB =>  DATABASE,
+                Logs::SYSTEM => SYSTEM,
             );            
         }        
         
@@ -163,15 +162,14 @@
             
             return $query;
         }
-
-
+        
+        
         /**
          * Get number of lines in given logs
-         *
-         * @param string $logs Log name
-         * @param string $filter Log filter
+         * 
+         * @param string $name Log name
+         * 
          * @return integer|boolean
-         * @throws DBException
          */
         public static function countAll($logs, $filter = '') {
             
@@ -199,16 +197,15 @@
             return $row[0];
             
         }// get         
-
+        
+        
+        
         /**
          * Get all logs in database
-         *
+         * 
          * @param array $logs Logs (optional, default: null - all)
-         * @param string $filter Log filter
-         * @param int $start
-         * @param bool $max
+         * 
          * @return array|boolean
-         * @throws DBException
          */
         public static function getAll($logs = null, $filter = '', $start = 0, $max = false) {
             
@@ -229,53 +226,46 @@
             return $logs;
             
         }// getAll     
-
-
+        
+        
         /**
          * Get number of lines in given log
-         *
+         * 
          * @param string $name Log name
-         * @param string $filter Log filter
-         *
+         * 
          * @return integer|boolean
-         * @throws DBException
          */
         public static function count($name, $filter = '') {
             
             return Logs::countAll(array($name), $filter);
             
         }// get        
-
-
+        
+        
         /**
          * Get log with given name
-         *
+         * 
          * @param string $name Log name
-         * @param string $filter Log filter
-         * @param int $start
-         * @param bool $max
-         *
+         * 
          * @return array|boolean
-         * @throws DBException
          */
         public static function get($name, $filter = '', $start = 0, $max = false) {
             
             return Logs::getAll(array($name), $filter, $start, $max);
             
         }// get
-
-
+        
+        
+        
         /**
          * Write message to log.
          *
-         * @param string $name Log name
          * @param string $level Log level
          * @param string $message Message text
          * @param array $context Log context values
          * @param integer $user_id User id
          *
          * @return void
-         * @throws DBException
          */
         public static function write($name, $level, $message, $context = array(), $user_id = null) {
             
@@ -299,22 +289,6 @@
                 
             }
         }
-
-
-        public static function toArray(\Exception $e) {
-            if($e === null) {
-                return '';
-            }
-
-            return array(
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'code' => $e->getCode(),
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'previous' => Logs::toArray($e->getPrevious()),
-            );
-        }
-
+        
         
     }// Logs

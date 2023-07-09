@@ -1,34 +1,32 @@
 <? 
 require('config.php');
 
-use \RescueMe\Mobile;
-use \RescueMe\Trace;
+use \RescueMe\Missing;
+use \RescueMe\Operation;
 
 $id = input_get_hash('id');
 
 if ($id === false) { 
     
-    $message = T_('Illegal arguments');
+    $message = ILLEGAL_ARGUMENTS;
     
 } else {
-
-    $id = decrypt_id($id);
-
-    $m = Mobile::get($id);
-
+    
+    $m = Missing::get(decrypt_id($id));
+    
     if($m !== false)
     {
         set_system_locale(DOMAIN_TRACE, $m->locale);
         
-        $trace_name = sprintf(T_('Closed by %1$s at %2$s'), $m->id, date('Y-m-d'));
+        $op_name = sprintf(CLOSED_BY_S1_AT_S2, $m->id, date('Y-m-d'));
         
-        if(Trace::close($m->trace_id, array('trace_name' => $trace_name))) {
+        if(Operation::close($m->op_id, array('op_name' => $op_name))) {
             
-            $message = sprintf(T_('Trace %1$s aborted'), $m->name);
+            $message = sprintf(TRACE_S_IS_ABORTED, $m->name);
             
         } else {
             
-            $message = sprintf(T_('Failed to abort trace %1$s'), $id);
+            $message = sprintf(FAILED_TO_ABORT_TRACE_S, $id);
             
             include 'locate.php';
             
@@ -37,7 +35,7 @@ if ($id === false) {
         }
     }
     else {
-        $message = sprintf(T_('Trace %1$s not found'), $id);
+        $message = sprintf(TRACE_S_NOT_FOUND, $id);
     }
 }
 ?>

@@ -15,7 +15,7 @@
         'id' => 'password',
         'type' => 'password', 
         'label' => T_('Password'),
-        'placeholder' => sprintf(T_('Minimum %1$s characters'),PASSWORD_LENGTH),
+        'placeholder' => sprintf(MINIMUM_D_CHARACTERS,8),
         'class' => 'span3',
         'attributes' => 'required'
     );
@@ -23,7 +23,7 @@
         'id' => 'repeat-pwd',
         'type' => 'password', 
         'label' => T_('Repeat Password'),
-        'placeholder' => sprintf(T_('Minimum %1$s characters'),PASSWORD_LENGTH),
+        'placeholder' => sprintf(MINIMUM_D_CHARACTERS,8),
         'class' => 'span3 offset1',
         'attributes' => 'required equalTo="#password"'
     );    

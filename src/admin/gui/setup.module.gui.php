@@ -1,9 +1,9 @@
 <?
-use RescueMe\Manager;
+use RescueMe\Module;
 
 $id = input_get_int('id');
 
-$module = Manager::get($id);
+$module = Module::get($id);
 
 if($module === false)
 {
@@ -30,7 +30,7 @@ else
         'value' => isset($_GET['type']) ? $_GET['type'] : $module->impl
     );
     
-    $config = $impl->getConfig();
+    $config = $impl->config();
     
     foreach($config->params() as $property => $default) {
         
@@ -42,7 +42,7 @@ else
             'id' => "$property",
             'type' => 'text', 
             'value' => $default, 
-            'label' => $config->label($property),
+            'label' => T_($config->label($property)),
             'attributes' => trim(implode(" ", $attributes))
         );
     }
@@ -50,7 +50,7 @@ else
     $fields[2]['attributes'] .= ' autofocus';
     
     // Prepare label and action url
-    $label = $module->type.': ';
+    $label = T_($module->type).': ';
     $action = ADMIN_URI."setup/module/$id";
     if(isset($_GET['type'])) {
         $action .= '?type='.$_GET['type'];

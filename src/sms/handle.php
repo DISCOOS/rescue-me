@@ -12,7 +12,7 @@
     
     require('config.php');
 
-    use RescueMe\Manager;
+    use RescueMe\Module;
     use Psr\Log\LogLevel;
     use RescueMe\Log\Logs;
     use RescueMe\Log\Logger;
@@ -34,17 +34,17 @@
 
         if(empty($params)) {    
 
-            error(T_('No parameters found'));
+            error(NO_PARAMETERS_FOUND);
         } 
         else {
 
-            $module = Manager::get(Provider::TYPE, $_GET['user']);
+            $module = Module::get(Provider::TYPE, $_GET['user']);
 
             $sms = $module->newInstance();
 
             if($sms === FALSE){
 
-                error(sprintf(T_('Failed to load [%1$s]'),Provider::TYPE));
+                error(sprintf(FAILED_TO_LOAD_MODULE_S,Provider::TYPE));
 
             } else {
 
@@ -58,12 +58,12 @@
                         if ($sms instanceof RescueMe\SMS\Callback) {
                             $sms->handle($params);
                         } else {
-                            error(sprintf(T_('[%1$s] does not support [%2$s]'), $module->impl, 'RescueMe/SMS/Callback'));
+                            error(sprintf(MODULE_S1_DOES_NOT_SUPPORT_S2, $module->impl, 'RescueMe/SMS/Callback'));
                         }
 
                         break;
                     default:
-                        error(sprintf(T_('SMS request [%1$s] not supported'), $request));
+                        error(sprintf(SMS_REQUEST_S_NOT_SUPPORTED, $request));
                         break;
                 }
             }

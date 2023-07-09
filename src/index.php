@@ -1,13 +1,8 @@
 <?php
-
-require('config.php');
-
-use RescueMe\Locale;
-
-$locale = Locale::getBrowserLocale();
-
-set_system_locale(DOMAIN_COMMON, $locale);
-
+    require('config.php');
+    
+    set_system_locale(DOMAIN_ADMIN);
+    
 ?>
 
 <!DOCTYPE html>
@@ -17,27 +12,46 @@ set_system_locale(DOMAIN_COMMON, $locale);
         <title><?= TITLE ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="apple-mobile-web-app-title" content="<?=TITLE?>" >
-        <link rel="shortcut icon" href="<?=APP_URI?>img/favicon.ico" >
+        <link rel="shortcut icon" href="img/favicon.ico" >
         <link rel="apple-touch-icon" href="<?=APP_URI?>img/rescueme-non-trans.png" >
-        <link href="<?=APP_URI?>css/index.css" rel="stylesheet">
-        <script src="<?=APP_URI?>js/index.js"></script>
+        <link href="css/index.css" rel="stylesheet">
+        <script src="js/index.js"></script>
     </head>
 
     <body>
         <div class="container-narrow">
-            <div class="row-fluid masthead">
-                <div class="pull-left">
-                    <p class="lead muted"><b><?=TITLE?></b></p>
-                </div>
+            <div class="masthead">
                 <ul class="nav nav-pills pull-right">
-                <?require('gui/nav.gui.php')?>
+                <? 
+                    
+                    if(isset_get($_SESSION, 'logon', false)) {
+                        
+                 ?>
+                    <li id="start"><a href="<?= ADMIN_URI ?>start"><?= START ?></a></li>
+                    <li id="logout"><a data-toggle="modal" data-backdrop="false" href="#confirm"><?= LOGOUT ?></a></li>
+                <? 
+                        insert_dialog_confirm("confirm", CONFIRM, DO_YOU_WANT_TO_LOGOUT, ADMIN_URI."logout");
+                    
+                    } else {
+                        
+                 ?>  
+                    
+                    <li id="logout"><a href="<?= ADMIN_URI."user/new" ?>"><?=DONT_HAVE_AN_ACCOUNT?> <?=SIGN_UP_HERE?></a></li>
+                    <li id="logout"><a href="<?= ADMIN_URI ?>"><?= LOGIN ?></a></li>
+                    
+                <?php 
+                    
+                    }
+                        
+                 ?>                               
                 </ul>
             </div>
-            <div class="row-fluid"><?require('gui/home.gui.php')?></div>
-            <div class="form-signin text-center visible-phone">
-                <a href="<?= ADMIN_URI."user/new" ?>"><?=T_('Don\'t have an account?')?> <?=T_('Sign up here')?></a>
-            </div>
-            <?require('gui/footer.gui.php')?>
+            <?
+                require('gui/about.gui.php');
+                if(is_file(realpath('footer.php'))) {
+                    require('footer.php');
+                }
+            ?>
         </div>
     </body>
 </html>

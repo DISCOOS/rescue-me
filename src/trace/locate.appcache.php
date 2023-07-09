@@ -2,18 +2,17 @@
 
 require_once('../config.php');
 
-use RescueMe\Mobile;
+use RescueMe\Missing;
 use RescueMe\Properties;
 
-$id = input_get_hash('id');
-$mobile = ($id === false ? false : Mobile::get(decrypt_id($id)));
+set_system_locale();
 
-if($mobile !== false) {
+$id = $_GET['id'];
+$missing = Missing::get($id);
 
-    set_system_locale(DOMAIN_TRACE, $mobile->locale);
-
+if($missing !== false) {
     $version = VERSION;
-    $user_id = $mobile->user_id;
+    $user_id = $missing->user_id;
     $type = Properties::get(Properties::LOCATION_APPCACHE, $user_id);
     if($type === 'settings')
     {

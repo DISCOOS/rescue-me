@@ -1,4 +1,4 @@
-// Define RescueMe "namespace"
+// Define Rescue Me! "namespace"
 R = install;
 
 // Allow one "version" per window
@@ -21,21 +21,6 @@ R.toQuery = function(url) {
     return query;
 };
 
-/**
- * Change URL hash without page jump
- * @param id Hash id
- */
-R.hash = function(id) {
-    if(history.replaceState){
-        history.replaceState({},'','#'+id);
-    }else{
-        var el = $(id);
-        el.removeAttr('id');
-        location.hash = id;
-        el.attr('id',id);
-    }
-};
-
 R.cookie = {};
 R.cookie.get = function(name, use) {
     
@@ -50,12 +35,4 @@ R.cookie.get = function(name, use) {
             return c.substring(name.length,c.length);
     }
     return use;
-};
-
-R.isJSON = function isJSON(str) {
-    if (!str) return false;
-    str = str.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@');
-    str = str.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']');
-    str = str.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
-    return (/^[\],:{}\s]*$/).test(str);
 };

@@ -2,12 +2,12 @@
 ob_start();
 
 use RescueMe\User;
-use RescueMe\Mobile;
+use RescueMe\Missing;
 use RescueMe\Properties;
 
 $num = (int)$_GET['num'];
 $user_id = User::currentId();
-$mobile = Mobile::get((int)$_GET['id']);
+$missing = Missing::get((int)$_GET['id']);
 $params = Properties::getAll($user_id);
 
 // Close the session prematurely to avoid usleep() from locking other requests
@@ -17,14 +17,16 @@ set_time_limit(120);
 // Counter to manually keep track of time elapsed (PHP's set_time_limit() is unrealiable while sleeping)
 $endtime = time() + 110;    
 while(time() <= $endtime){
-    $positions = $mobile->getAjaxPositions($num);
+    $positions = $missing->getAjaxPositions($num);
 
     if (sizeof($positions) > 0) {
         break;
     }
+    // MANUAL EDIT->
     // We don't run "live" against the DB - check every 1 sec
     // TODO: Config-value?
     usleep(1000000);
+    //<-MANUAL EDIT
 }
 foreach ($positions as $key=>$value) {
     $posText = format_pos($value, $params);
@@ -32,7 +34,7 @@ foreach ($positions as $key=>$value) {
 
     $arr = array('lat' => $value->lat, 'lon' => $value->lon, 'acc' => $value->acc,
                  'alt' => $value->alt, 'posText' => $posText, 'posTextClean' => $posTextClean,
-                 'timestamp' => format_tz($value->timestamp));
+                 'timestamp' => $value->timestamp.\RescueMe\TimeZone::getOffset());
 
     echo json_encode($arr);
 }

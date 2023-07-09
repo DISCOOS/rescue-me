@@ -29,21 +29,17 @@
         /**
          * Constructor
          *
-         * @param array $uses
+         * @param string $uses 
          *
          * @since 29. September 2013
          * 
          */
-        protected function __construct($uses=array())
+        public function __construct($uses=array())
         {
             $this->uses = is_array($uses) ? $uses : array($uses);
-        }
-
-
-        /**
-         * Get uses
-         * @return array
-         */
+        }// __construct        
+        
+        
         public function uses() {
             return $this->uses;
         }

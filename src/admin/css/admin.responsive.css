@@ -20,55 +20,41 @@
 /  Portrait tablet to landscape and desktop
 /  ==========================================*/
 
-@media (min-width: 830px) and (max-width: 1200px) {
+@media (min-width: 768px) and (max-width: 979px) {  
 
     /* Use defaults */
 
 }
 
-
 /* ==========================================
 /  Landscape phone to portrait tablet
 /  ==========================================*/
 
-@media (min-width: 480px) and (max-width: 767px) {
+@media (max-width: 767px) {
 
     #map {
-        width: 100%;
-        max-width: 100%;
-        height: 40%;
-        max-height: 40%;
+        clear: left;
+        float: left;
+        width: 255px;
+        height: auto;
+        min-width: 255px;
+        min-height: 255px;
     }
 
     #sidebar {
-        clear: left;
-        float: left;
-        width: calc(100% - 0.8em);
-        max-width: calc(100% - 0.8em);
-        height: 60%;
-        max-height: 60%
+        width: 225px;
+        height: auto;
+        min-width: 225px;
+        min-height: 255px;
     }
-
-    div .map {
-
-        height: 750px;
-        max-height: 750px;
-    }
-
-
+    
     #trace div {
         float: left !important;
     }
     
     /* Make dropdown toggles easier to hit */
-    /*.editor .dropdown-toggle {
+    .editor .dropdown-toggle {
         width: 1.25em;
-    }*/
-
-    /* Move dropdown to the left */
-    .pull-right li:last-child .dropdown-menu {
-        left: auto;
-        right: 4px;
     }
     
     /* Fit formsets on single row */
@@ -87,30 +73,43 @@
 /  Portrait phones and down
 /  ==========================================*/
 
-@media (max-width: 480px) {
+@media (max-width: 480px) { 
 
     #map {
-        width: 100%;
-        max-width: 100%;
-        height: 40%;
-        max-height: 40%;
+        clear: left;
+        float: left;
+        height: auto;
+        width: 340px;
+        min-width: 340px;
+        min-height: 340px;
     }
 
     #sidebar {
         clear: left;
         float: left;
-        width: calc(100% - 0.8em);
-        max-width: calc(100% - 0.8em);
-        height: 60%;
-        max-height: 60%
+        width: 330px;
+        height: auto;
+        min-width: 330px;
+        min-height: 330px;
+        border: 1px solid lightgray;
+        border-top: 0px;
+    }
+    
+    .trace {
+        left: -10px;
     }
 
-    div .map {
-
-        height: 550px;
-        max-height: 550px;
+    .trace .span
+    {
+        width: 70px;
     }
-
+    
+    .trace .trace-bar
+    {
+        width: 40px;
+        left: -20px;
+    }
+    
 
     /* Make search field smaller */
     input.search-query {
@@ -118,15 +117,8 @@
     }
 
     /* Make dropdown toggles easier to hit */
-/*
     .editor .dropdown-toggle {
         width: 1.25em;
-    }
-*/
-    /* Move dropdown to the left */
-    .pull-right li:last-child .dropdown-menu {
-        left: auto;
-        right: 4px;
     }
 
     /* Allow names to wrap*/
@@ -144,14 +136,5 @@
         height: 6em;
     }
 
-    .row-fluid div[class*="v-space"] {
-        margin-top: 30px;
-    }
-}
-
-@media (max-height: 300px) and (orientation: landscape) {
-    .hidden-landscape {
-        display: none !important;
-    }
 }
 

@@ -1,0 +1,28 @@
+{#
+ACCEPTS:
+
+EITHER 
+	message // Single message, will be preceded with "An error ocurred"
+OR
+	message.header // No preceding "An error ocurred"
+	message.body
+	message.data
+#}
+<div class="alert alert-error jQshake">
+	<strong>
+		{% if message.header is defined %}
+			{{message.header}}
+		{% else %}
+			{% trans "An error occurred" %}
+		{% endif %}
+	</strong><br />
+	{% if message.body is defined %}
+		{{message.body}}
+	{% else %}
+		{{message}}
+	{% endif %}
+
+	{% if message.data is defined %}
+		<br />"<em>{{message.data}}</em>"
+	{% endif %}
+</div>
