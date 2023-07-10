@@ -2,6 +2,7 @@ nbproject
 dist
 test
 logs
+*.log
 .idea/
 .vagrant/
 src/config.php
