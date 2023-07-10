@@ -40,7 +40,35 @@
                                     13=>'Subscriber Age Restriction',
                                     14=>'Number Blocked By Carrier',
                                     15=>'Pre-Paid Insufficient Funds',
+                                    50=>'Entity Filter',
+                                    51=>'Header Filter',
+                                    52=>'Content Filter',
+                                    53=>'Consent Filter',
+                                    54=>'Regulation Error',
                                     99=>'General Error');
+
+        private $errorDesc = array(0=>'',
+            1=>'Message was not delivered and no cause could be determined.',
+            2=>'Message was not delivered because handset was temporarily unavailable. Retry.',
+            3=>'Number is no longer active and should be removed from your database.',
+            4=>'Permanent error. Number should be removed from your database and the user must contact their network operator to remove the bar.',
+            5=>'Issue relating to portability of the number. Contact the network operator to resolve it.',
+            6=>"Message blocked by carrier's anti-spam filter.",
+            7=>'Handset not available at the time message was sent. Retry.',
+            8=>'Message failed due to network error. Retry.',
+            9=>'User has requested not to receive messages from a specific service.',
+            10=>'Error in message parameter, e.g., wrong encoding flag.',
+            11=>'Vonage cannot find a suitable route to deliver the message.',
+            12=>"Route to number cannot be found. Confirm the recipient's number.",
+            13=>'Target cannot receive message due to their age.',
+            14=>'Recipient should ask their carrier to enable SMS on their plan.',
+            15=>'Recipient is on a prepaid plan and does not have enough credit to receive your message.',
+            50=>'Message failed due to entity-id being incorrect or not provided.',
+            51=>'Message failed because the header ID (from phone number) was incorrect or missing.',
+            52=>'Message failed due to content-id being incorrect or not provided.',
+            53=>'Message failed due to consent not being authorized.',
+            54=>'Unexpected regulation error.',
+            99=>'General Error');
         
         /**
          * Constructor
@@ -189,15 +217,22 @@
                        new \DateTime()
                     );
                 } else if ($params['status'] !== "accepted") {
+                    $errorDesc = '';
+                    if(isset($params['err-code'])) {
+                        $errorCode = (int)$params['err-code'];
+                        $errorDesc = $this->errorCodes[$errorCode]." ($errorCode)";
+                        if(!empty($this->errorDesc[$errorCode])) {
+                            $errorDesc .= ': '.$this->errorDesc[$errorCode];
+                        }
+                    }
                     $this->delivered(
                         $params['messageId'], 
                         $params['msisdn'], 
                         $params['status'], 
                         new \DateTime(), 
-                        isset($params['err-code']) 
-                        ? $this->errorCodes[(int)$params['err-code']].' ('.$params['err-code'].')'
-                        : ''
+                        $errorDesc
                     );
+
                 }// else if
             }// if
         }// handle
