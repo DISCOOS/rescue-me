@@ -753,7 +753,7 @@
                 Logs::write(
                     Logs::TRACE, 
                     LogLevel::INFO,
-                    "SMS sent to $recipient ($to)",
+                    "Location request $id sent to $recipient ($to)",
                     $context
                 );
                 

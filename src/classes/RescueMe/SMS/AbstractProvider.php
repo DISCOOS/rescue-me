@@ -193,7 +193,7 @@
                 array($from, $code.$to, $message)
             );
             
-            if($id === FALSE) {
+            if(!$id) {
                 $context['error'] = $this->error();
                 Logs::write(Logs::SMS, LogLevel::ERROR, "Failed to send message to $code$to", $context);
             } else {
@@ -308,7 +308,7 @@
                         $delivered = isset($datetime) ? "FROM_UNIXTIME({$datetime->getTimestamp()})" : "NULL";
 
                         $update = "UPDATE `missing` 
-                                   SET `sms_delivery` = $delivered, `sms_error` = '".(string)$errorDesc."'
+                                   SET `sms_delivery` = $delivered, `sms_error` = '".DB::escape((string)$errorDesc)."'
                                    WHERE `missing_id` = {$row['missing_id']}";
 
                         if(DB::query($update)) {

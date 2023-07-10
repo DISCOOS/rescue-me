@@ -139,8 +139,12 @@
             }// if
                         
             $result = DB::instance()->mysqli->query($sql);
-            if($result == true && strpos($sql, "INSERT") !== false) {
+            if($result && strpos($sql, "INSERT") !== false) {
                 return DB::instance()->mysqli->insert_id;
+            } else if(!$result) {
+                $context['query'] = $sql;
+                $context['error'] = DB::error();
+                Logs::write(Logs::DB, LogLevel::ERROR, "Failed to execute query [$sql]", $context);
             }
             return $result;
         }// query
