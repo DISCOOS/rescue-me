@@ -1,8 +1,11 @@
 <?
     use RescueMe\User;
+    use RescueMe\Locale;
+    use RescueMe\Module;
     use RescueMe\Missing;
     use RescueMe\Operation;
     use RescueMe\Properties;
+    use RescueMe\SMS\Provider;
     
     $id = input_get_int('id');
 
@@ -17,13 +20,25 @@
     
         $positions = $missing->getPositions();
         $name = $missing->name;
+        $title = $name;
         if(Operation::isClosed($missing->op_id)) {
-            $name .= " (".CLOSED.")";
+            $title .= " [".CLOSED."]";
+        } else {
+            $mobile = $missing->mobile;
+            $mobile_country = $missing->mobile_country;
+            $code = Locale::getDialCode($mobile_country);
+            $module = Module::get(Provider::TYPE, User::currentId());
+            $sms = $module->newInstance();
+            $check = ($sms instanceof RescueMe\SMS\Check);
+            if($check) {
+                $code = $sms->accept($code);
+            }
+            $title .= ' [<a href="tel:' . "$code$mobile" . '">'."$code$mobile</a>]";
         }
 
 ?>
 <div>
-    <h3 class="pagetitle"><?= $name ?></h3>
+    <h3 class="pagetitle"><?= $title ?></h3>
 <?
         if(isset($_ROUTER['error'])) { ?>
     
