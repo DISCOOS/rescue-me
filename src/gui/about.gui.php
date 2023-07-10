@@ -21,20 +21,17 @@
 
 <h3>Systemet utvikles av</h3>
 <div class="contact span3">
-	<img src="http://graph.facebook.com/svenove/picture" />
 	<div class="name">Sven-Ove Bjerkan</div>
 	<div class="phone">988 46 414</div>
 	<div class="mail">sven-ove@discoos.org</div>
 </div>
 <div class="contact span3">
-	<img src="http://graph.facebook.com/mariusmandal/picture" />
-	<div class="name">Marius Mandal</div>
-	<div class="phone">928 37 360</div>
-	<div class="mail">mariusmandal@discoos.org</div>
-</div>
-<div class="contact span3">
-	<img src="http://graph.facebook.com/kengulb/picture" />
 	<div class="name">Kenneth Gulbrandsøy</div>
 	<div class="phone">932 58 930</div>
 	<div class="mail">kenneth@discoos.org</div>
+</div>
+<div class="contact span3">
+    <div class="name">Marius Mandal</div>
+    <div class="phone">928 37 360</div>
+    <div class="mail">mariusmandal@discoos.org</div>
 </div>
