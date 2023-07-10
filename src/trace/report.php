@@ -7,9 +7,9 @@
     use RescueMe\Missing;
 
     $id = input_get_hash('id');
-    $acc = input_get_int('acc');
     $lat = input_get_float('lat');
     $lon = input_get_float('lon');
+    $acc = intval(input_get_float('acc'));
     $alt = input_get_float('alt');
     $timestamp = floor(input_get_float('timestamp')/1000);
 
