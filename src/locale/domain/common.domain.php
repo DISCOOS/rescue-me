@@ -40,7 +40,10 @@
         define('MESSAGE', T_('Message'));
         define('MESSAGES', T_('Messages'));
         define('DATABASE', T_('Database'));        
-        
+        define('MOBILE', T_('Mobile'));
+        define('OS', T_('OS'));
+        define('BROWSER', T_('Browser'));
+
         define('TEST', T_('Test'));
         define('TRACE', T_('Trace'));
         define('TRACES', T_('Traces'));
@@ -66,7 +69,8 @@
         
         define('CALCULATING', T_('Calculating...'));
         define('ARE_YOU_SURE', T_('Are you sure?'));
-        
+        define('THIS_WILL_ABORT_THE_REQUEST_PERMANENTLY', T_('This will abort the request permanently'));
+
         define('FORGOT_YOUR_PASSWORD',T_('Forgot your password?'));
         define('DONT_HAVE_AN_ACCOUNT',T_("Don't have an account?"));
         define('SIGN_UP_HERE',T_('Sign up here'));
@@ -103,15 +107,18 @@
         define('SMS_REQUEST_S_NOT_SUPPORTED', T_('SMS request [%1$s] not supported.'));
         define('MODULE_S1_DOES_NOT_SUPPORT_S2', T_('[%1$s] does not support [%2$s].'));
         define('FAILED_TO_CREATE_INSTANCE_OF_MODULE_S', T_('Failed to create instance of module [%1$s].'));
-        
+        define('HAVE_YOU_OPENED_THE_LINK_ON_A_MOBILE_PHONE', T_('Have you opened the link on a mobile phone?'));
+        define('YES_TRACE_ME', T_('Yes, trace me now'));
+        define('NO_DONT_TRACE_ME', T_("No, don't trace me"));
+
         define('TRACE_S', sentence(array(TRACE,'%1$s')));
-        
+
         define('NOT_FOUND', sentence(array(NOT,FOUND)));
-        
+
         define('ID_NOT_FOUND', sentence(array(ID,NOT_FOUND)));
-        
+
         define('IS_CLOSED', sentence(array(IS,CLOSED)));
-        
+
         define('ILLEGAL_ARGUMENTS', sentence(array(ILLEGAL,ARGUMENTS)));
         define('ILLEGAL_OPERATION', sentence(array(ILLEGAL,OPERATION)));
         define('TRACE_S_NOT_FOUND', sentence(array(TRACE_S,NOT_FOUND)));

@@ -59,6 +59,7 @@
         public $user_name;
 
         public $answered;
+        public $answered_user_agent;
         public $reported;
 
         public $name;
@@ -94,13 +95,13 @@
             
         }
         
-        private static function select($filter='', $admin = false, $start = 0, $max = false){
+        private static function select($filter='', $all = false, $start = 0, $max = false){
             
             $query  = Missing::SELECT . ' ' . Missing::JOIN;
             
             $where = $filter ? array($filter) : array();
             
-            if($admin === false) {                
+            if($all === false) {
                 $where[] = '`operations`.`user_id` = ' . User::currentId();
             } 
             
@@ -118,13 +119,13 @@
         }
         
 
-        public static function countAll($filter='', $admin = false) {
+        public static function countAll($filter='', $all = false) {
             
             $query  = Missing::COUNT . ' ' . Missing::JOIN;
             
             $where = $filter ? array($filter) : array();
             
-            if($admin === false) {                
+            if($all === false) {                
                 $where[] = '`operations`.`user_id` = ' . User::currentId();
             } 
             
@@ -141,9 +142,9 @@
         }        
         
         
-        public static function getAll($filter='', $admin = false, $start = 0, $max = false) {
+        public static function getAll($filter='', $all = false, $start = 0, $max = false) {
             
-            $select = Missing::select($filter, $admin, $start, $max);
+            $select = Missing::select($filter, $all, $start, $max);
             
             $res = DB::query($select);
 
@@ -159,8 +160,8 @@
             return $missings;
         }        
         
-        public static function count($id, $admin = false) {
-            return Missing::countAll('`missing_id`=' . (int) $id, $admin);
+        public static function count($id, $all = false) {
+            return Missing::countAll('`missing_id`=' . (int) $id, $all);
         }
         
 
@@ -168,13 +169,13 @@
          * Get Missing instance
          * 
          * @param integer $id Missing id
-         * @param boolean $admin Administrator flag
+         * @param boolean $all Select from all missing flag (if false, limit to current user)
          *
-         * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
+         * @return Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
          */
-        public static function get($id, $admin = true){
+        public static function get($id, $all = true){
 
-            $res = DB::query(Missing::select('`missing_id`=' . (int) $id, $admin));
+            $res = DB::query(Missing::select('`missing_id`=' . (int) $id, $all));
             
             if(DB::isEmpty($res)) {
                 return false;
@@ -281,13 +282,13 @@
         /**
          * Load missing data from database
          *
-         * @param boolean $admin Administrator flag
+         * @param boolean $all Load all missing flag (if false, limit to current user)
          *
          * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
          */
-        public function load($admin = true){
+        public function load($all = true){
 
-            $res = DB::query(Missing::select('`missing_id`=' . (int) $this->id, $admin));
+            $res = DB::query(Missing::select('`missing_id`=' . (int) $this->id, $all));
 
             if(DB::isEmpty($res)) {
                 return false;
@@ -602,13 +603,13 @@
          * Check missing state
          * 
          * @param integer $id
-         * @param boolean $admin
+         * @param boolean $all Check all missing flag (if false, limit to current user)
          * 
          * @return Missing|boolean
          */
-        public static function check($id, $admin = true) {
+        public static function check($id, $all = true) {
             
-            $missing = Missing::get($id, $admin);
+            $missing = Missing::get($id, $all);
             
             // Is check required?
             if($missing !== false) { 
@@ -637,22 +638,33 @@
 
         /**
          * Log missing location request response answered
-         * 
+         *
+         * @param $user_agent string User agent of reporting entity
+         * @param $force bool True if tracee choose to be traced from browser not identified as mobile
+         *
          * @return boolean
+         * @throws \Exception
          */
-        public function answered() {
+        public function answered($user_agent,$force) {
 
             $query = "UPDATE `missing` 
-                        SET `missing_answered` = NOW() 
+                        SET `missing_answered` = NOW(), `missing_answered_user_agent` = '" . DB::escape($user_agent) . "'  
                       WHERE `missing_id` = '" . $this->id . "';";
 
             $res = DB::query($query);
 
             if($res === FALSE) {
                 $context = array('sql' => $query);
-                Missing::error('Failed to update status to ANSWERED for missing ' . $this->id, $context);
+                Missing::error('Failed to update status to ANSWERED for missing '
+                    . $this->id . '[' . DB::error() . ']', $context);
             } else {
-                Logs::write(Logs::TRACE, LogLevel::INFO, "Missing {$this->id} has loaded tracking page");
+                Logs::write(
+                    Logs::TRACE,
+                    $force ? LogLevel::WARNING : LogLevel::INFO,
+                    $force
+                        ? "Missing [$this->id] has loaded tracking page with [force=true] and user agent [$user_agent]"
+                        : "Missing [$this->id] has loaded tracking page"
+                );
             }
             return $res;
         }

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-03 23:25+0100\n"
-"PO-Revision-Date: 2014-08-03 23:25+0100\n"
+"POT-Creation-Date: 2023-08-02 14:41+0200\n"
+"PO-Revision-Date: 2023-08-02 14:42+0200\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
 "Language: nb_NO\n"
@@ -11,343 +11,371 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: T_;T_locale\n"
-"X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src\n"
+"X-Poedit-Basepath: ../../domain\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.4\n"
-"X-Poedit-SearchPath-0: locale/domain\n"
+"X-Generator: Poedit 3.3.2\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: locale/domain/common.domain.php:8
+#: common.domain.php:8
 msgid "Is"
 msgstr "Er"
 
-#: locale/domain/common.domain.php:9
+#: common.domain.php:9
 msgid "Not"
 msgstr "Ikke"
 
-#: locale/domain/common.domain.php:10
+#: common.domain.php:10
 msgid "All"
 msgstr "Alle"
 
-#: locale/domain/common.domain.php:11
+#: common.domain.php:11
 msgid "None"
 msgstr "Ingen"
 
-#: locale/domain/common.domain.php:13
+#: common.domain.php:13
 msgid "No"
 msgstr "Nei"
 
-#: locale/domain/common.domain.php:14
+#: common.domain.php:14
 msgid "Yes"
 msgstr "Ja"
 
-#: locale/domain/common.domain.php:16
+#: common.domain.php:16
 msgid "Found"
 msgstr "Funnet"
 
-#: locale/domain/common.domain.php:17
+#: common.domain.php:17
 msgid "Active"
 msgstr "Aktiv"
 
-#: locale/domain/common.domain.php:18
+#: common.domain.php:18
 msgid "Pending"
 msgstr "Ventende"
 
-#: locale/domain/common.domain.php:19
+#: common.domain.php:19
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: locale/domain/common.domain.php:20
+#: common.domain.php:20
 msgid "Deleted"
 msgstr "Slettet"
 
-#: locale/domain/common.domain.php:21
+#: common.domain.php:21
 msgid "Loading"
 msgstr "Laster"
 
-#: locale/domain/common.domain.php:23
+#: common.domain.php:23
 msgid "Login"
 msgstr "Logg inn"
 
-#: locale/domain/common.domain.php:24
+#: common.domain.php:24
 msgid "Logout"
 msgstr "Logg ut"
 
-#: locale/domain/common.domain.php:25
+#: common.domain.php:25
 msgid "Update"
 msgstr "Oppdater"
 
-#: locale/domain/common.domain.php:26
+#: common.domain.php:26
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: locale/domain/common.domain.php:27
+#: common.domain.php:27
 msgid "Select"
 msgstr "Velg"
 
-#: locale/domain/common.domain.php:28
+#: common.domain.php:28
 msgid "Confirm"
 msgstr "Bekreft"
 
-#: locale/domain/common.domain.php:30
+#: common.domain.php:30
 msgid "Illegal"
 msgstr "Ulovlig"
 
-#: locale/domain/common.domain.php:31
+#: common.domain.php:31
 msgid "Closed"
 msgstr "Lukket"
 
-#: locale/domain/common.domain.php:32
+#: common.domain.php:32
 msgid "Access"
 msgstr "Tilgang"
 
-#: locale/domain/common.domain.php:34
+#: common.domain.php:34
 msgid "Id"
 msgstr "Id"
 
-#: locale/domain/common.domain.php:35
+#: common.domain.php:35
 msgid "SMS"
 msgstr "SMS"
 
-#: locale/domain/common.domain.php:36
+#: common.domain.php:36
 msgid "Module"
 msgstr "Modul"
 
-#: locale/domain/common.domain.php:37
+#: common.domain.php:37
 msgid "Design"
 msgstr "Design"
 
-#: locale/domain/common.domain.php:38
+#: common.domain.php:38
 msgid "System"
 msgstr "System"
 
-#: locale/domain/common.domain.php:39
+#: common.domain.php:39
 msgid "Account"
 msgstr "Konto"
 
-#: locale/domain/common.domain.php:40
+#: common.domain.php:40
 msgid "Message"
 msgstr "Melding"
 
-#: locale/domain/common.domain.php:41
+#: common.domain.php:41
 msgid "Messages"
 msgstr "Meldinger"
 
-#: locale/domain/common.domain.php:42
+#: common.domain.php:42
 msgid "Database"
 msgstr "Database"
 
-#: locale/domain/common.domain.php:44
+#: common.domain.php:43
+msgid "Mobile"
+msgstr "Mobil"
+
+#: common.domain.php:44
+msgid "OS"
+msgstr "OS"
+
+#: common.domain.php:45
+msgid "Browser"
+msgstr "Nettleser"
+
+#: common.domain.php:47
 msgid "Test"
 msgstr "Test"
 
-#: locale/domain/common.domain.php:45
+#: common.domain.php:48
 msgid "Trace"
 msgstr "Sporing"
 
-#: locale/domain/common.domain.php:46
+#: common.domain.php:49
 msgid "Traces"
 msgstr "Sporinger"
 
-#: locale/domain/common.domain.php:47
+#: common.domain.php:50
 msgid "Exercise"
 msgstr "Øvelse"
 
-#: locale/domain/common.domain.php:48
+#: common.domain.php:51
 msgid "Locations"
 msgstr "Lokasjoner"
 
-#: locale/domain/common.domain.php:49
+#: common.domain.php:52
 msgid "Arguments"
 msgstr "Argumenter"
 
-#: locale/domain/common.domain.php:50
+#: common.domain.php:53
 msgid "Operation"
 msgstr "Aksjon"
 
-#: locale/domain/common.domain.php:52
+#: common.domain.php:55
 msgid "User"
 msgstr "Bruker"
 
-#: locale/domain/common.domain.php:53
+#: common.domain.php:56
 msgid "API ID"
 msgstr "API ID"
 
-#: locale/domain/common.domain.php:54
+#: common.domain.php:57
 msgid "Password"
 msgstr "Passord"
 
-#: locale/domain/common.domain.php:55
+#: common.domain.php:58
 msgid "Callback"
 msgstr "Tilbakemelding"
 
-#: locale/domain/common.domain.php:57
+#: common.domain.php:60
 msgid "Key"
 msgstr "Key"
 
-#: locale/domain/common.domain.php:58
+#: common.domain.php:61
 msgid "Secret"
 msgstr "Secret"
 
-#: locale/domain/common.domain.php:60
+#: common.domain.php:63
 msgid "User ID"
 msgstr "User ID"
 
-#: locale/domain/common.domain.php:61
+#: common.domain.php:64
 msgid "Company ID"
 msgstr "Company ID"
 
-#: locale/domain/common.domain.php:62
+#: common.domain.php:65
 msgid "Department ID"
 msgstr "Department ID"
 
-#: locale/domain/common.domain.php:64
+#: common.domain.php:67
 msgid "min"
 msgstr "min"
 
-#: locale/domain/common.domain.php:65
+#: common.domain.php:68
 msgid "sec"
 msgstr "sek"
 
-#: locale/domain/common.domain.php:67
+#: common.domain.php:70
 msgid "Calculating..."
 msgstr "Kalkulerer..."
 
-#: locale/domain/common.domain.php:68
+#: common.domain.php:71
 msgid "Are you sure?"
 msgstr "Er du sikker?"
 
-#: locale/domain/common.domain.php:70
+#: common.domain.php:72
+msgid "This will abort the request permanently"
+msgstr "Dette vil avbryte forespørselen permanent"
+
+#: common.domain.php:74
 msgid "Forgot your password?"
 msgstr "Glemt passordet?"
 
-#: locale/domain/common.domain.php:71
+#: common.domain.php:75
 msgid "Don't have an account?"
 msgstr "Har du ikke en konto?"
 
-#: locale/domain/common.domain.php:72
+#: common.domain.php:76
 msgid "Sign up here"
 msgstr "Registrer deg her"
 
-#: locale/domain/common.domain.php:74
+#: common.domain.php:78
 msgid "Change password"
 msgstr "Endre passord"
 
-#: locale/domain/common.domain.php:75
+#: common.domain.php:79
 msgid "Reset password"
 msgstr "Nullstill passord"
 
-#: locale/domain/common.domain.php:76
+#: common.domain.php:80
 msgid "Do you want to logout?"
 msgstr "Vil du logge ut?"
 
-#: locale/domain/common.domain.php:78
+#: common.domain.php:82
 msgid "Caps-lock is on!"
 msgstr "Caps-lock er på!"
 
-#: locale/domain/common.domain.php:79
+#: common.domain.php:83
 #, php-format
 msgid "Missing values: %1$s"
 msgstr "Verdier mangler: %1$s"
 
-#: locale/domain/common.domain.php:80
+#: common.domain.php:84
 msgid "No parameters found"
 msgstr "Ingen parameter funnet"
 
-#: locale/domain/common.domain.php:82
+#: common.domain.php:86
 msgid "User not found."
-msgstr "Bruker ikke funnet"
+msgstr "Bruker ikke funnet."
 
-#: locale/domain/common.domain.php:83
+#: common.domain.php:87
 #, php-format
 msgid "User %1$s is created."
 msgstr "Bruker %1$s er opprettet."
 
-#: locale/domain/common.domain.php:84
+#: common.domain.php:88
 msgid "Failed to create user."
 msgstr "Kunne ikke opprette bruker."
 
-#: locale/domain/common.domain.php:85
+#: common.domain.php:89
 #, php-format
 msgid "Recovery password sent to user %1$s."
 msgstr "Engangspassord sendt til bruker %1$s."
 
-#: locale/domain/common.domain.php:86
+#: common.domain.php:90
 msgid "Recovery password not sent."
 msgstr "Engangspassord ikke sendt."
 
-#: locale/domain/common.domain.php:87
+#: common.domain.php:91
 #, php-format
 msgid "Failed to send recovery password to user %1$s."
 msgstr "Kunne sende engangspassord til bruker %1$s."
 
-#: locale/domain/common.domain.php:88
+#: common.domain.php:92
 #, php-format
 msgid "Your single-use %1$s password."
 msgstr "Ditt %1$s  engangspassord."
 
-#: locale/domain/common.domain.php:90
+#: common.domain.php:94
 #, php-format
 msgid "Your %1$s account is approved."
 msgstr "Din %1$s kontoforespørsel er godkjent."
 
-#: locale/domain/common.domain.php:91
+#: common.domain.php:95
 #, php-format
 msgid "Log in to %1$s."
 msgstr "Logg inn her %1$s."
 
-#: locale/domain/common.domain.php:92
+#: common.domain.php:96
 #, php-format
 msgid "Your %1$s account request is rejected."
 msgstr "Din %1$s kontoforespørsel er avvist."
 
-#: locale/domain/common.domain.php:94
+#: common.domain.php:98
 #, php-format
 msgid "Minimum %1$s characters"
 msgstr "Minimum %1$s tegn"
 
-#: locale/domain/common.domain.php:96
+#: common.domain.php:100
 #, php-format
 msgid "Failed to load [%1$s]."
 msgstr "Klarte ikke å laste [%1$s]."
 
-#: locale/domain/common.domain.php:97
+#: common.domain.php:101
 msgid "Failed to get country code."
 msgstr "Klarte ikke å finne landkode."
 
-#: locale/domain/common.domain.php:98
+#: common.domain.php:102
 msgid "Please fill out this field."
 msgstr "Vennligst fyll ut feltet."
 
-#: locale/domain/common.domain.php:99
+#: common.domain.php:103
 msgid "Please enter a valid email address."
 msgstr "Vennligst oppgi en lovlig e-postadresse."
 
-#: locale/domain/common.domain.php:100
+#: common.domain.php:104
 msgid "Please enter at least {0} characters."
 msgstr "Passordet må være minst {0} tegn."
 
-#: locale/domain/common.domain.php:101
+#: common.domain.php:105
 msgid "Please match the required format."
 msgstr "Vennligst skriv riktig format."
 
-#: locale/domain/common.domain.php:102
+#: common.domain.php:106
 msgid "Please enter the same value again."
-msgstr "Vennligst skriv inn samme verdi på nytt"
+msgstr "Vennligst skriv inn samme verdi på nytt."
 
-#: locale/domain/common.domain.php:103
+#: common.domain.php:107
 #, php-format
 msgid "SMS request [%1$s] not supported."
 msgstr "SMS forespørsel  [%1$s] ikke støttet."
 
-#: locale/domain/common.domain.php:104
+#: common.domain.php:108
 #, php-format
 msgid "[%1$s] does not support [%2$s]."
 msgstr "[%1$s] støtter ikke [%2$s]."
 
-#: locale/domain/common.domain.php:105
+#: common.domain.php:109
 #, php-format
 msgid "Failed to create instance of module [%1$s]."
 msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
+
+#: common.domain.php:110
+msgid "Have you opened the link on a mobile phone?"
+msgstr "Har du åpnet lenken på en mobil?"
+
+#: common.domain.php:111
+msgid "Yes, trace me now"
+msgstr "Ja! Spor meg nå"
+
+#: common.domain.php:112
+msgid "No, don't trace me"
+msgstr "Nei, ikke spor meg"
 
 #~ msgid "Your user has NOT been approved."
 #~ msgstr "Din bruker har ikke blitt godkjent"
@@ -406,11 +434,8 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 #~ msgid "Failed to abort operation"
 #~ msgstr "Klarte ikke å avbryte operasjonen"
 
-#~ msgid ""
-#~ "Stay still, we are comming. <br>Try to make your self visible from both "
-#~ "air and ground!"
-#~ msgstr ""
-#~ "Hold deg i ro, vi er på vei. Forsøk å gjøre deg synlig fra luft og bakke!"
+#~ msgid "Stay still, we are comming. <br>Try to make your self visible from both air and ground!"
+#~ msgstr "Hold deg i ro, vi er på vei. Forsøk å gjøre deg synlig fra luft og bakke!"
 
 #~ msgid "Unknown trace"
 #~ msgstr "Ukjent sporing"
@@ -445,18 +470,11 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 #~ msgid "Name"
 #~ msgstr "Navn"
 
-#~ msgid "Mobile"
-#~ msgstr "Mobil"
-
 #~ msgid "E-mail"
 #~ msgstr "E-post"
 
-#~ msgid ""
-#~ "Note: This will permanently delete name and mobile numbers (privacy "
-#~ "conserns)"
-#~ msgstr ""
-#~ "Merk: Dette vil slette navn og mobilnummer til savnede permanent (av "
-#~ "personvernhensyn)."
+#~ msgid "Note: This will permanently delete name and mobile numbers (privacy conserns)"
+#~ msgstr "Merk: Dette vil slette navn og mobilnummer til savnede permanent (av personvernhensyn)."
 
 #~ msgid "Edit role"
 #~ msgstr "Endre rolle"
@@ -506,52 +524,23 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 #~ msgid "Location script"
 #~ msgstr "Lokasjonsskript"
 
-#~ msgid ""
-#~ "When the user clicks on the link a webpage is downloaded which contain a "
-#~ "script that attempts to locate the mobile phone. The user must authorize "
-#~ "the script access before location can be determined"
-#~ msgstr ""
-#~ "Når brukeren trykker på linken åpnes en nettside med et script som vil "
-#~ "forsøke å posisjonerer mobiltelefonen. Brukeren må godkjenne deling av "
-#~ "posisjon i nettleseren før posisjonen kan bestemmes."
+#~ msgid "When the user clicks on the link a webpage is downloaded which contain a script that attempts to locate the mobile phone. The user must authorize the script access before location can be determined"
+#~ msgstr "Når brukeren trykker på linken åpnes en nettside med et script som vil forsøke å posisjonerer mobiltelefonen. Brukeren må godkjenne deling av posisjon i nettleseren før posisjonen kan bestemmes."
 
 #~ msgid "Script download time"
 #~ msgstr "Nedlastingstid"
 
-#~ msgid ""
-#~ "The location script is compressed (gzip, 1.8KB). Is should not take more "
-#~ "than a second to download this even on a low-bandwidth network (2G). If "
-#~ "it does, the user must be patient and wait until the script is downloaded."
-#~ msgstr ""
-#~ "Skriptet er komprimert (1.8KB). Det burde ta mindre enn ett sekund på "
-#~ "dårlig mobilnett (2G) å laste den ned. Det er likevel viktig at brukeren "
-#~ "er tålmodig, og venter lengre enn dette hvis siden ikke åpnes."
+#~ msgid "The location script is compressed (gzip, 1.8KB). Is should not take more than a second to download this even on a low-bandwidth network (2G). If it does, the user must be patient and wait until the script is downloaded."
+#~ msgstr "Skriptet er komprimert (1.8KB). Det burde ta mindre enn ett sekund på dårlig mobilnett (2G) å laste den ned. Det er likevel viktig at brukeren er tålmodig, og venter lengre enn dette hvis siden ikke åpnes."
 
 #~ msgid "Repeated localization"
 #~ msgstr "Gjentatt lokalisering"
 
-#~ msgid ""
-#~ "If the location is inaccurate, the script will continue to listen for "
-#~ "location updates until desired accuracy or maximum wait time is is "
-#~ "reached. A count-down is shown during this time. Last known location is "
-#~ "presented to the user, which allow the user to read out the location over "
-#~ "the phone or send ith with an SMS (tell the user to click on the link "
-#~ "presented to the user when the script timed out)"
-#~ msgstr ""
-#~ "Hvis posisjonen er unøyaktig, vil nettsiden vente til posisjon med ønsket "
-#~ "nøyaktighet er funnet, eller maksimum ventetid er nådd. En nedtelling "
-#~ "vises mens dette foregår. Siste posisjon vises også til brukeren, slik at "
-#~ "denne kan leses opp på telefonen, eller sendes på SMS (be brukeren klikke "
-#~ "på linken bak posisjonen)."
+#~ msgid "If the location is inaccurate, the script will continue to listen for location updates until desired accuracy or maximum wait time is is reached. A count-down is shown during this time. Last known location is presented to the user, which allow the user to read out the location over the phone or send ith with an SMS (tell the user to click on the link presented to the user when the script timed out)"
+#~ msgstr "Hvis posisjonen er unøyaktig, vil nettsiden vente til posisjon med ønsket nøyaktighet er funnet, eller maksimum ventetid er nådd. En nedtelling vises mens dette foregår. Siste posisjon vises også til brukeren, slik at denne kan leses opp på telefonen, eller sendes på SMS (be brukeren klikke på linken bak posisjonen)."
 
-#~ msgid ""
-#~ "Desired accurary (location.desired.accuracy), maximum wait time (location."
-#~ "max.wait) and maximum location age (location.max.age) can be configured "
-#~ "on page %1$s"
-#~ msgstr ""
-#~ " Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid "
-#~ "(location.max.wait) og maximum alder på gammel posisjon (location.max."
-#~ "age) kan konfigureres på siden %1$s"
+#~ msgid "Desired accurary (location.desired.accuracy), maximum wait time (location.max.wait) and maximum location age (location.max.age) can be configured on page %1$s"
+#~ msgstr " Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location.max.wait) og maximum alder på gammel posisjon (location.max.age) kan konfigureres på siden %1$s"
 
 #~ msgid "All traces are listed at"
 #~ msgstr "Alle sporinger er listet på denne siden"
@@ -586,21 +575,14 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 #~ msgid "Your changes was not saved!"
 #~ msgstr "Dine endringer ble ikke lagret!"
 
-#~ msgid ""
-#~ "You entered an invalid e-mail address. Please enter a correct e-mail "
-#~ "address"
-#~ msgstr ""
-#~ "Du har skrevet inn en ulovlig e-postadresse. Vennligst oppgi en lovlig e-"
-#~ "postadresse."
+#~ msgid "You entered an invalid e-mail address. Please enter a correct e-mail address"
+#~ msgstr "Du har skrevet inn en ulovlig e-postadresse. Vennligst oppgi en lovlig e-postadresse."
 
 #~ msgid "An error ocurred!"
 #~ msgstr "En feil har oppstått!"
 
-#~ msgid ""
-#~ "An unknown error ocurred while saving your user data. The system reported"
-#~ msgstr ""
-#~ "En uventet feil oppsto under lagring av dine brukerdata. Systemet "
-#~ "rapporterte"
+#~ msgid "An unknown error ocurred while saving your user data. The system reported"
+#~ msgstr "En uventet feil oppsto under lagring av dine brukerdata. Systemet rapporterte"
 
 #~ msgid "Sorry"
 #~ msgstr "Beklager"
@@ -626,8 +608,7 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 #~ msgid "Oops! Could not create user"
 #~ msgstr "Auda! Kunne ikke opprette brukeren"
 
-#~ msgid ""
-#~ "When attempting to create user, an error ocurred. The system reported: "
+#~ msgid "When attempting to create user, an error ocurred. The system reported: "
 #~ msgstr "Klarte ikke å opprette ny bruker. Systemet rapporterte:"
 
 #~ msgid "Configure"
@@ -894,9 +875,7 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 #~ msgid "Location link"
 #~ msgstr "Sporingslink"
 
-#~ msgid ""
-#~ "Remember to include %1$s so that %2$s can replace it with the actual "
-#~ "trace url."
+#~ msgid "Remember to include %1$s so that %2$s can replace it with the actual trace url."
 #~ msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
 
 #~ msgid "Note: This will reopen this operation"
@@ -918,8 +897,7 @@ msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 #~ msgid "Eenable"
 #~ msgstr "Aktivert"
 
-#~ msgid ""
-#~ "Husk å sette inn %LINK% slik at RescueMe kan sette inn med riktig lenke."
+#~ msgid "Husk å sette inn %LINK% slik at RescueMe kan sette inn med riktig lenke."
 #~ msgstr "Husk å sette inn %1$s slik at %1$s kan sette inn riktig lenke."
 
 #~ msgid "Locate page"

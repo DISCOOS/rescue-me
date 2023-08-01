@@ -1,5 +1,7 @@
 <?
-    use RescueMe\User;
+
+use RescueMe\Device;
+use RescueMe\User;
     use RescueMe\Locale;
     use RescueMe\Module;
     use RescueMe\Missing;
@@ -21,6 +23,10 @@
         $positions = $missing->getPositions();
         $name = $missing->name;
         $title = $name;
+        $user_agent = $missing->answered_user_agent;
+        $browser = UNKNOWN;
+        $platform = UNKNOWN;
+        $is_mobile = UNKNOWN;
         if(Operation::isClosed($missing->op_id)) {
             $title .= " [".CLOSED."]";
         } else {
@@ -34,6 +40,11 @@
                 $code = $sms->accept($code);
             }
             $title .= ' [<a href="tel:' . "$code$mobile" . '">'."$code$mobile</a>]";
+            if(!empty($user_agent)) {
+                $browser = Device::detectBrowser($user_agent);
+                $platform = Device::detectPlatform($user_agent);
+                $is_mobile = Device::isMobile($user_agent) ? YES : NO;
+            }
         }
 
 ?>
@@ -83,6 +94,18 @@
             <span class="label label-<?=$located_state?>"><?= $located ?></span>
         </div>
     <? } ?>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=MOBILE?></label>
+            <span class="label label-<?=empty($user_agent)?'warning':'success'?>"><?= $is_mobile ?></span>
+        </div>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?echo OS?></label>
+            <span class="label label-<?=empty($user_agent)?'warning':'success'?>"><?= $platform ?></span>
+        </div>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?echo BROWSER?></label>
+            <span class="label label-<?=empty($user_agent)?'warning':'success'?>"><?= $browser ?></span>
+        </div>
     </div>
     
     <? require_once(ADMIN_PATH_GUI.'missing.position.list.gui.php'); ?>
@@ -100,25 +123,25 @@
     <? if($top === false) { insert_trace_bar($missing, $collapsed); } ?>
     
     <div class="infos clearfix pull-left">
-        
+
     <? if (in_array(Properties::TRACE_DETAILS_REFERENCE, $details)) { ?>
         <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=REFERENCE?></label> 
+            <label class="label label-info"><?=REFERENCE?></label>
             <span class="label label-<?=empty($missing->op_ref) ? 'warning' : 'success' ?>">
                 <?= empty($missing->op_ref) ? UNKNOWN : $missing->op_ref ?>
             </span>
         </div>
     <? } if (in_array(Properties::TRACE_DETAILS_LOCATION_URL, $details)) { ?>
         <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=LOCATION_LINK?></label> 
+            <label class="label label-info"><?=LOCATION_LINK?></label>
             <span class="label label-success">
                 <?= str_replace("#missing_id", encrypt_id($missing->id), LOCATE_URL); ?>
             </span>
         </div>
     <? } ?>
-    </div>    
-                
-    
+    </div>
+
+
 </div>
 
     <? } ?>    

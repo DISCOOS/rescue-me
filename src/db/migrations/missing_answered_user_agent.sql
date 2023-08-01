@@ -1,0 +1,1 @@
+ALTER TABLE missing ADD COLUMN `missing_answered_user_agent` varchar(255) NOT NULL DEFAULT '' AFTER `missing_answered`;

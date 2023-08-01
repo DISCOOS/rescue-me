@@ -7,88 +7,149 @@
     require('config.php');
 
     use Psr\Log\LogLevel;
-    use RescueMe\Log\Logs;    
+    use RescueMe\Device;
+    use RescueMe\Log\Logs;
     use RescueMe\Locale;
     use RescueMe\Missing;
     use RescueMe\Operation;
     use RescueMe\Properties;
 
     $id = input_get_hash('id');
+    $force = input_get_boolean('force');
 
     $missing = ($id === false ? false : Missing::get(decrypt_id($id)));
 
     if($missing !== false) {
 
         set_system_locale(DOMAIN_TRACE, $missing->locale);
-        
-        if(($delay = isset($message)) === false) {
-            $message = CALCULATING;
-        }
 
         $type = Properties::get(Properties::LOCATION_APPCACHE, $missing->user_id);
-        $manifest =  ($type !== 'none' ? 'manifest="locate.appcache"' : '');
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $manifest = ($type !== 'none' ? 'manifest="locate.appcache"' : '');
+        $is_mobile = Device::isMobile($user_agent);
 
-        // Set state
-        $missing->answered();                
+        if($is_mobile || $force) {
+            if(($delay = isset($message)) === false) {
+                $message = CALCULATING;
+            }
 
-        // Create minified js
-        $trace = JSMin::minify(file_get_contents(APP_PATH.'trace/js/trace.js'));
-        
-        // Is iPhone?
-        if (strstr($_SERVER['HTTP_USER_AGENT'],'iPhone')) {
-            $extra = JSMin::minify(file_get_contents(APP_PATH.'trace/js/iPhone.js'));
-        }
+            // Set state
+            $missing->answered($user_agent, $force);
 
-        $user_id = Operation::get($missing->op_id)->user_id;
+            // Create minified js
+            $trace = JSMin::minify(file_get_contents(APP_PATH.'trace/js/trace.js'));
 
-        // Create install options
-        $options = array();
-        $options['trace']['id'] = $id;
-        $options['trace']['name'] = $missing->name;
-        $options['trace']['delay'] = $delay;
-        $options['trace']['msg'] = get_messages();
+            // Is iPhone?
+            if (strstr($user_agent,'iPhone')) {
+                $extra = JSMin::minify(file_get_contents(APP_PATH.'trace/js/iPhone.js'));
+            }
 
-        $country = $missing->alert_mobile_country;
-        if(($code = Locale::getDialCode($country)) === FALSE)
-        {
-            Logs::write(Logs::SMS, LogLevel::ERROR, FAILED_TO_GET_COUNTRY_CODE, $_GET);
-        }               
+            $user_id = Operation::get($missing->op_id)->user_id;
 
-        $options['trace']['to'] = $code . $missing->alert_mobile;
-        $options['trace']['age'] = Properties::get(Properties::LOCATION_MAX_AGE, $user_id);
-        $options['trace']['wait'] = Properties::get(Properties::LOCATION_MAX_WAIT, $user_id);   
-        $options['trace']['acc'] = Properties::get(Properties::LOCATION_DESIRED_ACC, $user_id);
+            // Create install options
+            $options = array();
+            $options['trace']['id'] = $id;
+            $options['trace']['name'] = $missing->name;
+            $options['trace']['delay'] = $delay;
+            $options['trace']['msg'] = get_messages();
 
-        $install = get_rescueme_install($options);
+            $country = $missing->alert_mobile_country;
+            if(($code = Locale::getDialCode($country)) === FALSE)
+            {
+                Logs::write(Logs::SMS, LogLevel::ERROR, FAILED_TO_GET_COUNTRY_CODE, $_GET);
+            }
 
-        // Get js wrapped inside self-invoking function.
-        $js = "(function(window,document,install){".$trace."}(window,document,$install));";
+            $options['trace']['to'] = $code . $missing->alert_mobile;
+            $options['trace']['age'] = Properties::get(Properties::LOCATION_MAX_AGE, $user_id);
+            $options['trace']['wait'] = Properties::get(Properties::LOCATION_MAX_WAIT, $user_id);
+            $options['trace']['acc'] = Properties::get(Properties::LOCATION_DESIRED_ACC, $user_id);
+
+            $install = get_rescueme_install($options);
+
+            // Get js wrapped inside self-invoking function.
+            $js = "(function(window,document,install){".$trace."}(window,document,$install));";
+
+            # Prevent Chrome Data Compression Proxy
+            header('Cache-Control: no-store,no-transform');
+
+    ?>
+    <html <?=$manifest?>>
+        <head>
+            <title><?=TITLE?></title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
+            <script id="trace"><?=$js?></script>
+    <? if (isset($extra)) { ?><script id="extra"><?=$extra?></script><?php } ?>
+        </head>
+        <body onLoad="R.trace.locate();">
+            <div align="center">
+                <div style="max-width: 400px; min-height: 100px;">
+                    <div id="f" style="margin-bottom: 10px"><?=$message?></div>
+                    <span id="i"></span><br /><span id="s"></span>
+                </div>
+                <hr />
+                <div id="l" style="margin-bottom: 10px">
+                </div>
+                <a href="<?=APP_URI?>a/<?=$id?>"
+                    onclick="return confirm('<?=ARE_YOU_SURE.' '.THIS_WILL_ABORT_THE_REQUEST_PERMANENTLY?>');"><?=CANCEL?></a>
+            </div>
+        </body>
+    </html>
+
+    <?  } else {
+
+        $browser = Device::detectBrowser($user_agent);
+        Logs::write(Logs::TRACE,LogLevel::WARNING,
+            "Location request [$id] loaded non-mobile browser [$user_agent]",
+            $_GET, $missing->user_id);
 
         # Prevent Chrome Data Compression Proxy
         header('Cache-Control: no-store,no-transform');
-
     ?>
-    <html <?=$manifest?>><head><title><?=TITLE?></title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
-    <script id="trace"><?=$js?></script>
-    <?php if (isset($extra)) { ?><script id="extra"><?=$extra?></script><?php } ?>
-    </head><body onLoad="R.trace.locate();"><div align="center"><div style="max-width: 400px; min-height: 100px;">
-    <div id="f" style="margin-bottom: 10px"><?=$message?></div><span id="i"></span><br /><span id="s"></span></div><hr />
-    <div id="l" style="margin-bottom: 10px"></div><a href="<?=APP_URI?>a/<?=$id?>" onclick="return confirm('<?=ARE_YOU_SURE?>');"><?=CANCEL?></a></div></body> 
-    <? } else {
+        <html>
+        <head>
+            <title><?=TITLE?></title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
+        </head>
+        <body>
+            <div align="center">
+                <div style="max-width: 400px; min-height: 100px;">
+                    <?=HAVE_YOU_OPENED_THE_LINK_ON_A_MOBILE_PHONE?>
+                    <p>
+                    <a href="?force=true"><?=YES_TRACE_ME?></a>
+                    </p>
+                </div>
+                <hr />
+                <div id="l" style="margin-bottom: 10px">
+                <a href="<?=APP_URI?>a/<?=$id?>"
+                   onclick="return confirm('<?=ARE_YOU_SURE.' '.THIS_WILL_ABORT_THE_REQUEST_PERMANENTLY?>');"><?=NO_DONT_TRACE_ME?></a>
+            </div>
+        </body>
+    <?  }
 
-	# Prevent Chrome Data Compression Proxy
+    } else {
+        set_system_locale();
+	    # Prevent Chrome Data Compression Proxy
         header('Cache-Control: no-store,no-transform');
-    	insert_alert(sprintf(TRACE_S_NOT_FOUND,$id)); 
+    ?>
+        <html>
+        <head>
+            <title><?=TITLE?></title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
+        </head>
+        <body>
+            <div align="center">
+                <div style="max-width: 400px; min-height: 100px;">
+                    <?=sprintf(TRACE_S_NOT_FOUND,"'$id'")?>
+                </div>
+            </div>
+        </body>
+    <? }
 
-    } ?>
-    </html>
-    <? 
-        
     function get_messages() {
 
-        /* 
+        /*
          * Get messages in domain 'trace'
-         * 
+         *
          * NOTE: We do not use i18next.js here because of the overhead it introduces!
          */
 
@@ -114,6 +175,6 @@
         }
         return $msg;
     }
-    
+
 ?>
 

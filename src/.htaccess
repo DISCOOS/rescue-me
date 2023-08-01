@@ -32,7 +32,12 @@ AddType application/x-httpd-php .appcache
     
     # Location request
     RewriteCond %{SCRIPT_FILENAME} !-d  
-    RewriteCond %{SCRIPT_FILENAME} !-f  
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteCond %{QUERY_STRING} force=true [NC]
+    RewriteRule ^l/(.*)$ trace/locate.php?id=$1&force=true [L]
+
+    RewriteCond %{SCRIPT_FILENAME} !-d
+    RewriteCond %{SCRIPT_FILENAME} !-f
     RewriteRule ^l/(.*)$ trace/locate.php?id=$1 [L]
 
     # Location request - appcache

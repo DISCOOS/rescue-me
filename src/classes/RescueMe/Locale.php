@@ -36,7 +36,7 @@
             
             $locale = false;
             
-            if(!isset($locale) && extension_loaded("intl")) {
+            if(extension_loaded("intl")) {
                 $locale = \locale_get_default();
             }
             
@@ -58,7 +58,7 @@
             
             $locale = false;
             
-            if(!isset($locale) && extension_loaded("intl")) {
+            if(extension_loaded("intl")) {
                 $locale = \locale_get_default();
             }
             
@@ -73,7 +73,7 @@
          * 
          * @param string $locale Locale
          * 
-         * @return array
+         * @return array|false
          */
         public static function getCountryLanguage($locale) {
             $code = preg_split("#[_-]#", $locale);
@@ -101,7 +101,7 @@
         /**
          * Get default language code (immutable)
          * 
-         * @return boolean|string
+         * @return array|false
          */
         public static function getDefaultCountryLanguage() {
             
@@ -111,25 +111,24 @@
             
             return false;
             
-        }        
-                
+        }
+
 
         /**
-         * Get country name
-         * 
-         * @param string $country ISO2 Country code
-         * @param string $language ISO2 Language code
-         *  
-         * @return string Country $code ISO2 country code
-         * 
+         * Get language name
+         *
+         * @param string $locale ISO2 Locale code
+         *
+         * @return string Language name in given locale
+         *
          */
         public static function getLanguageName($locale) {
 
-            list($country, ) = preg_split("#[_-]#", $locale);
+            $code = self::getCountryCode($locale);
             
-            if($country) {
+            if($code) {
             
-                $country = self::getCountryInfo($country);
+                $country = self::getCountryInfo($code);
 
                 if($country !== false) {                
                     foreach($country['language'] as $name => $match) {
@@ -144,8 +143,8 @@
             return false;
             
         }
-        
-        
+
+
         /**
          * Get locales
          *  
@@ -199,7 +198,7 @@
          * 
          * @param string $locale Locale
          * 
-         * @return array
+         * @return string
          */
         public static function getCountryCode($locale) {
             $code = preg_split("#[_-]#", $locale);
@@ -265,21 +264,14 @@
                 if($language !== FALSE) {
                     
                     $locale = $language.'_'.$country;
-                    
-                    foreach($country['language'] as $name => $locale) {
-                        if(is_dir(APP_PATH_LOCALE.$locale) || $locale === 'en_US') {
-                            $accept = true;
-                            break;
-                        }
-                    }
-                    
+                    $accept = is_dir(APP_PATH_LOCALE.$locale) || $locale === 'en_US';
+
                 }
             }
             
             return $accept;
             
         }
-        
         
         /**
          * Get country dial code
@@ -289,8 +281,8 @@
          * @return string Country dial code
          */
         public static function getDialCode($code) {
-            $locale = Locale::getCountryInfo($code);
-            return $locale !== false ? $locale['dial_code'] : false;
+            $info = Locale::getCountryInfo($code);
+            return isset($info['dial_code']) ? $info['dial_code'] : false;
         }
         
         
@@ -312,33 +304,32 @@
         
         /**
          * Get country name
-         * 
+         *
          * @param string $code ISO2 Country code
          * @param boolean $phone Include dial code if TRUE
-         *  
+         *
          * @return string Country name
-         * 
+         *
          */
         public static function getCountryName($code, $phone=true) {
-            
+
             $name = false;
-            
+
             $country = self::getCountryInfo($code);
-            
-            if($country !== false) {                
+
+            if($country !== false) {
                 $name = ucwords(strtolower($country['country']));
                 if($phone) {
-            
-            
+
                     $dail_code = $country['dial_code'];
                     $name .=  " (" . (strlen($dail_code)<4 ? "+$dail_code" : $dail_code). ")";
                 }
             }
             return $name;
-            
+
         }
-        
-        
+
+
         /**
          * Get all country names
          * 
