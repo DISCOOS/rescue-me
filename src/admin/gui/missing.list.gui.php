@@ -8,7 +8,7 @@
         unset($_ROUTER['error']);
     }
     
-    $admin = User::current()->allow("read", 'operations.all');
+    $all = User::current()->allow("read", 'operations.all');
     $type = isset($_GET['name']) === false || $_GET['name'] === 'open' ? Operation::TRACE : $_GET['name'];
     
 ?>
@@ -33,7 +33,7 @@
                     <th width="13%" class="hidden-phone"><?=ANSWERED?></th>
                     <th width="13%" class="hidden-phone"><?=REPORTED?></th>
                     <th width="13%"><?=LOCATION?></th>
-                    <? if($admin) { ?>
+                    <? if($all) { ?>
                     <th width="5%" class="hidden-phone"><?=USER?></th>
                     <th>
                     <? } else { ?>
@@ -63,7 +63,7 @@
                     <th width="13%" class="hidden-phone"><?=ANSWERED?></th>
                     <th width="13%" class="hidden-phone"><?=REPORTED?></th>
                     <th width="13%"><?=LOCATION?></th>
-                    <? if($admin) { ?>
+                    <? if($all) { ?>
                     <th width="5%" class="hidden-phone"><?=USER?></th>
                     <th>
                     <? } else { ?>
@@ -93,7 +93,7 @@
                     <th width="13%" class="hidden-phone"><?=ANSWERED?></th>
                     <th width="13%" class="hidden-phone"><?=REPORTED?></th>
                     <th width="13%"><?=LOCATION?></th>
-                    <? if($admin) { ?>
+                    <? if($all) { ?>
                     <th width="5%" class="hidden-phone"><?=USER?></th>
                     <th>
                     <? } else { ?>
@@ -120,7 +120,7 @@
                     <th width="10%"><?=TYPE?></th>
                     <th width="20%"><?=NAME?></th>
                     <th width="20%"><?=CLOSED?></th>
-                    <? if($admin) { ?>
+                    <? if($all) { ?>
                     <th width="20%" class="hidden-phone"><?= USER ?></th>
                     <th>
                     <? } else { ?>

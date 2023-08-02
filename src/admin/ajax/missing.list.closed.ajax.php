@@ -12,14 +12,14 @@
     
     $user = User::current();
     $user_id = $user->id;
-    $admin = User::current()->allow("read", 'operations.all');
+    $all = User::current()->allow("read", 'operations.all');
     
     $filter = '(op_closed IS NOT NULL)';
     if(isset($_GET['filter'])) {
         $filter .= ' AND ' . Missing::filter(isset_get($_GET, 'filter', ''), 'OR');
     }
     
-    $list = Missing::countAll($filter, $admin);
+    $list = Missing::countAll($filter, $all);
     
     $page = input_get_int('page', 1);
     $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
@@ -29,7 +29,7 @@
         $options = array();
 ?>
 
-        <tr><td colspan="<?=$admin ? 4 : 3?>"><?=NONE_FOUND?></td></tr>
+        <tr><td colspan="<?=$all ? 4 : 3?>"><?=NONE_FOUND?></td></tr>
 
 <? } else {
         
@@ -41,7 +41,7 @@
     $types = RescueMe\Operation::titles();
     
     // Get missing
-    $list = Missing::getAll($filter, $admin, $start, $max);
+    $list = Missing::getAll($filter, $all, $start, $max);
     
     foreach($list as $id => $this_missing) {
         $owner = ($this_missing->user_id === $user_id);
@@ -50,7 +50,7 @@
                 <td class="missing name"><?= $types[$this_missing->op_type] ?></td>
                 <td class="missing name"> <?= $this_missing->name ?> </td>
                 <td class="missing date"><?= format_dt($this_missing->op_closed) ?></td>
-                <? if($admin) { ?>
+                <? if($all) { ?>
                 <td class="missing name hidden-phone"><?= $this_missing->user_name ?></td>
                 <td class="missing editor">
                 <? } else { ?>

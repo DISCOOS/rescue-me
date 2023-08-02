@@ -4,9 +4,9 @@
     
     $id = input_get_int('id');
     $operation = Operation::get($id);
-    $admin = User::current()->allow("read", 'operations.all');
+    $all = User::current()->allow("read", 'operations.all');
     
-    $missings = $operation === FALSE ? FALSE : $operation->getAllMissing($admin);
+    $missings = $operation === FALSE ? FALSE : $operation->getAllMissing($all);
     if($missings !== false)
     {
         $missing = current($missings);

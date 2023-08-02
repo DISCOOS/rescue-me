@@ -23,7 +23,11 @@
     class Roles
     {
         const TABLE = 'roles';
-        
+        const SYSADMIN = 0;
+        const SUPERVISOR = 1;
+        const OPERATOR = 2;
+        const PERSONNEL = 3;
+
         private static $fields = array(
             'user_id',
             'role_id',
@@ -31,9 +35,10 @@
         );
         
         private static $roles = array(
-            1=>'Administrator', 
-            2=>'Operator', 
-            3=>'Personnel'
+            Roles::SYSADMIN=>'Sysadmin',
+            Roles::SUPERVISOR=>'Supervisor',
+            Roles::OPERATOR=>'Operator',
+            Roles::PERSONNEL=>'Personnel',
         );
         
         
@@ -48,7 +53,7 @@
             
             switch($role_id) {
                 
-                case 1:
+                case Roles::SYSADMIN:
                     // Grant administrator default permissions
                     if(Permissions::grant($role_id, $user_id, 'read', 'logs')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'user.all')) $count++;
@@ -59,8 +64,21 @@
                     if(Permissions::grant($role_id, $user_id, 'write', 'setup.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'operations.all')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'operations.all')) $count++;
-                    break;                    
-                case 2:
+                    break;
+                case Roles::SUPERVISOR:
+                    // Grant administrator default permissions
+                    if(Permissions::grant($role_id, $user_id, 'read', 'user')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'user')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'setup')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'setup')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'roles')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'roles')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'operations')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'read', 'operations.all')) $count++;
+                    if(Permissions::grant($role_id, $user_id, 'write', 'operations.all')) $count++;
+                    break;
+                case Roles::OPERATOR:
                     // Grant operator default permissions
                     if(Permissions::grant($role_id, $user_id, 'read', 'user')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'user')) $count++;
@@ -68,9 +86,9 @@
                     if(Permissions::grant($role_id, $user_id, 'write', 'setup')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'write', 'operations')) $count++;
-                    break;                    
-                case 3:
-                    // Grant personell default permissions
+                    break;
+                case Roles::PERSONNEL:
+                    // Grant personnel default permissions
                     if(Permissions::grant($role_id, $user_id, 'read', 'user')) $count++;
                     if(Permissions::grant($role_id, $user_id, 'read', 'operations')) $count++;
                     break;                    
@@ -79,16 +97,27 @@
             return $count;
             
        }
-        
-        
-       /**
+
+        /**
+         * Get role name
+         *
+         * @return string|null
+         */
+        public static function getName($role_id)
+        {
+            return self::$roles[$role_id];
+        }
+
+
+
+        /**
          * Get all roles
          * 
          * @return array
          */
         public static function getAll() {
              
-            return self::$roles ;
+            return self::$roles;
             
         }// getAll     
 
@@ -278,6 +307,7 @@
             );
                 
             return false;
-        }        
+        }
+
 
     }// Roles

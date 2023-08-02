@@ -139,7 +139,7 @@
             $res = DB::update(self::TABLE, $values, "`op_id`=" . (int) $id);
 
             if($res === FALSE) {
-                return $this->error("Failed to close operation $id");
+                return Operation::error("Failed to close operation $id");
             }
 
             Logs::write(
@@ -164,7 +164,7 @@
             $res = DB::update(self::TABLE,array($field => $value), "`op_id`=" . (int) $id);
 
             if($res === FALSE) {
-                return $this->error("Failed to update field [$field] in operation $id");
+                return Operation::error("Failed to update field [$field] in operation $id");
             }
 
             return $res;
@@ -182,7 +182,7 @@
             $res = DB::update(self::TABLE,array('op_closed' => 'NULL'), "`op_id`=" . (int) $id);
 
             if($res === FALSE) {
-                $this->error("Failed to reopen operation $id");
+                Operation::error("Failed to reopen operation $id");
             } else {
 
                 Logs::write(
@@ -278,9 +278,11 @@
          * Get all operations
          * 
          * @param string $status NULL, 'open' or 'closed'
-         * @return mixed. Instance of \RescueMe\Operation if success, FALSE otherwise.
+         * @param boolean $all Select from all missing flag (if false, limit to current user)
+         *
+         * @return array|false. List  of Operation if success, FALSE otherwise.
          */
-        public static function getAll($status='open', $admin = false) {
+        public static function getAll($status='open', $all = false) {
             $user = User::current();
             // Get WHERE clause
             switch( $status ) {
@@ -293,7 +295,7 @@
                     break;
             }
             
-            $owned = ($admin ? '' : "AND `".self::TABLE."`.`user_id` = ".(int)$user->id);
+            $owned = ($all ? '' : "AND `".self::TABLE."`.`user_id` = ".(int)$user->id);
 
             $query = "SELECT `op_id`, `op_name` FROM `".self::TABLE."`
                       WHERE `op_closed` {$where} {$owned} ORDER BY `op_opened` DESC";
@@ -315,8 +317,8 @@
         } // getAll
         
 
-        public function getAllMissing($admin = false, $start = 0, $max = false) {
-            return Missing::getAll('`missing`.`op_id` = ' .(int)$this->id, $admin, $start, $max);
+        public function getAllMissing($all = false, $start = 0, $max = false) {
+            return Missing::getAll('`missing`.`op_id` = ' .(int)$this->id, $all, $start, $max);
         }
 
         public function getAlertMobile() {
@@ -331,7 +333,7 @@
             return DB::error();
         }
 
-        private function error($message, $context = array())
+        static private function error($message, $context = array())
         {
             $context['code'] = DB::errno();
             $context['error'] = DB::error();

@@ -1,8 +1,9 @@
 <?php
 
     ob_start();
-    
-    use RescueMe\User;
+
+use RescueMe\Roles;
+use RescueMe\User;
     use RescueMe\Properties;
 
     $user = User::current();
@@ -34,7 +35,7 @@
         $options = create_paginator(1, $total, $user_id);        
         
         $users = User::getAll(array($state), $filter, $start, $max);
-        $roles = \RescueMe\Roles::getAll();
+        $roles = Roles::getAll();
 
         
         foreach($users as $id => $user) { $editable = (User::DELETED === $user->state ? '' : 'user') ?>

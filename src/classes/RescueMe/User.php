@@ -178,9 +178,11 @@
         public static function filter($values, $operand) {
             
             $fields = array(
-                '`users`.`name`', 
-                '`users`.`email`', 
-                '`users`.`mobile`');
+                '`users`.`name`',
+                '`users`.`email`',
+                '`users`.`mobile`',
+                '`roles`.`role_name`'
+            );
 
             return DB::filter($fields, $values, $operand);
             
@@ -192,7 +194,7 @@
          * 
          * @param array $states User state (optional, default: null, values: {'pending', 'disabled', 'deleted'})
          * 
-         * @return boolean|array
+         * @return boolean|int
          */
         public static function count($states=null, $filter = '') {
             
@@ -203,7 +205,8 @@
             $where = array();
             foreach(isset($states) ? $states : array() as $state) {
                 $where[] = $state === null || $state === "NULL"  ? "`state` IS NULL" : "`state`='$state'";
-            } 
+            }
+
             if(empty($where) === false) {
                 if (empty($filter) === false) {
                     $filter = '(' . $filter . ') AND ';
@@ -211,7 +214,10 @@
                 $filter .= implode($where," OR ");
             }
             
-            return DB::count(self::TABLE, $filter);
+            return DB::count(
+                array(self::TABLE, Roles::TABLE),
+                "`roles`.`user_id`=`users`.`user_id` AND $filter"
+            );
             
         }// count
         
@@ -244,7 +250,13 @@
             
             $limit = ($max === false ? '' : "$start, $max");
 
-            $res = DB::select(self::TABLE, "*", $filter, "`state`, `name`", $limit);
+            $res = DB::select(
+                array(self::TABLE, Roles::TABLE),
+                "*",
+                "`roles`.`user_id`=`users`.`user_id` AND $filter",
+                "`state`, `name`",
+                $limit
+            );
             
             if (DB::isEmpty($res)) return false;
 

@@ -1,6 +1,7 @@
 <?php
 
-    use RescueMe\User;
+use RescueMe\Roles;
+use RescueMe\User;
     
     if(isset($_ROUTER['error'])) {
         insert_error($_ROUTER['error']);
@@ -11,7 +12,7 @@
 
     $id = input_get_int('id', User::currentId());
 
-    $user = $id > 0 ? User::get($id)->name : SYSTEM;
+    $role = $id > 0 ? Roles::getName(User::get($id)->role_id) : SYSTEM;
     
     
 ?>
@@ -22,7 +23,7 @@
   <li><a href="#design" data-toggle="tab"><?=DESIGN?></a></li>
   <li><a href="#sms" data-toggle="tab"><?=SMS?></a></li>
   <li><a href="#maps" data-toggle="tab"><?=MAPS?></a></li>
-  <li class="pull-right"><?=$user?></li>
+  <li class="pull-right"><?=$role?></li>
 </ul>
 
 <div class="tab-content" style="width: auto; overflow: visible">

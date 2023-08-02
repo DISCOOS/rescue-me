@@ -387,10 +387,9 @@
             if (DB::isEmpty($res)) {
                 
                 // Allow empty?
-                switch($name) {
-                    case self::SMS_REQUIRE:
-                        return "";
-               }
+                if ($name == self::SMS_REQUIRE) {
+                    return "";
+                }
                 
                 return $defaults[$name];
             }

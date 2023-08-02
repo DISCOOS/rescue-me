@@ -213,13 +213,16 @@
         /**
          * Get row count
          * 
-         * @param string $table
+         * @param array|string $tables
          * @param string $filter
          * @return boolean|integer
          */
-        public static function count($table, $filter='') 
+        public static function count($tables, $filter='')
         {
-            $query = "SELECT COUNT(*) FROM `$table`";
+            $tables = is_array($tables) ? $tables : array($tables);
+            $table = "`" . implode($tables, '`,`') . "`";
+
+            $query = "SELECT COUNT(*) FROM $table";
             
             if($filter) $query .= " WHERE $filter";
             
@@ -237,15 +240,18 @@
         /**
          * Get selection from given table
          * 
-         * @param string $table
+         * @param array|string $tables
          * @param mixed $fields
          * @param string $filter
          * @param string $order
          * @param string $limit
          * @return boolean|\mysqli_result
          */
-        public static function select($table, $fields='*', $filter='', $order='', $limit = '') 
+        public static function select($tables, $fields='*', $filter='', $order='', $limit = '')
         {
+            $tables = is_array($tables) ? $tables : array($tables);
+            $table = "`" . implode($tables, '`,`') . "`";
+
             if(is_string($fields) && in_array(strtoupper($fields), array('*','COUNT(*)')) === FALSE) {
                 $fields = "`" . ltrim(rtrim($fields,"`"),"`") . "`";
             }
@@ -253,7 +259,7 @@
                 $fields = "`" . implode("`,`", $fields) . "`";
             }
             
-            $query = "SELECT $fields FROM `$table`";
+            $query = "SELECT $fields FROM $table";
             
             if($filter) $query .= " WHERE $filter";
             

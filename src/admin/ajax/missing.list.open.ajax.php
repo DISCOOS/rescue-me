@@ -18,7 +18,7 @@
     
     $user = User::current();
     $user_id = $user->id;
-    $admin = User::current()->allow("read", 'operations.all');
+    $all = User::current()->allow("read", 'operations.all');
     
     $filter = "(op_type = '$type') AND (op_closed IS NULL)";
     
@@ -26,7 +26,7 @@
         $filter .= ' AND ' . Missing::filter(isset_get($_GET, 'filter', ''), 'OR');
     }
     
-    $list = Missing::countAll($filter, $admin);
+    $list = Missing::countAll($filter, $all);
     
     $page = input_get_int('page', 1);
     $max = Properties::get(Properties::SYSTEM_PAGE_SIZE, $user_id);
@@ -37,7 +37,7 @@
         $options = array();
  ?>
 
-        <tr><td colspan="<?=$admin ? 8 : 7?>"><?=NONE_FOUND?></td></tr>
+        <tr><td colspan="<?=$all ? 8 : 7?>"><?=NONE_FOUND?></td></tr>
 
  <? } else {
 
@@ -48,7 +48,7 @@
         $options = create_paginator(1, $total, $user_id);
         
         // Get missing
-        $list = Missing::getAll($filter, $admin, $start, $max);
+        $list = Missing::getAll($filter, $all, $start, $max);
 
         // Enable manual SMS delivery status check?
         $module = Module::get(Provider::TYPE, User::currentId());
@@ -87,7 +87,7 @@
                 <td id="responded-<?=$id?>" class="missing answered hidden-phone"><?= $answered ?></td>
                 <td class="missing received hidden-phone"><?= $received ?></td>
                 <td class="missing position"><?= $position ?></td>
-                <? if($admin) { ?>
+                <? if($all) { ?>
                 <td class="missing name hidden-phone"><?= $this_missing->user_name ?></td>
                 <td class="missing editor">
                 <? } else { ?>

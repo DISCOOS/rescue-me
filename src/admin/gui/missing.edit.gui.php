@@ -9,9 +9,9 @@
 
     $user = User::current();
 
-    $admin = $user->allow('write', 'operations.all');
+    $all = $user->allow('write', 'operations.all');
 
-    $missing = Missing::get($id, $admin);
+    $missing = Missing::get($id, $all);
 
     if($missing !== false)
     {

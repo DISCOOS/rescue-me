@@ -141,11 +141,11 @@
                 break;
             }
 
-            $admin = $user->allow('write', 'operations.all');
+            $all = $user->allow('write', 'operations.all');
             $missing = Missing::get($id);
 
             if ($missing !== FALSE) {
-                if (($user->allow('write', 'operations', $missing->op_id) || $admin) === FALSE) {
+                if (($user->allow('write', 'operations', $missing->op_id) || $all) === FALSE) {
                     $_ROUTER['name'] = _("Illegal Operation");
                     $_ROUTER['view'] = "404";
                     $_ROUTER['error'] = _("Access denied");
@@ -389,10 +389,10 @@
             $redirect = APP_URI;
             $_ROUTER['name'] = REQUEST_NEW_USER;
             
-            $admin = ($user instanceof RescueMe\User) && $user->allow('write', 'user.all');
+            $all = ($user instanceof RescueMe\User) && $user->allow('write', 'user.all');
             
             // Admins are allowed to create users
-            if($admin)
+            if($all)
             {
                 $state = User::ACTIVE;
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -443,7 +443,7 @@
 
                     $user->prepare(input_get_string('use_system_sms_provider', false));
                     
-                    if($admin === false) {
+                    if($all === false) {
                         $_ROUTER['name'] = REQUEST_SENT;
                         $_ROUTER['view'] = 'continue';
                         $_ROUTER['continue'] = $redirect;
@@ -462,7 +462,7 @@
             
         case 'user/edit':
             
-            if(($id = input_get_int('id', User::currentId())) === FALSE) {
+            if(FALSE === ($id = input_get_int('id', User::currentId()))) {
 
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
                 $_ROUTER['view'] = "404";
@@ -873,9 +873,9 @@
             $_ROUTER['name'] = T_('Close operation');
             $_ROUTER['view'] = 'operation/close';
             
-            $admin = $user->allow('write', 'operations.all');
+            $all = $user->allow('write', 'operations.all');
                         
-            if (($user->allow('write', 'operations', $id)  || $admin)=== FALSE) {
+            if (($user->allow('write', 'operations', $id)  || $all)=== FALSE) {
                 
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
                 $_ROUTER['view'] = "404";
@@ -885,7 +885,7 @@
             
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
-                $missings = Operation::get($id)->getAllMissing($admin);
+                $missings = Operation::get($id)->getAllMissing($all);
                 if($missings !== FALSE) {
                     foreach($missings as $missing) {
                         $missing->anonymize($_POST['m_sex']. ' ('.$_POST['m_age'].')');
@@ -917,9 +917,9 @@
             $_ROUTER['name'] = REOPEN_OPERATION;
             $_ROUTER['view'] = 'missing/list';
             
-            $admin = $user->allow('write', 'operations.all');
+            $all = $user->allow('write', 'operations.all');
             
-            if (($user->allow('write', 'operations', $id)  || $admin)=== FALSE) {
+            if (($user->allow('write', 'operations', $id)  || $all)=== FALSE) {
                 $_ROUTER['name'] = ILLEGAL_OPERATION;
                 $_ROUTER['view'] = "404";
                 $_ROUTER['error'] = ACCESS_DENIED;
@@ -927,7 +927,7 @@
             } 
             
             $operation = Operation::get($id);
-            $missings = $operation->getAllMissing($admin);
+            $missings = $operation->getAllMissing($all);
             $missing = reset($missings);
             $missing_id = $missing->id;
             
@@ -999,9 +999,9 @@
             
             if($missing !== FALSE){
                 
-                $admin = $user->allow('read', 'operations.all');
+                $all = $user->allow('read', 'operations.all');
                 
-                if(($user->allow('read', 'operations', $missing->op_id) || $admin) === FALSE) {
+                if(($user->allow('read', 'operations', $missing->op_id) || $all) === FALSE) {
                 
                     $_ROUTER['name'] = ILLEGAL_OPERATION;
                     $_ROUTER['view'] = "404";
@@ -1056,7 +1056,7 @@
                 break;
             } 
             
-            $admin = $user->allow('write', 'operations.all');
+            $all = $user->allow('write', 'operations.all');
             
             $missing = Missing::get($id);
             
@@ -1065,7 +1065,7 @@
 
             if($missing !== FALSE){
                 
-                if (($user->allow('write', 'operations', $missing->op_id)  || $admin)=== FALSE) {
+                if (($user->allow('write', 'operations', $missing->op_id)  || $all)=== FALSE) {
 
                     $_ROUTER['name'] = ILLEGAL_OPERATION;
                     $_ROUTER['view'] = "404";
@@ -1133,9 +1133,9 @@
 
                 if($missing !== FALSE) {
 
-                    $admin = $user->allow('write', 'operations.all');
+                    $all = $user->allow('write', 'operations.all');
 
-                    if (($user->allow('write', 'operations', $missing->op_id) || $admin)=== FALSE) {
+                    if (($user->allow('write', 'operations', $missing->op_id) || $all)=== FALSE) {
 
                         echo ACCESS_DENIED;
 
@@ -1177,13 +1177,13 @@
 
             } else {
 
-                $admin = $user->allow('read', 'operations.all');
+                $all = $user->allow('read', 'operations.all');
 
-                $missing = Missing::check($id, $admin);
+                $missing = Missing::check($id, $all);
 
                 if($missing !== FALSE) {
                 
-                    if (($admin || $user->allow('read', 'operations', $missing->op_id))=== FALSE) {
+                    if (($all || $user->allow('read', 'operations', $missing->op_id))=== FALSE) {
 
                         echo ACCESS_DENIED;
 
