@@ -71,9 +71,9 @@
         $group['value'][] = array(
             'id' => 'use_system_sms_provider',
             'type' => 'checkbox',
-            'value' => '1',
+            'value' => 'unchecked',
             'label' => USE_SYSTEM_SMS_PROVIDER,
-            'class' => 'span3'
+            'class' => 'span4'
         );
     }
 

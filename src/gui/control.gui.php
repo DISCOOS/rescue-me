@@ -64,10 +64,17 @@
 
 <div class="<?= $class ?>">
     <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
-    <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>" 
-           placeholder="<?= isset($placeholder) ? $placeholder : $label ?>" 
-           class="input-block-level" <?= $attributes ?> 
-           <?php echo ($type==='checkbox' && $value === 'checked' ? 'checked="checked' : 'value="'.$value); ?>">
+    <? if($type==='checkbox') {?>
+    <label class="switch">
+    <?}?>
+        <input id="<?= $id ?>" name="<?= $id ?>" type="<?= $type ?>"
+               placeholder="<?= isset($placeholder) ? $placeholder : $label ?>"
+               class="input-block-level" <?= $attributes ?>
+               <?php echo ($type==='checkbox' && $value === 'checked' ? 'checked="checked' : 'value="'.$value); ?>">
+    <? if($type==='checkbox') {?>
+        <span class="slider round"></span>
+        </label>
+    <?}?>
 </div>
 
 <? } ?>

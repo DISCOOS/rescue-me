@@ -331,7 +331,9 @@
             
             if($res === FALSE)
             {
-                Logs::write(Logs::DB, LogLevel::ERROR, "Failed to delete $count rows from $table", DB::error());
+                $context['query'] = $query;
+                $context['error'] = DB::error();
+                Logs::write(Logs::DB, LogLevel::ERROR, "Failed to delete $count rows from $table", $context);
             } else {
                 Logs::write(Logs::DB, LogLevel::INFO, "Deleted $count rows from $table");
             }
@@ -365,7 +367,9 @@
             
             if($res === FALSE)
             {
-                Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to update ' . count($values) . " values in $table", DB::error());
+                $context['query'] = $query;
+                $context['error'] = DB::error();
+                Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to update ' . count($values) . " values in $table", $context);
             } else {
                 Logs::write(Logs::DB, LogLevel::INFO, 'Updated ' . count($values) . " values in $table");
             }
