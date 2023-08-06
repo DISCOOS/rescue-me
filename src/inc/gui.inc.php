@@ -219,4 +219,15 @@
             echo $html;
         }
         return $html;
-    }    
+    }
+
+    function insert_title($title, $href, $action, $output=true)
+    {
+        ob_start();
+        require(APP_PATH . "gui/title.gui.php");
+        $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }

@@ -2,14 +2,16 @@
 
     use RescueMe\Roles;
 
-    $roles = Roles::getAll();        
+    $roles = Roles::getAll();
 ?>
-
-    <h3><?=T_("Roles")?></h3>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th><?=T_("Name")?></th>
+                <th>
+                    <div class="pull-left no-wrap" style="height: 45px">
+                        <h3 class="pagetitle"><?=ROLES?></h3>
+                    </div>
+                </th>
                 <th>
                     <input type="search" class="input-medium search-query pull-right" placeholder="Search">
                 </th>            

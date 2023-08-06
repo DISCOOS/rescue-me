@@ -48,8 +48,9 @@ use RescueMe\User;
         }
 
 ?>
-<div>
-    <h3 class="pagetitle"><?= $title ?></h3>
+<div class="container-narrow">
+    <?insert_title($title, ADMIN_URI."missing/edit/$id", EDIT);?>
+
 <?
         if(isset($_ROUTER['error'])) { ?>
     
