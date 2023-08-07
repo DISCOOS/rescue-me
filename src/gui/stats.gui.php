@@ -2,28 +2,30 @@
 <p>Det er mange grunner til at sporinger ikke fører til lokalisering. Hvis savnede er utenfor dekning,
     tom for batteri, velger å ikke klikke på lenken i SMSen, eller ikke klarer å aktivere deling av
     posisjon med nettleseren vil vi ikke klare å lokalisere telefonen.</p>
+<? $days = 90;?>
 <div class="row text-center no-wrap">
-    <div class="span2" id="no_response"
+    <div id="no_response" class="span2"
          title="<?='Sporinger som ikke er blitt åpnet'?>"
          rel="tooltip" data-placement="bottom"></div>
-    <div class="span2" id="no_location"
+    <div  id="no_location" class="span2"
          title="<?='Åpnede sporinger uten lokasjon'?>"
          rel="tooltip" data-placement="bottom"></div>
-    <div class="span2" id="total"
+    <div  id="located" class="span2"
          title="<?='Sporinger med lokasjon'?>"
          rel="tooltip" data-placement="bottom"></div>
-    <div class="span2" id="attainable"
+    <div id="attainable" class="span2"
          title="<?='Sporinger som er blitt åpnet av savnede'?>"
          rel="tooltip" data-placement="bottom"></div>
     <div class="span2 " style="height: 100px;"
          title="<?='Antall sporinger totalt'?>"
          rel="tooltip" data-placement="bottom">
             <div class="center" style="height: 100%;">
-                <div style="height: 25px;"></div>
-                <h3 id="traces">0</h3>
-                <p>
-                    <i class="icon-envelope"></i> Sporinger
-                </p>
+                <div style="height: 35%;"></div>
+                <h3>
+                    <span id="traces">0</span>
+                    <img src="img/rescueme.png" width="16" height="16" class="img-rounded">
+                </h3>
+                <span class="small muted">Siste <?=$days?> dager</span>
             </div>
     </div>
 </div>
@@ -31,7 +33,7 @@
     const gauges = [
         {id: 'no_response', label: 'Ingen respons'},
         {id: 'no_location', label:'Respons, ingen lokasjon'},
-        {id: 'total', label: 'Lokalisert'},
+        {id: 'located', label: 'Lokalisert'},
         {id: 'attainable', label: 'Mulig å finne'},
     ].map((gauge) => new JustGage({
             id: gauge.id, // the id of the html element
@@ -44,20 +46,14 @@
             gaugeWidthScale: 0.6
     }));
     $(document.documentElement).find('[rel="tooltip"]').tooltip();
-    $.getJSON('stats.php', function(data) {
+    $.getJSON('stats.php?type=trace&days=<?=$days?>', function(data) {
         const trace = data.trace;
-        const total = trace.totals.all;
+        const total = trace.count.total.unique;
         const element = document.getElementById('traces');
         element.innerHTML = total;
         for (let g of gauges) {
-            if(['attainable','total'].includes(g.config.id)) {
-                const value = trace.rates[g.config.id].all;
-                g.refresh(value * 100);
-            } else {
-                const stat = trace[g.config.id];
-                const value = stat.all / total * 100;
-                g.refresh(value);
-            }
+            const value = trace.rates[g.config.id].unique;
+            g.refresh(value * 100);
         }
     });
 </script>
