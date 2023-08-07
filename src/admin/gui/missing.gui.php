@@ -55,7 +55,7 @@ use RescueMe\User;
 ?>
 <div class="container-narrow">
     <?$isClosed
-        ? insert_title($title, ADMIN_URI."operation/reopen/$id", REOPEN)
+        ? insert_title($title, ADMIN_URI."operation/reopen/$missing->op_id", REOPEN)
         : insert_title($title, ADMIN_URI."missing/edit/$id", EDIT);?>
 
 <?
