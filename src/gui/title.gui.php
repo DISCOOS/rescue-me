@@ -22,12 +22,19 @@
                 <?}?>
             </div>
         </th>
-        <?if(isset($href)){?>
+        <?if(isset($href) || isset($menu)){?>
         <th>
+            <div class="pull-right">
+            <?
+            if(isset($menu)) {
+                echo $menu;
+            ?>
+        <?} else {?>
             <div class="btn-group pull-right">
                 <a class="btn btn-small" href="<?=$href?>">
                     <b class="icon icon-edit"></b><?= $action ?>
                 </a>
+        <?}?>
             </div>
         </th>
         <?}?>

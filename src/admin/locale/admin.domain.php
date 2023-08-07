@@ -160,6 +160,8 @@
         
 
         define('ABOUT', T_('About').' '.TITLE);
+        define('INSIGHT', T_('Insight'));
+        define('RATIOS', T_('Ratios'));
         define('USER_S', sentence(array(USER,'%1$s')));
         define('MISSING_PERSON', sentence(array(MISSING,PERSON)));
         define('MISSING_PERSONS', sentence(array(MISSING,PERSONS)));

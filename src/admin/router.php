@@ -101,8 +101,8 @@
             $_ROUTER['name'] = DASHBOARD;
             $_ROUTER['view'] = 'dash';
             break;
-        case 'about':
-            $_ROUTER['name'] = ABOUT;
+        case 'insight':
+            $_ROUTER['name'] = INSIGHT;
             $_ROUTER['view'] = $_GET['view'];
             break;
         case 'logs':

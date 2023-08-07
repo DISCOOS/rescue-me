@@ -21,7 +21,12 @@
 
 <div style="height: 25px;"></div>
 
-<?require('gui/stats.gui.php');?>
+<p class="lead">Hvor mange finner vi?</p>
+<p>Det er mange grunner til at sporinger ikke fører til lokalisering. Hvis savnede er utenfor dekning,
+    tom for batteri, velger å ikke klikke på lenken i SMSen, eller ikke klarer å aktivere deling av
+    posisjon med nettleseren vil vi ikke klare å lokalisere telefonen.</p>
+
+<?insert_stats('trace', 'unique', 90)?>
 
 <div style="height: 25px;"></div>
 

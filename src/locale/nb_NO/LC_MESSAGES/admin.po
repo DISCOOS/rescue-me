@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-06 19:17+0200\n"
-"PO-Revision-Date: 2023-08-06 19:18+0200\n"
+"POT-Creation-Date: 2023-08-07 18:43+0200\n"
+"PO-Revision-Date: 2023-08-07 18:44+0200\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescue@discoos.org>\n"
 "Language: nb_NO\n"
@@ -27,11 +27,11 @@ msgstr "Innstillinger"
 
 #: controllers/logon.controller.php:5
 msgid "Incorrect email or password."
-msgstr "E-post eller passord er feil"
+msgstr "E-post eller passord er feil."
 
 #: controllers/logon.controller.php:6
 msgid "Make sure your email and password are both correct."
-msgstr "Sjekk at både din e-post og passord er korrekt "
+msgstr "Sjekk at både din e-post og passord er korrekt ."
 
 #: controllers/missing.new.controller.php:16
 msgid "Missing modules!"
@@ -56,7 +56,7 @@ msgstr "Kunne ikke starte sporing"
 
 #: controllers/missing.new.controller.php:37
 msgid "System error: could not initiate operation"
-msgstr "Kunne ikke utføre operasjon."
+msgstr "Kunne ikke utføre operasjon"
 
 #: controllers/missing.new.controller.php:49
 msgid "Please try again"
@@ -79,7 +79,7 @@ msgid ""
 "You entered an invalid e-mail address. Please enter a correct e-mail address"
 msgstr ""
 "Du har skrevet inn en ulovlig e-postadresse. Vennligst oppgi en lovlig e-"
-"postadresse."
+"postadresse"
 
 #: controllers/user.edit.controller.php:17
 msgid "An error ocurred!"
@@ -97,7 +97,7 @@ msgstr "Beklager"
 
 #: controllers/user.new.controller.php:8
 msgid "Invalid e-mail. Please enter a correct e-mail address"
-msgstr "Ulovig e-post. Vennligst oppgi en lovlig e-postadresse."
+msgstr "Ulovig e-post. Vennligst oppgi en lovlig e-postadresse"
 
 #: controllers/user.new.controller.php:15
 msgid "Oops! Could not create user"
@@ -105,7 +105,7 @@ msgstr "Auda! Kunne ikke opprette brukeren"
 
 #: controllers/user.new.controller.php:16
 msgid "When attempting to create user, an error ocurred. The system reported: "
-msgstr "Klarte ikke å opprette ny bruker. Systemet rapporterte:"
+msgstr "Klarte ikke å opprette ny bruker. Systemet rapporterte: "
 
 #: gui/dash.gui.php:2
 msgid "Get started"
@@ -155,7 +155,7 @@ msgid ""
 msgstr ""
 "Når brukeren trykker på linken åpnes en nettside med et script som vil "
 "forsøke å posisjonerer mobiltelefonen. Brukeren må godkjenne deling av "
-"posisjon i nettleseren før posisjonen kan bestemmes."
+"posisjon i nettleseren før posisjonen kan bestemmes"
 
 #: gui/missing.new.gui.php:141
 msgid "Script download time"
@@ -197,7 +197,7 @@ msgid ""
 "max.wait) and maximum location age (location.max.age) can be configured on "
 "page %1$s"
 msgstr ""
-" Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location."
+"Ønsket nøyaktighet (location.desired.accuracy), maksimum ventetid (location."
 "max.wait) og maximum alder på gammel posisjon (location.max.age) kan "
 "konfigureres på siden %1$s"
 
@@ -640,7 +640,7 @@ msgstr "Kun nummer"
 
 #: locale/admin.domain.php:98
 msgid "No spaces"
-msgstr "ingen mellomrom"
+msgstr "Ingen mellomrom"
 
 #: locale/admin.domain.php:99
 msgid "Country code"
@@ -656,7 +656,7 @@ msgstr "Kommentarer"
 
 #: locale/admin.domain.php:102
 msgid "Operation number, etc."
-msgstr "SAR- eller AMIS-nr"
+msgstr "SAR- eller AMIS-nr."
 
 #: locale/admin.domain.php:103
 msgid "Report to"
@@ -776,7 +776,7 @@ msgstr "Telefon er lokalisert"
 
 #: locale/admin.domain.php:132
 msgid "Trace script downloaded."
-msgstr "Sporingsskript er lastet ned"
+msgstr "Sporingsskript er lastet ned."
 
 #: locale/admin.domain.php:133
 msgid "Trace script not downloaded."
@@ -840,12 +840,20 @@ msgstr "Sjekk leveringsstatus"
 msgid "About"
 msgstr "Om"
 
-#: locale/admin.domain.php:174
+#: locale/admin.domain.php:163
+msgid "Insight"
+msgstr "Innsikt"
+
+#: locale/admin.domain.php:164
+msgid "Ratios"
+msgstr "Forholdstall"
+
+#: locale/admin.domain.php:176
 #, php-format
 msgid "User with e-mail %1$s"
 msgstr "Bruker med e-post %1$s"
 
-#: locale/admin.domain.php:179
+#: locale/admin.domain.php:181
 msgid "cannot be approved"
 msgstr "kunne ikke godkjennes"
 
@@ -872,6 +880,9 @@ msgstr "Gjenopprett passord"
 #: router.php:1170
 msgid "Not an ajax request"
 msgstr "Ikke en ajax-forespørsel"
+
+#~ msgid "Rates"
+#~ msgstr "Forholdstall"
 
 #~ msgid "Id"
 #~ msgstr "Id"
@@ -971,9 +982,6 @@ msgstr "Ikke en ajax-forespørsel"
 
 #~ msgid "password"
 #~ msgstr "passord"
-
-#~ msgid "Locations"
-#~ msgstr "Lokasjoner"
 
 #~ msgid "Access"
 #~ msgstr "Tilgang"

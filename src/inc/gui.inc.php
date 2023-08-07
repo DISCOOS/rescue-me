@@ -20,7 +20,7 @@
         return $html;
     }    
     
-    function insert_item($label, $href, $icon="", $class="", $attributes='', $output=true) 
+    function insert_item($label, $href, $icon='', $class='', $attributes='', $output=true)
     {
         $attributes .= 'role="menuitem"';
         $html = '<li class="'.$class.'">'.insert_action($label, $href, $icon, "", $attributes, false).'</li>';
@@ -225,6 +225,17 @@
     {
         ob_start();
         require(APP_PATH . "gui/title.gui.php");
+        $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+
+    function insert_stats($type='trace', $set = 'unique', $days=90, $prefix='',$output=true)
+    {
+        ob_start();
+        require(APP_PATH . "gui/stats.gui.php");
         $html = ob_get_clean();
         if($output) {
             echo $html;

@@ -164,10 +164,11 @@ if(defined('USE_SILEX') && USE_SILEX) {
                             <li id="roles"><a role="menuitem" href="<?= ADMIN_URI ?>role/list"><b class="icon icon-th-list"></b><?=ROLES?></a></li>
                             <? } if ($user->allow('read', 'logs')) { ?>
                             <li id="settings"><a href="<?= ADMIN_URI ?>logs"><b class="icon icon-list"></b><?= LOGS ?></a></li>
-                            <li class="divider"></li>
                             <? } if ($user->allow('write', 'setup.all')) { ?>
+                            <li id="insight"><a href="<?= ADMIN_URI ?>insight"><b class="icon icon-eye-open"></b><?= INSIGHT ?></a></li>
+                            <li class="divider"></li>
                             <li id="system_settings"><a href="<?= ADMIN_URI ?>setup/0"><b class="icon icon-wrench"></b><?= SYSTEM_SETUP ?></a></li>
-                            <li class="divider"></li>                            
+                            <li class="divider"></li>
                             <? } ?>
                             <li id="logout"><a data-toggle="modal" data-target="#confirm"
                                 data-content="<?=DO_YOU_WANT_TO_LOGOUT?>"

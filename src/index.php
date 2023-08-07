@@ -53,5 +53,8 @@
                 }
             ?>
         </div>
+    <script>
+        $(document.documentElement).find('[rel="tooltip"]').tooltip();
+    </script>
     </body>
 </html>

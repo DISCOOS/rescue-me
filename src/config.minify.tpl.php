@@ -25,7 +25,7 @@
                 '//js/jquery.min.js', 
                 '//js/bootstrap.min.js',
                 '//js/raphael-min.js',
-                '//js/justgage.min.js',
+                '//js/justgage.min.js'
             ),
             'admin.css' => array
             (
@@ -49,6 +49,8 @@
                 '//js/rescueme.js', 
                 '//js/capslock.js',
                 '//js/validate.js',
+                '//js/raphael-min.js',
+                '//js/justgage.min.js',
                 '//admin/js/admin.js'
             ),
             'map.js' => array
