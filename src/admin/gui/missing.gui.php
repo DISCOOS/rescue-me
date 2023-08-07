@@ -19,15 +19,16 @@ use RescueMe\User;
     }
     else
     {        
-    
+
         $positions = $missing->getPositions();
         $name = $missing->name;
         $title = $name;
         $user_agent = $missing->answered_user_agent;
+        $last_error = NULL;
         $browser = UNKNOWN;
         $platform = UNKNOWN;
         $is_mobile = UNKNOWN;
-        if(Operation::isClosed($missing->op_id)) {
+        if($isClosed = Operation::isClosed($missing->op_id)) {
             $title .= " [".CLOSED."]";
         } else {
             $mobile = $missing->mobile;
@@ -45,11 +46,17 @@ use RescueMe\User;
                 $platform = Device::detectPlatform($user_agent);
                 $is_mobile = Device::isMobile($user_agent) ? YES : NO;
             }
+            if(isset($missing->last_error)) {
+                $ts = format_since($missing->last_error);
+                $last_error = "$missing->last_error_desc ($ts)";
+            }
         }
 
 ?>
 <div class="container-narrow">
-    <?insert_title($title, ADMIN_URI."missing/edit/$id", EDIT);?>
+    <?$isClosed
+        ? insert_title($title, ADMIN_URI."operation/reopen/$id", REOPEN)
+        : insert_title($title, ADMIN_URI."missing/edit/$id", EDIT);?>
 
 <?
         if(isset($_ROUTER['error'])) { ?>
@@ -96,16 +103,10 @@ use RescueMe\User;
         </div>
     <? } ?>
         <div class="info pull-left no-wrap">
-            <label class="label label-info"><?=MOBILE?></label>
-            <span class="label label-<?=empty($user_agent)?'warning':'success'?>"><?= $is_mobile ?></span>
-        </div>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?echo OS?></label>
-            <span class="label label-<?=empty($user_agent)?'warning':'success'?>"><?= $platform ?></span>
-        </div>
-        <div class="info pull-left no-wrap">
-            <label class="label label-info"><?echo BROWSER?></label>
-            <span class="label label-<?=empty($user_agent)?'warning':'success'?>"><?= $browser ?></span>
+            <label class="label label-<?=isset($last_error) ? 'important' : 'info'?>"
+                   title="<?=REPORTED_FROM_TRACKED_DEVICE?>"
+                   rel="tooltip"><?=LAST_ERROR?></label>
+            <span class="label <?=isset($last_error)?'label-warning':''?>"><?= isset($last_error) ? $last_error :  NONE ?></span>
         </div>
     </div>
     
@@ -128,7 +129,7 @@ use RescueMe\User;
     <? if (in_array(Properties::TRACE_DETAILS_REFERENCE, $details)) { ?>
         <div class="info pull-left no-wrap">
             <label class="label label-info"><?=REFERENCE?></label>
-            <span class="label label-<?=empty($missing->op_ref) ? 'warning' : 'success' ?>">
+            <span class="label <?=empty($missing->op_ref) ? '' : 'label-success' ?>">
                 <?= empty($missing->op_ref) ? UNKNOWN : $missing->op_ref ?>
             </span>
         </div>
@@ -140,6 +141,18 @@ use RescueMe\User;
             </span>
         </div>
     <? } ?>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?=MOBILE?></label>
+            <span class="label <?=empty($user_agent)?'':'label-success'?>"><?= $is_mobile ?></span>
+        </div>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?echo OS?></label>
+            <span class="label <?=empty($user_agent)?'':'label-success'?>"><?= $platform ?></span>
+        </div>
+        <div class="info pull-left no-wrap">
+            <label class="label label-info"><?echo BROWSER?></label>
+            <span class="label <?=empty($user_agent)?'':'label-success'?>"><?= $browser ?></span>
+        </div>
     </div>
 
 

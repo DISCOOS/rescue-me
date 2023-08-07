@@ -73,6 +73,8 @@
         define('SETTING', T_('Setting'));
         define('TRY_AGAIN', T_('Try again'));
         define('LAST_LOCATION', T_('Last location'));
+        define('LAST_ERROR', T_('Last error'));
+        define('REPORTED_FROM_TRACKED_DEVICE', T_('Reported from tracked device'));
         define('LOCATION_RECEIVED', T_('Location received'));
         define('_CONTINUE', T_('Continue'));
         define('AWAITS_APPROVAL', T_('Awaits approval'));

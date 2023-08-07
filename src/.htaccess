@@ -55,6 +55,11 @@ AddType application/x-httpd-php .appcache
     RewriteCond %{SCRIPT_FILENAME} !-f  
     RewriteRule ^r/(.*)/(.*)/(.*)/(.*)/(.*)/(.*)$ trace/report.php?id=$1&lat=$2&lon=$3&acc=$4&alt=$5&timestamp=$6 [L]
 
+    # Location error
+    RewriteCond %{SCRIPT_FILENAME} !-d
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteRule ^e/(.*)/(.*)/(.*)$ trace/error.php?id=$1&code=$2&desc=$3 [L]
+
     # Redirects
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f

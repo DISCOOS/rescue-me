@@ -14,7 +14,7 @@ if($missing !== false) {
     $version = VERSION;
     $user_id = $missing->user_id;
     $type = Properties::get(Properties::LOCATION_APPCACHE, $user_id);
-    if($type === 'settings')
+    if($type === Properties::LOCATION_APPCACHE_SETTINGS)
     {
         header('Content-Type: text/cache-manifest');
 

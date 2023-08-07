@@ -24,9 +24,12 @@
         set_system_locale(DOMAIN_TRACE, $missing->locale);
 
         $type = Properties::get(Properties::LOCATION_APPCACHE, $missing->user_id);
+        $version = Properties::get(Properties::LOCATION_SCRIPT_VERSION, $missing->user_id);
+
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        $manifest = ($type !== 'none' ? 'manifest="locate.appcache"' : '');
         $is_mobile = Device::isMobile($user_agent);
+        $platform = strtolower(Device::detectPlatform($user_agent));
+        $manifest = ($type !== 'none' ? 'manifest="locate.appcache"' : '');
 
         if($is_mobile || $force) {
             if(($delay = isset($message)) === false) {
@@ -37,11 +40,12 @@
             $missing->answered($user_agent, $force);
 
             // Create minified js
-            $trace = JSMin::minify(file_get_contents(APP_PATH.'trace/js/trace.js'));
+            $trace = JSMin::minify(file_get_contents(APP_PATH."trace/js/$version/trace.js"));
 
-            // Is iPhone?
-            if (strstr($user_agent,'iPhone')) {
-                $extra = JSMin::minify(file_get_contents(APP_PATH.'trace/js/iPhone.js'));
+            // Is supported?
+            $file_path = APP_PATH."trace/js/$version/trace.$platform.js";
+            if (file_exists($file_path)) {
+                $extra = JSMin::minify(file_get_contents(APP_PATH."trace/js/$version/trace.$platform.js"));
             }
 
             $user_id = Operation::get($missing->op_id)->user_id;
@@ -51,7 +55,8 @@
             $options['trace']['id'] = $id;
             $options['trace']['name'] = $missing->name;
             $options['trace']['delay'] = $delay;
-            $options['trace']['msg'] = get_messages();
+            $options['trace']['msg'] = get_messages($platform);
+            $options['trace']['tip'] = array();
 
             $country = $missing->alert_mobile_country;
             if(($code = Locale::getDialCode($country)) === FALSE)
@@ -63,6 +68,9 @@
             $options['trace']['age'] = Properties::get(Properties::LOCATION_MAX_AGE, $user_id);
             $options['trace']['wait'] = Properties::get(Properties::LOCATION_MAX_WAIT, $user_id);
             $options['trace']['acc'] = Properties::get(Properties::LOCATION_DESIRED_ACC, $user_id);
+
+            $missing->getPositions();
+            $options['trace']['located'] = $missing->last_pos->timestamp>-1;
 
             $install = get_rescueme_install($options);
 
@@ -78,7 +86,9 @@
             <title><?=TITLE?></title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta charset="utf-8" />
             <script id="trace"><?=$js?></script>
-    <? if (isset($extra)) { ?><script id="extra"><?=$extra?></script><?php } ?>
+    <? if (isset($extra)) { ?>
+        <script id="extra"><?=$extra?></script>
+    <?php } ?>
         </head>
         <body onLoad="R.trace.locate();">
             <div align="center">
@@ -145,7 +155,7 @@
         </body>
     <? }
 
-    function get_messages() {
+    function get_messages($platform) {
 
         /*
          * Get messages in domain 'trace'
@@ -168,10 +178,24 @@
         $msg[11] = SEND_LOCATION_AS;
         $msg[12] = LOCATION_NOT_FOUND;
         $msg[13] = UPDATE;
-        if (strstr($_SERVER['HTTP_USER_AGENT'],'iPhone')) {
-            $msg[14] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA;
-            $msg[15] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA2;
-            $msg[16] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA3;
+        $msg[14] = ACCEPT_PROMPT_TO_ACCESS_LOCATION_DATA;
+        $msg[15] = YOU_DENIED_PERMISSION_TO_ACCESS_LOCATION_DATA;
+        $msg[16] = GOTO_BROWSER_SETTINGS_IF_YOU_WANT;
+        switch ($platform) {
+            case 'iphone':
+                $msg[114] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA;
+                $msg[115] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA2;
+                $msg[116] = IOS_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA3;
+                break;
+            case 'android':
+                $msg[114] = ANDROID_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA;
+                $msg[115] = ANDROID_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA2;
+                $msg[116] = ANDROID_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA3;
+                $msg[117] = ANDROID_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA4;
+                $msg[118] = ANDROID_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA5;
+                $msg[119] = ANDROID_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA6;
+                $msg[120] = ANDROID_TURN_ON_PERMISSION_TO_ACCESS_LOCATION_DATA7;
+                break;
         }
         return $msg;
     }

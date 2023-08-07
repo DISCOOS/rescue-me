@@ -52,9 +52,13 @@
         const LOCATION_MAX_AGE = "location.max.age";
         
         const LOCATION_DESIRED_ACC = "location.desired.accuracy";
-        
+
+        const LOCATION_SCRIPT_VERSION = "location.script.version";
+
         const LOCATION_APPCACHE = "location.appcache";
+
         const LOCATION_APPCACHE_VERSION = "version";
+
         const LOCATION_APPCACHE_SETTINGS = "settings";
         
         const TRACE_ALERT_NEW = "trace.alert.new";
@@ -149,6 +153,16 @@
                 'default' => 100,
                 'options' => false,
                 'description' => "Track until location with accuracy is found (meter)."
+            ),
+
+            self::LOCATION_SCRIPT_VERSION => array(
+                'type' => 'select',
+                'default' => 'basic',
+                'options' => array(
+                    'basic' => 'Basic',
+                    'extended' => 'Extended',
+                ),
+                'description' => "Location script version to be used."
             ),
             
             self::LOCATION_APPCACHE => array(
@@ -387,9 +401,10 @@
             if (DB::isEmpty($res)) {
                 
                 // Allow empty?
-                if ($name == self::SMS_REQUIRE) {
-                    return "";
-                }
+                switch($name) {
+                    case self::SMS_REQUIRE:
+                        return "";
+               }
                 
                 return $defaults[$name];
             }
@@ -712,6 +727,7 @@
                 case self::TRACE_ALERT_NEW:
                 case self::TRACE_BAR_STATE:
                 case self::TRACE_BAR_LOCATION:
+                case self::LOCATION_SCRIPT_VERSION:
 
                     $array = is_array($value) ? $value : explode(",", $value);
                     

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-03 23:26+0100\n"
-"PO-Revision-Date: 2014-08-03 23:26+0100\n"
+"POT-Creation-Date: 2023-08-07 02:48+0200\n"
+"PO-Revision-Date: 2023-08-07 02:48+0200\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
 "Language: nb_NO\n"
@@ -11,97 +11,146 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: T_;T_locale\n"
-"X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src\n"
+"X-Poedit-Basepath: ../../../trace\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.4\n"
-"X-Poedit-SearchPath-0: trace\n"
+"X-Generator: Poedit 3.3.2\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: trace/report.php:26
-#, php-format
-msgid "Your location is received (&#177;%1$s m)."
-msgstr "Din posisjon er mottatt (&#177;%1$s m)."
-
-#: trace/report.php:28 trace/report.php:30
-msgid "Stay still, we are coming."
-msgstr "Hold deg i ro, vi er på vei."
-
-#: trace/report.php:28 trace/report.php:30
-msgid "Try to make your self visible from both air and ground!"
-msgstr "Forsøk å gjøre deg synlig fra luft og bakke!"
-
-#: trace/locale/trace.domain.php:7
+#: locale/trace.domain.php:7
 msgid "Aborted"
 msgstr "Avbrutt"
 
-#: trace/locale/trace.domain.php:9
+#: locale/trace.domain.php:9
 #, php-format
 msgid "Closed by %1$s at %2$s"
 msgstr "Lukket av %1$s den %2$s"
 
-#: trace/locale/trace.domain.php:11
+#: locale/trace.domain.php:11
 #, php-format
 msgid "Failed to abort trace %1$s"
 msgstr "Klarte ikke å avbryte sporing %1$s"
 
-#: trace/locale/trace.domain.php:13
+#: locale/trace.domain.php:13
 msgid "Geolocation not supported."
-msgstr "Lokalisering ikke støttet"
+msgstr "Lokalisering ikke støttet."
 
-#: trace/locale/trace.domain.php:14
+#: locale/trace.domain.php:14
 msgid "Found location with &#177;{0} m accuracy."
 msgstr "Fant lokasjon med  &#177;{0} m nøyaktighet."
 
-#: trace/locale/trace.domain.php:15
+#: locale/trace.domain.php:15
 msgid "Location is old, check if GPS is on!"
 msgstr "Lokasjon er gammel, sjekk at GPS er påslått!"
 
-#: trace/locale/trace.domain.php:16
+#: locale/trace.domain.php:16
 msgid "Waiting for higher accuracy..."
 msgstr "Venter på bedre nøyaktighet..."
 
-#: trace/locale/trace.domain.php:17
+#: locale/trace.domain.php:17
+msgid "Accept prompt to access location data!"
+msgstr "Godta forespørsel om tilgang til stedsinformasjon!"
+
+#: locale/trace.domain.php:18
+msgid "You denied browser permission to access location!"
+msgstr "Du ga ikke nettleseren tillatelse til å dele stedsinformasjon!"
+
+#: locale/trace.domain.php:19
+msgid ""
+"Goto browser setting and change permission if you want to share the location."
+msgstr ""
+"Åpne nettleserinnstillinger og endre tillatelsen hvis du ønsker å dele "
+"posisjonen."
+
+#: locale/trace.domain.php:20
 msgid "Turn on permission to access location data!"
 msgstr "Slå på tilgang til stedsinformasjon!"
 
-#: trace/locale/trace.domain.php:18
-msgid "Go to Settings -> General -> Privacy -> Location services -> On."
-msgstr "Gå til Innstillinger -> Personvern -> Stedstjeneste -> På."
-
-#: trace/locale/trace.domain.php:19
-msgid "Also, scroll down and make sure it is set to \"On\" for Safari as well."
-msgstr "Sørg også for Safari er satt til \"På\" lengre ned  på samme side"
-
-#: trace/locale/trace.domain.php:20
-msgid "Then, click \"Update\" below."
-msgstr "Klikk deretter på \"Oppdater\"."
-
-#: trace/locale/trace.domain.php:21
+#: locale/trace.domain.php:21
 msgid "Location is unavailable."
-msgstr "Lokasjon er ikke tilgjengelig"
+msgstr "Lokasjon er ikke tilgjengelig."
 
-#: trace/locale/trace.domain.php:22
+#: locale/trace.domain.php:22
 msgid "Please approve access to location faster."
 msgstr "Vennligst bekreft tilgang til lokasjonsdata raskere."
 
-#: trace/locale/trace.domain.php:23
+#: locale/trace.domain.php:23
 msgid "Unknown error."
-msgstr "Ukjent feil"
+msgstr "Ukjent feil."
 
-#: trace/locale/trace.domain.php:24
+#: locale/trace.domain.php:24
 msgid "Location: {0}"
 msgstr "Lokasjon: {0}"
 
-#: trace/locale/trace.domain.php:25
+#: locale/trace.domain.php:25
 msgid "Location not sent, check data connection."
 msgstr "Lokasjon ikke sendt, sjekk datakobling."
 
-#: trace/locale/trace.domain.php:26
+#: locale/trace.domain.php:26
 msgid "Send location as"
 msgstr "Send lokasjon som"
 
-#: trace/locale/trace.domain.php:27
+#: locale/trace.domain.php:27
 msgid "Location not found."
-msgstr "Lokasjon ikke funnet"
+msgstr "Lokasjon ikke funnet."
+
+#: locale/trace.domain.php:33
+msgid "1. Go to Settings > Privacy & Security > Location services > On."
+msgstr ""
+"1. Gå til Innstillinger > Personvern og sikkerhet > Stedstjenester -> På."
+
+#: locale/trace.domain.php:34
+msgid ""
+"2. Also, scroll down and make sure it is set to \"On\" for Safari as well."
+msgstr "2. Sørg også for Safari er satt til \"På\" lengre ned  på samme side."
+
+#: locale/trace.domain.php:35
+msgid "3. Then, click \"Update\" below to start location sharing."
+msgstr "3. Klikk deretter på \"Oppdater\" for å starte posisjonsdelingen."
+
+#: locale/trace.domain.php:37
+msgid "1. Swipe down from the top of the screen."
+msgstr "1. Sveip ned fra toppen av skjermen."
+
+#: locale/trace.domain.php:38
+msgid "2. Touch and hold Location (swipe left/right to locate icon)."
+msgstr "2. Trykk og hold på Posisjon (sveip venstre/høyre for å ikonet)."
+
+#: locale/trace.domain.php:39
+msgid ""
+"2a. If you didn't find Location > Edit or Settings > Drag Location into your "
+"Quick Settings."
+msgstr ""
+"2a. Hvis du ikke ser Posisjon, trykke på Endre eller Innstillinger og dra "
+"Posisjon til Hurtiginnstillingene."
+
+#: locale/trace.domain.php:40
+msgid "3. Then, Toggle Location > On."
+msgstr "3. Toggle Posisjon > På."
+
+#: locale/trace.domain.php:41
+msgid "4. Tap Location Services > Google Location Accuracy."
+msgstr "4. Trykk på Posisjonstjenester > Google Posisjonsnøyaktighet."
+
+#: locale/trace.domain.php:42
+msgid "5. Then, Toggle Improve Location Accuracy > On."
+msgstr "5. Toggle Forbedre posisjonsnøyaktigheten > På."
+
+#: locale/trace.domain.php:43
+msgid "6. Finally, click \"Update\" below to start location sharing."
+msgstr "6. Klikk deretter på «Oppdater» for å starte posisjonsdelingen."
+
+#: report.php:29
+#, php-format
+msgid "Your location is received (&#177;%1$s m)."
+msgstr "Din posisjon er mottatt (&#177;%1$s m)."
+
+#: report.php:31 report.php:33
+msgid "Stay still, we are coming."
+msgstr "Hold deg i ro, vi er på vei."
+
+#: report.php:31 report.php:33
+msgid "Try to make your self visible from both air and ground!"
+msgstr "Forsøk å gjøre deg synlig fra luft og bakke!"
 
 #~ msgid "You have entered wrong username or password"
 #~ msgstr "Du har oppgitt feil brukernavn eller passord"

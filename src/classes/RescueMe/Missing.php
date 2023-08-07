@@ -32,17 +32,18 @@
 
         const COUNT = 'SELECT COUNT(*), `users`.`name` AS `user_name` FROM `missing`';
         
-        private static $fields = array
+
+        private static $insert = array
         (
-            "missing_name", 
-            "missing_mobile_country", 
-            "missing_mobile", 
-            "missing_locale", 
+            "missing_name",
+            "missing_mobile_country",
+            "missing_mobile",
+            "missing_locale",
             "missing_reported",
             "op_id",
-            "sms_text"
+            "sms_text",
         );
-        
+
         private static $update = array
         (
             "missing_name", 
@@ -51,6 +52,14 @@
             "missing_locale", 
             "sms_text"
         );
+
+        private static $failure = array
+        (
+            "last_error",
+            "last_error_code",
+            "last_error_desc"
+        );
+
 
         public $id = -1;
         public $op_id;
@@ -81,6 +90,11 @@
         public $sms_provider;
         public $sms_provider_ref;
         public $sms_text;
+
+        public $last_error;
+        public $last_error_code;
+        public $last_error_desc;
+
 
         public $positions = array();
         
@@ -253,7 +267,7 @@
                 (int) $op_id, 
                 $sms_text
             );
-            $values = prepare_values(self::$fields, $values);
+            $values = prepare_values(self::$insert, $values);
 
             $id = DB::insert(self::TABLE, $values);
 
@@ -285,6 +299,7 @@
          * @param boolean $all Load all missing flag (if false, limit to current user)
          *
          * @return \RescueMe\Missing|boolean. Instance of \RescueMe\Missing is success, FALSE otherwise.
+         * @throws \Exception
          */
         public function load($all = true){
 
@@ -301,7 +316,15 @@
         }// get
 
 
-
+        /**
+         * Update missing
+         * @param $m_name
+         * @param $m_mobile_country
+         * @param $m_mobile
+         * @param $m_locale
+         * @param $sms_text
+         * @return bool
+         */
         public function update($m_name, $m_mobile_country, $m_mobile, $m_locale, $sms_text){
 
             if(empty($m_name) || empty($m_mobile_country) || empty($m_mobile) || empty($m_locale) || empty($sms_text)) {
@@ -340,7 +363,80 @@
             return $res;
 
         }// update
-        
+
+
+        /**
+         * Set last error
+         * @param $code
+         * @param $desc
+         * @return bool
+         */
+        public function setLastError($code, $desc){
+
+            if(empty($code) || empty($desc)) {
+
+                $line = __LINE__;
+                Logs::write(
+                    Logs::TRACE,
+                    LogLevel::ERROR,
+                    "One or more required arguments are missing",
+                    array(
+                        'file' => __FILE__,
+                        'method' => 'update',
+                        'params' => func_get_args(),
+                        'line' => $line,
+                    )
+                );
+                return false;
+            }
+
+            $values = prepare_values(Missing::$failure, array("NOW()", $code, $desc));
+
+            $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
+
+            if($res) {
+                Logs::write(
+                    Logs::TRACE,
+                    LogLevel::INFO,
+                    'Last error set for missing ' . $this->id,
+                    $values
+                );
+            }
+            else {
+                Missing::error('Failed to set last error for missing ' . $this->id);
+            }
+
+            return $res;
+
+        }// setLastError
+
+
+        /**
+         * Reset last error
+         * @return bool
+         */
+        public function resetLastError(){
+
+            $values = prepare_values(Missing::$failure, array("NULL", "NULL", "NULL"));
+
+            $res = DB::update(self::TABLE, $values, "`missing_id` = $this->id");
+
+            if($res) {
+                Logs::write(
+                    Logs::TRACE,
+                    LogLevel::INFO,
+                    'Reset last error for missing ' . $this->id,
+                    $values
+                );
+            }
+            else {
+                Missing::error('Failed to reset last error for missing ' . $this->id);
+            }
+
+            return $res;
+
+        }// resetLastError
+
         // TODO: Merge with getPositions()!
         public function getAjaxPositions($num) {
             if($this->id === -1)
@@ -550,7 +646,10 @@
                 
                 Missing::error('Failed to insert position for missing ' . $this->id, $values);
                 
-            }            
+            }
+
+            $this->resetLastError();
+
 
         }// addPosition
 

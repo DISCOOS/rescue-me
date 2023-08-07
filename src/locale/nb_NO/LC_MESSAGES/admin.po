@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-03 23:23+0100\n"
-"PO-Revision-Date: 2014-08-03 23:33+0100\n"
+"POT-Creation-Date: 2023-08-06 19:17+0200\n"
+"PO-Revision-Date: 2023-08-06 19:18+0200\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescue@discoos.org>\n"
 "Language: nb_NO\n"
@@ -11,188 +11,123 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: T_;T_locale\n"
-"X-Poedit-Basepath: /home/kengu/src/git/rescue-me/src\n"
+"X-Poedit-Basepath: ../../../admin\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.4\n"
-"X-Poedit-SearchPath-0: admin\n"
+"X-Generator: Poedit 3.3.2\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: admin/index.php:55 admin/locale/admin.domain.php:65
-msgid "Dashboard"
-msgstr "Dashboard"
+#: ajax/logs.ajax.php:55
+msgid "System"
+msgstr "System"
 
-#: admin/router.php:21
-msgid "You have entered wrong username or password"
-msgstr "Du har oppgitt feil brukernavn eller passord"
+#: ajax/setup.module.list.ajax.php:21 ajax/setup.property.list.ajax.php:20
+#: gui/table.gui.php:25
+msgid "Settings"
+msgstr "Innstillinger"
 
-#: admin/router.php:122 admin/gui/logs.gui.php:18
-#: admin/locale/admin.domain.php:55
-msgid "Logs"
-msgstr "Logger"
-
-#: admin/router.php:128 admin/router.php:135 admin/router.php:146
-msgid "Illegal Operation"
-msgstr "Ulovlig operasjon"
-
-#: admin/router.php:148 admin/locale/admin.domain.php:72
-msgid "Access denied"
-msgstr "Ingen tilgang"
-
-#: admin/router.php:810
-msgid "Change Password"
-msgstr "Bytt passord"
-
-#: admin/router.php:820
-msgid "Password must be at least 8 characters long"
-msgstr "Passordet må være minst 8 tegn"
-
-#: admin/router.php:825 admin/locale/admin.domain.php:92
-msgid "Passwords do not match"
-msgstr "Passordene stemmer ikke"
-
-#: admin/router.php:842
-msgid "Recover Password"
-msgstr "Gjenopprett passord"
-
-#: admin/router.php:868 admin/locale/admin.domain.php:69
-msgid "Close operation"
-msgstr "Avslutt operasjon"
-
-#: admin/router.php:1165
-msgid "Not an ajax request"
-msgstr "Ikke en ajax-forespørsel"
-
-#: admin/controllers/logon.controller.php:5
+#: controllers/logon.controller.php:5
 msgid "Incorrect email or password."
 msgstr "E-post eller passord er feil"
 
-#: admin/controllers/logon.controller.php:6
+#: controllers/logon.controller.php:6
 msgid "Make sure your email and password are both correct."
 msgstr "Sjekk at både din e-post og passord er korrekt "
 
-#: admin/controllers/missing.new.controller.php:15
+#: controllers/missing.new.controller.php:16
 msgid "Missing modules!"
 msgstr "Moduler mangler!"
 
-#: admin/controllers/missing.new.controller.php:16
+#: controllers/missing.new.controller.php:17
 msgid "Missing module!"
 msgstr "Modul mangler!"
 
-#: admin/controllers/missing.new.controller.php:18
+#: controllers/missing.new.controller.php:19
 msgid "The system is missing following modules!"
 msgstr "Systemet mangler følgende moduler!"
 
-#: admin/controllers/missing.new.controller.php:19
+#: controllers/missing.new.controller.php:20
 msgid "The system is missing following module!"
 msgstr "Systemet mangler følgende modul!"
 
-#: admin/controllers/missing.new.controller.php:35
-#: admin/controllers/missing.new.controller.php:47
+#: controllers/missing.new.controller.php:36
+#: controllers/missing.new.controller.php:48
 msgid "Could not initiate trace"
 msgstr "Kunne ikke starte sporing"
 
-#: admin/controllers/missing.new.controller.php:36
+#: controllers/missing.new.controller.php:37
 msgid "System error: could not initiate operation"
 msgstr "Kunne ikke utføre operasjon."
 
-#: admin/controllers/missing.new.controller.php:48
+#: controllers/missing.new.controller.php:49
 msgid "Please try again"
 msgstr "Vennligst prøv igjen"
 
-#: admin/controllers/password.recover.controller.php:11
+#: controllers/password.recover.controller.php:11
 msgid "Could not reset password:"
 msgstr "Kunne ikke nullstille passord:"
 
-#: admin/controllers/password.recover.controller.php:12
+#: controllers/password.recover.controller.php:12
 msgid "User does not exist"
 msgstr "Bruker eksisterer ikke"
 
-#: admin/controllers/user.edit.controller.php:10
+#: controllers/user.edit.controller.php:10
 msgid "Your changes was not saved!"
 msgstr "Dine endringer ble ikke lagret!"
 
-#: admin/controllers/user.edit.controller.php:11
+#: controllers/user.edit.controller.php:11
 msgid ""
 "You entered an invalid e-mail address. Please enter a correct e-mail address"
 msgstr ""
 "Du har skrevet inn en ulovlig e-postadresse. Vennligst oppgi en lovlig e-"
 "postadresse."
 
-#: admin/controllers/user.edit.controller.php:17
+#: controllers/user.edit.controller.php:17
 msgid "An error ocurred!"
 msgstr "En feil har oppstått!"
 
-#: admin/controllers/user.edit.controller.php:18
+#: controllers/user.edit.controller.php:18
 msgid ""
 "An unknown error ocurred while saving your user data. The system reported"
 msgstr ""
 "En uventet feil oppsto under lagring av dine brukerdata. Systemet rapporterte"
 
-#: admin/controllers/user.edit.controller.php:19
+#: controllers/user.edit.controller.php:19
 msgid "Sorry"
 msgstr "Beklager"
 
-#: admin/controllers/user.new.controller.php:8
+#: controllers/user.new.controller.php:8
 msgid "Invalid e-mail. Please enter a correct e-mail address"
 msgstr "Ulovig e-post. Vennligst oppgi en lovlig e-postadresse."
 
-#: admin/controllers/user.new.controller.php:15
+#: controllers/user.new.controller.php:15
 msgid "Oops! Could not create user"
 msgstr "Auda! Kunne ikke opprette brukeren"
 
-#: admin/controllers/user.new.controller.php:16
+#: controllers/user.new.controller.php:16
 msgid "When attempting to create user, an error ocurred. The system reported: "
 msgstr "Klarte ikke å opprette ny bruker. Systemet rapporterte:"
 
-#: admin/inc/common.inc.php:18
-msgid "Missing modules"
-msgstr "Moduler mangler"
-
-#: admin/inc/common.inc.php:18
-msgid "Configure"
-msgstr "Konfigurer"
-
-#: admin/gui/dash.gui.php:2
+#: gui/dash.gui.php:2
 msgid "Get started"
 msgstr "Kom i gang"
 
-#: admin/gui/dash.gui.php:3
+#: gui/dash.gui.php:3
 msgid "Use mobile phone to trace persons fast and easy."
 msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
 
-#: admin/gui/missing.trace.gui.php:5
-msgid "When trace was registered"
-msgstr "Når sporing ble opprettet"
+#: gui/logs.gui.php:18 locale/admin.domain.php:55 router.php:125
+msgid "Logs"
+msgstr "Logger"
 
-#: admin/gui/missing.trace.gui.php:10
-msgid "When SMS was sent"
-msgstr "Når SMS ble sendt"
-
-#: admin/gui/missing.trace.gui.php:14
-msgid "When SMS was delivered to mobile"
-msgstr "Når SMS ble levert til telefonen"
-
-#: admin/gui/missing.trace.gui.php:18
-msgid "When location script was downloaded"
-msgstr "Når lokaliseringsskript ble nedlastet"
-
-#: admin/gui/missing.trace.gui.php:22
-msgid "When last location was received"
-msgstr "Når siste lokasjon ble mottatt"
-
-#: admin/gui/table.gui.php:25 admin/ajax/setup.module.list.ajax.php:21
-#: admin/ajax/setup.property.list.ajax.php:20
-msgid "Settings"
-msgstr "Innstillinger"
-
-#: admin/gui/missing.new.gui.php:36
+#: gui/missing.new.gui.php:37
 msgid "Place, region or country"
 msgstr "Sted, region eller land"
 
-#: admin/gui/missing.new.gui.php:57
+#: gui/missing.new.gui.php:58
 msgid "Is the receiving phone from another country?"
 msgstr "Er telefonen fra et annet land?"
 
-#: admin/gui/missing.new.gui.php:58
+#: gui/missing.new.gui.php:59
 msgid ""
 "It is critically important to include instructions about how to turn on data "
 "roaming in the SMS if the phone is not registered on the home network!"
@@ -200,19 +135,19 @@ msgstr ""
 "Det er kritisk viktig å inkludere instruksjoner for hvordan man slå på "
 "dataroaming i SMSen hvis telefonen ikke er registrert på sitt hjemmenettverk!"
 
-#: admin/gui/missing.new.gui.php:113
+#: gui/missing.new.gui.php:114
 msgid "Not all SMS-carriers support more than 160 chars!"
 msgstr "Ikke alle SMS-leverandører støtter flere en 160 tegn!"
 
-#: admin/gui/missing.new.gui.php:135
+#: gui/missing.new.gui.php:136
 msgid "Standard message"
 msgstr "Standard melding"
 
-#: admin/gui/missing.new.gui.php:138
+#: gui/missing.new.gui.php:139
 msgid "Location script"
 msgstr "Lokasjonsskript"
 
-#: admin/gui/missing.new.gui.php:139
+#: gui/missing.new.gui.php:140
 msgid ""
 "When the user clicks on the link a webpage is downloaded which contain a "
 "script that attempts to locate the mobile phone. The user must authorize the "
@@ -222,11 +157,11 @@ msgstr ""
 "forsøke å posisjonerer mobiltelefonen. Brukeren må godkjenne deling av "
 "posisjon i nettleseren før posisjonen kan bestemmes."
 
-#: admin/gui/missing.new.gui.php:140
+#: gui/missing.new.gui.php:141
 msgid "Script download time"
 msgstr "Nedlastingstid"
 
-#: admin/gui/missing.new.gui.php:141
+#: gui/missing.new.gui.php:142
 msgid ""
 "The location script is compressed (gzip, 1.8KB). Is should not take more "
 "than a second to download this even on a low-bandwidth network (2G). If it "
@@ -236,11 +171,11 @@ msgstr ""
 "mobilnett (2G) å laste den ned. Det er likevel viktig at brukeren er "
 "tålmodig, og venter lengre enn dette hvis siden ikke åpnes."
 
-#: admin/gui/missing.new.gui.php:142
+#: gui/missing.new.gui.php:143
 msgid "Repeated localization"
 msgstr "Gjentatt lokalisering"
 
-#: admin/gui/missing.new.gui.php:143
+#: gui/missing.new.gui.php:144
 msgid ""
 "If the location is inaccurate, the script will continue to listen for "
 "location updates until desired accuracy or maximum wait time is is reached. "
@@ -255,7 +190,7 @@ msgstr ""
 "kan leses opp på telefonen, eller sendes på SMS (be brukeren klikke på "
 "linken bak posisjonen)."
 
-#: admin/gui/missing.new.gui.php:144
+#: gui/missing.new.gui.php:145
 #, php-format
 msgid ""
 "Desired accurary (location.desired.accuracy), maximum wait time (location."
@@ -266,515 +201,562 @@ msgstr ""
 "max.wait) og maximum alder på gammel posisjon (location.max.age) kan "
 "konfigureres på siden %1$s"
 
-#: admin/gui/missing.new.gui.php:145
+#: gui/missing.new.gui.php:146
 msgid "All traces are listed at"
 msgstr "Alle sporinger er listet på denne siden"
 
-#: admin/gui/missing.position.list.gui.php:73
+#: gui/missing.position.list.gui.php:76
 msgid "Google Maps not loaded"
 msgstr "Google Maps ikke lastet"
 
-#: admin/gui/password.recover.gui.php:9
-msgid "If user exist a SMS with reset link is sent to registered mobile phone"
-msgstr "Hvis brukeren finnes sendes det en reset link på SMS"
+#: gui/missing.trace.gui.php:5
+msgid "When trace was registered"
+msgstr "Når sporing ble opprettet"
 
-#: admin/gui/password.recover.gui.php:26 admin/gui/user.list.gui.php:41
-msgid "E-mail"
-msgstr "E-post"
+#: gui/missing.trace.gui.php:10
+msgid "When SMS was sent"
+msgstr "Når SMS ble sendt"
 
-#: admin/gui/password.recover.gui.php:54
-msgid "Reset"
-msgstr "Nullstill"
+#: gui/missing.trace.gui.php:14
+msgid "When SMS was delivered to mobile"
+msgstr "Når SMS ble levert til telefonen"
 
-#: admin/gui/role.edit.gui.php:32
-msgid "Edit role"
-msgstr "Endre rolle"
+#: gui/missing.trace.gui.php:18
+msgid "When location script was downloaded"
+msgstr "Når lokaliseringsskript ble nedlastet"
 
-#: admin/gui/setup.module.gui.php:10
-msgid "Module"
-msgstr "Modul"
+#: gui/missing.trace.gui.php:22
+msgid "When last location was received"
+msgstr "Når siste lokasjon ble mottatt"
 
-#: admin/gui/setup.module.gui.php:12
-msgid "No module found. Run install script."
-msgstr "Ingen modul funnet. Kjør installeringsskript."
-
-#: admin/gui/role.list.gui.php:8 admin/locale/admin.domain.php:51
-msgid "Roles"
-msgstr "Roller"
-
-#: admin/gui/role.list.gui.php:12 admin/gui/user.list.gui.php:38
-#: admin/locale/admin.domain.php:8
-msgid "Name"
-msgstr "Navn"
-
-#: admin/gui/user.list.gui.php:21 admin/locale/admin.domain.php:52
-msgid "Users"
-msgstr "Brukere"
-
-#: admin/gui/user.list.gui.php:39 admin/locale/admin.domain.php:50
-msgid "Role"
-msgstr "Rolle"
-
-#: admin/gui/user.list.gui.php:40
-msgid "Mobile"
-msgstr "Mobil"
-
-#: admin/gui/password.change.gui.php:17
-msgid "Password"
-msgstr "Passord"
-
-#: admin/gui/password.change.gui.php:25 admin/gui/user.new.gui.php:66
-msgid "Repeat Password"
-msgstr "Gjenta passord"
-
-#: admin/gui/operation.close.gui.php:78
+#: gui/operation.close.gui.php:78
 msgid ""
 "Note: This will permanently delete name and mobile numbers (privacy conserns)"
 msgstr ""
 "Merk: Dette vil slette navn og mobilnummer til savnede permanent (av "
 "personvernhensyn)."
 
-#: admin/gui/user.new.gui.php:14 admin/locale/admin.domain.php:87
+#: gui/password.change.gui.php:17
+msgid "Password"
+msgstr "Passord"
+
+#: gui/password.change.gui.php:25 gui/user.new.gui.php:66
+msgid "Repeat Password"
+msgstr "Gjenta passord"
+
+#: gui/password.recover.gui.php:9
+msgid "If user exist a SMS with reset link is sent to registered mobile phone"
+msgstr "Hvis brukeren finnes sendes det en reset link på SMS"
+
+#: gui/password.recover.gui.php:26 gui/user.list.gui.php:41
+msgid "E-mail"
+msgstr "E-post"
+
+#: gui/password.recover.gui.php:54
+msgid "Reset"
+msgstr "Nullstill"
+
+#: gui/role.edit.gui.php:32
+msgid "Edit role"
+msgstr "Endre rolle"
+
+#: gui/setup.module.gui.php:10
+msgid "Module"
+msgstr "Modul"
+
+#: gui/setup.module.gui.php:12
+msgid "No module found. Run install script."
+msgstr "Ingen modul funnet. Kjør installeringsskript."
+
+#: gui/user.list.gui.php:21 locale/admin.domain.php:52
+msgid "Users"
+msgstr "Brukere"
+
+#: gui/user.list.gui.php:38 locale/admin.domain.php:8
+msgid "Name"
+msgstr "Navn"
+
+#: gui/user.list.gui.php:39 locale/admin.domain.php:50
+msgid "Role"
+msgstr "Rolle"
+
+#: gui/user.list.gui.php:40
+msgid "Mobile"
+msgstr "Mobil"
+
+#: gui/user.new.gui.php:14 locale/admin.domain.php:89
 msgid "Full name"
 msgstr "Fullt navn"
 
-#: admin/ajax/logs.ajax.php:55
-msgid "System"
-msgstr "System"
+#: inc/common.inc.php:18
+msgid "Missing modules"
+msgstr "Moduler mangler"
 
-#: admin/locale/admin.domain.php:9
+#: inc/common.inc.php:18
+msgid "Configure"
+msgstr "Konfigurer"
+
+#: index.php:55 locale/admin.domain.php:65
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: locale/admin.domain.php:9
 msgid "Save"
 msgstr "Lagre"
 
-#: admin/locale/admin.domain.php:10
+#: locale/admin.domain.php:10
 msgid "Create"
 msgstr "Opprett"
 
-#: admin/locale/admin.domain.php:11
+#: locale/admin.domain.php:11
 msgid "New"
 msgstr "Ny"
 
-#: admin/locale/admin.domain.php:12
+#: locale/admin.domain.php:12
 msgid "Add"
 msgstr "Legg til"
 
-#: admin/locale/admin.domain.php:13
+#: locale/admin.domain.php:13
 msgid "Edit"
 msgstr "Endre"
 
-#: admin/locale/admin.domain.php:14
+#: locale/admin.domain.php:14
 msgid "Approve"
 msgstr "Godkjenn"
 
-#: admin/locale/admin.domain.php:15
+#: locale/admin.domain.php:15
 msgid "Deny"
 msgstr "Avvis"
 
-#: admin/locale/admin.domain.php:16
+#: locale/admin.domain.php:16
 msgid "Remove"
 msgstr "Slett"
 
-#: admin/locale/admin.domain.php:17
+#: locale/admin.domain.php:17
 msgid "Delete"
 msgstr "Slett"
 
-#: admin/locale/admin.domain.php:18
+#: locale/admin.domain.php:18
 msgid "Start"
 msgstr "Start"
 
-#: admin/locale/admin.domain.php:19
+#: locale/admin.domain.php:19
 msgid "Alert"
 msgstr "Varsle"
 
-#: admin/locale/admin.domain.php:20
+#: locale/admin.domain.php:20
 msgid "Person"
 msgstr "Person"
 
-#: admin/locale/admin.domain.php:21
+#: locale/admin.domain.php:21
 msgid "Persons"
 msgstr "Personer"
 
-#: admin/locale/admin.domain.php:22
+#: locale/admin.domain.php:22
 msgid "Missing"
 msgstr "Mangler"
 
-#: admin/locale/admin.domain.php:23
+#: locale/admin.domain.php:23
 msgid "Search"
 msgstr "Søk"
 
-#: admin/locale/admin.domain.php:24
+#: locale/admin.domain.php:24
 msgid "Type"
 msgstr "Type"
 
-#: admin/locale/admin.domain.php:25
+#: locale/admin.domain.php:25
 msgid "Alerted"
 msgstr "Varslet"
 
-#: admin/locale/admin.domain.php:26
+#: locale/admin.domain.php:26
 msgid "Sent"
 msgstr "Sendt"
 
-#: admin/locale/admin.domain.php:27
+#: locale/admin.domain.php:27
 msgid "Enable"
 msgstr "Aktiver"
 
-#: admin/locale/admin.domain.php:28
+#: locale/admin.domain.php:28
 msgid "Disable"
 msgstr "Deaktiver"
 
-#: admin/locale/admin.domain.php:29
+#: locale/admin.domain.php:29
 msgid "Date"
 msgstr "Dato"
 
-#: admin/locale/admin.domain.php:30
+#: locale/admin.domain.php:30
 msgid "Level"
 msgstr "Nivå"
 
-#: admin/locale/admin.domain.php:31
+#: locale/admin.domain.php:31
 msgid "General"
 msgstr "Generelt"
 
-#: admin/locale/admin.domain.php:32
+#: locale/admin.domain.php:32
 msgid "Delivered"
 msgstr "Levert"
 
-#: admin/locale/admin.domain.php:33
+#: locale/admin.domain.php:33
 msgid "Response"
 msgstr "Respons"
 
-#: admin/locale/admin.domain.php:34
+#: locale/admin.domain.php:34
 msgid "Located"
 msgstr "Lokalisert"
 
-#: admin/locale/admin.domain.php:35
+#: locale/admin.domain.php:35
 msgid "Answered"
 msgstr "Besvart"
 
-#: admin/locale/admin.domain.php:36
+#: locale/admin.domain.php:36
 msgid "Reported"
 msgstr "Rapportert"
 
-#: admin/locale/admin.domain.php:37
+#: locale/admin.domain.php:37
 msgid "Location"
 msgstr "Lokasjon"
 
-#: admin/locale/admin.domain.php:38
+#: locale/admin.domain.php:38
 msgid "Enabled"
 msgstr "Aktivert"
 
-#: admin/locale/admin.domain.php:39
+#: locale/admin.domain.php:39
 msgid "Executed"
 msgstr "Gjennomført"
 
-#: admin/locale/admin.domain.php:40
+#: locale/admin.domain.php:40
 msgid "Open"
 msgstr "Åpen"
 
-#: admin/locale/admin.domain.php:41
+#: locale/admin.domain.php:41
 msgid "Tests"
 msgstr "Tester"
 
-#: admin/locale/admin.domain.php:42
+#: locale/admin.domain.php:42
 msgid "Exercises"
 msgstr "Øvelser"
 
-#: admin/locale/admin.domain.php:43
+#: locale/admin.domain.php:43
 msgid "Library"
 msgstr "Bibliotek"
 
-#: admin/locale/admin.domain.php:44
+#: locale/admin.domain.php:44
 msgid "Template"
 msgstr "Mal"
 
-#: admin/locale/admin.domain.php:45
+#: locale/admin.domain.php:45
 msgid "Templates"
 msgstr "Maler"
 
-#: admin/locale/admin.domain.php:46
+#: locale/admin.domain.php:46
 msgid "Saved"
 msgstr "Lagret"
 
-#: admin/locale/admin.domain.php:47
+#: locale/admin.domain.php:47
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: admin/locale/admin.domain.php:48
+#: locale/admin.domain.php:48
 msgid "Language"
 msgstr "Språk"
 
-#: admin/locale/admin.domain.php:49
+#: locale/admin.domain.php:49
 msgid "Operation name"
 msgstr "Aksjonsnavn"
 
-#: admin/locale/admin.domain.php:53
+#: locale/admin.domain.php:51
+msgid "Roles"
+msgstr "Roller"
+
+#: locale/admin.domain.php:53
 msgid "Username not safe"
 msgstr "Brukernavn er ikke sikker"
 
-#: admin/locale/admin.domain.php:54
+#: locale/admin.domain.php:54
 msgid "Log"
 msgstr "Logg"
 
-#: admin/locale/admin.domain.php:56
+#: locale/admin.domain.php:56
 msgid "Maps"
 msgstr "Kart"
 
-#: admin/locale/admin.domain.php:57
+#: locale/admin.domain.php:57
 msgid "Age"
 msgstr "Alder"
 
-#: admin/locale/admin.domain.php:58
+#: locale/admin.domain.php:58
 msgid "Man"
 msgstr "Mann"
 
-#: admin/locale/admin.domain.php:59
+#: locale/admin.domain.php:59
 msgid "Woman"
 msgstr "Kvinne"
 
-#: admin/locale/admin.domain.php:60
+#: locale/admin.domain.php:60
 msgid "Gender"
 msgstr "Kjønn"
 
-#: admin/locale/admin.domain.php:61
+#: locale/admin.domain.php:61
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: admin/locale/admin.domain.php:62
+#: locale/admin.domain.php:62
 msgid "Short description"
 msgstr "Kort beskrivelse"
 
-#: admin/locale/admin.domain.php:63
+#: locale/admin.domain.php:63
 msgid "Request"
 msgstr "Forespørsel"
 
-#: admin/locale/admin.domain.php:64
+#: locale/admin.domain.php:64
 msgid "Overview"
 msgstr "Oversikt"
 
-#: admin/locale/admin.domain.php:66
+#: locale/admin.domain.php:66
 msgid "Setup"
 msgstr "Oppsett"
 
-#: admin/locale/admin.domain.php:67
+#: locale/admin.domain.php:67
 msgid "Failed to"
 msgstr "Kunne ikke"
 
-#: admin/locale/admin.domain.php:68
+#: locale/admin.domain.php:68
 msgid "Close"
 msgstr "Lukk"
 
-#: admin/locale/admin.domain.php:70
+#: locale/admin.domain.php:69 router.php:873
+msgid "Close operation"
+msgstr "Avslutt operasjon"
+
+#: locale/admin.domain.php:70
 msgid "Reopen"
 msgstr "Gjenåpne"
 
-#: admin/locale/admin.domain.php:71
+#: locale/admin.domain.php:71
 msgid "Reopen operation"
 msgstr "Gjenåpne operasjon"
 
-#: admin/locale/admin.domain.php:73
+#: locale/admin.domain.php:72 router.php:151
+msgid "Access denied"
+msgstr "Ingen tilgang"
+
+#: locale/admin.domain.php:73
 msgid "Setting"
 msgstr "Innstillinger"
 
-#: admin/locale/admin.domain.php:74
+#: locale/admin.domain.php:74
 msgid "Try again"
 msgstr "Vennligst prøv igjen"
 
-#: admin/locale/admin.domain.php:75
+#: locale/admin.domain.php:75
 msgid "Last location"
 msgstr "Siste lokasjon"
 
-#: admin/locale/admin.domain.php:76
+#: locale/admin.domain.php:76
+msgid "Last error"
+msgstr "Siste feil"
+
+#: locale/admin.domain.php:77
+msgid "Reported from tracked device"
+msgstr "Rapportert fra sporet mobil"
+
+#: locale/admin.domain.php:78
 msgid "Location received"
 msgstr "Lokasjon mottatt"
 
-#: admin/locale/admin.domain.php:77
+#: locale/admin.domain.php:79
 msgid "Continue"
 msgstr "Fortsett"
 
-#: admin/locale/admin.domain.php:78
+#: locale/admin.domain.php:80
 msgid "Awaits approval"
 msgstr "Avventer godkjenning"
 
-#: admin/locale/admin.domain.php:79
+#: locale/admin.domain.php:81
 msgid "Email"
 msgstr "E-post"
 
-#: admin/locale/admin.domain.php:80
+#: locale/admin.domain.php:82
 msgid "Must contain"
 msgstr "Må inneholde"
 
-#: admin/locale/admin.domain.php:81
+#: locale/admin.domain.php:83
 msgid "At least one alphanumeric character"
 msgstr "Minst ett siffer"
 
-#: admin/locale/admin.domain.php:82
+#: locale/admin.domain.php:84
 msgid "Alphanumeric"
 msgstr "Siffer"
 
-#: admin/locale/admin.domain.php:83
+#: locale/admin.domain.php:85
 msgid "Character"
 msgstr "Tegn"
 
-#: admin/locale/admin.domain.php:84
+#: locale/admin.domain.php:86
 msgid "Email must contain at least one alphanumeric character"
 msgstr "E-post må inneholde minst ett alphanumerisk tegn"
 
-#: admin/locale/admin.domain.php:85
+#: locale/admin.domain.php:87
 msgid "Already exists"
 msgstr "Eksisterer allerede"
 
-#: admin/locale/admin.domain.php:86
+#: locale/admin.domain.php:88
 msgid "Reject user"
 msgstr "Avvis bruker"
 
-#: admin/locale/admin.domain.php:88
+#: locale/admin.domain.php:90
 msgid "Approve user..."
 msgstr "Godkjenn bruker..."
 
-#: admin/locale/admin.domain.php:89
+#: locale/admin.domain.php:91
 msgid "Mobile country"
 msgstr "Mobil land"
 
-#: admin/locale/admin.domain.php:90
+#: locale/admin.domain.php:92
 msgid "User approved"
 msgstr "Bruker godkjent"
 
-#: admin/locale/admin.domain.php:91
+#: locale/admin.domain.php:93
 #, php-format
 msgid "Password must be at least %1$d characters long"
 msgstr "Passordet må være minst %1$d tegn"
 
-#: admin/locale/admin.domain.php:93
+#: locale/admin.domain.php:94 router.php:830
+msgid "Passwords do not match"
+msgstr "Passordene stemmer ikke"
+
+#: locale/admin.domain.php:95
 #, php-format
 msgid "Message sent to %1$s"
 msgstr "Melding sendt til %1$s"
 
-#: admin/locale/admin.domain.php:94
+#: locale/admin.domain.php:96
 msgid "Country"
 msgstr "Land"
 
-#: admin/locale/admin.domain.php:95
+#: locale/admin.domain.php:97
 msgid "Numbers only"
 msgstr "Kun nummer"
 
-#: admin/locale/admin.domain.php:96
+#: locale/admin.domain.php:98
 msgid "No spaces"
 msgstr "ingen mellomrom"
 
-#: admin/locale/admin.domain.php:97
+#: locale/admin.domain.php:99
 msgid "Country code"
 msgstr "Landskode"
 
-#: admin/locale/admin.domain.php:98
+#: locale/admin.domain.php:100
 msgid "Reference"
 msgstr "Aksjonsreferanse"
 
-#: admin/locale/admin.domain.php:99
+#: locale/admin.domain.php:101
 msgid "Comments"
 msgstr "Kommentarer"
 
-#: admin/locale/admin.domain.php:100
+#: locale/admin.domain.php:102
 msgid "Operation number, etc."
 msgstr "SAR- eller AMIS-nr"
 
-#: admin/locale/admin.domain.php:101
+#: locale/admin.domain.php:103
 msgid "Report to"
 msgstr "Rapporter til"
 
-#: admin/locale/admin.domain.php:102
+#: locale/admin.domain.php:104
 msgid "Mobile phone"
 msgstr "Mobiltelefon"
 
-#: admin/locale/admin.domain.php:103
+#: locale/admin.domain.php:105
 msgid "Phone number"
 msgstr "Mobilnummer"
 
-#: admin/locale/admin.domain.php:104
+#: locale/admin.domain.php:106
 msgid "Send to"
 msgstr "Send til"
 
-#: admin/locale/admin.domain.php:105
+#: locale/admin.domain.php:107
 msgid "Start new trace"
 msgstr "Start ny sporing"
 
-#: admin/locale/admin.domain.php:106
+#: locale/admin.domain.php:108
 msgid "See active traces"
 msgstr "Se aktive sporinger"
 
-#: admin/locale/admin.domain.php:107
+#: locale/admin.domain.php:109
 msgid "More"
 msgstr "Mer"
 
-#: admin/locale/admin.domain.php:108
+#: locale/admin.domain.php:110
 msgid "Resend SMS"
 msgstr "Send SMS på nytt"
 
-#: admin/locale/admin.domain.php:109
+#: locale/admin.domain.php:111
 msgid "None found"
 msgstr "Ingen funnet"
 
-#: admin/locale/admin.domain.php:110
+#: locale/admin.domain.php:112
 #, php-format
 msgid "Locations &le; %1$s"
 msgstr "Lokasjoner &le; %1$s"
 
-#: admin/locale/admin.domain.php:111
+#: locale/admin.domain.php:113
 #, php-format
 msgid "Locations &gt; %1$s"
 msgstr "Lokasjoner  &gt; %1$s"
 
-#: admin/locale/admin.domain.php:112
+#: locale/admin.domain.php:114
 msgid "Location link"
 msgstr "Sporingslink"
 
-#: admin/locale/admin.domain.php:113
+#: locale/admin.domain.php:115
 #, php-format
 msgid ""
 "Remember to include %1$s so that %2$s can replace it with the actual trace "
 "url."
 msgstr "Husk å sette inn %1$s slik at %2$s kan sette inn riktig lenke."
 
-#: admin/locale/admin.domain.php:114
+#: locale/admin.domain.php:116
 msgid "Note: This will reopen this operation"
 msgstr "Merk: Dette vil gjenåpne aksjonen"
 
-#: admin/locale/admin.domain.php:115
+#: locale/admin.domain.php:117
 msgid "Send SMS"
 msgstr "Send SMS"
 
-#: admin/locale/admin.domain.php:116
+#: locale/admin.domain.php:118
 msgid "Trace started"
 msgstr "Sporing startet"
 
-#: admin/locale/admin.domain.php:117
+#: locale/admin.domain.php:119
 msgid "SMS sent"
 msgstr "SMS er sendt"
 
-#: admin/locale/admin.domain.php:118
+#: locale/admin.domain.php:120
 msgid "SMS not sent."
 msgstr "SMS er ikke sendt."
 
-#: admin/locale/admin.domain.php:119
+#: locale/admin.domain.php:121
 msgid "Check log."
 msgstr "Sjekk logg."
 
-#: admin/locale/admin.domain.php:120
+#: locale/admin.domain.php:122
 msgid "SMS received."
 msgstr "SMS er mottatt."
 
-#: admin/locale/admin.domain.php:122
+#: locale/admin.domain.php:124
 msgid "SMS is delivered, but delivery report from SMS provider not received."
 msgstr "SMS er levert, men leveranserapport fra SMS leverandør ikke mottatt."
 
-#: admin/locale/admin.domain.php:123
+#: locale/admin.domain.php:125
 #, php-format
 msgid "SMS not delivered after %1$d hours."
 msgstr "SMS ikke levert på %1$d timer."
 
-#: admin/locale/admin.domain.php:124
+#: locale/admin.domain.php:126
 msgid "The phone may be out of power or coverage."
 msgstr "Telefonen kan være tom for  strøm eller utenfor dekning."
 
-#: admin/locale/admin.domain.php:126
+#: locale/admin.domain.php:128
 msgid ""
 "The phone may be out of power, out of coverage, support for localization can "
 "be turned off or not possible, or the user chose not to share their location "
@@ -784,88 +766,112 @@ msgstr ""
 "kan være slått av eller ikke mulig, eller brukeren valgte å ikke dele "
 "posisjonen med deg."
 
-#: admin/locale/admin.domain.php:128
+#: locale/admin.domain.php:130
 msgid "SMS probably not delivered."
 msgstr "SMS er sannsynligvis ikke levert."
 
-#: admin/locale/admin.domain.php:129
+#: locale/admin.domain.php:131
 msgid "Mobile located"
 msgstr "Telefon er lokalisert"
 
-#: admin/locale/admin.domain.php:130
+#: locale/admin.domain.php:132
 msgid "Trace script downloaded."
 msgstr "Sporingsskript er lastet ned"
 
-#: admin/locale/admin.domain.php:131
+#: locale/admin.domain.php:133
 msgid "Trace script not downloaded."
 msgstr "Sporingsskript er ikke lastet ned."
 
-#: admin/locale/admin.domain.php:133
+#: locale/admin.domain.php:135
 msgid "Trace script is downloaded, but not location is received."
 msgstr "Sporingsside er lastet ned, men ingen posisjon er mottatt."
 
-#: admin/locale/admin.domain.php:134
+#: locale/admin.domain.php:136
 msgid "Use system SMS provider"
 msgstr "Bruk systemets SMS leverandør"
 
-#: admin/locale/admin.domain.php:135
+#: locale/admin.domain.php:137
 msgid "System setup"
 msgstr "Systemoppsett"
 
-#: admin/locale/admin.domain.php:136
+#: locale/admin.domain.php:138
 msgid "Request sent"
 msgstr "Forespørsel sendt"
 
-#: admin/locale/admin.domain.php:138
+#: locale/admin.domain.php:140
 msgid "You will receive an SMS when the request is processed."
 msgstr "Du vil motta en SMS når forespørselen er behandlet."
 
-#: admin/locale/admin.domain.php:139
+#: locale/admin.domain.php:141
 #, php-format
 msgid "Do you want to close %1$s?"
 msgstr "Vil du sende avslutte %1$s?"
 
-#: admin/locale/admin.domain.php:140
+#: locale/admin.domain.php:142
 #, php-format
 msgid "Do you want to reopen %1$s?"
 msgstr "Vil du gjenåpne %1$s?"
 
-#: admin/locale/admin.domain.php:141
+#: locale/admin.domain.php:143
 #, php-format
 msgid "Do you want to resend SMS to %1$s?"
 msgstr "Vil du sende SMS på nytt til %1$s?"
 
-#: admin/locale/admin.domain.php:142
+#: locale/admin.domain.php:144
 #, php-format
 msgid "Do you want to enable %1$s?"
 msgstr "Vil du aktivere %1$s?"
 
-#: admin/locale/admin.domain.php:143
+#: locale/admin.domain.php:145
 #, php-format
 msgid "Do you want to disable %1$s?"
 msgstr "Vil du deaktivere %1$s?"
 
-#: admin/locale/admin.domain.php:144
+#: locale/admin.domain.php:146
 #, php-format
 msgid "Do you want to delete %1$s?"
 msgstr "Vil du slette %1$s?"
 
-#: admin/locale/admin.domain.php:145
+#: locale/admin.domain.php:147
 msgid "Check SMS delivery status"
 msgstr "Sjekk leveringsstatus"
 
-#: admin/locale/admin.domain.php:160
+#: locale/admin.domain.php:162
 msgid "About"
 msgstr "Om"
 
-#: admin/locale/admin.domain.php:172
+#: locale/admin.domain.php:174
 #, php-format
 msgid "User with e-mail %1$s"
 msgstr "Bruker med e-post %1$s"
 
-#: admin/locale/admin.domain.php:177
+#: locale/admin.domain.php:179
 msgid "cannot be approved"
 msgstr "kunne ikke godkjennes"
+
+#: router.php:23
+msgid "You have entered wrong username or password"
+msgstr "Du har oppgitt feil brukernavn eller passord"
+
+#: router.php:131 router.php:138 router.php:149
+msgid "Illegal Operation"
+msgstr "Ulovlig operasjon"
+
+#: router.php:815
+msgid "Change Password"
+msgstr "Bytt passord"
+
+#: router.php:825
+msgid "Password must be at least 8 characters long"
+msgstr "Passordet må være minst 8 tegn"
+
+#: router.php:847
+msgid "Recover Password"
+msgstr "Gjenopprett passord"
+
+#: router.php:1170
+msgid "Not an ajax request"
+msgstr "Ikke en ajax-forespørsel"
 
 #~ msgid "Id"
 #~ msgstr "Id"

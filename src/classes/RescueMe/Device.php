@@ -52,11 +52,10 @@
             return $browserName;
         }
 
-        public static function detectPlatform($user_agent)
-        {
+        public static function detectPlatform($user_agent) {
             $platform = 'Unknown';
-            if (preg_match('/ipad|ipod|iphone/i', $user_agent)) {
-                $platform = "iOS";
+            if (preg_match('/iphone/i', $user_agent)) {
+                $platform = "iPhone";
             } else if (preg_match('/android/i', $user_agent)) {
                 $platform = "Android";
             } else if (preg_match('/blackberry/i', $user_agent)) {
@@ -65,6 +64,7 @@
                 $platform = "SymbianOS";
             }
             return $platform;
-        }
 
+        }
+        
     }

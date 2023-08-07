@@ -16,6 +16,13 @@ var q = R.trace;
  */
 var msg = R.trace.msg;
 
+/*
+ * Get tip messages
+ */
+var tip = function(c) {
+    return R.trace.tip[c];
+};
+
 /**
  * Document reference
  */
@@ -51,13 +58,18 @@ function get(id) {
 /*
  * Implement location algorithm
  */
-R.trace.locate = function() {
+R.trace.locate = ()=> {
     
     /*
      * Countdown timer id
      */
     var cID = 0;
-    
+
+    /*
+     * Geolocation timeout id
+     */
+    var lID = 0;
+
     /**
      * Seconds until failure in seconds
      */
@@ -82,25 +94,72 @@ R.trace.locate = function() {
      * Location element
      */
     var l = get("l");
-    
+
+    /*
+     * Location permission granted flag
+     */
+    var granted = false;
+
     /* ===================================================
      *  Register geolocation callback
      * =================================================== */
     if(ngl) {
-        
-        setTimeout(function() {R.trace.change(rp, se, sp, q);}, q.delay ? 3000 : 0);
-        
+
+        /*
+         * Check permissions if possible
+         */
+        R.trace.check(
+            () => {
+                granted = true;
+                ld();
+            },
+            ()=>
+            {
+                granted = false;
+                re(14);
+                f.innerHTML += rt();
+                ld();
+            },
+            () => {
+                /* Check if previously denied */
+                re(q.located === true ? 15 : 4);
+                spd(q.located === true ? 15 : 4);
+            },
+            (result) => {
+                // Denied is handled by geolocation error handler that calls gp (=>sp)
+                if (result.state !== 'denied') {
+                    ld();
+                }
+            },
+            ld,
+        );
+
+    } else {
+        // 'Location not supported on this device'
+        re(0, msg[0]);
+    }
+
+    function ld() {
+        if(lID>0) {
+            s.innerHTML = '';
+            i.innerHTML = '';
+            clearTimeout(lID);
+        }
+
+        lID = setTimeout(
+            () => {
+                R.trace.change(rp, se, sp, q);
+            },
+            q.delay ? 3000 : 0,
+        );
+
         // Register progress indicator
         var im = d.createElement("img");
         im.src = R.app.url+"img/loading.gif";
         i.appendChild(im);
         s.innerHTML = pt(w);
         cID = setTimeout(cd, 1000);
-        
-    } else {
-        // 'Location not supported on this device'
-        f.innerHTML = msg[0];
-    }    
+    }
     
     
     /*
@@ -109,7 +168,9 @@ R.trace.locate = function() {
      * @param a position age
      */
     function sp(c, a) {
-        
+
+        granted = true;
+
         // Notify position found with given accuracy
         var m = msg[1].replace('{0}',Math.ceil(c.accuracy)) + '... <br />';
         
@@ -147,82 +208,153 @@ R.trace.locate = function() {
         return '<p><a href>'+msg[13]+'</a></p>';
     }
 
-    /*
-     * Show error to client
+    /**
+     * Display permission denied information
+     */
+    function spd(code) {
+        if(tip(code) !== undefined) {
+            f.innerHTML += '<p>'+tip(code).map((c) => msg[c]).join('<br>')+'</p>';
+        }
+        f.innerHTML += rt();
+    }
+
+    /**
+     * Display error to client and rapport it to operator
      */
     function se(e) {
         switch (e.code) {
             case e.PERMISSION_DENIED:
-                f.innerHTML = msg[4]+rt();
+                re(q.located === true ? 15 : 4);
+                spd(q.located === true ? 15 : 4);
+                granted = false;
                 break;
             case e.POSITION_UNAVAILABLE:
-                f.innerHTML = msg[5];
+                granted = false;
+                re(5);
                 break;
             case e.TIMEOUT:
-                f.innerHTML = msg[6];
+                re(6);
                 break;
-            case e.UNKNOWN_ERROR:
-                f.innerHTML = msg[7];
+            default:
+                re(7);
                 break;
         }
     }
-    
-    /*
-     * Report acquired location to server
-     * @param c position coordinates
-     * @param u update view flag
+
+    /**
+     * Report error to operator
+     * @param c Error code
      */
-    function rp(c, timestamp, u) {
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xhr = new XMLHttpRequest();
-        }
-        else {// code for IE6, IE5
-            try {
-                xhr = new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (e) {
-                xhr = false;
+    function re(c) {
+        f.innerHTML = msg[c];
+        const url = toUrl(['e',q.id,c,msg[c]]);
+        send(
+            url,
+            () => {},
+            () => {},
+            () => {
+                return true;
             }
-        }
-        
+        );
+    }
+
+    /**
+     * Build URL from array of parameters
+     * @param {[]} params
+     */
+    function toUrl(params) {
+        return R.app.url + params.join('/')
+    }
+
+    /**
+     * Report acquired location to server
+     * @param c location coordinates
+     * @param t location timestamp
+     * @param u update page information flag
+     */
+    function rp(c, t, u) {
+
+        granted = true;
+
         l.innerHTML = ps(c);
-        
-        var url = R.app.url + "r/" + q.id + "/" + c.latitude + "/" + c.longitude + "/" + c.accuracy + "/" + c.altitude + "/" + timestamp;
-        
+
+        const url = toUrl(['r',q.id,c.latitude,c.longitude,c.accuracy || 0.0,c.altitude || 0.0,t]);
+
+        send(
+            url,
+            (xhr) => {
+                // Update message with response text?
+                if(u) {
+                    f.innerHTML = xhr.responseText + rt();
+                    s.innerHTML = '';
+                    i.innerHTML = '';
+                    clearTimeout(cID);
+                }
+            },
+            () => {
+                f.innerHTML = msg[10];
+            },
+            () => {
+                return c.accuracy < 300;
+            }
+        );
+    }
+
+
+    /**
+     * Send GET request
+     * @param {string} url
+     * @param {*} ok On response '200 OK'
+     * @param {*} err On error (and timeout)
+     * @param {*} fb Return true if fallback should be attempted
+     */
+    function send(url, ok, err, fb) {
+        const xhr = nrq();
         if (xhr !== false) {
-            
-            xhr.onreadystatechange = function() {
-                
+
+            xhr.onreadystatechange = () => {
+
                 if (xhr.readyState === 4) {
-                    
+
                     if(xhr.status === 200) {
-                        // Update message with response text?
-                        if(u) {
-                            f.innerHTML = xhr.responseText + rt();
-                            s.innerHTML = '';
-                            i.innerHTML = '';
-                            clearTimeout(cID);                        
-                        } 
+                        ok(xhr);
                     } else {
-                        f.innerHTML = msg[10];
+                        err(xhr);
                     }
                 }
             }
 
-            xhr.open("GET", url, true);
+            xhr.open("GET", encodeURI(url), true);
             xhr.send();
-            
+
             // Detect connection timeouts
             xhr.timeout = w;
-            xhr.ontimeout = function() { f.innerHTML = msg[10]; };
-          
-        // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
-        } else if (c.accuracy < 300) {
-            
+            xhr.ontimeout = err;
+
+            // Fallback for those not supporting XMLhttprequest. Known: WP 7.8
+        } else if(fb()){
             // No error reporting implemented!!
-            window.location = url;            
+            window.location = url;
         }
     }
-    
+
+    /**
+     * Create new request object
+     * @returns {XMLHttpRequest|any|boolean}
+     */
+    function nrq() {
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            return new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            try {
+                return new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {}
+        }
+        return false;
+    }
+
+
     /**
      * Print position coordinates
      * @param c position coordinates
@@ -258,8 +390,8 @@ R.trace.locate = function() {
  * Handle geolocation change.
  * 
  * @param gf GeoLocation found
- * @param ge GeoLocation error occured
- * @param gp Geolocation progress occured
+ * @param ge GeoLocation error occurred
+ * @param gp Geolocation progress occurred
  * @param o Geolocation Options: {
  *                      wait: maximum time to wait for position, 
  *                      age: only accept positions younger than this, 
@@ -275,7 +407,7 @@ R.trace.change = function (gf, ge, gp, o) {
      * Handle location checks
      */
     var hc = function (p) {
-        
+
         // Used on timeout
         lc = p.coords;
         
@@ -317,7 +449,7 @@ R.trace.change = function (gf, ge, gp, o) {
     /*
      * Stop trying to get location fix.
      */
-    var st = function () {
+    var st = () => {
         ngl.clearWatch(wID);
         fp(lc);
     };
@@ -335,3 +467,29 @@ R.trace.change = function (gf, ge, gp, o) {
 
     var tID = setTimeout(st, o.wait); // Set a timeout that will abandon the location loop
 };
+
+/**
+ * Check trace permissions
+ * @param g Called when permission is granted
+ * @param p Called when permission is going to be prompted
+ * @param d Called when permission is denied
+ * @param c Called when permission is changed
+ * @param u Called when the permissions API are unavailable
+ */
+R.trace.check = function (g, p, d, c, u) {
+    if(navigator.permissions!==undefined) {
+        navigator.permissions.query({name: 'geolocation'}).then(function (result) {
+            if (result.state === 'granted') {
+                g();
+            } else if (result.state === 'prompt') {
+                p();
+            } else if (result.state === 'denied') {
+                d();
+            }
+            result.onchange = () => c(result);
+        });
+    } else {
+        // Assume
+        u();
+    }
+}
