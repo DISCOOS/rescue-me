@@ -221,7 +221,7 @@
         return $html;
     }
 
-    function insert_title($title, $href, $action, $output=true)
+    function insert_title($title, $href=null, $action=null, $class=null, $output=true)
     {
         ob_start();
         require(APP_PATH . "gui/title.gui.php");

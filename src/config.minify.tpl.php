@@ -23,7 +23,9 @@
                 '//js/i18next.min.js', 
                 '//js/rescueme.js', 
                 '//js/jquery.min.js', 
-                '//js/bootstrap.min.js'
+                '//js/bootstrap.min.js',
+                '//js/raphael-min.js',
+                '//js/justgage.min.js',
             ),
             'admin.css' => array
             (

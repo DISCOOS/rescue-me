@@ -1,37 +1,63 @@
-<p class="lead muted"><b><?= TITLE ?></b></p>
-
-<div class="lead">Lokaliserer personer via deres mobiltelefon</div>
-<p>
-    <?= TITLE ?> sender en lenke til den savnede via SMS. Med brukerens samtykke (klikk på lenken) blir brukeren lokalisert ved hjelp av 
-    <a href="http://www.w3schools.com/html/html5_geolocation.asp">HTML5 Geolocation</a>. Dette krever at telefonen har en nettleser, at telefonen
-    er på Internett (datakobling er på) og at GPS-posisjonering er aktivert. 
-</p>    
-<p>
-    <strong>Alle posisjoner som mottas fra savnede logges i systemet, også de med stor unøyaktighet</strong>.
-</p>
-<p>
-    Det sendes 2 SMS til brukeren; SMS 1 inneholder info om sporingslenke, SMS 2 inneholder info om GPS-innstillinger. Delingen sikrer at den savnede 
-    får den viktigste infoen først, og kan starte sporing fortest mulig. SMS 2 sendes kun hvis første posisjonering er unøyaktig, og kun én gang per 
-    savnet.
-</p>
-<p>
-    Posisjoneringssiden den savnede åpner er komprimert maksimalt for å kunne gi en raskest mulig innlasting, uansett internetthastighet. Selv med 
-    veldig dårlig internettilkobling skal siden lastes inn i løpet av sekunder.
-</p>
-
-<h3>Systemet utvikles av</h3>
-<div class="contact span3">
-	<div class="name">Sven-Ove Bjerkan</div>
-	<div class="phone">988 46 414</div>
-	<div class="mail">sven-ove@discoos.org</div>
+<p class="lead">Hvor mange finner vi?</p>
+<p>Det er mange grunner til at sporinger ikke fører til lokalisering. Hvis savnede er utenfor dekning,
+    tom for batteri, velger å ikke klikke på lenken i SMSen, eller ikke klarer å aktivere deling av
+    posisjon med nettleseren vil vi ikke klare å lokalisere telefonen.</p>
+<div class="row text-center no-wrap">
+    <div class="span2" id="no_response"
+         title="<?='Sporinger som ikke er blitt åpnet'?>"
+         rel="tooltip" data-placement="bottom"></div>
+    <div class="span2" id="no_location"
+         title="<?='Åpnede sporinger uten lokasjon'?>"
+         rel="tooltip" data-placement="bottom"></div>
+    <div class="span2" id="total"
+         title="<?='Sporinger med lokasjon'?>"
+         rel="tooltip" data-placement="bottom"></div>
+    <div class="span2" id="attainable"
+         title="<?='Sporinger som er blitt åpnet av savnede'?>"
+         rel="tooltip" data-placement="bottom"></div>
+    <div class="span2 " style="height: 100px;"
+         title="<?='Antall sporinger totalt'?>"
+         rel="tooltip" data-placement="bottom">
+            <div class="center" style="height: 100%;">
+                <div style="height: 25px;"></div>
+                <h3 id="traces">0</h3>
+                <p>
+                    <i class="icon-envelope"></i> Sporinger
+                </p>
+            </div>
+    </div>
 </div>
-<div class="contact span3">
-	<div class="name">Kenneth Gulbrandsøy</div>
-	<div class="phone">932 58 930</div>
-	<div class="mail">kenneth@discoos.org</div>
-</div>
-<div class="contact span3">
-    <div class="name">Marius Mandal</div>
-    <div class="phone">928 37 360</div>
-    <div class="mail">mariusmandal@discoos.org</div>
-</div>
+<script>
+    const gauges = [
+        {id: 'no_response', label: 'Ingen respons'},
+        {id: 'no_location', label:'Respons, ingen lokasjon'},
+        {id: 'total', label: 'Lokalisert'},
+        {id: 'attainable', label: 'Mulig å finne'},
+    ].map((gauge) => new JustGage({
+            id: gauge.id, // the id of the html element
+            value: 0.0,
+            decimals: 1,
+            symbol: '%',
+            hideMinMax: true,
+            label: gauge.label,
+            levelColors: ['#10C689'],
+            gaugeWidthScale: 0.6
+    }));
+    $(document.documentElement).find('[rel="tooltip"]').tooltip();
+    $.getJSON('stats.php', function(data) {
+        const trace = data.trace;
+        const total = trace.totals.all;
+        const element = document.getElementById('traces');
+        element.innerHTML = total;
+        for (let g of gauges) {
+            if(['attainable','total'].includes(g.config.id)) {
+                const value = trace.rates[g.config.id].all;
+                g.refresh(value * 100);
+            } else {
+                const stat = trace[g.config.id];
+                const value = stat.all / total * 100;
+                g.refresh(value);
+            }
+        }
+    });
+</script>

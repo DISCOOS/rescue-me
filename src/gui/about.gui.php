@@ -10,7 +10,7 @@
     <strong>Alle posisjoner som mottas fra savnede logges i systemet, også de med stor unøyaktighet</strong>.
 </p>
 <p>
-    Det sendes 2 SMS til brukeren; SMS 1 inneholder info om sporingslenke, SMS 2 inneholder info om GPS-innstillinger. Delingen sikrer at den savnede 
+    Det sendes to SMS til brukeren; SMS 1 inneholder info om sporingslenke, SMS 2 inneholder info om GPS-innstillinger. Delingen sikrer at den savnede
     får den viktigste infoen først, og kan starte sporing fortest mulig. SMS 2 sendes kun hvis første posisjonering er unøyaktig, og kun én gang per 
     savnet.
 </p>
@@ -19,19 +19,31 @@
     veldig dårlig internettilkobling skal siden lastes inn i løpet av sekunder.
 </p>
 
-<h3>Systemet utvikles av</h3>
-<div class="contact span3">
-	<div class="name">Sven-Ove Bjerkan</div>
-	<div class="phone">988 46 414</div>
-	<div class="mail">sven-ove@discoos.org</div>
+<div style="height: 25px;"></div>
+
+<?require('gui/stats.gui.php');?>
+
+<div style="height: 25px;"></div>
+
+<p class="lead">Hvem utvikler <?=TITLE?>?</p>
+<p><?=TITLE?> utvikles av frivillige i <a href="https://discoos.org">DISCO Open Source</a>, vederlagsfritt for redningstjenesten.</p>
+
+<div style="height: 25px;"></div>
+
+<p class="lead">Kontaktinformasjon</p>
+<div class="row">
+    <div class="span3">
+        <p>Merk at <?=TITLE?> driftes uten noen garantier. Følgende personer kan kontaktes ved behov:</p>
+    </div>
+    <div class="contact span2 text-center" style="height: 75px;">
+        <div class="name">Sven-Ove Bjerkan</div>
+        <div class="phone"><a href="tel:+4798846414">+47 98846414</a></div>
+        <div class="mail"><a href="mailto:sven-ove@discoos.org">sven-ove@discoos.org</a></div>
+    </div>
+    <div class="contact span2 text-center" style="height: 75px;">
+        <div class="name">Kenneth Gulbrandsøy</div>
+        <div class="phone"><a href="tel:+4793258930">+47 93258930</a></div>
+        <div class="mail"><a href="mailto:sven-ove@discoos.org">kenneth@discoos.org</a></div>
+    </div>
 </div>
-<div class="contact span3">
-	<div class="name">Kenneth Gulbrandsøy</div>
-	<div class="phone">932 58 930</div>
-	<div class="mail">kenneth@discoos.org</div>
-</div>
-<div class="contact span3">
-    <div class="name">Marius Mandal</div>
-    <div class="phone">928 37 360</div>
-    <div class="mail">mariusmandal@discoos.org</div>
-</div>
+

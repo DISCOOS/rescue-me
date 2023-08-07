@@ -15,7 +15,11 @@
     <tr style="border: 0; border-bottom:1px solid lightgray; align-items: stretch">
         <th>
             <div class="pull-left no-wrap" style="height: 40px">
+                <?if(isset($class)) { ?>
+                <p class="<?=$class?>"><?=$title?></p>
+                <?}else{?>
                 <h3 class="pagetitle"><?=$title?></h3>
+                <?}?>
             </div>
         </th>
         <?if(isset($href)){?>
