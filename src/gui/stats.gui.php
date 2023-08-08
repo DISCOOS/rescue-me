@@ -1,8 +1,9 @@
 <?
     if(!isset($days)) $days = 90;
-    if(!isset($set)) $set = 'unique';
+    if(!isset($set)) $set = 'all';
     if(!isset($type)) $type = 'trace';
     if(!isset($prefix)) $prefix = '';
+    if(!isset($user_id)) $user_id = 0; else $user_id = (int)$user_id;
 ?>
 <div class="row text-center no-wrap">
     <div id="<?=$prefix?>no_response" class="span2"
@@ -22,7 +23,7 @@
                 <div style="height: 35%;"></div>
                 <h3>
                     <span id="<?=$prefix?>traces">0</span>
-                    <img src="img/rescueme.png" width="16" height="16" class="img-rounded">
+                    <img src="<?=APP_URL?>img/rescueme.png" width="16" height="16" class="img-rounded">
                 </h3>
                 <span class="small muted">Siste <?=$days?> dager</span>
             </div>
@@ -44,7 +45,8 @@
             levelColors: ['#10C689'],
             gaugeWidthScale: 0.6
     }));
-    $.getJSON('<?=APP_URL?>stats.php?type=<?=$type?>&days=<?=$days?>', function(data) {
+    const <?=$prefix?>url = '<?=APP_URL?>stats.php?type=<?=$type?>&days=<?=$days?>&user_id=<?=$user_id?>';
+    $.getJSON(<?=$prefix?>url, function(data) {
         const trace = data.trace;
         const total = trace.count.total['<?=$set?>'];
         const element = document.getElementById('<?=$prefix?>traces');

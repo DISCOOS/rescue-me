@@ -2,20 +2,20 @@
 
     use RescueMe\User;
 
+    $days = 90;
     $id = input_get_int('id', User::currentId());
     $user = User::get($id); 
     
-    if($user == false)
+    if($user === false)
     {
-        insert_alert("Ingen registrert");
+        insert_alert(USER_NOT_FOUND);
     }
     else
     {
-?>
-    <h3><?=$user->name?></h3>            
-<?php
-        insert_alert("Kommer snart!");
-
+        insert_title($user->name, ADMIN_URI."user/edit/$id", EDIT);
     }
 ?>
-    
+    <p>Sporingstilstand som andel av <span class="label">alle sporinger</span></p>
+    <?insert_stats('trace', 'all', $days, 'a_', $id)?>
+
+

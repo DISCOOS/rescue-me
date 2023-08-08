@@ -232,7 +232,7 @@
         return $html;
     }
 
-    function insert_stats($type='trace', $set = 'unique', $days=90, $prefix='',$output=true)
+    function insert_stats($type='trace', $set = 'all', $days=90, $prefix='', $user_id=0, $output=true)
     {
         ob_start();
         require(APP_PATH . "gui/stats.gui.php");

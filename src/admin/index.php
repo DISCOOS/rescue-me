@@ -149,7 +149,7 @@ if(defined('USE_SILEX') && USE_SILEX) {
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
                             <? if ($user->allow('write', 'user', $id) || $user->allow('write', 'user.all')) { ?>
-                            <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/edit/<?=$user->id?>"><b class="icon icon-user"></b><?=ACCOUNT?></a></li>
+                            <li id="user"><a role="menuitem" href="<?= ADMIN_URI ?>user/<?=$user->id?>"><b class="icon icon-user"></b><?=ACCOUNT?></a></li>
                             <li id="passwd"><a role="menuitem" href="<?= ADMIN_URI ?>password/change/<?=$user->id?>"><b class="icon icon-lock"></b><?=CHANGE_PASSWORD?></a></li>
                             <? } if ($user->allow('write', 'setup', $id) || $user->allow('write', 'setup.all')) { ?>
                             <li id="user_settings"><a href="<?= ADMIN_URI ?>setup"><b class="icon icon-wrench"></b><?= SETUP ?></a></li>
