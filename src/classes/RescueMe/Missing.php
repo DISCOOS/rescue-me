@@ -755,7 +755,7 @@
             if($res === FALSE) {
                 $context = array('sql' => $query);
                 Missing::error('Failed to update status to ANSWERED for missing '
-                    . $this->id . '[' . DB::error() . ']', $context);
+                    . $this->id . '[' . DB::error() . ']['.DB::errno().']', $context);
             } else {
                 Logs::write(
                     Logs::TRACE,

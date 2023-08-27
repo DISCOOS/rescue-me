@@ -26,7 +26,7 @@
     tom for batteri, velger å ikke klikke på lenken i SMSen, eller ikke klarer å aktivere deling av
     posisjon med nettleseren vil vi ikke klare å lokalisere telefonen.</p>
 
-<?insert_stats('trace', 'all', 90)?>
+<?insert_insights('trace', 'ratios', 90)?>
 
 <div style="height: 25px;"></div>
 

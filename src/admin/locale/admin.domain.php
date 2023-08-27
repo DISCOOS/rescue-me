@@ -160,12 +160,10 @@
         
 
         define('ABOUT', T_('About').' '.TITLE);
-        define('INSIGHT', T_('Insight'));
-        define('RATIOS', T_('Ratios'));
         define('USER_S', sentence(array(USER,'%1$s')));
         define('MISSING_PERSON', sentence(array(MISSING,PERSON)));
         define('MISSING_PERSONS', sentence(array(MISSING,PERSONS)));
-        define('NEW_TRACE', sentence(array(_NEW,TRACE)));    
+        define('NEW_TRACE', sentence(array(_NEW,TRACE)));
         define('NEW_USER', sentence(array(_NEW,USER)));
         define('REQUEST_NEW_USER', sentence(array(REQUEST,_NEW,USER)));
         define('EDIT_USER', sentence(array(EDIT,USER)));
@@ -179,6 +177,27 @@
         define('USER_S_NOT_ENABLED', sentence(array(USER_S,NOT_ENABLED)));
         define('USER_S_NOT_DISABLED', sentence(array(USER_S,NOT_DISABLED)));
         define('USER_S_CANNOT_BE_APPROVED', sentence(array(USER_S,T_('cannot be approved'))));
+
+        define('NO_RESPONSE', T_('No response'));
+        define('RESPONSE_NO_LOCATION', T_('Response, no location'));
+        define('POSSIBLE_TO_LOCATE', T_('Possible to locate'));
+        define('TRACES_NOT_OPENED_BY_RECEIVER', T_('Traces not opened by the receiver'));
+        define('TRACES_WITHOUT_ANY_LOCATION', T_('Traces without any location'));
+        define('TRACES_WITH_AT_LEAST_ONE_LOCATION', T_('Traces with at least one location'));
+        define('TRACES_OPENED_BY_THE_RECEIVER', T_('Traces opened by the receiver'));
+
+        define('INSIGHT', T_('Insight'));
+        define('RATIOS', T_('Ratios'));
+        define('TOTALS', T_('Totals'));
+        define('RATIOS_PER_STATE', T_("Ratios per state"));
+        define('TOTALS_PER_STATE', T_("Totals per state"));
+        define('THE_BEST', T_("the best"));
+        define('LAST_N_DAYS', T_("last {days} days"));
+        define('FETCHING_RANKINGS', T_("Fetching rankings"));
+        define('NO_TRACES_CREATED_IN_PERIOD', T_("No traces created {days}."));
+        define('YOU_ARE_THE_OPERATOR_IN_PERIOD',T_('You received a location in {success} of attempts and are {operator} operator {days}.'));
+        define('YOU_ARE_THE_NTH_OPERATOR_IN_PERIOD',T_('You received a location in {success} of the attempts {days} and are better than {lesser} of all operators.'));
+        define('THE_BEST_OPERATOR_IS',T_('The best operator received a location in {success} of the attempts.'));
 
     }
 

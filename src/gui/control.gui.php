@@ -14,7 +14,9 @@
 <? if(stristr($type,"select") !== false) { $class = (empty($class) ? 'input-block-level' : $class) ?> 
 
 <div class="<?= $class ?>">
+    <?if(isset($label)){?>
     <label class="control-label" for="<?= $id ?>"><?= ucfirst($label) ?></label>
+    <?}?>
     <select id="<?= $id ?>" name="<?= $id ?>" type="select" class="input-block-level" <?= $attributes ?>>
         <?= $value ?>
     </select>

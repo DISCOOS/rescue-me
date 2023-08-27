@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-07 18:43+0200\n"
-"PO-Revision-Date: 2023-08-07 18:44+0200\n"
+"POT-Creation-Date: 2023-08-27 23:16+0200\n"
+"PO-Revision-Date: 2023-08-27 23:16+0200\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescue@discoos.org>\n"
 "Language: nb_NO\n"
@@ -107,15 +107,15 @@ msgstr "Auda! Kunne ikke opprette brukeren"
 msgid "When attempting to create user, an error ocurred. The system reported: "
 msgstr "Klarte ikke å opprette ny bruker. Systemet rapporterte: "
 
-#: gui/dash.gui.php:2
+#: gui/dash.gui.php:10
 msgid "Get started"
 msgstr "Kom i gang"
 
-#: gui/dash.gui.php:3
+#: gui/dash.gui.php:11
 msgid "Use mobile phone to trace persons fast and easy."
 msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
 
-#: gui/logs.gui.php:18 locale/admin.domain.php:55 router.php:125
+#: gui/logs.gui.php:18 locale/admin.domain.php:55 router.php:126
 msgid "Logs"
 msgstr "Logger"
 
@@ -295,10 +295,6 @@ msgstr "Moduler mangler"
 #: inc/common.inc.php:18
 msgid "Configure"
 msgstr "Konfigurer"
-
-#: index.php:55 locale/admin.domain.php:65
-msgid "Dashboard"
-msgstr "Dashboard"
 
 #: locale/admin.domain.php:9
 msgid "Save"
@@ -512,6 +508,10 @@ msgstr "Forespørsel"
 msgid "Overview"
 msgstr "Oversikt"
 
+#: locale/admin.domain.php:65
+msgid "Dashboard"
+msgstr "Dashboard"
+
 #: locale/admin.domain.php:66
 msgid "Setup"
 msgstr "Oppsett"
@@ -524,7 +524,7 @@ msgstr "Kunne ikke"
 msgid "Close"
 msgstr "Lukk"
 
-#: locale/admin.domain.php:69 router.php:873
+#: locale/admin.domain.php:69 router.php:874
 msgid "Close operation"
 msgstr "Avslutt operasjon"
 
@@ -536,7 +536,7 @@ msgstr "Gjenåpne"
 msgid "Reopen operation"
 msgstr "Gjenåpne operasjon"
 
-#: locale/admin.domain.php:72 router.php:151
+#: locale/admin.domain.php:72 router.php:152
 msgid "Access denied"
 msgstr "Ingen tilgang"
 
@@ -621,7 +621,7 @@ msgstr "Bruker godkjent"
 msgid "Password must be at least %1$d characters long"
 msgstr "Passordet må være minst %1$d tegn"
 
-#: locale/admin.domain.php:94 router.php:830
+#: locale/admin.domain.php:94 router.php:831
 msgid "Passwords do not match"
 msgstr "Passordene stemmer ikke"
 
@@ -840,44 +840,120 @@ msgstr "Sjekk leveringsstatus"
 msgid "About"
 msgstr "Om"
 
-#: locale/admin.domain.php:163
-msgid "Insight"
-msgstr "Innsikt"
-
-#: locale/admin.domain.php:164
-msgid "Ratios"
-msgstr "Forholdstall"
-
-#: locale/admin.domain.php:176
+#: locale/admin.domain.php:174
 #, php-format
 msgid "User with e-mail %1$s"
 msgstr "Bruker med e-post %1$s"
 
-#: locale/admin.domain.php:181
+#: locale/admin.domain.php:179
 msgid "cannot be approved"
 msgstr "kunne ikke godkjennes"
+
+#: locale/admin.domain.php:181
+msgid "No response"
+msgstr "Ingen respons"
+
+#: locale/admin.domain.php:182
+msgid "Response, no location"
+msgstr "Respons, ingen lokasjon"
+
+#: locale/admin.domain.php:183
+msgid "Possible to locate"
+msgstr "Mulig å lokalisere"
+
+#: locale/admin.domain.php:184
+msgid "Traces not opened by the receiver"
+msgstr "Sporinger ikke åpnet av mottaker ennå"
+
+#: locale/admin.domain.php:185
+msgid "Traces without any location"
+msgstr "Sporinger uten lokasjon"
+
+#: locale/admin.domain.php:186
+msgid "Traces with at least one location"
+msgstr "Sporinger med minst èn lokasjon"
+
+#: locale/admin.domain.php:187
+msgid "Traces opened by the receiver"
+msgstr "Sporinger åpnet av mottaker"
+
+#: locale/admin.domain.php:189
+msgid "Insight"
+msgstr "Innsikt"
+
+#: locale/admin.domain.php:190
+msgid "Ratios"
+msgstr "Forholdstall"
+
+#: locale/admin.domain.php:191
+msgid "Totals"
+msgstr "Telling"
+
+#: locale/admin.domain.php:192
+msgid "Ratios per state"
+msgstr "Antall per tilstand"
+
+#: locale/admin.domain.php:193
+msgid "Totals per state"
+msgstr "Antall per tilstand"
+
+#: locale/admin.domain.php:194
+msgid "the best"
+msgstr "den beste"
+
+#: locale/admin.domain.php:195
+msgid "last {days} days"
+msgstr "siste {days} dager"
+
+#: locale/admin.domain.php:196
+msgid "Fetching rankings"
+msgstr "Henter rangering"
+
+#: locale/admin.domain.php:197
+msgid "No traces created {days}."
+msgstr "Ingen sporinger opprettet {days}."
+
+#: locale/admin.domain.php:198
+msgid ""
+"You received a location in {success} of attempts and are {operator} operator "
+"{days}."
+msgstr ""
+"Du mottok en lokasjon i {success} av forsøkene og er {operator} operatøren "
+"{days}."
+
+#: locale/admin.domain.php:199
+msgid ""
+"You received a location in {success} of the attempts {days} and are better "
+"than {lesser} of all operators."
+msgstr ""
+"Du mottok en lokasjon i {success} av forsøkene {days} og er bedre enn "
+"{lesser} av alle operatører."
+
+#: locale/admin.domain.php:200
+msgid "The best operator received a location in {success} of the attempts."
+msgstr "Den beste operatøren mottok en lokasjon i {success} av forsøkene."
 
 #: router.php:23
 msgid "You have entered wrong username or password"
 msgstr "Du har oppgitt feil brukernavn eller passord"
 
-#: router.php:131 router.php:138 router.php:149
+#: router.php:132 router.php:139 router.php:150
 msgid "Illegal Operation"
 msgstr "Ulovlig operasjon"
 
-#: router.php:815
+#: router.php:816
 msgid "Change Password"
 msgstr "Bytt passord"
 
-#: router.php:825
+#: router.php:826
 msgid "Password must be at least 8 characters long"
 msgstr "Passordet må være minst 8 tegn"
 
-#: router.php:847
+#: router.php:848
 msgid "Recover Password"
 msgstr "Gjenopprett passord"
 
-#: router.php:1170
+#: router.php:1171
 msgid "Not an ajax request"
 msgstr "Ikke en ajax-forespørsel"
 

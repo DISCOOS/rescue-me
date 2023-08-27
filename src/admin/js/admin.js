@@ -1,9 +1,3 @@
-// Initialize i18n support (async)
-i18n.init({
-    getAsync: false,
-    useLocalStorage: false,
-    resGetPath: R.admin.url+'locale/translate.json.php'
-});
 
 $(document).ready(function() {
     
@@ -185,6 +179,8 @@ R.prepare = function(element, options) {
     });
     
     $(element).find('[rel="tooltip"]').tooltip();
+
+    $(element).find('.btn-group').button();
 
     // Add form validation
     R.form.validate(element);

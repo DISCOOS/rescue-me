@@ -15,26 +15,22 @@
     <tr style="border: 0; border-bottom:1px solid lightgray; align-items: stretch">
         <th>
             <div class="pull-left no-wrap" style="height: 40px">
-                <?if(isset($class)) { ?>
-                <p class="<?=$class?>"><?=$title?></p>
-                <?}else{?>
                 <h3 class="pagetitle"><?=$title?></h3>
-                <?}?>
             </div>
         </th>
-        <?if(isset($href) || isset($menu)){?>
+        <?if(isset($href) || isset($toolbar)){?>
         <th>
-            <div class="pull-right">
-            <?
-            if(isset($menu)) {
-                echo $menu;
-            ?>
-        <?} else {?>
-            <div class="btn-group pull-right">
-                <a class="btn btn-small" href="<?=$href?>">
-                    <b class="icon icon-edit"></b><?= $action ?>
-                </a>
-        <?}?>
+            <div class="btn-toolbar pull-right" style="margin-top: 0; margin-bottom: 0;">
+            <?if(isset($toolbar)){?>
+                <?=$toolbar?>
+            <?}?>
+            <?if(isset($href)){?>
+                <div class="btn-group" data-toggle="buttons-radio">
+                    <a class="btn btn-small" href="<?=$href?>">
+                        <b class="icon icon-edit"></b><?= $action ?>
+                    </a>
+                </div>
+            <?}?>
             </div>
         </th>
         <?}?>

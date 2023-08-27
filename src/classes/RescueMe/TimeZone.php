@@ -58,8 +58,14 @@
          * @param string $identifier Timezone identifier.
          *
          * @return boolean True if accepted, false otherwise.
+         * @throws \Exception
          */
         public static function set($identifier) {
+
+            if(empty($identifier) or $identifier=="") {
+                $identifier = DEFAULT_TIMEZONE;
+            }
+
 
             if(date_default_timezone_set($identifier)) {
 
@@ -67,9 +73,7 @@
                 setcookie('timezone', self::getOffset($identifier));
 
                 // Reconfigure database connection
-                DB::reconfigure();
-
-                return true;
+                return DB::reconfigure();
             }
 
             return false;

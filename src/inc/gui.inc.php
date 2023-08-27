@@ -77,7 +77,7 @@
         return insert_message($html,$output);        
     }
 
-    function insert_control($id, $type, $value, $label, $attributes='', $class='', $placeholder=null, $output=true)
+    function insert_control($id, $type, $value, $label='', $attributes='', $class='', $placeholder=null, $output=true)
     {
         ob_start();
         require(APP_PATH . "gui/control.gui.php");
@@ -221,7 +221,7 @@
         return $html;
     }
 
-    function insert_title($title, $href=null, $action=null, $class=null, $output=true)
+    function insert_title($title, $href=null, $action=null, $output=true)
     {
         ob_start();
         require(APP_PATH . "gui/title.gui.php");
@@ -232,10 +232,32 @@
         return $html;
     }
 
-    function insert_stats($type='trace', $set = 'all', $days=90, $prefix='', $user_id=0, $output=true)
+    function insert_title_toolbar($title, $toolbar, $output=true)
     {
         ob_start();
-        require(APP_PATH . "gui/stats.gui.php");
+        require(APP_PATH . "gui/title.gui.php");
+        $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+
+    function insert_insights($type='trace', $name = 'ratios', $days=90, $user_id=0, $prefix='', $output=true)
+    {
+        ob_start();
+        require(APP_PATH . "gui/insights.gui.php");
+        $html = ob_get_clean();
+        if($output) {
+            echo $html;
+        }
+        return $html;
+    }
+
+    function insert_insights_controls($type='trace', $name = 'ratios', $days=90, $user_id=0, $prefix='', $output=true)
+    {
+        ob_start();
+        require(APP_PATH . "gui/insights.controls.gui.php");
         $html = ob_get_clean();
         if($output) {
             echo $html;

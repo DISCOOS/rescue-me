@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RescueMe 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-02 14:41+0200\n"
-"PO-Revision-Date: 2023-08-02 14:42+0200\n"
+"POT-Creation-Date: 2023-08-27 17:01+0200\n"
+"PO-Revision-Date: 2023-08-27 17:01+0200\n"
 "Last-Translator: Kenneth Gulbrandsøy <kenneth@discoos.org>\n"
 "Language-Team: DISCOOS/RescueMe <rescueme@discoos.org>\n"
 "Language: nb_NO\n"
@@ -137,245 +137,297 @@ msgid "Database"
 msgstr "Database"
 
 #: common.domain.php:43
+msgid "Insights"
+msgstr "Innsikt"
+
+#: common.domain.php:44
 msgid "Mobile"
 msgstr "Mobil"
 
-#: common.domain.php:44
+#: common.domain.php:45
 msgid "OS"
 msgstr "OS"
 
-#: common.domain.php:45
+#: common.domain.php:46
 msgid "Browser"
 msgstr "Nettleser"
 
-#: common.domain.php:47
+#: common.domain.php:48
 msgid "Test"
 msgstr "Test"
 
-#: common.domain.php:48
+#: common.domain.php:49
 msgid "Trace"
 msgstr "Sporing"
 
-#: common.domain.php:49
+#: common.domain.php:50
 msgid "Traces"
 msgstr "Sporinger"
 
-#: common.domain.php:50
+#: common.domain.php:51
 msgid "Exercise"
 msgstr "Øvelse"
 
-#: common.domain.php:51
+#: common.domain.php:52
 msgid "Locations"
 msgstr "Lokasjoner"
 
-#: common.domain.php:52
+#: common.domain.php:53
 msgid "Arguments"
 msgstr "Argumenter"
 
-#: common.domain.php:53
+#: common.domain.php:54
 msgid "Operation"
 msgstr "Aksjon"
 
-#: common.domain.php:55
+#: common.domain.php:56
 msgid "User"
 msgstr "Bruker"
 
-#: common.domain.php:56
+#: common.domain.php:57
 msgid "API ID"
 msgstr "API ID"
 
-#: common.domain.php:57
+#: common.domain.php:58
 msgid "Password"
 msgstr "Passord"
 
-#: common.domain.php:58
+#: common.domain.php:59
 msgid "Callback"
 msgstr "Tilbakemelding"
 
-#: common.domain.php:60
+#: common.domain.php:61
 msgid "Key"
 msgstr "Key"
 
-#: common.domain.php:61
+#: common.domain.php:62
 msgid "Secret"
 msgstr "Secret"
 
-#: common.domain.php:63
+#: common.domain.php:64
 msgid "User ID"
 msgstr "User ID"
 
-#: common.domain.php:64
+#: common.domain.php:65
 msgid "Company ID"
 msgstr "Company ID"
 
-#: common.domain.php:65
+#: common.domain.php:66
 msgid "Department ID"
 msgstr "Department ID"
 
-#: common.domain.php:67
+#: common.domain.php:68
 msgid "min"
 msgstr "min"
 
-#: common.domain.php:68
+#: common.domain.php:69
 msgid "sec"
 msgstr "sek"
 
-#: common.domain.php:70
+#: common.domain.php:71
 msgid "Calculating..."
 msgstr "Kalkulerer..."
 
-#: common.domain.php:71
+#: common.domain.php:72
 msgid "Are you sure?"
 msgstr "Er du sikker?"
 
-#: common.domain.php:72
+#: common.domain.php:73
 msgid "This will abort the request permanently"
 msgstr "Dette vil avbryte forespørselen permanent"
 
-#: common.domain.php:74
+#: common.domain.php:75
 msgid "Forgot your password?"
 msgstr "Glemt passordet?"
 
-#: common.domain.php:75
+#: common.domain.php:76
 msgid "Don't have an account?"
 msgstr "Har du ikke en konto?"
 
-#: common.domain.php:76
+#: common.domain.php:77
 msgid "Sign up here"
 msgstr "Registrer deg her"
 
-#: common.domain.php:78
+#: common.domain.php:79
 msgid "Change password"
 msgstr "Endre passord"
 
-#: common.domain.php:79
+#: common.domain.php:80
 msgid "Reset password"
 msgstr "Nullstill passord"
 
-#: common.domain.php:80
+#: common.domain.php:81
 msgid "Do you want to logout?"
 msgstr "Vil du logge ut?"
 
-#: common.domain.php:82
+#: common.domain.php:83
 msgid "Caps-lock is on!"
 msgstr "Caps-lock er på!"
 
-#: common.domain.php:83
+#: common.domain.php:84
 #, php-format
 msgid "Missing values: %1$s"
 msgstr "Verdier mangler: %1$s"
 
-#: common.domain.php:84
+#: common.domain.php:85
 msgid "No parameters found"
 msgstr "Ingen parameter funnet"
 
-#: common.domain.php:86
+#: common.domain.php:87
 msgid "User not found."
 msgstr "Bruker ikke funnet."
 
-#: common.domain.php:87
+#: common.domain.php:88
 #, php-format
 msgid "User %1$s is created."
 msgstr "Bruker %1$s er opprettet."
 
-#: common.domain.php:88
+#: common.domain.php:89
 msgid "Failed to create user."
 msgstr "Kunne ikke opprette bruker."
 
-#: common.domain.php:89
+#: common.domain.php:90
 #, php-format
 msgid "Recovery password sent to user %1$s."
 msgstr "Engangspassord sendt til bruker %1$s."
 
-#: common.domain.php:90
+#: common.domain.php:91
 msgid "Recovery password not sent."
 msgstr "Engangspassord ikke sendt."
 
-#: common.domain.php:91
+#: common.domain.php:92
 #, php-format
 msgid "Failed to send recovery password to user %1$s."
 msgstr "Kunne sende engangspassord til bruker %1$s."
 
-#: common.domain.php:92
+#: common.domain.php:93
 #, php-format
 msgid "Your single-use %1$s password."
 msgstr "Ditt %1$s  engangspassord."
 
-#: common.domain.php:94
+#: common.domain.php:95
 #, php-format
 msgid "Your %1$s account is approved."
 msgstr "Din %1$s kontoforespørsel er godkjent."
 
-#: common.domain.php:95
+#: common.domain.php:96
 #, php-format
 msgid "Log in to %1$s."
 msgstr "Logg inn her %1$s."
 
-#: common.domain.php:96
+#: common.domain.php:97
 #, php-format
 msgid "Your %1$s account request is rejected."
 msgstr "Din %1$s kontoforespørsel er avvist."
 
-#: common.domain.php:98
+#: common.domain.php:99
 #, php-format
 msgid "Minimum %1$s characters"
 msgstr "Minimum %1$s tegn"
 
-#: common.domain.php:100
+#: common.domain.php:101
 #, php-format
 msgid "Failed to load [%1$s]."
 msgstr "Klarte ikke å laste [%1$s]."
 
-#: common.domain.php:101
+#: common.domain.php:102
 msgid "Failed to get country code."
 msgstr "Klarte ikke å finne landkode."
 
-#: common.domain.php:102
+#: common.domain.php:103
 msgid "Please fill out this field."
 msgstr "Vennligst fyll ut feltet."
 
-#: common.domain.php:103
+#: common.domain.php:104
 msgid "Please enter a valid email address."
 msgstr "Vennligst oppgi en lovlig e-postadresse."
 
-#: common.domain.php:104
+#: common.domain.php:105
 msgid "Please enter at least {0} characters."
 msgstr "Passordet må være minst {0} tegn."
 
-#: common.domain.php:105
+#: common.domain.php:106
 msgid "Please match the required format."
 msgstr "Vennligst skriv riktig format."
 
-#: common.domain.php:106
+#: common.domain.php:107
 msgid "Please enter the same value again."
 msgstr "Vennligst skriv inn samme verdi på nytt."
 
-#: common.domain.php:107
+#: common.domain.php:108
 #, php-format
 msgid "SMS request [%1$s] not supported."
 msgstr "SMS forespørsel  [%1$s] ikke støttet."
 
-#: common.domain.php:108
+#: common.domain.php:109
 #, php-format
 msgid "[%1$s] does not support [%2$s]."
 msgstr "[%1$s] støtter ikke [%2$s]."
 
-#: common.domain.php:109
+#: common.domain.php:110
 #, php-format
 msgid "Failed to create instance of module [%1$s]."
 msgstr "Kunne ikke opprette instanse av modul  [%1$s]."
 
-#: common.domain.php:110
+#: common.domain.php:111
 msgid "Have you opened the link on a mobile phone?"
 msgstr "Har du åpnet lenken på en mobil?"
 
-#: common.domain.php:111
+#: common.domain.php:112
 msgid "Yes, trace me now"
 msgstr "Ja! Spor meg nå"
 
-#: common.domain.php:112
+#: common.domain.php:113
 msgid "No, don't trace me"
 msgstr "Nei, ikke spor meg"
+
+#~ msgid "Settings"
+#~ msgstr "Innstillinger"
+
+#~ msgid "Traces not opened by the receiver"
+#~ msgstr "Sporinger som ikke er åpnet av mottaker ennå"
+
+#~ msgid "Traces without any location"
+#~ msgstr "Sporinger uten noen lokasjon"
+
+#~ msgid "Traces with at least one location"
+#~ msgstr "Sporinger med minst èn lokasjon"
+
+#~ msgid "Traces opened by the receiver"
+#~ msgstr "Sporinger åpnet av mottaker"
+
+#~ msgid "No response"
+#~ msgstr "Ingen respons"
+
+#~ msgid "Response, no location"
+#~ msgstr "Respons, ingen lokasjon"
+
+#~ msgid "Possible to locate"
+#~ msgstr "Mulig å lokalisere"
+
+#~ msgid "Ratios per state"
+#~ msgstr "Antall per tilstand"
+
+#~ msgid "Totals per state"
+#~ msgstr "Antall per tilstand"
+
+#~ msgid "last {days} days"
+#~ msgstr "siste {days} dager"
+
+#~ msgid "the best"
+#~ msgstr "den beste"
+
+#~ msgid "You received a location in {success} of attempts and are {operator} operator {days}."
+#~ msgstr "Du mottok en lokasjon i {success} av forsøkene og er {operator} operatøren {days}."
+
+#~ msgid "You received a location in {success} of the attempts {days} and are better than {lesser} of all operators."
+#~ msgstr "Du mottok en lokasjon i {success} av forsøkene {days} og er bedre enn {lesser} av alle operatører."
+
+#~ msgid "The best operator received {success}."
+#~ msgstr "Den beste operatøren mottok {success}."
+
+#~ msgid "Ratios of all traces"
+#~ msgstr "Andel av alle sporinger"
 
 #~ msgid "Your user has NOT been approved."
 #~ msgstr "Din bruker har ikke blitt godkjent"
@@ -484,9 +536,6 @@ msgstr "Nei, ikke spor meg"
 
 #~ msgid "Use mobile phone to trace persons fast and easy."
 #~ msgstr "Bruk savnedes mobiltelefon for et enklere oppdrag."
-
-#~ msgid "Settings"
-#~ msgstr "Innstillinger"
 
 #~ msgid "Full name"
 #~ msgstr "Fullt navn"
@@ -683,9 +732,6 @@ msgstr "Nei, ikke spor meg"
 #~ msgid "Delivered"
 #~ msgstr "Levert"
 
-#~ msgid "Response"
-#~ msgstr "Respons"
-
 #~ msgid "Located"
 #~ msgstr "Lokalisert"
 
@@ -764,9 +810,6 @@ msgstr "Nei, ikke spor meg"
 #~ msgid "Reopen"
 #~ msgstr "Gjenåpen"
 
-#~ msgid "Reopen operation"
-#~ msgstr "Gjenåpne operasjon"
-
 #~ msgid "Access denied"
 #~ msgstr "Ingen tilgang"
 
@@ -775,9 +818,6 @@ msgstr "Nei, ikke spor meg"
 
 #~ msgid "Try again"
 #~ msgstr "Vennligst prøv igjen"
-
-#~ msgid "Last location"
-#~ msgstr "Siste lokasjon"
 
 #~ msgid "Location received"
 #~ msgstr "Lokasjon mottatt"

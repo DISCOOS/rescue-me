@@ -79,7 +79,8 @@
     // Use user-specified locale and timezone
     $id = ($user ? $user->id : 0);
     set_system_locale(DOMAIN_ADMIN, Properties::get(Properties::SYSTEM_LOCALE, $id));
-    TimeZone::set(Properties::get(Properties::SYSTEM_TIMEZONE, $id));
+    $timezone = Properties::get(Properties::SYSTEM_TIMEZONE, $id);
+    TimeZone::set($timezone);
 
     // Dispatch view
     switch($_GET['view']) {
@@ -306,7 +307,7 @@
                     $_ROUTER['error'] = ACCESS_DENIED;
                     break;
                 }
-                
+
                 // Get data
                 $name = $_POST['pk'];
                 $value = isset($_POST['value']) ? $_POST['value'] : "";

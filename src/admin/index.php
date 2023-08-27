@@ -1,99 +1,26 @@
 <?php
     
-require('config.php');
+    require('config.php');
 
-use RescueMe\User;
-       
-if(defined('USE_SILEX') && USE_SILEX) {
-    
-    // Verify logon information
-    $user = User::verify();
-    $_SESSION['logon'] = ($user instanceof User);
-    
-	$TWIG = array(
-        'APP_TITLE' => TITLE,
-        'APP_URI' => APP_URI,
-        'APP_ADMIN_URI' => ADMIN_URI,
-        'LOGIN' => $_SESSION['logon'],
-        'SMS_TEXT_MISSING' => ALERT_SMS_TRACE,
-        'SMS_TEXT_GUIDE'  => ALERT_SMS_2
-	);
-    
-	$app = new Silex\Application();
-	$app['debug'] = true;
-	$app->register(new Silex\Provider\TwigServiceProvider(),
-		array('twig.path' =>ADMIN_PATH.'views',
-			  #'twig.options' => array('cache' => APP_PATH. 'tmp/twig.cache')
-			  ));
-    $app['twig']->addExtension(new Twig_Extensions_Extension_I18n());
-    
-   	// Force logon?
-	if($_SESSION['logon'] == false) {
-		$app->match('/', function () use ($app) {
-			global $TWIG;
-			require_once(ADMIN_PATH.'controllers/logon.controller.php');
-			return $app['twig']->render('logon.twig', $TWIG);
-		});
-	}
+    use RescueMe\User;
 
-	// Main actions
-	$app->match('/{module}', function ($module) use ($app, $user) {
-		global $TWIG;
-		if($_SESSION['logon']==true) {
-            if($module == 'logon') {
-                $module = 'start';
-            } elseif($module == 'logout') {
-                $user->logout();
-                return $app->redirect(APP_URI);
-            }
-        }
-        
-		$controller = ADMIN_PATH."controllers/$module.controller.php";
-		if(file_exists($controller))
-			require_once($controller);
-        
-		$TWIG['VIEW'] = T_('Dashboard');
-	    return $app['twig']->render("$module.twig", $TWIG);
-        
-	})->value('module', 'start')->assert('module', "logon|start|logout");
-	
-	// Module actions
-	$app->match('/{module}/{action}/{id}', function ($module, $action, $id) use ($app, $user) {
-		global $TWIG; 
-		$view = rtrim("$module.$action",".");
-		$controller = ADMIN_PATH."controllers/$view.controller.php";
-		if(file_exists($controller))
-			require_once($controller);
-
-        $TWIG['VIEW'] = trim("$action $module");
-	    return $app['twig']->render("$view.twig", $TWIG);
-        
-	})->value('id', false);
-	
-	$app->run();
-	
-	die();
-    
-} else {                   
-    
     require('router.php');
 
     // Was ajax request?
     if(is_ajax_request()) {
         die();
     }
-    
+
     $user = User::current();
     if($user instanceof User) {
         $id = $user->id;
     }
-    
+
     $num_pending = User::count(array(User::PENDING));
     if ($num_pending === 0) {
         $num_pending = '';
     }
-    
-}?>
+?>
 
 <!DOCTYPE html>
 <html lang="en">

@@ -849,17 +849,21 @@
             $granted = $this->isState(User::ACTIVE);
             
             $isset = isset($_SESSION['logon']) && $_SESSION['logon'];
+            $user_id = $info['user_id'];
             
             if($granted) {
                 $_SESSION['logon'] = true;
-                $_SESSION['user_id'] = $info['user_id'];
+                $_SESSION['user_id'] = $user_id;
                 $_SESSION['password'] = $info['password'];
             } else {
                 $this->logout();
             }
             
             if($isset === false) {
-                User::log($granted ? 'User logged in.' : 'Logon not granted. User is ' . $this->state);
+                User::log($granted
+                    ? "User [$$user_id] logged in."
+                    : "Login not granted for user [$$user_id] (was in state " . $this->state . ')'
+                );
             }
             
             return $granted ? true : $this->state;

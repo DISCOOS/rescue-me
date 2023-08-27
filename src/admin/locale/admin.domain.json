@@ -9,5 +9,13 @@
         "email": "PLEASE_ENTER_A_VALID_EMAIL_ADDRESS",
         "equalto": "PLEASE_ENTER_THE_SAME_VALUE_AGAIN"
 
+    },
+    "insights": {
+        "last_n_days": "LAST_N_DAYS",
+        "the_best": "THE_BEST",
+        "no_traces_created": "NO_TRACES_CREATED_IN_PERIOD",
+        "are_best_operator": "YOU_ARE_THE_OPERATOR_IN_PERIOD",
+        "nth_best_operator": "YOU_ARE_THE_NTH_OPERATOR_IN_PERIOD",
+        "best_operator_is": "THE_BEST_OPERATOR_IS"
     }
 }

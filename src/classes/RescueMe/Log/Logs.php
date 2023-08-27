@@ -12,6 +12,7 @@
 
     namespace RescueMe\Log;
     
+    use Exception;
     use \RescueMe\DB;
     use \RescueMe\User;
 
@@ -80,7 +81,12 @@
          */        
         const TRACE = "trace";
         
-        
+        /**
+         * Insights log
+         */
+        const INSIGHTS = "insights";
+
+
         /**
          * Location log
          */        
@@ -96,6 +102,7 @@
             self::LOCATION,
             self::SYSTEM,
             self::DB,
+            self::INSIGHTS,
             self::SMS
         );
         
@@ -112,6 +119,7 @@
                 Logs::SMS => SMS,
                 Logs::ACCESS => ACCESS,
                 Logs::DB =>  DATABASE,
+                Logs::INSIGHTS => INSIGHTS,
                 Logs::SYSTEM => SYSTEM,
             );            
         }        
@@ -162,14 +170,16 @@
             
             return $query;
         }
-        
-        
+
+
         /**
          * Get number of lines in given logs
-         * 
-         * @param string $name Log name
-         * 
+         *
+         * @param $logs
+         * @param string $filter
          * @return integer|boolean
+         *
+         * @throws Exception
          */
         public static function countAll($logs, $filter = '') {
             
@@ -226,14 +236,15 @@
             return $logs;
             
         }// getAll     
-        
-        
+
+
         /**
          * Get number of lines in given log
-         * 
+         *
          * @param string $name Log name
-         * 
+         *
          * @return integer|boolean
+         * @throws Exception
          */
         public static function count($name, $filter = '') {
             
@@ -254,9 +265,8 @@
             return Logs::getAll(array($name), $filter, $start, $max);
             
         }// get
-        
-        
-        
+
+
         /**
          * Write message to log.
          *
@@ -266,6 +276,7 @@
          * @param integer $user_id User id
          *
          * @return void
+         * @throws Exception
          */
         public static function write($name, $level, $message, $context = array(), $user_id = null) {
             

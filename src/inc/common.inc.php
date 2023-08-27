@@ -1,7 +1,8 @@
 <?php
     
     use Psr\Log\LogLevel;
-    use RescueMe\Log\Logs;    
+    use RescueMe\DB;
+    use RescueMe\Log\Logs;
     use RescueMe\Properties;
     use RescueMe\TimeZone;
 
@@ -895,4 +896,53 @@
 
         return $out;
     }
-    
+
+    /**
+     * Get results using query
+     * @param string $sql
+     * @return array|false
+     * @throws Exception
+     */
+    function mysql_query_fetch($sql)
+    {
+        $res = DB::query($sql);
+
+        if(DB::isEmpty($res)) {
+            return false;
+        }
+
+        $rows = array();
+        while ($row = $res->fetch_assoc()) {
+            $rows[] = $row;
+        }
+
+        $res->close();
+
+        return $rows;
+    }
+
+    /**
+     * Get results using prepared statement
+     * @param false|mysqli $conn
+     * @param string $sql
+     * @param string $types
+     * @param mixed $values
+     * @return mixed
+     */
+    function mysql_prepared_fetch($conn, $sql, $types, $values) {
+        $stmt = $conn->prepare($sql);
+        array_unshift($values, $types);
+        call_user_func_array(array($stmt, 'bind_param'), $values);
+        $stmt->bind_result($result) or die ("Failed to bind result");
+        $stmt->execute() or die("Failed to execute stmt");
+        $stmt->fetch() or die("Failed to fetch data");
+        $stmt->store_result() or die("Failed to store result");
+        $stmt->free_result();
+        $stmt->close();
+        return $result;
+    }
+
+    function fraction($num, $denom) {
+        return $denom>0 ? round($num / $denom, 4) : 0;
+    }
+

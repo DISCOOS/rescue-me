@@ -315,13 +315,14 @@
 
             $name = false;
 
-            $country = self::getCountryInfo($code);
+            $info = self::getCountryInfo($code);
 
-            if($country !== false) {
-                $name = ucwords(strtolower($country['country']));
+            if($info !== false) {
+
+                $name = ucwords(strtolower($info['country']));
                 if($phone) {
 
-                    $dail_code = $country['dial_code'];
+                    $dail_code = $info['dial_code'];
                     $name .=  " (" . (strlen($dail_code)<4 ? "+$dail_code" : $dail_code). ")";
                 }
             }
@@ -360,7 +361,7 @@
          * 
          * @param string|boolean $code ISO country code
          * 
-         * @return array Country|ies information
+         * @return bool|array Country|ies information
          */
         public static function getCountryInfo($code=false)
         {

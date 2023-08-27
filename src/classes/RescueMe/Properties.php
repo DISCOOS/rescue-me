@@ -12,6 +12,7 @@
     
     namespace RescueMe;
 
+    use Exception;
     use RescueMe\SMS;
     
     /**
@@ -108,21 +109,21 @@
             
             self::SYSTEM_COUNTRY_PREFIX => array(
                 'type' => 'select',
-                'default' => '',
+                'default' => COUNTRY_PREFIX,
                 'options' => true,
                 'description' => "Use phone number prefix for given country as default."
             ),
             
             self::SYSTEM_LOCALE => array(
                 'type' => 'select',
-                'default' => '',
+                'default' => DEFAULT_LOCALE,
                 'options' => true,
                 'description' => "Use given language (locale)."
             ),
 
             self::SYSTEM_TIMEZONE => array(
                 'type' => 'select',
-                'default' => '',
+                'default' => DEFAULT_TIMEZONE,
                 'options' => true,
                 'description' => "Use given timezone."
             ),
@@ -414,16 +415,17 @@
             return $row[0];
             
         }// get
-        
-        
+
+
         /**
          * Set value of property with given name
-         * 
+         *
          * @param string $name
          * @param mixed $value
          * @param integer $user_id
-         * 
+         *
          * @return boolean TRUE if success, FALSE otherwise
+         * @throws Exception
          */
         public static function set($name, $value, $user_id=0) {
             

@@ -12,10 +12,13 @@
     
     namespace RescueMe;
 
+    use \mysqli;
+    use Exception;
+    use mysqli_result;
     use \Psr\Log\LogLevel;
     use \RescueMe\Log\Logs;
     use \RescueMe\TimeZone;
-    
+
 
     /**
      * Database class
@@ -35,7 +38,7 @@
         /**
          * Connection instance
          * 
-         * @var \mysqli
+         * @var mysqli
          */
         private $mysqli;
         
@@ -105,7 +108,7 @@
          * 
          * @param string $name DB name
          * 
-         * @return TRUE if success, FALSE otherwise.
+         * @return bool TRUE if success, FALSE otherwise.
          */
         public function database($name=DB_NAME)
         {
@@ -122,8 +125,8 @@
          * 
          * @param string $sql SQL query.
          * 
-         * @return mixed FALSE on failure. For successful SELECT, SHOW, DESCRIBE or EXPLAIN queries 
-         * mysqli_query will return a mysqli_result object. For successfull INSERT queries with 
+         * @return bool|mysqli_result FALSE on failure. For successful SELECT, SHOW, DESCRIBE or EXPLAIN queries
+         * mysqli_query will return a mysqli_result object. For successful INSERT queries with
          * AUTO_INCREMENT field, the auto generated id is returned. For other successful queries 
          * the method will return TRUE.
          * 
@@ -137,8 +140,23 @@
                 $error = mysqli_connect_error(DB::instance()->mysqli);
                 throw new Exception("Failed to connect to MySQL: " . $error, $code);
             }// if
-                        
+
+            if(DB::instance()->mysqli->more_results()) {
+                DB::instance()->mysqli->next_result();
+            }
+
             $result = DB::instance()->mysqli->query($sql);
+
+            /*
+            var_dump($result);
+            var_dump(DB::errno());
+            var_dump(DB::error());
+
+            if(DB::errno()>0) {
+                throw new Exception(DB::error(), DB::errno());
+            }
+            */
+
             if($result && strpos($sql, "INSERT") !== false) {
                 return DB::instance()->mysqli->insert_id;
             } else if(!$result) {
@@ -153,17 +171,17 @@
         /**
          * Check if result set is empty.
          * 
-         * @param \mysqli_result $res Result set
+         * @param mysqli_result $res Result set
          * 
-         * @return FALSE if result set is FALSE or empty, TRUE otherwise.
+         * @return bool
          */
         public static function isEmpty($res) 
         {
             return isset($res) === FALSE || $res === FALSE || 
-                ($res instanceof \mysqli_result) && mysqli_num_rows($res) === 0;
+                ($res instanceof mysqli_result) && mysqli_num_rows($res) === 0;
         }// isEmpty
-        
-        
+
+
         /**
          * Escapes special characters in a string for use in an SQL statement, taking into account the current charset of the connection.
          * 
@@ -209,13 +227,14 @@
             return call_user_func_array("sprintf",  $params);
         }
 
-        
+
         /**
          * Get row count
-         * 
+         *
          * @param array|string $tables
          * @param string $filter
          * @return boolean|integer
+         * @throws Exception
          */
         public static function count($tables, $filter='')
         {
@@ -232,20 +251,23 @@
             
             $row = $res->fetch_row();
 
+            $res->close();
+
             return (int)$row[0];
             
         }// count
-        
+
 
         /**
          * Get selection from given table
-         * 
+         *
          * @param array|string $tables
          * @param mixed $fields
          * @param string $filter
          * @param string $order
          * @param string $limit
-         * @return boolean|\mysqli_result
+         * @return boolean|mysqli_result
+         * @throws Exception
          */
         public static function select($tables, $fields='*', $filter='', $order='', $limit = '')
         {
@@ -270,14 +292,15 @@
             return DB::query($query);
             
         }// select
-        
-        
+
+
         /**
          * Insert values into given table.
-         * 
+         *
          * @param string $table
          * @param array $values
          * @return integer|boolean FALSE on failure, integer if table has AUTO_INCREMENT primary id, TRUE otherswise.
+         * @throws Exception
          */
         public static function insert($table, $values)
         {
@@ -309,15 +332,16 @@
             return $res;
             
         }// insert
-        
-        
+
+
         /**
          * Delete rows from given table.
-         * 
+         *
          * @param string $table
          * @param string $filter
-         * 
+         *
          * @return boolean TRUE on success, FALSE otherswise.
+         * @throws Exception
          */
         public static function delete($table, $filter='')
         {
@@ -341,15 +365,16 @@
             return true;
             
         }// delete        
-        
-        
+
+
         /**
          * Update table with given values.
-         * 
+         *
          * @param string $table
          * @param array $values
          * @param string $filter
          * @return boolean TRUE on success, FALSE otherswise.
+         * @throws Exception
          */
         public static function update($table, $values, $filter) 
         {
@@ -372,19 +397,21 @@
                 Logs::write(Logs::DB, LogLevel::ERROR, 'Failed to update ' . count($values) . " values in $table", $context);
             } else {
                 Logs::write(Logs::DB, LogLevel::INFO, 'Updated ' . count($values) . " values in $table");
+                var_dump($query);
             }
             
             return true;
             
         }// update
-        
-        
+
+
         /**
          * Check if database exists.
-         * 
+         *
          * @param string $name Database name
-         * 
+         *
          * @return boolean TRUE if success, FALSE otherwise.
+         * @throws Exception
          */
         public static function exists($name)
         {
@@ -399,14 +426,15 @@
             unset($mysqli);
             return $result;
         }// exists
-        
-        
+
+
         /**
          * Create database with given name.
-         * 
+         *
          * @param string $name Database name
-         * 
+         *
          * @return boolean TRUE if success, FALSE otherwise.
+         * @throws Exception
          */
         public static function create($name)
         {
@@ -454,14 +482,15 @@
             
             return $filter;
         }
-        
-        
+
+
         /**
          * Import SQL dump into database.
-         * 
+         *
          * @param string $pathname Path to file
-         * 
-         * @return boolean TRUE if success, FALSE otherwise.
+         *
+         * @return array|bool
+         * @throws Exception
          */
         public static function import($pathname)
         {
@@ -648,7 +677,7 @@
          * <li>Connection encoding to 'utf8'</li>
          * <li>Connection timesone offset from php timesone</li>
          * </ol>
-         * @param \mysqli $mysqli
+         * @param mysqli $mysqli
          * @return boolean TRUE if success, FALSE otherwise
          */
         private static function configure($mysqli) {
@@ -665,12 +694,8 @@
             //
             $offset = TimeZone::getOffset();
 
-            if($mysqli->query("SET time_zone='$offset';") === FALSE) {
-                return false;
-            }
-            
-            return true;
-            
+            return $mysqli->query("SET time_zone='$offset';") !== FALSE;
+
         }
 
 
@@ -682,6 +707,7 @@
          *
          * @return boolean
          *
+         * @throws Exception
          */
         public static function reconfigure() {
             //
@@ -689,20 +715,21 @@
             //
             // (see http://www.sitepoint.com/synchronize-php-mysql-timezone-configuration)
             //
-            $offset = $offset = TimeZone::getOffset();
+            $offset = TimeZone::getOffset();
 
             return DB::query("SET time_zone='$offset';");
 
         }
-        
-        
-       /**
+
+
+        /**
          * Export SQL dump from database.
-         * 
+         *
          * @param string $pathname Path to export file
-         * @param string $charset Default table charset 
-         * 
+         * @param string $charset Default table charset
+         *
          * @return boolean TRUE if success, FALSE otherwise.
+         * @throws Exception
          */
         public static function export($pathname, $charset="utf8")
         {

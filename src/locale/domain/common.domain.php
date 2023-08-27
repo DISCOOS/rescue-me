@@ -39,7 +39,8 @@
         define('ACCOUNT', T_('Account'));
         define('MESSAGE', T_('Message'));
         define('MESSAGES', T_('Messages'));
-        define('DATABASE', T_('Database'));        
+        define('DATABASE', T_('Database'));
+        define('INSIGHTS', T_('Insights'));
         define('MOBILE', T_('Mobile'));
         define('OS', T_('OS'));
         define('BROWSER', T_('Browser'));

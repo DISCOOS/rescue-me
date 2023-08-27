@@ -44,7 +44,8 @@ R.CapsLock.listen = function(selector) {
         function handle(input, on) {
             $this = input;
             if ( on ) {
-                $this.data('popover').options.content = $.i18n.t("capslock.on");
+                $this.data('popover').options.content =
+                    $.i18n.t("capslock.on");
                 $this.popover('show').click(function (e) {
                     $this.popover('hide');
                     e.preventDefault();
