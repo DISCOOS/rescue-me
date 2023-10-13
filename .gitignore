@@ -3,6 +3,8 @@ dist
 test
 logs
 *.log
+.DS_Store
+backup/
 .idea/
 .vagrant/
 src/config.php
