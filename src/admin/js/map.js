@@ -35,6 +35,7 @@ if(typeof google !== "undefined") {
             mapTypeControlOptions: {
                 mapTypeIds: [
                     'statkart.topo2',
+                    'osm',
                     google.maps.MapTypeId.ROADMAP,
                     google.maps.MapTypeId.SATELLITE,
                     google.maps.MapTypeId.HYBRID,
@@ -46,6 +47,7 @@ if(typeof google !== "undefined") {
         };
         map = new google.maps.Map(document.getElementById(id), mapProp);
         map.mapTypes.set('statkart.topo2', new R.map.StatkartMapType("Norway Topo", "topo"));
+        map.mapTypes.set('osm', new R.map.OsmMapType("Open Street Map"));
 
         google.maps.event.addListener(map, 'click', function() {
             if (lastInfoWindow !== null) {
@@ -83,6 +85,29 @@ if(typeof google !== "undefined") {
             div.style.height = this.tileSize.height + 'px';
             div.style.backgroundImage = "url(http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=" +
                     this.layer + "&zoom=" + zoom + "&x=" + coord.x + "&y=" + coord.y + ")";
+            return div;
+        };
+    };
+
+    R.map.OsmMapType = function (name) {
+        this.name = name;
+        this.alt = name;
+        this.tileSize = new google.maps.Size(256, 256);
+        this.maxZoom = 18;
+        this.getTile = function(coord, zoom, ownerDocument) {
+            // "Wrap" x (longitude) at 180th meridian properly
+            // NB: Don't touch coord.x: because coord param is by reference,
+            // and changing its x property breaks something in Google's lib
+            var tilesPerGlobe = 1 << zoom;
+            var x = coord.x % tilesPerGlobe;
+            if (x < 0) {
+                x = tilesPerGlobe+x;
+            }
+            // Wrap y (latitude) in a like manner if you want to enable vertical infinite scrolling
+            var div = ownerDocument.createElement('DIV');
+            div.style.width = this.tileSize.width + 'px';
+            div.style.height = this.tileSize.height + 'px';
+            div.style.backgroundImage = "url(https://tile.openstreetmap.org/" + zoom + "/" + x + "/" + coord.y + ".png)";
             return div;
         };
     };
