@@ -251,7 +251,7 @@
                 'type' => 'select',
                 'default' => self::MAP_DEFAULT_BASE_TERRAIN,
                 'options' => array(
-                    'statkart.topo2' => 'Norway Topo2', 
+                    'statkart.topo2' => 'Norway Topo',
                     self::MAP_DEFAULT_BASE_TERRAIN => 'Terrain', 
                     self::MAP_DEFAULT_BASE_SATELLITE => 'Satellite',
                     self::MAP_DEFAULT_BASE_HYBRID => 'Hybrid'

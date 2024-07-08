@@ -45,7 +45,7 @@ if(typeof google !== "undefined") {
 
         };
         map = new google.maps.Map(document.getElementById(id), mapProp);
-        map.mapTypes.set('statkart.topo2', new R.map.StatkartMapType("Norway Topo4", "topo4"));
+        map.mapTypes.set('statkart.topo2', new R.map.StatkartMapType("Norway Topo", "topo"));
 
         google.maps.event.addListener(map, 'click', function() {
             if (lastInfoWindow !== null) {
