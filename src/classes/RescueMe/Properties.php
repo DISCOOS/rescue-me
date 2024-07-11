@@ -252,6 +252,7 @@
                 'default' => self::MAP_DEFAULT_BASE_TERRAIN,
                 'options' => array(
                     'statkart.topo2' => 'Norway Topo',
+                    'statkart.topo4' => 'Norway Topo4',
                     'osm' => 'Open Street Map',
                     self::MAP_DEFAULT_BASE_TERRAIN => 'Terrain',
                     self::MAP_DEFAULT_BASE_SATELLITE => 'Satellite',

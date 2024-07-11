@@ -54,6 +54,7 @@
                 '//js/sparkline.js',
                 '//js/raphael-min.js',
                 '//js/justgage.min.js',
+                '//js/googlemaps-ogc.min.js',
                 '//js/common.js',
                 '//admin/js/admin.js'
             ),

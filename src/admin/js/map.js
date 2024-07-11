@@ -35,6 +35,7 @@ if(typeof google !== "undefined") {
             mapTypeControlOptions: {
                 mapTypeIds: [
                     'statkart.topo2',
+                    'statkart.topo4',
                     'osm',
                     google.maps.MapTypeId.ROADMAP,
                     google.maps.MapTypeId.SATELLITE,
@@ -46,7 +47,14 @@ if(typeof google !== "undefined") {
 
         };
         map = new google.maps.Map(document.getElementById(id), mapProp);
-        map.mapTypes.set('statkart.topo2', new R.map.StatkartMapType("Norway Topo", "topo"));
+        map.mapTypes.set('statkart.topo2', new google.maps.plugins.ogc.WmsMapType({
+            url: "https://openwms.statkart.no/skwms1/wms.topo?",
+            layers: "topo",
+            name: "Norway Topo",
+            alt: "topo",
+            maxZoom: 18
+        }));
+        map.mapTypes.set('statkart.topo4', new R.map.StatkartMapType("Norway Topo4", "topo4"));
         map.mapTypes.set('osm', new R.map.OsmMapType("Open Street Map"));
 
         google.maps.event.addListener(map, 'click', function() {
