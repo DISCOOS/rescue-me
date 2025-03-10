@@ -34,8 +34,8 @@ if(typeof google !== "undefined") {
 
             mapTypeControlOptions: {
                 mapTypeIds: [
-                    'statkart.topo2',
-                    'statkart.topo4',
+                    'statkart.topo',
+                    'statkart.topograatone',
                     'osm',
                     google.maps.MapTypeId.ROADMAP,
                     google.maps.MapTypeId.SATELLITE,
@@ -47,14 +47,20 @@ if(typeof google !== "undefined") {
 
         };
         map = new google.maps.Map(document.getElementById(id), mapProp);
-        map.mapTypes.set('statkart.topo2', new google.maps.plugins.ogc.WmsMapType({
+        map.mapTypes.set('statkart.topo', new google.maps.plugins.ogc.WmsMapType({
             url: "https://wms.geonorge.no/skwms1/wms.topo?",
             layers: "topo",
             name: "Norway Topo",
             alt: "topo",
             maxZoom: 18
         }));
-        map.mapTypes.set('statkart.topo4', new R.map.StatkartMapType("Norway Topo4", "topo4"));
+        map.mapTypes.set('statkart.topograatone', new google.maps.plugins.ogc.WmsMapType({
+            url: "https://wms.geonorge.no/skwms1/wms.topograatone?",
+            layers: "topograatone",
+            name: "Norway Topo Gray",
+            alt: "topograatone",
+            maxZoom: 18
+        }));
         map.mapTypes.set('osm', new R.map.OsmMapType("Open Street Map"));
 
         google.maps.event.addListener(map, 'click', function() {
@@ -81,6 +87,7 @@ if(typeof google !== "undefined") {
         return R.map.icons[iconColor];
     };
 
+    /*/ NOT IN USE
     R.map.StatkartMapType = function (name, layer) {
         this.layer = layer;
         this.name = name;
@@ -96,6 +103,7 @@ if(typeof google !== "undefined") {
             return div;
         };
     };
+    */
 
     R.map.OsmMapType = function (name) {
         this.name = name;
