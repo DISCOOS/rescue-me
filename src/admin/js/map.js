@@ -48,7 +48,7 @@ if(typeof google !== "undefined") {
         };
         map = new google.maps.Map(document.getElementById(id), mapProp);
         map.mapTypes.set('statkart.topo2', new google.maps.plugins.ogc.WmsMapType({
-            url: "https://openwms.statkart.no/skwms1/wms.topo?",
+            url: "https://wms.geonorge.no/skwms1/wms.topo?",
             layers: "topo",
             name: "Norway Topo",
             alt: "topo",
